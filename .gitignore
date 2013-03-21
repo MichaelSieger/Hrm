@@ -9,7 +9,6 @@ target/*
 # Meta files
 .settings/*
 *.pydevproject
-.project
 .metadata
 *~.nib
 local.properties
