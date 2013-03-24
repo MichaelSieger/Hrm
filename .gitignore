@@ -1,6 +1,6 @@
 # Binary files / folders
-bin/*
-*/target/*
+bin/
+*/target/
 *.jar
 *.war
 *.ear
