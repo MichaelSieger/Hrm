@@ -12,7 +12,6 @@ bin/
 .metadata
 *~.nib
 local.properties
-.classpath
 .loadpath
 
 # Tmp files
