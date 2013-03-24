@@ -1,13 +1,13 @@
 # Binary files / folders
 bin/*
-target/*
+*/target/*
 *.jar
 *.war
 *.ear
 *.class
 
 # Meta files
-.settings/*
+*/.settings/*
 *.pydevproject
 .metadata
 *~.nib
