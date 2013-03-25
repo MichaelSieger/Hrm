@@ -20,7 +20,7 @@ import org.eclipse.swt.widgets.Shell;
 public class AboutHandler {
 	@Execute
 	public void execute(@Named(IServiceConstants.ACTIVE_SHELL) Shell shell) {
-		String[] developer = new String[] { "Tobias Placht", "Anton Schreck"};
+		String[] developer = new String[] { "Tobias Placht", "Anton Schreck", "Lucas Haering"};
 		StringBuilder sb = new StringBuilder();
 
 		for (String s : developer) {
