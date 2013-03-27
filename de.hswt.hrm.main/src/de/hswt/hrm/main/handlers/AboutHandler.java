@@ -10,6 +10,7 @@
  *******************************************************************************/
 package de.hswt.hrm.main.handlers;
 
+import java.util.Arrays;
 import javax.inject.Named;
 
 import org.eclipse.e4.core.di.annotations.Execute;
@@ -20,10 +21,11 @@ import org.eclipse.swt.widgets.Shell;
 public class AboutHandler {
 	@Execute
 	public void execute(@Named(IServiceConstants.ACTIVE_SHELL) Shell shell) {
-		String[] developer = new String[] { "Tobias Placht", "Anton Schreck", "Lucas Haering", "Marek Bieber"};
+		String[] developer = new String[] { "Tobias Placht", "Anton Schreck",
+			"Lucas Haering", "Marek Bieber", "Benjamin Pabst"};
 		StringBuilder sb = new StringBuilder();
 
-		for (String s : developer) {
+		for (String s : Arrays.sort(developer)) {
 			sb.append(s);
 			sb.append("\n");
 		}
