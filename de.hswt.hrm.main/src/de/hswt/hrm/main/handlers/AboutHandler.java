@@ -22,10 +22,10 @@ public class AboutHandler {
 	@Execute
 	public void execute(@Named(IServiceConstants.ACTIVE_SHELL) Shell shell) {
 		String[] developer = new String[] { "Tobias Placht", "Anton Schreck",
-			"Lucas Haering", "Marek Bieber", "Benjamin Pabst"};
+			"Lucas Haering", "Marek Bieber", "Benjamin Pabst", "Michael Sieger"};
 		StringBuilder sb = new StringBuilder();
-
-		for (String s : Arrays.sort(developer)) {
+		Arrays.sort(developer);
+		for (String s : developer) {
 			sb.append(s);
 			sb.append("\n");
 		}
