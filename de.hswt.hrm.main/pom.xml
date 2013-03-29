@@ -16,7 +16,7 @@
   </build>
   <parent>
   	<groupId>de.hswt.hrm</groupId>
-  	<artifactId>parent</artifactId>
+  	<artifactId>de.hswt.hrm.parent</artifactId>
   	<version>0.0.1-SNAPSHOT</version>
   	<relativePath>../parent</relativePath>
   </parent>
