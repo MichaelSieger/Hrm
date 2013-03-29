@@ -2,7 +2,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.hswt.hrm</groupId>
-	<artifactId>parent</artifactId>
+	<artifactId>de.hswt.hrm.parent</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
@@ -50,5 +50,23 @@
 
 	<modules>
 		<module>../de.hswt.hrm.main</module>
+		<module>
+			../../../../workspaces/eclipse/e4/de.hswt.hrm.contact.dao.core
+		</module>
+		<module>
+			../../../../workspaces/eclipse/e4/de.hswt.hrm.contact.dao.impl
+		</module>
+		<module>
+			../../../../workspaces/eclipse/e4/de.hswt.hrm.contact.feature
+		</module>
+		<module>
+			../../../../workspaces/eclipse/e4/de.hswt.hrm.contact.model
+		</module>
+		<module>
+			../../../../workspaces/eclipse/e4/de.hswt.hrm.contact.service.core
+		</module>
+		<module>
+			../../../../workspaces/eclipse/e4/de.hswt.hrm.contact.service.impl
+		</module>
 	</modules>
 </project>
