@@ -22,7 +22,7 @@ public class AboutHandler {
 	@Execute
 	public void execute(@Named(IServiceConstants.ACTIVE_SHELL) Shell shell) {
 		String[] developer = new String[] { "Tobias Placht", "Anton Schreck",
-			"Lucas Haering", "Marek Bieber", "Benjamin Pabst", "Michael Sieger"};
+			"Lucas Haering", "Marek Bieber", "Benjamin Pabst", "Michael Sieger","Stefan Kleeberger"};
 		StringBuilder sb = new StringBuilder();
 		Arrays.sort(developer);
 		for (String s : developer) {
