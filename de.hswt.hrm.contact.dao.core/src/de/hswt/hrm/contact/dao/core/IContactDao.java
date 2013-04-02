@@ -9,7 +9,7 @@ import de.hswt.hrm.contact.model.Contact;
 public interface IContactDao {
     
     /**
-     * @return All contacts from the database.
+     * @return All contacts from storage.
      */
     public Collection<Contact> findAll();
     
@@ -18,4 +18,20 @@ public interface IContactDao {
      * @return Contact with the given id.
      */
     public Contact findById(long id);
+    
+    // TODO: specify exception that will be thrown when contact already exists
+    /**
+     * Add a new contact to storage.
+     * 
+     * @param contact Contact that should be stored.
+     */
+    public void insert(Contact contact);
+    
+    // TODO: specify exception that will be thrown when contact does not exist
+    /**
+     * Update an existing contact in storage.
+     * 
+     * @param contact Contact that should be updated.
+     */
+    public void update(Contact contact);
 }
