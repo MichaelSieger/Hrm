@@ -1,6 +1,5 @@
 package de.hswt.hrm.plant;
 
-import org.eclipse.swt.widgets.Display;
 
 /**
  * This class is for early developing purposes only, and will
