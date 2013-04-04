@@ -12,6 +12,7 @@ public class PlantPart {
     
     private int xPos, yPos;
     private PlantImage imag;
+    private Category category;
     
     public int getxPos() {
         return xPos;
@@ -36,6 +37,15 @@ public class PlantPart {
     public void setImag(PlantImage imag) {
         this.imag = imag;
     }
-    
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+        
 
 }
