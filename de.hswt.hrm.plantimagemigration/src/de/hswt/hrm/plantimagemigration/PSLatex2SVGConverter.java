@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import de.hswt.hrm.plantimagemigration.converter.Converter;
 import de.hswt.hrm.plantimagemigration.converter.DVIConverter;
+import de.hswt.hrm.plantimagemigration.converter.PSConverter;
 import de.hswt.hrm.plantimagemigration.converter.PdfConverter;
 import de.hswt.hrm.plantimagemigration.converter.SvgConverter;
 
@@ -20,8 +21,7 @@ public class PSLatex2SVGConverter {
     private static final String SOURCE_FOLDER = "symbols";
     private static final String DECONTEXT_FOLDER = "1";
     private static final String DVI_FOLDER = "2";
-    private static final String PDF_FOLDER = "3";
-    private static final String SVG_FOLDER = "4";
+    private static final String PS_FOLDER = "3";
     private static final String TMP_FOLDER = "tmp";
 
     private String dir;
@@ -33,8 +33,7 @@ public class PSLatex2SVGConverter {
         doDecontextStep();
 
         doStep(new DVIConverter(getDVIFolder(), getDecontextFolder(), getTmpFolder()));
-        doStep(new PdfConverter(getPdfFolder(), getDVIFolder(), getTmpFolder()));
-        doStep(new SvgConverter(getSvgFolder(), getPdfFolder(), getTmpFolder()));
+        doStep(new PSConverter(getPSFolder(), getDVIFolder(), getTmpFolder()));
         deleteDir(getTmpFolder());
     }
 
@@ -93,16 +92,12 @@ public class PSLatex2SVGConverter {
     }
 
     private File[] getResultFolders() {
-        return new File[] { getDecontextFolder(), getTmpFolder(), getDVIFolder(), getPdfFolder(),
-                getSvgFolder() };
+        return new File[] { getDecontextFolder(), getTmpFolder(), getDVIFolder(),
+                getPSFolder() };
     }
 
-    private File getSvgFolder() {
-        return new File(dir, SVG_FOLDER);
-    }
-
-    private File getPdfFolder() {
-        return new File(dir, PDF_FOLDER);
+    private File getPSFolder(){
+        return new File(dir, PS_FOLDER);
     }
 
     private File getTmpFolder() {
