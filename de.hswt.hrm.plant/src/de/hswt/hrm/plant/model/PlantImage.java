@@ -11,7 +11,7 @@ package de.hswt.hrm.plant.model;
  * @author Michael Sieger
  *
  */
-public class PlantPart {
+public class PlantImage {
 	
 	//TODO graphical representation
 	private int width, height;	//Size in grid units
