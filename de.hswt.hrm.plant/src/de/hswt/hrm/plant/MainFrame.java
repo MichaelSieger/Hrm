@@ -8,7 +8,8 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 
-import de.hswt.hrm.plant.model.PlantPart;
+import de.hswt.hrm.plant.ui.PlantBuilderFrame;
+
 
 /**
  * This class is for early developing purposes only, and will
@@ -54,7 +55,7 @@ public class MainFrame{
 			
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				new PlantBuilderFrame(shell, SWT.NONE);
+				new PlantBuilderFrame(shell, SWT.NONE, null);
 			}
 			
 			@Override

@@ -7,7 +7,8 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 
-import de.hswt.hrm.plant.model.PlantPart;
+import de.hswt.hrm.plant.model.PlantImage;
+
 
 public class PlantGrid extends Composite{
     
@@ -21,13 +22,13 @@ public class PlantGrid extends Composite{
         layout.setRows(height);
     }
 
-    public void setPartAt(PlantPart part){
+    public void setPartAt(PlantImage image){
         ImageWidget widget = new ImageWidget(this, SWT.NONE);
         GridData gridData = new GridData();
-        gridData.horizontalSpan = part.getWidth();
-        gridData.verticalSpan = part.getHeight();
+        gridData.horizontalSpan = image.getWidth();
+        gridData.verticalSpan = image.getHeight();
         widget.setLayoutData(gridData);
-        widget.setSize(part.getWidth()*FIELD_WIDTH, 
-                        part.getHeight()*FIELD_WIDTH);
+        widget.setSize(image.getWidth()*FIELD_WIDTH, 
+                image.getHeight()*FIELD_WIDTH);
     }
 }
