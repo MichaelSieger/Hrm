@@ -8,6 +8,8 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 
+import de.hswt.hrm.plant.model.PlantPart;
+
 /**
  * This class is for early developing purposes only, and will
  * be removed in the migration to RCP.
@@ -52,7 +54,7 @@ public class MainFrame{
 			
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				System.out.println("HAALLO");
+				new PlantBuilderFrame(shell, SWT.NONE);
 			}
 			
 			@Override
