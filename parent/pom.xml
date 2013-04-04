@@ -62,5 +62,7 @@
 		<module>../de.hswt.hrm.contact.service.core</module>
 		<module>../de.hswt.hrm.contact.service.impl</module>
 		<module>../de.hswt.hrm.contact.dao.impl</module>
+		
+		<module>../de.hswt.hrm.common</module>
 	</modules>
 </project>
