@@ -1,6 +1,9 @@
 package de.hswt.hrm.contact.dao.core;
 
 import java.util.Collection;
+
+import de.hswt.hrm.common.database.exception.ElementNotFoundException;
+import de.hswt.hrm.common.database.exception.SaveException;
 import de.hswt.hrm.contact.model.Contact;
 
 /**
@@ -16,22 +19,24 @@ public interface IContactDao {
     /**
      * @param id of the target contact.
      * @return Contact with the given id.
+     * @throws ElementNotFoundException If the given id is not present in the database.
      */
-    public Contact findById(long id);
+    public Contact findById(long id) throws ElementNotFoundException;
     
-    // TODO: specify exception that will be thrown when contact already exists
     /**
      * Add a new contact to storage.
      * 
      * @param contact Contact that should be stored.
+     * @throws SaveException If the contact could not be inserted.
      */
-    public void insert(Contact contact);
+    public void insert(Contact contact) throws SaveException;
     
-    // TODO: specify exception that will be thrown when contact does not exist
     /**
      * Update an existing contact in storage.
      * 
      * @param contact Contact that should be updated.
+     * @throws ElementNotFoundException If the given contact is not present in the database.
+     * @throws SaveException If the contact could not be updated.
      */
-    public void update(Contact contact);
+    public void update(Contact contact) throws ElementNotFoundException, SaveException;
 }
