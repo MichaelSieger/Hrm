@@ -68,5 +68,10 @@
 		<module>../de.hswt.hrm.jdbc.mariadb</module>
 		
 		<module>../de.hswt.hrm.main.feature</module>
+		<module>../de.hswt.hrm.place.dao.core</module>
+		<module>../de.hswt.hrm.place.dao.jdbc</module>
+		<module>../de.hswt.hrm.place.feature</module>
+		<module>../de.hswt.hrm.place.model</module>
+		<module>../de.hswt.hrm.place.service</module>
 	</modules>
 </project>
