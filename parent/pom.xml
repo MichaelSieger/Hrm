@@ -64,5 +64,8 @@
 		<module>../de.hswt.hrm.contact.dao.impl</module>
 		
 		<module>../de.hswt.hrm.common</module>
+		<module>
+			../../../../workspaces/eclipse/e4/de.hswt.hrm.jdbc.mariadb
+		</module>
 	</modules>
 </project>
