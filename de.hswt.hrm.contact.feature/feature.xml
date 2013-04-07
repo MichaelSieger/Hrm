@@ -38,21 +38,14 @@
          unpack="false"/>
 
    <plugin
-         id="de.hswt.hrm.contact.service.core"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="de.hswt.hrm.contact.service.impl"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="com.google.guava"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="de.hswt.hrm.contact.service"
          download-size="0"
          install-size="0"
          version="0.0.0"
