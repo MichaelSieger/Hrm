@@ -1,5 +1,7 @@
 package de.hswt.hrm.contact.model;
 
+import com.google.common.base.Optional;
+
 /**
  * Represents a contact.
  */
@@ -11,7 +13,9 @@ public class Contact {
     private String street;
     private String postCode;
     private String city;
-    private String acronym;
+    
+    // optional
+    private String shortcut;
     private String phone;
     private String fax;
     private String mobile;
@@ -81,40 +85,40 @@ public class Contact {
         this.city = city;
     }
 
-    public String getAcronym() {
-        return acronym;
+    public Optional<String> getShortcut() {
+        return Optional.fromNullable(shortcut);
     }
 
-    public void setAcronym(String acronym) {
-        this.acronym = acronym;
+    public void setShortcut(String shortcut) {
+        this.shortcut = shortcut;
     }
 
-    public String getPhone() {
-        return phone;
+    public Optional<String> getPhone() {
+        return Optional.fromNullable(phone);
     }
 
     public void setPhone(String phone) {
         this.phone = phone;
     }
 
-    public String getFax() {
-        return fax;
+    public Optional<String> getFax() {
+        return Optional.fromNullable(fax);
     }
 
     public void setFax(String fax) {
         this.fax = fax;
     }
 
-    public String getMobile() {
-        return mobile;
+    public Optional<String> getMobile() {
+        return Optional.fromNullable(mobile);
     }
 
     public void setMobile(String mobile) {
         this.mobile = mobile;
     }
 
-    public String getEmail() {
-        return email;
+    public Optional<String> getEmail() {
+        return Optional.fromNullable(email);
     }
 
     public void setEmail(String email) {
