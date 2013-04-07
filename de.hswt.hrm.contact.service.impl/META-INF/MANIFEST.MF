@@ -1,6 +1,0 @@
-Manifest-Version: 1.0
-Bundle-ManifestVersion: 2
-Bundle-Name: Impl
-Bundle-SymbolicName: de.hswt.hrm.contact.service.impl
-Bundle-Version: 0.0.1.qualifier
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
