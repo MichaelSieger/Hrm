@@ -4,3 +4,7 @@ Bundle-Name: Core
 Bundle-SymbolicName: de.hswt.hrm.contact.service
 Bundle-Version: 0.0.1.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Import-Package: de.hswt.hrm.common.database.exception,
+ de.hswt.hrm.common.exception,
+ de.hswt.hrm.contact.dao.core,
+ de.hswt.hrm.contact.model
