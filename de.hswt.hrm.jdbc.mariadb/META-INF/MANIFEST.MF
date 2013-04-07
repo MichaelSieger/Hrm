@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Mariadb
 Bundle-SymbolicName: de.hswt.hrm.jdbc.mariadb
-Bundle-Version: 1.0.0
+Bundle-Version: 0.0.1.qualifier
 Export-Package: org.mariadb.jdbc,
  org.mariadb.jdbc.internal,
  org.mariadb.jdbc.internal.common,
