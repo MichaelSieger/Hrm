@@ -13,13 +13,19 @@ package de.hswt.hrm.plant.model;
  */
 public class PlantImage {
 	
-	//TODO graphical representation
+	private String postScript;
 	private int width, height;	//Size in grid units
 	private int primaryKey;
 	
 	
 	
-	public int getWidth() {
+	public String getPostScript() {
+        return postScript;
+    }
+    public void setPostScript(String postScript) {
+        this.postScript = postScript;
+    }
+    public int getWidth() {
 		return width;
 	}
 	public void setWidth(int width) {
