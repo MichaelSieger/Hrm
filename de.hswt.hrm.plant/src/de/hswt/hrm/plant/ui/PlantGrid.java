@@ -49,7 +49,7 @@ public class PlantGrid extends Canvas{
 
     private void drawVerticalLines(GC gc){
         Rectangle rec = this.getBounds();
-        final int w = quads[0].length;
+        final int w = getGridWidth();
         final float quadW = ((float)rec.x)/w;
         for(int i = 0; i < w; i++){
             final int x = Math.round(i*quadW);
