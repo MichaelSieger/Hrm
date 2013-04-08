@@ -1,13 +1,23 @@
 package de.hswt.hrm.plant;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
+import java.util.Scanner;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 
+import de.hswt.hrm.plant.model.PlantImage;
 import de.hswt.hrm.plant.ui.PlantBuilderFrame;
 
 
@@ -26,7 +36,6 @@ public class MainFrame{
 		Display display = new Display();
 		shell = new Shell();
 		initUI();
-		shell.pack();
 		shell.setSize(400, 400);
 		shell.open();
 		while(!shell.isDisposed()){
@@ -44,8 +53,9 @@ public class MainFrame{
 		MenuItem dataItem = createDataItem(bar);
 		Menu dataMenu = createDataMenu(bar, dataItem);
 		createPlantItem(dataMenu);
-
 		shell.setMenuBar(bar);
+		
+		shell.setLayout(new FillLayout());
 	}
 	
 	private MenuItem createPlantItem(Menu dataMenu){
@@ -55,13 +65,38 @@ public class MainFrame{
 			
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				new PlantBuilderFrame(shell, SWT.NONE, null);
+				try {
+				    PlantBuilderFrame frame = new PlantBuilderFrame(
+				            shell, SWT.NONE, getTestImages());
+				    frame.setBackground(shell.getDisplay()
+				            .getSystemColor(SWT.COLOR_GREEN));
+				    shell.layout();
+                }
+                catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
 			}
 			
 			@Override
 			public void widgetDefaultSelected(SelectionEvent arg0) {}
 		});
 		return newPlantItem;
+	}
+	
+	private PlantImage[] getTestImages() throws FileNotFoundException{
+	    PlantImage img = new PlantImage();
+	    img.setWidth(4);
+	    img.setHeight(4);
+	    img.setPostScript(readPostScript(FileSystems.getDefault().getPath(
+	            "/", "home", "tamaran", "tmp", "MARBBIN.EPS")));
+	    return new PlantImage[]{img};
+	}
+	
+	private String readPostScript(Path path) throws FileNotFoundException{
+	   try(Scanner sc = new Scanner(new FileInputStream(
+	           path.toFile()))){
+	       return sc.useDelimiter("\\Z").next();
+	   }
 	}
 	
 	private Menu createDataMenu(Menu m, MenuItem dataItem){
