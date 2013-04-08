@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Impl
+Bundle-Name: Dao-Jdbc
 Bundle-SymbolicName: de.hswt.hrm.contact.dao.jdbc
 Bundle-Version: 0.0.1.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7

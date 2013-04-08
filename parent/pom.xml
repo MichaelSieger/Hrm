@@ -61,7 +61,7 @@
 		<module>../de.hswt.hrm.contact.model</module>
 		
 		
-		<module>../de.hswt.hrm.contact.dao.impl</module>
+		
 		
 		<module>../de.hswt.hrm.common</module>
 		
@@ -74,5 +74,6 @@
 		<module>../de.hswt.hrm.place.model</module>
 		<module>../de.hswt.hrm.place.service</module>
 		<module>../de.hswt.hrm.contact.service</module>
+		<module>../de.hswt.hrm.contact.dao.jdbc</module>
 	</modules>
 </project>

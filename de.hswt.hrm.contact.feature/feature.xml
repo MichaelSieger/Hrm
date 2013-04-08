@@ -24,13 +24,6 @@
          unpack="false"/>
 
    <plugin
-         id="de.hswt.hrm.contact.dao.impl"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="de.hswt.hrm.contact.model"
          download-size="0"
          install-size="0"
@@ -46,6 +39,13 @@
 
    <plugin
          id="de.hswt.hrm.contact.service"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="de.hswt.hrm.contact.dao.jdbc"
          download-size="0"
          install-size="0"
          version="0.0.0"
