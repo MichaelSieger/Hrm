@@ -7,7 +7,12 @@ import org.eclipse.swt.widgets.Composite;
 
 import de.hswt.hrm.plant.model.PSGridImage;
 
-
+/**
+ * This is the Frame where new Schemes can be created.
+ * 
+ * @author Michael Sieger
+ *
+ */
 public class SchemeBuilderFrame extends Composite{
     
     private static final int TOOLBOX_WIDTH = 200;

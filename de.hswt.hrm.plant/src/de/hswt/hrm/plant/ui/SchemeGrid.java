@@ -8,7 +8,12 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 
-
+/**
+ * A Widget that displays scheme parts in a grid.
+ * 
+ * @author Michael Sieger
+ *
+ */
 public class SchemeGrid extends Canvas{
     
     private RenderedGridImage[][] quads;
