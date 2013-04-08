@@ -17,8 +17,8 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 
-import de.hswt.hrm.plant.model.PlantImage;
-import de.hswt.hrm.plant.ui.PlantBuilderFrame;
+import de.hswt.hrm.plant.model.PSGridImage;
+import de.hswt.hrm.plant.ui.SchemeBuilderFrame;
 
 
 /**
@@ -66,7 +66,7 @@ public class MainFrame{
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
 				try {
-				    PlantBuilderFrame frame = new PlantBuilderFrame(
+				    SchemeBuilderFrame frame = new SchemeBuilderFrame(
 				            shell, SWT.NONE, getTestImages());
 				    frame.setBackground(shell.getDisplay()
 				            .getSystemColor(SWT.COLOR_GREEN));
@@ -83,13 +83,13 @@ public class MainFrame{
 		return newPlantItem;
 	}
 	
-	private PlantImage[] getTestImages() throws FileNotFoundException{
-	    PlantImage img = new PlantImage();
+	private PSGridImage[] getTestImages() throws FileNotFoundException{
+	    PSGridImage img = new PSGridImage();
 	    img.setWidth(4);
 	    img.setHeight(4);
 	    img.setPostScript(readPostScript(FileSystems.getDefault().getPath(
 	            "/", "home", "tamaran", "tmp", "MARBBIN.EPS")));
-	    return new PlantImage[]{img};
+	    return new PSGridImage[]{img};
 	}
 	
 	private String readPostScript(Path path) throws FileNotFoundException{

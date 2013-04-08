@@ -12,17 +12,17 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 
-import de.hswt.hrm.plant.model.PlantImage;
+import de.hswt.hrm.plant.model.PSGridImage;
 
 
-public class PlantGrid extends Canvas{
+public class SchemeGrid extends Canvas{
     
-    private RenderedPlantImage[][] quads;
+    private RenderedGridImage[][] quads;
 
-    public PlantGrid(Composite parent, int style, 
+    public SchemeGrid(Composite parent, int style, 
             int width, int height) {
         super(parent, style);
-        quads = new RenderedPlantImage[height][width];
+        quads = new RenderedGridImage[height][width];
         super.addPaintListener(new PaintListener() {
             
             @Override
@@ -65,7 +65,7 @@ public class PlantGrid extends Canvas{
         return quads.length;
     }
     
-    public void setPartAt(RenderedPlantImage rendered,
+    public void setPartAt(RenderedGridImage rendered,
                           int x, int y){
         final int w = rendered.getPlantImage().getWidth();
         final int h = rendered.getPlantImage().getHeight();

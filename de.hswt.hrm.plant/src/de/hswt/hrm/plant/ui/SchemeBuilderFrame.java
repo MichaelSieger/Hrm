@@ -5,19 +5,19 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 
-import de.hswt.hrm.plant.model.PlantImage;
+import de.hswt.hrm.plant.model.PSGridImage;
 
 
-public class PlantBuilderFrame extends Composite{
+public class SchemeBuilderFrame extends Composite{
     
     private static final int TOOLBOX_WIDTH = 200;
     
-    private PlantGrid toolbox, builderField;
+    private SchemeGrid toolbox, builderField;
 
-    public PlantBuilderFrame(
+    public SchemeBuilderFrame(
             Composite parent, 
             int style,
-            PlantImage[] images) {
+            PSGridImage[] images) {
         super(parent, style);
         GridLayout layout = new GridLayout();
         layout.numColumns = 2;
@@ -29,14 +29,14 @@ public class PlantBuilderFrame extends Composite{
     }
     
     private void createBuilderField(){
-        builderField = new PlantGrid(this, SWT.NONE, 20, 20);
+        builderField = new SchemeGrid(this, SWT.NONE, 20, 20);
         GridData gridData = new GridData(GridData.FILL, 
                 GridData.FILL, true, true);
         builderField.setLayoutData(gridData);
     }
     
-    private void createToolbox(PlantImage[] images){
-        toolbox = new PlantGrid(this, SWT.NONE, 
+    private void createToolbox(PSGridImage[] images){
+        toolbox = new SchemeGrid(this, SWT.NONE, 
                 2, 
                 images.length/2+1);
         toolbox.setSize(TOOLBOX_WIDTH, 100);

@@ -11,16 +11,16 @@ import org.ghost4j.document.PSDocument;
 import org.ghost4j.renderer.RendererException;
 import org.ghost4j.renderer.SimpleRenderer;
 
-import de.hswt.hrm.plant.model.PlantImage;
+import de.hswt.hrm.plant.model.PSGridImage;
 
-public class RenderedPlantImage {
+public class RenderedGridImage {
     
     private static final int DPI = 300;
     
-    private PlantImage plantImage;
+    private PSGridImage plantImage;
     private Image renderedImage;
     
-    public RenderedPlantImage(PlantImage plantImage) throws IOException, RendererException, DocumentException{
+    public RenderedGridImage(PSGridImage plantImage) throws IOException, RendererException, DocumentException{
         this.plantImage = plantImage;
         PSDocument doc = new PSDocument();
         doc.load(new ByteArrayInputStream(
@@ -35,7 +35,7 @@ public class RenderedPlantImage {
         renderedImage = renderResult.get(0);
     }
 
-    public PlantImage getPlantImage() {
+    public PSGridImage getPlantImage() {
         return plantImage;
     }
 
