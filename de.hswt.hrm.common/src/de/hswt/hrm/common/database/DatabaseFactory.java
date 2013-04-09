@@ -20,8 +20,13 @@ public class DatabaseFactory {
      * @throws DatabaseException If connection could not be created.
      */
     public static Connection getConnection() throws DatabaseException {
-        // TODO load driver
-        // Class.forName("put driver name in here");
+        // load mariadb driver
+        try {
+            Class.forName("org.mariadb.jdbc.Driver.class");
+        }
+        catch (ClassNotFoundException e) {
+            throw new DatabaseException("Database driver not found.");
+        }
         
         // TODO load connection string from configuration
         String config = "";
