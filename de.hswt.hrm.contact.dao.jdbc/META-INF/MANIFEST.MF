@@ -4,3 +4,7 @@ Bundle-Name: Dao-Jdbc
 Bundle-SymbolicName: de.hswt.hrm.contact.dao.jdbc
 Bundle-Version: 0.0.1.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Import-Package: de.hswt.hrm.common.database,
+ de.hswt.hrm.common.database.exception,
+ de.hswt.hrm.contact.dao.core,
+ de.hswt.hrm.contact.model
