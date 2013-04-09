@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Test
+Bundle-SymbolicName: de.hswt.hrm.contact.dao.jdbc.test
+Bundle-Version: 1.0.0.qualifier
+Fragment-Host: de.hswt.hrm.contact.dao.jdbc
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Import-Package: de.hswt.hrm.common.database.exception
+Require-Bundle: org.junit
