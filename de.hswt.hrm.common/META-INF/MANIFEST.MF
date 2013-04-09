@@ -7,3 +7,4 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: de.hswt.hrm.common.database,
  de.hswt.hrm.common.database.exception,
  de.hswt.hrm.common.exception
+Require-Bundle: de.hswt.hrm.jdbc.mariadb;bundle-version="0.0.1"

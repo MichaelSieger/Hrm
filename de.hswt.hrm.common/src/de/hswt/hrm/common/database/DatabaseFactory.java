@@ -25,15 +25,17 @@ public class DatabaseFactory {
             Class.forName("org.mariadb.jdbc.Driver.class");
         }
         catch (ClassNotFoundException e) {
-            throw new DatabaseException("Database driver not found.");
+            throw new DatabaseException("Database driver not found.", e);
         }
         
         // TODO load connection string from configuration
-        String config = "";
+        String config = "jdbc:mysql://10.154.4.20";
+        String username = "root";
+        String password = "70b145pl4ch7";
         
         if (con == null) {
             try {
-                con = DriverManager.getConnection(config);
+                con = DriverManager.getConnection(config, username, password);
             }
             catch (SQLException e) {
                 // TODO maybe add specific information about the error
