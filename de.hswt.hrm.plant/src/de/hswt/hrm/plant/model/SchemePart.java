@@ -14,38 +14,30 @@ public class SchemePart {
     private PSGridImage imag;
     private SchemePartCategory category;
     
+    // Getters and setters:
     public int getxPos() {
         return xPos;
     }
-    
     public void setxPos(int xPos) {
         this.xPos = xPos;
     }
-
     public int getyPos() {
         return yPos;
     }
-
     public void setyPos(int yPos) {
         this.yPos = yPos;
     }
-
     public PSGridImage getImag() {
         return imag;
     }
-
     public void setImag(PSGridImage imag) {
         this.imag = imag;
     }
-
     public SchemePartCategory getCategory() {
         return category;
     }
-
     public void setCategory(SchemePartCategory category) {
         this.category = category;
-    }
-
-        
-
+    }      
+    
 }
