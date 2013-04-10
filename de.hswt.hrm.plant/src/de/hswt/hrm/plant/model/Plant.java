@@ -14,14 +14,14 @@ import java.util.Date;
 public class Plant {
     
     private SchemePart[] composition;
-    private String name, location, comments;
+    private String name, place, comments;
     private Date nextInspection;
-    private Integer numElem;    // number of plant parts
+    private Integer numElem;
     private TechnicalData techData;
     // missing: inspections, which have been in the past
     
     // optional:
-    private String producer;
+    private String manufacturer;
     private Integer constYear;  // year of construction
     
     // Getters and setters:
@@ -37,11 +37,11 @@ public class Plant {
     public void setName(String name) {
         this.name = name;
     }
-    public String getLocation() {
-        return location;
+    public String getPlace() {
+        return place;
     }
-    public void setLocation(String location) {
-        this.location = location;
+    public void setPlace(String place) {
+        this.place = place;
     }
     public String getComments() {
         return comments;
@@ -67,11 +67,11 @@ public class Plant {
     public void setTechData(TechnicalData techData) {
         this.techData = techData;
     }
-    public String getProducer() {
-        return producer;
+    public String getManufacturer() {
+        return manufacturer;
     }
-    public void setProducer(String producer) {
-        this.producer = producer;
+    public void setManufacturer(String manufacturer) {
+        this.manufacturer = manufacturer;
     }
     public Integer getConstYear() {
         return constYear;

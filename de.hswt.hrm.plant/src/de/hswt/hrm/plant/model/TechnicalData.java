@@ -9,20 +9,20 @@ package de.hswt.hrm.plant.model;
 
 public class TechnicalData {
     
-    private Double nominalCurrent;
+    private Double current;
     private Integer voltage;
     
     // optional:
     private String type;
-    private Integer airPower, engineSpeed;
+    private Integer airPerformance, engineRPM;
     private Double enginePower, ventilatorPower;
     
     // Getters and setters:
-    public Double getNominalCurrent() {
-        return nominalCurrent;
+    public Double getCurrent() {
+        return current;
     }
-    public void setNominalCurrent(Double nominalCurrent) {
-        this.nominalCurrent = nominalCurrent;
+    public void setCurrent(Double current) {
+        this.current = current;
     }
     public Integer getVoltage() {
         return voltage;
@@ -36,17 +36,17 @@ public class TechnicalData {
     public void setType(String type) {
         this.type = type;
     }
-    public Integer getAirPower() {
-        return airPower;
+    public Integer getAirPerformance() {
+        return airPerformance;
     }
-    public void setAirPower(Integer airPower) {
-        this.airPower = airPower;
+    public void setAirPerformance(Integer airPerformance) {
+        this.airPerformance = airPerformance;
     }
-    public Integer getEngineSpeed() {
-        return engineSpeed;
+    public Integer getEngineRPM() {
+        return engineRPM;
     }
-    public void setEngineSpeed(Integer engineSpeed) {
-        this.engineSpeed = engineSpeed;
+    public void setEngineRPM(Integer engineRPM) {
+        this.engineRPM = engineRPM;
     }
     public Double getEnginePower() {
         return enginePower;
