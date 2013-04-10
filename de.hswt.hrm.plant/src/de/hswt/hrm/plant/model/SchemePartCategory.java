@@ -8,7 +8,7 @@ package de.hswt.hrm.plant.model;
  *
  */
 
-public enum Category {
+public enum SchemePartCategory {
     
     ASSEMBLY_PART, ASSEMBLY_PART_TYPE, FUNCTION, SYMBOL, VENTILATION_DIRECTION;
     

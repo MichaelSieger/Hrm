@@ -12,7 +12,7 @@ public class SchemePart {
     
     private int xPos, yPos;
     private PSGridImage imag;
-    private Category category;
+    private SchemePartCategory category;
     
     public int getxPos() {
         return xPos;
@@ -38,11 +38,11 @@ public class SchemePart {
         this.imag = imag;
     }
 
-    public Category getCategory() {
+    public SchemePartCategory getCategory() {
         return category;
     }
 
-    public void setCategory(Category category) {
+    public void setCategory(SchemePartCategory category) {
         this.category = category;
     }
 
