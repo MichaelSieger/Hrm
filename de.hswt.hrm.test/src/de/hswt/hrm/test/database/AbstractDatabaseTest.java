@@ -6,8 +6,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Random;
 
-import junit.framework.TestCase;
-
 import org.junit.After;
 import org.junit.Before;
 
@@ -21,7 +19,7 @@ import de.hswt.hrm.common.database.exception.DatabaseException;
  *
  * You can use {@link #resetDatabase()} to reset the database during a test.
  */
-public abstract class AbstractDatabaseTest extends TestCase {
+public abstract class AbstractDatabaseTest {
 
 	private Connection con;
 	private String dbName;
