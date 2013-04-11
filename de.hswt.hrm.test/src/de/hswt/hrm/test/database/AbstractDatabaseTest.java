@@ -102,7 +102,7 @@ public abstract class AbstractDatabaseTest {
     public void dropDatabase() throws DatabaseException {
         try {
 			Statement stmt = con.createStatement();
-			stmt.executeQuery("DROP " + dbName);
+			stmt.executeQuery("DROP DATABASE " + dbName);
 		}
 		catch (SQLException e) {
 			throw new DatabaseException(e);
