@@ -75,5 +75,7 @@
 		<module>../de.hswt.hrm.place.service</module>
 		<module>../de.hswt.hrm.contact.service</module>
 		<module>../de.hswt.hrm.contact.dao.jdbc</module>
+		
+		<module>../de.hswt.hrm.test</module>
 	</modules>
 </project>
