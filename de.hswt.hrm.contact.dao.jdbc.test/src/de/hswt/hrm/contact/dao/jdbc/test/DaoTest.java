@@ -4,7 +4,9 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-public class DaoTest {
+import de.hswt.hrm.test.database.AbstractDatabaseTest;
+
+public class DaoTest extends AbstractDatabaseTest {
 
     @Test
     public void test() {

@@ -6,22 +6,18 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Random;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+import org.junit.After;
+import org.junit.Before;
 
 import de.hswt.hrm.common.database.DatabaseUtil;
 import de.hswt.hrm.common.database.exception.DatabaseException;
 
 /**
  * Tests that need a database can inherit from this class which automatically creates a
- * test database and fills in some test data.
- * The test database is automatically deleted after all tests have run.
- * 
- * <b>Attention:</b>
- * The same database is used for all tests within this class. If you want to reset the
- * database after or before executing a specific test, use the "resetDatabase" method.
- * But don't forget that this will result in a delete and complete recreation of the
- * test database. 
+ * test database and fills in some test data before a test.
+ * The test database is automatically deleted after a tests is run.
+ *
+ * You can use {@link #resetDatabase()} to reset the database during a test.
  */
 public abstract class AbstractDatabaseTest {
 
@@ -80,7 +76,7 @@ public abstract class AbstractDatabaseTest {
 		return name;
 	}
 	
-    @BeforeClass
+    @Before
     public void createDatabase() throws DatabaseException {
         Connection con = getConnection();
         String name = createUniqueName();
@@ -98,17 +94,22 @@ public abstract class AbstractDatabaseTest {
 		}
     }
     
-    @AfterClass
+    @After
     public void dropDatabase() throws DatabaseException {
         try {
 			Statement stmt = con.createStatement();
-			stmt.executeQuery("DROP " + dbName);
+			stmt.executeQuery("DROP DATABASE " + dbName);
 		}
 		catch (SQLException e) {
 			throw new DatabaseException(e);
 		}
     }
     
+    /**
+     * Reset the test database.
+     * 
+     * @throws DatabaseException If an error occurs during reset.
+     */
     public void resetDatabase() throws DatabaseException {
         dropDatabase();
         createDatabase();
