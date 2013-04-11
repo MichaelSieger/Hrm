@@ -6,3 +6,4 @@ Bundle-Version: 1.0.0.qualifier
 Fragment-Host: de.hswt.hrm.common
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Require-Bundle: org.junit;bundle-version="4.10.0"
+Export-Package: de.hswt.hrm.common.test

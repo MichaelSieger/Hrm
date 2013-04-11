@@ -22,7 +22,7 @@ public class DatabaseFactory {
     public static Connection getConnection() throws DatabaseException {
         // load mariadb driver
         try {
-            Class.forName("org.mariadb.jdbc.Driver.class");
+            Class.forName("org.mariadb.jdbc.Driver");
         }
         catch (ClassNotFoundException e) {
             throw new DatabaseException("Database driver not found.", e);
