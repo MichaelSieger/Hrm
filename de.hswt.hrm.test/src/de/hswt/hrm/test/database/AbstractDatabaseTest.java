@@ -1,7 +1,5 @@
 package de.hswt.hrm.test.database;
 
-import static com.google.common.base.Preconditions.checkArgument;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
