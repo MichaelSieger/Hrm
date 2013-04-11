@@ -1,4 +1,4 @@
-package de.hswt.hrm.common.test;
+package de.hswt.hrm.test.database;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;

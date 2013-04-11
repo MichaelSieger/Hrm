@@ -4,3 +4,4 @@ Bundle-Name: Test
 Bundle-SymbolicName: de.hswt.hrm.test
 Bundle-Version: 0.0.1.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Require-Bundle: org.junit;bundle-version="4.10.0"
