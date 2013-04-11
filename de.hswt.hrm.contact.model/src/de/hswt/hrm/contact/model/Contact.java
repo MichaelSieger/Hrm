@@ -11,6 +11,7 @@ public class Contact {
     private String firstName;
     private String company;
     private String street;
+    private String streetNo;
     private String postCode;
     private String city;
     
@@ -22,17 +23,18 @@ public class Contact {
     private String email;
     
     public Contact(final String lastName, final String firstName, final String street,
-            final String postCode, final String city) {
+            final String streetNo, final String postCode, final String city) {
         
-        this(-1, lastName, firstName, street, postCode, city);
+        this(-1, lastName, firstName, street, streetNo, postCode, city);
     }
     
     public Contact(long id, final String lastName, final String firstName, final String street,
-            final String postCode, final String city) {
+            final String streetNo, final String postCode, final String city) {
         this.id = id;
         this.lastName = lastName;
         this.firstName = firstName;
         this.street = street;
+        this.streetNo = streetNo;
         this.postCode = postCode;
         this.city = city;
     }
@@ -67,6 +69,14 @@ public class Contact {
 
     public void setStreet(String street) {
         this.street = street;
+    }
+    
+    public String getStreetNo() {
+    	return streetNo;
+    }
+    
+    public void setStreetNo(String streetNo) {
+    	this.streetNo = streetNo;
     }
 
     public String getPostCode() {
