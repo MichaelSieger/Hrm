@@ -15,7 +15,9 @@ CREATE  TABLE IF NOT EXISTS `hrm`.`Contact` (
   `Contact_Fax` VARCHAR(45) NULL ,
   `Contact_Mobil` VARCHAR(45) NULL ,
   `Contact_Email` VARCHAR(45) NULL ,
-  PRIMARY KEY (`Contact_ID`) )
+  `Contact_Uuid` VARCHAR(36) NULL ,
+  PRIMARY KEY (`Contact_ID`) ,
+  UNIQUE INDEX `Contact_Uuid_UNIQUE` (`Contact_Uuid` ASC) )
 ENGINE = InnoDB;
 
 
@@ -31,7 +33,20 @@ CREATE  TABLE IF NOT EXISTS `hrm`.`Place` (
   `Place_Street_Number` VARCHAR(5) NOT NULL ,
   `Place_Location` VARCHAR(255) NULL ,
   `Place_Area` VARCHAR(255) NULL ,
-  PRIMARY KEY (`Place_ID`) )
+  `Place_Uuid` VARCHAR(36) NULL ,
+  PRIMARY KEY (`Place_ID`) ,
+  UNIQUE INDEX `Place_Uuid_UNIQUE` (`Place_Uuid` ASC) )
 ENGINE = InnoDB;
 
+
+-- -----------------------------------------------------
+-- Table `hrm`.`Session`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `hrm`.`Session` (
+  `Session_Uuid` VARCHAR(36) NOT NULL ,
+  `Session_User` VARCHAR(30) NOT NULL ,
+  `Session_Timestamp` DATETIME NOT NULL ,
+  PRIMARY KEY (`Session_Uuid`) ,
+  UNIQUE INDEX `Session_Uuid_UNIQUE` (`Session_Uuid` ASC) )
+ENGINE = InnoDB;
 
