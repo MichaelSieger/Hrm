@@ -79,5 +79,6 @@
 		<module>../de.hswt.hrm.test</module>
 		<module>../de.hswt.hrm.contact.dao.jdbc.test</module>
 		<module>../de.hswt.hrm.common.test</module>
+		<module>../de.hswt.hrm.contact.ui</module>
 	</modules>
 </project>
