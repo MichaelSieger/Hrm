@@ -6,8 +6,6 @@ import java.io.IOException;
 import de.hswt.hrm.plantimagemigration.converter.Converter;
 import de.hswt.hrm.plantimagemigration.converter.DVIConverter;
 import de.hswt.hrm.plantimagemigration.converter.PSConverter;
-import de.hswt.hrm.plantimagemigration.converter.PdfConverter;
-import de.hswt.hrm.plantimagemigration.converter.SvgConverter;
 
 /**
  * This class handles the conversion process from the latex files to svg. It creates a number of
