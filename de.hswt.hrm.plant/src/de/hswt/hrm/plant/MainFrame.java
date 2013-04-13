@@ -54,16 +54,50 @@ public class MainFrame{
 		Menu bar = createMenu();
 		MenuItem dataItem = createDataItem(bar);
 		Menu dataMenu = createDataMenu(bar, dataItem);
-		createPlantItem(dataMenu);
+		createBuilderItem(dataMenu);
+		createNewPlantItem(dataMenu);
+		createShowPlantsItem(dataMenu);
 		shell.setMenuBar(bar);
 		
 		shell.setLayout(new FillLayout());
 	}
 	
-	private MenuItem createPlantItem(Menu dataMenu){
-		MenuItem newPlantItem = new MenuItem(dataMenu, SWT.NONE);
-		newPlantItem.setText("Neue Anlage erstellen");
-		newPlantItem.addSelectionListener(new SelectionListener() {
+	private MenuItem createShowPlantsItem(Menu dataMenu){
+		MenuItem mItem = new MenuItem(dataMenu, SWT.NONE);
+		mItem.setText("Anlagen anzeigen");
+		mItem.addSelectionListener(new SelectionListener() {
+			
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				//TODO start gui
+			}
+			
+			@Override
+			public void widgetDefaultSelected(SelectionEvent arg0) {}
+		});
+		return mItem;
+	}
+	
+	private MenuItem createNewPlantItem(Menu dataMenu){
+		MenuItem mItem = new MenuItem(dataMenu, SWT.NONE);
+		mItem.setText("Neue Anlage");
+		mItem.addSelectionListener(new SelectionListener() {
+			
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				//TODO start gui
+			}
+			
+			@Override
+			public void widgetDefaultSelected(SelectionEvent arg0) {}
+		});
+		return mItem;
+	}
+	
+	private MenuItem createBuilderItem(Menu dataMenu){
+		MenuItem mItem = new MenuItem(dataMenu, SWT.NONE);
+		mItem.setText("Neues Anlagenschema erstellen");
+		mItem.addSelectionListener(new SelectionListener() {
 			
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
@@ -82,7 +116,7 @@ public class MainFrame{
 			@Override
 			public void widgetDefaultSelected(SelectionEvent arg0) {}
 		});
-		return newPlantItem;
+		return mItem;
 	}
 	
 	private GridImage[] getTestImages() throws FileNotFoundException{
