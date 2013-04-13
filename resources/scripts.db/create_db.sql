@@ -15,9 +15,8 @@ CREATE  TABLE IF NOT EXISTS `hrm`.`Contact` (
   `Contact_Fax` VARCHAR(45) NULL ,
   `Contact_Mobil` VARCHAR(45) NULL ,
   `Contact_Email` VARCHAR(45) NULL ,
-  `Contact_Uuid` VARCHAR(36) NULL ,
-  PRIMARY KEY (`Contact_ID`) ,
-  UNIQUE INDEX `Contact_Uuid_UNIQUE` (`Contact_Uuid` ASC) )
+  `Contact_Lock` VARCHAR(36) NULL ,
+  PRIMARY KEY (`Contact_ID`) )
 ENGINE = InnoDB;
 
 
@@ -33,9 +32,8 @@ CREATE  TABLE IF NOT EXISTS `hrm`.`Place` (
   `Place_Street_Number` VARCHAR(5) NOT NULL ,
   `Place_Location` VARCHAR(255) NULL ,
   `Place_Area` VARCHAR(255) NULL ,
-  `Place_Uuid` VARCHAR(36) NULL ,
+  `Place_Lock` VARCHAR(36) NULL ,
   PRIMARY KEY (`Place_ID`) ,
-  UNIQUE INDEX `Place_Uuid_UNIQUE` (`Place_Uuid` ASC) )
 ENGINE = InnoDB;
 
 
