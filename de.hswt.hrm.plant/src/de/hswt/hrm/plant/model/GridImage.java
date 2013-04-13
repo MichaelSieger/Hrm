@@ -1,7 +1,9 @@
 package de.hswt.hrm.plant.model;
 
+import org.eclipse.swt.graphics.Image;
+
 /**
- * This class contains an Image (PostScript), and its size in the grid.
+ * This class contains an Image, and its size in the grid.
  * 
  * The size ratio of the grid box can be different, that
  * the one in the image.
@@ -9,21 +11,20 @@ package de.hswt.hrm.plant.model;
  * @author Michael Sieger
  *
  */
-public class PSGridImage {
+public class GridImage {
 	
-	private String postScript;
+	private Image renderedImage;
 	private int width, height;	//Size in grid units
 	private int primaryKey;
 	
 	
-	
-	public String getPostScript() {
-        return postScript;
-    }
-    public void setPostScript(String postScript) {
-        this.postScript = postScript;
-    }
-    public int getWidth() {
+    public Image getRenderedImage() {
+		return renderedImage;
+	}
+	public void setRenderedImage(Image renderedImage) {
+		this.renderedImage = renderedImage;
+	}
+	public int getWidth() {
 		return width;
 	}
 	public void setWidth(int width) {

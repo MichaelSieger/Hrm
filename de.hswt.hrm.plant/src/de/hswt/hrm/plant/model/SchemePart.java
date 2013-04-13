@@ -11,7 +11,7 @@ package de.hswt.hrm.plant.model;
 public class SchemePart {
     
     private int xPos, yPos;
-    private PSGridImage imag;
+    private GridImage imag;
     private SchemePartCategory category;
     
     // Getters and setters:
@@ -27,10 +27,10 @@ public class SchemePart {
     public void setyPos(int yPos) {
         this.yPos = yPos;
     }
-    public PSGridImage getImag() {
+    public GridImage getImag() {
         return imag;
     }
-    public void setImag(PSGridImage imag) {
+    public void setImag(GridImage imag) {
         this.imag = imag;
     }
     public SchemePartCategory getCategory() {

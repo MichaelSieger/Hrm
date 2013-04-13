@@ -9,6 +9,7 @@ import java.util.Scanner;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -17,7 +18,7 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 
-import de.hswt.hrm.plant.model.PSGridImage;
+import de.hswt.hrm.plant.model.GridImage;
 import de.hswt.hrm.plant.ui.SchemeBuilderFrame;
 
 
@@ -31,9 +32,10 @@ import de.hswt.hrm.plant.ui.SchemeBuilderFrame;
 public class MainFrame{
 	
 	private Shell shell;
+	private Display display;
 	
 	public MainFrame(){
-		Display display = new Display();
+		display = new Display();
 		shell = new Shell();
 		initUI();
 		shell.setSize(400, 400);
@@ -83,22 +85,14 @@ public class MainFrame{
 		return newPlantItem;
 	}
 	
-	private PSGridImage[] getTestImages() throws FileNotFoundException{
-	    PSGridImage img = new PSGridImage();
+	private GridImage[] getTestImages() throws FileNotFoundException{
+	    GridImage img = new GridImage();
 	    img.setWidth(4);
 	    img.setHeight(4);
-	    img.setPostScript(readPostScript(FileSystems.getDefault().getPath(
-	            "/", "home", "tamaran", "tmp", "MARBBIN.EPS")));
-	    return new PSGridImage[]{img};
+	    img.setRenderedImage(new Image(display, "/home/tamaran/tmp/220px-Tux.png"));
+	    return new GridImage[]{img};
 	}
-	
-	private String readPostScript(Path path) throws FileNotFoundException{
-	   try(Scanner sc = new Scanner(new FileInputStream(
-	           path.toFile()))){
-	       return sc.useDelimiter("\\Z").next();
-	   }
-	}
-	
+
 	private Menu createDataMenu(Menu m, MenuItem dataItem){
 		Menu dataMenu = new Menu(m);
 		dataItem.setMenu(dataMenu);

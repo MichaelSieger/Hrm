@@ -5,7 +5,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 
-import de.hswt.hrm.plant.model.PSGridImage;
+import de.hswt.hrm.plant.model.GridImage;
 
 /**
  * This is the Frame where new Schemes can be created.
@@ -22,7 +22,7 @@ public class SchemeBuilderFrame extends Composite{
     public SchemeBuilderFrame(
             Composite parent, 
             int style,
-            PSGridImage[] images) {
+            GridImage[] images) {
         super(parent, style);
         GridLayout layout = new GridLayout();
         layout.numColumns = 2;
@@ -40,7 +40,7 @@ public class SchemeBuilderFrame extends Composite{
         builderField.setLayoutData(gridData);
     }
     
-    private void createToolbox(PSGridImage[] images){
+    private void createToolbox(GridImage[] images){
         toolbox = new SchemeGrid(this, SWT.NONE, 
                 2, 
                 images.length/2+1);

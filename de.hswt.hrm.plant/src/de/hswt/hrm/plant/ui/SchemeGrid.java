@@ -8,6 +8,8 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 
+import de.hswt.hrm.plant.model.GridImage;
+
 /**
  * A Widget that displays scheme parts in a grid.
  * 
@@ -16,12 +18,12 @@ import org.eclipse.swt.widgets.Composite;
  */
 public class SchemeGrid extends Canvas{
     
-    private RenderedGridImage[][] quads;
+    private GridImage[][] quads;
 
     public SchemeGrid(Composite parent, int style, 
             int width, int height) {
         super(parent, style);
-        quads = new RenderedGridImage[height][width];
+        quads = new GridImage[height][width];
         super.addPaintListener(new PaintListener() {
             
             @Override
@@ -55,7 +57,7 @@ public class SchemeGrid extends Canvas{
         }
     }
     
-    private void drawImage(GC gc, RenderedGridImage gridImage, int x, int y, int w, int h){
+    private void drawImage(GC gc, GridImage gridImage, int x, int y, int w, int h){
         Image image = gridImage.getRenderedImage();
         final float quadW = getQuadWidth();
         final float quadH = getQuadHeight();
@@ -75,7 +77,7 @@ public class SchemeGrid extends Canvas{
     }
     
     private int getImageSpanWidth(int x, int y){
-        RenderedGridImage img = quads[y][x];
+    	GridImage img = quads[y][x];
         final int w = getGridWidth();
         int i = x;
         while(i < w && quads[y][i] == img){
@@ -85,7 +87,7 @@ public class SchemeGrid extends Canvas{
     }
     
     private int getImageSpanHeight(int x, int y){
-        RenderedGridImage img = quads[y][x];
+    	GridImage img = quads[y][x];
         final int h = getGridHeight();
         int i = y;
         while(i < h && quads[i][x] == img){
@@ -130,13 +132,13 @@ public class SchemeGrid extends Canvas{
         return quads.length;
     }
     
-    public void setPartAt(RenderedGridImage rendered,
+    public void setPartAt(GridImage image,
                           int x, int y){
-        final int w = rendered.getSchemeGrid().getWidth();
-        final int h = rendered.getSchemeGrid().getHeight();
+        final int w = image.getWidth();
+        final int h = image.getHeight();
         for(int i = y; i < y+h; i++){
             for(int j = x; j < x+w; j++){
-                quads[i][j] = rendered;
+                quads[i][j] = image;
             }
         }
     }
