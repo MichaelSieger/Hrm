@@ -1,24 +1,14 @@
 package de.hswt.hrm.plant;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.nio.file.FileSystems;
-import java.nio.file.Path;
-import java.util.Scanner;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 
-import de.hswt.hrm.plant.model.GridImage;
 import de.hswt.hrm.plant.ui.SchemeBuilderFrame;
 
 
@@ -101,30 +91,14 @@ public class MainFrame{
 			
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				try {
-				    SchemeBuilderFrame frame = new SchemeBuilderFrame(
-				            shell, SWT.NONE, getTestImages());
-				    frame.setBackground(shell.getDisplay()
-				            .getSystemColor(SWT.COLOR_GREEN));
-				    shell.layout();
-                }
-                catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
+				SchemeBuilderFrame frame = new SchemeBuilderFrame(shell, SWT.NONE);
+			    shell.layout();
 			}
 			
 			@Override
 			public void widgetDefaultSelected(SelectionEvent arg0) {}
 		});
 		return mItem;
-	}
-	
-	private GridImage[] getTestImages() throws FileNotFoundException{
-	    GridImage img = new GridImage();
-	    img.setWidth(4);
-	    img.setHeight(4);
-	    img.setRenderedImage(new Image(display, "/home/tamaran/tmp/220px-Tux.png"));
-	    return new GridImage[]{img};
 	}
 
 	private Menu createDataMenu(Menu m, MenuItem dataItem){

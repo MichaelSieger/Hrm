@@ -1,54 +1,60 @@
 package de.hswt.hrm.plant.ui;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Composite;
+import java.net.URL;
+import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
+import java.util.Map;
 
-import de.hswt.hrm.plant.model.GridImage;
+import org.eclipse.e4.xwt.DefaultLoadingContext;
+import org.eclipse.e4.xwt.IConstants;
+import org.eclipse.e4.xwt.IXWTLoader;
+import org.eclipse.e4.xwt.XWT;
+import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 
 /**
- * This is the Frame where new Schemes can be created.
+ * This is the frame where new schemes can be created
  * 
  * @author Michael Sieger
  *
  */
-public class SchemeBuilderFrame extends Composite{
-    
-    private static final int TOOLBOX_WIDTH = 200;
-    
-    private SchemeGrid toolbox, builderField;
+public class SchemeBuilderFrame extends Composite {
 
-    public SchemeBuilderFrame(
-            Composite parent, 
-            int style,
-            GridImage[] images) {
-        super(parent, style);
-        GridLayout layout = new GridLayout();
-        layout.numColumns = 2;
-        setLayout(layout);
-        createBuilderField();
-        createToolbox(images);
-        this.setBackground(getDisplay().getSystemColor(SWT.COLOR_BLUE));
-        this.layout();
-    }
-    
-    private void createBuilderField(){
-        builderField = new SchemeGrid(this, SWT.NONE, 20, 20);
-        GridData gridData = new GridData(GridData.FILL, 
-                GridData.FILL, true, true);
-        builderField.setLayoutData(gridData);
-    }
-    
-    private void createToolbox(GridImage[] images){
-        toolbox = new SchemeGrid(this, SWT.NONE, 
-                2, 
-                images.length/2+1);
-        toolbox.setSize(TOOLBOX_WIDTH, 100);
-        GridData gridData = new GridData();
-        gridData.verticalAlignment = GridData.FILL;
-        gridData.grabExcessVerticalSpace = true;
-        toolbox.setLayoutData(gridData);
-    }
+	public SchemeBuilderFrame(Composite parent, int style) {
+		super(parent, style);
+		setLayout(new FillLayout());
+		// load XWT
+		String name = SchemeBuilderFrame.class.getSimpleName()
+				+ IConstants.XWT_EXTENSION_SUFFIX;
+		try {
+			URL url = SchemeBuilderFrame.class.getResource(name);
+			Map<String, Object> options = new HashMap<String, Object>();
+			options.put(IXWTLoader.CLASS_PROPERTY, this);
+			options.put(IXWTLoader.CONTAINER_PROPERTY, this);
+			XWT.setLoadingContext(new DefaultLoadingContext(this.getClass()
+					.getClassLoader()));
+			XWT.loadWithOptions(url, options);
+		} catch (Throwable e) {
+			throw new Error("Unable to load " + name, e);
+		}
+		XWT.getRealm().exec(new Runnable() {
+			
+			@Override
+			public void run() {
+				getTree().setContentProvider(GridImageContentProviderFactory.create(getDisplay()));
+			}
+		});
+		
+	}
+	
+	private TreeViewer getTree(){
+		Object o = XWT.findElementByName(this, "tree");
+		if(o == null){
+			throw new RuntimeException("Tree not found");
+		}
+		return (TreeViewer) o;
+	}
 
 }
