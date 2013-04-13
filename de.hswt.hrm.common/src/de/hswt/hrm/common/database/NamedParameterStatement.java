@@ -12,10 +12,15 @@ import static com.google.common.base.Preconditions.*;
 /**
  * Simple class that enables named parameters in prepared statements.
  * 
- * <p>Example Usage:
+ * <p><b>Example Usage:</b>
  * <pre><code>
  * {@code
- * 
+ * String query = "INSERT INTO (Col1, Col2) VALUES (:col1, :col2);";
+ * NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query);
+ * stmt.addParameter("col1", "Some String");
+ * stmt.addParameter("col2", 5);
+ * stmt.executeUpdate();
+ * stmt.close();
  * }
  * </code></pre>
  * </p>
