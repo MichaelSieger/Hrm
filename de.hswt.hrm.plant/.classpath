@@ -16,5 +16,12 @@
 	<classpathentry kind="lib" path="lib/org.eclipse.e4.xwt.forms_0.9.1.SNAPSHOT.jar"/>
 	<classpathentry kind="lib" path="lib/org.pushingpixels.trident_1.2.0.v20100204-1500.jar"/>
 	<classpathentry kind="lib" path="lib/org.eclipse.osgi_3.8.2.v20130124-134944.jar"/>
+	<classpathentry kind="lib" path="lib/org.eclipse.e4.xwt.pde_0.9.1.v20110603.jar"/>
+	<classpathentry kind="lib" path="lib/org.eclipse.e4.xwt.xml_0.9.0.v20100617-2100.jar"/>
+	<classpathentry kind="lib" path="lib/org.eclipse.core.databinding.property_1.4.100.v20120523-1955.jar"/>
+	<classpathentry kind="lib" path="lib/org.eclipse.equinox.registry_3.5.200.v20120522-1841.jar"/>
+	<classpathentry kind="lib" path="lib/org.eclipse.jface.text_3.8.2.v20121126-164145.jar"/>
+	<classpathentry kind="lib" path="lib/org.eclipse.text_3.5.200.v20120523-1310.jar"/>
+	<classpathentry kind="lib" path="lib/org.eclipse.ui.forms_3.5.200.v20120705-114351.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
