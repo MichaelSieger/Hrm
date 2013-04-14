@@ -1,10 +1,8 @@
 package de.hswt.hrm.contact.dao.jdbc;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Types;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -38,7 +36,7 @@ public class ContactDao implements IContactDao {
         
         try (Connection con = DatabaseFactory.getConnection()) {
             try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
-                stmt.addParameter("id", id);
+                stmt.setParameter("id", id);
                 ResultSet result = stmt.executeQuery();
                 
                 Collection<Contact> contacts = fromResultSet(result);
@@ -65,83 +63,51 @@ public class ContactDao implements IContactDao {
     	final String query = "INSERT INTO Contact (Contact_Name, Contact_First_Name, "
     			+ "Contact_Zip_Code, Contact_City, Contact_Street, Contact_Street_Number, "
     			+ "Contact_Shortcut, Contact_Phone, Contact_Fax, Contact_Mobile, Contact_Email) " 
-    			+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+    			+ "VALUES (:name, :firstName, :zipCode, :city, :street, :streetNumber, "
+    			+ ":shortcut, :phone, :fax, :mobile, :email);";
     	
     	try (Connection con = DatabaseFactory.getConnection()) {
-	    	try(PreparedStatement stmt = con.prepareStatement(query)) {
-	    		
-	    		stmt.setString(1, contact.getLastName());
-	    		stmt.setString(2, contact.getFirstName());
-	    		stmt.setString(3, contact.getPostCode());
-	    		stmt.setString(4, contact.getCity());
-	    		stmt.setString(5, contact.getStreet());
-	    		stmt.setString(6, contact.getStreetNo());
-	    		
-	    		if (contact.getShortcut().isPresent()) {
-	    			stmt.setString(7, contact.getShortcut().get());
-	    		}
-	    		else {
-	    			stmt.setNull(7, Types.VARCHAR);
-	    		}
-	    		
-	    		if (contact.getPhone().isPresent()) {
-	    			stmt.setString(8, contact.getPhone().get());
-	    		}
-	    		else {
-	    			stmt.setNull(8, Types.VARCHAR);
-	    		}
-	    		
-	    		if (contact.getFax().isPresent()) {
-	    			stmt.setString(9, contact.getFax().get());
-	    		}
-	    		else {
-	    			stmt.setNull(9, Types.VARCHAR);
-	    		}
-	    		
-	    		if (contact.getMobile().isPresent()) {
-	    			stmt.setString(10, contact.getMobile().get());
-	    		}
-	    		else {
-	    			stmt.setNull(10, Types.VARCHAR);
-	    		}
-	    		
-	    		if (contact.getEmail().isPresent()) {
-	    			stmt.setString(11, contact.getEmail().get());
-	    		}
-	    		else {
-	    			stmt.setNull(11, Types.VARCHAR);
-	    		}
-	    		
-	    		int affectedRows = stmt.executeUpdate();
-	    		if (affectedRows != 1) {
-	    			throw new SaveException();
-	    		}
-	    		
-	    		try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
-		    		if (generatedKeys.next()) {
-		    			int id = generatedKeys.getInt(1);
-		    			
-		    			// Create new contact with id
-		    			Contact inserted = new Contact(id, contact.getLastName(), 
-		    			        contact.getFirstName(), contact.getStreet(), 
-		    			        contact.getStreetNo(), contact.getPostCode(), contact.getCity());
-		    			
-		    			inserted.setShortcut(contact.getShortcut().orNull());
-		    			inserted.setPhone(contact.getPhone().orNull());
-		    			inserted.setFax(contact.getFax().orNull());
-		    			inserted.setMobile(contact.getMobile().orNull());
-		    			inserted.setEmail(contact.getEmail().orNull());
-		    			
-		    			return inserted;
-		    		}
-		    		else {
-		    		    throw new SaveException("Could not retrieve generated ID.");    
-		    		}
-	    		}
-	    		catch (SQLException e) {
-	    			throw new SaveException("Could not retrieve generated ID.", e);
-	    		}
-	    	}
+    	    try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
+    	        stmt.setParameter("name", contact.getLastName());
+    	        stmt.setParameter("firstName", contact.getFirstName());
+    	        stmt.setParameter("zipCode", contact.getPostCode());
+    	        stmt.setParameter("city", contact.getCity());
+    	        stmt.setParameter("street", contact.getStreet());
+    	        stmt.setParameter("streetNumber", contact.getStreetNo());
+    	        stmt.setParameter("shortcut", contact.getShortcut().orNull());
+    	        stmt.setParameter("phone", contact.getPhone().orNull());
+    	        stmt.setParameter("fax", contact.getFax().orNull());
+    	        stmt.setParameter("mobile", contact.getMobile().orNull());
+    	        stmt.setParameter("email", contact.getEmail().orNull());
+    	        
+    	        int affectedRows = stmt.executeUpdate();
+    	        if (affectedRows != 1) {
+                    throw new SaveException();
+                }
+    	        
+    	        try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        int id = generatedKeys.getInt(1);
+                        
+                        // Create new contact with id
+                        Contact inserted = new Contact(id, contact.getLastName(), 
+                                contact.getFirstName(), contact.getStreet(), 
+                                contact.getStreetNo(), contact.getPostCode(), contact.getCity());
+                        
+                        inserted.setShortcut(contact.getShortcut().orNull());
+                        inserted.setPhone(contact.getPhone().orNull());
+                        inserted.setFax(contact.getFax().orNull());
+                        inserted.setMobile(contact.getMobile().orNull());
+                        inserted.setEmail(contact.getEmail().orNull());
+                        
+                        return inserted;
+                    }
+                    else {
+                        throw new SaveException("Could not retrieve generated ID.");    
+                    }
+                }
+    	    }
+    	    
     	}
     	catch (SQLException|DatabaseException e) {
     		throw new SaveException(e);
