@@ -1,12 +1,11 @@
 package de.hswt.hrm.common;
 
-import java.io.FileInputStream;
+import static com.google.common.base.Preconditions.checkArgument;
+
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Properties;
-import static com.google.common.base.Preconditions.*;
 
 /**
  * Singleton that holds the current configuration.
@@ -14,11 +13,11 @@ import static com.google.common.base.Preconditions.*;
 public class Config {
     private static Config instance;
     private Properties props = new Properties();
-    
+
     private Config() {
-        
+
     }
-    
+
     /**
      * @return The current configuration instance.
      */
@@ -26,30 +25,34 @@ public class Config {
         if (instance == null) {
             instance = new Config();
         }
-        
+
         return instance;
     }
-    
+
     /**
      * Replace the current configuration with the content of the given properties file.
-     * @param path Path to the properties file.
+     * 
+     * @param path
+     *            Path to the properties file.
      * @throws IOException
      */
     public void load(Path path) throws IOException {
         checkArgument(Files.exists(path), "Configuration file is not present.");
         props = loadFromFile(path);
     }
-    
+
     /**
      * You mostly should use keys from {@link Keys} for the key.
-     * @see {@link Properties#setProperty(String, String)} 
+     * 
+     * @see {@link Properties#setProperty(String, String)}
      */
     public void setProperty(String key, String value) {
         props.setProperty(key, value);
     }
-    
+
     /**
      * You mostly should use keys from {@link Keys} for the key.
+     * 
      * @see {@link Properties#getProperty(String)}
      */
     public String getProperty(String key) {
@@ -58,19 +61,20 @@ public class Config {
 
     /**
      * You mostly should use keys from {@link Keys} for the key.
+     * 
      * @see {@link Properties#getProperty(String, String)}
      */
     public String getProperty(String key, String defaultValue) {
         return props.getProperty(key, defaultValue);
     }
-    
+
     private Properties loadFromFile(Path path) throws IOException {
         Properties props = new Properties();
-        InputStream in = new FileInputStream(path.toFile());     
-        props.load(in);
+        // InputStream in = new FileInputStream(path.toFile());
+        props.load(Files.newInputStream(path));
         return props;
     }
-    
+
     /**
      * Holds the possible keys from the configuration.
      */
