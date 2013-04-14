@@ -33,14 +33,14 @@ CREATE  TABLE IF NOT EXISTS `Place` (
   `Place_Location` VARCHAR(255) NULL ,
   `Place_Area` VARCHAR(255) NULL ,
   `Place_Lock` VARCHAR(36) NULL ,
-  PRIMARY KEY (`Place_ID`) ,
+  PRIMARY KEY (`Place_ID`) )
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
 -- Table `hrm`.`Session`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `hrm`.`Session` (
+CREATE  TABLE IF NOT EXISTS `Session` (
   `Session_Uuid` VARCHAR(36) NOT NULL ,
   `Session_User` VARCHAR(30) NOT NULL ,
   `Session_Timestamp` DATETIME NOT NULL ,
