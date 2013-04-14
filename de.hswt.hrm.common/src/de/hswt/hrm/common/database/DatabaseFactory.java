@@ -10,11 +10,8 @@ import de.hswt.hrm.common.database.exception.DatabaseException;
  * Class that is used to get a database connection. This may be changed to injection later on.
  */
 public class DatabaseFactory {
-    private static Connection con;
-    
     /**
-     * Returns a connection object for the database. This is a singleton (will only create the
-     * connection once and returns the same instance on all later calls).
+     * Returns a connection object for the database.
      * 
      * @return Connection object for the database.
      * @throws DatabaseException If connection could not be created.
@@ -33,16 +30,14 @@ public class DatabaseFactory {
         String username = "root";
         String password = "70b145pl4ch7";
         
-        if (con == null) {
-            try {
-                con = DriverManager.getConnection(config, username, password);
-            }
-            catch (SQLException e) {
-                // TODO maybe add specific information about the error
-                throw new DatabaseException(e);
-            }
+        try {
+            Connection con = DriverManager.getConnection(config, username, password);
+            return con;
         }
-        
-        return con;
+        catch (SQLException e) {
+            // TODO maybe add specific information about the error
+            throw new DatabaseException(e);
+        }
+
     }
 }

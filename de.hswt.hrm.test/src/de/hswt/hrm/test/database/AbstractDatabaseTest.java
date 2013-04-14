@@ -1,6 +1,7 @@
 package de.hswt.hrm.test.database;
 
 import java.io.IOException;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -16,6 +17,7 @@ import de.hswt.hrm.common.Config;
 import de.hswt.hrm.common.Config.Keys;
 import de.hswt.hrm.common.database.DatabaseFactory;
 import de.hswt.hrm.common.database.DatabaseUtil;
+import de.hswt.hrm.common.database.ScriptParser;
 import de.hswt.hrm.common.database.exception.DatabaseException;
 
 /**
@@ -26,7 +28,6 @@ import de.hswt.hrm.common.database.exception.DatabaseException;
  * You can use {@link #resetDatabase()} to reset the database during a test.
  */
 public abstract class AbstractDatabaseTest {
-	private Connection con;
 	private String dbName;
 	
 	private String getRandomString(int count) {
@@ -54,6 +55,14 @@ public abstract class AbstractDatabaseTest {
 		return name;
 	}
 	
+	private void applyScheme(Connection con) throws SQLException, IOException {
+	    Path path = Paths.get("..", "resources", "scripts.db", "create_db.sql");
+	    ScriptParser parser = new ScriptParser(con.createStatement());
+	    try (Statement stmt = parser.parse(path)) {
+	        stmt.executeBatch();
+	    }
+	}
+	
     @Before
     public void createDatabase() throws DatabaseException, IOException {
         // load configuration
@@ -64,24 +73,24 @@ public abstract class AbstractDatabaseTest {
         config.setProperty(Keys.DB_NAME, "");
         
         // Create database
-        con = DatabaseFactory.getConnection();
-        String name = createUniqueName();
-        
-        DatabaseUtil.createDb(con, name);
-        
-        // Select database
-        try {
+        try (Connection con = DatabaseFactory.getConnection()) {
+            String name = createUniqueName();
+            
+            DatabaseUtil.createDb(con, name);
+            
+            // Select database
 			Statement stmt = con.createStatement();
 			stmt.executeQuery("USE " + name);
 			dbName = name;
 			
 			// Configure new db name
 			config.setProperty(Keys.DB_NAME, name);
-			
-		}
-		catch (SQLException e) {
-			throw new DatabaseException(e);
-		}
+
+			applyScheme(con);
+        }
+        catch (SQLException e) {
+            throw new DatabaseException(e);
+        }
     }
     
     @After
@@ -90,7 +99,7 @@ public abstract class AbstractDatabaseTest {
             throw new IllegalStateException("Database name must not be null!");
         }
         
-        try {
+        try (Connection con = DatabaseFactory.getConnection()) {
 			Statement stmt = con.createStatement();
 			stmt.executeQuery("DROP DATABASE " + dbName);
 		}
