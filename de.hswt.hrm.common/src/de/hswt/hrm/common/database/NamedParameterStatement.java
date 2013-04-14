@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.NoSuchElementException;
+
 import static com.google.common.base.Preconditions.*;
 
 /**
@@ -86,7 +86,7 @@ public class NamedParameterStatement implements AutoCloseable {
      * @param name Key of the parameter.
      * @param value Value for the parameter.
      */
-    public void addParameter(String name, Object value) {
+    public void setParameter(String name, Object value) {
         params.put(name, value);
     }
     
@@ -95,7 +95,7 @@ public class NamedParameterStatement implements AutoCloseable {
      * 
      * @param params Map of parameters.
      */
-    public void addParameter(Map<String, Object> params) {
+    public void setParameter(Map<String, Object> params) {
         this.params.putAll(params);
     }
     
@@ -192,29 +192,71 @@ public class NamedParameterStatement implements AutoCloseable {
     }
     
     private String parse(final String query) {
-        String parsed = query;
+        StringBuilder parsed = new StringBuilder();
+        StringBuilder currentKey = new StringBuilder();
+        boolean keyStartFound = false;
         
-        for (String key : params.keySet()) {
-            if (!this.query.contains(":" + key)) {
-                throw new NoSuchElementException("Key '" + key + "' not found.");
+        for (int i = 0, len = query.length(); i < len; i++) {
+            char c = query.charAt(i);
+            
+            if (c == ':' && !keyStartFound) {
+                keyStartFound = true;
+                continue;
             }
             
-            Object value = params.get(key);
-            if (value instanceof Integer
-                    || value instanceof Long
-                    || value instanceof Byte
-                    || value instanceof Short
-                    || value instanceof Double
-                    || value instanceof Float) {
-                
-                parsed = parsed.replace(":" + key, value.toString());
+            if (keyStartFound) {
+                if (Character.isLetterOrDigit(c)) {
+                    currentKey.append(c);
+                }
+                else {
+                    // Key finished
+                    keyStartFound = false;
+                    if (params.containsKey(currentKey.toString())) {
+                        String value = getEscapedString(params.get(currentKey.toString()));
+                        parsed.append(value);
+                    }
+                    else {
+                        parsed.append(":").append(currentKey.toString());
+                    }
+
+                    // Check if we're at the next colon
+                    if (c == ':') {
+                        keyStartFound = true;
+                    }
+                    else {
+                        parsed.append(c);
+                    }
+                    
+                    // Create empty key
+                    currentKey = new StringBuilder();
+                }
             }
             else {
-                parsed = parsed.replace(":" + key, "'" + escape(value.toString()) + "'");
+                parsed.append(c);
             }
         }
         
-        return parsed;
+        return parsed.toString();
+    }
+    
+    private String getEscapedString(Object value) {
+        if (value == null) {
+            return "null";
+        }
+        
+        if (value instanceof Integer
+                || value instanceof Long
+                || value instanceof Byte
+                || value instanceof Short
+                || value instanceof Double
+                || value instanceof Float) {
+
+            return value.toString();
+        }
+        else {
+            return "'" + escape(value.toString()) + "'";
+        }
+
     }
     
     private String escape(String query) {
