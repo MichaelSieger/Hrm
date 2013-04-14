@@ -70,7 +70,6 @@ public class Config {
 
     private Properties loadFromFile(Path path) throws IOException {
         Properties props = new Properties();
-        // InputStream in = new FileInputStream(path.toFile());
         props.load(Files.newInputStream(path));
         return props;
     }
