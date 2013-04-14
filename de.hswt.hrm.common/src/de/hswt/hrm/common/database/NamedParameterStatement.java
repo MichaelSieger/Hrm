@@ -25,7 +25,7 @@ import static com.google.common.base.Preconditions.*;
  * </code></pre>
  * </p>
  */
-public class NamedParameterStatement {
+public class NamedParameterStatement implements AutoCloseable {
     private final Statement stmt;
     private String query;
     private Map<String, Object> params = new HashMap<>();

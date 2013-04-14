@@ -5,10 +5,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.ArrayList;
 import java.util.Collection;
 
+import static com.google.common.base.Preconditions.*;
+
 import de.hswt.hrm.common.database.DatabaseFactory;
-import de.hswt.hrm.common.database.DatabaseUtil;
+import de.hswt.hrm.common.database.NamedParameterStatement;
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.ElementNotFoundException;
 import de.hswt.hrm.common.database.exception.SaveException;
@@ -18,15 +21,38 @@ import de.hswt.hrm.contact.dao.core.IContactDao;
 public class ContactDao implements IContactDao {
 
     @Override
-    public Collection<Contact> findAll() {
+    public Collection<Contact> findAll() throws DatabaseException {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public Contact findById(long id) throws ElementNotFoundException {
-        // TODO Auto-generated method stub
-        return null;
+    public Contact findById(long id) throws DatabaseException, ElementNotFoundException {
+        checkArgument(id >= 0, "Id must not be negative.");
+        
+        final String query = "SELECT Contact_Name, Contact_First_Name, Contact_Zip_Code, "
+                + "Contact_City, Contact_Street, Contact_Street_Number, Contact_Shortcut, "
+                + "Contact_Phone, Contact_Fax, Contact_Mobile, Contact_Email FROM Contact "
+                + "WHERE Contact_ID = :id;";
+        
+        try (Connection con = DatabaseFactory.getConnection()) {
+            try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
+                ResultSet result = stmt.executeQuery();
+                
+                Collection<Contact> contacts = fromResultSet(result);
+                if (contacts.size() < 1) {
+                    throw new ElementNotFoundException();
+                }
+                else if (contacts.size() > 1) {
+                    throw new DatabaseException("ID '" + id + "' is not unique.");
+                }
+                
+                return contacts.iterator().next();
+            }
+        }
+        catch (SQLException e) {
+            throw new DatabaseException(e);
+        }
     }
 
     /**
@@ -111,4 +137,32 @@ public class ContactDao implements IContactDao {
         
     }
 
+    private Collection<Contact> fromResultSet(ResultSet rs) throws SQLException {
+        checkNotNull(rs, "Result must not be null.");
+        Collection<Contact> contactList = new ArrayList<>();
+        
+        while (rs.next()) {
+            //Contact_Name, Contact_First_Name, Contact_Zip_Code, "
+            //        + "Contact_City, Contact_Street, Contact_Street_Number, Contact_Shortcut, "
+            //        + "Contact_Phone, Contact_Fax, Contact_Mobile, Contact_Email
+            int id = rs.getInt("Contact_Id");
+            String lastName = rs.getString("Contact_First_Name");
+            String firstName = rs.getString("Contact_First_Name"); 
+            String zipCode = rs.getString("Contact_Zip_Code");
+            String city = rs.getString("Contact_City");
+            String street = rs.getString("Contact_Street");
+            String streetNo = rs.getString("Contact_Street_Number");
+            
+            Contact contact = new Contact(id, lastName, firstName, zipCode, city, street, streetNo);
+            contact.setShortcut(rs.getString("Contact_Shortcut"));
+            contact.setPhone(rs.getString("Contact_Phone"));
+            contact.setFax(rs.getString("Contact_Fax"));
+            contact.setMobile(rs.getString("Contact_Mobile"));
+            contact.setEmail(rs.getString("Contact_Email"));
+            
+            contactList.add(contact);
+        }
+        
+        return contactList;
+    }
 }
