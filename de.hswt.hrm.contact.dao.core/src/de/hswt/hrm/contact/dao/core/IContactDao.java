@@ -22,15 +22,16 @@ public interface IContactDao {
      * @return Contact with the given id.
      * @throws ElementNotFoundException If the given id is not present in the database.
      */
-    public Contact findById(long id) throws DatabaseException, ElementNotFoundException;
+    public Contact findById(int id) throws DatabaseException, ElementNotFoundException;
     
     /**
      * Add a new contact to storage.
      * 
      * @param contact Contact that should be stored.
+     * @return Newly generated contact (also holding the correct id).
      * @throws SaveException If the contact could not be inserted.
      */
-    public void insert(Contact contact) throws SaveException;
+    public Contact insert(Contact contact) throws SaveException;
     
     /**
      * Update an existing contact in storage.

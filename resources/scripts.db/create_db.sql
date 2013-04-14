@@ -13,7 +13,7 @@ CREATE  TABLE IF NOT EXISTS `Contact` (
   `Contact_Shortcut` VARCHAR(45) NULL ,
   `Contact_Phone` VARCHAR(45) NULL ,
   `Contact_Fax` VARCHAR(45) NULL ,
-  `Contact_Mobil` VARCHAR(45) NULL ,
+  `Contact_Mobile` VARCHAR(45) NULL ,
   `Contact_Email` VARCHAR(45) NULL ,
   PRIMARY KEY (`Contact_ID`) )
 ENGINE = InnoDB;
