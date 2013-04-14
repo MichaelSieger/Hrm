@@ -1,16 +1,19 @@
 package de.hswt.hrm.contact.model;
 
 import com.google.common.base.Optional;
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Strings.isNullOrEmpty;
 
 /**
  * Represents a contact.
  */
 public class Contact {
-    private long id;
+    private int id;
     private String lastName;
     private String firstName;
     private String company;
     private String street;
+    private String streetNo;
     private String postCode;
     private String city;
     
@@ -22,17 +25,26 @@ public class Contact {
     private String email;
     
     public Contact(final String lastName, final String firstName, final String street,
-            final String postCode, final String city) {
+            final String streetNo, final String postCode, final String city) {
         
-        this(-1, lastName, firstName, street, postCode, city);
+        this(-1, lastName, firstName, street, streetNo, postCode, city);
     }
     
-    public Contact(long id, final String lastName, final String firstName, final String street,
-            final String postCode, final String city) {
+    public Contact(int id, final String lastName, final String firstName, final String street,
+            final String streetNo, final String postCode, final String city) {
+        // Check values
+        checkArgument(!isNullOrEmpty(lastName), "LastName is a mandatory field");
+        checkArgument(!isNullOrEmpty(firstName), "FirstName is a mandatory field");
+        checkArgument(!isNullOrEmpty(street), "Street is a mandatory field");
+        checkArgument(!isNullOrEmpty(streetNo), "StreetNo is a mandatory field");
+        checkArgument(!isNullOrEmpty(postCode), "PostCode is a mandatory field");
+        checkArgument(!isNullOrEmpty(city), "City is a mandatory field");
+        
         this.id = id;
         this.lastName = lastName;
         this.firstName = firstName;
         this.street = street;
+        this.streetNo = streetNo;
         this.postCode = postCode;
         this.city = city;
     }
@@ -67,6 +79,14 @@ public class Contact {
 
     public void setStreet(String street) {
         this.street = street;
+    }
+    
+    public String getStreetNo() {
+    	return streetNo;
+    }
+    
+    public void setStreetNo(String streetNo) {
+    	this.streetNo = streetNo;
     }
 
     public String getPostCode() {
@@ -125,7 +145,7 @@ public class Contact {
         this.email = email;
     }
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 

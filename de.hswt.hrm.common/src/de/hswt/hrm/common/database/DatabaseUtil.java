@@ -43,8 +43,15 @@ public class DatabaseUtil {
 		return false;
 	}
 	
+	/**
+	 * Create a database.
+	 * 
+	 * @param con Connection to the database server.
+	 * @param name Name of the database.
+	 * @throws DatabaseException
+	 */
 	public static void createDb(final Connection con, final String name) throws DatabaseException {
-		checkNotNull(con, "Connection must not be null");
+		checkNotNull(con, "Connection must not be null.");
 		checkNotNull(name, "Name must not be null.");
 		
 		try {

@@ -1,15 +1,23 @@
 package de.hswt.hrm.test.database;
 
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Random;
 
+import static com.google.common.base.Strings.*;
+
 import org.junit.After;
 import org.junit.Before;
 
+import de.hswt.hrm.common.Config;
+import de.hswt.hrm.common.Config.Keys;
+import de.hswt.hrm.common.database.DatabaseFactory;
 import de.hswt.hrm.common.database.DatabaseUtil;
+import de.hswt.hrm.common.database.ScriptParser;
 import de.hswt.hrm.common.database.exception.DatabaseException;
 
 /**
@@ -20,36 +28,7 @@ import de.hswt.hrm.common.database.exception.DatabaseException;
  * You can use {@link #resetDatabase()} to reset the database during a test.
  */
 public abstract class AbstractDatabaseTest {
-
-	private Connection con;
 	private String dbName;
-	
-	public Connection getConnection() throws DatabaseException {
-        // load mariadb driver
-        try {
-            Class.forName("org.mariadb.jdbc.Driver");
-        }
-        catch (ClassNotFoundException e) {
-            throw new DatabaseException("Database driver not found.", e);
-        }
-        
-        // TODO load connection string from configuration
-        String config = "jdbc:mysql://10.154.4.20";
-        String username = "root";
-        String password = "70b145pl4ch7";
-        
-        if (con == null) {
-	        try {
-	            con = DriverManager.getConnection(config, username, password);
-	        }
-	        catch (SQLException e) {
-	            // TODO maybe add specific information about the error
-	            throw new DatabaseException(e);
-	        }
-        }
-        
-        return con;
-    }
 	
 	private String getRandomString(int count) {
 		final String alphabet = "abcdefghijklmnopqrstuvwxyz";
@@ -64,9 +43,9 @@ public abstract class AbstractDatabaseTest {
 		return sb.toString();
 	}
 	
-	private String createUniqueName() throws DatabaseException {
-		String prefix = "hrmtest_";
-		Connection con = getConnection();
+	private String createUniqueName() throws DatabaseException, IOException {
+	    String prefix = "hrmtest_";
+		Connection con = DatabaseFactory.getConnection();
 		
 		String name = prefix + getRandomString(5);
 		while (DatabaseUtil.dbExists(con, name)) {
@@ -76,29 +55,58 @@ public abstract class AbstractDatabaseTest {
 		return name;
 	}
 	
+	private void applyScheme(Connection con) throws SQLException, IOException {
+	    Path path = Paths.get("..", "resources", "scripts.db", "create_db.sql");
+	    ScriptParser parser = new ScriptParser(con.createStatement());
+	    try (Statement stmt = parser.parse(path)) {
+	        con.setAutoCommit(false);
+	        stmt.executeBatch();
+	        con.commit();
+	        con.setAutoCommit(true);
+	    }
+	}
+	
     @Before
-    public void createDatabase() throws DatabaseException {
-        Connection con = getConnection();
-        String name = createUniqueName();
+    public void createDatabase() throws DatabaseException, IOException {
+        // load configuration
+        Config config = Config.getInstance();
+        config.load(Paths.get("../resources/hrm.properties"));
         
-        DatabaseUtil.createDb(con, name);
+        // remove database name
+        config.setProperty(Keys.DB_NAME, "");
         
-        // Select database
-        try {
+        // Create database
+        try (Connection con = DatabaseFactory.getConnection()) {
+            String name = createUniqueName();
+            
+            DatabaseUtil.createDb(con, name);
+            
+            // Select database
 			Statement stmt = con.createStatement();
-			stmt.executeQuery("USE " + name);
+			stmt.executeQuery("USE " + name + ";");
 			dbName = name;
-		}
-		catch (SQLException e) {
-			throw new DatabaseException(e);
-		}
+			
+			// Configure new db name
+			config.setProperty(Keys.DB_NAME, name);
+
+			applyScheme(con);
+        }
+        catch (SQLException e) {
+            throw new DatabaseException(e);
+        }
     }
     
     @After
     public void dropDatabase() throws DatabaseException {
-        try {
+        if (isNullOrEmpty(dbName)) {
+            throw new IllegalStateException("Database name must not be null!");
+        }
+        
+        // Reset database name to get database less connection
+        Config.getInstance().setProperty(Keys.DB_NAME, "");
+        try (Connection con = DatabaseFactory.getConnection()) {
 			Statement stmt = con.createStatement();
-			stmt.executeQuery("DROP DATABASE " + dbName);
+			stmt.executeQuery("DROP DATABASE " + dbName + ";");
 		}
 		catch (SQLException e) {
 			throw new DatabaseException(e);
@@ -109,8 +117,9 @@ public abstract class AbstractDatabaseTest {
      * Reset the test database.
      * 
      * @throws DatabaseException If an error occurs during reset.
+     * @throws IOException 
      */
-    public void resetDatabase() throws DatabaseException {
+    public void resetDatabase() throws DatabaseException, IOException {
         dropDatabase();
         createDatabase();
     }

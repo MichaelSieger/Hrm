@@ -1,7 +1,7 @@
 -- -----------------------------------------------------
 -- Table `hrm`.`Contact`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `hrm`.`Contact` (
+CREATE  TABLE IF NOT EXISTS `Contact` (
   `Contact_ID` INT NOT NULL ,
   `Contact_Role_FK` INT NOT NULL ,
   `Contact_Name` VARCHAR(255) NOT NULL ,
@@ -13,7 +13,7 @@ CREATE  TABLE IF NOT EXISTS `hrm`.`Contact` (
   `Contact_Shortcut` VARCHAR(45) NULL ,
   `Contact_Phone` VARCHAR(45) NULL ,
   `Contact_Fax` VARCHAR(45) NULL ,
-  `Contact_Mobil` VARCHAR(45) NULL ,
+  `Contact_Mobile` VARCHAR(45) NULL ,
   `Contact_Email` VARCHAR(45) NULL ,
   `Contact_Lock` VARCHAR(36) NULL ,
   PRIMARY KEY (`Contact_ID`) )
@@ -23,7 +23,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `hrm`.`Place`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `hrm`.`Place` (
+CREATE  TABLE IF NOT EXISTS `Place` (
   `Place_ID` INT NOT NULL ,
   `Place_Name` VARCHAR(255) NOT NULL ,
   `Place_Zip_Code` VARCHAR(45) NOT NULL ,
