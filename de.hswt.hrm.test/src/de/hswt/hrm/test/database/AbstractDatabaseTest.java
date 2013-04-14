@@ -59,7 +59,10 @@ public abstract class AbstractDatabaseTest {
 	    Path path = Paths.get("..", "resources", "scripts.db", "create_db.sql");
 	    ScriptParser parser = new ScriptParser(con.createStatement());
 	    try (Statement stmt = parser.parse(path)) {
+	        con.setAutoCommit(false);
 	        stmt.executeBatch();
+	        con.commit();
+	        con.setAutoCommit(true);
 	    }
 	}
 	
@@ -80,7 +83,7 @@ public abstract class AbstractDatabaseTest {
             
             // Select database
 			Statement stmt = con.createStatement();
-			stmt.executeQuery("USE " + name);
+			stmt.executeQuery("USE " + name + ";");
 			dbName = name;
 			
 			// Configure new db name
@@ -99,9 +102,11 @@ public abstract class AbstractDatabaseTest {
             throw new IllegalStateException("Database name must not be null!");
         }
         
+        // Reset database name to get database less connection
+        Config.getInstance().setProperty(Keys.DB_NAME, "");
         try (Connection con = DatabaseFactory.getConnection()) {
 			Statement stmt = con.createStatement();
-			stmt.executeQuery("DROP DATABASE " + dbName);
+			stmt.executeQuery("DROP DATABASE " + dbName + ";");
 		}
 		catch (SQLException e) {
 			throw new DatabaseException(e);

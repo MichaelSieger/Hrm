@@ -4,6 +4,10 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import static com.google.common.base.Strings.*;
+
+import de.hswt.hrm.common.Config;
+import de.hswt.hrm.common.Config.Keys;
 import de.hswt.hrm.common.database.exception.DatabaseException;
 
 /**
@@ -24,14 +28,22 @@ public class DatabaseFactory {
         catch (ClassNotFoundException e) {
             throw new DatabaseException("Database driver not found.", e);
         }
+
+        // TODO Remove: Testserver jdbc:mysql://10.154.4.20
+        Config cfg = Config.getInstance();
+        final String host = cfg.getProperty(Keys.DB_HOST, "jdbc:mysql://localhost");
+        final String username = cfg.getProperty(Keys.DB_USER, "root");
+        final String password = cfg.getProperty(Keys.DB_PASSWORD, "70b145pl4ch7");
+        final String database = cfg.getProperty(Keys.DB_NAME, "hrm");
         
-        // TODO load connection string from configuration
-        String config = "jdbc:mysql://10.154.4.20";
-        String username = "root";
-        String password = "70b145pl4ch7";
+        // Build connection String
+        String conStr = host;
+        if (!isNullOrEmpty(database)) {
+            conStr += conStr.endsWith("/") ? database : "/" + database; 
+        }
         
         try {
-            Connection con = DriverManager.getConnection(config, username, password);
+            Connection con = DriverManager.getConnection(conStr, username, password);
             return con;
         }
         catch (SQLException e) {
