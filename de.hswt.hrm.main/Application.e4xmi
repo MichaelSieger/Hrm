@@ -2,9 +2,12 @@
 <application:Application xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:advanced="http://www.eclipse.org/ui/2010/UIModel/application/ui/advanced" xmlns:application="http://www.eclipse.org/ui/2010/UIModel/application" xmlns:basic="http://www.eclipse.org/ui/2010/UIModel/application/ui/basic" xmlns:menu="http://www.eclipse.org/ui/2010/UIModel/application/ui/menu" xmi:id="_ucxCQJSXEeKKYob9VrLbBA" elementId="org.eclipse.e4.ide.application" bindingContexts="_ucxpUJSXEeKKYob9VrLbBA">
   <children xsi:type="basic:TrimmedWindow" xmi:id="_ucxCQZSXEeKKYob9VrLbBA" label="Hygiene Report Manager" width="500" height="400">
     <children xsi:type="advanced:PerspectiveStack" xmi:id="_ucxpZ5SXEeKKYob9VrLbBA">
-      <children xsi:type="advanced:Perspective" xmi:id="_ucxpaJSXEeKKYob9VrLbBA">
+      <children xsi:type="advanced:Perspective" xmi:id="_ucxpaJSXEeKKYob9VrLbBA" label="">
         <children xsi:type="basic:PartSashContainer" xmi:id="_ucxpaZSXEeKKYob9VrLbBA">
-          <children xsi:type="basic:PartStack" xmi:id="_ucxpapSXEeKKYob9VrLbBA"/>
+          <children xsi:type="basic:PartStack" xmi:id="_ucxpapSXEeKKYob9VrLbBA">
+            <children xsi:type="basic:Part" xmi:id="_EVCGgKXlEeK_d5AKUI3Qzg" elementId="de.hswt.hrm.main.part.0" label="Kunden"/>
+            <children xsi:type="basic:Part" xmi:id="_FPaEEKXlEeK_d5AKUI3Qzg" elementId="de.hswt.hrm.main.part.1" label="Standorte"/>
+          </children>
         </children>
       </children>
     </children>
@@ -18,12 +21,6 @@
         <children xsi:type="menu:HandledMenuItem" xmi:id="_ucxpZpSXEeKKYob9VrLbBA" label="About" command="_ucxpXZSXEeKKYob9VrLbBA"/>
       </children>
     </mainMenu>
-    <trimBars xmi:id="_ucyQYJSXEeKKYob9VrLbBA">
-      <children xsi:type="menu:ToolBar" xmi:id="_ucyQYZSXEeKKYob9VrLbBA" elementId="toolbar:org.eclipse.ui.main.toolbar">
-        <children xsi:type="menu:HandledToolItem" xmi:id="_ucyQYpSXEeKKYob9VrLbBA" iconURI="platform:/plugin/de.hswt.hrm.main/icons/sample.gif" command="_ucxpV5SXEeKKYob9VrLbBA"/>
-        <children xsi:type="menu:HandledToolItem" xmi:id="_ucyQY5SXEeKKYob9VrLbBA" iconURI="platform:/plugin/de.hswt.hrm.main/icons/save_edit.gif" command="_ucxpWpSXEeKKYob9VrLbBA"/>
-      </children>
-    </trimBars>
   </children>
   <handlers xmi:id="_ucxpXpSXEeKKYob9VrLbBA" contributionURI="bundleclass://de.hswt.hrm.main/de.hswt.hrm.main.handlers.AboutHandler" command="_ucxpXZSXEeKKYob9VrLbBA"/>
   <bindingTables xmi:id="_ucxpVZSXEeKKYob9VrLbBA" bindingContext="_ucxpUJSXEeKKYob9VrLbBA">
