@@ -10,8 +10,17 @@
  *******************************************************************************/
 package de.hswt.hrm.main.handlers;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import javax.inject.Named;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.e4.ui.services.IServiceConstants;
@@ -30,6 +39,30 @@ public class AboutHandler {
 			sb.append("\n");
 		}
 
+		// EASTER EGG
+		new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				try {
+					Clip clip = AudioSystem.getClip();
+					Path p = Paths.get("..", "resources", "media", "freestiloer.m4a");
+					if (!Files.exists(p)) {
+						// TODO: log!
+					}
+					
+					AudioInputStream audioStream = AudioSystem.getAudioInputStream(
+							p.toFile());
+					clip.open(audioStream);
+					clip.start();
+				}
+				catch (UnsupportedAudioFileException|LineUnavailableException|IOException e) {
+					// TODO: log!
+				}
+			}
+		}).start();			
+		// EASTER EGG END
+		
 		MessageDialog.openInformation(shell, "Developed by", sb.toString());
 
 	}
