@@ -48,7 +48,7 @@ public class AboutHandler {
 			@Override
 			public void run() {
 				try {
-					URL url = new URL("platform:/plugin/de.hswt.hrm.main/media/2-10_journey_stand.wav");
+					URL url = new URL("platform:/plugin/de.hswt.hrm.main/media/freestyler.wav");
 					
 
 					Clip clip = AudioSystem.getClip();
