@@ -13,6 +13,7 @@
 
    <windowImages/>
 
+
    <launcher>
       <solaris/>
       <win useIco="false">
@@ -120,11 +121,11 @@
 
    <features>
       <feature id="de.hswt.hrm.contact.feature" version="0.0.1.qualifier"/>
+      <feature id="de.hswt.hrm.main.feature" version="0.0.1.qualifier"/>
+      <feature id="de.hswt.hrm.place.feature" version="0.0.1.qualifier"/>
       <feature id="org.eclipse.e4.rcp" version="1.1.2.v20130130-191718-91FUvGP7GIX2Kgz-z-gvjMvXV1NS"/>
       <feature id="org.eclipse.emf.ecore"/>
       <feature id="org.eclipse.emf.common"/>
-      <feature id="de.hswt.hrm.main.feature" version="0.0.1.qualifier"/>
-      <feature id="de.hswt.hrm.place.feature" version="0.0.1.qualifier"/>
    </features>
 
 
