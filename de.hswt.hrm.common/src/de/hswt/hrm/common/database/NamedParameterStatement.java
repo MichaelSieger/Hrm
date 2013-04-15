@@ -161,7 +161,9 @@ public class NamedParameterStatement implements AutoCloseable {
      * @see Statement#close()
      */
     public void close() throws SQLException {
-        stmt.close();
+    	if (stmt != null && !stmt.isClosed()) {
+    		stmt.close();
+    	}
     }
 
     /**
