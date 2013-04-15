@@ -1,3 +1,10 @@
-<Composite xmlns="http://www.eclipse.org/xwt/presentation" xmlns:x="http://www.eclipse.org/xwt">
-	<Button text="Test" bounds="10, 10, 83, 27"/>
+<Composite xmlns="http://www.eclipse.org/xwt/presentation" xmlns:x="http://www.eclipse.org/xwt" xmlns:p1="clr-namespace:de.hswt.hrm.contact.ui.xwt">
+	<Button text="Kunden Hinzufügen" bounds="10, 10, 132, 27"/>
+	<TableViewer x:Style="BORDER | FULL_SELECTION">
+		<TableViewer.table headerVisible="true" linesVisible="true" bounds="10, 81, 372, 209"/>
+		<TableViewer.labelProvider>
+			<p1:TableLabelProvider_1/>
+		</TableViewer.labelProvider>
+	</TableViewer>
+	<Text x:Style="SEARCH" bounds="262, 10, 120, 27" text="Suche"/>
 </Composite>

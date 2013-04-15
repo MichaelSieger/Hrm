@@ -13,17 +13,18 @@ import org.eclipse.swt.widgets.Composite;
 public class ContactView {
     @Inject
     public ContactView() {
-        // TODO Your code here
+
     }
 
     @PostConstruct
     public void postConstruct(Composite parent) {
 
-        String name = ContactView.class.getSimpleName() + IConstants.XWT_EXTENSION_SUFFIX;
+        String location = "de/hswt/hrm/contact/ui/xwt/" + ContactView.class.getSimpleName()
+                + IConstants.XWT_EXTENSION_SUFFIX;
 
-        URL u = ContactView.class.getClassLoader().getResource(name);
+        URL url = ContactView.class.getClassLoader().getResource(location);
         try {
-            XWT.load(parent, u);
+            XWT.load(parent, url);
         }
         catch (Exception e) {
             // TODO Auto-generated catch block
@@ -34,7 +35,6 @@ public class ContactView {
 
     @Focus
     public void onFocus() {
-        // TODO Your code here
     }
 
 }
