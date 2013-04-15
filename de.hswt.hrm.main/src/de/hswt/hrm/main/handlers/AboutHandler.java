@@ -10,7 +10,10 @@
  *******************************************************************************/
 package de.hswt.hrm.main.handlers;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -45,19 +48,17 @@ public class AboutHandler {
 			@Override
 			public void run() {
 				try {
-					Clip clip = AudioSystem.getClip();
-					Path p = Paths.get("..", "resources", "media", "freestiloer.m4a");
-					if (!Files.exists(p)) {
-						// TODO: log!
-					}
+					URL url = new URL("platform:/plugin/de.hswt.hrm.main/media/2-10_journey_stand.wav");
 					
+
+					Clip clip = AudioSystem.getClip();
 					AudioInputStream audioStream = AudioSystem.getAudioInputStream(
-							p.toFile());
+						    new BufferedInputStream(url.openConnection().getInputStream()));
 					clip.open(audioStream);
 					clip.start();
 				}
 				catch (UnsupportedAudioFileException|LineUnavailableException|IOException e) {
-					// TODO: log!
+					e.printStackTrace();
 				}
 			}
 		}).start();			
