@@ -5,6 +5,8 @@ Bundle-SymbolicName: de.hswt.hrm.contact.ui
 Bundle-Version: 0.0.1.qualifier
 Require-Bundle: javax.annotation,
  javax.inject,
- org.eclipse.swt;bundle-version="3.100.1"
+ org.eclipse.swt;bundle-version="3.100.1",
+ org.eclipse.e4.xwt;bundle-version="0.9.1"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: de.hswt.hrm.contact.ui.view
+Import-Package: org.eclipse.e4.ui.di

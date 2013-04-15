@@ -1,0 +1,3 @@
+<Composite xmlns="http://www.eclipse.org/xwt/presentation" xmlns:x="http://www.eclipse.org/xwt">
+	<Button text="Test" bounds="10, 36, 83, 27"/>
+</Composite>
