@@ -2,16 +2,13 @@ package de.hswt.hrm.contact.ui.view;
 
 import java.net.URL;
 
-import javax.inject.Inject;
 import javax.annotation.PostConstruct;
+import javax.inject.Inject;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Composite;
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.xwt.IConstants;
 import org.eclipse.e4.xwt.XWT;
-import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Composite;
 
 public class ContactView {
     @Inject
@@ -21,13 +18,10 @@ public class ContactView {
 
     @PostConstruct
     public void postConstruct(Composite parent) {
-        // parent.setLayout(new GridLayout(2, false));
-        // Button b = new Button(parent, SWT.BORDER);
 
-        // String name = ContactView.class.getSimpleName() + IConstants.XWT_EXTENSION_SUFFIX;
+        String name = ContactView.class.getSimpleName() + IConstants.XWT_EXTENSION_SUFFIX;
 
-        URL u = ContactView.class.getClassLoader().getResource(
-                "de/hswt/hrm/contact/ui/xwt/Test.xwt");
+        URL u = ContactView.class.getClassLoader().getResource(name);
         try {
             XWT.load(parent, u);
         }
