@@ -30,7 +30,6 @@ public class ContactView {
                 "de/hswt/hrm/contact/ui/xwt/Test.xwt");
         try {
             XWT.load(parent, u);
-            parent.pack();
         }
         catch (Exception e) {
             // TODO Auto-generated catch block
