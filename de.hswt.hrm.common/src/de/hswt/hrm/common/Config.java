@@ -10,13 +10,11 @@ import java.util.Properties;
 /**
  * Singleton that holds the current configuration.
  */
-public class Config {
+public final class Config {
     private static Config instance;
     private Properties props = new Properties();
 
-    private Config() {
-
-    }
+    private Config() { }
 
     /**
      * @return The current configuration instance.

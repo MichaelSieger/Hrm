@@ -12,7 +12,9 @@ import de.hswt.hrm.common.database.exception.DatabaseException;
 /**
  * Common utility methods for database handling. 
  */
-public class DatabaseUtil {
+public final class DatabaseUtil {
+	
+	private DatabaseUtil() { }
 
 	/**
 	 * Check if a database exists on the server.

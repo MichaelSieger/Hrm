@@ -13,7 +13,10 @@ import de.hswt.hrm.common.database.exception.DatabaseException;
 /**
  * Class that is used to get a database connection. This may be changed to injection later on.
  */
-public class DatabaseFactory {
+public final class DatabaseFactory {
+	
+	private DatabaseFactory() { }
+	
     /**
      * Returns a connection object for the database.
      * 
