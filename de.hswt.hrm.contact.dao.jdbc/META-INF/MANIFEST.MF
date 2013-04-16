@@ -11,3 +11,4 @@ Import-Package: com.google.common.base,
  de.hswt.hrm.contact.dao.core,
  de.hswt.hrm.contact.model,
  org.eclipse.e4.core.di.annotations
+Export-Package: de.hswt.hrm.contact.dao.jdbc
