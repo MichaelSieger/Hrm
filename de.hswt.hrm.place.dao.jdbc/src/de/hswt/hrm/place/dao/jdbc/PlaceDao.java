@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import de.hswt.hrm.common.database.DatabaseFactory;
@@ -27,8 +28,32 @@ public class PlaceDao implements IPlaceDao {
 
     @Override
     public Place findById(int id) throws DatabaseException, ElementNotFoundException {
-        throw new NotImplementedException();
+        checkArgument(id >= 0, "Id must not be negative.");
+        
+        final String query = "SELECT Place_ID, Place_Name, Place_Zip_Code, Place_City"
+                + "Place_Street, Place_Street_Number, Place_Location, Place_Area"
+                + "WHERE Place_ID = :id;";
+        
+        try (Connection con = DatabaseFactory.getConnection()) {
+            try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
+                stmt.setParameter("id", id);
+                ResultSet result = stmt.executeQuery();
+                
+                Collection<Place> places = fromResultSet(result);
+                if (places.size() < 1) {
+                    throw new ElementNotFoundException();
+                }
+                else if (places.size() > 1) {
+                    throw new DatabaseException("ID '" + id + "' is not unique.");
+                }
+                
+                return places.iterator().next();
+            }
         }
+        catch (SQLException e) {
+            throw new DatabaseException(e);
+        }
+    }
     
 
     /**
