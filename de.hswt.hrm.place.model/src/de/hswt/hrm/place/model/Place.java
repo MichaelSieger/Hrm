@@ -1,13 +1,13 @@
 package de.hswt.hrm.place.model;
 
 public class Place {
-
-    /**
-     * @param args
-     */
-    public static void main(String[] args) {
-        // TODO Auto-generated method stub
-
-    }
+    private int id;
+    private String placeName;
+    private String postCode;
+    private String city;
+    private String street;
+    private String streetNo;
+    private String location;
+    private String area;
 
 }
