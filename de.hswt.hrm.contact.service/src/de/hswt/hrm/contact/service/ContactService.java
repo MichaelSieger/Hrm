@@ -2,6 +2,8 @@ package de.hswt.hrm.contact.service;
 
 import java.util.Collection;
 
+import javax.inject.Inject;
+
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.ElementNotFoundException;
 import de.hswt.hrm.common.database.exception.SaveException;
@@ -12,13 +14,17 @@ import de.hswt.hrm.contact.model.Contact;
  * Service class which should be used to interact with the storage system for contacts.
  */
 public class ContactService {
-    private IContactDao dao;
+    
+    private ContactService() { };
+    
+    @Inject
+    private static IContactDao dao;
     
     /**
      * @return All contacts from storage.
      * @throws DatabaseException 
      */
-    public Collection<Contact> findAll() throws DatabaseException {
+    public static Collection<Contact> findAll() throws DatabaseException {
         return dao.findAll();
     }
     
@@ -27,7 +33,7 @@ public class ContactService {
      * @return Contact with the given id.
      * @throws DatabaseException 
      */
-    public Contact findById(int id) throws DatabaseException {
+    public static Contact findById(int id) throws DatabaseException {
         return dao.findById(id);
     }
     
@@ -38,7 +44,7 @@ public class ContactService {
      * @return The created contact.
      * @throws SaveException If the contact could not be inserted.
      */
-    public Contact insert(Contact contact) throws SaveException {
+    public static Contact insert(Contact contact) throws SaveException {
         return insert(contact);
     }
     
@@ -49,7 +55,7 @@ public class ContactService {
      * @throws ElementNotFoundException If the given contact is not present in the database.
      * @throws SaveException If the contact could not be updated.
      */
-    public void update(Contact contact) throws ElementNotFoundException, SaveException {
+    public static void update(Contact contact) throws ElementNotFoundException, SaveException {
         dao.update(contact);
     }
 }
