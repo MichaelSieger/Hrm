@@ -1,6 +1,6 @@
 package de.hswt.hrm.place.model;
 
-public class Dummy {
+public class Place {
 
     /**
      * @param args
