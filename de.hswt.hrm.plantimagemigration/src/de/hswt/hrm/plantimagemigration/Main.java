@@ -18,7 +18,7 @@ public class Main {
         }
         else {
             System.out.println("Selected dir: " + args[0]);
-            new PSLatex2SVGConverter(args[0]);
+            new PSLatex2PDFConverter(args[0]);
         }
     }
 

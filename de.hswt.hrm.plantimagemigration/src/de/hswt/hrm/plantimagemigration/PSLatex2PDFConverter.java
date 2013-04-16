@@ -5,8 +5,7 @@ import java.io.IOException;
 
 import de.hswt.hrm.plantimagemigration.converter.Converter;
 import de.hswt.hrm.plantimagemigration.converter.DVIConverter;
-import de.hswt.hrm.plantimagemigration.converter.PSConverter;
-
+import de.hswt.hrm.plantimagemigration.converter.PdfConverter;
 /**
  * This class handles the conversion process from the latex files to svg. It creates a number of
  * folders each one containing the intermediate step. The last one contains the resulting svg.
@@ -14,24 +13,24 @@ import de.hswt.hrm.plantimagemigration.converter.PSConverter;
  * @author Michael Sieger
  * 
  */
-public class PSLatex2SVGConverter {
+public class PSLatex2PDFConverter {
 
     private static final String SOURCE_FOLDER = "symbols";
     private static final String DECONTEXT_FOLDER = "1";
     private static final String DVI_FOLDER = "2";
-    private static final String PS_FOLDER = "3";
+    private static final String PDF_FOLDER = "3";
     private static final String TMP_FOLDER = "tmp";
 
     private String dir;
 
-    public PSLatex2SVGConverter(String dir) throws IOException {
+    public PSLatex2PDFConverter(String dir) throws IOException {
         this.dir = dir;
         deleteOldData();
         createFolders();
         doDecontextStep();
 
         doStep(new DVIConverter(getDVIFolder(), getDecontextFolder(), getTmpFolder()));
-        doStep(new PSConverter(getPSFolder(), getDVIFolder(), getTmpFolder()));
+        doStep(new PdfConverter(getPDFFolder(), getDVIFolder(), getTmpFolder()));
         deleteDir(getTmpFolder());
     }
 
@@ -91,11 +90,11 @@ public class PSLatex2SVGConverter {
 
     private File[] getResultFolders() {
         return new File[] { getDecontextFolder(), getTmpFolder(), getDVIFolder(),
-                getPSFolder() };
+                getPDFFolder() };
     }
 
-    private File getPSFolder(){
-        return new File(dir, PS_FOLDER);
+    private File getPDFFolder(){
+        return new File(dir, PDF_FOLDER);
     }
 
     private File getTmpFolder() {
