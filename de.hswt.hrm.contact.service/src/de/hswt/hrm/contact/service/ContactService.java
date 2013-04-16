@@ -2,12 +2,11 @@ package de.hswt.hrm.contact.service;
 
 import java.util.Collection;
 
-import javax.inject.Inject;
-
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.ElementNotFoundException;
 import de.hswt.hrm.common.database.exception.SaveException;
 import de.hswt.hrm.contact.dao.core.IContactDao;
+import de.hswt.hrm.contact.dao.jdbc.ContactDao;
 import de.hswt.hrm.contact.model.Contact;
 
 /**
@@ -17,8 +16,8 @@ public class ContactService {
     
     private ContactService() { };
     
-    @Inject
-    private static IContactDao dao;
+//    @Inject
+    private static IContactDao dao = new ContactDao();
     
     /**
      * @return All contacts from storage.
