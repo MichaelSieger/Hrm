@@ -3,6 +3,8 @@ package de.hswt.hrm.plant.ui;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.swt.widgets.Display;
 
+import test.GridImageContentProviderMock;
+
 /**
  * Hides where the grid images come from
  * 
