@@ -1,5 +1,5 @@
 package de.hswt.hrm.place.dao.jdbc;
 
-public class Dummy {
+public class PlaceDao {
 
 }
