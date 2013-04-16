@@ -68,6 +68,10 @@ public class ContactServiceTest extends AbstractDatabaseTest {
         Contact expected = new Contact("Sarpei", "Hans", "Some Street", "15", "81934", "Nowhere");
         Contact parsed = ContactService.insert(expected);
         
+        // We add another contact to ensure that the update affects just one row.
+        Contact con2 = new Contact("Other", "Some", "Some Street", "15", "81934", "Nowhere");
+        ContactService.insert(con2);
+        
         parsed.setCity("Some City");
         parsed.setEmail("someone@example.com");
         ContactService.update(parsed);
