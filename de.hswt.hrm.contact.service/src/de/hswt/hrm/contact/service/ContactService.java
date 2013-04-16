@@ -44,7 +44,7 @@ public class ContactService {
      * @throws SaveException If the contact could not be inserted.
      */
     public static Contact insert(Contact contact) throws SaveException {
-        return insert(contact);
+        return dao.insert(contact);
     }
     
     /**
