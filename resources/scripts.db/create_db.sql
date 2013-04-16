@@ -2,7 +2,7 @@
 -- Table `hrm`.`Contact`
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `Contact` (
-  `Contact_ID` INT NOT NULL ,
+  `Contact_ID` INT NOT NULL AUTO_INCREMENT ,
   `Contact_Role_FK` INT NOT NULL ,
   `Contact_Name` VARCHAR(255) NOT NULL ,
   `Contact_First_Name` VARCHAR(255) NOT NULL ,
@@ -24,7 +24,7 @@ ENGINE = InnoDB;
 -- Table `hrm`.`Place`
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `Place` (
-  `Place_ID` INT NOT NULL ,
+  `Place_ID` INT NOT NULL AUTO_INCREMENT ,
   `Place_Name` VARCHAR(255) NOT NULL ,
   `Place_Zip_Code` VARCHAR(45) NOT NULL ,
   `Place_City` VARCHAR(45) NOT NULL ,
