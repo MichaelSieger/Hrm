@@ -6,8 +6,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.eclipse.e4.core.di.annotations.Creatable;
-
 import static com.google.common.base.Preconditions.*;
 
 import de.hswt.hrm.common.database.DatabaseFactory;
@@ -19,7 +17,6 @@ import de.hswt.hrm.common.exception.NotImplementedException;
 import de.hswt.hrm.contact.model.Contact;
 import de.hswt.hrm.contact.dao.core.IContactDao;
 
-@Creatable  
 public class ContactDao implements IContactDao {
     
     @Override
@@ -119,7 +116,50 @@ public class ContactDao implements IContactDao {
 
     @Override
     public void update(Contact contact) throws ElementNotFoundException, SaveException {
-        throw new NotImplementedException();        
+        checkNotNull(contact, "Contact must not be null.");
+        
+        if (contact.getId() < 0) {
+            throw new ElementNotFoundException("Element has no valid ID.");
+        }
+        
+        final String query = "UPDATE Contact SET "
+                + "Contact_Name = :lastName, "
+                + "Contact_First_Name = :firstName, "
+                + "Contact_Zip_Code = :zipCode, "
+                + "Contact_City = :city, "
+                + "Contact_Street = :street, "
+                + "Contact_Street_Number = :streetNumber, "
+                + "Contact_Shortcut = :shortcut, "
+                + "Contact_Phone = :phone, "
+                + "Contact_Fax = :fax, "
+                + "Contact_Mobile = :mobile, "
+                + "Contact_Email = :email "
+                + "WHERE Contact_ID = :id;";
+        
+        try (Connection con = DatabaseFactory.getConnection()) {
+            try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
+                stmt.setParameter("id", contact.getId());
+                stmt.setParameter("lastName", contact.getLastName());
+                stmt.setParameter("firstName", contact.getFirstName());
+                stmt.setParameter("zipCode", contact.getPostCode());
+                stmt.setParameter("city", contact.getCity());
+                stmt.setParameter("street", contact.getStreet());
+                stmt.setParameter("streetNumber", contact.getStreetNo());
+                stmt.setParameter("shortcut", contact.getShortcut().orNull());
+                stmt.setParameter("phone", contact.getPhone().orNull());
+                stmt.setParameter("fax", contact.getFax().orNull());
+                stmt.setParameter("mobile", contact.getMobile().orNull());
+                stmt.setParameter("email", contact.getEmail().orNull());
+                
+                int affectedRows = stmt.executeUpdate();
+                if (affectedRows != 1) {
+                    throw new SaveException();
+                }
+            }
+        }
+        catch (SQLException|DatabaseException e) {
+            throw new SaveException(e);
+        }
     }
 
     private Collection<Contact> fromResultSet(ResultSet rs) throws SQLException {
