@@ -11,7 +11,6 @@ public class Contact {
     private int id;
     private String lastName;
     private String firstName;
-    private String company;
     private String street;
     private String streetNo;
     private String postCode;
@@ -32,21 +31,15 @@ public class Contact {
     
     public Contact(int id, final String lastName, final String firstName, final String street,
             final String streetNo, final String postCode, final String city) {
-        // Check values
-        checkArgument(!isNullOrEmpty(lastName), "LastName is a mandatory field");
-        checkArgument(!isNullOrEmpty(firstName), "FirstName is a mandatory field");
-        checkArgument(!isNullOrEmpty(street), "Street is a mandatory field");
-        checkArgument(!isNullOrEmpty(streetNo), "StreetNo is a mandatory field");
-        checkArgument(!isNullOrEmpty(postCode), "PostCode is a mandatory field");
-        checkArgument(!isNullOrEmpty(city), "City is a mandatory field");
         
         this.id = id;
-        this.lastName = lastName;
-        this.firstName = firstName;
-        this.street = street;
-        this.streetNo = streetNo;
-        this.postCode = postCode;
-        this.city = city;
+        
+        setLastName(lastName);
+        setFirstName(firstName);
+        setStreet(street);
+        setStreetNo(streetNo);
+        setPostCode(postCode);
+        setCity(city);
     }
 
     public String getLastName() {
@@ -54,6 +47,7 @@ public class Contact {
     }
 
     public void setLastName(String lastName) {
+        checkArgument(!isNullOrEmpty(lastName), "Field is a mandatory.");
         this.lastName = lastName;
     }
 
@@ -62,15 +56,8 @@ public class Contact {
     }
 
     public void setFirstName(String firstName) {
+        checkArgument(!isNullOrEmpty(firstName), "Field is a mandatory.");
         this.firstName = firstName;
-    }
-
-    public String getCompany() {
-        return company;
-    }
-
-    public void setCompany(String company) {
-        this.company = company;
     }
 
     public String getStreet() {
@@ -78,6 +65,7 @@ public class Contact {
     }
 
     public void setStreet(String street) {
+        checkArgument(!isNullOrEmpty(street), "Field is a mandatory.");
         this.street = street;
     }
     
@@ -86,6 +74,7 @@ public class Contact {
     }
     
     public void setStreetNo(String streetNo) {
+        checkArgument(!isNullOrEmpty(streetNo), "Field is a mandatory.");
     	this.streetNo = streetNo;
     }
 
@@ -94,6 +83,7 @@ public class Contact {
     }
 
     public void setPostCode(String postCode) {
+        checkArgument(!isNullOrEmpty(postCode), "PostCode is a mandatory field");
         this.postCode = postCode;
     }
 
@@ -102,6 +92,7 @@ public class Contact {
     }
 
     public void setCity(String city) {
+        checkArgument(!isNullOrEmpty(city), "City is a mandatory field");
         this.city = city;
     }
 
@@ -154,7 +145,6 @@ public class Contact {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((city == null) ? 0 : city.hashCode());
-        result = prime * result + ((company == null) ? 0 : company.hashCode());
         result = prime * result + ((email == null) ? 0 : email.hashCode());
         result = prime * result + ((fax == null) ? 0 : fax.hashCode());
         result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
@@ -182,12 +172,6 @@ public class Contact {
                 return false;
         }
         else if (!city.equals(other.city))
-            return false;
-        if (company == null) {
-            if (other.company != null)
-                return false;
-        }
-        else if (!company.equals(other.company))
             return false;
         if (email == null) {
             if (other.email != null)

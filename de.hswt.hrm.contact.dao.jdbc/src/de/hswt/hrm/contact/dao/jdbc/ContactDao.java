@@ -6,6 +6,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.eclipse.e4.core.di.annotations.Creatable;
+
 import static com.google.common.base.Preconditions.*;
 
 import de.hswt.hrm.common.database.DatabaseFactory;
@@ -13,15 +15,16 @@ import de.hswt.hrm.common.database.NamedParameterStatement;
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.ElementNotFoundException;
 import de.hswt.hrm.common.database.exception.SaveException;
+import de.hswt.hrm.common.exception.NotImplementedException;
 import de.hswt.hrm.contact.model.Contact;
 import de.hswt.hrm.contact.dao.core.IContactDao;
 
+@Creatable  
 public class ContactDao implements IContactDao {
-
+    
     @Override
     public Collection<Contact> findAll() throws DatabaseException {
-        // TODO Auto-generated method stub
-        return null;
+        throw new NotImplementedException();
     }
 
     @Override
@@ -116,8 +119,7 @@ public class ContactDao implements IContactDao {
 
     @Override
     public void update(Contact contact) throws ElementNotFoundException, SaveException {
-        // TODO Auto-generated method stub
-        
+        throw new NotImplementedException();        
     }
 
     private Collection<Contact> fromResultSet(ResultSet rs) throws SQLException {
