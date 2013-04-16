@@ -15,14 +15,14 @@ public interface IContactDao {
     /**
      * @return All contacts from storage.
      */
-    public Collection<Contact> findAll() throws DatabaseException;
+    Collection<Contact> findAll() throws DatabaseException;
     
     /**
      * @param id of the target contact.
      * @return Contact with the given id.
      * @throws ElementNotFoundException If the given id is not present in the database.
      */
-    public Contact findById(int id) throws DatabaseException, ElementNotFoundException;
+    Contact findById(int id) throws DatabaseException, ElementNotFoundException;
     
     /**
      * Add a new contact to storage.
@@ -31,7 +31,7 @@ public interface IContactDao {
      * @return Newly generated contact (also holding the correct id).
      * @throws SaveException If the contact could not be inserted.
      */
-    public Contact insert(Contact contact) throws SaveException;
+    Contact insert(Contact contact) throws SaveException;
     
     /**
      * Update an existing contact in storage.
@@ -40,5 +40,5 @@ public interface IContactDao {
      * @throws ElementNotFoundException If the given contact is not present in the database.
      * @throws SaveException If the contact could not be updated.
      */
-    public void update(Contact contact) throws ElementNotFoundException, SaveException;
+    void update(Contact contact) throws ElementNotFoundException, SaveException;
 }
