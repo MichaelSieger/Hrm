@@ -42,7 +42,7 @@ public class PlaceDao implements IPlaceDao {
         checkArgument(id >= 0, "Id must not be negative.");
 
         final String query = "SELECT Place_ID, Place_Name, Place_Zip_Code, Place_City"
-                + "Place_Street, Place_Street_Number, Place_Location, Place_Area"
+                + "Place_Street, Place_Street_Number, Place_Location, Place_Area FROM Place"
                 + "WHERE Place_ID = :id;";
 
         try (Connection con = DatabaseFactory.getConnection()) {
