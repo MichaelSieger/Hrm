@@ -22,7 +22,19 @@ public class PlaceDao implements IPlaceDao {
 
     @Override
     public Collection<Place> findAll() throws DatabaseException {
-        throw new NotImplementedException();
+        final String query = "SELECT Place_ID, Place_Name, Place_Zip_Code, Place_City"
+                + "Place_Street, Place_Street_Number, Place_Location, Place_Area FROM Place;";
+
+        try (Connection con = DatabaseFactory.getConnection()) {
+            try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
+                ResultSet result = stmt.executeQuery();
+
+                return fromResultSet(result);
+            }
+        }
+        catch (SQLException e) {
+            throw new DatabaseException(e);
+        }
     }
 
     @Override
@@ -111,15 +123,10 @@ public class PlaceDao implements IPlaceDao {
             throw new ElementNotFoundException("Element has no valid ID.");
         }
 
-        final String query = "UPDATE Place SET " 
-                + "Place_Name = :placeName, "
-                + "Place_Zip_Code = :zipCode, " 
-                + "Place_City = :city, "
-                + "Place_Street = :street, " 
-                + "Place_Street_Number = :streetNumber, "
-                + "Place_Location = :location, " 
-                + "Place_Area = :area, "
-                + "WHERE Place_ID = :id;";
+        final String query = "UPDATE Place SET " + "Place_Name = :placeName, "
+                + "Place_Zip_Code = :zipCode, " + "Place_City = :city, "
+                + "Place_Street = :street, " + "Place_Street_Number = :streetNumber, "
+                + "Place_Location = :location, " + "Place_Area = :area, " + "WHERE Place_ID = :id;";
 
         try (Connection con = DatabaseFactory.getConnection()) {
             try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
@@ -131,7 +138,6 @@ public class PlaceDao implements IPlaceDao {
                 stmt.setParameter("streetNumber", place.getStreetNo());
                 stmt.setParameter("location", place.getLocation());
                 stmt.setParameter("area", place.getArea());
-
 
                 int affectedRows = stmt.executeUpdate();
                 if (affectedRows != 1) {
