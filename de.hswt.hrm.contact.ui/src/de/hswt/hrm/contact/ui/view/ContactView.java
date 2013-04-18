@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Paths;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
@@ -30,7 +31,7 @@ public class ContactView {
 
     private TableViewer viewer;
     private Collection<Contact> contacts;
-    private Map<String, String> columnHeader;
+    private Map<String, String> columnHeaders;
 
     @PostConstruct
     public void postConstruct(Composite parent) {
@@ -56,26 +57,23 @@ public class ContactView {
 
         initalizeTable(parent, viewer);
 
-        TableColumn[] t = viewer.getTable().getColumns();
-        for (TableColumn c : t) {
-            System.out.println(c);
-        }
-
     }
 
     private void initalizeMap() {
 
-        columnHeader.put("lastName", "Nachname");
-        columnHeader.put("firstName", "Vorname");
-        columnHeader.put("street", "Strasse");
-        columnHeader.put("streetNr", "Hausnummer");
-        columnHeader.put("postCode", "Postleitzahl");
-        columnHeader.put("city", "Stadt");
-        columnHeader.put("shortcut", "Kürzel");
-        columnHeader.put("phone", "Telefonnummer");
-        columnHeader.put("fax", "Fax");
-        columnHeader.put("mobile", "Mobil");
-        columnHeader.put("email", "E-mail");
+        columnHeaders = new HashMap<>();
+
+        columnHeaders.put("lastName", "Nachname");
+        columnHeaders.put("firstName", "Vorname");
+        columnHeaders.put("street", "Strasse");
+        columnHeaders.put("streetNo", "Hausnummer");
+        columnHeaders.put("postCode", "Postleitzahl");
+        columnHeaders.put("city", "Stadt");
+        columnHeaders.put("shortcut", "Kürzel");
+        columnHeaders.put("phone", "Telefonnummer");
+        columnHeaders.put("fax", "Fax");
+        columnHeaders.put("mobile", "Mobil");
+        columnHeaders.put("email", "E-mail");
 
     }
 
@@ -107,15 +105,63 @@ public class ContactView {
 
     private void createColumns(Composite parent, TableViewer viewer2) {
 
-        String[] titles = { "Last Name", "First Name", "Street", "Street Number", "Post Code",
-                "City", "Short Cut", "Phone", "fax", "mobile", "Email" };
-
-        TableViewerColumn col = createTableViewerColumn(titles[0], WIDTH, 0);
+        // LastName
+        TableViewerColumn col = createTableViewerColumn(columnHeaders.get("lastName"), WIDTH, 0);
         col.setLabelProvider(new ColumnLabelProvider() {
             @Override
             public String getText(Object element) {
                 Contact c = (Contact) element;
                 return c.getLastName();
+            }
+        });
+
+        // firstName
+        col = createTableViewerColumn(columnHeaders.get("firstName"), WIDTH, 0);
+        col.setLabelProvider(new ColumnLabelProvider() {
+            @Override
+            public String getText(Object element) {
+                Contact c = (Contact) element;
+                return c.getFirstName();
+            }
+        });
+
+        // street
+        col = createTableViewerColumn(columnHeaders.get("street"), WIDTH, 0);
+        col.setLabelProvider(new ColumnLabelProvider() {
+            @Override
+            public String getText(Object element) {
+                Contact c = (Contact) element;
+                return c.getStreet();
+            }
+        });
+
+        // streetNo
+        col = createTableViewerColumn(columnHeaders.get("streetNo"), WIDTH, 0);
+        col.setLabelProvider(new ColumnLabelProvider() {
+            @Override
+            public String getText(Object element) {
+                Contact c = (Contact) element;
+                return c.getStreetNo();
+            }
+        });
+
+        // postCode
+        col = createTableViewerColumn(columnHeaders.get("postCode"), WIDTH, 0);
+        col.setLabelProvider(new ColumnLabelProvider() {
+            @Override
+            public String getText(Object element) {
+                Contact c = (Contact) element;
+                return c.getPostCode();
+            }
+        });
+
+        // city
+        col = createTableViewerColumn(columnHeaders.get("city"), WIDTH, 0);
+        col.setLabelProvider(new ColumnLabelProvider() {
+            @Override
+            public String getText(Object element) {
+                Contact c = (Contact) element;
+                return c.getCity();
             }
         });
 
