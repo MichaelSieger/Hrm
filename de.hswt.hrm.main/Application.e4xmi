@@ -5,7 +5,7 @@
       <children xsi:type="advanced:Perspective" xmi:id="_ucxpaJSXEeKKYob9VrLbBA" label="">
         <children xsi:type="basic:PartSashContainer" xmi:id="_ucxpaZSXEeKKYob9VrLbBA">
           <children xsi:type="basic:PartStack" xmi:id="_ucxpapSXEeKKYob9VrLbBA">
-            <children xsi:type="basic:Part" xmi:id="_EVCGgKXlEeK_d5AKUI3Qzg" elementId="de.hswt.hrm.main.part.0" contributionURI="bundleclass://de.hswt.hrm.contact.ui/de.hswt.hrm.contact.ui.part.ContactView" label="Kunden"/>
+            <children xsi:type="basic:Part" xmi:id="_EVCGgKXlEeK_d5AKUI3Qzg" elementId="de.hswt.hrm.main.part.0" contributionURI="bundleclass://de.hswt.hrm.contact.ui/de.hswt.hrm.contact.ui.part.ContactPart" label="Kunden"/>
             <children xsi:type="basic:Part" xmi:id="_FPaEEKXlEeK_d5AKUI3Qzg" elementId="de.hswt.hrm.main.part.1" label="Standorte"/>
           </children>
         </children>

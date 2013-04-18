@@ -25,7 +25,7 @@ import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.contact.model.Contact;
 import de.hswt.hrm.contact.service.ContactService;
 
-public class ContactView {
+public class ContactPart {
 
     private final static int WIDTH = 100;
 
@@ -44,7 +44,7 @@ public class ContactView {
          */
         initalizeMap();
 
-        URL url = ContactView.class.getClassLoader().getResource(
+        URL url = ContactPart.class.getClassLoader().getResource(
                 "de/hswt/hrm/contact/ui/xwt/ContactView" + IConstants.XWT_EXTENSION_SUFFIX);
         try {
             Composite comp = (Composite) XWT.load(parent, url);
