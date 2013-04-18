@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Paths;
 import java.util.Collection;
+import java.util.Map;
+
 import javax.annotation.PostConstruct;
 
 import org.eclipse.e4.ui.di.Focus;
@@ -24,15 +26,22 @@ import de.hswt.hrm.contact.service.ContactService;
 
 public class ContactView {
 
+    private final static int WIDTH = 100;
+
     private TableViewer viewer;
     private Collection<Contact> contacts;
+    private Map<String, String> columnHeader;
 
     @PostConstruct
     public void postConstruct(Composite parent) {
         /*
-         * This needs to be improved
+         * This needs to be improved using eclipse preferences or user.home
          */
-        initalize();
+        initalizeDbConfig();
+        /*
+         * This is only a temporary Solution
+         */
+        initalizeMap();
 
         URL url = ContactView.class.getClassLoader().getResource(
                 "de/hswt/hrm/contact/ui/xwt/ContactView" + IConstants.XWT_EXTENSION_SUFFIX);
@@ -47,9 +56,30 @@ public class ContactView {
 
         initalizeTable(parent, viewer);
 
+        TableColumn[] t = viewer.getTable().getColumns();
+        for (TableColumn c : t) {
+            System.out.println(c);
+        }
+
     }
 
-    private void initalize() {
+    private void initalizeMap() {
+
+        columnHeader.put("lastName", "Nachname");
+        columnHeader.put("firstName", "Vorname");
+        columnHeader.put("street", "Strasse");
+        columnHeader.put("streetNr", "Hausnummer");
+        columnHeader.put("postCode", "Postleitzahl");
+        columnHeader.put("city", "Stadt");
+        columnHeader.put("shortcut", "Kürzel");
+        columnHeader.put("phone", "Telefonnummer");
+        columnHeader.put("fax", "Fax");
+        columnHeader.put("mobile", "Mobil");
+        columnHeader.put("email", "E-mail");
+
+    }
+
+    private void initalizeDbConfig() {
 
         try {
             Config config = Config.getInstance();
@@ -79,9 +109,8 @@ public class ContactView {
 
         String[] titles = { "Last Name", "First Name", "Street", "Street Number", "Post Code",
                 "City", "Short Cut", "Phone", "fax", "mobile", "Email" };
-        int[] bounds = { 100, 100, 100, 100 };
 
-        TableViewerColumn col = createTableViewerColumn(titles[0], 100, 0);
+        TableViewerColumn col = createTableViewerColumn(titles[0], WIDTH, 0);
         col.setLabelProvider(new ColumnLabelProvider() {
             @Override
             public String getText(Object element) {
@@ -97,9 +126,9 @@ public class ContactView {
 
     }
 
-    private TableViewerColumn createTableViewerColumn(String title, int bound, final int colNumber) {
-        final TableViewerColumn viewerColumn = new TableViewerColumn(viewer, SWT.NONE);
-        final TableColumn column = viewerColumn.getColumn();
+    private TableViewerColumn createTableViewerColumn(String title, int bound, int colNumber) {
+        TableViewerColumn viewerColumn = new TableViewerColumn(viewer, SWT.NONE);
+        TableColumn column = viewerColumn.getColumn();
         column.setText(title);
         column.setWidth(bound);
         column.setResizable(true);
