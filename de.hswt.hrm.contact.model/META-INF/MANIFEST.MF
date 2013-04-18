@@ -5,5 +5,6 @@ Bundle-SymbolicName: de.hswt.hrm.contact.model
 Bundle-Version: 0.0.1.qualifier
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Import-Package: com.google.common.base
+Import-Package: com.google.common.base,
+ org.eclipse.jface.viewers
 Export-Package: de.hswt.hrm.contact.model
