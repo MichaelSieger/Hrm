@@ -12,6 +12,7 @@
 
 		<juno-repo.url>http://download.eclipse.org/releases/juno</juno-repo.url>
 		<tycho-repo.url>https://oss.sonatype.org/content/groups/public/</tycho-repo.url>
+		<juno-incubator>http://download.eclipse.org/e4/updates/0.12</juno-incubator>
 	</properties>
 
 
@@ -21,7 +22,11 @@
 			<url>${juno-repo.url}</url>
 			<layout>p2</layout>
 		</repository>
-
+		<repository>
+		  <id>juno-incubator</id>
+		  <url>${juno-incubator}</url>
+		  <layout>p2</layout>
+		</repository>
 	</repositories>
 
 	<pluginRepositories>
