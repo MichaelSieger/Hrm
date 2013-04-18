@@ -87,5 +87,6 @@
 		<module>../de.hswt.hrm.contact.ui</module>
 		<module>../de.hswt.hrm.contact.service.test</module>
 		<module>../de.hswt.hrm.commons.dbutils</module>
+		<module>../de.hswt.hrm.place.service.test</module>
 	</modules>
 </project>
