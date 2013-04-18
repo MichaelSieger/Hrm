@@ -17,17 +17,14 @@ public class ContactView {
     @PostConstruct
     public void postConstruct(Composite parent) {
 
-        String location = "de/hswt/hrm/contact/ui/xwt/" + ContactView.class.getSimpleName()
-                + IConstants.XWT_EXTENSION_SUFFIX;
-
-        URL url = ContactView.class.getClassLoader().getResource(location);
+        URL url = ContactView.class.getClassLoader().getResource(
+                "de/hswt/hrm/contact/ui/xwt/ContactView" + IConstants.XWT_EXTENSION_SUFFIX);
         try {
             Composite comp = (Composite) XWT.load(parent, url);
-            tv = (TableViewer) XWT.findElementByName(comp, "tv");
+            tv = (TableViewer) XWT.findElementByName(comp, "contactTable");
             System.out.println(tv.toString());
         }
         catch (Exception e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
