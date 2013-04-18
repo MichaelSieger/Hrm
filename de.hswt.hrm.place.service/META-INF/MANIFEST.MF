@@ -8,3 +8,4 @@ Import-Package: de.hswt.hrm.common.database.exception,
  de.hswt.hrm.place.dao.core,
  de.hswt.hrm.place.dao.jdbc,
  de.hswt.hrm.place.model
+Export-Package: de.hswt.hrm.place.service
