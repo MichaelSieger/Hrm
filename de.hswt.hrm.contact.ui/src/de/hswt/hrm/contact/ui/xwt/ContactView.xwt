@@ -5,9 +5,8 @@
 		SelectionEvent="button" />
 	<TableViewer x:Style="BORDER | FULL_SELECTION">
 		<TableViewer.table headerVisible="true"
-			linesVisible="true" bounds="10, 81, 384, 209" />
+			linesVisible="true" bounds="10, 81, 880, 409" />
 	</TableViewer>
 	<Text x:name="t" x:Style="SEARCH" bounds="256, 29, 132, 27" text="Test"
 		FocusEvent="text" DefaultSelectionEvent="onDefaultSelection" />
-	<Button text="New Button" bounds="148, 29, 83, 27" />
 </Composite>

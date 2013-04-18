@@ -1,7 +1,6 @@
 package de.hswt.hrm.contact.ui.event;
 
 import org.eclipse.e4.xwt.XWT;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Text;
 
