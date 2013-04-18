@@ -18,7 +18,10 @@ public class ContactEventHandler {
         System.out.println(t.getText());
     }
 
-    public void onDefaultSelection(Event event) {
+    public void clearText(Event event) {
+
+        Text text = (Text) event.widget;
+        text.setText("");
 
     }
 }
