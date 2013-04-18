@@ -14,7 +14,6 @@ import de.hswt.hrm.common.database.NamedParameterStatement;
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.ElementNotFoundException;
 import de.hswt.hrm.common.database.exception.SaveException;
-import de.hswt.hrm.common.exception.NotImplementedException;
 import de.hswt.hrm.place.model.Place;
 import de.hswt.hrm.place.dao.core.IPlaceDao;
 

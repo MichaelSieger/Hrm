@@ -13,7 +13,6 @@ import de.hswt.hrm.common.database.NamedParameterStatement;
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.ElementNotFoundException;
 import de.hswt.hrm.common.database.exception.SaveException;
-import de.hswt.hrm.common.exception.NotImplementedException;
 import de.hswt.hrm.contact.model.Contact;
 import de.hswt.hrm.contact.dao.core.IContactDao;
 
