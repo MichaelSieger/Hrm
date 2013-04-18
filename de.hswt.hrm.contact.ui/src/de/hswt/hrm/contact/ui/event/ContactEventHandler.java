@@ -5,16 +5,14 @@ import org.eclipse.swt.widgets.Text;
 
 public class ContactEventHandler {
 
-    public void clearText(Event event) {
-
-        Text text = (Text) event.widget;
-        text.setText("");
-
-    }
-
     public void onFocusOut(Event event) {
 
         Text text = (Text) event.widget;
         text.setText("Suche");
+    }
+
+    public void onFocusIn(Event event) {
+        Text text = (Text) event.widget;
+        text.setText("");
     }
 }

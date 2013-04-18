@@ -7,5 +7,5 @@
 			linesVisible="true" bounds="10, 81, 880, 409" />
 	</TableViewer>
 	<Text x:name="searchText" x:Style="SEARCH" bounds="148, 29, 132, 27"
-		text="Suche" MouseDownEvent="clearText" FocusOutEvent="onFocusOut" />
+		text="Suche" FocusOutEvent="onFocusOut" FocusInEvent="onFocusIn" />
 </Composite>
