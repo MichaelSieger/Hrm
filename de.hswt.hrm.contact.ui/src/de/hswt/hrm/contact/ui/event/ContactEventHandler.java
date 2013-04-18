@@ -1,5 +1,6 @@
 package de.hswt.hrm.contact.ui.event;
 
+import org.eclipse.e4.xwt.XWT;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Text;
@@ -7,9 +8,10 @@ import org.eclipse.swt.widgets.Text;
 public class ContactEventHandler {
 
     protected void button(Event event) {
-        Button b = (Button) event.widget;
-        b.setText("Hello World");
-        System.out.println(b.getText());
+        Object o = XWT.findElementByName(event.widget, "t");
+        // System.out.println("entering event....");
+        Text b = (Text) o;
+        b.setText("BAM!");
     }
 
     protected void text(Event event) {
@@ -19,6 +21,5 @@ public class ContactEventHandler {
 
     public void onDefaultSelection(Event event) {
 
-        System.out.println("entering event....");
     }
 }

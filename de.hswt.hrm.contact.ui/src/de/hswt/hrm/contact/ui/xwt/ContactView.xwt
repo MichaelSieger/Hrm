@@ -1,13 +1,13 @@
 <Composite xmlns="http://www.eclipse.org/xwt/presentation"
 	xmlns:x="http://www.eclipse.org/xwt" xmlns:p1="clr-namespace:de.hswt.hrm.contact.ui.xwt"
 	x:Class="de.hswt.hrm.contact.ui.event.ContactEventHandler">
-	<Button text="Kunden Hinzufügen" bounds="10, 29, 132, 27"
+	<Button x:name="b" text="Kunden Hinzufügen" bounds="10, 29, 132, 27"
 		SelectionEvent="button" />
 	<TableViewer x:Style="BORDER | FULL_SELECTION">
 		<TableViewer.table headerVisible="true"
 			linesVisible="true" bounds="10, 81, 384, 209" />
 	</TableViewer>
-	<Text x:Style="SEARCH" bounds="256, 29, 132, 27" text="Test"
+	<Text x:name="t" x:Style="SEARCH" bounds="256, 29, 132, 27" text="Test"
 		FocusEvent="text" DefaultSelectionEvent="onDefaultSelection" />
 	<Button text="New Button" bounds="148, 29, 83, 27" />
 </Composite>
