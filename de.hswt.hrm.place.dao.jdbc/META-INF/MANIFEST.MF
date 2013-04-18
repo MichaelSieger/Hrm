@@ -10,3 +10,4 @@ Import-Package: com.google.common.base,
  de.hswt.hrm.common.exception,
  de.hswt.hrm.place.dao.core,
  de.hswt.hrm.place.model
+Export-Package: de.hswt.hrm.place.dao.jdbc
