@@ -12,7 +12,7 @@ import org.eclipse.swt.widgets.Composite;
 
 public class ContactView {
 
-    private TableViewer tv;
+    private TableViewer table;
 
     @PostConstruct
     public void postConstruct(Composite parent) {
@@ -21,12 +21,18 @@ public class ContactView {
                 "de/hswt/hrm/contact/ui/xwt/ContactView" + IConstants.XWT_EXTENSION_SUFFIX);
         try {
             Composite comp = (Composite) XWT.load(parent, url);
-            tv = (TableViewer) XWT.findElementByName(comp, "contactTable");
-            System.out.println(tv.toString());
+            table = (TableViewer) XWT.findElementByName(comp, "contactTable");
+            System.out.println(table.toString());
         }
         catch (Exception e) {
             e.printStackTrace();
         }
+
+        initalizeTable(parent, table);
+
+    }
+
+    private void initalizeTable(Composite parent, TableViewer table) {
 
     }
 
