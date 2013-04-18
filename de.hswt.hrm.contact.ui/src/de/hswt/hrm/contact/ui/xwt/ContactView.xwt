@@ -7,6 +7,6 @@
 		<TableViewer.table headerVisible="true"
 			linesVisible="true" bounds="10, 81, 880, 409" />
 	</TableViewer>
-	<Text x:name="searchText" x:Style="SEARCH" bounds="256, 29, 132, 27"
+	<Text x:name="searchText" x:Style="SEARCH" bounds="148, 29, 132, 27"
 		text="Suche" MouseDownEvent="clearText" />
 </Composite>
