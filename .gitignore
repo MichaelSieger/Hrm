@@ -5,7 +5,7 @@ bin/
 *.war
 *.ear
 *.class
-
+!de.hswt.hrm.commons.*
 # Meta files
 */.settings/*
 *.pydevproject

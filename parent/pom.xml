@@ -86,5 +86,6 @@
 		<module>../de.hswt.hrm.common.test</module>
 		<module>../de.hswt.hrm.contact.ui</module>
 		<module>../de.hswt.hrm.contact.service.test</module>
+		<module>../de.hswt.hrm.commons.dbutils</module>
 	</modules>
 </project>

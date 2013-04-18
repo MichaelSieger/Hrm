@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Dbutils
+Bundle-SymbolicName: de.hswt.hrm.commons.dbutils
+Bundle-Version: 0.0.1.qualifier
+Export-Package: org.apache.commons.dbutils,
+ org.apache.commons.dbutils.handlers,
+ org.apache.commons.dbutils.wrappers
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
