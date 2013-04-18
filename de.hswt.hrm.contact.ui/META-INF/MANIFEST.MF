@@ -13,5 +13,7 @@ Require-Bundle: javax.inject,
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: de.hswt.hrm.contact.ui.event,
  de.hswt.hrm.contact.ui.view
-Import-Package: de.hswt.hrm.contact.service,
+Import-Package: de.hswt.hrm.common.database.exception,
+ de.hswt.hrm.contact.model,
+ de.hswt.hrm.contact.service,
  org.eclipse.e4.ui.di
