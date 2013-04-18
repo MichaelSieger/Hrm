@@ -12,7 +12,7 @@ Require-Bundle: javax.inject,
  com.ibm.icu;bundle-version="4.4.2"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: de.hswt.hrm.contact.ui.event,
- de.hswt.hrm.contact.ui.view
+ de.hswt.hrm.contact.ui.part
 Import-Package: de.hswt.hrm.common,
  de.hswt.hrm.common.database.exception,
  de.hswt.hrm.contact.model,

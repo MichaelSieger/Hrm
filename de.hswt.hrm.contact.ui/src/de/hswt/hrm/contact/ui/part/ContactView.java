@@ -1,4 +1,4 @@
-package de.hswt.hrm.contact.ui.view;
+package de.hswt.hrm.contact.ui.part;
 
 import java.io.IOException;
 import java.net.URL;
