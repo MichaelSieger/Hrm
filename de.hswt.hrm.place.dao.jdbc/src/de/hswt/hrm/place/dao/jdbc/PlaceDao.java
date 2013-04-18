@@ -21,7 +21,7 @@ public class PlaceDao implements IPlaceDao {
 
     @Override
     public Collection<Place> findAll() throws DatabaseException {
-        final String query = "SELECT Place_ID, Place_Name, Place_Zip_Code, Place_City"
+        final String query = "SELECT Place_ID, Place_Name, Place_Zip_Code, Place_City, "
                 + "Place_Street, Place_Street_Number, Place_Location, Place_Area FROM Place;";
 
         try (Connection con = DatabaseFactory.getConnection()) {
@@ -40,8 +40,8 @@ public class PlaceDao implements IPlaceDao {
     public Place findById(int id) throws DatabaseException, ElementNotFoundException {
         checkArgument(id >= 0, "Id must not be negative.");
 
-        final String query = "SELECT Place_ID, Place_Name, Place_Zip_Code, Place_City"
-                + "Place_Street, Place_Street_Number, Place_Location, Place_Area FROM Place"
+        final String query = "SELECT Place_ID, Place_Name, Place_Zip_Code, Place_City, "
+                + "Place_Street, Place_Street_Number, Place_Location, Place_Area FROM Place "
                 + "WHERE Place_ID = :id;";
 
         try (Connection con = DatabaseFactory.getConnection()) {
@@ -125,7 +125,7 @@ public class PlaceDao implements IPlaceDao {
         final String query = "UPDATE Place SET " + "Place_Name = :placeName, "
                 + "Place_Zip_Code = :zipCode, " + "Place_City = :city, "
                 + "Place_Street = :street, " + "Place_Street_Number = :streetNumber, "
-                + "Place_Location = :location, " + "Place_Area = :area, " + "WHERE Place_ID = :id;";
+                + "Place_Location = :location, " + "Place_Area = :area " + "WHERE Place_ID = :id;";
 
         try (Connection con = DatabaseFactory.getConnection()) {
             try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {

@@ -57,6 +57,7 @@ public class PlaceServiceTest extends AbstractDatabaseTest {
 		assertEquals("Requested object does not equal parsed one.", parsed, retrieved);
 	}
 	
+	@Test
 	public void testUpdate() throws ElementNotFoundException, DatabaseException {
 		Place expected = new Place("place Name", "55464", "SomeCity", "Street", "113a", "Location", "Some Area");
 		Place parsed = PlaceService.insert(expected);
