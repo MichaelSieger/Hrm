@@ -56,7 +56,7 @@ public abstract class AbstractDatabaseTest {
 	}
 	
 	private void applyScheme(Connection con) throws SQLException, IOException {
-	    Path path = Paths.get("..", "resources", "scripts.db", "create_db.sql");
+	    Path path = Paths.get("..", "resources", "scripts.db", "create_tables.sql");
 	    ScriptParser parser = new ScriptParser(con.createStatement());
 	    try (Statement stmt = parser.parse(path)) {
 	        con.setAutoCommit(false);
