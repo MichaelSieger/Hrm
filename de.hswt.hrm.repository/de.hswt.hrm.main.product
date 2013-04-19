@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="de.hswt.hrm.main" id="de.hswt.hrm.main.product" application="org.eclipse.e4.ui.workbench.swt.E4Application" version="1.0.0.qualifier" useFeatures="true" includeLaunchers="true">
+<product name="de.hswt.hrm.main" uid="de.hswt.hrm" id="de.hswt.hrm.main.product" application="org.eclipse.e4.ui.workbench.swt.E4Application" version="1.0.0.qualifier" useFeatures="true" includeLaunchers="true">
 
    <configIni use="default">
    </configIni>
@@ -12,7 +12,6 @@
    </launcherArgs>
 
    <windowImages/>
-
 
    <launcher>
       <solaris/>
@@ -128,5 +127,10 @@
       <feature id="org.eclipse.emf.common"/>
    </features>
 
+   <configurations>
+      <plugin id="org.eclipse.core.runtime" autoStart="false" startLevel="2" />
+      <plugin id="org.eclipse.equinox.ds" autoStart="false" startLevel="3" />
+      <plugin id="org.eclipse.equinox.event" autoStart="false" startLevel="3" />
+   </configurations>
 
 </product>
