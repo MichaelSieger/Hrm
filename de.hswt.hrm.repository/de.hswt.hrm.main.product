@@ -125,12 +125,13 @@
       <feature id="org.eclipse.e4.rcp" version="1.1.2.v20130130-191718-91FUvGP7GIX2Kgz-z-gvjMvXV1NS"/>
       <feature id="org.eclipse.emf.ecore"/>
       <feature id="org.eclipse.emf.common"/>
+      <feature id="org.eclipse.e4.xwt.feature" version="0.9.1.v20091126-1500-17Z2AkF7B98PAL03211"/>
    </features>
 
    <configurations>
-      <plugin id="org.eclipse.core.runtime" autoStart="false" startLevel="2" />
-      <plugin id="org.eclipse.equinox.ds" autoStart="false" startLevel="3" />
-      <plugin id="org.eclipse.equinox.event" autoStart="false" startLevel="3" />
+      <plugin id="org.eclipse.core.runtime" autoStart="true" startLevel="2" />
+      <plugin id="org.eclipse.equinox.ds" autoStart="true" startLevel="3" />
+      <plugin id="org.eclipse.equinox.event" autoStart="true" startLevel="3" />
    </configurations>
 
 </product>
