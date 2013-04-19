@@ -23,9 +23,9 @@
 			<layout>p2</layout>
 		</repository>
 		<repository>
-		  <id>juno-incubator</id>
-		  <url>${juno-incubator}</url>
-		  <layout>p2</layout>
+			<id>juno-incubator</id>
+			<url>${juno-incubator}</url>
+			<layout>p2</layout>
 		</repository>
 	</repositories>
 
@@ -50,28 +50,53 @@
 				<version>${tycho.version}</version>
 				<extensions>true</extensions>
 			</plugin>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-p2-repository-plugin</artifactId>
+				<version>${tycho.version}</version>
+				<configuration>
+					<includeAllDependencies>true</includeAllDependencies>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>target-platform-configuration</artifactId>
+				<version>${tycho.version}</version>
+				<configuration>
+					<environments>
+						<environment>
+							<os>linux</os>
+							<ws>gtk</ws>
+							<arch>x86</arch>
+						</environment>
+						<environment>
+							<os>linux</os>
+							<ws>gtk</ws>
+							<arch>x86_64</arch>
+						</environment>
+						<environment>
+							<os>win32</os>
+							<ws>win32</ws>
+							<arch>x86</arch>
+						</environment>
+						<environment>
+							<os>win32</os>
+							<ws>win32</ws>
+							<arch>x86_64</arch>
+						</environment>
+					</environments>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 
 	<modules>
 		<module>../de.hswt.hrm.main</module>
-		
-		
-		
-		
-		
-		
 		<module>../de.hswt.hrm.contact.dao.core</module>
 		<module>../de.hswt.hrm.contact.feature</module>
 		<module>../de.hswt.hrm.contact.model</module>
-		
-		
-		
-		
 		<module>../de.hswt.hrm.common</module>
-		
 		<module>../de.hswt.hrm.jdbc.mariadb</module>
-		
 		<module>../de.hswt.hrm.main.feature</module>
 		<module>../de.hswt.hrm.place.dao.core</module>
 		<module>../de.hswt.hrm.place.dao.jdbc</module>
@@ -80,7 +105,6 @@
 		<module>../de.hswt.hrm.place.service</module>
 		<module>../de.hswt.hrm.contact.service</module>
 		<module>../de.hswt.hrm.contact.dao.jdbc</module>
-		
 		<module>../de.hswt.hrm.test</module>
 		<module>../de.hswt.hrm.contact.dao.jdbc.test</module>
 		<module>../de.hswt.hrm.common.test</module>
@@ -88,5 +112,6 @@
 		<module>../de.hswt.hrm.contact.service.test</module>
 		<module>../de.hswt.hrm.commons.dbutils</module>
 		<module>../de.hswt.hrm.place.service.test</module>
+		<module>../de.hswt.hrm.repository</module>
 	</modules>
 </project>
