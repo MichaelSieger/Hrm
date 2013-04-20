@@ -21,7 +21,16 @@ public class ContactFilter extends ViewerFilter {
         }
 
         Contact c = (Contact) element;
+        // match LastName
         if (c.getLastName().matches(searchString)) {
+            return true;
+        }
+        // match firstName
+        if (c.getFirstName().matches(searchString)) {
+            return true;
+        }
+        // match city
+        if (c.getCity().matches(searchString)) {
             return true;
         }
 

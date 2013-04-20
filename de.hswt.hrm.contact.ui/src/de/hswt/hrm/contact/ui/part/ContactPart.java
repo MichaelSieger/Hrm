@@ -18,12 +18,14 @@ import de.hswt.hrm.common.Config;
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.contact.model.Contact;
 import de.hswt.hrm.contact.service.ContactService;
+import de.hswt.hrm.contact.ui.filter.ContactFilter;
 import de.hswt.hrm.contact.ui.part.util.ContactPartUtils;
 
 public class ContactPart {
 
     private TableViewer viewer;
     private Collection<Contact> contacts;
+    private ContactFilter filter;
 
     @PostConstruct
     public void postConstruct(Composite parent) {
@@ -34,6 +36,7 @@ public class ContactPart {
          * improved using eclipse preferences or user.home
          */
         initalizeDbConfig();
+        filter = new ContactFilter();
 
         // URL to the Paths defining XWT file
         URL url = ContactPart.class.getClassLoader().getResource(
@@ -95,6 +98,7 @@ public class ContactPart {
         ContactPartUtils.createColumns(parent, viewer, ContactPartUtils.getDefaultColumnHeaders());
         viewer.setContentProvider(ArrayContentProvider.getInstance());
         viewer.setInput(contacts);
+        viewer.addFilter(filter);
 
     }
 
