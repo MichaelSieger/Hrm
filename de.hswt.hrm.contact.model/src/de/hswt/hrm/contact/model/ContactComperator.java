@@ -7,8 +7,10 @@ public class ContactComperator extends ViewerComparator {
 
     @Override
     public int compare(Viewer viewer, Object e1, Object e2) {
-        // TODO Implement compareTo
-        return super.compare(viewer, e1, e2);
+        Contact c1 = (Contact) e1;
+        Contact c2 = (Contact) e2;
+        return c1.getLastName().compareTo(c2.getLastName());
+
     }
 
 }

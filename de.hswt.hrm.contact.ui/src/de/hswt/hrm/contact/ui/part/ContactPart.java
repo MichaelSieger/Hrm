@@ -17,6 +17,7 @@ import org.eclipse.swt.widgets.Composite;
 import de.hswt.hrm.common.Config;
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.contact.model.Contact;
+import de.hswt.hrm.contact.model.ContactComperator;
 import de.hswt.hrm.contact.service.ContactService;
 import de.hswt.hrm.contact.ui.filter.ContactFilter;
 import de.hswt.hrm.contact.ui.part.util.ContactPartUtils;
@@ -99,7 +100,7 @@ public class ContactPart {
         viewer.setContentProvider(ArrayContentProvider.getInstance());
         viewer.setInput(contacts);
         viewer.addFilter(filter);
+        viewer.setComparator(new ContactComperator());
 
     }
-
 }
