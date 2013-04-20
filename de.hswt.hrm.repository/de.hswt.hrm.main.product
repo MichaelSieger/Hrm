@@ -13,6 +13,8 @@
 
    <windowImages/>
 
+   <splash
+      location="de.hswt.hrm.main" />
    <launcher>
       <solaris/>
       <win useIco="false">
