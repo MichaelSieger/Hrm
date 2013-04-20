@@ -101,6 +101,5 @@ public class ContactPart {
         viewer.setInput(contacts);
         viewer.addFilter(filter);
         viewer.setComparator(new ContactComperator());
-
     }
 }

@@ -1,13 +1,15 @@
 <Composite xmlns="http://www.eclipse.org/xwt/presentation"
 	xmlns:x="http://www.eclipse.org/xwt" xmlns:p1="clr-namespace:de.hswt.hrm.contact.ui.xwt"
 	x:Class="de.hswt.hrm.contact.ui.event.ContactEventHandler">
-	<Button x:name="addContact" text="Kunden Hinzufügen" bounds="10, 29, 132, 27"
-		SelectionEvent="onSelection" />
-	<TableViewer x:name="contactTable" x:Style="BORDER | FULL_SELECTION">
+	<Composite.layout>
+		<GridLayout />
+	</Composite.layout>
+	<Text x:name="searchText" x:Style="SEARCH" text="Suche (Vorname,Nachname,Stadt)"
+		FocusOutEvent="onFocusOut" FocusInEvent="onFocusIn" KeyUpEvent="onKeyUp" />
+	<TableViewer x:name="contactTable" x:Style="BORDER">
 		<TableViewer.table headerVisible="true"
-			linesVisible="true" bounds="10, 81, 880, 409" />
+			linesVisible="true" />
 	</TableViewer>
-	<Text x:name="searchText" x:Style="SEARCH" bounds="148, 29, 132, 27"
-		text="Suche" FocusOutEvent="onFocusOut" FocusInEvent="onFocusIn"
-		KeyUpEvent="onKeyUp" />
+	<Button x:name="addContact" text="Kunden Hinzufügen"
+		SelectionEvent="onSelection" />
 </Composite>

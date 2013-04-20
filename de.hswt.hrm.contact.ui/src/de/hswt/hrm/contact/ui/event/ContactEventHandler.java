@@ -15,7 +15,7 @@ public class ContactEventHandler {
     public void onFocusOut(Event event) {
 
         Text text = (Text) event.widget;
-        text.setText("Suche");
+        text.setText("Suche (Nachname,Vorname,Stadt)");
         TableViewer tf = (TableViewer) XWT.findElementByName(text, "contactTable");
         tf.refresh();
 
@@ -34,7 +34,7 @@ public class ContactEventHandler {
     }
 
     public void onKeyUp(Event event) {
-        
+
         Text searchText = (Text) event.widget;
         TableViewer tf = (TableViewer) XWT.findElementByName(searchText, "contactTable");
         ContactFilter f = (ContactFilter) tf.getFilters()[0];
