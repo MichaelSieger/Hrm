@@ -2,11 +2,7 @@ package de.hswt.hrm.contact.ui.wizard;
 
 import java.util.HashMap;
 
-import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.Wizard;
-import org.eclipse.swt.events.KeyEvent;
-import org.eclipse.swt.events.KeyListener;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
 
 import de.hswt.hrm.contact.model.Contact;
