@@ -3,18 +3,29 @@ package de.hswt.hrm.contact.ui.filter;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 
+import de.hswt.hrm.contact.model.Contact;
+
 public class ContactFilter extends ViewerFilter {
 
     private String searchString;
 
     public void setSearchString(String substring) {
-        this.searchString = ".*" + substring + ".*";
+        searchString = ".*" + substring + ".*";
     }
 
     @Override
     public boolean select(Viewer viewer, Object parentElement, Object element) {
-        // TODO Auto-generated method stub
-        return false;
-    }
 
+        if (searchString == null || searchString.length() == 0) {
+            return true;
+        }
+
+        Contact c = (Contact) element;
+        if (c.getLastName().matches(searchString)) {
+            return true;
+        }
+
+        return false;
+
+    }
 }
