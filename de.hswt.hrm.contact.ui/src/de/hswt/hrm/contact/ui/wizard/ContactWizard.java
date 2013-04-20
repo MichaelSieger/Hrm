@@ -9,48 +9,46 @@ import de.hswt.hrm.contact.model.Contact;
 
 public class ContactWizard extends Wizard {
     ContactWizardPageOne one;
-    
-    
+
     public ContactWizard() {
-        setWindowTitle("New Wizard");
+        setWindowTitle("Add a new Contact");
+
     }
 
     @Override
     public void addPages() {
-        one = new ContactWizardPageOne("asd");
+        one = new ContactWizardPageOne("Test");
         addPage(one);
     }
-   
+
     @Override
-    public boolean canFinish(){
-//        HashMap widgets = one.getWidgets();
-//        for(Object object : widgets.values()){
-//            Text textField = (Text)object;
-//            if(textField.getText().length() == 0){
-//                return false;
-//            }          
-//        }
+    public boolean canFinish() {
+        // HashMap widgets = one.getWidgets();
+        // for(Object object : widgets.values()){
+        // Text textField = (Text)object;
+        // if(textField.getText().length() == 0){
+        // return false;
+        // }
+        // }
         return true;
     }
 
     @Override
-    public boolean performFinish() { 
-    	HashMap widgets = one.getWidgets();
-	    String firstName = ((Text)widgets.get("firstName")).getText();
-	    String lastName = ((Text) widgets.get("lastName")).getText();
-	    String shorcut = ((Text) widgets.get("shortcut")).getText();
-	    String street = ((Text) widgets.get("street")).getText();
-	    String streetNumber = ((Text) widgets.get("streetNumber")).getText();
-	    String city = ((Text) widgets.get("city")).getText();
-	    String zipCode = ((Text) widgets.get("zipCode")).getText();
-	    String phone = ((Text) widgets.get("phone")).getText();
-	    String fax = ((Text) widgets.get("fax")).getText();
-	    String mobilePhone = ((Text) widgets.get("mobilePhone")).getText();
-	    String email = ((Text) widgets.get("email")).getText();
-    	
-    	
-    	
-    	Contact newContact = new Contact(lastName, firstName, street, streetNumber, zipCode, city);    	
+    public boolean performFinish() {
+        HashMap widgets = one.getWidgets();
+        String firstName = ((Text) widgets.get("firstName")).getText();
+        String lastName = ((Text) widgets.get("lastName")).getText();
+        String shorcut = ((Text) widgets.get("shortcut")).getText();
+        String street = ((Text) widgets.get("street")).getText();
+        String streetNumber = ((Text) widgets.get("streetNumber")).getText();
+        String city = ((Text) widgets.get("city")).getText();
+        String zipCode = ((Text) widgets.get("zipCode")).getText();
+        String phone = ((Text) widgets.get("phone")).getText();
+        String fax = ((Text) widgets.get("fax")).getText();
+        String mobilePhone = ((Text) widgets.get("mobilePhone")).getText();
+        String email = ((Text) widgets.get("email")).getText();
+
+        Contact newContact = new Contact(lastName, firstName, street, streetNumber, zipCode, city);
         return true;
     }
 

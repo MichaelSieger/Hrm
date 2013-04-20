@@ -3,10 +3,7 @@ package de.hswt.hrm.contact.ui.wizard;
 import java.util.HashMap;
 
 import org.eclipse.jface.wizard.WizardPage;
-import org.eclipse.swt.events.KeyEvent;
-import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 
 public class ContactWizardPageOne extends WizardPage {
     private Composite container;
@@ -14,6 +11,17 @@ public class ContactWizardPageOne extends WizardPage {
 
     protected ContactWizardPageOne(String pageName) {
         super(pageName);
+        setDescription(createDiscription());
+
+    }
+
+    private String createDiscription() {
+        StringBuffer sb = new StringBuffer();
+        sb.append("Mandatory Fields");
+        sb.append("\n");
+        sb.append("Optional Fields");
+        return sb.toString();
+
     }
 
     @Override
