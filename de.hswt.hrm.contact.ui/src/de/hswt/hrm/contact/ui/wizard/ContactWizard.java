@@ -17,19 +17,22 @@ public class ContactWizard extends Wizard {
 
     @Override
     public void addPages() {
-        one = new ContactWizardPageOne("Test");
+        one = new ContactWizardPageOne("First Page");
         addPage(one);
     }
 
     @Override
     public boolean canFinish() {
-        // HashMap widgets = one.getWidgets();
-        // for(Object object : widgets.values()){
-        // Text textField = (Text)object;
-        // if(textField.getText().length() == 0){
-        // return false;
-        // }
-        // }
+        HashMap widgets = one.getWidgets();
+        for (Object object : widgets.values()) {
+            Text textField = (Text) object;
+            if (textField != null) {
+                if (textField.getText().length() == 0) {
+                    return false;
+                }
+            }
+
+        }
         return true;
     }
 

@@ -26,7 +26,7 @@ public class ContactWizardWindow extends Composite {
         super(parent, style);
         setLayout(new FillLayout());
         // load XWT
-        String name = ContactWizardWindow.class.getSimpleName() + IConstants.XWT_EXTENSION_SUFFIX;
+
         try {
             URL url = ContactWizardWindow.class.getClassLoader().getResource(
                     "de/hswt/hrm/contact/ui/xwt/ContactWizardWindow"
@@ -36,15 +36,16 @@ public class ContactWizardWindow extends Composite {
             options.put(IXWTLoader.CONTAINER_PROPERTY, this);
             XWT.setLoadingContext(new DefaultLoadingContext(this.getClass().getClassLoader()));
             XWT.loadWithOptions(url, options);
+
         }
         catch (Throwable e) {
-            throw new Error("Unable to load " + name, e);
+            throw new Error("Unable to load " + "name", e);
         }
     }
 
     public HashMap getWidgets() {
         HashMap<String, Text> widgets = new HashMap<String, Text>();
-        widgets.put("firstName", (Text) XWT.findElementByName(common, "firstName"));
+        widgets.put("firstName", (Text) XWT.findElementByName(this, "firstName"));
         widgets.put("lastName", (Text) XWT.findElementByName(common, "lastName"));
         widgets.put("shortcut", (Text) XWT.findElementByName(common, "shortcut"));
         widgets.put("street", (Text) XWT.findElementByName(common, "street"));
