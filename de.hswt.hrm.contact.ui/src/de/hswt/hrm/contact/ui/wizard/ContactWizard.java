@@ -23,13 +23,13 @@ public class ContactWizard extends Wizard {
    
     @Override
     public boolean canFinish(){
-        HashMap widgets = one.getWidgets();
-        for(Object object : widgets.values()){
-            Text textField = (Text)object;
-            if(textField.getText().length() == 0){
-                return false;
-            }          
-        }
+//        HashMap widgets = one.getWidgets();
+//        for(Object object : widgets.values()){
+//            Text textField = (Text)object;
+//            if(textField.getText().length() == 0){
+//                return false;
+//            }          
+//        }
         return true;
     }
 

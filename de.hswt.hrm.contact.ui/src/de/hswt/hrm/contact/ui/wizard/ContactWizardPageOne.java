@@ -20,7 +20,7 @@ public class ContactWizardPageOne extends WizardPage {
     public void createControl(Composite parent) {
         window = new ContactWizardWindow(parent, 0);
         container = window;
-        setKeyListener();
+        // setKeyListener();
         setControl(container);
         setPageComplete(false);
     }
@@ -29,21 +29,21 @@ public class ContactWizardPageOne extends WizardPage {
         return window.getWidgets();
     }
 
-    public void setKeyListener() {
-        HashMap widgets = window.getWidgets();
-        for (Object object : widgets.values()) {
-
-            ((Control) object).addKeyListener(new KeyListener() {
-
-                @Override
-                public void keyPressed(KeyEvent e) {
-                }
-
-                @Override
-                public void keyReleased(KeyEvent e) {
-                    getWizard().getContainer().updateButtons();
-                }
-            });
-        }
-    }
+    // public void setKeyListener() {
+    // HashMap widgets = window.getWidgets();
+    // for (Object object : widgets.values()) {
+    //
+    // ((Control) object).addKeyListener(new KeyListener() {
+    //
+    // @Override
+    // public void keyPressed(KeyEvent e) {
+    // }
+    //
+    // @Override
+    // public void keyReleased(KeyEvent e) {
+    // getWizard().getContainer().updateButtons();
+    // }
+    // });
+    // }
+    // }
 }

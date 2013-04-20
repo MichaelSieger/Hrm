@@ -1,7 +1,8 @@
 <Composite xmlns="http://www.eclipse.org/xwt/presentation"
 	xmlns:x="http://www.eclipse.org/xwt" xmlns:p1="clr-namespace:de.hswt.hrm.contact.ui.xwt"
 	x:Class="de.hswt.hrm.contact.ui.event.ContactEventHandler">
-	<Button x:name="addContact" text="Kunden Hinzufügen" bounds="10, 29, 132, 27" />
+	<Button x:name="addContact" text="Kunden Hinzufügen" bounds="10, 29, 132, 27"
+		SelectionEvent="onSelection" />
 	<TableViewer x:name="contactTable" x:Style="BORDER | FULL_SELECTION">
 		<TableViewer.table headerVisible="true"
 			linesVisible="true" bounds="10, 81, 880, 409" />

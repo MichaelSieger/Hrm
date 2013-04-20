@@ -42,7 +42,7 @@ public class ContactPart {
         try {
 
             // Obtain root element of the XWT file
-            Composite comp = (Composite) XWT.load(parent, url);
+            final Composite comp = (Composite) XWT.load(parent, url);
             // Obtain TableViwer to fill it with data
             viewer = (TableViewer) XWT.findElementByName(comp, "contactTable");
 
