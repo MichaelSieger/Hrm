@@ -15,7 +15,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Text;
 
-public class UserWizardWindow extends Composite{
+public class ContactWizardWindow extends Composite{
     @UI
     Group common;
     @UI
@@ -23,14 +23,14 @@ public class UserWizardWindow extends Composite{
     @UI
     Group contactData;
 
-	public UserWizardWindow(Composite parent, int style) {
+	public ContactWizardWindow(Composite parent, int style) {
 		super(parent, style);
 		setLayout(new FillLayout());
 		// load XWT
-		String name = UserWizardWindow.class.getSimpleName()
+		String name = ContactWizardWindow.class.getSimpleName()
 				+ IConstants.XWT_EXTENSION_SUFFIX;
 		try {
-			URL url = UserWizardWindow.class.getResource(name);
+			URL url = ContactWizardWindow.class.getResource(name);
 			Map<String, Object> options = new HashMap<String, Object>();
 			options.put(IXWTLoader.CLASS_PROPERTY, this);
 			options.put(IXWTLoader.CONTAINER_PROPERTY, this);

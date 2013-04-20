@@ -7,17 +7,17 @@ import org.eclipse.swt.widgets.Text;
 
 import de.hswt.hrm.contact.model.Contact;
 
-public class UserWizard extends Wizard {
-    WizardPageOne one;
+public class ContactWizard extends Wizard {
+    ContactWizardPageOne one;
     
     
-    public UserWizard() {
+    public ContactWizard() {
         setWindowTitle("New Wizard");
     }
 
     @Override
     public void addPages() {
-        one = new WizardPageOne("asd");
+        one = new ContactWizardPageOne("asd");
         addPage(one);
     }
    

@@ -8,17 +8,17 @@ import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
-public class WizardPageOne extends WizardPage {
+public class ContactWizardPageOne extends WizardPage {
     private Composite container;
-    UserWizardWindow window;
+    ContactWizardWindow window;
 
-    protected WizardPageOne(String pageName) {
+    protected ContactWizardPageOne(String pageName) {
         super(pageName);
     }
 
     @Override
     public void createControl(Composite parent) {
-        window = new UserWizardWindow(parent, 0);
+        window = new ContactWizardWindow(parent, 0);
         container = window;
         setKeyListener();
         setControl(container);
