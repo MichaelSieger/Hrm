@@ -1,4 +1,4 @@
-package de.hswt.hrm.contact.ui.UserWizard;
+package de.hswt.hrm.contact.ui.wizard;
 
 import java.util.HashMap;
 
