@@ -27,6 +27,8 @@ public class ContactPart {
     private TableViewer viewer;
     private Collection<Contact> contacts;
     private ContactFilter filter;
+    
+   
 
     @PostConstruct
     public void postConstruct(Composite parent) {
