@@ -1,8 +1,8 @@
 package de.hswt.hrm.common;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -16,11 +16,12 @@ import org.slf4j.LoggerFactory;
  * Holds application methods like "init" or "shutdown".
  */
 public final class Hrm {
-    
+
     private static final Logger LOG = LoggerFactory.getLogger(Hrm.class);
-    
-    private Hrm() { }
-    
+
+    private Hrm() {
+    }
+
     /**
      * Initializes the application. (E. g. load configuration file)
      */
@@ -32,11 +33,12 @@ public final class Hrm {
                 // Create a default one
                 Files.createDirectories(configPath.getParent());
                 Files.createFile(configPath);
-                FileOutputStream targetFile = new FileOutputStream(configPath.toFile());
-                InputStream configFile = BundleUtil.getStreamForFile("de.hswt.hrm.common", 
+
+                OutputStream targetFile = Files.newOutputStream(configPath);
+                InputStream configFile = BundleUtil.getStreamForFile("de.hswt.hrm.common",
                         "resources/hrm.properties");
                 IOUtils.copy(configFile, targetFile);
-                
+
                 // Close resources
                 targetFile.close();
                 configFile.close();
@@ -45,18 +47,18 @@ public final class Hrm {
                 LOG.error("Could not create default configuration file from bundle.", e);
                 return;
             }
-            
+
         }
-        
+
         Config cfg = Config.getInstance();
         try {
             cfg.load(configPath);
         }
         catch (IOException e) {
-            LOG.error("Could not load configuration at '" + configPath.toString()+ "'.", e);
+            LOG.error("Could not load configuration at '" + configPath.toString() + "'.", e);
         }
     }
-    
+
     /**
      * @return The correct home directory of the current user.
      */
@@ -75,5 +77,5 @@ public final class Hrm {
             return userHome.resolve(".config/hrm");
         }
     }
-    
+
 }

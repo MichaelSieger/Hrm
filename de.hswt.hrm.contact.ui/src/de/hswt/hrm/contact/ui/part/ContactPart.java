@@ -1,8 +1,6 @@
 package de.hswt.hrm.contact.ui.part;
 
-import java.io.IOException;
 import java.net.URL;
-import java.nio.file.Paths;
 import java.util.Collection;
 
 import javax.annotation.PostConstruct;
@@ -16,7 +14,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.hswt.hrm.common.Config;
 import de.hswt.hrm.common.Hrm;
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.contact.model.Contact;
