@@ -10,7 +10,8 @@ public class ContactFilter extends ViewerFilter {
     private String searchString;
 
     public void setSearchString(String substring) {
-        searchString = ".*" + substring + ".*";
+        searchString = (".*" + substring + ".*").toLowerCase();
+
     }
 
     @Override
@@ -22,15 +23,15 @@ public class ContactFilter extends ViewerFilter {
 
         Contact c = (Contact) element;
         // match LastName
-        if (c.getLastName().matches(searchString)) {
+        if (c.getLastName().toLowerCase().matches(searchString)) {
             return true;
         }
         // match firstName
-        if (c.getFirstName().matches(searchString)) {
+        if (c.getFirstName().toLowerCase().matches(searchString)) {
             return true;
         }
         // match city
-        if (c.getCity().matches(searchString)) {
+        if (c.getCity().toLowerCase().matches(searchString)) {
             return true;
         }
 
