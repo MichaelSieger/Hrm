@@ -45,6 +45,20 @@ public class ContactComperator extends ViewerComparator {
         case 1:
             rc = c1.getFirstName().compareTo(c2.getFirstName());
             break;
+        case 2:
+            rc = c1.getStreet().compareTo(c2.getStreet());
+            break;
+        case 3:
+            int first = Integer.parseInt(c1.getStreetNo());
+            int second = Integer.parseInt(c2.getStreetNo());
+            rc = first - second;
+            break;
+        case 4:
+            rc = c1.getPostCode().compareTo(c2.getPostCode());
+            break;
+        case 5:
+            rc = c1.getCity().compareTo(c2.getCity());
+            break;
         default:
             rc = 0;
         }
