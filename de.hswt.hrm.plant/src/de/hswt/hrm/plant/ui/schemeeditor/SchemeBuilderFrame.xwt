@@ -20,6 +20,7 @@
 					</FormData.top>
 				</FormData>
 			</TreeViewer.tree.layoutData>
+			<TreeColumn text="Bilder" width="100"/>
 		</TreeViewer.tree>
 	</TreeViewer>
 	<Composite x:Name="schemeComposite">

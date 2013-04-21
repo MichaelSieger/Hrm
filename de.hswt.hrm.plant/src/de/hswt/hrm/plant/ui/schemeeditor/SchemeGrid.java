@@ -1,9 +1,8 @@
-package de.hswt.hrm.plant.ui;
+package de.hswt.hrm.plant.ui.schemeeditor;
 
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.DropTarget;
-import org.eclipse.swt.dnd.DropTargetListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.GC;

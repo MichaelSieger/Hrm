@@ -1,4 +1,4 @@
-package de.hswt.hrm.plant.ui;
+package de.hswt.hrm.plant.ui.schemeeditor;
 
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DropTargetEvent;

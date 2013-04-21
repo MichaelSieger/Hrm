@@ -1,4 +1,4 @@
-package de.hswt.hrm.plant.ui;
+package de.hswt.hrm.plant.ui.schemeeditor;
 
 import java.net.URL;
 import java.security.NoSuchAlgorithmException;
@@ -9,6 +9,7 @@ import org.eclipse.e4.xwt.DefaultLoadingContext;
 import org.eclipse.e4.xwt.IConstants;
 import org.eclipse.e4.xwt.IXWTLoader;
 import org.eclipse.e4.xwt.XWT;
+import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -29,22 +30,22 @@ public class SchemeBuilderFrame extends Composite {
         String name = SchemeBuilderFrame.class.getSimpleName() + IConstants.XWT_EXTENSION_SUFFIX;
         try {
             URL url = SchemeBuilderFrame.class.getResource(name);
-            Map<String, Object> options = new HashMap<String, Object>();
-            options.put(IXWTLoader.CLASS_PROPERTY, this);
-            options.put(IXWTLoader.CONTAINER_PROPERTY, this);
-            XWT.setLoadingContext(new DefaultLoadingContext(this.getClass().getClassLoader()));
-            XWT.loadWithOptions(url, options);
+            XWT.load(url);
+            XWT.getRealm().asyncExec(new Runnable() {
+				
+				@Override
+				public void run() {
+		            getTree().setContentProvider(
+		            		GridImageContentProviderFactory.create(getDisplay()));
+		            getTree().setLabelProvider(new LabelProvider());
+		            getTree().setInput("");
+				}
+			});
+
         }
         catch (Throwable e) {
             throw new Error("Unable to load " + name, e);
         }
-        XWT.getRealm().exec(new Runnable() {
-
-            @Override
-            public void run() {
-                getTree().setContentProvider(GridImageContentProviderFactory.create(getDisplay()));
-            }
-        });
 
     }
 

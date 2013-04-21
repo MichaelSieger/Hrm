@@ -39,7 +39,7 @@ public class GridImageContentProviderMock implements ITreeContentProvider {
         GridImage img = new GridImage();
         img.setWidth(4);
         img.setHeight(4);
-        img.setRenderedImage(new Image(display, "/home/tamaran/tmp/220px-Tux.png"));
+        img.setRenderedImage(new Image(display, "/home/tamaran/hrmbilder/test.png"));
         images.add(img);
     }
 
