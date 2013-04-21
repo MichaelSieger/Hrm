@@ -31,17 +31,20 @@ public class ContactWizardPageOne extends WizardPage {
     public void createControl(Composite parent) {
         window = new ContactWizardWindow(parent, 0);
         container = window;
-        // setKeyListener();
+        setKeyListener();
         setControl(container);
         setPageComplete(false);
     }
 
-    public HashMap getWidgets() {
-        return window.getWidgets();
+    public HashMap getMandatoryWidgets() {
+        return window.getMandatoryWidgets();
+    }
+    public HashMap getOptionalWidgets() {
+        return window.getOptionalWidgets();
     }
 
     public void setKeyListener() {
-        HashMap widgets = window.getWidgets();
+        HashMap widgets = window.getMandatoryWidgets();
         for (Object object : widgets.values()) {
 
             ((Control) object).addKeyListener(new KeyListener() {

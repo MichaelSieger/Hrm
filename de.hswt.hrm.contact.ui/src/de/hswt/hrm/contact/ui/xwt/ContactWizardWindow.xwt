@@ -1,30 +1,28 @@
-<Composite xmlns="http://www.eclipse.org/xwt/presentation" xmlns:x="http://www.eclipse.org/xwt" x:Class="de.hswt.hrm.main.handlers.UserWizardWindow" layout="{x:Null}">	
-	<Group name="common" text="Allgemein" bounds="10, 0, 434, 150">
+<Composite xmlns="http://www.eclipse.org/xwt/presentation" xmlns:x="http://www.eclipse.org/xwt" x:Class="de.hswt.hrm.contact.ui.wizard.ContactWizardWindow" layout="{x:Null}">	
+	<Group name="mandatory" text="Pflichtfelder" bounds="10, 0, 434, 242">
 		<Label text="Vorname :" bounds="50, 30, 65, 15"/>
-		<Label  text="Nachname :" bounds="50, 70, 65, 15"/>
-		<Label  text="Shortcut :" bounds="50, 110, 65, 15"/>
+		<Label  text="Nachname :" bounds="50, 60, 65, 15"/>		
+		<Label text="Strasse :" bounds="50, 90, 65, 15"/>
+		<Label text="Strassenr :" bounds="50, 120, 65, 15"/>
+		<Label  text="Stadt :" bounds="50, 150, 65, 15"/>
+		<Label  text="Postleitzahl :" bounds="50, 180, 65, 15"/>
 		<Text x:name="firstName"  x:Style="BORDER" bounds="120, 30, 250, 21"/>
-		<Text x:name="lastName" x:Style="BORDER" bounds="120, 70, 250, 21"/>
-		<Text x:name="shortcut" x:Style="BORDER" bounds="120, 110, 250, 21"/>
-	</Group>
-	<Group name="adress" text="Adresse" bounds="10,160, 434, 190">
-		<Label text="Strasse :" bounds="50, 30, 65, 15"/>
-		<Label text="Strassenr :" bounds="50, 70, 65, 15"/>
-		<Label  text="Stadt :" bounds="50, 110, 65, 15"/>
-		<Label  text="Postleitzahl :" bounds="50, 150, 65, 15"/>
-		<Text x:name="street"  x:Style="BORDER" bounds="120, 30, 250, 21"/>
-		<Text x:name="streetNumber"  x:Style="BORDER" bounds="120, 70, 50, 21"/>
-		<Text x:name="city" x:Style="BORDER" bounds="120, 110, 250, 21"/>
-		<Text x:name="zipCode" x:Style="BORDER" bounds="120, 150, 50, 21"/>
+		<Text x:name="lastName" x:Style="BORDER" bounds="120, 60, 250, 21"/>
+		<Text x:name="street"  x:Style="BORDER" bounds="120, 90, 250, 21"/>
+		<Text x:name="streetNumber"  x:Style="BORDER" bounds="120, 120, 50, 21"/>
+		<Text x:name="city" x:Style="BORDER" bounds="120, 150, 250, 21"/>
+		<Text x:name="zipCode" x:Style="BORDER" bounds="120, 180, 50, 21"/>
 	</Group>	
-	<Group name="contactData" text="Kontaktdaten" bounds="10, 360, 434, 190">
+	<Group name="optional" text="Optionale Felder" bounds="10, 248, 434, 190">
 		<Label text="Telefon :" bounds="50, 30, 65, 15"/>
-		<Label text="Fax :" bounds="50, 70, 65, 15"/>
-		<Label  text="Mobil :" bounds="50, 110, 65, 15"/>
-		<Label  text="Email :" bounds="50, 150, 65, 15"/>
+		<Label text="Fax :" bounds="50, 60, 65, 15"/>
+		<Label  text="Mobil :" bounds="50, 90, 65, 15"/>
+		<Label  text="Email :" bounds="50, 120, 65, 15"/>
+		<Label  text="Shortcut :" bounds="50, 150, 65, 15"/>		
 		<Text x:name="phone"  x:Style="BORDER" bounds="120, 30, 250, 21"/>
-		<Text x:name="fax"  x:Style="BORDER" bounds="120, 70, 250, 21"/>
-		<Text x:name="mobilePhone" x:Style="BORDER" bounds="120, 110, 250, 21"/>
-		<Text x:name="email" x:Style="BORDER" bounds="120, 150, 250, 21"/>
+		<Text x:name="fax"  x:Style="BORDER" bounds="120, 60, 250, 21"/>
+		<Text x:name="mobilePhone" x:Style="BORDER" bounds="120, 90, 250, 21"/>
+		<Text x:name="email" x:Style="BORDER" bounds="120, 120, 250, 21"/>
+		<Text x:name="shortcut" x:Style="BORDER" bounds="120, 150, 250, 21"/>
 	</Group>	
 </Composite>

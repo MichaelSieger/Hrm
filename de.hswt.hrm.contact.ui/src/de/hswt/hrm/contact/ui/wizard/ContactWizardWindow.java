@@ -16,11 +16,9 @@ import org.eclipse.swt.widgets.Text;
 
 public class ContactWizardWindow extends Composite {
     @UI
-    Group common;
+    Group mandatory;   
     @UI
-    Group adress;
-    @UI
-    Group contactData;
+    Group optional;
 
     public ContactWizardWindow(Composite parent, int style) {
         super(parent, style);
@@ -43,19 +41,23 @@ public class ContactWizardWindow extends Composite {
         }
     }
 
-    public HashMap getWidgets() {
+    public HashMap getMandatoryWidgets() {    	
         HashMap<String, Text> widgets = new HashMap<String, Text>();
-        widgets.put("firstName", (Text) XWT.findElementByName(this, "firstName"));
-        widgets.put("lastName", (Text) XWT.findElementByName(common, "lastName"));
-        widgets.put("shortcut", (Text) XWT.findElementByName(common, "shortcut"));
-        widgets.put("street", (Text) XWT.findElementByName(common, "street"));
-        widgets.put("streetNumber", (Text) XWT.findElementByName(common, "streetNumber"));
-        widgets.put("city", (Text) XWT.findElementByName(common, "city"));
-        widgets.put("zipCode", (Text) XWT.findElementByName(common, "zipCode"));
-        widgets.put("phone", (Text) XWT.findElementByName(common, "phone"));
-        widgets.put("fax", (Text) XWT.findElementByName(common, "fax"));
-        widgets.put("mobilePhone", (Text) XWT.findElementByName(common, "mobilePhone"));
-        widgets.put("email", (Text) XWT.findElementByName(common, "email"));
+        widgets.put("firstName", (Text) XWT.findElementByName(mandatory, "firstName"));
+        widgets.put("lastName", (Text) XWT.findElementByName(mandatory, "lastName"));
+        widgets.put("street", (Text) XWT.findElementByName(mandatory, "street"));
+        widgets.put("streetNumber", (Text) XWT.findElementByName(mandatory, "streetNumber"));
+        widgets.put("city", (Text) XWT.findElementByName(mandatory, "city"));
+        widgets.put("zipCode", (Text) XWT.findElementByName(mandatory, "zipCode"));
+        return widgets;
+    }
+    public HashMap getOptionalWidgets() {    	
+        HashMap<String, Text> widgets = new HashMap<String, Text>();
+        widgets.put("shortcut", (Text) XWT.findElementByName(mandatory, "shortcut"));
+        widgets.put("phone", (Text) XWT.findElementByName(mandatory, "phone"));
+        widgets.put("fax", (Text) XWT.findElementByName(mandatory, "fax"));
+        widgets.put("mobilePhone", (Text) XWT.findElementByName(mandatory, "mobilePhone"));
+        widgets.put("email", (Text) XWT.findElementByName(mandatory, "email"));
         return widgets;
     }
 }
