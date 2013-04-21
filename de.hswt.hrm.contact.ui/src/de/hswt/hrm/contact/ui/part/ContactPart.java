@@ -29,12 +29,12 @@ public class ContactPart {
     private ContactFilter filter;
     private ContactComperator c;
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(ContactPart.class);
+    private final static Logger LOG = LoggerFactory.getLogger(ContactPart.class);
 
     @PostConstruct
     public void postConstruct(Composite parent) {
 
-        LOGGER.debug("entering method postConstruct");
+        LOG.debug("entering method postConstruct");
 
         /*
          * Getting database connection information via an absolute Path. In addition this method
