@@ -17,7 +17,7 @@ public class ContactComperator extends ViewerComparator {
 
     public int getDirection() {
 
-        return direction == 1 ? SWT.DOWN : SWT.UP;
+        return direction == 0 ? SWT.DOWN : SWT.UP;
 
     }
 
@@ -58,6 +58,9 @@ public class ContactComperator extends ViewerComparator {
             break;
         case 5:
             rc = c1.getCity().compareTo(c2.getCity());
+            break;
+        case 6:
+            rc = c1.getMobile().get().compareTo(c2.getMobile().get());
             break;
         default:
             rc = 0;

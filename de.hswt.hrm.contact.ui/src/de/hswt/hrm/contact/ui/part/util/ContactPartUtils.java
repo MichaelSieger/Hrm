@@ -123,7 +123,7 @@ public final class ContactPartUtils {
             }
         });
         createMenuItem(headerMenu, col.getColumn());
-
+        // mobile
         col = createTableViewerColumn(columnHeaders.get("mobile"), WIDTH, viewer, 6, comparator);
         col.setLabelProvider(new ColumnLabelProvider() {
             @Override
