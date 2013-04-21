@@ -30,4 +30,8 @@ public class PlaceService {
 	public static void update(Place place) throws ElementNotFoundException, SaveException {
 		dao.update(place);
 	}
+	
+	public static Place refresh(Place place) throws ElementNotFoundException, DatabaseException {
+	    return dao.findById(place.getId());
+	}
 }

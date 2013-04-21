@@ -57,4 +57,16 @@ public class ContactService {
     public static void update(Contact contact) throws ElementNotFoundException, SaveException {
         dao.update(contact);
     }
+    
+    /**
+     * Refreshes a given contact with values from the database.
+     * 
+     * @param contact
+     * @return
+     * @throws ElementNotFoundException
+     * @throws DatabaseException
+     */
+    public static Contact refresh(Contact contact) throws ElementNotFoundException, DatabaseException {
+        return dao.findById(contact.getId());
+    }
 }
