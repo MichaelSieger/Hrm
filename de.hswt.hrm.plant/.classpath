@@ -12,7 +12,7 @@
 	<classpathentry kind="lib" path="lib/org.eclipse.jface_3.8.102.v20130123-162658.jar"/>
 	<classpathentry kind="lib" path="lib/org.eclipse.e4.core.commands_0.10.1.v20120523-1955.jar"/>
 	<classpathentry kind="lib" path="lib/org.eclipse.core.commands_3.6.2.v20130123-162658.jar"/>
-	<classpathentry kind="lib" path="lib/org.eclipse.e4.xwt_0.9.1.SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="lib/org.eclipse.e4.xwt_0.9.1.SNAPSHOT.jar" sourcepath="lib/org.eclipse.e4.xwt.source_0.9.1.SNAPSHOT.jar"/>
 	<classpathentry kind="lib" path="lib/org.eclipse.e4.xwt.forms_0.9.1.SNAPSHOT.jar"/>
 	<classpathentry kind="lib" path="lib/org.pushingpixels.trident_1.2.0.v20100204-1500.jar"/>
 	<classpathentry kind="lib" path="lib/org.eclipse.osgi_3.8.2.v20130124-134944.jar"/>
