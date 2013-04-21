@@ -30,13 +30,20 @@ public final class Hrm {
         if (!Files.exists(configPath)) {
             try {
                 // Create a default one
+                Files.createDirectories(configPath.getParent());
+                Files.createFile(configPath);
                 FileOutputStream targetFile = new FileOutputStream(configPath.toFile());
                 InputStream configFile = BundleUtil.getStreamForFile("de.hswt.hrm.common", 
                         "resources/hrm.properties");
                 IOUtils.copy(configFile, targetFile);
+                
+                // Close resources
+                targetFile.close();
+                configFile.close();
             }
             catch (IOException e) {
-                LOG.error("Could create default configuration file from bundle.", e);
+                LOG.error("Could not create default configuration file from bundle.", e);
+                return;
             }
             
         }

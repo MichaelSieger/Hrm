@@ -3,6 +3,7 @@ package de.hswt.hrm.common;
 import static com.google.common.base.Preconditions.checkArgument;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Properties;
@@ -68,7 +69,11 @@ public final class Config {
 
     private Properties loadFromFile(Path path) throws IOException {
         Properties props = new Properties();
-        props.load(Files.newInputStream(path));
+        
+        try (InputStream is = Files.newInputStream(path)) {
+            props.load(is);
+        }
+        
         return props;
     }
 
