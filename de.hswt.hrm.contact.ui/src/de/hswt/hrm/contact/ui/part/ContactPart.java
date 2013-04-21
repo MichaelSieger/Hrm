@@ -41,7 +41,8 @@ public class ContactPart {
          * must be placed into the right position when the layout is final. This needs to be
          * improved using eclipse preferences or user.home
          */
-        initalizeDbConfig();
+        Hrm.init();
+        
         filter = new ContactFilter();
         c = new ContactComperator();
         // URL to the Paths defining XWT file
@@ -70,11 +71,6 @@ public class ContactPart {
     @Focus
     public void onFocus() {
 
-    }
-
-    private void initalizeDbConfig() {
-        // Init app
-        Hrm.init();
     }
 
     /**
