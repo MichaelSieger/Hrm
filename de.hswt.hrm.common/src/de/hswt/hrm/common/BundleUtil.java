@@ -32,4 +32,5 @@ public final class BundleUtil {
         URL url = new URL("platform:/plugin/" + bundleName + "/" + path);
         return url.openConnection().getInputStream();
     }
+    
 }
