@@ -52,7 +52,7 @@ public class Decontexter {
     private void appendPreamble(PrintWriter w) {
         w.println("\\documentclass{minimal}");
         w.println("\\usepackage{pstricks}");
-        w.println("\\usepackage[german]{babel}");
+        w.println("\\usepackage[utf8]{inputenc}");
         w.println("\\begin{document}");
         w.println("\\thispagestyle{empty}");
     }
