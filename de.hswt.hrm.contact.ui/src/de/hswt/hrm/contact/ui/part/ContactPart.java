@@ -17,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.hswt.hrm.common.Config;
+import de.hswt.hrm.common.Hrm;
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.contact.model.Contact;
 import de.hswt.hrm.contact.model.ContactComperator;
@@ -75,15 +76,8 @@ public class ContactPart {
     }
 
     private void initalizeDbConfig() {
-
-        try {
-            Config config = Config.getInstance();
-            config.load(Paths.get("/home/knacht/git/hrm/resources/hrm.properties"));
-        }
-        catch (IOException e) {
-
-            e.printStackTrace();
-        }
+        // Init app
+        Hrm.init();
     }
 
     /**
