@@ -3,6 +3,7 @@
 
 <product name="de.hswt.hrm.main" uid="de.hswt.hrm" id="de.hswt.hrm.main.product" application="org.eclipse.e4.ui.workbench.swt.E4Application" version="1.0.0.qualifier" useFeatures="true" includeLaunchers="true">
 
+
    <configIni use="default">
    </configIni>
 
@@ -21,6 +22,7 @@
          <bmp/>
       </win>
    </launcher>
+
 
    <vm>
    </vm>
@@ -127,6 +129,7 @@
       <feature id="org.eclipse.e4.rcp" version="1.1.2.v20130130-191718-91FUvGP7GIX2Kgz-z-gvjMvXV1NS"/>
       <feature id="org.eclipse.emf.ecore"/>
       <feature id="org.eclipse.emf.common"/>
+      <feature id="de.hswt.hrm.thirdparty.feature" version="0.0.1.qualifer"/>
    </features>
 
    <configurations>
