@@ -3,7 +3,7 @@ package de.hswt.hrm.plant.ui.schemeeditor;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.swt.widgets.Display;
 
-import test.GridImageContentProviderMock;
+import test.ImageTreeModelMock;
 
 /**
  * Hides where the grid images come from
@@ -11,10 +11,10 @@ import test.GridImageContentProviderMock;
  * @author Michael Sieger
  * 
  */
-public class GridImageContentProviderFactory {
+public class ImageTreeModelFactory {
 
-    public static ITreeContentProvider create(Display display) {
-        return new GridImageContentProviderMock(display);
+    public static IImageTreeModel create(Display display) {
+        return new ImageTreeModelMock(display);
     }
 
 }
