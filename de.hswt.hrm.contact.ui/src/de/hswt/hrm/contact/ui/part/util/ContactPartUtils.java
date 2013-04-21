@@ -7,6 +7,9 @@ import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
@@ -14,6 +17,7 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.TableColumn;
 import de.hswt.hrm.contact.model.Contact;
+import de.hswt.hrm.contact.model.ContactComperator;
 
 public final class ContactPartUtils {
 
@@ -48,14 +52,14 @@ public final class ContactPartUtils {
      * vogella, check license
      */
     public static void createColumns(Composite parent, TableViewer viewer,
-            Map<String, String> columnHeaders) {
+            Map<String, String> columnHeaders, final ContactComperator comparator) {
 
         Menu headerMenu = new Menu(viewer.getTable());
         viewer.getTable().setMenu(headerMenu);
 
         // LastName
         TableViewerColumn col = createTableViewerColumn(columnHeaders.get("lastName"), WIDTH,
-                viewer);
+                viewer, 0, comparator);
         col.setLabelProvider(new ColumnLabelProvider() {
             @Override
             public String getText(Object element) {
@@ -66,7 +70,7 @@ public final class ContactPartUtils {
         createMenuItem(headerMenu, col.getColumn());
 
         // firstName
-        col = createTableViewerColumn(columnHeaders.get("firstName"), WIDTH, viewer);
+        col = createTableViewerColumn(columnHeaders.get("firstName"), WIDTH, viewer, 1, comparator);
         col.setLabelProvider(new ColumnLabelProvider() {
             @Override
             public String getText(Object element) {
@@ -77,7 +81,7 @@ public final class ContactPartUtils {
         createMenuItem(headerMenu, col.getColumn());
 
         // street
-        col = createTableViewerColumn(columnHeaders.get("street"), WIDTH, viewer);
+        col = createTableViewerColumn(columnHeaders.get("street"), WIDTH, viewer, 2, comparator);
         col.setLabelProvider(new ColumnLabelProvider() {
             @Override
             public String getText(Object element) {
@@ -88,7 +92,7 @@ public final class ContactPartUtils {
         createMenuItem(headerMenu, col.getColumn());
 
         // streetNo
-        col = createTableViewerColumn(columnHeaders.get("streetNo"), WIDTH, viewer);
+        col = createTableViewerColumn(columnHeaders.get("streetNo"), WIDTH, viewer, 3, comparator);
         col.setLabelProvider(new ColumnLabelProvider() {
             @Override
             public String getText(Object element) {
@@ -99,7 +103,7 @@ public final class ContactPartUtils {
         createMenuItem(headerMenu, col.getColumn());
 
         // postCode
-        col = createTableViewerColumn(columnHeaders.get("postCode"), WIDTH, viewer);
+        col = createTableViewerColumn(columnHeaders.get("postCode"), WIDTH, viewer, 4, comparator);
         col.setLabelProvider(new ColumnLabelProvider() {
             @Override
             public String getText(Object element) {
@@ -110,7 +114,7 @@ public final class ContactPartUtils {
         createMenuItem(headerMenu, col.getColumn());
 
         // city
-        col = createTableViewerColumn(columnHeaders.get("city"), WIDTH, viewer);
+        col = createTableViewerColumn(columnHeaders.get("city"), WIDTH, viewer, 5, comparator);
         col.setLabelProvider(new ColumnLabelProvider() {
             @Override
             public String getText(Object element) {
@@ -120,7 +124,7 @@ public final class ContactPartUtils {
         });
         createMenuItem(headerMenu, col.getColumn());
 
-        col = createTableViewerColumn(columnHeaders.get("mobile"), WIDTH, viewer);
+        col = createTableViewerColumn(columnHeaders.get("mobile"), WIDTH, viewer, 6, comparator);
         col.setLabelProvider(new ColumnLabelProvider() {
             @Override
             public String getText(Object element) {
@@ -159,13 +163,31 @@ public final class ContactPartUtils {
      * vogella, check license
      */
     private static TableViewerColumn createTableViewerColumn(String title, int bound,
-            TableViewer viewer) {
+            TableViewer viewer, int colNumber, final ContactComperator comparator) {
         TableViewerColumn viewerColumn = new TableViewerColumn(viewer, SWT.NONE);
         TableColumn column = viewerColumn.getColumn();
         column.setText(title);
         column.setWidth(bound);
         column.setResizable(true);
         column.setMoveable(true);
+        column.addSelectionListener(getSelectionAdapter(viewer, column, colNumber, comparator));
         return viewerColumn;
+    }
+
+    private static SelectionListener getSelectionAdapter(final TableViewer viewer,
+            final TableColumn column, final int index, final ContactComperator comparator) {
+        SelectionAdapter selectionAdapter = new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+
+                comparator.setColumn(index);
+                int dir = comparator.getDirection();
+                viewer.getTable().setSortDirection(dir);
+                viewer.getTable().setSortColumn(column);
+                viewer.refresh();
+
+            }
+        };
+        return selectionAdapter;
     }
 }

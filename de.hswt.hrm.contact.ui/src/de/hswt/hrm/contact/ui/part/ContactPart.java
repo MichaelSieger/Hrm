@@ -29,6 +29,7 @@ public class ContactPart {
     private TableViewer viewer;
     private Collection<Contact> contacts;
     private ContactFilter filter;
+    private ContactComperator c;
 
     private final static Logger LOGGER = LoggerFactory.getLogger(ContactPart.class);
 
@@ -44,7 +45,7 @@ public class ContactPart {
          */
         initalizeDbConfig();
         filter = new ContactFilter();
-
+        c = new ContactComperator();
         // URL to the Paths defining XWT file
         URL url = ContactPart.class.getClassLoader().getResource(
                 "de/hswt/hrm/contact/ui/xwt/ContactView" + IConstants.XWT_EXTENSION_SUFFIX);
@@ -102,10 +103,12 @@ public class ContactPart {
         catch (DatabaseException e) {
             e.printStackTrace();
         }
-        ContactPartUtils.createColumns(parent, viewer, ContactPartUtils.getDefaultColumnHeaders());
+        ContactPartUtils.createColumns(parent, viewer, ContactPartUtils.getDefaultColumnHeaders(),
+                c);
         viewer.setContentProvider(ArrayContentProvider.getInstance());
         viewer.setInput(contacts);
         viewer.addFilter(filter);
-        viewer.setComparator(new ContactComperator());
+        viewer.setComparator(c);
+
     }
 }
