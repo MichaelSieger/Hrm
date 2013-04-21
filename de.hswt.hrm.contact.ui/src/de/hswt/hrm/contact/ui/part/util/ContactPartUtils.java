@@ -8,7 +8,12 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.TableColumn;
+import org.slf4j.Logger;
 
 import de.hswt.hrm.contact.model.Contact;
 
@@ -41,8 +46,14 @@ public final class ContactPartUtils {
         return columnHeaders;
     }
 
+    /*
+     * vogella, check license
+     */
     public static void createColumns(Composite parent, TableViewer viewer,
             Map<String, String> columnHeaders) {
+
+        Menu headerMenu = new Menu(viewer.getTable());
+        viewer.getTable().setMenu(headerMenu);
 
         // LastName
         TableViewerColumn col = createTableViewerColumn(columnHeaders.get("lastName"), WIDTH,
@@ -54,6 +65,7 @@ public final class ContactPartUtils {
                 return c.getLastName();
             }
         });
+        createMenuItem(headerMenu, col.getColumn());
 
         // firstName
         col = createTableViewerColumn(columnHeaders.get("firstName"), WIDTH, viewer);
@@ -64,6 +76,7 @@ public final class ContactPartUtils {
                 return c.getFirstName();
             }
         });
+        createMenuItem(headerMenu, col.getColumn());
 
         // street
         col = createTableViewerColumn(columnHeaders.get("street"), WIDTH, viewer);
@@ -74,6 +87,7 @@ public final class ContactPartUtils {
                 return c.getStreet();
             }
         });
+        createMenuItem(headerMenu, col.getColumn());
 
         // streetNo
         col = createTableViewerColumn(columnHeaders.get("streetNo"), WIDTH, viewer);
@@ -84,6 +98,7 @@ public final class ContactPartUtils {
                 return c.getStreetNo();
             }
         });
+        createMenuItem(headerMenu, col.getColumn());
 
         // postCode
         col = createTableViewerColumn(columnHeaders.get("postCode"), WIDTH, viewer);
@@ -94,6 +109,7 @@ public final class ContactPartUtils {
                 return c.getPostCode();
             }
         });
+        createMenuItem(headerMenu, col.getColumn());
 
         // city
         col = createTableViewerColumn(columnHeaders.get("city"), WIDTH, viewer);
@@ -104,9 +120,46 @@ public final class ContactPartUtils {
                 return c.getCity();
             }
         });
+        createMenuItem(headerMenu, col.getColumn());
+
+        col = createTableViewerColumn(columnHeaders.get("mobile"), WIDTH, viewer);
+        col.setLabelProvider(new ColumnLabelProvider() {
+            @Override
+            public String getText(Object element) {
+                Contact c = (Contact) element;
+                return c.getMobile().get();
+
+            }
+        });
+        createMenuItem(headerMenu, col.getColumn());
 
     }
 
+    /*
+     * vogella, check license
+     */
+    private static void createMenuItem(Menu parent, final TableColumn column) {
+        final MenuItem itemName = new MenuItem(parent, SWT.CHECK);
+        itemName.setText(column.getText());
+        itemName.setSelection(column.getResizable());
+        itemName.addListener(SWT.Selection, new Listener() {
+            public void handleEvent(Event event) {
+                if (itemName.getSelection()) {
+                    column.setWidth(WIDTH);
+                    column.setResizable(true);
+                }
+                else {
+                    column.setWidth(0);
+                    column.setResizable(false);
+                }
+            }
+        });
+
+    }
+
+    /*
+     * vogella, check license
+     */
     private static TableViewerColumn createTableViewerColumn(String title, int bound,
             TableViewer viewer) {
         TableViewerColumn viewerColumn = new TableViewerColumn(viewer, SWT.NONE);
