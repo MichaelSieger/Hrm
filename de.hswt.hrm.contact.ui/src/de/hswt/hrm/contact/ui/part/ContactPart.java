@@ -13,6 +13,8 @@ import org.eclipse.e4.xwt.XWT;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.widgets.Composite;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import de.hswt.hrm.common.Config;
 import de.hswt.hrm.common.database.exception.DatabaseException;
@@ -27,11 +29,13 @@ public class ContactPart {
     private TableViewer viewer;
     private Collection<Contact> contacts;
     private ContactFilter filter;
-    
-   
+
+    private final static Logger LOGGER = LoggerFactory.getLogger(ContactPart.class);
 
     @PostConstruct
     public void postConstruct(Composite parent) {
+
+        LOGGER.debug("entering method postConstruct");
 
         /*
          * Getting database connection information via an absolute Path. In addition this method
