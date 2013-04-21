@@ -13,8 +13,6 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.TableColumn;
-import org.slf4j.Logger;
-
 import de.hswt.hrm.contact.model.Contact;
 
 public final class ContactPartUtils {
