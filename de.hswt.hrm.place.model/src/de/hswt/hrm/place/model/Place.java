@@ -134,11 +134,13 @@ public class Place {
                 return false;
             }
         }
-        else if (!area.equals(other.area))
+        else if (!area.equals(other.area)) {
             return false;
+        }
         if (city == null) {
-            if (other.city != null)
+            if (other.city != null) {
                 return false;
+            }
         }
         else if (!city.equals(other.city)) {
             return false;
