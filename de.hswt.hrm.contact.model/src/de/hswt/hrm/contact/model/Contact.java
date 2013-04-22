@@ -15,25 +15,27 @@ public class Contact {
     private String streetNo;
     private String postCode;
     private String city;
-    
+
     // optional
     private String shortcut;
     private String phone;
     private String fax;
     private String mobile;
     private String email;
-    
+
+    private String isMandatory = "Field is a mandatory.";
+
     public Contact(final String lastName, final String firstName, final String street,
             final String streetNo, final String postCode, final String city) {
-        
+
         this(-1, lastName, firstName, street, streetNo, postCode, city);
     }
-    
+
     public Contact(int id, final String lastName, final String firstName, final String street,
             final String streetNo, final String postCode, final String city) {
-        
+
         this.id = id;
-        
+
         setLastName(lastName);
         setFirstName(firstName);
         setStreet(street);
@@ -47,7 +49,7 @@ public class Contact {
     }
 
     public void setLastName(String lastName) {
-        checkArgument(!isNullOrEmpty(lastName), "Field is a mandatory.");
+        checkArgument(!isNullOrEmpty(lastName), isMandatory);
         this.lastName = lastName;
     }
 
@@ -56,7 +58,7 @@ public class Contact {
     }
 
     public void setFirstName(String firstName) {
-        checkArgument(!isNullOrEmpty(firstName), "Field is a mandatory.");
+        checkArgument(!isNullOrEmpty(firstName), isMandatory);
         this.firstName = firstName;
     }
 
@@ -65,17 +67,17 @@ public class Contact {
     }
 
     public void setStreet(String street) {
-        checkArgument(!isNullOrEmpty(street), "Field is a mandatory.");
+        checkArgument(!isNullOrEmpty(street), isMandatory);
         this.street = street;
     }
-    
+
     public String getStreetNo() {
-    	return streetNo;
+        return streetNo;
     }
-    
+
     public void setStreetNo(String streetNo) {
-        checkArgument(!isNullOrEmpty(streetNo), "Field is a mandatory.");
-    	this.streetNo = streetNo;
+        checkArgument(!isNullOrEmpty(streetNo), isMandatory);
+        this.streetNo = streetNo;
     }
 
     public String getPostCode() {
@@ -83,7 +85,7 @@ public class Contact {
     }
 
     public void setPostCode(String postCode) {
-        checkArgument(!isNullOrEmpty(postCode), "PostCode is a mandatory field");
+        checkArgument(!isNullOrEmpty(postCode), isMandatory);
         this.postCode = postCode;
     }
 
@@ -92,7 +94,7 @@ public class Contact {
     }
 
     public void setCity(String city) {
-        checkArgument(!isNullOrEmpty(city), "City is a mandatory field");
+        checkArgument(!isNullOrEmpty(city), isMandatory);
         this.city = city;
     }
 
@@ -160,76 +162,100 @@ public class Contact {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+        if (obj == null) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+        if (getClass() != obj.getClass()) {
             return false;
+        }
         Contact other = (Contact) obj;
         if (city == null) {
-            if (other.city != null)
+            if (other.city != null) {
                 return false;
+            }
         }
-        else if (!city.equals(other.city))
+        else if (!city.equals(other.city)) {
             return false;
+        }
         if (email == null) {
-            if (other.email != null)
+            if (other.email != null) {
                 return false;
+            }
         }
-        else if (!email.equals(other.email))
+        else if (!email.equals(other.email)) {
             return false;
+        }
         if (fax == null) {
-            if (other.fax != null)
+            if (other.fax != null) {
                 return false;
+            }
         }
-        else if (!fax.equals(other.fax))
+        else if (!fax.equals(other.fax)) {
             return false;
+        }
         if (firstName == null) {
-            if (other.firstName != null)
+            if (other.firstName != null) {
                 return false;
+            }
         }
-        else if (!firstName.equals(other.firstName))
+        else if (!firstName.equals(other.firstName)) {
             return false;
-        if (id != other.id)
+        }
+        if (id != other.id) {
             return false;
+        }
         if (lastName == null) {
-            if (other.lastName != null)
+            if (other.lastName != null) {
                 return false;
+            }
         }
-        else if (!lastName.equals(other.lastName))
+        else if (!lastName.equals(other.lastName)) {
             return false;
+        }
         if (mobile == null) {
-            if (other.mobile != null)
+            if (other.mobile != null) {
                 return false;
+            }
         }
-        else if (!mobile.equals(other.mobile))
+        else if (!mobile.equals(other.mobile)) {
             return false;
+        }
         if (phone == null) {
-            if (other.phone != null)
+            if (other.phone != null) {
                 return false;
+            }
         }
-        else if (!phone.equals(other.phone))
+        else if (!phone.equals(other.phone)) {
             return false;
+        }
         if (postCode == null) {
-            if (other.postCode != null)
+            if (other.postCode != null) {
                 return false;
+            }
         }
-        else if (!postCode.equals(other.postCode))
+        else if (!postCode.equals(other.postCode)) {
             return false;
+        }
         if (shortcut == null) {
-            if (other.shortcut != null)
+            if (other.shortcut != null) {
                 return false;
+            }
         }
-        else if (!shortcut.equals(other.shortcut))
+        else if (!shortcut.equals(other.shortcut)) {
             return false;
+        }
         if (street == null) {
-            if (other.street != null)
+            if (other.street != null) {
                 return false;
+            }
         }
-        else if (!street.equals(other.street))
+        else if (!street.equals(other.street)) {
             return false;
+        }
         return true;
     }
-    
+
 }
