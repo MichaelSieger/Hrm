@@ -13,6 +13,8 @@ public class Place {
     private String location;
     private String area;
 
+    private String isMandatory = "Field is a mandatory.";
+
     public Place(final String placeName, final String postCode, final String city,
             final String street, final String streetNo, final String location, final String area) {
 
@@ -42,7 +44,7 @@ public class Place {
     }
 
     public void setPlaceName(String placeName) {
-        checkArgument(!isNullOrEmpty(placeName), "Field is a mandatory.");
+        checkArgument(!isNullOrEmpty(placeName), isMandatory);
         this.placeName = placeName;
     }
 
@@ -51,7 +53,7 @@ public class Place {
     }
 
     public void setPostCode(String postCode) {
-        checkArgument(!isNullOrEmpty(postCode), "Field is a mandatory.");
+        checkArgument(!isNullOrEmpty(postCode), isMandatory);
         this.postCode = postCode;
     }
 
@@ -60,7 +62,7 @@ public class Place {
     }
 
     public void setCity(String city) {
-        checkArgument(!isNullOrEmpty(city), "Field is a mandatory.");
+        checkArgument(!isNullOrEmpty(city), isMandatory);
         this.city = city;
     }
 
@@ -69,7 +71,7 @@ public class Place {
     }
 
     public void setStreet(String street) {
-        checkArgument(!isNullOrEmpty(street), "Field is a mandatory.");
+        checkArgument(!isNullOrEmpty(street), isMandatory);
         this.street = street;
     }
 
@@ -78,7 +80,7 @@ public class Place {
     }
 
     public void setStreetNo(String streetNo) {
-        checkArgument(!isNullOrEmpty(streetNo), "Field is a mandatory.");
+        checkArgument(!isNullOrEmpty(streetNo), isMandatory);
         this.streetNo = streetNo;
     }
 
@@ -87,7 +89,7 @@ public class Place {
     }
 
     public void setLocation(String location) {
-        checkArgument(!isNullOrEmpty(location), "Field is a mandatory.");
+        checkArgument(!isNullOrEmpty(location), isMandatory);
         this.location = location;
     }
 
@@ -96,7 +98,7 @@ public class Place {
     }
 
     public void setArea(String area) {
-        checkArgument(!isNullOrEmpty(area), "Field is a mandatory.");
+        checkArgument(!isNullOrEmpty(area), isMandatory);
         this.area = area;
     }
 
@@ -117,16 +119,20 @@ public class Place {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+        if (obj == null) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+        if (getClass() != obj.getClass()) {
             return false;
+        }
         Place other = (Place) obj;
         if (area == null) {
-            if (other.area != null)
+            if (other.area != null) {
                 return false;
+            }
         }
         else if (!area.equals(other.area))
             return false;
@@ -134,40 +140,52 @@ public class Place {
             if (other.city != null)
                 return false;
         }
-        else if (!city.equals(other.city))
+        else if (!city.equals(other.city)) {
             return false;
-        if (id != other.id)
+        }
+        if (id != other.id) {
             return false;
+        }
         if (location == null) {
-            if (other.location != null)
+            if (other.location != null) {
                 return false;
+            }
         }
-        else if (!location.equals(other.location))
+        else if (!location.equals(other.location)) {
             return false;
+        }
         if (placeName == null) {
-            if (other.placeName != null)
+            if (other.placeName != null) {
                 return false;
+            }
         }
-        else if (!placeName.equals(other.placeName))
+        else if (!placeName.equals(other.placeName)) {
             return false;
+        }
         if (postCode == null) {
-            if (other.postCode != null)
+            if (other.postCode != null) {
                 return false;
+            }
         }
-        else if (!postCode.equals(other.postCode))
+        else if (!postCode.equals(other.postCode)) {
             return false;
+        }
         if (street == null) {
-            if (other.street != null)
+            if (other.street != null) {
                 return false;
+            }
         }
-        else if (!street.equals(other.street))
+        else if (!street.equals(other.street)) {
             return false;
+        }
         if (streetNo == null) {
-            if (other.streetNo != null)
+            if (other.streetNo != null) {
                 return false;
+            }
         }
-        else if (!streetNo.equals(other.streetNo))
+        else if (!streetNo.equals(other.streetNo)) {
             return false;
+        }
         return true;
     }
 
