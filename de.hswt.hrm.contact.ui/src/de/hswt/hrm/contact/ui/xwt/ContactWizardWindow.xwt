@@ -1,4 +1,4 @@
-<Composite xmlns="http://www.eclipse.org/xwt/presentation" xmlns:x="http://www.eclipse.org/xwt" x:Class="de.hswt.hrm.contact.ui.wizard.ContactWizardWindow" layout="{x:Null}">	
+<Composite xmlns="http://www.eclipse.org/xwt/presentation" xmlns:x="http://www.eclipse.org/xwt" x:Class="de.hswt.hrm.contact.ui.wizard.ContactWizardPageOne" layout="{x:Null}">	
 	<Group name="mandatory" text="Pflichtfelder" bounds="10, 0, 434, 242">
 		<Label text="Vorname :" bounds="50, 30, 65, 15"/>
 		<Label  text="Nachname :" bounds="50, 60, 65, 15"/>		

@@ -13,7 +13,7 @@ public class ContactWizard extends Wizard {
     ContactWizardPageOne one;
 
     public ContactWizard() {
-        setWindowTitle("Add a new Contact");
+        setWindowTitle("Neuen Kontakt hinzufügen");
 
     }
 
@@ -25,36 +25,31 @@ public class ContactWizard extends Wizard {
 
     @Override
     public boolean canFinish() {
-        HashMap mandatoryWidgets = one.getMandatoryWidgets();
-        for (Object object : mandatoryWidgets.values()) {
-            Text textField = (Text) object;
-            if (textField != null) {
-                if (textField.getText().length() == 0) {
-                    return false;
-                }
-            }
-        }
-        return true;
+    	if(one.isPageComplete()){
+    		return true;
+    	}else{
+    		return false;
+    	}
     }
 
     @Override
     public boolean performFinish() {
-        HashMap mandatoryWidgets = one.getMandatoryWidgets();
-        String firstName = ((Text) mandatoryWidgets.get("firstName")).getText();
-        String lastName = ((Text) mandatoryWidgets.get("lastName")).getText();        
-        String street = ((Text) mandatoryWidgets.get("street")).getText();
-        String streetNumber = ((Text) mandatoryWidgets.get("streetNumber")).getText();
-        String city = ((Text) mandatoryWidgets.get("city")).getText();
-        String zipCode = ((Text) mandatoryWidgets.get("zipCode")).getText();
+    	HashMap <String,Text> mandatoryWidgets = one.getMandatoryWidgets();
+        String firstName = mandatoryWidgets.get("firstName").getText();
+        String lastName = mandatoryWidgets.get("lastName").getText();        
+        String street = mandatoryWidgets.get("street").getText();
+        String streetNumber = mandatoryWidgets.get("streetNumber").getText();
+        String city = mandatoryWidgets.get("city").getText();
+        String zipCode = mandatoryWidgets.get("zipCode").getText();
             
         Contact newContact = new Contact(lastName, firstName, street, streetNumber, zipCode, city);
         
-        HashMap optionalWidgets = one.getOptionalWidgets();
-        String shortcut = ((Text) optionalWidgets.get("shortcut")).getText();
-        String phone = ((Text) optionalWidgets.get("phone")).getText();
-        String fax = ((Text) optionalWidgets.get("fax")).getText();
-        String mobilePhone = ((Text) optionalWidgets.get("mobilePhone")).getText();
-        String email = ((Text) optionalWidgets.get("email")).getText(); 
+        HashMap <String,Text> optionalWidgets = one.getOptionalWidgets();
+        String shortcut = optionalWidgets.get("shortcut").getText();
+        String phone = optionalWidgets.get("phone").getText();
+        String fax = optionalWidgets.get("fax").getText();
+        String mobilePhone = optionalWidgets.get("mobilePhone").getText();
+        String email = optionalWidgets.get("email").getText(); 
         
         newContact.setShortcut(shortcut);
         newContact.setPhone(phone);
