@@ -14,7 +14,7 @@ import de.hswt.hrm.test.database.AbstractDatabaseTest;
 
 public class PlaceServiceTest extends AbstractDatabaseTest {
 
-    private void ComparePlaceFields(final Place expected, final Place actual) {
+    private void comparePlaceFields(final Place expected, final Place actual) {
         assertEquals("Area not set correctly.", expected.getArea(), actual.getArea());
         assertEquals("City not set correctly.", expected.getCity(), actual.getCity());
         assertEquals("Location not set correctly.", expected.getLocation(), actual.getLocation());
@@ -44,7 +44,7 @@ public class PlaceServiceTest extends AbstractDatabaseTest {
         Place parsed = PlaceService.insert(expected);
 
         Place retrieved = PlaceService.findById(parsed.getId());
-        ComparePlaceFields(expected, retrieved);
+        comparePlaceFields(expected, retrieved);
     }
 
     @Test
@@ -53,11 +53,11 @@ public class PlaceServiceTest extends AbstractDatabaseTest {
                 "Some Area");
 
         Place parsed = PlaceService.insert(expected);
-        ComparePlaceFields(expected, parsed);
+        comparePlaceFields(expected, parsed);
         assertTrue("ID not set correctly.", parsed.getId() >= 0);
 
         Place retrieved = PlaceService.findById(parsed.getId());
-        ComparePlaceFields(expected, retrieved);
+        comparePlaceFields(expected, retrieved);
         assertEquals("Requested object does not equal parsed one.", parsed, retrieved);
     }
 
@@ -76,7 +76,7 @@ public class PlaceServiceTest extends AbstractDatabaseTest {
         PlaceService.update(parsed);
 
         Place retrieved = PlaceService.findById(parsed.getId());
-        ComparePlaceFields(parsed, retrieved);
+        comparePlaceFields(parsed, retrieved);
         assertEquals("Requested object does not equal updated one.", parsed, retrieved);
     }
 }
