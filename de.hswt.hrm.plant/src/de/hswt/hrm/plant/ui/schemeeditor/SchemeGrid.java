@@ -1,5 +1,8 @@
-package de.hswt.hrm.plant.ui;
+package de.hswt.hrm.plant.ui.schemeeditor;
 
+
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.dnd.DropTarget;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.GC;
@@ -16,9 +19,9 @@ import de.hswt.hrm.plant.model.GridImage;
  * @author Michael Sieger
  * 
  */
-public class SchemeGrid extends Canvas {
+public class SchemeGrid extends Canvas{
 
-    private GridImage[][] quads;
+    private final GridImage[][] quads;
 
     public SchemeGrid(Composite parent, int style, int width, int height) {
         super(parent, style);
@@ -30,6 +33,9 @@ public class SchemeGrid extends Canvas {
                 draw(ev.gc);
             }
         });
+        DropTarget dt = new DropTarget(this, SWT.NONE);
+        dt.addDropListener(
+        		new SchemeGridDropListener(this));
     }
 
     private void draw(GC gc) {

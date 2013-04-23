@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
 /**
@@ -21,7 +22,7 @@ public class Decontexter {
 
     public void convertFile(File fin, File fout) throws IOException {
         fout.createNewFile();
-        try (Scanner sc = new Scanner(new FileInputStream(fin))) {
+        try (Scanner sc = new Scanner(new FileInputStream(fin), StandardCharsets.ISO_8859_1.name())) {
             try (PrintWriter writer = new PrintWriter(new FileOutputStream(fout))) {
                 appendPreamble(writer);
                 while (sc.hasNextLine()) {
@@ -51,7 +52,7 @@ public class Decontexter {
     private void appendPreamble(PrintWriter w) {
         w.println("\\documentclass{minimal}");
         w.println("\\usepackage{pstricks}");
-        w.println("\\usepackage[german]{babel}");
+        w.println("\\usepackage[utf8]{inputenc}");
         w.println("\\begin{document}");
         w.println("\\thispagestyle{empty}");
     }
