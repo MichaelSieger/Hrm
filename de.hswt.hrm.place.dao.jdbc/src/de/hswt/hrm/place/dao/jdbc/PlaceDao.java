@@ -6,6 +6,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.apache.commons.dbutils.DbUtils;
+
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -28,7 +30,10 @@ public class PlaceDao implements IPlaceDao {
             try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
                 ResultSet result = stmt.executeQuery();
 
-                return fromResultSet(result);
+                Collection<Place> places = fromResultSet(result);
+                DbUtils.closeQuietly(result);
+                
+                return places;
             }
         }
         catch (SQLException e) {
@@ -50,6 +55,8 @@ public class PlaceDao implements IPlaceDao {
                 ResultSet result = stmt.executeQuery();
 
                 Collection<Place> places = fromResultSet(result);
+                DbUtils.closeQuietly(result);
+                
                 if (places.size() < 1) {
                     throw new ElementNotFoundException();
                 }
