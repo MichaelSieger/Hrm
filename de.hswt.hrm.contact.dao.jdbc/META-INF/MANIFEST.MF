@@ -4,11 +4,12 @@ Bundle-Name: Dao-Jdbc
 Bundle-SymbolicName: de.hswt.hrm.contact.dao.jdbc
 Bundle-Version: 0.0.1.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Import-Package: com.google.common.base,
- de.hswt.hrm.common.database,
+Import-Package: de.hswt.hrm.common.database,
  de.hswt.hrm.common.database.exception,
  de.hswt.hrm.common.exception,
  de.hswt.hrm.contact.dao.core,
  de.hswt.hrm.contact.model,
  org.eclipse.e4.core.di.annotations
 Export-Package: de.hswt.hrm.contact.dao.jdbc
+Require-Bundle: com.google.guava;bundle-version="10.0.1",
+ de.hswt.hrm.commons.dbutils;bundle-version="0.0.1"
