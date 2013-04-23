@@ -1,5 +1,7 @@
 package de.hswt.hrm.plant.model;
 
+import com.google.common.base.Optional;
+
 /**
  * Data class for the technical data of a plant.
  * 
@@ -13,9 +15,9 @@ public class TechnicalData {
     private Integer voltage;
 
     // optional:
-    private String type;
-    private Integer airPerformance, engineRPM;
-    private Double enginePower, ventilatorPower;
+    private Optional<String> type;
+    private Optional<Integer> airPerformance, engineRPM;
+    private Optional<Double> enginePower, ventilatorPower;
 
     // Getters and setters:
     public Double getCurrent() {
@@ -34,43 +36,43 @@ public class TechnicalData {
         this.voltage = voltage;
     }
 
-    public String getType() {
+    public Optional<String> getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(Optional<String> type) {
         this.type = type;
     }
 
-    public Integer getAirPerformance() {
+    public Optional<Integer> getAirPerformance() {
         return airPerformance;
     }
 
-    public void setAirPerformance(Integer airPerformance) {
+    public void setAirPerformance(Optional<Integer> airPerformance) {
         this.airPerformance = airPerformance;
     }
 
-    public Integer getEngineRPM() {
+    public Optional<Integer> getEngineRPM() {
         return engineRPM;
     }
 
-    public void setEngineRPM(Integer engineRPM) {
+    public void setEngineRPM(Optional<Integer> engineRPM) {
         this.engineRPM = engineRPM;
     }
 
-    public Double getEnginePower() {
+    public Optional<Double> getEnginePower() {
         return enginePower;
     }
 
-    public void setEnginePower(Double enginePower) {
+    public void setEnginePower(Optional<Double> enginePower) {
         this.enginePower = enginePower;
     }
 
-    public Double getVentilatorPower() {
+    public Optional<Double> getVentilatorPower() {
         return ventilatorPower;
     }
 
-    public void setVentilatorPower(Double ventilatorPower) {
+    public void setVentilatorPower(Optional<Double> ventilatorPower) {
         this.ventilatorPower = ventilatorPower;
     }
 
