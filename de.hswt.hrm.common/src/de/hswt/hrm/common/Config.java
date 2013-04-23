@@ -67,7 +67,7 @@ public final class Config {
         return props.getProperty(key, defaultValue);
     }
 
-    private Properties loadFromFile(Path path) throws IOException {
+    private static Properties loadFromFile(Path path) throws IOException {
         Properties props = new Properties();
         
         try (InputStream is = Files.newInputStream(path)) {
