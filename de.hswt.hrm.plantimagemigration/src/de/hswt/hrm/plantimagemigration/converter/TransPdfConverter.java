@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Fixes transparency and margins of PDF pictures
+ * Get transparency and remove margins of PDF pictures
  * 
  * @author Anton Schreck
  *
