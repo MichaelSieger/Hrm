@@ -32,10 +32,9 @@ public class SchemeBuilderFrame extends Composite {
             root = (Composite) XWT.load(url);
             root.setParent(this);
             Tree tree = getTree();
-            for(GridImage img : ImageTreeModelFactory.create(getDisplay()).getImages()){
-                TreeItem item = new TreeItem(tree, SWT.NONE);
-                item.setText(img.toString());
-            }
+            new TreeManager(getDisplay(), 
+            				ImageTreeModelFactory.create(
+            						getDisplay()), tree);
         }
         catch (Throwable e) {
             throw new Error("Unable to load " + name, e);
