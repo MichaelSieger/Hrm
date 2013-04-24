@@ -115,5 +115,6 @@
 		<module>../de.hswt.hrm.repository</module>
 		<module>../de.hswt.hrm.thirdparty.feature</module>
 		<module>../de.hswt.hrm.commons.dbutils</module>
+		<module>../de.hswt.hrm.place.ui</module>
 	</modules>
 </project>

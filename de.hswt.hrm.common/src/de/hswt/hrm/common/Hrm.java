@@ -35,7 +35,7 @@ public final class Hrm {
                 Files.createFile(configPath);
 
                 OutputStream targetFile = Files.newOutputStream(configPath);
-                InputStream configFile = BundleUtil.getStreamForFile("de.hswt.hrm.common",
+                InputStream configFile = BundleUtil.getStreamForFile(Hrm.class,
                         "resources/hrm.properties");
                 IOUtils.copy(configFile, targetFile);
 

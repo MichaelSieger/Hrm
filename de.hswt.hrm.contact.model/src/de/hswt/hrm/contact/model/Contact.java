@@ -7,7 +7,7 @@ import static com.google.common.base.Strings.isNullOrEmpty;
 /**
  * Represents a contact.
  */
-public class Contact {
+public final class Contact {
     private int id;
     private String lastName;
     private String firstName;
@@ -23,7 +23,7 @@ public class Contact {
     private String mobile;
     private String email;
 
-    private String isMandatory = "Field is a mandatory.";
+    private static final String IS_MANDATORY = "Field is a mandatory.";
 
     public Contact(final String lastName, final String firstName, final String street,
             final String streetNo, final String postCode, final String city) {
@@ -49,7 +49,7 @@ public class Contact {
     }
 
     public void setLastName(String lastName) {
-        checkArgument(!isNullOrEmpty(lastName), isMandatory);
+        checkArgument(!isNullOrEmpty(lastName), IS_MANDATORY);
         this.lastName = lastName;
     }
 
@@ -58,7 +58,7 @@ public class Contact {
     }
 
     public void setFirstName(String firstName) {
-        checkArgument(!isNullOrEmpty(firstName), isMandatory);
+        checkArgument(!isNullOrEmpty(firstName), IS_MANDATORY);
         this.firstName = firstName;
     }
 
@@ -67,7 +67,7 @@ public class Contact {
     }
 
     public void setStreet(String street) {
-        checkArgument(!isNullOrEmpty(street), isMandatory);
+        checkArgument(!isNullOrEmpty(street), IS_MANDATORY);
         this.street = street;
     }
 
@@ -76,7 +76,7 @@ public class Contact {
     }
 
     public void setStreetNo(String streetNo) {
-        checkArgument(!isNullOrEmpty(streetNo), isMandatory);
+        checkArgument(!isNullOrEmpty(streetNo), IS_MANDATORY);
         this.streetNo = streetNo;
     }
 
@@ -85,7 +85,7 @@ public class Contact {
     }
 
     public void setPostCode(String postCode) {
-        checkArgument(!isNullOrEmpty(postCode), isMandatory);
+        checkArgument(!isNullOrEmpty(postCode), IS_MANDATORY);
         this.postCode = postCode;
     }
 
@@ -94,7 +94,7 @@ public class Contact {
     }
 
     public void setCity(String city) {
-        checkArgument(!isNullOrEmpty(city), isMandatory);
+        checkArgument(!isNullOrEmpty(city), IS_MANDATORY);
         this.city = city;
     }
 

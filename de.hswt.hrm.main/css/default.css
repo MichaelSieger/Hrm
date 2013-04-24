@@ -14,7 +14,6 @@ Shell, Group {
 CTabItem  {  
   font-size: 15;
   font:bold;
-  show-close: true;
 }
 
 Button {

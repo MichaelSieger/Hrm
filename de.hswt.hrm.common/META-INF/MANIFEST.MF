@@ -14,4 +14,5 @@ Require-Bundle: de.hswt.hrm.jdbc.mariadb;bundle-version="0.0.1",
  org.slf4j.api;bundle-version="1.6.4",
  com.google.guava;bundle-version="10.0.1",
  org.apache.commons.lang;bundle-version="2.6.0",
- org.apache.commons.io;bundle-version="2.0.1"
+ org.apache.commons.io;bundle-version="2.0.1",
+ org.eclipse.osgi;bundle-version="3.8.2"

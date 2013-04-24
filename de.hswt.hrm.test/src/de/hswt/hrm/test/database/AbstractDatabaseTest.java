@@ -10,6 +10,7 @@ import java.util.Random;
 
 import static com.google.common.base.Strings.*;
 
+import org.apache.commons.dbutils.DbUtils;
 import org.junit.After;
 import org.junit.Before;
 
@@ -52,6 +53,7 @@ public abstract class AbstractDatabaseTest {
 			name = prefix + getRandomString(5);
 		}
 		
+		DbUtils.closeQuietly(con);
 		return name;
 	}
 	
@@ -84,6 +86,8 @@ public abstract class AbstractDatabaseTest {
             // Select database
 			Statement stmt = con.createStatement();
 			stmt.executeQuery("USE " + name + ";");
+			DbUtils.closeQuietly(stmt);
+			
 			dbName = name;
 			
 			// Configure new db name
@@ -107,6 +111,7 @@ public abstract class AbstractDatabaseTest {
         try (Connection con = DatabaseFactory.getConnection()) {
 			Statement stmt = con.createStatement();
 			stmt.executeQuery("DROP DATABASE " + dbName + ";");
+			DbUtils.closeQuietly(stmt);
 		}
 		catch (SQLException e) {
 			throw new DatabaseException(e);

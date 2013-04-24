@@ -3,7 +3,7 @@ package de.hswt.hrm.place.model;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Strings.isNullOrEmpty;
 
-public class Place {
+public final class Place {
     private int id;
     private String placeName;
     private String postCode;
@@ -13,7 +13,7 @@ public class Place {
     private String location;
     private String area;
 
-    private String isMandatory = "Field is a mandatory.";
+    private static final String IS_MANDATORY = "Field is a mandatory.";
 
     public Place(final String placeName, final String postCode, final String city,
             final String street, final String streetNo, final String location, final String area) {
@@ -44,7 +44,7 @@ public class Place {
     }
 
     public void setPlaceName(String placeName) {
-        checkArgument(!isNullOrEmpty(placeName), isMandatory);
+        checkArgument(!isNullOrEmpty(placeName), IS_MANDATORY);
         this.placeName = placeName;
     }
 
@@ -53,7 +53,7 @@ public class Place {
     }
 
     public void setPostCode(String postCode) {
-        checkArgument(!isNullOrEmpty(postCode), isMandatory);
+        checkArgument(!isNullOrEmpty(postCode), IS_MANDATORY);
         this.postCode = postCode;
     }
 
@@ -62,7 +62,7 @@ public class Place {
     }
 
     public void setCity(String city) {
-        checkArgument(!isNullOrEmpty(city), isMandatory);
+        checkArgument(!isNullOrEmpty(city), IS_MANDATORY);
         this.city = city;
     }
 
@@ -71,7 +71,7 @@ public class Place {
     }
 
     public void setStreet(String street) {
-        checkArgument(!isNullOrEmpty(street), isMandatory);
+        checkArgument(!isNullOrEmpty(street), IS_MANDATORY);
         this.street = street;
     }
 
@@ -80,7 +80,7 @@ public class Place {
     }
 
     public void setStreetNo(String streetNo) {
-        checkArgument(!isNullOrEmpty(streetNo), isMandatory);
+        checkArgument(!isNullOrEmpty(streetNo), IS_MANDATORY);
         this.streetNo = streetNo;
     }
 
@@ -89,7 +89,7 @@ public class Place {
     }
 
     public void setLocation(String location) {
-        checkArgument(!isNullOrEmpty(location), isMandatory);
+        checkArgument(!isNullOrEmpty(location), IS_MANDATORY);
         this.location = location;
     }
 
@@ -98,7 +98,7 @@ public class Place {
     }
 
     public void setArea(String area) {
-        checkArgument(!isNullOrEmpty(area), isMandatory);
+        checkArgument(!isNullOrEmpty(area), IS_MANDATORY);
         this.area = area;
     }
 

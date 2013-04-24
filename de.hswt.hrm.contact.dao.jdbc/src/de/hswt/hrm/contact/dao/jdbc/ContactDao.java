@@ -6,6 +6,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.apache.commons.dbutils.DbUtils;
+
 import static com.google.common.base.Preconditions.*;
 
 import de.hswt.hrm.common.database.DatabaseFactory;
@@ -30,7 +32,9 @@ public class ContactDao implements IContactDao {
             try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
                 ResultSet result = stmt.executeQuery();
 
-                return fromResultSet(result);
+                Collection<Contact> contacts = fromResultSet(result);
+                DbUtils.closeQuietly(result);
+                return contacts;
             }
         }
         catch (SQLException e) {
@@ -54,6 +58,8 @@ public class ContactDao implements IContactDao {
                 ResultSet result = stmt.executeQuery();
 
                 Collection<Contact> contacts = fromResultSet(result);
+                DbUtils.closeQuietly(result);
+                
                 if (contacts.size() < 1) {
                     throw new ElementNotFoundException();
                 }

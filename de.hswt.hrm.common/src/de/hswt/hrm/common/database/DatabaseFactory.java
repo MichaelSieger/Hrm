@@ -32,7 +32,6 @@ public final class DatabaseFactory {
             throw new DatabaseException("Database driver not found.", e);
         }
 
-        // TODO Remove: Testserver jdbc:mysql://10.154.4.20
         Config cfg = Config.getInstance();
         final String host = cfg.getProperty(Keys.DB_HOST, "jdbc:mysql://localhost");
         final String username = cfg.getProperty(Keys.DB_USER, "root");
@@ -46,8 +45,7 @@ public final class DatabaseFactory {
         }
         
         try {
-            Connection con = DriverManager.getConnection(conStr, username, password);
-            return con;
+            return DriverManager.getConnection(conStr, username, password);
         }
         catch (SQLException e) {
             // TODO maybe add specific information about the error

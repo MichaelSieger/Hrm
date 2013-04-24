@@ -18,7 +18,7 @@ import static com.google.common.base.Strings.isNullOrEmpty;;
  * Can be used to execute a .sql script or multiple statements (without static data) at once.
  */
 public class ScriptParser {
-    private final String DELIMITER = ";";
+    private static final String DELIMITER = ";";
     private Statement stmt;
     
     /**
