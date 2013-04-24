@@ -3,6 +3,9 @@
 		<FormLayout/>
 	</Composite.layout>
 	<Composite x:Name="schemeComposite">
+		<Composite.layout>
+			<FillLayout/>
+		</Composite.layout>
 		<Composite.layoutData>
 			<FormData>
 				<FormData.bottom>

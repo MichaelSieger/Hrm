@@ -8,9 +8,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Tree;
-import org.eclipse.swt.widgets.TreeItem;
-
-import de.hswt.hrm.plant.model.GridImage;
 
 /**
  * This is the frame where new schemes can be created
@@ -19,8 +16,13 @@ import de.hswt.hrm.plant.model.GridImage;
  * 
  */
 public class SchemeBuilderFrame extends Composite {
+	
+	private static final int SCHEME_WIDTH = 40,
+							 SCHEME_HEIGHT = 20;
     
     private final Composite root;
+    
+    private final SchemeGrid grid;
 
     public SchemeBuilderFrame(Composite parent, int style) {
         super(parent, style);
@@ -35,6 +37,8 @@ public class SchemeBuilderFrame extends Composite {
             new TreeManager(getDisplay(), 
             				ImageTreeModelFactory.create(
             						getDisplay()), tree);
+            grid = new SchemeGrid(getSchemeComposite(), 
+            		SWT.NONE, SCHEME_WIDTH, SCHEME_HEIGHT);
         }
         catch (Throwable e) {
             throw new Error("Unable to load " + name, e);
@@ -44,6 +48,10 @@ public class SchemeBuilderFrame extends Composite {
 
     private Tree getTree() {
         return (Tree) XWT.findElementByName(root, "tree");
+    }
+    
+    private Composite getSchemeComposite(){
+    	return (Composite) XWT.findElementByName(root, "schemeComposite");
     }
 
 }

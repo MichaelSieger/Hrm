@@ -36,6 +36,7 @@ public class SchemeGrid extends Canvas{
         DropTarget dt = new DropTarget(this, SWT.NONE);
         dt.addDropListener(
         		new SchemeGridDropListener(this));
+      
     }
 
     private void draw(GC gc) {
