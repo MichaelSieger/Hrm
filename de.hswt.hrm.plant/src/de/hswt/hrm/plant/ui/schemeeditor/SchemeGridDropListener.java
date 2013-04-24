@@ -17,6 +17,7 @@ public class SchemeGridDropListener
 	@Override
 	public void dragEnter(DropTargetEvent ev) {
 		ev.operations = DND.DROP_COPY;
+		System.out.println("enter");
 	}
 
 	@Override

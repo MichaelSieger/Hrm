@@ -5,6 +5,8 @@ import java.net.URL;
 import org.eclipse.e4.xwt.IConstants;
 import org.eclipse.e4.xwt.XWT;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.dnd.DND;
+import org.eclipse.swt.dnd.DropTarget;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Tree;
@@ -18,7 +20,8 @@ import org.eclipse.swt.widgets.Tree;
 public class SchemeBuilderFrame extends Composite {
 	
 	private static final int SCHEME_WIDTH = 40,
-							 SCHEME_HEIGHT = 20;
+							 SCHEME_HEIGHT = 20,
+							 DROP_OPS = DND.DROP_COPY;
     
     private final Composite root;
     
@@ -39,6 +42,9 @@ public class SchemeBuilderFrame extends Composite {
             						getDisplay()), tree);
             grid = new SchemeGrid(getSchemeComposite(), 
             		SWT.NONE, SCHEME_WIDTH, SCHEME_HEIGHT);
+            DropTarget dt = new DropTarget(this, DROP_OPS);
+            dt.addDropListener(
+                    new SchemeGridDropListener(grid));
         }
         catch (Throwable e) {
             throw new Error("Unable to load " + name, e);
