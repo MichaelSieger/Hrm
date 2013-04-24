@@ -4,5 +4,8 @@ Bundle-Name: Ui
 Bundle-SymbolicName: de.hswt.hrm.place.ui
 Bundle-Version: 0.0.1.qualifier
 Require-Bundle: javax.annotation,
- javax.inject
+ javax.inject,
+ ch.qos.logback.classic;bundle-version="1.0.0",
+ ch.qos.logback.core;bundle-version="1.0.0",
+ org.slf4j.api;bundle-version="1.6.4"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7

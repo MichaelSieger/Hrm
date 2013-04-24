@@ -1,0 +1,15 @@
+<Composite xmlns="http://www.eclipse.org/xwt/presentation"
+	xmlns:x="http://www.eclipse.org/xwt" xmlns:p1="clr-namespace:de.hswt.hrm.place.ui.xwt"
+	x:Class="de.hswt.hrm.place.ui.event.PlaceEventHandler">
+	<Composite.layout>
+		<GridLayout />
+	</Composite.layout>
+	<Text x:name="searchText" x:Style="SEARCH" text="Suche (Vorname,Nachname,Stadt)"
+		FocusOutEvent="onFocusOut" FocusInEvent="onFocusIn" KeyUpEvent="onKeyUp" />
+	<TableViewer x:name="placeTable" x:Style="BORDER">
+		<TableViewer.table headerVisible="true"
+			linesVisible="true" />
+	</TableViewer>
+	<Button x:name="addPlace" text="Standort Hinzufügen"
+		SelectionEvent="onSelection" />
+</Composite>
