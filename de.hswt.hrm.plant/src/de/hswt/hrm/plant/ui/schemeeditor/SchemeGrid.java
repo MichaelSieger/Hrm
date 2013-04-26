@@ -133,11 +133,19 @@ public class SchemeGrid extends Canvas{
         return quads.length;
     }
 
-    public void setImageAt(GridImage image, int x, int y) {
+    public void setImageAt(GridImage image, int x, int y) throws PlaceOccupiedException {
         checkArgument(x >= 0 && x < getGridWidth());
         checkArgument(y >= 0 && y < getGridHeight());
         final int w = image.getWidth();
         final int h = image.getHeight();
+        for(int i = 0; i < h; i++){
+            for(int j = 0; j < w; j++){
+                if(quads[y + i][x + j] != null) {
+                    throw new PlaceOccupiedException(String.format("Place is already occupied (%d,%d)", 
+                                                                     x + j, y + i));
+                }
+            }
+        }
         for (int i = y; i < y + h; i++) {
             for (int j = x; j < x + w; j++) {
                 quads[i][j] = image;
@@ -146,7 +154,7 @@ public class SchemeGrid extends Canvas{
         this.redraw();
     }
     
-    public void setImageAtPixel(GridImage image, int x, int y){
+    public void setImageAtPixel(GridImage image, int x, int y) throws PlaceOccupiedException{
         setImageAt(image, Math.round(((float)x)/getQuadWidth()), Math.round(((float)y)/getQuadHeight()));
     }
 
