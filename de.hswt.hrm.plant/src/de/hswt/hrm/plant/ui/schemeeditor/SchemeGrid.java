@@ -1,8 +1,6 @@
 package de.hswt.hrm.plant.ui.schemeeditor;
 
 
-import org.eclipse.swt.dnd.DND;
-import org.eclipse.swt.dnd.DropTarget;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.GC;
@@ -12,6 +10,8 @@ import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 
 import de.hswt.hrm.plant.model.GridImage;
+
+import static com.google.common.base.Preconditions.*;
 
 /**
  * A Widget that displays scheme parts in a grid.
@@ -65,8 +65,8 @@ public class SchemeGrid extends Canvas{
         final float quadW = getQuadWidth();
         final float quadH = getQuadHeight();
         Rectangle rec = image.getBounds();
-        gc.drawImage(image, 0, 0, rec.x, rec.y, Math.round(quadW * x), Math.round(quadH * y),
-                Math.round(quadW * w), Math.round(quadH));
+        gc.drawImage(image, 0, 0, rec.width, rec.height, Math.round(quadW * x), Math.round(quadH * y),
+                Math.round(quadW * w), Math.round(quadH * h));
     }
 
     private void fillTrue(boolean[][] arr, int x, int y, int w, int h) {
@@ -133,7 +133,9 @@ public class SchemeGrid extends Canvas{
         return quads.length;
     }
 
-    public void setPartAt(GridImage image, int x, int y) {
+    public void setImageAt(GridImage image, int x, int y) {
+        checkArgument(x >= 0 && x < getGridWidth());
+        checkArgument(y >= 0 && y < getGridHeight());
         final int w = image.getWidth();
         final int h = image.getHeight();
         for (int i = y; i < y + h; i++) {
@@ -141,6 +143,11 @@ public class SchemeGrid extends Canvas{
                 quads[i][j] = image;
             }
         }
+        this.redraw();
+    }
+    
+    public void setImageAtPixel(GridImage image, int x, int y){
+        setImageAt(image, Math.round(((float)x)/getQuadWidth()), Math.round(((float)y)/getQuadHeight()));
     }
 
 }
