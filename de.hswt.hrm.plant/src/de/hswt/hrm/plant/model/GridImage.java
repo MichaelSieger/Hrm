@@ -1,5 +1,7 @@
 package de.hswt.hrm.plant.model;
 
+import java.io.Serializable;
+
 import org.eclipse.swt.graphics.Image;
 
 /**
@@ -10,8 +12,12 @@ import org.eclipse.swt.graphics.Image;
  * @author Michael Sieger
  * 
  */
-public class GridImage {
+public class GridImage 
+    implements Serializable
+{
 
+    private static final long serialVersionUID = 2906158433227663863L;
+    
     private Image renderedImage;
     private int width, height; // Size in grid units
     private int primaryKey;

@@ -110,6 +110,7 @@ public class SchemeGrid extends Canvas{
             final int y = Math.round(i * quadH);
             gc.drawLine(0, y, rec.width, y);
         }
+        gc.drawLine(0, rec.height-1, rec.width, rec.height-1);
     }
 
     private void drawVerticalLines(GC gc) {
@@ -119,6 +120,7 @@ public class SchemeGrid extends Canvas{
             final int x = Math.round(i * quadW);
             gc.drawLine(x, 0, x, rec.height);
         }
+        gc.drawLine(rec.width-1, 0, rec.width-1, rec.height);
     }
 
     private float getQuadWidth() {
@@ -131,6 +133,7 @@ public class SchemeGrid extends Canvas{
 
     /**
      * The image is placed at the given grid position.
+     * Throws an IllegalArgumentException if the image is outside of the grid
      * 
      * @param image
      * @param x
@@ -140,8 +143,8 @@ public class SchemeGrid extends Canvas{
     public void setImageAt(GridImage image, int x, int y) throws PlaceOccupiedException {
         final int w = image.getWidth();
         final int h = image.getHeight();
-        checkArgument(x >= 0 && x + w < width);
-        checkArgument(y >= 0 && y + h < height);
+        checkArgument(x >= 0 && x + w <= width);
+        checkArgument(y >= 0 && y + h <= height);
         GridImageContainer toInsert = new GridImageContainer(image, x, y);
         for(GridImageContainer c : images){
             if(c.intersects(toInsert)){
