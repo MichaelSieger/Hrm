@@ -1,6 +1,9 @@
 package de.hswt.hrm.plant.ui.schemeeditor;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.GC;
@@ -21,13 +24,54 @@ import static com.google.common.base.Preconditions.*;
  */
 public class SchemeGrid extends Canvas{
     
-   
-
-    private final GridImage[][] quads;
-
+    private static class GridImageContainer{
+        GridImage image;
+        int x, y;
+        public GridImageContainer(GridImage image, int x, int y) {
+            super();
+            this.image = image;
+            this.x = x;
+            this.y = y;
+        }
+        
+        /**
+         * Returns true if the image intersects the other image.
+         * 
+         * @param o
+         * @return
+         */
+        boolean intersects(GridImageContainer o){
+            //TODO some better implementation
+            final int w1 = image.getWidth();
+            final int h1 = image.getHeight();
+            final int w2 = o.image.getWidth();
+            final int h2 = o.image.getHeight();
+            for(int i = 0; i < w1; i++){
+                for(int j = 0; j < h1; j++){
+                    for(int k = 0; k < h2; k++){
+                        for(int n = 0; n < w2; n++){
+                            final int x1 = j + x;
+                            final int y1 = i + y;
+                            final int x2 = n + o.x;
+                            final int y2 = k + o.y;
+                            if(x1 == x2 && y1 == y2){
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+            return false;
+        }
+    }
+    
+    private final List<GridImageContainer> images = new ArrayList<>();
+    private final int width, height;
+    
     public SchemeGrid(Composite parent, int style, int width, int height) {
         super(parent, style);
-        quads = new GridImage[height][width];
+        this.width = width;
+        this.height = height;
         super.addPaintListener(new PaintListener() {
 
             @Override
@@ -45,63 +89,24 @@ public class SchemeGrid extends Canvas{
     }
 
     private void drawImages(GC gc) {
-        final int w = getGridWidth();
-        final int h = getGridHeight();
-        boolean[][] drawn = new boolean[h][w];
-        for (int i = 0; i < h; i++) {
-            for (int j = 0; j < w; j++) {
-                if (!drawn[i][j] && quads[i][j] != null) {
-                    final int imgW = getImageSpanWidth(j, i);
-                    final int imgH = getImageSpanHeight(j, i);
-                    drawImage(gc, quads[i][j], j, i, imgW, imgH);
-                    fillTrue(drawn, j, i, imgW, imgH);
-                }
-            }
+        for(GridImageContainer container : images){
+            drawImage(gc, container.image, container.x, container.y);
         }
     }
 
-    private void drawImage(GC gc, GridImage gridImage, int x, int y, int w, int h) {
+    private void drawImage(GC gc, GridImage gridImage, int x, int y) {
         Image image = gridImage.getRenderedImage();
         final float quadW = getQuadWidth();
         final float quadH = getQuadHeight();
         Rectangle rec = image.getBounds();
         gc.drawImage(image, 0, 0, rec.width, rec.height, Math.round(quadW * x), Math.round(quadH * y),
-                Math.round(quadW * w), Math.round(quadH * h));
-    }
-
-    private void fillTrue(boolean[][] arr, int x, int y, int w, int h) {
-        for (int i = 0; i < h; i++) {
-            for (int j = 0; j < w; j++) {
-                arr[i + y][j + x] = true;
-            }
-        }
-    }
-
-    private int getImageSpanWidth(int x, int y) {
-        GridImage img = quads[y][x];
-        final int w = getGridWidth();
-        int i = x;
-        while (i < w && quads[y][i] == img) {
-            i++;
-        }
-        return i - x;
-    }
-
-    private int getImageSpanHeight(int x, int y) {
-        GridImage img = quads[y][x];
-        final int h = getGridHeight();
-        int i = y;
-        while (i < h && quads[i][x] == img) {
-            i++;
-        }
-        return i - y;
+                Math.round(quadW * gridImage.getWidth()), Math.round(quadH * gridImage.getHeight()));
     }
 
     private void drawHorizontalLines(GC gc) {
         Rectangle rec = this.getBounds();
-        final int h = getGridHeight();
         final float quadH = getQuadHeight();
-        for (int i = 0; i < h; i++) {
+        for (int i = 0; i < height; i++) {
             final int y = Math.round(i * quadH);
             gc.drawLine(0, y, rec.width, y);
         }
@@ -109,48 +114,33 @@ public class SchemeGrid extends Canvas{
 
     private void drawVerticalLines(GC gc) {
         Rectangle rec = this.getBounds();
-        final int w = getGridWidth();
         final float quadW = getQuadWidth();
-        for (int i = 0; i < w; i++) {
+        for (int i = 0; i < width; i++) {
             final int x = Math.round(i * quadW);
             gc.drawLine(x, 0, x, rec.height);
         }
     }
 
     private float getQuadWidth() {
-        return ((float) getBounds().width) / getGridWidth();
+        return ((float) getBounds().width) / width;
     }
 
     private float getQuadHeight() {
-        return ((float) getBounds().height) / getGridHeight();
-    }
-
-    private int getGridWidth() {
-        return quads[0].length;
-    }
-
-    private int getGridHeight() {
-        return quads.length;
+        return ((float) getBounds().height) / height;
     }
 
     public void setImageAt(GridImage image, int x, int y) throws PlaceOccupiedException {
-        checkArgument(x >= 0 && x < getGridWidth());
-        checkArgument(y >= 0 && y < getGridHeight());
         final int w = image.getWidth();
         final int h = image.getHeight();
-        for(int i = 0; i < h; i++){
-            for(int j = 0; j < w; j++){
-                if(quads[y + i][x + j] != null) {
-                    throw new PlaceOccupiedException(String.format("Place is already occupied (%d,%d)", 
-                                                                     x + j, y + i));
-                }
+        checkArgument(x >= 0 && x + w < width);
+        checkArgument(y >= 0 && y + h < height);
+        GridImageContainer toInsert = new GridImageContainer(image, x, y);
+        for(GridImageContainer c : images){
+            if(c.intersects(toInsert)){
+                throw new PlaceOccupiedException("The image intersects with an image that is already there");
             }
         }
-        for (int i = y; i < y + h; i++) {
-            for (int j = x; j < x + w; j++) {
-                quads[i][j] = image;
-            }
-        }
+        images.add(toInsert);
         this.redraw();
     }
     
