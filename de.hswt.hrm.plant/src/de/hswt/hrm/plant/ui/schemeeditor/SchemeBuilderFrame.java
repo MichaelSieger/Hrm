@@ -22,8 +22,7 @@ import org.eclipse.swt.widgets.Tree;
 public class SchemeBuilderFrame extends Composite {
 	
 	private static final int SCHEME_WIDTH = 40,
-							 SCHEME_HEIGHT = 20,
-							 DROP_OPS = DND.DROP_COPY;
+							 SCHEME_HEIGHT = 20;
     
     private final Composite root;
     
@@ -44,10 +43,7 @@ public class SchemeBuilderFrame extends Composite {
             						getDisplay()), tree);
             grid = new SchemeGrid(getSchemeComposite(), 
             		SWT.NONE, SCHEME_WIDTH, SCHEME_HEIGHT);
-            DropTarget dt = new DropTarget(grid, DROP_OPS);
-            dt.setTransfer(new Transfer[]{TextTransfer.getInstance()});
-            dt.addDropListener(
-                    new SchemeGridDropListener(grid));
+            new DNDManager(this);
         }
         catch (Throwable e) {
             throw new Error("Unable to load " + name, e);
@@ -55,12 +51,16 @@ public class SchemeBuilderFrame extends Composite {
 
     }
 
-    private Tree getTree() {
+    protected Tree getTree() {
         return (Tree) XWT.findElementByName(root, "tree");
     }
     
     private Composite getSchemeComposite(){
     	return (Composite) XWT.findElementByName(root, "schemeComposite");
+    }
+    
+    protected SchemeGrid getGrid(){
+        return (SchemeGrid) getSchemeComposite().getChildren()[0];
     }
 
 }

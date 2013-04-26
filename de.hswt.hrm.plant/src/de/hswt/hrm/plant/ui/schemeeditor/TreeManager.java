@@ -1,6 +1,7 @@
 package de.hswt.hrm.plant.ui.schemeeditor;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.dnd.ByteArrayTransfer;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DragSource;
 import org.eclipse.swt.dnd.DragSourceEvent;
@@ -16,8 +17,6 @@ import org.eclipse.swt.widgets.TreeItem;
 import de.hswt.hrm.plant.model.GridImage;
 
 public class TreeManager {
-
-    private static final int DRAG_OPS = DND.DROP_COPY;
     
     private static final int THUMBNAIL_GRID_SIZE = 10;
 
@@ -39,30 +38,6 @@ public class TreeManager {
 			TreeItem item = new TreeItem(tree, SWT.NONE);
 			item.setImage(getThumbnail(img));
 			item.setData(img);
-			DragSource src = new DragSource(tree, DRAG_OPS);
-			src.setTransfer(new Transfer[]{
-			        TextTransfer.getInstance()
-			});
-			src.addDragListener(new DragSourceListener() {
-                
-                @Override
-                public void dragStart(DragSourceEvent ev) {
-                    //TreeItem item = tree.getSelection()[0];
-                    //ev.data = item.getData();
-                }
-                
-                @Override
-                public void dragSetData(DragSourceEvent arg0) {
-                    // TODO Auto-generated method stub
-                    
-                }
-                
-                @Override
-                public void dragFinished(DragSourceEvent arg0) {
-                    // TODO Auto-generated method stub
-                    
-                }
-            });
 		}
 	}
 
