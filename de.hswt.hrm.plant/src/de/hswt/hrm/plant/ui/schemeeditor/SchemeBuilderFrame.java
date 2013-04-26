@@ -17,8 +17,8 @@ import org.eclipse.swt.widgets.Tree;
  */
 public class SchemeBuilderFrame extends Composite {
 	
-	private static final int SCHEME_WIDTH = 40,
-							 SCHEME_HEIGHT = 20;
+	private static final int SCHEME_WIDTH = 20,
+							 SCHEME_HEIGHT = 10;
     
     private final Composite root;
     
