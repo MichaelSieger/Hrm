@@ -17,7 +17,7 @@ import de.hswt.hrm.plant.model.GridImage;
 import static com.google.common.base.Preconditions.*;
 
 /**
- * A Widget that displays scheme parts in a grid.
+ * A Widget that displays components in a grid.
  * 
  * @author Michael Sieger
  * 
@@ -129,6 +129,14 @@ public class SchemeGrid extends Canvas{
         return ((float) getBounds().height) / height;
     }
 
+    /**
+     * The image is placed at the given grid position.
+     * 
+     * @param image
+     * @param x
+     * @param y
+     * @throws PlaceOccupiedException
+     */
     public void setImageAt(GridImage image, int x, int y) throws PlaceOccupiedException {
         final int w = image.getWidth();
         final int h = image.getHeight();
@@ -144,6 +152,15 @@ public class SchemeGrid extends Canvas{
         this.redraw();
     }
     
+    /**
+     * The image is placed at the given position in pixel.
+     * The image snaps to the nearest grid position.
+     * 
+     * @param image
+     * @param x
+     * @param y
+     * @throws PlaceOccupiedException
+     */
     public void setImageAtPixel(GridImage image, int x, int y) throws PlaceOccupiedException{
         setImageAt(image, Math.round(((float)x)/getQuadWidth()), Math.round(((float)y)/getQuadHeight()));
     }

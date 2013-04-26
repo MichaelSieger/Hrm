@@ -9,6 +9,13 @@ import org.eclipse.swt.widgets.TreeItem;
 
 import de.hswt.hrm.plant.model.GridImage;
 
+/**
+ * This class manages the TreeItems of a Tree that displays the GridImages.
+ * The GridImages are organized by their category.
+ * 
+ * @author Michael Sieger
+ *
+ */
 public class TreeManager {
     
     private static final int THUMBNAIL_GRID_SIZE = 10;

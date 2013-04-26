@@ -1,5 +1,11 @@
 package de.hswt.hrm.plant.ui.schemeeditor;
 
+/**
+ * This Exception is thrown if a place in the SchemeGrid is already occupied by another image.
+ * 
+ * @author Michael Sieger
+ *
+ */
 public class PlaceOccupiedException extends Exception{
 
     private static final long serialVersionUID = 1783878305645670087L;

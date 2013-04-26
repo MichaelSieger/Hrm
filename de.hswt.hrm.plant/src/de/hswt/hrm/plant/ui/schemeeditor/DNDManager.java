@@ -1,5 +1,7 @@
 package de.hswt.hrm.plant.ui.schemeeditor;
 
+import java.awt.Toolkit;
+
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DragSource;
 import org.eclipse.swt.dnd.DragSourceEvent;
@@ -15,6 +17,12 @@ import org.eclipse.swt.widgets.TreeItem;
 
 import de.hswt.hrm.plant.model.GridImage;
 
+/**
+ * This class manages the drag and drop in SchemeBuilderFrame 
+ * 
+ * @author Michael Sieger
+ *
+ */
 public class DNDManager {
     
     private static final int DRAG_OPS = DND.DROP_COPY,
@@ -44,7 +52,13 @@ public class DNDManager {
                     public void drop(DropTargetEvent ev) {
                         SchemeGrid grid = frame.getGrid();
                         Point loc = grid.toDisplay(0, 0);
-                        frame.getGrid().setImageAtPixel(dragging, ev.x-loc.x, ev.y-loc.y);
+                        try {
+                            frame.getGrid().setImageAtPixel(dragging, ev.x-loc.x, ev.y-loc.y);
+                        }
+                        catch (PlaceOccupiedException e) {
+                            e.printStackTrace();
+                            Toolkit.getDefaultToolkit().beep();
+                        }
                     }
                     
                     @Override
