@@ -2,6 +2,8 @@ package de.hswt.hrm.plant.model;
 
 import java.util.Date;
 
+import com.google.common.base.Optional;
+
 /**
  * Data class for a specific plant. Contains the representation of the plant and other data, like
  * name, location, next inspection etc.
@@ -20,8 +22,8 @@ public class Plant {
     // missing: inspections, which have been in the past
 
     // optional:
-    private String manufacturer;
-    private Integer constYear; // year of construction
+    private Optional<String> manufacturer;
+    private Optional<Integer> constYear; // year of construction
 
     // Getters and setters:
     public SchemePart[] getComposition() {
@@ -80,19 +82,19 @@ public class Plant {
         this.techData = techData;
     }
 
-    public String getManufacturer() {
+    public Optional<String> getManufacturer() {
         return manufacturer;
     }
 
-    public void setManufacturer(String manufacturer) {
+    public void setManufacturer(Optional<String> manufacturer) {
         this.manufacturer = manufacturer;
     }
 
-    public Integer getConstYear() {
+    public Optional<Integer> getConstYear() {
         return constYear;
     }
 
-    public void setConstYear(Integer constYear) {
+    public void setConstYear(Optional<Integer> constYear) {
         this.constYear = constYear;
     }
 

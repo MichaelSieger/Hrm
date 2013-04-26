@@ -6,6 +6,7 @@ import java.io.IOException;
 import de.hswt.hrm.plantimagemigration.converter.Converter;
 import de.hswt.hrm.plantimagemigration.converter.DVIConverter;
 import de.hswt.hrm.plantimagemigration.converter.PdfConverter;
+import de.hswt.hrm.plantimagemigration.converter.TransPdfConverter;
 /**
  * This class handles the conversion process from the latex files to svg. It creates a number of
  * folders each one containing the intermediate step. The last one contains the resulting svg.
@@ -19,6 +20,7 @@ public class PSLatex2PDFConverter {
     private static final String DECONTEXT_FOLDER = "1";
     private static final String DVI_FOLDER = "2";
     private static final String PDF_FOLDER = "3";
+    private static final String TRANS_PDF_FOLDER = "4";
     private static final String TMP_FOLDER = "tmp";
 
     private String dir;
@@ -31,6 +33,7 @@ public class PSLatex2PDFConverter {
 
         doStep(new DVIConverter(getDVIFolder(), getDecontextFolder(), getTmpFolder()));
         doStep(new PdfConverter(getPDFFolder(), getDVIFolder(), getTmpFolder()));
+        doStep(new TransPdfConverter(getTransPdfFolder(),getPDFFolder(), getTmpFolder()));
         deleteDir(getTmpFolder());
     }
 
@@ -90,7 +93,7 @@ public class PSLatex2PDFConverter {
 
     private File[] getResultFolders() {
         return new File[] { getDecontextFolder(), getTmpFolder(), getDVIFolder(),
-                getPDFFolder() };
+                getPDFFolder(), getTransPdfFolder() };
     }
 
     private File getPDFFolder(){
@@ -107,5 +110,9 @@ public class PSLatex2PDFConverter {
 
     private File getDecontextFolder() {
         return new File(dir, DECONTEXT_FOLDER);
+    }
+
+    public File getTransPdfFolder() {
+        return new File(dir, TRANS_PDF_FOLDER);
     }
 }
