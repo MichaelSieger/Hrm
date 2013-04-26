@@ -165,7 +165,7 @@ public class SchemeGrid extends Canvas{
      * @throws PlaceOccupiedException
      */
     public void setImageAtPixel(GridImage image, int x, int y) throws PlaceOccupiedException{
-        setImageAt(image, Math.round(((float)x)/getQuadWidth()), Math.round(((float)y)/getQuadHeight()));
+        setImageAt(image, (int)(((float)x)/getQuadWidth()), (int)(((float)y)/getQuadHeight()));
     }
 
 }
