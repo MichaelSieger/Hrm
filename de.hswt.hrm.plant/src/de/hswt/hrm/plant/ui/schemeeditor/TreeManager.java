@@ -38,6 +38,7 @@ public class TreeManager {
 		for(GridImage img : model.getImages()){
 			TreeItem item = new TreeItem(tree, SWT.NONE);
 			item.setImage(getThumbnail(img));
+			item.setData(img);
 			DragSource src = new DragSource(tree, DRAG_OPS);
 			src.setTransfer(new Transfer[]{
 			        TextTransfer.getInstance()
@@ -45,9 +46,9 @@ public class TreeManager {
 			src.addDragListener(new DragSourceListener() {
                 
                 @Override
-                public void dragStart(DragSourceEvent arg0) {
-                    // TODO Auto-generated method stub
-                    
+                public void dragStart(DragSourceEvent ev) {
+                    //TreeItem item = tree.getSelection()[0];
+                    //ev.data = item.getData();
                 }
                 
                 @Override

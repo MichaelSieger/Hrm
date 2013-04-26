@@ -16,13 +16,12 @@ public class SchemeGridDropListener
 
 	@Override
 	public void dragEnter(DropTargetEvent ev) {
-		ev.operations = DND.DROP_COPY;
-		System.out.println("enter");
+		ev.detail = DND.DROP_COPY;
 	}
 
 	@Override
 	public void dragLeave(DropTargetEvent ev) {
-		ev.operations = DND.DROP_NONE;
+		ev.detail = DND.DROP_NONE;
 	}
 
 	@Override

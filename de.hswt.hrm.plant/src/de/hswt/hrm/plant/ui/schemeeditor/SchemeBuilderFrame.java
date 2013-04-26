@@ -7,6 +7,8 @@ import org.eclipse.e4.xwt.XWT;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DropTarget;
+import org.eclipse.swt.dnd.TextTransfer;
+import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Tree;
@@ -42,7 +44,8 @@ public class SchemeBuilderFrame extends Composite {
             						getDisplay()), tree);
             grid = new SchemeGrid(getSchemeComposite(), 
             		SWT.NONE, SCHEME_WIDTH, SCHEME_HEIGHT);
-            DropTarget dt = new DropTarget(this, DROP_OPS);
+            DropTarget dt = new DropTarget(grid, DROP_OPS);
+            dt.setTransfer(new Transfer[]{TextTransfer.getInstance()});
             dt.addDropListener(
                     new SchemeGridDropListener(grid));
         }
