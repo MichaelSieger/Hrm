@@ -1,0 +1,60 @@
+<Composite xmlns="http://www.eclipse.org/xwt/presentation" xmlns:x="http://www.eclipse.org/xwt" x:Class="de.hswt.hrm.contact.ui.wizard.ContactWizardWindow" xmlns:p1="clr-namespace:org.eclipse.ui.forms.widgets">
+	<Composite.layout>
+		<GridLayout numColumns="2"/>
+	</Composite.layout>
+	<Section text="Pflichtfelder" x:Style="(p1:Section).EXPANDED | (p1:Section).TITLE_BAR" x:Name="Mandatory">
+		<Section.layoutData>
+			<GridData grabExcessHorizontalSpace="true" widthHint="277" horizontalAlignment="FILL" horizontalSpan="2"/>
+		</Section.layoutData>
+		<Section.client>
+			<Composite>
+				<Composite.layout>
+					<GridLayout numColumns="2"/>
+				</Composite.layout>
+				<Label text="Name :"/>
+				<Text x:Style="BORDER" x:Name="name">
+					<Text.layoutData>
+						<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
+					</Text.layoutData>
+				</Text>
+				<Label text="Strasse"/>
+				<Text x:Style="BORDER" x:Name="street">
+					<Text.layoutData>
+						<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
+					</Text.layoutData>
+				</Text>
+				<Label text="Strassennr. :"/>
+				<Text x:Style="BORDER" x:Name="streetNumber">
+					<Text.layoutData>
+						<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL" verticalAlignment="BOTTOM"/>
+					</Text.layoutData>
+				</Text>
+				<Label text="PLZ : "/>
+				<Text x:Style="BORDER" x:Name="zipCode">
+					<Text.layoutData>
+						<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
+					</Text.layoutData>
+				</Text>
+				<Label text="Stadt :"/>
+				<Text x:Style="BORDER" x:Name="city">
+					<Text.layoutData>
+						<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
+					</Text.layoutData>
+				</Text>
+				<Label text="Ort :"/>
+				<Text x:Style="BORDER" x:Name="location">
+					<Text.layoutData>
+						<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
+					</Text.layoutData>
+				</Text>
+				<Label text="Areal :"/>
+				<Text x:Style="BORDER" x:Name="area">
+					<Text.layoutData>
+						<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
+					</Text.layoutData>
+				</Text>
+			</Composite>
+		</Section.client>
+	</Section>
+</Composite>
+<!-- Forms API -->
