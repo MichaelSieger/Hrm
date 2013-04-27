@@ -30,5 +30,12 @@
          version="0.0.0"
          unpack="false"/>
 
-   
+   <plugin
+         id="de.hswt.hrm.log.config"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         fragment="true"
+         unpack="false"/>
+
 </feature>
