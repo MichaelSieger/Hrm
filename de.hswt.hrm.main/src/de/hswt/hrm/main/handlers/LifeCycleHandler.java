@@ -4,7 +4,7 @@ import org.eclipse.e4.ui.workbench.lifecycle.PostContextCreate;
 
 import de.hswt.hrm.common.Hrm;
 
-public class StartupHandler {
+public class LifeCycleHandler {
 
     /*
      * This method is called before the Eclipse Context is created and therefore before the GUI is

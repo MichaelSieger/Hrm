@@ -21,9 +21,8 @@
          </property>
           <property
            name="lifeCycleURI"
-           value="bundleclass://de.hswt.hrm.main/de.hswt.hrm.main.handlers.StartupHandler">
+           value="bundleclass://de.hswt.hrm.main/de.hswt.hrm.main.handlers.LifeCycleHandler">
          </property>
       </product>
    </extension>
-
 </plugin>
