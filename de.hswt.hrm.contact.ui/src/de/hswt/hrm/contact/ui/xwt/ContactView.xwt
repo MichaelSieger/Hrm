@@ -4,8 +4,8 @@
 	<Composite.layout>
 		<GridLayout />
 	</Composite.layout>
-	<Text x:name="searchText" x:Style="SEARCH" text="Suche (Vorname,Nachname,Stadt)"
-		FocusOutEvent="onFocusOut" FocusInEvent="onFocusIn" KeyUpEvent="onKeyUp" />
+	<Text x:name="searchText" x:Style="SEARCH"
+		FocusOutEvent="onFocusOut" KeyUpEvent="onKeyUp" />
 	<TableViewer x:name="contactTable" x:Style="BORDER">
 		<TableViewer.table headerVisible="true"
 			linesVisible="true" />

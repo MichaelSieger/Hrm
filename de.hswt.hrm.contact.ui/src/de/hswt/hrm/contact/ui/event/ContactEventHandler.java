@@ -15,15 +15,11 @@ public class ContactEventHandler {
     public void onFocusOut(Event event) {
 
         Text text = (Text) event.widget;
-        text.setText("Suche (Nachname,Vorname,Stadt)");
+        if (text.getText().isEmpty()) {
+            text.setText("");
+        }
         TableViewer tf = (TableViewer) XWT.findElementByName(text, "contactTable");
         tf.refresh();
-
-    }
-
-    public void onFocusIn(Event event) {
-        Text text = (Text) event.widget;
-        text.setText("");
 
     }
 
