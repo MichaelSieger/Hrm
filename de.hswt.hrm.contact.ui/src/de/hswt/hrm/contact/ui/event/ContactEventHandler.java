@@ -12,8 +12,8 @@ import de.hswt.hrm.contact.ui.wizard.ContactWizard;
 
 public class ContactEventHandler {
 
-    private final String DEFAULT_SEARCH_STRING = "Suche";
-    private final String EMPTY = "";
+    private static final String DEFAULT_SEARCH_STRING = "Suche";
+    private static final String EMPTY = "";
 
     public void onFocusOut(Event event) {
 
