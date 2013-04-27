@@ -24,7 +24,7 @@ public class PlaceWizardPageOne extends WizardPage {
 
     private String createDiscription() {
         StringBuffer sb = new StringBuffer();
-        sb.append("Neuen Standort hinzufügen");
+        sb.append("Neuen Standort hinzufï¿½gen");
         return sb.toString();
     }
 
