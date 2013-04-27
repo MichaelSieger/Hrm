@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Pdfrenderer
+Bundle-SymbolicName: de.hswt.hrm.pdfrenderer
+Bundle-Version: 0.0.1.qualifier
+Bundle-ClassPath: PDFRenderer-0.9.1.jar
+Export-Package: com.sun.pdfview,
+ com.sun.pdfview.action,
+ com.sun.pdfview.colorspace,
+ com.sun.pdfview.decode,
+ com.sun.pdfview.decrypt,
+ com.sun.pdfview.font,
+ com.sun.pdfview.font.ttf,
+ com.sun.pdfview.function,
+ com.sun.pdfview.pattern,
+ test
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
