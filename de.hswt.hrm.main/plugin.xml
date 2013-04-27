@@ -19,6 +19,10 @@
                name="appName"
                value="de.hswt.hrm.main">
          </property>
+          <property
+           name="lifeCycleURI"
+           value="bundleclass://de.hswt.hrm.main/de.hswt.hrm.main.handlers.StartupHandler">
+         </property>
       </product>
    </extension>
 
