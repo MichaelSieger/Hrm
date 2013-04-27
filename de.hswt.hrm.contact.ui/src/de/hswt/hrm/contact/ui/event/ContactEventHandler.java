@@ -12,11 +12,14 @@ import de.hswt.hrm.contact.ui.wizard.ContactWizard;
 
 public class ContactEventHandler {
 
+    private final String DEFAULT_SEARCH_STRING = "Suche";
+    private final String EMPTY = "";
+
     public void onFocusOut(Event event) {
 
         Text text = (Text) event.widget;
         if (text.getText().isEmpty()) {
-            text.setText("");
+            text.setText(DEFAULT_SEARCH_STRING);
         }
         TableViewer tf = (TableViewer) XWT.findElementByName(text, "contactTable");
         tf.refresh();
@@ -36,6 +39,14 @@ public class ContactEventHandler {
         ContactFilter f = (ContactFilter) tf.getFilters()[0];
         f.setSearchString(searchText.getText());
         tf.refresh();
+
+    }
+
+    public void onFocusIn(Event event) {
+        Text text = (Text) event.widget;
+        if (text.getText().equals(DEFAULT_SEARCH_STRING)) {
+            text.setText(EMPTY);
+        }
 
     }
 }
