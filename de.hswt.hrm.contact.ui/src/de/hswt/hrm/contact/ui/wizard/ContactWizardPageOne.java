@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import org.eclipse.e4.xwt.IConstants;
 import org.eclipse.e4.xwt.XWT;
+import org.eclipse.e4.xwt.forms.XWTForms;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
@@ -14,6 +15,7 @@ import org.eclipse.swt.widgets.Text;
 public class ContactWizardPageOne extends WizardPage {
 	
 	private Composite container;
+
 
     protected ContactWizardPageOne(String pageName) {
         super(pageName);
@@ -30,16 +32,14 @@ public class ContactWizardPageOne extends WizardPage {
     public void createControl(Composite parent) {
     	
     	URL url = ContactWizardPageOne.class.getClassLoader().getResource(
-                  "de/hswt/hrm/contact/ui/xwt/ContactWizardWindow" + IConstants.XWT_EXTENSION_SUFFIX);
-    	
+                "de/hswt/hrm/contact/ui/xwt/ContactWizardWindow" + IConstants.XWT_EXTENSION_SUFFIX);
     	try {
-			container = (Composite) XWT.load(parent, url);
+    		container = (Composite) XWTForms.load(parent, url);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-        setKeyListener();
+    	setKeyListener();
         setControl(container);
         setPageComplete(false);
     }
