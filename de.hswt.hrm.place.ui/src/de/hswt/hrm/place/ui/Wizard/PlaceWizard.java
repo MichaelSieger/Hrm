@@ -51,8 +51,6 @@ public class PlaceWizard extends Wizard {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	
-       
         return true;
     }
 
