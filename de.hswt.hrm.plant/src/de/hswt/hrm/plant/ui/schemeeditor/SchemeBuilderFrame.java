@@ -39,6 +39,7 @@ public class SchemeBuilderFrame extends Composite {
             grid = new SchemeGrid(getSchemeComposite(), 
             		SWT.NONE, SCHEME_WIDTH, SCHEME_HEIGHT);
             new TreeDNDManager(this);
+            new GridDNDManager(grid);
         }
         catch (Throwable e) {
             throw new Error("Unable to load " + name, e);
