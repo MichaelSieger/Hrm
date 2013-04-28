@@ -12,10 +12,10 @@ import de.hswt.hrm.contact.model.Contact;
 import de.hswt.hrm.contact.service.ContactService;
 
 public class ContactWizard extends Wizard {
-    private ContactWizardPageOne one;
+    private ContactWizardPageOne first;
 
     public ContactWizard(Contact c) {
-        one = new ContactWizardPageOne("First Page", c);
+        first = new ContactWizardPageOne("First Page", c);
         setWindowTitle("Neuen Kontakt hinzufügen");
 
     }
@@ -23,18 +23,18 @@ public class ContactWizard extends Wizard {
     @Override
     public void addPages() {
 
-        addPage(one);
+        addPage(first);
     }
 
     @Override
     public boolean canFinish() {
-        return one.isPageComplete();
+        return first.isPageComplete();
     }
 
     @Override
     public boolean performFinish() {
 
-        if (one.getContact() == null) {
+        if (first.getContact() == null) {
             return insertNewContact();
         }
 
@@ -49,7 +49,7 @@ public class ContactWizard extends Wizard {
         Contact c = null;
 
         try {
-            c = ContactService.findById(one.getContact().getId());
+            c = ContactService.findById(first.getContact().getId());
 
         }
         catch (DatabaseException e1) {
@@ -57,7 +57,7 @@ public class ContactWizard extends Wizard {
             e1.printStackTrace();
         }
 
-        HashMap<String, Text> mandatoryWidgets = one.getMandatoryWidgets();
+        HashMap<String, Text> mandatoryWidgets = first.getMandatoryWidgets();
         String firstName = mandatoryWidgets.get("firstName").getText();
         String lastName = mandatoryWidgets.get("lastName").getText();
         String street = mandatoryWidgets.get("street").getText();
@@ -72,7 +72,7 @@ public class ContactWizard extends Wizard {
         c.setCity(city);
         c.setPostCode(zipCode);
 
-        HashMap<String, Text> optionalWidgets = one.getOptionalWidgets();
+        HashMap<String, Text> optionalWidgets = first.getOptionalWidgets();
         String shortcut = optionalWidgets.get("shortcut").getText();
         String phone = optionalWidgets.get("phone").getText();
         String fax = optionalWidgets.get("fax").getText();
@@ -102,7 +102,7 @@ public class ContactWizard extends Wizard {
     }
 
     private boolean insertNewContact() {
-        HashMap<String, Text> mandatoryWidgets = one.getMandatoryWidgets();
+        HashMap<String, Text> mandatoryWidgets = first.getMandatoryWidgets();
         String firstName = mandatoryWidgets.get("firstName").getText();
         String lastName = mandatoryWidgets.get("lastName").getText();
         String street = mandatoryWidgets.get("street").getText();
@@ -112,7 +112,7 @@ public class ContactWizard extends Wizard {
 
         Contact newContact = new Contact(lastName, firstName, street, streetNumber, zipCode, city);
 
-        HashMap<String, Text> optionalWidgets = one.getOptionalWidgets();
+        HashMap<String, Text> optionalWidgets = first.getOptionalWidgets();
         String shortcut = optionalWidgets.get("shortcut").getText();
         String phone = optionalWidgets.get("phone").getText();
         String fax = optionalWidgets.get("fax").getText();
