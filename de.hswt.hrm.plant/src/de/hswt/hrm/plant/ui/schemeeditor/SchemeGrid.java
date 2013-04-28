@@ -10,6 +10,7 @@ import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
@@ -62,6 +63,13 @@ public class SchemeGrid extends Canvas{
                 }
             }
             return false;
+        }
+        
+        boolean intersects(Point p){
+        	return p.x >= x &&
+        			p.y >= y &&
+        			p.x < x + image.getGridImage().getWidth() &&
+        			p.y < y + image.getGridImage().getHeight();
         }
     }
     
@@ -130,6 +138,26 @@ public class SchemeGrid extends Canvas{
     private float getQuadHeight() {
         return ((float) getBounds().height) / height;
     }
+    
+    /**
+     * Coverts pixel position to grid position
+     * 
+     * @param x
+     * @return
+     */
+    private int getGridX(int x){
+    	return (int)(((float)x)/getQuadWidth());
+    }
+    
+    /**
+     * Coverts pixel position to grid position
+     * 
+     * @param x
+     * @return
+     */
+    private int getGridY(int y){
+    	return (int)(((float)y)/getQuadHeight());
+    }
 
     /**
      * The image is placed at the given grid position.
@@ -165,7 +193,43 @@ public class SchemeGrid extends Canvas{
      * @throws PlaceOccupiedException
      */
     public void setImageAtPixel(RenderedGridImage image, int x, int y) throws PlaceOccupiedException{
-        setImageAt(image, (int)(((float)x)/getQuadWidth()), (int)(((float)y)/getQuadHeight()));
+        setImageAt(image, getGridX(x), getGridY(y));
     }
+    
+    /**
+     * Removes and returns the image at the given grid position.
+     * Returns null if there is no image.
+     * 
+     * @param x
+     * @param y
+     * @return
+     */
+    public RenderedGridImage removeImage(int x, int y){
+    	Point p = new Point(x, y);
+    	RenderedGridImageContainer res = null;
+    	for(RenderedGridImageContainer cont : images){
+    		if(cont.intersects(p)){
+    			res = cont;
+    			break;
+    		}
+    	}
+    	if(res != null){
+    		images.remove(res);
+    		return res.image;
+    	}
+    	return null;
+    }
+
+    /**
+     * Removes and returns the image at the given pixel position
+     * Returns null if there is no image.
+     * 
+     * @param x
+     * @param y
+     * @return
+     */
+	public RenderedGridImage removeImagePixel(int x, int y) {
+		return removeImage(getGridX(x), getGridY(y));
+	}
 
 }
