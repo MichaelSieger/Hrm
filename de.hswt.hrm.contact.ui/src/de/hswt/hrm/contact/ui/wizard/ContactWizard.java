@@ -31,6 +31,24 @@ public class ContactWizard extends Wizard {
 
     @Override
     public boolean performFinish() {
+
+        if (one.getContact() == null) {
+            return insertNewContact();
+        }
+
+        else {
+            return editExistingCustomer();
+        }
+
+    }
+
+    private boolean editExistingCustomer() {
+
+        return false;
+
+    }
+
+    private boolean insertNewContact() {
         HashMap<String, Text> mandatoryWidgets = one.getMandatoryWidgets();
         String firstName = mandatoryWidgets.get("firstName").getText();
         String lastName = mandatoryWidgets.get("lastName").getText();

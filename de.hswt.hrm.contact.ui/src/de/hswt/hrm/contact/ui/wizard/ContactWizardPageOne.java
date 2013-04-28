@@ -55,8 +55,24 @@ public class ContactWizardPageOne extends WizardPage {
 
     private void exisitingContact(Composite container) {
 
+        fillMandatoryFields(container);
+
+    }
+
+    private void fillMandatoryFields(Composite Container) {
+
         Text t = (Text) XWT.findElementByName(container, "firstName");
-        t.setText("Deine Hutta");
+        t.setText(c.getFirstName());
+        t = (Text) XWT.findElementByName(container, "lastName");
+        t.setText(c.getLastName());
+        t = (Text) XWT.findElementByName(container, "street");
+        t.setText(c.getStreet());
+        t = (Text) XWT.findElementByName(container, "streetNumber");
+        t.setText(c.getStreetNo());
+        t = (Text) XWT.findElementByName(container, "city");
+        t.setText(c.getCity());
+        t = (Text) XWT.findElementByName(container, "zipCode");
+        t.setText(c.getPostCode());
 
     }
 
@@ -109,5 +125,9 @@ public class ContactWizardPageOne extends WizardPage {
                 }
             });
         }
+    }
+
+    public Contact getContact() {
+        return c;
     }
 }
