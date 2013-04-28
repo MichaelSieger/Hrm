@@ -27,8 +27,8 @@ public class PlacePart {
 	private final static Logger LOG = LoggerFactory.getLogger(PlacePart.class);
 
 	private TableViewer viewer;
-    private PlaceFilter filter;
-    private PlaceComparator p;
+    private PlaceFilter filter  = new PlaceFilter();
+    private PlaceComparator p = new PlaceComparator();
 	private Collection<Place> places = null;
 
 	@PostConstruct
@@ -37,7 +37,7 @@ public class PlacePart {
 		 * URL url = ContactPart.class.getClassLoader().getResource(
                 "de/hswt/hrm/contact/ui/xwt/ContactView" + IConstants.XWT_EXTENSION_SUFFIX);
 		 */
-		URL url = PlacePart.class.getResource(
+		URL url = PlacePart.class.getClassLoader().getResource(
 				"de/hswt/hrm/place/ui/xwt/PlaceView" + IConstants.XWT_EXTENSION_SUFFIX);
 		
 		try {

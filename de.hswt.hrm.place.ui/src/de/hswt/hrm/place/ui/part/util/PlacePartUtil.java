@@ -60,8 +60,8 @@ public final class PlacePartUtil {
         });
         createMenuItem(headerMenu, col.getColumn());
 
-        // postcode
-        col = createTableViewerColumn(columnHeaders.get("postcode"), WIDTH, viewer, 1, comparator);
+        // postCode
+        col = createTableViewerColumn(columnHeaders.get("postCode"), WIDTH, viewer, 1, comparator);
         col.setLabelProvider(new ColumnLabelProvider() {
             @Override
             public String getText(Object element) {
