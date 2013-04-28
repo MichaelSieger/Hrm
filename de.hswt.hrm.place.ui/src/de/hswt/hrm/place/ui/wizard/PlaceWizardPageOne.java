@@ -1,4 +1,4 @@
-package de.hswt.hrm.place.ui.Wizard;
+package de.hswt.hrm.place.ui.wizard;
 
 import java.net.URL;
 import java.util.HashMap;

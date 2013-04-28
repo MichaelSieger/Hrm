@@ -1,4 +1,4 @@
-package de.hswt.hrm.place.ui.Wizard;
+package de.hswt.hrm.place.ui.wizard;
 
 import java.util.HashMap;
 
@@ -13,7 +13,7 @@ public class PlaceWizard extends Wizard {
     PlaceWizardPageOne one;
 
     public PlaceWizard() {
-        setWindowTitle("Neuen Standort hinzufügen");
+        setWindowTitle("Neuen Standort hinzufï¿½gen");
 
     }
 
