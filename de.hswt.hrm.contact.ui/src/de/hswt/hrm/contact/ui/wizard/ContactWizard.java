@@ -11,17 +11,16 @@ import de.hswt.hrm.contact.service.ContactService;
 
 public class ContactWizard extends Wizard {
     private ContactWizardPageOne one;
-    private Contact c;
 
     public ContactWizard(Contact c) {
-        this.c = c;
+        one = new ContactWizardPageOne("First Page",c);
         setWindowTitle("Neuen Kontakt hinzufügen");
 
     }
 
     @Override
     public void addPages() {
-        one = new ContactWizardPageOne("First Page");
+
         addPage(one);
     }
 
