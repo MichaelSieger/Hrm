@@ -23,7 +23,7 @@ import de.hswt.hrm.plant.model.RenderedGridImage;
  * @author Michael Sieger
  * 
  */
-public class DNDManager {
+public class TreeDNDManager {
 
     private static final int DRAG_OPS = DND.DROP_COPY, DROP_OPS = DND.DROP_COPY;
 
@@ -31,7 +31,7 @@ public class DNDManager {
 
     private RenderedGridImage dragging;
 
-    public DNDManager(SchemeBuilderFrame frame) {
+    public TreeDNDManager(SchemeBuilderFrame frame) {
         super();
         this.frame = frame;
         initDrag();
