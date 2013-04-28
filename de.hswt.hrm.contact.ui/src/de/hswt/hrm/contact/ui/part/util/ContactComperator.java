@@ -1,8 +1,10 @@
-package de.hswt.hrm.contact.model;
+package de.hswt.hrm.contact.ui.part.util;
 
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.swt.SWT;
+
+import de.hswt.hrm.contact.model.Contact;
 
 public class ContactComperator extends ViewerComparator {
 
