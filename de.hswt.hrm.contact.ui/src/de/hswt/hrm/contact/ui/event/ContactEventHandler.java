@@ -29,7 +29,7 @@ public class ContactEventHandler {
 
     public void onSelection(Event event) {
         Button b = (Button) event.widget;
-        WizardDialog dialog = new WizardDialog(b.getShell(), new ContactWizard());
+        WizardDialog dialog = new WizardDialog(b.getShell(), new ContactWizard(null));
         dialog.open();
     }
 
