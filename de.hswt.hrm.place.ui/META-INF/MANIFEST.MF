@@ -17,6 +17,8 @@ Require-Bundle: javax.inject,
  org.eclipse.ui.forms;bundle-version="3.5.200"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Import-Package: de.hswt.hrm.common.database.exception,
+ de.hswt.hrm.place.model,
+ de.hswt.hrm.place.service,
  org.eclipse.jface.wizard,
  org.eclipse.swt.events,
  org.eclipse.swt.widgets
