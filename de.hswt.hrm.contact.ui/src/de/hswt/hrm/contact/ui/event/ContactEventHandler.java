@@ -36,10 +36,10 @@ public class ContactEventHandler {
     public void onKeyUp(Event event) {
 
         Text searchText = (Text) event.widget;
-        TableViewer tf = (TableViewer) XWT.findElementByName(searchText, "contactTable");
-        ContactFilter f = (ContactFilter) tf.getFilters()[0];
-        f.setSearchString(searchText.getText());
-        tf.refresh();
+        TableViewer tv = (TableViewer) XWT.findElementByName(searchText, "contactTable");
+        ContactFilter filter = (ContactFilter) tv.getFilters()[0];
+        filter.setSearchString(searchText.getText());
+        tv.refresh();
 
     }
 
@@ -51,12 +51,17 @@ public class ContactEventHandler {
 
     }
 
+    /**
+     * This method is called whenever a doubleClick onto the Tableviewer occurs. It obtains the
+     * contact from the selected column of the TableViewer. The Contact is passed to the
+     * ContactWizard. When the Wizard has finished, the contact will be updated in the Database
+     * 
+     * @param event Even which occured within SWT
+     */
     public void onMouseDoubleClick(Event event) {
-        System.out.println("entering event");
-
         TableViewer tv = (TableViewer) XWT.findElementByName(event.widget, "contactTable");
+        // obtain the contact in the column where the doubleClick happend
         Contact c = (Contact) tv.getElementAt(tv.getTable().getSelectionIndex());
-        System.out.println(c.getFirstName());
         WizardDialog wd = new WizardDialog(tv.getTable().getShell(), new ContactWizard(c));
         wd.open();
 
