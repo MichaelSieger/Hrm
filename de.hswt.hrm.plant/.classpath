@@ -23,5 +23,6 @@
 	<classpathentry kind="lib" path="lib/org.eclipse.jface.text_3.8.2.v20121126-164145.jar"/>
 	<classpathentry kind="lib" path="lib/org.eclipse.text_3.5.200.v20120523-1310.jar"/>
 	<classpathentry kind="lib" path="lib/org.eclipse.ui.forms_3.5.200.v20120705-114351.jar"/>
+	<classpathentry kind="lib" path="/home/anton/Downloads/guava-14.0.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

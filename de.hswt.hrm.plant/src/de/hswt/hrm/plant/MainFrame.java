@@ -1,5 +1,6 @@
 package de.hswt.hrm.plant;
 
+import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -9,7 +10,7 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 
-import de.hswt.hrm.plant.ui.schemeeditor.SchemeBuilderFrame;
+import de.hswt.hrm.plant.ui.newplant.NewPlantWizard;
 import de.hswt.hrm.plant.ui.schemeeditor.SchemeBuilderFrame;
 
 /**
@@ -75,7 +76,9 @@ public class MainFrame {
 
             @Override
             public void widgetSelected(SelectionEvent arg0) {
-                // TODO start gui
+                WizardDialog wiz = new WizardDialog(shell,new NewPlantWizard());
+                wiz.open();
+                shell.layout();
             }
 
             @Override
