@@ -17,11 +17,11 @@ import de.hswt.hrm.contact.model.Contact;
 public class ContactWizardPageOne extends WizardPage {
 
     private Composite container;
-    private Contact c;
+    private Contact contact;
 
-    public ContactWizardPageOne(String pageName, Contact c) {
+    public ContactWizardPageOne(String pageName, Contact contact) {
         super(pageName);
-        this.c = c;
+        this.contact = contact;
         setDescription(createDiscription());
     }
 
@@ -44,7 +44,7 @@ public class ContactWizardPageOne extends WizardPage {
             e.printStackTrace();
         }
 
-        if (this.c != null) {
+        if (this.contact != null) {
             exisitingContact(container);
         }
 
@@ -62,17 +62,17 @@ public class ContactWizardPageOne extends WizardPage {
     private void fillMandatoryFields(Composite Container) {
 
         Text t = (Text) XWT.findElementByName(container, "firstName");
-        t.setText(c.getFirstName());
+        t.setText(contact.getFirstName());
         t = (Text) XWT.findElementByName(container, "lastName");
-        t.setText(c.getLastName());
+        t.setText(contact.getLastName());
         t = (Text) XWT.findElementByName(container, "street");
-        t.setText(c.getStreet());
+        t.setText(contact.getStreet());
         t = (Text) XWT.findElementByName(container, "streetNumber");
-        t.setText(c.getStreetNo());
+        t.setText(contact.getStreetNo());
         t = (Text) XWT.findElementByName(container, "city");
-        t.setText(c.getCity());
+        t.setText(contact.getCity());
         t = (Text) XWT.findElementByName(container, "zipCode");
-        t.setText(c.getPostCode());
+        t.setText(contact.getPostCode());
 
     }
 
@@ -128,6 +128,6 @@ public class ContactWizardPageOne extends WizardPage {
     }
 
     public Contact getContact() {
-        return c;
+        return contact;
     }
 }
