@@ -1,6 +1,8 @@
 package de.hswt.hrm.plant.ui.schemeeditor;
 
 
+import static com.google.common.base.Preconditions.checkArgument;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,9 +14,7 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 
-import de.hswt.hrm.plant.model.GridImage;
-
-import static com.google.common.base.Preconditions.*;
+import de.hswt.hrm.plant.model.RenderedGridImage;
 
 /**
  * A Widget that displays components in a grid.
@@ -24,10 +24,10 @@ import static com.google.common.base.Preconditions.*;
  */
 public class SchemeGrid extends Canvas{
     
-    private static class GridImageContainer{
-        GridImage image;
+    private static class RenderedGridImageContainer{
+        RenderedGridImage image;
         int x, y;
-        public GridImageContainer(GridImage image, int x, int y) {
+        public RenderedGridImageContainer(RenderedGridImage image, int x, int y) {
             super();
             this.image = image;
             this.x = x;
@@ -40,12 +40,12 @@ public class SchemeGrid extends Canvas{
          * @param o
          * @return
          */
-        boolean intersects(GridImageContainer o){
+        boolean intersects(RenderedGridImageContainer o){
             //TODO some better implementation
-            final int w1 = image.getWidth();
-            final int h1 = image.getHeight();
-            final int w2 = o.image.getWidth();
-            final int h2 = o.image.getHeight();
+            final int w1 = image.getGridImage().getWidth();
+            final int h1 = image.getGridImage().getHeight();
+            final int w2 = o.image.getGridImage().getWidth();
+            final int h2 = o.image.getGridImage().getHeight();
             for(int i = 0; i < w1; i++){
                 for(int j = 0; j < h1; j++){
                     for(int k = 0; k < h2; k++){
@@ -65,7 +65,7 @@ public class SchemeGrid extends Canvas{
         }
     }
     
-    private final List<GridImageContainer> images = new ArrayList<>();
+    private final List<RenderedGridImageContainer> images = new ArrayList<>();
     private final int width, height;
     
     public SchemeGrid(Composite parent, int style, int width, int height) {
@@ -89,18 +89,18 @@ public class SchemeGrid extends Canvas{
     }
 
     private void drawImages(GC gc) {
-        for(GridImageContainer container : images){
+        for(RenderedGridImageContainer container : images){
             drawImage(gc, container.image, container.x, container.y);
         }
     }
 
-    private void drawImage(GC gc, GridImage gridImage, int x, int y) {
-        Image image = gridImage.getRenderedImage();
+    private void drawImage(GC gc, RenderedGridImage RenderedGridImage, int x, int y) {
+        Image image = RenderedGridImage.getImage();
         final float quadW = getQuadWidth();
         final float quadH = getQuadHeight();
         Rectangle rec = image.getBounds();
         gc.drawImage(image, 0, 0, rec.width, rec.height, Math.round(quadW * x), Math.round(quadH * y),
-                Math.round(quadW * gridImage.getWidth()), Math.round(quadH * gridImage.getHeight()));
+                Math.round(quadW * RenderedGridImage.getGridImage().getWidth()), Math.round(quadH * RenderedGridImage.getGridImage().getHeight()));
     }
 
     private void drawHorizontalLines(GC gc) {
@@ -140,13 +140,13 @@ public class SchemeGrid extends Canvas{
      * @param y
      * @throws PlaceOccupiedException
      */
-    public void setImageAt(GridImage image, int x, int y) throws PlaceOccupiedException {
-        final int w = image.getWidth();
-        final int h = image.getHeight();
+    public void setImageAt(RenderedGridImage image, int x, int y) throws PlaceOccupiedException {
+        final int w = image.getGridImage().getWidth();
+        final int h = image.getGridImage().getHeight();
         checkArgument(x >= 0 && x + w <= width);
         checkArgument(y >= 0 && y + h <= height);
-        GridImageContainer toInsert = new GridImageContainer(image, x, y);
-        for(GridImageContainer c : images){
+        RenderedGridImageContainer toInsert = new RenderedGridImageContainer(image, x, y);
+        for(RenderedGridImageContainer c : images){
             if(c.intersects(toInsert)){
                 throw new PlaceOccupiedException("The image intersects with an image that is already there");
             }
@@ -164,7 +164,7 @@ public class SchemeGrid extends Canvas{
      * @param y
      * @throws PlaceOccupiedException
      */
-    public void setImageAtPixel(GridImage image, int x, int y) throws PlaceOccupiedException{
+    public void setImageAtPixel(RenderedGridImage image, int x, int y) throws PlaceOccupiedException{
         setImageAt(image, (int)(((float)x)/getQuadWidth()), (int)(((float)y)/getQuadHeight()));
     }
 

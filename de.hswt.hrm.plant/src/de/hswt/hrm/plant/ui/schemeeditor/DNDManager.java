@@ -16,6 +16,7 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
 import de.hswt.hrm.plant.model.GridImage;
+import de.hswt.hrm.plant.model.RenderedGridImage;
 
 /**
  * This class manages the drag and drop in SchemeBuilderFrame
@@ -29,7 +30,7 @@ public class DNDManager {
 
     private final SchemeBuilderFrame frame;
 
-    private GridImage dragging;
+    private RenderedGridImage dragging;
 
     public DNDManager(SchemeBuilderFrame frame) {
         super();
@@ -98,7 +99,7 @@ public class DNDManager {
                 if (items.length != 1) {
                     throw new RuntimeException("Only one item is accepted for dragging");
                 }
-                dragging = (GridImage) items[0].getData();
+                dragging = (RenderedGridImage) items[0].getData();
             }
 
             @Override

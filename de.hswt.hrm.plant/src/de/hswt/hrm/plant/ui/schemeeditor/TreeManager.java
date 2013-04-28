@@ -8,6 +8,7 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
 import de.hswt.hrm.plant.model.GridImage;
+import de.hswt.hrm.plant.model.RenderedGridImage;
 
 /**
  * This class manages the TreeItems of a Tree that displays the GridImages.
@@ -34,19 +35,10 @@ public class TreeManager {
 
     private void generateTreeItems(){
 		tree.clearAll(true);
-		for(GridImage img : model.getImages()){
+		for(RenderedGridImage img : model.getImages()){
 			TreeItem item = new TreeItem(tree, SWT.NONE);
-			item.setImage(getThumbnail(img));
+			item.setImage(img.getThumbnail());
 			item.setData(img);
 		}
 	}
-
-    private Image getThumbnail(GridImage img) {
-        ImageData data = img
-                .getRenderedImage()
-                .getImageData()
-                .scaledTo(img.getWidth() * THUMBNAIL_GRID_SIZE,
-                        img.getHeight() * THUMBNAIL_GRID_SIZE);
-        return new Image(display, data);
-    }
 }
