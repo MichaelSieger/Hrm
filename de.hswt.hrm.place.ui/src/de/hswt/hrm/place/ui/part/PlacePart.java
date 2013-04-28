@@ -10,6 +10,8 @@ import org.eclipse.e4.xwt.XWT;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,16 +35,13 @@ public class PlacePart {
 
 	@PostConstruct
 	public void postConstruct(Composite parent) {
-		/**
-		 * URL url = ContactPart.class.getClassLoader().getResource(
-                "de/hswt/hrm/contact/ui/xwt/ContactView" + IConstants.XWT_EXTENSION_SUFFIX);
-		 */
 		URL url = PlacePart.class.getClassLoader().getResource(
 				"de/hswt/hrm/place/ui/xwt/PlaceView" + IConstants.XWT_EXTENSION_SUFFIX);
 		
 		try {
 			final Composite composite = (Composite) XWT.load(url);
 			viewer = (TableViewer) XWT.findElementByName(composite, "placeTable");
+			LOG.debug("XWT load, viewer: " + viewer);
 			initializeTable(parent, viewer);
 			refreshTable(parent);
 			
