@@ -48,6 +48,10 @@ public class GridImageConverter {
 			throws IOException {
 		ByteBuffer buf = ByteBuffer.wrap(gridImage.getImage());
 		PDFFile pdffile = new PDFFile(buf);
+		if(pdffile.getNumPages() != 1){
+			throw new NotSinglePageException(
+					String.format("An image must be single page but has %d", pdffile.getNumPages()));
+		}
 		PDFPage page = pdffile.getPage(0);
 		return new RenderedGridImage(
 				getSWTImage(
