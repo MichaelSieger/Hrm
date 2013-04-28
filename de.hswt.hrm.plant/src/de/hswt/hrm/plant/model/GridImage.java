@@ -18,19 +18,19 @@ public class GridImage
 
     private static final long serialVersionUID = 2906158433227663863L;
     
-    private Image renderedImage;
+    private byte[] image;
     private int width, height; // Size in grid units
     private int primaryKey;
 
-    public Image getRenderedImage() {
-        return renderedImage;
-    }
+    public byte[] getImage() {
+		return image;
+	}
 
-    public void setRenderedImage(Image renderedImage) {
-        this.renderedImage = renderedImage;
-    }
+	public void setImage(byte[] image) {
+		this.image = image;
+	}
 
-    public int getWidth() {
+	public int getWidth() {
         return width;
     }
 
