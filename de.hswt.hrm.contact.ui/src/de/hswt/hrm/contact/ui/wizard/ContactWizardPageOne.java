@@ -11,10 +11,14 @@ import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import de.hswt.hrm.contact.model.Contact;
 
 public class ContactWizardPageOne extends WizardPage {
+
+    private static final Logger LOG = LoggerFactory.getLogger(ContactWizardPageOne.class);
 
     private Composite container;
     private Contact contact;
@@ -40,8 +44,7 @@ public class ContactWizardPageOne extends WizardPage {
             container = (Composite) XWTForms.load(parent, url);
         }
         catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            LOG.error("An error occured", e);
         }
 
         if (this.contact != null) {

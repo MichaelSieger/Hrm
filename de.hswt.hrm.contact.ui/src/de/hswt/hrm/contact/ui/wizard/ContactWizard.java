@@ -4,6 +4,8 @@ import java.util.HashMap;
 
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.widgets.Text;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.ElementNotFoundException;
@@ -12,6 +14,8 @@ import de.hswt.hrm.contact.model.Contact;
 import de.hswt.hrm.contact.service.ContactService;
 
 public class ContactWizard extends Wizard {
+
+    private static final Logger LOG = LoggerFactory.getLogger(ContactWizard.class);
     private ContactWizardPageOne first;
 
     public ContactWizard(Contact c) {
@@ -53,8 +57,8 @@ public class ContactWizard extends Wizard {
 
         }
         catch (DatabaseException e1) {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
+
+            LOG.error("Could not find Contact with ID: " + first.getContact().getId(), e1);
         }
 
         HashMap<String, Text> mandatoryWidgets = first.getMandatoryWidgets();
@@ -89,12 +93,10 @@ public class ContactWizard extends Wizard {
             ContactService.update(c);
         }
         catch (ElementNotFoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            LOG.error("Element " + c + " not found in Database", e);
         }
         catch (SaveException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            LOG.error("Could not save Element: " + c + "into Database", e);
         }
 
         return true;
@@ -129,8 +131,7 @@ public class ContactWizard extends Wizard {
             ContactService.insert(newContact);
         }
         catch (SaveException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            LOG.error("Could not save Element: " + newContact + "into Database", e);
         }
 
         return true;
