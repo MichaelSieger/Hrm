@@ -11,7 +11,9 @@ import org.eclipse.swt.widgets.Composite;
 public class NewPlantWizardPageOne extends WizardPage {
 
     /**
-     * Create the wizard.
+     * Page One of the NewPlantWizard
+     * 
+     * @author Anton Schreck
      */
     
     private Composite container;

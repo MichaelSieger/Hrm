@@ -3,6 +3,12 @@ package de.hswt.hrm.plant.ui.newplant;
 import org.eclipse.jface.wizard.Wizard;
 
 public class NewPlantWizard extends Wizard {
+
+    /**
+     * Wizard to create a new Plant
+     * 
+     * @author Anton Schreck
+     */
     
     private NewPlantWizardPageOne pageOne; 
 
