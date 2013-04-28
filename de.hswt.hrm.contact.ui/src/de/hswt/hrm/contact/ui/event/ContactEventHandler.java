@@ -57,11 +57,8 @@ public class ContactEventHandler {
         TableViewer tv = (TableViewer) XWT.findElementByName(event.widget, "contactTable");
         Contact c = (Contact) tv.getElementAt(tv.getTable().getSelectionIndex());
         System.out.println(c.getFirstName());
-        // ExistingContactWizardPage e = new ExistingContactWizardPage("hello", c);
-        // ContactWizard cw = new ContactWizard();
-        // cw.addPage(e);
-        // WizardDialog d = new WizardDialog(shell, new ExistingContactWizard(c));
-        // d.open();
+        WizardDialog wd = new WizardDialog(tv.getTable().getShell(), new ContactWizard(c));
+        wd.open();
 
     }
 }

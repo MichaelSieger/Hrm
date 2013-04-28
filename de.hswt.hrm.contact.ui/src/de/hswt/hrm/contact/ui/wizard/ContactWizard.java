@@ -13,7 +13,7 @@ public class ContactWizard extends Wizard {
     private ContactWizardPageOne one;
 
     public ContactWizard(Contact c) {
-        one = new ContactWizardPageOne("First Page",c);
+        one = new ContactWizardPageOne("First Page", c);
         setWindowTitle("Neuen Kontakt hinzufügen");
 
     }
@@ -26,12 +26,7 @@ public class ContactWizard extends Wizard {
 
     @Override
     public boolean canFinish() {
-        if (one.isPageComplete()) {
-            return true;
-        }
-        else {
-            return false;
-        }
+        return one.isPageComplete();
     }
 
     @Override

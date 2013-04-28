@@ -34,24 +34,6 @@ public class ContactWizardPageOne extends WizardPage {
     @Override
     public void createControl(Composite parent) {
 
-        if (this.c == null) {
-            newContact(parent);
-        }
-
-        else {
-            exisitingContact(parent);
-        }
-
-        setKeyListener();
-        setControl(container);
-        setPageComplete(false);
-    }
-
-    private void exisitingContact(Composite parent) {
-
-    }
-
-    private void newContact(Composite parent) {
         URL url = ContactWizardPageOne.class.getClassLoader().getResource(
                 "de/hswt/hrm/contact/ui/xwt/ContactWizardWindow" + IConstants.XWT_EXTENSION_SUFFIX);
         try {
@@ -61,6 +43,20 @@ public class ContactWizardPageOne extends WizardPage {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+
+        if (this.c != null) {
+            exisitingContact(container);
+        }
+
+        setKeyListener();
+        setControl(container);
+        setPageComplete(false);
+    }
+
+    private void exisitingContact(Composite container) {
+
+        Text t = (Text) XWT.findElementByName(container, "firstName");
+        t.setText("Deine Hutta");
 
     }
 
