@@ -8,7 +8,7 @@
 		FocusOutEvent="onFocusOut" KeyUpEvent="onKeyUp" FocusInEvent="onFocusIn" text="Suche" />
 	<TableViewer x:name="contactTable" x:Style="BORDER">
 		<TableViewer.table headerVisible="true"
-			linesVisible="true" />
+			linesVisible="true" MouseDoubleClickEvent="onMouseDoubleClick" />
 	</TableViewer>
 	<Button x:name="addContact" text="Kunden Hinzufügen"
 		SelectionEvent="onSelection" />

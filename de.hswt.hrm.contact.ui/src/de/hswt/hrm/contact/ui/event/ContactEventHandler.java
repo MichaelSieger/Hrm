@@ -7,6 +7,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Text;
 
+import de.hswt.hrm.contact.model.Contact;
 import de.hswt.hrm.contact.ui.filter.ContactFilter;
 import de.hswt.hrm.contact.ui.wizard.ContactWizard;
 
@@ -47,6 +48,20 @@ public class ContactEventHandler {
         if (text.getText().equals(DEFAULT_SEARCH_STRING)) {
             text.setText(EMPTY);
         }
+
+    }
+
+    public void onMouseDoubleClick(Event event) {
+        System.out.println("entering event");
+
+        TableViewer tv = (TableViewer) XWT.findElementByName(event.widget, "contactTable");
+        Contact c = (Contact) tv.getElementAt(tv.getTable().getSelectionIndex());
+        System.out.println(c.getFirstName());
+        // ExistingContactWizardPage e = new ExistingContactWizardPage("hello", c);
+        // ContactWizard cw = new ContactWizard();
+        // cw.addPage(e);
+        // WizardDialog d = new WizardDialog(shell, new ExistingContactWizard(c));
+        // d.open();
 
     }
 }
