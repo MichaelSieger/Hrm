@@ -2,8 +2,6 @@ package de.hswt.hrm.plant.model;
 
 import java.io.Serializable;
 
-import org.eclipse.swt.graphics.Image;
-
 /**
  * This class contains an Image, and its size in the grid.
  * 

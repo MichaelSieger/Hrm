@@ -15,7 +15,6 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
-import de.hswt.hrm.plant.model.GridImage;
 import de.hswt.hrm.plant.model.RenderedGridImage;
 
 /**

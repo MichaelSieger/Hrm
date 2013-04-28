@@ -10,7 +10,6 @@ import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 
 import de.hswt.hrm.plant.ui.schemeeditor.SchemeBuilderFrame;
-import de.hswt.hrm.plant.ui.schemeeditor.SchemeBuilderFrame;
 
 /**
  * This class is for early developing purposes only, and will be removed in the migration to RCP.

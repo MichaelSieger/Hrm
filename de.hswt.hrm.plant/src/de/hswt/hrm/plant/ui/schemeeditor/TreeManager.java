@@ -1,13 +1,10 @@
 package de.hswt.hrm.plant.ui.schemeeditor;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
-import de.hswt.hrm.plant.model.GridImage;
 import de.hswt.hrm.plant.model.RenderedGridImage;
 
 /**

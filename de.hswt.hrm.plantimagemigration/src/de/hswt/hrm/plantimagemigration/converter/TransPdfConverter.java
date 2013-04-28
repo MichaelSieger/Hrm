@@ -2,8 +2,6 @@ package de.hswt.hrm.plantimagemigration.converter;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Get transparency and remove margins of PDF pictures
