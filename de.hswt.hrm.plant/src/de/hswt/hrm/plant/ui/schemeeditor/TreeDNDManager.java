@@ -18,7 +18,7 @@ import org.eclipse.swt.widgets.TreeItem;
 import de.hswt.hrm.plant.model.RenderedGridImage;
 
 /**
- * This class manages the drag and drop in SchemeBuilderFrame
+ * This class manages the drag and drop from the tree to the SchemeGrid
  * 
  * @author Michael Sieger
  * 
