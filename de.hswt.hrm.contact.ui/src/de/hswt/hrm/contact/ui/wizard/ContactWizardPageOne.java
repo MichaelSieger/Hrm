@@ -45,18 +45,12 @@ public class ContactWizardPageOne extends WizardPage {
         }
 
         if (this.contact != null) {
-            exisitingContact(container);
+            fillMandatoryFields((container));
         }
 
         setKeyListener();
         setControl(container);
         setPageComplete(false);
-    }
-
-    private void exisitingContact(Composite container) {
-
-        fillMandatoryFields(container);
-
     }
 
     private void fillMandatoryFields(Composite Container) {
