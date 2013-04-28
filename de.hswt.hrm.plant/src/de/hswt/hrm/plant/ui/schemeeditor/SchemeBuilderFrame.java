@@ -34,8 +34,7 @@ public class SchemeBuilderFrame extends Composite {
             root = (Composite) XWT.load(url);
             root.setParent(this);
             Tree tree = getTree();
-            new TreeManager(getDisplay(), 
-            				ImageTreeModelFactory.create(
+            new TreeManager(ImageTreeModelFactory.create(
             						getDisplay()), tree);
             grid = new SchemeGrid(getSchemeComposite(), 
             		SWT.NONE, SCHEME_WIDTH, SCHEME_HEIGHT);

@@ -1,7 +1,6 @@
 package de.hswt.hrm.plant.ui.schemeeditor;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
@@ -15,18 +14,14 @@ import de.hswt.hrm.plant.model.RenderedGridImage;
  *
  */
 public class TreeManager {
-    
-    private static final int THUMBNAIL_GRID_SIZE = 10;
 
-    private final Display display;
     private final IImageTreeModel model;
     private final Tree tree;
 
-    public TreeManager(Display display, IImageTreeModel model, Tree tree) {
+    public TreeManager(IImageTreeModel model, Tree tree) {
         super();
         this.model = model;
         this.tree = tree;
-        this.display = display;
         generateTreeItems();
     }
 
