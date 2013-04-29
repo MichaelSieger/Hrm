@@ -110,7 +110,6 @@
 		<module>../de.hswt.hrm.common.test</module>
 		<module>../de.hswt.hrm.contact.ui</module>
 		<module>../de.hswt.hrm.contact.service.test</module>
-		
 		<module>../de.hswt.hrm.place.service.test</module>
 		<module>../de.hswt.hrm.repository</module>
 		<module>../de.hswt.hrm.thirdparty.feature</module>
