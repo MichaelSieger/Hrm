@@ -128,6 +128,7 @@
       <feature id="org.eclipse.emf.ecore"/>
       <feature id="org.eclipse.emf.common"/>
       <feature id="de.hswt.hrm.thirdparty.feature" version="0.0.1.qualifier"/>
+      <feature id="de.hswt.hrm.plant.feature" version="0.0.1.qualifier"/>
    </features>
 
    <configurations>

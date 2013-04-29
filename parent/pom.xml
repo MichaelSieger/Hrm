@@ -118,5 +118,11 @@
 		<module>../de.hswt.hrm.log.config</module>
 		<module>../de.hswt.hrm.pdfrenderer</module>
 		<module>../de.hswt.hrm.common.ui.swt</module>
+		<module>../de.hswt.hrm.plant.dao.core</module>
+		<module>../de.hswt.hrm.plant.dao.jdbc</module>
+		<module>../de.hswt.hrm.plant.model</module>
+		<module>../de.hswt.hrm.plant.service</module>
+		<module>../de.hswt.hrm.plant.ui</module>
+		<module>../de.hswt.hrm.plant.feature</module>
 	</modules>
 </project>
