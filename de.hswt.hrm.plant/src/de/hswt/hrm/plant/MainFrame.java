@@ -10,7 +10,10 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 
+<<<<<<< HEAD
 import de.hswt.hrm.plant.ui.newplant.NewPlantWizard;
+=======
+>>>>>>> a27634082f5868138216ce828f70d9ac698df619
 import de.hswt.hrm.plant.ui.schemeeditor.SchemeBuilderFrame;
 
 /**

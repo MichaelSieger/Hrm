@@ -3,6 +3,9 @@
 		<FormLayout/>
 	</Composite.layout>
 	<Composite x:Name="schemeComposite">
+		<Composite.layout>
+			<FillLayout/>
+		</Composite.layout>
 		<Composite.layoutData>
 			<FormData>
 				<FormData.bottom>
@@ -20,7 +23,7 @@
 			</FormData>
 		</Composite.layoutData>
 	</Composite>
-	<Tree x:Style="BORDER">
+	<Tree x:Style="BORDER" x:Name="tree">
 		<Tree.layoutData>
 			<FormData>
 				<FormData.right>
