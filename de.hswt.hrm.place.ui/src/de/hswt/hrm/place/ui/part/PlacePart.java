@@ -39,7 +39,7 @@ public class PlacePart {
 				"de/hswt/hrm/place/ui/xwt/PlaceView" + IConstants.XWT_EXTENSION_SUFFIX);
 		
 		try {
-			final Composite composite = (Composite) XWT.load(url);
+			final Composite composite = (Composite) XWT.load(parent, url);
 			viewer = (TableViewer) XWT.findElementByName(composite, "placeTable");
 			LOG.debug("XWT load, viewer: " + viewer);
 			initializeTable(parent, viewer);

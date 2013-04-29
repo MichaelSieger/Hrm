@@ -23,9 +23,9 @@ public class PlaceEventHandler {
 	}
 
 	public void onSelection(Event event) {
-		//	        Button b = (Button) event.widget;
-		//	        WizardDialog dialog = new WizardDialog(b.getShell(), new PlaceWizard());
-		//	        dialog.open();
+//		Button b = (Button) event.widget;
+//		WizardDialog dialog = new WizardDialog(b.getShell(), new PlaceWizard());
+//		dialog.open();
 	}
 
 	public void onKeyUp(Event event) {
@@ -34,5 +34,7 @@ public class PlaceEventHandler {
 		PlaceFilter f = (PlaceFilter) tf.getFilters()[0];
 		f.setSearchString(searchText.getText());
 		tf.refresh();
+	}
+	public void onFocusOut_1(Event event) {
 	}
 }
