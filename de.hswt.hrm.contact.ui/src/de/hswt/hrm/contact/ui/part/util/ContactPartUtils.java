@@ -17,7 +17,6 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.TableColumn;
 import de.hswt.hrm.contact.model.Contact;
-import de.hswt.hrm.contact.model.ContactComperator;
 
 public final class ContactPartUtils {
 

@@ -116,5 +116,7 @@
 		<module>../de.hswt.hrm.thirdparty.feature</module>
 		<module>../de.hswt.hrm.commons.dbutils</module>
 		<module>../de.hswt.hrm.place.ui</module>
+		<module>../de.hswt.hrm.log.config</module>
+		<module>../de.hswt.hrm.pdfrenderer</module>
 	</modules>
 </project>

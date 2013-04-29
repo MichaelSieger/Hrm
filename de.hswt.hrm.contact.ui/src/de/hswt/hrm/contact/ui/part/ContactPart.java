@@ -14,12 +14,11 @@ import org.eclipse.swt.widgets.Composite;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.hswt.hrm.common.Hrm;
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.contact.model.Contact;
-import de.hswt.hrm.contact.model.ContactComperator;
 import de.hswt.hrm.contact.service.ContactService;
 import de.hswt.hrm.contact.ui.filter.ContactFilter;
+import de.hswt.hrm.contact.ui.part.util.ContactComperator;
 import de.hswt.hrm.contact.ui.part.util.ContactPartUtils;
 
 public class ContactPart {
@@ -36,13 +35,6 @@ public class ContactPart {
 
         LOG.debug("entering method postConstruct");
 
-        /*
-         * Getting database connection information via an absolute Path. In addition this method
-         * must be placed into the right position when the layout is final. This needs to be
-         * improved using eclipse preferences or user.home
-         */
-        Hrm.init();
-        
         filter = new ContactFilter();
         c = new ContactComperator();
         // URL to the Paths defining XWT file

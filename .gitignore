@@ -6,6 +6,7 @@ bin/
 *.ear
 *.class
 !de.hswt.hrm.commons.*
+!de.hswt.hrm.pdfrenderer.*
 # Meta files
 */.settings/*
 *.pydevproject
