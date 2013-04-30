@@ -1,7 +1,0 @@
-<Composite xmlns="http://www.eclipse.org/xwt/presentation" xmlns:x="http://www.eclipse.org/xwt" x:Class="de.hswt.hrm.plant.ui.newplant.NewPlantWizardPage">
-	<Composite.layout>
-		<GridLayout/>
-	</Composite.layout>
-	<Button text="Double click me!"/>
-	<Button text="Muh"></Button>
-</Composite>
