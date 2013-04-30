@@ -9,12 +9,12 @@ import org.eclipse.swt.widgets.TableColumn;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkArgument;
 
-public class ColumnComparator extends ViewerComparator {
-    private final Map<TableColumn, Comparator<Object>> comparators;
+public class ColumnComparator<T> extends ViewerComparator {
+    private final Map<TableColumn, Comparator<T>> comparators;
     private Direction dir = Direction.ASCENDING;
     private TableColumn currentCol;
     
-    public ColumnComparator(Map<TableColumn, Comparator<Object>> comparators) {
+    public ColumnComparator(Map<TableColumn, Comparator<T>> comparators) {
         super();
         
         checkNotNull(comparators, "You have to specify map of table comparators.");
@@ -24,12 +24,19 @@ public class ColumnComparator extends ViewerComparator {
     
     @Override
     public int compare(Viewer viewer, Object e1, Object e2) {
-        Comparator<Object> comparator = comparators.get(currentCol);
+        Comparator<T> comparator = comparators.get(currentCol);
         if (comparator == null) {
-            throw new IllegalStateException("Invalid column selected (no comparator available).");
+            // We use the first column if none is selected
+        	comparator = comparators.values().iterator().next();
         }
         
-        int result = comparator.compare(e1, e2);
+        // TODO check instance!
+        @SuppressWarnings("unchecked")
+		T o1 = (T) e1;
+        @SuppressWarnings("unchecked")
+        T o2 = (T) e2;
+        
+        int result = comparator.compare(o1, o2);
         
         if (dir == Direction.DESCENDING) {
             result = -result;

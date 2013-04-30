@@ -5,13 +5,13 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.TableColumn;
 
-public class SortingSelectionAdapter extends SelectionAdapter {
+public class SortingSelectionAdapter<T> extends SelectionAdapter {
     private final TableViewer viewer;
-    private final ColumnComparator comparator;
+    private final ColumnComparator<T> comparator;
     private TableColumn lastSelection;
     private Direction dir = Direction.ASCENDING;
     
-    public SortingSelectionAdapter(final TableViewer viewer, final ColumnComparator comparator) {
+    public SortingSelectionAdapter(final TableViewer viewer, final ColumnComparator<T> comparator) {
         super();
         
         this.viewer = viewer;
@@ -34,6 +34,8 @@ public class SortingSelectionAdapter extends SelectionAdapter {
                 dir = Direction.ASCENDING;
             }
         }
+        
+        lastSelection = currentCol;
         
 //        int computed = Arrays.asList(viewer.getTable().getColumns()).indexOf(e.getSource());
         comparator.setCurrentColumn(currentCol);
