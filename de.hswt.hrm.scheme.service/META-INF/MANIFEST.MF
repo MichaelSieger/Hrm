@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Service
+Bundle-SymbolicName: de.hswt.hrm.scheme.service
+Bundle-Version: 0.0.1.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Import-Package: com.sun.pdfview,
+ de.hswt.hrm.scheme.model,
+ org.eclipse.swt.graphics
+Export-Package: de.hswt.hrm.scheme.service
+Require-Bundle: org.eclipse.swt;bundle-version="3.100.1"

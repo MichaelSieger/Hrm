@@ -124,5 +124,8 @@
 		<module>../de.hswt.hrm.plant.service</module>
 		<module>../de.hswt.hrm.plant.ui</module>
 		<module>../de.hswt.hrm.plant.feature</module>
+		<module>../de.hswt.hrm.scheme.model</module>
+		<module>../de.hswt.hrm.scheme.service</module>
+		<module>../de.hswt.hrm.scheme.ui</module>
 	</modules>
 </project>
