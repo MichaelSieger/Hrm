@@ -4,6 +4,9 @@ import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DragSource;
 import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.dnd.DragSourceListener;
+import org.eclipse.swt.dnd.DropTarget;
+import org.eclipse.swt.dnd.DropTargetEvent;
+import org.eclipse.swt.dnd.DropTargetListener;
 import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.graphics.Point;
@@ -26,6 +29,39 @@ public class GridDNDManager {
 	public GridDNDManager(SchemeGrid grid){
 		this.grid = grid;
 		initDrag();
+		initDrop();
+	}
+	
+	private void initDrop(){
+	    DropTarget target = new DropTarget(grid, OPS);
+	    target.setTransfer(new Transfer[]{TextTransfer.getInstance()});
+	    target.addDropListener(new DropTargetListener() {
+            
+            @Override
+            public void dropAccept(DropTargetEvent arg0) {}
+            
+            @Override
+            public void drop(DropTargetEvent ev) {
+                dragging = null;
+                System.out.println("test");
+            }
+            
+            @Override
+            public void dragOver(DropTargetEvent arg0) {}
+            
+            @Override
+            public void dragOperationChanged(DropTargetEvent arg0) {}
+            
+            @Override
+            public void dragLeave(DropTargetEvent ev) {
+                ev.detail = DND.DROP_NONE;
+            }
+            
+            @Override
+            public void dragEnter(DropTargetEvent ev) {
+                ev.detail = DND.DROP_MOVE;
+            }
+        });
 	}
 	
 	private void initDrag(){
