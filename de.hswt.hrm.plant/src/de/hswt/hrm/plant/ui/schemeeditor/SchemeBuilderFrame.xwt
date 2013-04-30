@@ -1,0 +1,44 @@
+<Composite xmlns="http://www.eclipse.org/xwt/presentation" xmlns:x="http://www.eclipse.org/xwt" x:Class="de.hswt.hrm.plant.ui.SchemeBuilderFrame">
+	<Composite.layout>
+		<FormLayout/>
+	</Composite.layout>
+	<Composite x:Name="schemeComposite">
+		<Composite.layout>
+			<FillLayout/>
+		</Composite.layout>
+		<Composite.layoutData>
+			<FormData>
+				<FormData.bottom>
+					<FormAttachment numerator="100" offset="-10"/>
+				</FormData.bottom>
+				<FormData.left>
+					<FormAttachment offset="186" numerator="0"/>
+				</FormData.left>
+				<FormData.top>
+					<FormAttachment numerator="0" offset="10"/>
+				</FormData.top>
+				<FormData.right>
+					<FormAttachment numerator="100" offset="-10"/>
+				</FormData.right>
+			</FormData>
+		</Composite.layoutData>
+	</Composite>
+	<Tree x:Style="BORDER" x:Name="tree">
+		<Tree.layoutData>
+			<FormData>
+				<FormData.right>
+					<FormAttachment control="{Binding ElementName=schemeComposite}" offset="-9"/>
+				</FormData.right>
+				<FormData.left>
+					<FormAttachment numerator="0" offset="10"/>
+				</FormData.left>
+				<FormData.top>
+					<FormAttachment numerator="0" offset="10"/>
+				</FormData.top>
+				<FormData.bottom>
+					<FormAttachment numerator="100" offset="-10"/>
+				</FormData.bottom>
+			</FormData>
+		</Tree.layoutData>
+	</Tree>
+</Composite>

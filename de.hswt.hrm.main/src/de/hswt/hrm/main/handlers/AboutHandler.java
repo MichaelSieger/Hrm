@@ -28,16 +28,16 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Shell;
 
 public class AboutHandler {
-    @Execute
-    public void execute(@Named(IServiceConstants.ACTIVE_SHELL) Shell shell) {
-        String[] developer = new String[] { "Tobias Placht", "Anton Schreck", "Lucas Haering",
-                "Marek Bieber", "Benjamin Pabst", "Michael Sieger", "Stefan Kleeberger" };
-        StringBuilder sb = new StringBuilder();
-        Arrays.sort(developer);
-        for (String s : developer) {
-            sb.append(s);
-            sb.append("\n");
-        }
+	@Execute
+	public void execute(@Named(IServiceConstants.ACTIVE_SHELL) Shell shell) {
+		String[] developer = new String[] { "Tobias Placht", "Anton Schreck",
+			"Lucas Haering", "Marek Bieber", "Benjamin Pabst", "Michael Sieger"};
+		StringBuilder sb = new StringBuilder();
+		Arrays.sort(developer);
+		for (String s : developer) {
+			sb.append(s);
+			sb.append("\n");
+		}
 
         // EASTER EGG
         new Thread(new Runnable() {
