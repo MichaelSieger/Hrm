@@ -25,6 +25,7 @@ public class GridDNDManager {
 	
 	private final SchemeGrid grid;
 	private RenderedGridImage dragging;
+	private startX, startY;
 	
 	public GridDNDManager(SchemeGrid grid){
 		this.grid = grid;
@@ -42,8 +43,18 @@ public class GridDNDManager {
             
             @Override
             public void drop(DropTargetEvent ev) {
-                dragging = null;
-                System.out.println("test");
+                if(dragging != null){
+                    Point loc = grid.toDisplay(0, 0);
+                    final int x = ev.x - loc.x;
+                    final int y = ev.y - loc.y;
+                    try {
+                        grid.setImageAtPixel(dragging, x, y);
+                    } catch (PlaceOccupiedException e) {
+                        Toolbox.getDefaultToolbox().beep();
+                        grid.setImageAtPixel(dragging, startX, startY);
+                    }
+                    dragging = null;
+                }
             }
             
             @Override
@@ -72,30 +83,19 @@ public class GridDNDManager {
 			@Override
 			public void dragStart(DragSourceEvent ev) {
                 Point loc = grid.toDisplay(0, 0);
-                final int x = ev.x - loc.x;
-                final int y = ev.y - loc.y;
-                dragging = grid.removeImagePixel(x, y);
+                startX = ev.x - loc.x;
+                startY = ev.y - loc.y;
+                dragging = grid.removeImagePixel(startX, startY);
 			}
 			
 			@Override
 			public void dragSetData(DragSourceEvent ev) {
-				ev.data = "bla";
+				ev.data = dragging.toString();
 			}
 			
 			@Override
 			public void dragFinished(DragSourceEvent ev) {
-				if(dragging != null){
-					Point loc = grid.toDisplay(0, 0);
-	                final int x = ev.x - loc.x;
-	                final int y = ev.y - loc.y;
-					try {
-						grid.setImageAtPixel(dragging, x, y);
-					} catch (PlaceOccupiedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					dragging = null;
-				}
+
 			}
 		});
 	}
