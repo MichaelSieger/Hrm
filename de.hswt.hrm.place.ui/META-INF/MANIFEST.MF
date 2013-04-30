@@ -17,6 +17,7 @@ Require-Bundle: javax.annotation,
  org.eclipse.e4.xwt.forms;bundle-version="0.9.1"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Import-Package: de.hswt.hrm.common.database.exception,
+ de.hswt.hrm.common.ui.swt.table,
  de.hswt.hrm.place.model,
  de.hswt.hrm.place.service
 Export-Package: de.hswt.hrm.place.ui.event,
