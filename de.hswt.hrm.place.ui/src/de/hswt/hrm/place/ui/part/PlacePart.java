@@ -23,7 +23,7 @@ import org.slf4j.LoggerFactory;
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.ui.swt.table.ColumnComparator;
 import de.hswt.hrm.common.ui.swt.table.ColumnDescription;
-import de.hswt.hrm.common.ui.swt.table.TableViewerFiller;
+import de.hswt.hrm.common.ui.swt.table.TableViewerController;
 import de.hswt.hrm.place.model.Place;
 import de.hswt.hrm.place.service.PlaceService;
 import de.hswt.hrm.place.ui.filter.PlaceFilter;
@@ -188,7 +188,7 @@ public class PlacePart {
 	    
 	    Map<TableColumn, Comparator<Place>> comparators;
 	    
-	    TableViewerFiller<Place> filler = new TableViewerFiller<>(viewer);
+	    TableViewerController<Place> filler = new TableViewerController<>(viewer);
 	    comparators = filler.createColumns(columns);
 	    filler.createColumnSelectionMenu();
 	    

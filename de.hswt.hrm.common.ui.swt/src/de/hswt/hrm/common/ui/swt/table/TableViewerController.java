@@ -14,11 +14,11 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.TableColumn;
 
-public class TableViewerFiller<T> {
+public class TableViewerController<T> {
     private final TableViewer viewer;
     private ColumnComparator<T> comparator;
     
-    public TableViewerFiller(final TableViewer viewer) {
+    public TableViewerController(final TableViewer viewer) {
         this.viewer = viewer;
     }
     
