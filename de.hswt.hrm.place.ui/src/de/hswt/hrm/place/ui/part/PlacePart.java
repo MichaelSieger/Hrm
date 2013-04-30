@@ -1,7 +1,10 @@
 package de.hswt.hrm.place.ui.part;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 
@@ -9,6 +12,7 @@ import org.eclipse.e4.xwt.IConstants;
 import org.eclipse.e4.xwt.XWT;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
@@ -17,6 +21,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.hswt.hrm.common.database.exception.DatabaseException;
+import de.hswt.hrm.common.ui.swt.table.ColumnComparator;
+import de.hswt.hrm.common.ui.swt.table.ColumnDescription;
 import de.hswt.hrm.place.model.Place;
 import de.hswt.hrm.place.service.PlaceService;
 import de.hswt.hrm.place.ui.filter.PlaceFilter;
@@ -66,6 +72,37 @@ public class PlacePart {
 	}
 	
 	private void initializeTable(Composite parent, TableViewer viewer) {
+	    
+	    
+	    // Create columns
+	    List<ColumnDescription<Place>> columns = new ArrayList<>();
+	    columns.add(new ColumnDescription<Place>("Place Name",
+	            new ColumnLabelProvider() {
+	        @Override
+	        public String getText(Object element) {
+	            Place p = (Place) element;
+	            return p.getPlaceName();
+	        }
+	    } , 
+	    new Comparator<Place>() {
+
+	        @Override
+	        public int compare(Place o1, Place o2) {
+	            return o1.getPlaceName().compareTo(o2.getPlaceName());
+	        }
+
+	    }));
+	    
+	    /*
+	     * private String placeName;
+    private String postCode;
+    private String city;
+    private String street;
+    private String streetNo;
+    private String location;
+    private String area;
+	     */
+	    
 		PlacePartUtil.createColumns(parent, viewer, PlacePartUtil.getDefaultColumnHeaders(), p);
         viewer.setContentProvider(ArrayContentProvider.getInstance());
         viewer.addFilter(filter);
