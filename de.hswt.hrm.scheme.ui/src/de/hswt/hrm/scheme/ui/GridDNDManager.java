@@ -47,8 +47,8 @@ public class GridDNDManager {
             public void drop(DropTargetEvent ev) {
                 if(dragging != null){
                     Point loc = grid.toDisplay(0, 0);
-                    final int x = ev.x - loc.x;
-                    final int y = ev.y - loc.y;
+                    final int x = ev.x;
+                    final int y = ev.y;
                     try {
                         grid.setImageAtPixel(dragging, x, y);
                     } catch (PlaceOccupiedException e) {
@@ -65,6 +65,7 @@ public class GridDNDManager {
 						}
                     }
                     dragging = null;
+                    grid.redraw();
                 }
             }
             
@@ -84,7 +85,7 @@ public class GridDNDManager {
             @Override
             public void dragEnter(DropTargetEvent ev) {
             	if(dragging != null){
-            		ev.detail = DND.DROP_MOVE;
+            		ev.detail = DND.DROP_COPY;
             	}
             }
         });
@@ -96,9 +97,10 @@ public class GridDNDManager {
 			@Override
 			public void dragStart(DragSourceEvent ev) {
                 Point loc = grid.toDisplay(0, 0);
-                startX = ev.x - loc.x;
-                startY = ev.y - loc.y;
+                startX = ev.x;
+                startY = ev.y;
                 dragging = grid.removeImagePixel(startX, startY);
+                grid.redraw();
 			}
 			
 			@Override
@@ -110,7 +112,7 @@ public class GridDNDManager {
 			
 			@Override
 			public void dragFinished(DragSourceEvent ev) {
-
+				dragging = null;
 			}
 		});
 	}

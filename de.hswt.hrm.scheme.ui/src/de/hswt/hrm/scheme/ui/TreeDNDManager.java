@@ -112,9 +112,7 @@ public class TreeDNDManager {
 
             @Override
             public void dragFinished(DragSourceEvent arg0) {
-            	if(dragging != null){
-            		dragging = null;
-            	}
+            	dragging = null;
             }
         });
     }
