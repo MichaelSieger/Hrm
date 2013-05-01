@@ -7,6 +7,11 @@ import javax.annotation.PostConstruct;
 import org.eclipse.e4.xwt.IConstants;
 import org.eclipse.e4.xwt.XWT;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.dnd.DND;
+import org.eclipse.swt.dnd.DragSource;
+import org.eclipse.swt.dnd.DropTarget;
+import org.eclipse.swt.dnd.TextTransfer;
+import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Tree;
 
@@ -17,14 +22,14 @@ import de.hswt.hrm.scheme.ui.TreeDNDManager;
 import de.hswt.hrm.scheme.ui.TreeManager;
 
 public class SchemePart {
+	
+	private static final int DRAG_OPS = DND.DROP_COPY, DROP_OPS = DND.DROP_COPY;
 
 	private Composite root;
 	private SchemeGrid grid;
 
 	@PostConstruct
 	public void postConstruct(Composite parent) {
-
-		System.out.println(parent.getDisplay());
 
 		URL url = SchemePart.class.getClassLoader().getResource(
 				"de/hswt/hrm/scheme/ui/SchemeBuilderFrame"
@@ -38,8 +43,12 @@ public class SchemePart {
 			 TreeManager(ImageTreeModelFactory.create(parent.getDisplay()),
 			 tree);
 			grid = new SchemeGrid(getSchemeComposite(), SWT.NONE, 10, 10);
-			new TreeDNDManager(getTree(), grid);
-			new GridDNDManager(grid);
+	        DropTarget dt = new DropTarget(grid, DROP_OPS);
+	        dt.setTransfer(new Transfer[] { TextTransfer.getInstance() });
+	        DragSource src = new DragSource(tree, DRAG_OPS);
+	        src.setTransfer(new Transfer[] { TextTransfer.getInstance() });
+			new TreeDNDManager(getTree(), grid, dt, src);
+			new GridDNDManager(grid, dt, src);
 		} catch (Throwable e) {
 			throw new Error("Unable to load ", e);
 		}

@@ -25,24 +25,24 @@ import de.hswt.hrm.scheme.model.RenderedGridImage;
  */
 public class TreeDNDManager {
 
-    private static final int DRAG_OPS = DND.DROP_COPY, DROP_OPS = DND.DROP_COPY;
-
     private final Tree tree;
     private final SchemeGrid grid;
+    private final DropTarget dt;
+    private final DragSource src;
 
     private RenderedGridImage dragging;
 
-    public TreeDNDManager(Tree tree, SchemeGrid grid) {
+    public TreeDNDManager(Tree tree, SchemeGrid grid, DropTarget dt, DragSource src) {
         super();
         this.tree = tree;
         this.grid = grid;
+        this.dt = dt;
+        this.src = src;
         initDrag();
         initDrop();
     }
 
     private void initDrop() {
-        DropTarget dt = new DropTarget(grid, DROP_OPS);
-        dt.setTransfer(new Transfer[] { TextTransfer.getInstance() });
         dt.addDropListener(new DropTargetListener() {
 
             @Override
@@ -88,8 +88,6 @@ public class TreeDNDManager {
     }
 
     private void initDrag() {
-        DragSource src = new DragSource(tree, DRAG_OPS);
-        src.setTransfer(new Transfer[] { TextTransfer.getInstance() });
         src.addDragListener(new DragSourceListener() {
 
             @Override
@@ -103,7 +101,7 @@ public class TreeDNDManager {
 
             @Override
             public void dragSetData(DragSourceEvent ev) {
-                ev.data = "bla";
+                ev.data = dragging.toString();
             }
 
             @Override
