@@ -63,8 +63,4 @@ public class SchemePart {
 		return (Composite) XWT.findElementByName(root, "schemeComposite");
 	}
 
-	protected SchemeGrid getGrid() {
-		return (SchemeGrid) getSchemeComposite().getChildren()[0];
-	}
-
 }
