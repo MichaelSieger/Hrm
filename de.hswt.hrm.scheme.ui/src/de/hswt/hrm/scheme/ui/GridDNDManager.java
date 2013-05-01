@@ -76,12 +76,16 @@ public class GridDNDManager {
             
             @Override
             public void dragLeave(DropTargetEvent ev) {
-                ev.detail = DND.DROP_NONE;
+            	if(dragging != null){
+            		ev.detail = DND.DROP_NONE;
+            	}
             }
             
             @Override
             public void dragEnter(DropTargetEvent ev) {
-                ev.detail = DND.DROP_MOVE;
+            	if(dragging != null){
+            		ev.detail = DND.DROP_MOVE;
+            	}
             }
         });
 	}
@@ -91,9 +95,6 @@ public class GridDNDManager {
 			
 			@Override
 			public void dragStart(DragSourceEvent ev) {
-				if(dragging != null){
-					throw new RuntimeException("Already dragging an item");
-				}
                 Point loc = grid.toDisplay(0, 0);
                 startX = ev.x - loc.x;
                 startY = ev.y - loc.y;
@@ -102,7 +103,9 @@ public class GridDNDManager {
 			
 			@Override
 			public void dragSetData(DragSourceEvent ev) {
-				ev.data = dragging.toString();
+				if(dragging != null){
+					ev.data = dragging.toString();
+				}
 			}
 			
 			@Override

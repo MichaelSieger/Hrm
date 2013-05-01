@@ -77,12 +77,16 @@ public class TreeDNDManager {
 
             @Override
             public void dragLeave(DropTargetEvent ev) {
-                ev.detail = DND.DROP_NONE;
+            	if(dragging != null) {
+            		ev.detail = DND.DROP_NONE;
+            	}
             }
 
             @Override
             public void dragEnter(DropTargetEvent ev) {
-                ev.detail = DND.DROP_COPY;
+            	if(dragging != null){
+            		ev.detail = DND.DROP_COPY;
+            	}
             }
         });
     }
@@ -101,12 +105,16 @@ public class TreeDNDManager {
 
             @Override
             public void dragSetData(DragSourceEvent ev) {
-                ev.data = dragging.toString();
+            	if(dragging != null){
+            		ev.data = dragging.toString();
+            	}
             }
 
             @Override
             public void dragFinished(DragSourceEvent arg0) {
-                dragging = null;
+            	if(dragging != null){
+            		dragging = null;
+            	}
             }
         });
     }

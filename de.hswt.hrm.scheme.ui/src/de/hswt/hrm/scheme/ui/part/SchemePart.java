@@ -45,10 +45,12 @@ public class SchemePart {
 			grid = new SchemeGrid(getSchemeComposite(), SWT.NONE, 10, 10);
 	        DropTarget dt = new DropTarget(grid, DROP_OPS);
 	        dt.setTransfer(new Transfer[] { TextTransfer.getInstance() });
-	        DragSource src = new DragSource(tree, DRAG_OPS);
-	        src.setTransfer(new Transfer[] { TextTransfer.getInstance() });
-			new TreeDNDManager(getTree(), grid, dt, src);
-			new GridDNDManager(grid, dt, src);
+	        DragSource treeDragSource = new DragSource(tree, DRAG_OPS);
+	        treeDragSource.setTransfer(new Transfer[] { TextTransfer.getInstance()});
+	        DragSource gridDragSource = new DragSource(grid, DRAG_OPS);
+	        gridDragSource.setTransfer(new Transfer[]{TextTransfer.getInstance()});
+			new TreeDNDManager(getTree(), grid, dt, treeDragSource);
+			new GridDNDManager(grid, dt, gridDragSource);
 		} catch (Throwable e) {
 			throw new Error("Unable to load ", e);
 		}
