@@ -55,7 +55,7 @@ public class GridDNDManager {
                         Toolkit.getDefaultToolkit().beep();
                         try {
 							grid.setImageAtPixel(dragging, startX, startY);
-						} catch (PlaceOccupiedException e1) {
+						} catch (PlaceOccupiedException | IllegalArgumentException e1) {
 							/*
 							 * Das kann eigentlich nicht passieren, weil der Startpunkt
 							 * vor dem Drag nicht belegt war.
