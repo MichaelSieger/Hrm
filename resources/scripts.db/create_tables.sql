@@ -51,6 +51,7 @@ CREATE  TABLE IF NOT EXISTS `Plant` (
   `Plant_Current` VARCHAR(25) NULL ,
   `Plant_Voltage` VARCHAR(25) NULL ,
   `Plant_Note` TEXT NULL ,
+  `Plant_Description` VARCHAR(255) NOT NULL ,
   PRIMARY KEY (`Plant_ID`) ,
   INDEX `Plant_Place_FK` (`Plant_Place_FK` ASC) ,
   CONSTRAINT `Plant_Place_FK`
