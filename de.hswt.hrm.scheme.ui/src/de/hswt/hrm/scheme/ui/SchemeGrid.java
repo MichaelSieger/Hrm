@@ -42,27 +42,7 @@ public class SchemeGrid extends Canvas{
          * @return
          */
         boolean intersects(RenderedGridImageContainer o){
-            //TODO some better implementation
-            final int w1 = image.getGridImage().getWidth();
-            final int h1 = image.getGridImage().getHeight();
-            final int w2 = o.image.getGridImage().getWidth();
-            final int h2 = o.image.getGridImage().getHeight();
-            for(int i = 0; i < w1; i++){
-                for(int j = 0; j < h1; j++){
-                    for(int k = 0; k < h2; k++){
-                        for(int n = 0; n < w2; n++){
-                            final int x1 = j + x;
-                            final int y1 = i + y;
-                            final int x2 = n + o.x;
-                            final int y2 = k + o.y;
-                            if(x1 == x2 && y1 == y2){
-                                return true;
-                            }
-                        }
-                    }
-                }
-            }
-            return false;
+            return getBoundingBox().intersects(o.getBoundingBox());
         }
         
         boolean intersects(Point p){
@@ -70,6 +50,12 @@ public class SchemeGrid extends Canvas{
         			p.y >= y &&
         			p.x < x + image.getGridImage().getWidth() &&
         			p.y < y + image.getGridImage().getHeight();
+        }
+        
+        Rectangle getBoundingBox(){
+            return new Rectangle(x, y, 
+                    image.getGridImage().getWidth(),
+                    image.getGridImage().getHeight());
         }
     }
     
