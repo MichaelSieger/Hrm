@@ -36,13 +36,10 @@ public class SchemePart {
 
 	@PostConstruct
 	public void postConstruct(Composite parent) {
-
-		URL url = SchemePart.class.getClassLoader().getResource(
-				"de/hswt/hrm/scheme/ui/SchemeBuilderFrame"
-						+ IConstants.XWT_EXTENSION_SUFFIX);
+		URL url = SchemePart.class.getResource(
+				SchemePart.class.getSimpleName() + IConstants.XWT_EXTENSION_SUFFIX);
 
 		try {
-
 			root = (Composite) XWT.load(parent, url);
 			Tree tree = getTree();
 			new TreeManager(ImageTreeModelFactory.create(parent.getDisplay()),
