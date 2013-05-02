@@ -30,12 +30,12 @@ public class SchemeComponent {
     }
 
     public int getX() {
-        checkArgument(x < 0);
+        checkArgument(x >= 0);
         return x;
     }
 
     public void setX(int x) {
-        checkArgument(y > 0);
+        checkArgument(y >= 0);
         this.x = x;
     }
 
