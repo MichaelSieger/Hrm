@@ -26,8 +26,7 @@ public class GridDNDManager {
 	private final SchemeGrid grid;
 	private final DropTarget target;
 	private final DragSource source;
-	private RenderedGridImage dragging;
-	private int startX, startY;
+	private SchemeGridItem dragging;
 	
 	public GridDNDManager(SchemeGrid grid, DropTarget target, DragSource source){
 		this.grid = grid;
@@ -50,11 +49,11 @@ public class GridDNDManager {
                     final int x = ev.x - loc.x;
                     final int y = ev.y - loc.x;
                     try {
-                        grid.setImageAtPixel(dragging, x, y);
+                        grid.setImageAtPixel(dragging.getRenderedGridImage(), x, y);
                     } catch (PlaceOccupiedException | IllegalArgumentException e) {
                         Toolkit.getDefaultToolkit().beep();
                         try {
-							grid.setImageAtPixel(dragging, startX, startY);
+							grid.setImage(dragging);
 						} catch (PlaceOccupiedException | IllegalArgumentException e1) {
 							/*
 							 * Das kann eigentlich nicht passieren, weil der Startpunkt
@@ -94,9 +93,7 @@ public class GridDNDManager {
 			
 			@Override
 			public void dragStart(DragSourceEvent ev) {
-                startX = ev.x;
-                startY = ev.y;
-                dragging = grid.removeImagePixel(startX, startY);
+                dragging = grid.removeImagePixel(ev.x, ev.y);
 			}
 			
 			@Override
