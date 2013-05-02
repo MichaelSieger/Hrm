@@ -9,8 +9,7 @@ import static com.google.common.base.Preconditions.*;
  *
  */
 public class SchemeComponent {
-
-    private int id;
+    private final int id;
     private int x;
     private int y;
     
