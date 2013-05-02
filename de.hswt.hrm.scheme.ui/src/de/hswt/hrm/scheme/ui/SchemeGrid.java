@@ -25,38 +25,7 @@ import de.hswt.hrm.scheme.model.RenderedGridImage;
  */
 public class SchemeGrid extends Canvas{
     
-    private static class RenderedGridImageContainer{
-        RenderedGridImage image;
-        int x, y;
-        public RenderedGridImageContainer(RenderedGridImage image, int x, int y) {
-            super();
-            this.image = image;
-            this.x = x;
-            this.y = y;
-        }
-        
-        /**
-         * Returns true if the image intersects the other image.
-         * 
-         * @param o
-         * @return
-         */
-        boolean intersects(RenderedGridImageContainer o){
-            return getBoundingBox().intersects(o.getBoundingBox());
-        }
-        
-        boolean intersects(Point p){
-            return getBoundingBox().contains(p);
-        }
-        
-        Rectangle getBoundingBox(){
-            return new Rectangle(x, y, 
-                    image.getGridImage().getWidth(),
-                    image.getGridImage().getHeight());
-        }
-    }
-    
-    private final List<RenderedGridImageContainer> images = new ArrayList<>();
+    private final List<SchemeGridItem> images = new ArrayList<>();
     private final int width, height;
     
     public SchemeGrid(Composite parent, int style, int width, int height) {
@@ -80,8 +49,8 @@ public class SchemeGrid extends Canvas{
     }
 
     private void drawImages(GC gc) {
-        for(RenderedGridImageContainer container : images){
-            drawImage(gc, container.image, container.x, container.y);
+        for(SchemeGridItem item : images){
+            drawImage(gc, item.getGridImage(), item.getX(), item.getY());
         }
     }
 
@@ -156,8 +125,8 @@ public class SchemeGrid extends Canvas{
         final int h = image.getGridImage().getHeight();
         checkArgument(x >= 0 && x + w <= width);
         checkArgument(y >= 0 && y + h <= height);
-        RenderedGridImageContainer toInsert = new RenderedGridImageContainer(image, x, y);
-        for(RenderedGridImageContainer c : images){
+        SchemeGridItem toInsert = new SchemeGridItem(image, x, y);
+        for(SchemeGridItem c : images){
             if(c.intersects(toInsert)){
                 throw new PlaceOccupiedException("The image intersects with an image that is already there");
             }
@@ -189,8 +158,8 @@ public class SchemeGrid extends Canvas{
      */
     public RenderedGridImage removeImage(int x, int y){
     	Point p = new Point(x, y);
-    	RenderedGridImageContainer res = null;
-    	for(RenderedGridImageContainer cont : images){
+    	SchemeGridItem res = null;
+    	for(SchemeGridItem cont : images){
     		if(cont.intersects(p)){
     			res = cont;
     			break;
@@ -199,7 +168,7 @@ public class SchemeGrid extends Canvas{
     	if(res != null){
     		images.remove(res);
     		this.redraw();
-    		return res.image;
+    		return res.getGridImage();
     	}
     	return null;
     }
