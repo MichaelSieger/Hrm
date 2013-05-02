@@ -46,10 +46,7 @@ public class SchemeGrid extends Canvas{
         }
         
         boolean intersects(Point p){
-        	return p.x >= x &&
-        			p.y >= y &&
-        			p.x < x + image.getGridImage().getWidth() &&
-        			p.y < y + image.getGridImage().getHeight();
+            return getBoundingBox().contains(p);
         }
         
         Rectangle getBoundingBox(){
