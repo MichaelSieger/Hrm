@@ -66,8 +66,7 @@ public class GridImageConverter {
 				BufferedImage.TYPE_3BYTE_BGR);
 		Graphics2D g2 = (Graphics2D) bufImg.getGraphics();
 		PDFRenderer renderer = new PDFRenderer(page, g2, new Rectangle(0, 0, w,h), null, Color.WHITE);
-		renderer.run();
-		renderer.waitForFinish();
+		renderer.go(true);
 		return bufImg;
 	}
 
