@@ -20,6 +20,7 @@ public class SchemeComponent {
         this.id = id;
         setX(x);
         setY(y);
+        setDirection(direction);
     }
     
     public SchemeComponent(int x, int y, Direction direction){
