@@ -15,6 +15,7 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 
+import de.hswt.hrm.scheme.model.GridImage;
 import de.hswt.hrm.scheme.model.RenderedGridImage;
 
 /**
@@ -50,7 +51,7 @@ public class SchemeGrid extends Canvas{
 
     private void drawImages(GC gc) {
         for(SchemeGridItem item : images){
-            drawImage(gc, item.getGridImage(), item.getX(), item.getY());
+            drawImage(gc, item.getRenderedGridImage(), item.getX(), item.getY());
         }
     }
 
@@ -115,23 +116,21 @@ public class SchemeGrid extends Canvas{
      * The image is placed at the given grid position.
      * Throws an IllegalArgumentException if the image is outside of the grid
      * 
-     * @param image
+     * @param item
      * @param x
      * @param y
      * @throws PlaceOccupiedException
      */
-    public void setImageAt(RenderedGridImage image, int x, int y) throws PlaceOccupiedException {
-        final int w = image.getGridImage().getWidth();
-        final int h = image.getGridImage().getHeight();
-        checkArgument(x >= 0 && x + w <= width);
-        checkArgument(y >= 0 && y + h <= height);
-        SchemeGridItem toInsert = new SchemeGridItem(image, x, y);
+    public void setImage(SchemeGridItem item) throws PlaceOccupiedException {
+    	Rectangle r = item.getBoundingBox();
+        checkArgument(r.x >= 0 && r.x + r.width <= width);
+        checkArgument(r.y >= 0 && r.y + r.height <= height);
         for(SchemeGridItem c : images){
-            if(c.intersects(toInsert)){
+            if(c.intersects(item)){
                 throw new PlaceOccupiedException("The image intersects with an image that is already there");
             }
         }
-        images.add(toInsert);
+        images.add(item);
         this.redraw();
     }
     
@@ -145,7 +144,7 @@ public class SchemeGrid extends Canvas{
      * @throws PlaceOccupiedException
      */
     public void setImageAtPixel(RenderedGridImage image, int x, int y) throws PlaceOccupiedException{
-        setImageAt(image, getGridX(x), getGridY(y));
+    	setImage(new SchemeGridItem(image, getGridX(x), getGridY(y)));
     }
     
     /**
