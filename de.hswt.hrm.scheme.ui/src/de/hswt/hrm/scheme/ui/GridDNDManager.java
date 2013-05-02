@@ -43,7 +43,7 @@ public class GridDNDManager {
                 if(dragging != null){
                     Point loc = grid.toDisplay(0, 0);
                     final int x = ev.x - loc.x;
-                    final int y = ev.y - loc.x;
+                    final int y = ev.y - loc.y;
                     try {
                         grid.setImageAtPixel(dragging.getRenderedGridImage(), x, y);
                     } catch (PlaceOccupiedException | IllegalArgumentException e) {
