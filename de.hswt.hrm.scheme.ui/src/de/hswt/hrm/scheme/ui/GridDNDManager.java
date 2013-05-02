@@ -94,7 +94,6 @@ public class GridDNDManager {
 			
 			@Override
 			public void dragStart(DragSourceEvent ev) {
-                Point loc = grid.toDisplay(0, 0);
                 startX = ev.x;
                 startY = ev.y;
                 dragging = grid.removeImagePixel(startX, startY);
