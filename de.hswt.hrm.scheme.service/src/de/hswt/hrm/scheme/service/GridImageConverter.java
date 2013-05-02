@@ -26,6 +26,15 @@ import de.hswt.hrm.scheme.model.RenderedGridImage;
  * 
  */
 public class GridImageConverter {
+    
+    private static final ImageObserver observer = new ImageObserver(){
+
+        @Override
+        public boolean imageUpdate(Image img, int infoflags, int x, int y, int width, int height) {
+            return true;
+        }
+        
+    };
 
 	private static final int PPG = 100, // Pixel per grid
 			PPG_THUMBNAIL = 10;
@@ -67,17 +76,10 @@ public class GridImageConverter {
 	    if(img.getClass() == BufferedImage.class){
 	        return (BufferedImage) img;
 	    }
-	    BufferedImage result = new BufferedImage(img.getWidth(null), img.getHeight(null), 
+	    BufferedImage result = new BufferedImage(img.getWidth(observer), img.getHeight(observer), 
 	            BufferedImage.TYPE_4BYTE_ABGR);
 	    //Custom ImageObserver that loads the entire Image. That means drawImage is synchronous.
-	    result.getGraphics().drawImage(img, 0, 0, new ImageObserver(){
-
-            @Override
-            public boolean imageUpdate(Image img, int infoflags, int x, int y, int width, int height) {
-                return true;
-            }
-            
-        });
+	    result.getGraphics().drawImage(img, 0, 0, observer);
 	    return result;
 	}
 
