@@ -21,6 +21,12 @@ import de.hswt.hrm.scheme.ui.SchemeGrid;
 import de.hswt.hrm.scheme.ui.TreeDNDManager;
 import de.hswt.hrm.scheme.ui.TreeManager;
 
+/**
+ * This is the Part for the scheme builder frame.
+ * 
+ * @author Michael Sieger
+ *
+ */
 public class SchemePart {
 	
 	private static final int DRAG_OPS = DND.DROP_COPY, DROP_OPS = DND.DROP_COPY;
@@ -39,9 +45,8 @@ public class SchemePart {
 
 			root = (Composite) XWT.load(parent, url);
 			Tree tree = getTree();
-			 new
-			 TreeManager(ImageTreeModelFactory.create(parent.getDisplay()),
-			 tree);
+			new TreeManager(ImageTreeModelFactory.create(parent.getDisplay()),
+					 tree);
 			grid = new SchemeGrid(getSchemeComposite(), SWT.NONE, 40, 20);
 	        DropTarget dt = new DropTarget(grid, DROP_OPS);
 	        dt.setTransfer(new Transfer[] { TextTransfer.getInstance() });
@@ -57,7 +62,7 @@ public class SchemePart {
 
 	}
 
-	protected Tree getTree() {
+	private Tree getTree() {
 		return (Tree) XWT.findElementByName(root, "tree");
 	}
 
