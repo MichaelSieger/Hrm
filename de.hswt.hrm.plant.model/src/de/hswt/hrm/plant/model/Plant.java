@@ -20,7 +20,6 @@ public class Plant {
     // das gemeint?
     private int numberOfElements;
     private String description;
-    // eager loading
     private Place place;
 
     // optional
@@ -174,6 +173,144 @@ public class Plant {
 
     public void setNote(String note) {
         this.note = note;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((airPerformance == null) ? 0 : airPerformance.hashCode());
+        result = prime * result + constructionYear;
+        result = prime * result + ((current == null) ? 0 : current.hashCode());
+        result = prime * result + ((description == null) ? 0 : description.hashCode());
+        result = prime * result + id;
+        result = prime * result + inspectionInterval;
+        result = prime * result + ((manufactor == null) ? 0 : manufactor.hashCode());
+        result = prime * result + ((motorPower == null) ? 0 : motorPower.hashCode());
+        result = prime * result + ((motorRpm == null) ? 0 : motorRpm.hashCode());
+        result = prime * result + ((note == null) ? 0 : note.hashCode());
+        result = prime * result + numberOfElements;
+        result = prime * result + ((place == null) ? 0 : place.hashCode());
+        result = prime * result + ((type == null) ? 0 : type.hashCode());
+        result = prime * result
+                + ((ventilatorPerformance == null) ? 0 : ventilatorPerformance.hashCode());
+        result = prime * result + ((voltage == null) ? 0 : voltage.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        Plant other = (Plant) obj;
+        if (airPerformance == null) {
+            if (other.airPerformance != null) {
+                return false;
+            }
+        }
+        else if (!airPerformance.equals(other.airPerformance)) {
+            return false;
+        }
+        if (constructionYear != other.constructionYear) {
+            return false;
+        }
+        if (current == null) {
+            if (other.current != null) {
+                return false;
+            }
+        }
+        else if (!current.equals(other.current)) {
+            return false;
+        }
+        if (description == null) {
+            if (other.description != null) {
+                return false;
+            }
+        }
+        else if (!description.equals(other.description)) {
+            return false;
+        }
+        if (id != other.id) {
+            return false;
+        }
+        if (inspectionInterval != other.inspectionInterval) {
+            return false;
+        }
+        if (manufactor == null) {
+            if (other.manufactor != null) {
+                return false;
+            }
+        }
+        else if (!manufactor.equals(other.manufactor)) {
+            return false;
+        }
+        if (motorPower == null) {
+            if (other.motorPower != null) {
+                return false;
+            }
+        }
+        else if (!motorPower.equals(other.motorPower)) {
+            return false;
+        }
+        if (motorRpm == null) {
+            if (other.motorRpm != null) {
+                return false;
+            }
+        }
+        else if (!motorRpm.equals(other.motorRpm)) {
+            return false;
+        }
+        if (note == null) {
+            if (other.note != null) {
+                return false;
+            }
+        }
+        else if (!note.equals(other.note)) {
+            return false;
+        }
+        if (numberOfElements != other.numberOfElements) {
+            return false;
+        }
+        if (place == null) {
+            if (other.place != null) {
+                return false;
+            }
+        }
+        else if (!place.equals(other.place)) {
+            return false;
+        }
+        if (type == null) {
+            if (other.type != null) {
+                return false;
+            }
+        }
+        else if (!type.equals(other.type)) {
+            return false;
+        }
+        if (ventilatorPerformance == null) {
+            if (other.ventilatorPerformance != null) {
+                return false;
+            }
+        }
+        else if (!ventilatorPerformance.equals(other.ventilatorPerformance)) {
+            return false;
+        }
+        if (voltage == null) {
+            if (other.voltage != null) {
+                return false;
+            }
+        }
+        else if (!voltage.equals(other.voltage)) {
+            return false;
+        }
+        return true;
     }
 
 }
