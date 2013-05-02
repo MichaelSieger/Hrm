@@ -1,5 +1,8 @@
 package de.hswt.hrm.scheme.ui;
 
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.Rectangle;
+
 import de.hswt.hrm.scheme.model.RenderedGridImage;
 
 /**
@@ -45,6 +48,24 @@ public class SchemeGridItem {
 		this.y = y;
 	}
 	
-	
+    /**
+     * Returns true if the image intersects the other image.
+     * 
+     * @param o
+     * @return
+     */
+    boolean intersects(SchemeGridItem o){
+        return getBoundingBox().intersects(o.getBoundingBox());
+    }
+    
+    boolean intersects(Point p){
+        return getBoundingBox().contains(p);
+    }
+    
+    Rectangle getBoundingBox(){
+        return new Rectangle(x, y, 
+        		gridImage.getGridImage().getWidth(),
+                gridImage.getGridImage().getHeight());
+    }
 
 }
