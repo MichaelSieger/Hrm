@@ -1,10 +1,9 @@
 package de.hswt.hrm.scheme.service;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
-import java.awt.image.ComponentColorModel;
+import java.awt.image.ColorModel;
+import java.awt.image.ImageObserver;
 import java.awt.image.WritableRaster;
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -16,7 +15,6 @@ import org.eclipse.swt.widgets.Display;
 
 import com.sun.pdfview.PDFFile;
 import com.sun.pdfview.PDFPage;
-import com.sun.pdfview.PDFRenderer;
 
 import de.hswt.hrm.scheme.model.GridImage;
 import de.hswt.hrm.scheme.model.RenderedGridImage;
@@ -28,6 +26,15 @@ import de.hswt.hrm.scheme.model.RenderedGridImage;
  * 
  */
 public class GridImageConverter {
+    
+    private static final ImageObserver observer = new ImageObserver(){
+
+        @Override
+        public boolean imageUpdate(Image img, int infoflags, int x, int y, int width, int height) {
+            return true;
+        }
+        
+    };
 
 	private static final int PPG = 100, // Pixel per grid
 			PPG_THUMBNAIL = 10;
@@ -62,13 +69,18 @@ public class GridImageConverter {
 
 	private static BufferedImage renderImage(final PDFPage page, final int w,
 			final int h) {
-		BufferedImage bufImg = new BufferedImage(w, h,
-				BufferedImage.TYPE_3BYTE_BGR);
-		Graphics2D g2 = (Graphics2D) bufImg.getGraphics();
-		PDFRenderer renderer = new PDFRenderer(page, g2, new Rectangle(0, 0, w,h), null, Color.WHITE);
-		renderer.run();
-		renderer.waitForFinish();
-		return bufImg;
+	    return convertToBufferedImage(page.getImage(w, h, page.getBBox(), null, true, true));
+	}
+	
+	private static BufferedImage convertToBufferedImage(Image img){
+	    if(img.getClass() == BufferedImage.class){
+	        return (BufferedImage) img;
+	    }
+	    BufferedImage result = new BufferedImage(img.getWidth(observer), img.getHeight(observer), 
+	            BufferedImage.TYPE_4BYTE_ABGR);
+	    //Custom ImageObserver that loads the entire Image. That means drawImage is synchronous.
+	    result.getGraphics().drawImage(img, 0, 0, observer);
+	    return result;
 	}
 
 	private static org.eclipse.swt.graphics.Image getSWTImage(Display display,
@@ -83,8 +95,8 @@ public class GridImageConverter {
 	 * @return
 	 */
 	private static ImageData getSWTData(final BufferedImage bufferedImage) {
-	    ComponentColorModel colorModel = (ComponentColorModel)bufferedImage.getColorModel();
-
+	    //ComponentColorModel colorModel = (ComponentColorModel)bufferedImage.getColorModel();
+	    ColorModel colorModel = bufferedImage.getColorModel();
 	    //ASSUMES: 3 BYTE BGR IMAGE TYPE
 
 	    PaletteData palette = new PaletteData(0x0000FF, 0x00FF00,0xFF0000);
@@ -94,7 +106,7 @@ public class GridImageConverter {
 	    data.transparentPixel = -1;
 
 	    WritableRaster raster = bufferedImage.getRaster();
-	    int[] pixelArray = new int[3];
+	    int[] pixelArray = new int[4];
 	    for (int y = 0; y < data.height; y++) {
 	        for (int x = 0; x < data.width; x++) {
 	            raster.getPixel(x, y, pixelArray);

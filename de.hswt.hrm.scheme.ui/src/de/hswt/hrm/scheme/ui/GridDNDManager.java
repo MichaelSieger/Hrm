@@ -1,5 +1,7 @@
 package de.hswt.hrm.scheme.ui;
 
+import java.awt.Toolkit;
+
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DragSource;
 import org.eclipse.swt.dnd.DragSourceEvent;
@@ -21,21 +23,21 @@ import de.hswt.hrm.scheme.model.RenderedGridImage;
  */
 public class GridDNDManager {
 	
-	private static final int OPS = DND.DROP_MOVE;
-	
 	private final SchemeGrid grid;
+	private final DropTarget target;
+	private final DragSource source;
 	private RenderedGridImage dragging;
-//	private startX, startY;
+	private int startX, startY;
 	
-	public GridDNDManager(SchemeGrid grid){
+	public GridDNDManager(SchemeGrid grid, DropTarget target, DragSource source){
 		this.grid = grid;
+		this.target = target;
+		this.source = source;
 		initDrag();
 		initDrop();
 	}
 	
 	private void initDrop(){
-	    DropTarget target = new DropTarget(grid, OPS);
-	    target.setTransfer(new Transfer[]{TextTransfer.getInstance()});
 	    target.addDropListener(new DropTargetListener() {
             
             @Override
@@ -46,12 +48,20 @@ public class GridDNDManager {
                 if(dragging != null){
                     Point loc = grid.toDisplay(0, 0);
                     final int x = ev.x - loc.x;
-                    final int y = ev.y - loc.y;
+                    final int y = ev.y - loc.x;
                     try {
                         grid.setImageAtPixel(dragging, x, y);
-                    } catch (PlaceOccupiedException e) {
-//                        Toolbox.getDefaultToolbox().beep();
-//                        grid.setImageAtPixel(dragging, startX, startY);
+                    } catch (PlaceOccupiedException | IllegalArgumentException e) {
+                        Toolkit.getDefaultToolkit().beep();
+                        try {
+							grid.setImageAtPixel(dragging, startX, startY);
+						} catch (PlaceOccupiedException e1) {
+							/*
+							 * Das kann eigentlich nicht passieren, weil der Startpunkt
+							 * vor dem Drag nicht belegt war.
+							 */
+							e1.printStackTrace();
+						}
                     }
                     dragging = null;
                 }
@@ -65,37 +75,40 @@ public class GridDNDManager {
             
             @Override
             public void dragLeave(DropTargetEvent ev) {
-                ev.detail = DND.DROP_NONE;
+            	if(dragging != null){
+            		ev.detail = DND.DROP_NONE;
+            	}
             }
             
             @Override
             public void dragEnter(DropTargetEvent ev) {
-                ev.detail = DND.DROP_MOVE;
+            	if(dragging != null){
+            		ev.detail = DND.DROP_COPY;
+            	}
             }
         });
 	}
 	
 	private void initDrag(){
-		DragSource source = new DragSource(grid, OPS);
-		source.setTransfer(new Transfer[]{TextTransfer.getInstance()});
 		source.addDragListener(new DragSourceListener() {
 			
 			@Override
 			public void dragStart(DragSourceEvent ev) {
-                Point loc = grid.toDisplay(0, 0);
-//                startX = ev.x - loc.x;
-//                startY = ev.y - loc.y;
-               // dragging = grid.removeImagePixel(startX, startY);
+                startX = ev.x;
+                startY = ev.y;
+                dragging = grid.removeImagePixel(startX, startY);
 			}
 			
 			@Override
 			public void dragSetData(DragSourceEvent ev) {
-				ev.data = dragging.toString();
+				if(dragging != null){
+					ev.data = dragging.toString();
+				}
 			}
 			
 			@Override
 			public void dragFinished(DragSourceEvent ev) {
-
+				dragging = null;
 			}
 		});
 	}

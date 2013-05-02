@@ -201,6 +201,7 @@ public class SchemeGrid extends Canvas{
     	}
     	if(res != null){
     		images.remove(res);
+    		this.redraw();
     		return res.image;
     	}
     	return null;
