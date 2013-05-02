@@ -13,23 +13,23 @@ import de.hswt.hrm.scheme.model.RenderedGridImage;
  */
 public class SchemeGridItem {
 	
-	private RenderedGridImage gridImage;
+	private RenderedGridImage renderedGridImage;
 	private int x;
 	private int y;
 	
-	public SchemeGridItem(RenderedGridImage gridImage, int x, int y) {
+	public SchemeGridItem(RenderedGridImage renderedGridImage, int x, int y) {
 		super();
-		this.gridImage = gridImage;
+		this.renderedGridImage = renderedGridImage;
 		this.x = x;
 		this.y = y;
 	}
 
-	public RenderedGridImage getGridImage() {
-		return gridImage;
+	public RenderedGridImage getRenderedGridImage() {
+		return renderedGridImage;
 	}
 
-	public void setGridImage(RenderedGridImage gridImage) {
-		this.gridImage = gridImage;
+	public void setRenderedGridImage(RenderedGridImage renderedGridImage) {
+		this.renderedGridImage = renderedGridImage;
 	}
 
 	public int getX() {
@@ -64,8 +64,8 @@ public class SchemeGridItem {
     
     Rectangle getBoundingBox(){
         return new Rectangle(x, y, 
-        		gridImage.getGridImage().getWidth(),
-                gridImage.getGridImage().getHeight());
+        		renderedGridImage.getGridImage().getWidth(),
+        		renderedGridImage.getGridImage().getHeight());
     }
 
 }
