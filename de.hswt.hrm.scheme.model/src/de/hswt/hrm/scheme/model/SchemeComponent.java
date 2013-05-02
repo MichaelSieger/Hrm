@@ -9,22 +9,32 @@ import static com.google.common.base.Preconditions.*;
  *
  */
 public class SchemeComponent {
+	
     private final int id;
     private int x;
     private int y;
+    private Direction direction;
     
     
-    public SchemeComponent(int id, int x, int y) {
+    public SchemeComponent(int id, int x, int y, Direction direction) {
         this.id = id;
         setX(x);
         setY(y);
     }
     
-    public SchemeComponent(int x, int y){
-        this(-1, x, y);
+    public SchemeComponent(int x, int y, Direction direction){
+        this(-1, x, y, direction);
     }
 
-    public int getId() {
+    public Direction getDirection() {
+		return direction;
+	}
+
+	public void setDirection(Direction direction) {
+		this.direction = direction;
+	}
+
+	public int getId() {
         return id;
     }
 
