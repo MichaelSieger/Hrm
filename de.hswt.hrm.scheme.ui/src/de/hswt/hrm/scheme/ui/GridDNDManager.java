@@ -65,7 +65,6 @@ public class GridDNDManager {
 						}
                     }
                     dragging = null;
-                    grid.redraw();
                 }
             }
             
@@ -100,7 +99,6 @@ public class GridDNDManager {
                 startX = ev.x;
                 startY = ev.y;
                 dragging = grid.removeImagePixel(startX, startY);
-                grid.redraw();
 			}
 			
 			@Override
