@@ -57,7 +57,6 @@ public class TreeDNDManager {
                     	grid.setImageAtPixel(dragging, ev.x - loc.x, ev.y - loc.y);
                     }
                     catch (PlaceOccupiedException | IllegalArgumentException e) {
-                        e.printStackTrace();
                         Toolkit.getDefaultToolkit().beep();
                     }
                 }
