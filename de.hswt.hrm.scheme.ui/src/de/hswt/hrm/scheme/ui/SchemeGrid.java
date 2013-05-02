@@ -156,7 +156,7 @@ public class SchemeGrid extends Canvas{
      * @param y
      * @return
      */
-    public RenderedGridImage removeImage(int x, int y){
+    public SchemeGridItem removeImage(int x, int y){
     	Point p = new Point(x, y);
     	SchemeGridItem res = null;
     	for(SchemeGridItem cont : images){
@@ -168,7 +168,7 @@ public class SchemeGrid extends Canvas{
     	if(res != null){
     		images.remove(res);
     		this.redraw();
-    		return res.getGridImage();
+    		return res;
     	}
     	return null;
     }
@@ -181,7 +181,7 @@ public class SchemeGrid extends Canvas{
      * @param y
      * @return
      */
-	public RenderedGridImage removeImagePixel(int x, int y) {
+	public SchemeGridItem removeImagePixel(int x, int y) {
 		return removeImage(getGridX(x), getGridY(y));
 	}
 
