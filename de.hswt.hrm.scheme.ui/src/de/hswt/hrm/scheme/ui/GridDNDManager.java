@@ -47,12 +47,11 @@ public class GridDNDManager {
             public void drop(DropTargetEvent ev) {
                 if(dragging != null){
                     Point loc = grid.toDisplay(0, 0);
-                    final int x = ev.x;
-                    final int y = ev.y;
+                    final int x = ev.x - loc.x;
+                    final int y = ev.y - loc.x;
                     try {
                         grid.setImageAtPixel(dragging, x, y);
-                    } catch (PlaceOccupiedException e) {
-                    	
+                    } catch (PlaceOccupiedException | IllegalArgumentException e) {
                         Toolkit.getDefaultToolkit().beep();
                         try {
 							grid.setImageAtPixel(dragging, startX, startY);
