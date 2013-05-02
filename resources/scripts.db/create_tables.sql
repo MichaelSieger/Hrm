@@ -43,7 +43,7 @@ CREATE  TABLE IF NOT EXISTS `Plant` (
   `Plant_Inspection_Interval` INT(11) NOT NULL ,
   `Plant_Manufacturer` VARCHAR(45) NULL ,
   `Plant_Year_Of_Construction` YEAR NULL ,
-  `Plant_Type` INT(11) NULL ,
+  `Plant_Type` VARCHAR(255) NULL ,
   `Plant_Airperformance` VARCHAR(255) NULL ,
   `Plant_Motorpower` VARCHAR(25) NULL ,
   `Plant_Motor_Rpm` VARCHAR(25) NULL ,
