@@ -15,7 +15,6 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 
-import de.hswt.hrm.scheme.model.GridImage;
 import de.hswt.hrm.scheme.model.RenderedGridImage;
 
 /**

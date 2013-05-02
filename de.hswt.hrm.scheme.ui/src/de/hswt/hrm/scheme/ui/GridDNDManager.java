@@ -9,11 +9,7 @@ import org.eclipse.swt.dnd.DragSourceListener;
 import org.eclipse.swt.dnd.DropTarget;
 import org.eclipse.swt.dnd.DropTargetEvent;
 import org.eclipse.swt.dnd.DropTargetListener;
-import org.eclipse.swt.dnd.TextTransfer;
-import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.graphics.Point;
-
-import de.hswt.hrm.scheme.model.RenderedGridImage;
 
 /**
  * This class manages the drag and drop in the intern of the SchemeGrid
