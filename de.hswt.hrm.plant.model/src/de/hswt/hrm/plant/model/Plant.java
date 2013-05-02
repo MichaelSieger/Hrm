@@ -46,7 +46,8 @@ public class Plant {
     }
 
     public void setInspectionInterval(int inspectionInterval) {
-
+        checkArgument(inspectionInterval > 0,
+                "%d is not a valid Interval% Interval must greater than zero", inspectionInterval);
         this.inspectionInterval = inspectionInterval;
     }
 
