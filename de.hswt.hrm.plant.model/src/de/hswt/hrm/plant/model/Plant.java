@@ -1,5 +1,9 @@
 package de.hswt.hrm.plant.model;
 
+import com.google.common.base.Optional;
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Strings.isNullOrEmpty;
+
 import de.hswt.hrm.place.model.Place;
 
 /**
@@ -37,15 +41,12 @@ public class Plant {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public int getInspectionInterval() {
         return inspectionInterval;
     }
 
     public void setInspectionInterval(int inspectionInterval) {
+
         this.inspectionInterval = inspectionInterval;
     }
 
