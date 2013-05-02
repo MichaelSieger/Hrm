@@ -5,3 +5,4 @@ Bundle-SymbolicName: de.hswt.hrm.plant.model
 Bundle-Version: 0.0.1.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: de.hswt.hrm.plant.model
+Import-Package: de.hswt.hrm.place.model
