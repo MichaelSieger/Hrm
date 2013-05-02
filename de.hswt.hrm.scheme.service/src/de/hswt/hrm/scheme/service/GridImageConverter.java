@@ -1,13 +1,8 @@
 package de.hswt.hrm.scheme.service;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Label;
-import java.awt.Rectangle;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
-import java.awt.image.ComponentColorModel;
-import java.awt.image.DirectColorModel;
 import java.awt.image.ImageObserver;
 import java.awt.image.WritableRaster;
 import java.io.IOException;
@@ -20,7 +15,6 @@ import org.eclipse.swt.widgets.Display;
 
 import com.sun.pdfview.PDFFile;
 import com.sun.pdfview.PDFPage;
-import com.sun.pdfview.PDFRenderer;
 
 import de.hswt.hrm.scheme.model.GridImage;
 import de.hswt.hrm.scheme.model.RenderedGridImage;
@@ -66,7 +60,25 @@ public class GridImageConverter {
 
 	private static BufferedImage renderImage(final PDFPage page, final int w,
 			final int h) {
-	    return (BufferedImage) page.getImage(w, h, page.getBBox(), null, true, true);
+	    return convertToBufferedImage(page.getImage(w, h, page.getBBox(), null, true, true));
+	}
+	
+	private static BufferedImage convertToBufferedImage(Image img){
+	    if(img.getClass() == BufferedImage.class){
+	        return (BufferedImage) img;
+	    }
+	    BufferedImage result = new BufferedImage(img.getWidth(null), img.getHeight(null), 
+	            BufferedImage.TYPE_4BYTE_ABGR);
+	    //Custom ImageObserver that loads the entire Image. That means drawImage is synchronous.
+	    result.getGraphics().drawImage(img, 0, 0, new ImageObserver(){
+
+            @Override
+            public boolean imageUpdate(Image img, int infoflags, int x, int y, int width, int height) {
+                return true;
+            }
+            
+        });
+	    return result;
 	}
 
 	private static org.eclipse.swt.graphics.Image getSWTImage(Display display,
