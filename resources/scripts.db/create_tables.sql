@@ -76,44 +76,58 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `Catalog_Activity`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `Catalog_Activity` (
-  `Category_Activity_State_Activity_FK` INT NOT NULL ,
-  `Category_Activity_Catalog_FK` INT NOT NULL ,
-  PRIMARY KEY (`Category_Activity_State_Activity_FK`, `Category_Activity_Catalog_FK`) ,
-  INDEX `Category_Activity_State_Activity_IDx` (`Category_Activity_State_Activity_FK` ASC) ,
-  CONSTRAINT `Category_Activity_State_Activity_FK`
-    FOREIGN KEY (`Category_Activity_State_Activity_FK` )
-    REFERENCES `State_Activity` (`State_Activity_ID` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+--CREATE  TABLE IF NOT EXISTS `Catalog_Activity` (
+--  `Catalog_Activity_ID` INT NOT NULL AUTO_INCREMENT ,
+--  `Category_Activity_State_Activity_FK` INT NOT NULL ,
+--  `Category_Activity_Catalog_FK` INT NOT NULL ,
+--  PRIMARY KEY (`Catalog_Activity_ID`) ,
+--  INDEX `Category_Activity_State_Activity_IDx` (`Category_Activity_State_Activity_FK` ASC) ,
+--  INDEX `Category_Activity_Catalog_IDx` (`Category_Activity_Catalog_FK` ASC) ,
+--  CONSTRAINT `Category_Activity_State_Activity_FK`
+--    FOREIGN KEY (`Category_Activity_State_Activity_FK` )
+--    REFERENCES `State_Activity` (`State_Activity_ID` )
+--    ON DELETE NO ACTION
+--    ON UPDATE NO ACTION,
+-- CONSTRAINT `Category_Activity_Catalog_FK`
+--    FOREIGN KEY (`Category_Activity_Catalog_FK` )
+--    REFERENCES `Catalog` (`Catalog_ID` )
+--    ON DELETE NO ACTION
+--    ON UPDATE NO ACTION)
+--ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
 -- Table `State_Current`
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `State_Current` (
-  `State_Actual_ID` INT NOT NULL AUTO_INCREMENT ,
-  `State_Actual_Name` VARCHAR(100) NULL ,
-  `State_Actual_Text` TEXT NOT NULL ,
-  PRIMARY KEY (`State_Actual_ID`) )
+  `State_Current_ID` INT NOT NULL AUTO_INCREMENT ,
+  `State_Current_Name` VARCHAR(100) NULL ,
+  `State_Current_Text` TEXT NOT NULL ,
+  PRIMARY KEY (`State_Current_ID`) )
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
 -- Table `Catalog_Current`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `Catalog_Current` (
-  `Category_Actual_State_Actual_FK` INT NOT NULL ,
-  `Category_Actual_Category_FK` INT NOT NULL ,
-  PRIMARY KEY (`Category_Actual_State_Actual_FK`, `Category_Actual_Category_FK`) ,
-  INDEX `Category_Actual_State_Actual_IDx` (`Category_Actual_State_Actual_FK` ASC) ,
-  CONSTRAINT `Category_Actual_State_Actual_FK`
-    FOREIGN KEY (`Category_Actual_State_Actual_FK` )
-    REFERENCES `State_Current` (`State_Actual_ID` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+--CREATE  TABLE IF NOT EXISTS `Catalog_Current` (
+-- `Catalog_Current_ID` INT NOT NULL AUTO_INCREMENT ,
+--  `Category_Current_State_Current_FK` INT NOT NULL ,
+--  `Category_Current_Catalog_FK` INT NOT NULL ,
+--  INDEX `Category_Current_State_Current_IDx` (`Category_Current_State_Current_FK` ASC) ,
+--  INDEX `Category_Current_Catalog_IDx` (`Category_Current_Catalog_FK` ASC) ,
+--  PRIMARY KEY (`Catalog_Current_ID`) ,
+--  CONSTRAINT `Category_Current_State_Current_FK`
+--    FOREIGN KEY (`Category_Current_State_Current_FK` )
+--   REFERENCES `State_Current` (`State_Current_ID` )
+--    ON DELETE NO ACTION
+--    ON UPDATE NO ACTION,
+--  CONSTRAINT `Category_Current_Catalog_FK`
+--    FOREIGN KEY (`Category_Current_Catalog_FK` )
+--    REFERENCES `Catalog` (`Catalog_ID` )
+--    ON DELETE NO ACTION
+--    ON UPDATE NO ACTION)
+--ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
@@ -130,91 +144,98 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `Catalog_Target`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `Catalog_Target` (
-  `Category_Target_State_Target_FK` INT NOT NULL ,
-  `Category_Target_Category_FK` INT NOT NULL ,
-  PRIMARY KEY (`Category_Target_State_Target_FK`, `Category_Target_Category_FK`) ,
-  INDEX `Category_Target_State_Target_IDx` (`Category_Target_State_Target_FK` ASC) ,
-  CONSTRAINT `Category_Target_State_Target_FK`
-    FOREIGN KEY (`Category_Target_State_Target_FK` )
-    REFERENCES `State_Target` (`State_Target_ID` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+--CREATE  TABLE IF NOT EXISTS `Catalog_Target` (
+--  `Catalog_Target_ID` INT NOT NULL AUTO_INCREMENT ,
+--  `Category_Target_State_Target_FK` INT NOT NULL ,
+--  `Category_Target_Catalog_FK` INT NOT NULL ,
+--  PRIMARY KEY (`Catalog_Target_ID`) ,
+--  INDEX `Category_Target_State_Target_IDx` (`Category_Target_State_Target_FK` ASC) ,
+--  INDEX `Category_Target_Catalog_IDx` (`Category_Target_Catalog_FK` ASC) ,
+--  CONSTRAINT `Category_Target_State_Target_FK`
+--    FOREIGN KEY (`Category_Target_State_Target_FK` )
+--    REFERENCES `State_Target` (`State_Target_ID` )
+--   ON DELETE NO ACTION
+--    ON UPDATE NO ACTION,
+--  CONSTRAINT `Category_Target_Catalog_FK`
+--    FOREIGN KEY (`Category_Target_Catalog_FK` )
+--    REFERENCES `Catalog` (`Catalog_ID` )
+--    ON DELETE NO ACTION
+--    ON UPDATE NO ACTION)
+--ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
 -- Table `Catalog`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `Catalog` (
-  `Catalog_ID` INT NOT NULL AUTO_INCREMENT ,
-  `Catalog_Catalog_Activity_FK` INT NULL ,
-  `Catalog_Catalog_Current_FK` INT NULL ,
-  `Catalog_Catalog_Target_FK` INT NULL ,
-  PRIMARY KEY (`Catalog_ID`) ,
-  INDEX `Catalog_Catalog_Activity_FK` (`Catalog_Catalog_Activity_FK` ASC) ,
-  INDEX `Catalog_Catalog_Current_FK` (`Catalog_Catalog_Current_FK` ASC) ,
-  INDEX `Catalog_Catalog_Target_FK` (`Catalog_Catalog_Target_FK` ASC) ,
-  CONSTRAINT `Catalog_Catalog_Activity_FK`
-    FOREIGN KEY (`Catalog_Catalog_Activity_FK` )
-    REFERENCES `Catalog_Activity` (`Category_Activity_State_Activity_FK` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `Catalog_Catalog_Current_FK`
-    FOREIGN KEY (`Catalog_Catalog_Current_FK` )
-    REFERENCES `Catalog_Current` (`Category_Actual_State_Actual_FK` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `Catalog_Catalog_Target_FK`
-    FOREIGN KEY (`Catalog_Catalog_Target_FK` )
-    REFERENCES `Catalog_Target` (`Category_Target_State_Target_FK` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+--CREATE  TABLE IF NOT EXISTS `Catalog` (
+--  `Catalog_ID` INT NOT NULL AUTO_INCREMENT ,
+--  `Catalog_Catalog_Activity_FK` INT NULL ,
+--  `Catalog_Catalog_Current_FK` INT NULL ,
+--  `Catalog_Catalog_Target_FK` INT NULL ,
+--  PRIMARY KEY (`Catalog_ID`) ,
+--  INDEX `Catalog_Catalog_Activity_IDx` (`Catalog_Catalog_Activity_FK` ASC) ,
+--  INDEX `Catalog_Catalog_Current_IDx` (`Catalog_Catalog_Current_FK` ASC) ,
+--  INDEX `Catalog_Catalog_Target_IDx` (`Catalog_Catalog_Target_FK` ASC) ,
+--  CONSTRAINT `Catalog_Catalog_Activity_FK`
+--    FOREIGN KEY (`Catalog_Catalog_Activity_FK` )
+--    REFERENCES `Catalog_Activity` (`Catalog_Activity_ID` )
+--    ON DELETE NO ACTION
+--    ON UPDATE NO ACTION,
+--  CONSTRAINT `Catalog_Catalog_Current_FK`
+--    FOREIGN KEY (`Catalog_Catalog_Current_FK` )
+--    REFERENCES `Catalog_Current` (`Catalog_Current_ID` )
+--    ON DELETE NO ACTION
+--    ON UPDATE NO ACTION,
+--  CONSTRAINT `Catalog_Catalog_Target_FK`
+--    FOREIGN KEY (`Catalog_Catalog_Target_FK` )
+--    REFERENCES `Catalog_Target` (`Catalog_Target_ID` )
+--    ON DELETE NO ACTION
+--    ON UPDATE NO ACTION)
+--ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
 -- Table `Category`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `Category` (
-  `Category_ID` INT NOT NULL AUTO_INCREMENT ,
-  `Category_Name` VARCHAR(45) NULL ,
-  `Category_Height` VARCHAR(45) NULL ,
-  `Category_Width` VARCHAR(45) NULL ,
-  `Category_Default_Qualifier` VARCHAR(45) NULL ,
-  `Category_Default_bool_Rating` TINYINT(1) NULL ,
-  `Category_Catalog_FK` INT NULL ,
-  PRIMARY KEY (`Category_ID`) ,
-  INDEX `Category_Catalog_FK` (`Category_Catalog_FK` ASC) ,
-  CONSTRAINT `Category_Catalog_FK`
-    FOREIGN KEY (`Category_Catalog_FK` )
-    REFERENCES `Catalog` (`Catalog_ID` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+--CREATE  TABLE IF NOT EXISTS `Category` (
+--  `Category_ID` INT NOT NULL AUTO_INCREMENT ,
+--  `Category_Name` VARCHAR(45) NULL ,
+--  `Category_Height` VARCHAR(45) NULL ,
+--  `Category_Width` VARCHAR(45) NULL ,
+--  `Category_Default_Qualifier` VARCHAR(45) NULL ,
+--  `Category_Default_bool_Rating` TINYINT(1) NULL ,
+--  `Category_Catalog_FK` INT NULL ,
+--  PRIMARY KEY (`Category_ID`) ,
+--  INDEX `Category_Catalog_FK` (`Category_Catalog_FK` ASC) ,
+--  CONSTRAINT `Category_Catalog_FK`
+--    FOREIGN KEY (`Category_Catalog_FK` )
+--    REFERENCES `Catalog` (`Catalog_ID` )
+--    ON DELETE NO ACTION
+--    ON UPDATE NO ACTION)
+--ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
 -- Table `Component`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `Component` (
-  `Component_ID` INT NOT NULL AUTO_INCREMENT ,
-  `Component_Name` VARCHAR(45) NULL ,
-  `Component_Symbol_LR` VARCHAR(255) NULL ,
-  `Component_Symbol_RL` VARCHAR(255) NULL ,
-  `Component_Symbol_UD` VARCHAR(255) NULL ,
-  `Component_Symbol_DU` VARCHAR(255) NULL ,
-  `Component_Quantifier` INT NULL ,
-  `Component_Category_FK` INT NULL ,
-  `Component_Bool_Rating` TINYINT(1) NULL ,
-  PRIMARY KEY (`Component_ID`) ,
-  INDEX `Component_Category_FK` (`Component_Category_FK` ASC) ,
-  CONSTRAINT `Component_Category_FK`
-    FOREIGN KEY (`Component_Category_FK` )
-    REFERENCES `Category` (`Category_ID` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+--CREATE  TABLE IF NOT EXISTS `Component` (
+--  `Component_ID` INT NOT NULL AUTO_INCREMENT ,
+--  `Component_Name` VARCHAR(45) NULL ,
+--  `Component_Symbol_LR` VARCHAR(255) NULL ,
+--  `Component_Symbol_RL` VARCHAR(255) NULL ,
+--  `Component_Symbol_UD` VARCHAR(255) NULL ,
+-- `Component_Symbol_DU` VARCHAR(255) NULL ,
+--  `Component_Quantifier` INT NULL ,
+--  `Component_Category_FK` INT NULL ,
+--  `Component_Bool_Rating` TINYINT(1) NULL ,
+--  PRIMARY KEY (`Component_ID`) ,
+--  INDEX `Component_Category_FK` (`Component_Category_FK` ASC) ,
+--  CONSTRAINT `Component_Category_FK`
+--    FOREIGN KEY (`Component_Category_FK` )
+--    REFERENCES `Category` (`Category_ID` )
+--    ON DELETE NO ACTION
+--   ON UPDATE NO ACTION)
+--ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
@@ -249,26 +270,26 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `Scheme_Component`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `Scheme_Component` (
-  `Scheme_Component_ID` INT NOT NULL AUTO_INCREMENT ,
-  `Scheme_Component_Scheme_FK` INT NULL ,
-  `Scheme_Component_Component_FK` INT NULL ,
-  `Scheme_Component_X_Position` INT NULL ,
-  `Scheme_Component_Y_Position` INT NULL ,
-  PRIMARY KEY (`Scheme_Component_ID`) ,
-  INDEX `Scheme_Component_Scheme_FK` (`Scheme_Component_Scheme_FK` ASC) ,
-  INDEX `Scheme_Component_Component_FK` (`Scheme_Component_Component_FK` ASC) ,
-  CONSTRAINT `Scheme_Component_Scheme_FK`
-    FOREIGN KEY (`Scheme_Component_Scheme_FK` )
-    REFERENCES `Scheme` (`Scheme_ID` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `Scheme_Component_Component_FK`
-    FOREIGN KEY (`Scheme_Component_Component_FK` )
-    REFERENCES `Component` (`Component_ID` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+--CREATE  TABLE IF NOT EXISTS `Scheme_Component` (
+--  `Scheme_Component_ID` INT NOT NULL AUTO_INCREMENT ,
+--  `Scheme_Component_Scheme_FK` INT NULL ,
+--  `Scheme_Component_Component_FK` INT NULL ,
+--  `Scheme_Component_X_Position` INT NULL ,
+--  `Scheme_Component_Y_Position` INT NULL ,
+--  PRIMARY KEY (`Scheme_Component_ID`) ,
+--  INDEX `Scheme_Component_Scheme_FK` (`Scheme_Component_Scheme_FK` ASC) ,
+--  INDEX `Scheme_Component_Component_FK` (`Scheme_Component_Component_FK` ASC) ,
+--  CONSTRAINT `Scheme_Component_Scheme_FK`
+--   FOREIGN KEY (`Scheme_Component_Scheme_FK` )
+--    REFERENCES `Scheme` (`Scheme_ID` )
+--    ON DELETE NO ACTION
+--    ON UPDATE NO ACTION,
+--  CONSTRAINT `Scheme_Component_Component_FK`
+--    FOREIGN KEY (`Scheme_Component_Component_FK` )
+--    REFERENCES `Component` (`Component_ID` )
+--    ON DELETE NO ACTION
+--    ON UPDATE NO ACTION)
+--ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
