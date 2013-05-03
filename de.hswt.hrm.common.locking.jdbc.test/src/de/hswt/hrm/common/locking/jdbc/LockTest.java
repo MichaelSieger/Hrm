@@ -16,7 +16,7 @@ public class LockTest extends AbstractDatabaseTest {
     @Test
     public void testGetLock() {
         LockService service = new LockService(SESSION);
-        Optional<Lock> lock = service.getLock(service.TBL_PLANT, 1);
+        Optional<Lock> lock = service.getLock(LockService.TBL_PLANT, 1);
         
         assertTrue("Could not get lock!", lock.isPresent());
         assertEquals("Lock is not for the correct table.", PLANT, lock.get().getTable());
@@ -26,22 +26,22 @@ public class LockTest extends AbstractDatabaseTest {
     @Test
     public void testGetLockTwice() {
         LockService service = new LockService(SESSION);
-        Optional<Lock> lock = service.getLock(service.TBL_PLANT, 1);
+        Optional<Lock> lock = service.getLock(LockService.TBL_PLANT, 1);
         assertTrue("Could not get lock!", lock.isPresent());
         
-        lock = service.getLock(Service.TBL_PLANT, 1);
+        lock = service.getLock(LockService.TBL_PLANT, 1);
         assertFalse("Could get lock to already locked id.", lock.isPresent());
     }
     
     @Test
     public void testReleaseLock() {
         LockService service = new LockService(SESSION);
-        Optional<Lock> lock = service.getLock(service.TBL_PLANT, 1);
+        Optional<Lock> lock = service.getLock(LockService.TBL_PLANT, 1);
         assertTrue("Could not get lock!", lock.isPresent());
         
         service.release(lock);
         
-        lock = service.getLock(Service.TBL_PLANT, 1);
+        lock = service.getLock(LockService.TBL_PLANT, 1);
         assertTrue("Could not get lock for released id.", lock.isPresent());
     }
     
