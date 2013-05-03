@@ -53,8 +53,6 @@ public class SchemeGridItem {
 		this.direction = direction;
 	}
 
-
-
 	public int getX() {
 		return x;
 	}
