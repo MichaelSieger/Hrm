@@ -58,13 +58,13 @@ public class Component {
 	}
 
 	public void setCategory(Category category) {
-		Preconditions.checkNotNull(category);
+		checkNotNull(category);
 		this.category = category;
 	}
 
 	public void setName(String name) {
         //The name must be a non empty string
-        checkArgument(name != null);
+		checkNotNull(name);
         checkArgument(!name.trim().isEmpty());
         this.name = name;
     }
@@ -83,7 +83,7 @@ public class Component {
     }
 
     public void setRightLeftImage(byte[] rightLeftImage) {
-        checkArgument(rightLeftImage != null);
+    	checkNotNull(rightLeftImage);
         this.rightLeftImage = rightLeftImage;
     }
 
@@ -92,7 +92,7 @@ public class Component {
     }
 
     public void setUpDownImage(byte[] upDownImage) {
-        checkArgument(upDownImage != null);
+    	checkNotNull(upDownImage);
         this.upDownImage = upDownImage;
     }
 
@@ -101,7 +101,7 @@ public class Component {
     }
 
     public void setDownUpImage(byte[] downUpImage) {
-        checkArgument(downUpImage != null);
+    	checkNotNull(downUpImage);
         this.downUpImage = downUpImage;
     }
 
