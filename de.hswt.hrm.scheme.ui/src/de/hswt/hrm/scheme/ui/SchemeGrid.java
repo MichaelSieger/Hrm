@@ -43,9 +43,9 @@ public class SchemeGrid extends Canvas{
     }
 
     private void draw(GC gc) {
-        drawImages(gc);
         drawHorizontalLines(gc);
         drawVerticalLines(gc);
+        drawImages(gc);
     }
 
     private void drawImages(GC gc) {
