@@ -7,8 +7,8 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
 import de.hswt.hrm.scheme.model.Category;
+import de.hswt.hrm.scheme.model.Direction;
 import de.hswt.hrm.scheme.model.RenderedComponent;
-import de.hswt.hrm.scheme.model.ThumbnailImage;
 
 /**
  * This class manages the TreeItems of a Tree that displays the GridImages.
@@ -42,16 +42,16 @@ public class TreeManager {
 			}
 			TreeItem item = new TreeItem(categoryItem, SWT.NONE);
 			item.setText(c.getName());
-			addImage(comp.getDownUp(), comp, item);
-			addImage(comp.getLeftRight(), comp, item);
-			addImage(comp.getRightLeft(), comp, item);
-			addImage(comp.getTopDown(), comp, item);
+			addImage(Direction.downUp, comp, item);
+			addImage(Direction.upDown, comp, item);
+			addImage(Direction.leftRight, comp, item);
+			addImage(Direction.rightLeft, comp, item);
 		}
 	}
     
-    private void addImage(ThumbnailImage img, RenderedComponent comp, TreeItem parent){
+    private void addImage(Direction d, RenderedComponent comp, TreeItem parent){
     	TreeItem item = new TreeItem(parent, SWT.NONE);
-    	item.setImage(img.getThumbnail());
-    	item.setData(parent);
+    	item.setImage(comp.getByDirection(d).getThumbnail());
+    	item.setData(new TreeData(comp, d));
     }
 }
