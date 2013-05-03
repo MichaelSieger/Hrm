@@ -4,6 +4,12 @@ import org.eclipse.swt.graphics.Image;
 
 import static com.google.common.base.Preconditions.*;
 
+/**
+ * Represents a Image with thumbnail
+ * 
+ * @author Michael Sieger
+ *
+ */
 public class ThumbnailImage {
 	
 	private final Image image;
