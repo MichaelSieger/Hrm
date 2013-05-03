@@ -1,7 +1,9 @@
-<Composite xmlns="http://www.eclipse.org/xwt/presentation" xmlns:x="http://www.eclipse.org/xwt" x:Class="de.hswt.hrm.plant.ui.PlantPart">
+<Composite xmlns="http://www.eclipse.org/xwt/presentation" xmlns:x="http://www.eclipse.org/xwt"
+ xmlns:p1="clr-namespace:de.hswt.hrm.plant.ui.xwt"
+ x:Class="de.hswt.hrm.plant.ui.event.PlantEventHandler">
 	<Composite.layout>
 		<GridLayout numColumns="2"/>
 	</Composite.layout>
-	<Button text="Test the Wizard"/>
+	<Button x:name="TestIt" text="Test the Wizard" SelectionEvent="clickButton"/>
 </Composite>
 <!-- Forms API -->
