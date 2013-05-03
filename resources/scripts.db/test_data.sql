@@ -29,16 +29,32 @@ INSERT INTO `hrm`.`Plant` (`Plant_Place_FK`, `Plant_Inspection_Interval`, `Plant
 INSERT INTO `hrm`.`Plant` (`Plant_Place_FK`, `Plant_Inspection_Interval`, `Plant_Manufacturer`, `Plant_Year_Of_Construction`, `Plant_Type`, `Plant_Airperformance`, `Plant_Motorpower`, `Plant_Motor_Rpm`, `Plant_Ventilatorperformance`, `Plant_Current`, `Plant_Voltage`, `Plant_Note`, `Plant_Description`) VALUES ('3','1', 'Medion', '1999', 'PowerBlast 3.1' , '400', '160', '2200', '2', '16', '230', 'aus Plastik *würg*', 'Tower 3');
 
 ------------------------------------------------------------
--- Connect 2 different plants with contacts in the `Plant_Contact` Table
+-- Insert 3 different cataloges in the `Catalog` Table
 ------------------------------------------------------------
-INSERT INTO `hrm`.`Plant_Contact` (`Plant_Contact_Plant_FK`, `Plant_Contact_Contact_FK`) VALUES ('1','1' );
-INSERT INTO `hrm`.`Plant_Contact` (`Plant_Contact_Plant_FK`, `Plant_Contact_Contact_FK`) VALUES ('2','2' );
+INSERT INTO `hrm`.`Catalog` (`Catalog_Name`) VALUES ('Katalog_Filter');
+INSERT INTO `hrm`.`Catalog` (`Catalog_Name`) VALUES ('Katalog_Motor');
+INSERT INTO `hrm`.`Catalog` (`Catalog_Name`) VALUES ('Katalog_Heizung');
+
+------------------------------------------------------------
+-- Insert 4 different categories in the `Category` Table
+------------------------------------------------------------
+INSERT INTO `hrm`.`Category` (`Category_Name`, `Category_Height`, `Category_Width`, `Category_Default_Qualifier`, `Category_Default_bool_Rating`, `Category_Catalog_FK`) VALUES ('Filter', '4', '4', '1', '1', '1');
+INSERT INTO `hrm`.`Category` (`Category_Name`, `Category_Height`, `Category_Width`, `Category_Default_Qualifier`, `Category_Default_bool_Rating`, `Category_Catalog_FK`) VALUES ('Motor', '4', '2', '1', '1', '2');
+INSERT INTO `hrm`.`Category` (`Category_Name`, `Category_Height`, `Category_Width`, `Category_Default_Qualifier`, `Category_Default_bool_Rating`, `Category_Catalog_FK`) VALUES ('Heizung', '3', '3', '3', '0', '3');
+INSERT INTO `hrm`.`Category` (`Category_Name`, `Category_Height`, `Category_Width`, `Category_Default_Qualifier`, `Category_Default_bool_Rating`, `Category_Catalog_FK`) VALUES ('Spezial Filter', '2', '2', '3', '0', '1');
+------------------------------------------------------------
+-- Insert 3 different components in the `Component` Table
+------------------------------------------------------------
+INSERT INTO `hrm`.`Component` (`Component_Name`, `Component_Symbol_LR`, `Component_Symbol_RL`, `Component_Symbol_UD`, `Component_Symbol_DU`, `Component_Quantifier`, `Component_Category_FK`, `Component_Bool_Rating`) VALUES ('Heizschlange', '/home/bla.pdf', '/home/bla.pdf', '/home/bla.pdf', '/home/bla.pdf', '2', '3', '1');
+INSERT INTO `hrm`.`Component` (`Component_Name`, `Component_Symbol_LR`, `Component_Symbol_RL`, `Component_Symbol_UD`, `Component_Symbol_DU`, `Component_Quantifier`, `Component_Category_FK`, `Component_Bool_Rating`) VALUES ('Feinfilter', '/home/bla.pdf', '/home/bla.pdf', '/home/bla.pdf', '/home/bla.pdf', '1', '4', '');
+INSERT INTO `hrm`.`Component` (`Component_Name`, `Component_Symbol_LR`, `Component_Symbol_RL`, `Component_Symbol_UD`, `Component_Symbol_DU`, `Component_Quantifier`, `Component_Category_FK`, `Component_Bool_Rating`) VALUES ('Motor', '/home/bla.pdf', '/home/bla.pdf', '/home/bla.pdf', '/home/bla.pdf', '', '2', '1');
+
 ------------------------------------------------------------
 -- Insert 3 different schemes in the `Scheme` Table
 ------------------------------------------------------------
-INSERT INTO `hrm`.`Scheme` (`Scheme_Timestamp`, `Scheme_Plant_FK`) VALUES ('2012-05-01 12:01:10', '1');
-INSERT INTO `hrm`.`Scheme` (`Scheme_Timestamp`, `Scheme_Plant_FK`) VALUES ('2013-05-02 13:01:20', '2');
-INSERT INTO `hrm`.`Scheme` (`Scheme_Timestamp`, `Scheme_Plant_FK`) VALUES ('2000-05-03 14:01:30', '2');
+INSERT INTO `hrm`.`Scheme` (`Scheme_Plant_FK`) VALUES ('1');
+INSERT INTO `hrm`.`Scheme` (`Scheme_Plant_FK`) VALUES ('2');
+INSERT INTO `hrm`.`Scheme` (`Scheme_Plant_FK`) VALUES ('2');
 
 ------------------------------------------------------------
 -- Insert 3 different current states in the `State_Current` Table
@@ -61,3 +77,29 @@ INSERT INTO `hrm`.`State_Target` (`State_Target_Name`, `State_Target_Text`) VALU
 INSERT INTO `hrm`.`State_Target` (`State_Target_Name`, `State_Target_Text`) VALUES ('Soll-Status 2', 'Ich bin der zweite Soll-Zustand');
 INSERT INTO `hrm`.`State_Target` (`State_Target_Name`, `State_Target_Text`) VALUES ('Soll-Status 3', 'Ich bin der dritte Soll-Zustand');
 
+------------------------------------------------------------
+-- Connect 3 different catalog with currents in the `Catalog_Current` Table
+------------------------------------------------------------
+INSERT INTO `hrm`.`Catalog_Current` (`Category_Current_State_Current_FK`, `Category_Current_Catalog_FK`) VALUES ('1', '2');
+INSERT INTO `hrm`.`Catalog_Current` (`Category_Current_State_Current_FK`, `Category_Current_Catalog_FK`) VALUES ('2', '1');
+INSERT INTO `hrm`.`Catalog_Current` (`Category_Current_State_Current_FK`, `Category_Current_Catalog_FK`) VALUES ('2', '3');
+
+------------------------------------------------------------
+-- Connect 3 different catalog with activities the `Catalog_Activities` Table
+------------------------------------------------------------
+INSERT INTO `hrm`.`Catalog_Activity` (`Category_Activity_State_Activity_FK`, `Category_Activity_Catalog_FK`) VALUES ('1', '2');
+INSERT INTO `hrm`.`Catalog_Activity` (`Category_Activity_State_Activity_FK`, `Category_Activity_Catalog_FK`) VALUES ('2', '1');
+INSERT INTO `hrm`.`Catalog_Activity` (`Category_Activity_State_Activity_FK`, `Category_Activity_Catalog_FK`) VALUES ('2', '3');
+
+------------------------------------------------------------
+-- Connect 3 different catalog with targets in the `Catalog_Target` Table
+------------------------------------------------------------
+INSERT INTO `hrm`.`Catalog_Target` (`Category_Target_State_Target_FK`, `Category_Target_Catalog_FK`) VALUES ('1', '2');
+INSERT INTO `hrm`.`Catalog_Target` (`Category_Target_State_Target_FK`, `Category_Target_Catalog_FK`) VALUES ('2', '1');
+INSERT INTO `hrm`.`Catalog_Target` (`Category_Target_State_Target_FK`, `Category_Target_Catalog_FK`) VALUES ('2', '3');
+
+------------------------------------------------------------
+-- Connect 2 different plants with contacts in the `Plant_Contact` Table
+------------------------------------------------------------
+INSERT INTO `hrm`.`Plant_Contact` (`Plant_Contact_Plant_FK`, `Plant_Contact_Contact_FK`) VALUES ('1','1' );
+INSERT INTO `hrm`.`Plant_Contact` (`Plant_Contact_Plant_FK`, `Plant_Contact_Contact_FK`) VALUES ('2','2' );
