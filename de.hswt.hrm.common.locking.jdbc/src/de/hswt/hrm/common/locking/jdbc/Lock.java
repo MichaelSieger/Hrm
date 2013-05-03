@@ -1,23 +1,23 @@
 package de.hswt.hrm.common.locking.jdbc;
 
+import java.sql.Timestamp;
+
 /**
  * Represents a database lock for a specific id (FK) in a specific table.
  */
 public final class Lock {
-    private final int id;
     private final String session;
     private final String table;
     private final int fk;
+    private final Timestamp timestamp;
     
-    public Lock(final int id, final String session, final String table, final int fk) {
-        this.id = id;
+    public Lock(final String session, final String table, final int fk,
+            final Timestamp timestamp) {
+        
         this.session = session;
         this.table = table;
         this.fk = fk;
-    }
-
-    public int getId() {
-        return id;
+        this.timestamp = timestamp;
     }
 
     public String getSession() {
@@ -32,14 +32,18 @@ public final class Lock {
         return fk;
     }
 
+    public Timestamp getTimestamp() {
+        return timestamp;
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
         result = prime * result + fk;
-        result = prime * result + id;
         result = prime * result + ((session == null) ? 0 : session.hashCode());
         result = prime * result + ((table == null) ? 0 : table.hashCode());
+        result = prime * result + ((timestamp == null) ? 0 : timestamp.hashCode());
         return result;
     }
 
@@ -54,8 +58,6 @@ public final class Lock {
         Lock other = (Lock) obj;
         if (fk != other.fk)
             return false;
-        if (id != other.id)
-            return false;
         if (session == null) {
             if (other.session != null)
                 return false;
@@ -67,6 +69,12 @@ public final class Lock {
                 return false;
         }
         else if (!table.equals(other.table))
+            return false;
+        if (timestamp == null) {
+            if (other.timestamp != null)
+                return false;
+        }
+        else if (!timestamp.equals(other.timestamp))
             return false;
         return true;
     }
