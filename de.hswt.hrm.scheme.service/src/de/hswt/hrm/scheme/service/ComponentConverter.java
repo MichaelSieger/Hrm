@@ -72,13 +72,13 @@ public class ComponentConverter {
 		PDFPage page = pdffile.getPage(0);
 		return new ThumbnailImage(
 				getSWTImage(
-					display,
-					renderImage(page, w * PPG_THUMBNAIL,
-							h * PPG_THUMBNAIL)), 
+						display,
+						renderImage(page, w * PPG,
+								h * PPG)),
 				getSWTImage(
 					display,
-					renderImage(page, w * PPG,
-							h * PPG)));
+					renderImage(page, w * PPG_THUMBNAIL,
+							h * PPG_THUMBNAIL)));
 	}
 
 	private static BufferedImage renderImage(final PDFPage page, final int w,
