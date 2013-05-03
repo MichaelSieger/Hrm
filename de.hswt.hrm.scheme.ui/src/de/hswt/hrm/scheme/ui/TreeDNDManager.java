@@ -13,8 +13,6 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
-import de.hswt.hrm.scheme.model.RenderedGridImage;
-
 /**
  * This class manages the drag and drop from the tree to the SchemeGrid
  * 
@@ -28,7 +26,7 @@ public class TreeDNDManager {
     private final DropTarget dt;
     private final DragSource src;
 
-    private RenderedGridImage dragging;
+    private TreeData dragging;
 
     public TreeDNDManager(Tree tree, SchemeGrid grid, DropTarget dt, DragSource src) {
         super();
@@ -52,7 +50,8 @@ public class TreeDNDManager {
                 if (dragging != null) {
                     Point loc = grid.toDisplay(0, 0);
                     try {
-                    	grid.setImageAtPixel(dragging, ev.x - loc.x, ev.y - loc.y);
+                    	grid.setImageAtPixel(dragging.getRenderedComponent(), dragging.getDirection(), 
+                    							ev.x - loc.x, ev.y - loc.y);
                     }
                     catch (PlaceOccupiedException | IllegalArgumentException e) {
                         Toolkit.getDefaultToolkit().beep();
@@ -97,7 +96,7 @@ public class TreeDNDManager {
                 if (items.length != 1) {
                     throw new RuntimeException("Only one item is accepted for dragging");
                 }
-                dragging = (RenderedGridImage) items[0].getData();
+                dragging = (TreeData) items[0].getData();
             }
 
             @Override
