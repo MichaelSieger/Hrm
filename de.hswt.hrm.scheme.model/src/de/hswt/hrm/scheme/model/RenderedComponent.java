@@ -11,7 +11,7 @@ public class RenderedComponent {
 	private final Component component;
 	private final ThumbnailImage leftRight;
 	private final ThumbnailImage rightLeft;
-	private final ThumbnailImage topDown;
+	private final ThumbnailImage upDown;
 	private final ThumbnailImage downUp;
 	
 	public RenderedComponent(Component component, ThumbnailImage leftRight,
@@ -44,5 +44,4 @@ public class RenderedComponent {
 		return downUp;
 	}
 
-	
 }
