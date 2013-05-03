@@ -7,4 +7,6 @@ Fragment-Host: de.hswt.hrm.common.locking.jdbc;bundle-version="0.0.1"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Require-Bundle: org.junit;bundle-version="4.10.0",
  com.google.guava;bundle-version="10.0.1"
-Import-Package: de.hswt.hrm.test.database
+Import-Package: de.hswt.hrm.common.database,
+ de.hswt.hrm.common.database.exception,
+ de.hswt.hrm.test.database
