@@ -127,5 +127,6 @@
 		<module>../de.hswt.hrm.scheme.model</module>
 		<module>../de.hswt.hrm.scheme.service</module>
 		<module>../de.hswt.hrm.scheme.ui</module>
+		<module>../de.hswt.hrm.common.locking.jdbc</module>
 	</modules>
 </project>
