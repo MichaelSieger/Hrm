@@ -15,7 +15,8 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 
-import de.hswt.hrm.scheme.model.RenderedGridImage;
+import de.hswt.hrm.scheme.model.Direction;
+import de.hswt.hrm.scheme.model.RenderedComponent;
 
 /**
  * A Widget that displays components in a grid.
@@ -50,17 +51,26 @@ public class SchemeGrid extends Canvas{
 
     private void drawImages(GC gc) {
         for(SchemeGridItem item : images){
-            drawImage(gc, item.getRenderedGridImage(), item.getX(), item.getY());
+            drawImage(gc, 
+            		  item.getRenderedComponent()
+            				.getByDirection(item.getDirection()).getImage(), 
+            		  item.getBoundingBox());
         }
     }
 
-    private void drawImage(GC gc, RenderedGridImage RenderedGridImage, int x, int y) {
-        Image image = RenderedGridImage.getImage();
+    private void drawImage(GC gc, Image image, Rectangle rec) {
         final float quadW = getQuadWidth();
         final float quadH = getQuadHeight();
-        Rectangle rec = image.getBounds();
-        gc.drawImage(image, 0, 0, rec.width, rec.height, Math.round(quadW * x), Math.round(quadH * y),
-                Math.round(quadW * RenderedGridImage.getGridImage().getWidth()), Math.round(quadH * RenderedGridImage.getGridImage().getHeight()));
+        Rectangle imageBounds = image.getBounds();
+        gc.drawImage(image, 
+        		0, 
+        		0, 
+        		imageBounds.width, 
+        		imageBounds.height, 
+        		Math.round(quadW * rec.x), 
+        		Math.round(quadH * rec.y),
+                Math.round(quadW * rec.width), 
+                Math.round(quadH * rec.height));
     }
 
     private void drawHorizontalLines(GC gc) {
@@ -142,8 +152,8 @@ public class SchemeGrid extends Canvas{
      * @param y
      * @throws PlaceOccupiedException
      */
-    public void setImageAtPixel(RenderedGridImage image, int x, int y) throws PlaceOccupiedException{
-    	setImage(new SchemeGridItem(image, getGridX(x), getGridY(y)));
+    public void setImageAtPixel(RenderedComponent image, Direction direction, int x, int y) throws PlaceOccupiedException{
+    	setImage(new SchemeGridItem(image, direction, getGridX(x), getGridY(y)));
     }
     
     /**
