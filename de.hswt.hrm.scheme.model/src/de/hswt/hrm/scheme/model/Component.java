@@ -73,7 +73,7 @@ public class Component {
     }
 
     public void setLeftRightImage(byte[] leftRightImage) {
-        checkArgument(leftRightImage != null);
+    	checkForAllImagesNull();
         this.leftRightImage = leftRightImage;
     }
 
@@ -82,7 +82,7 @@ public class Component {
     }
 
     public void setRightLeftImage(byte[] rightLeftImage) {
-    	checkNotNull(rightLeftImage);
+    	checkForAllImagesNull();
         this.rightLeftImage = rightLeftImage;
     }
 
@@ -91,7 +91,7 @@ public class Component {
     }
 
     public void setUpDownImage(byte[] upDownImage) {
-    	checkNotNull(upDownImage);
+    	checkForAllImagesNull();
         this.upDownImage = upDownImage;
     }
 
@@ -100,7 +100,7 @@ public class Component {
     }
 
     public void setDownUpImage(byte[] downUpImage) {
-    	checkNotNull(downUpImage);
+    	checkForAllImagesNull();
         this.downUpImage = downUpImage;
     }
 
@@ -121,5 +121,10 @@ public class Component {
         this.isRated = isRated;
     }
     
-    
+    private void checkForAllImagesNull(){
+    	checkArgument(!(leftRightImage == null &&
+    					rightLeftImage == null &&
+    					upDownImage == null && 
+    					downUpImage == null));
+    }
 }
