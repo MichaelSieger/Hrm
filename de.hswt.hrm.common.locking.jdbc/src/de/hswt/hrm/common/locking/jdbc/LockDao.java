@@ -38,7 +38,7 @@ final class LockDao {
     public Collection<Lock> findAll() throws SQLException, DatabaseException {
         final String query =
                 "SELECT Lock_Uuid_Fk, Lock_Table, Lock_Row_ID, Lock_Timestamp "
-                        + "FROM Lock;";
+                        + "FROM `Lock`;";
         
         try (Connection con = DatabaseFactory.getConnection()) {
             try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
@@ -67,7 +67,7 @@ final class LockDao {
         
         final String query =
                 "SELECT Lock_Uuid_Fk, Lock_Table, Lock_Row_ID, Lock_Timestamp "
-                        + "FROM Lock "
+                        + "FROM `Lock` "
                         + "WHERE Lock_Uuid_Fk = :uuid "
                         + "AND Lock_Table = :table "
                         + "AND Lock_Row_ID = :fk;";
@@ -109,7 +109,7 @@ final class LockDao {
         checkArgument(fk >= 0, "Foreign key must not be negative.");
         
         final String query =
-                "INSERT INTO Lock (Lock_Uuid_Fk, Lock_Table, Lock_Row_ID) "
+                "INSERT INTO `Lock` (Lock_Uuid_Fk, Lock_Table, Lock_Row_ID) "
                         + "VALUES (:uuid, :table, :fk);";
         
         try (Connection con = DatabaseFactory.getConnection()) {
@@ -143,7 +143,7 @@ final class LockDao {
         checkArgument(fk >= 0, "Foreign key must not be negative.");
         
         final String query =
-                "DELETE FROM Lock "
+                "DELETE FROM `Lock` "
                         + "WHERE Lock_Uuid_Fk = :uuid "
                         + "AND Lock_Table = :table "
                         + "AND Lock_Row_ID = :fk;";

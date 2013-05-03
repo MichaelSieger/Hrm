@@ -39,7 +39,7 @@ public class LockTest extends AbstractDatabaseTest {
         Optional<Lock> lock = service.getLock(LockService.TBL_PLANT, 1);
         assertTrue("Could not get lock!", lock.isPresent());
         
-        service.release(lock);
+        assertTrue("Could not release lock.", service.release(lock));
         
         lock = service.getLock(LockService.TBL_PLANT, 1);
         assertTrue("Could not get lock for released id.", lock.isPresent());
