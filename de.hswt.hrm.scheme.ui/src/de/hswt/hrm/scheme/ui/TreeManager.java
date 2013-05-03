@@ -39,10 +39,11 @@ public class TreeManager {
 			TreeItem categoryItem = categoryItems.get(c);
 			if(categoryItem == null){
 				categoryItem = new TreeItem(tree, SWT.NONE);
+				categoryItem.setText(c.getName());
 				categoryItems.put(c, categoryItem);
 			}
 			TreeItem item = new TreeItem(categoryItem, SWT.NONE);
-			item.setText(c.getName());
+			item.setText(comp.getComponent().getName());
 			addImage(Direction.downUp, comp, item);
 			addImage(Direction.upDown, comp, item);
 			addImage(Direction.leftRight, comp, item);
