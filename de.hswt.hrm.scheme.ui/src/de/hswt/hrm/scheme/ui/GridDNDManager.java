@@ -45,7 +45,8 @@ public class GridDNDManager {
                     final int x = ev.x - loc.x;
                     final int y = ev.y - loc.y;
                     try {
-                        grid.setImageAtPixel(dragging.getRenderedGridImage(), x, y);
+                        grid.setImageAtPixel(dragging.getRenderedComponent(), dragging.getDirection(), 
+                        						x, y);
                     } catch (PlaceOccupiedException | IllegalArgumentException e) {
                         Toolkit.getDefaultToolkit().beep();
                         try {
