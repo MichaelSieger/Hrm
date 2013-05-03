@@ -7,9 +7,10 @@ import java.io.InputStream;
 import org.eclipse.swt.widgets.Display;
 
 import de.hswt.hrm.common.BundleUtil;
-import de.hswt.hrm.scheme.model.GridImage;
-import de.hswt.hrm.scheme.model.RenderedGridImage;
-import de.hswt.hrm.scheme.service.GridImageConverter;
+import de.hswt.hrm.scheme.model.Category;
+import de.hswt.hrm.scheme.model.Component;
+import de.hswt.hrm.scheme.model.RenderedComponent;
+import de.hswt.hrm.scheme.service.ComponentConverter;
 import de.hswt.hrm.scheme.ui.IImageTreeModel;
 
 /**
@@ -28,26 +29,59 @@ public class ImageTreeModelMock implements IImageTreeModel {
 	}
 
 	@Override
-	public RenderedGridImage[] getImages() {
-		try {
-			GridImage img = new GridImage();
-			img.setWidth(5);
-			img.setHeight(5);
-			img.setImage(loadBytes(BundleUtil.getStreamForFile(
-					ImageTreeModelMock.class, "test/pdftest.pdf")));
-			return new RenderedGridImage[] { GridImageConverter.convert(
-					display, img) };
-		} catch (Exception e) {
-			throw new RuntimeException(e);
+	public RenderedComponent[] getImages() {
+		try{
+			Component[] c = new Component[]
+					{
+					getVentilationComponent(),
+					getFilterComponent(),
+					getFilterComponent2(),
+					};
+			RenderedComponent[] rc = new RenderedComponent[c.length];
+			for(int i = 0; i < rc.length; i++){
+				rc[i] = ComponentConverter.convert(display, c[i]);
+			}
+			return rc;
+		}catch(Exception e){
+			e.printStackTrace();
+			return null;
 		}
 	}
+	
+	private Component getVentilationComponent() throws FileNotFoundException, IOException{
+		return new Component(
+				"Außenluft", loadBytes("1_0.pdf"), loadBytes("1_l_0.pdf"), null, null, 3, true, 
+				getVentilationCategory());
+	}
+	
+	private Component getFilterComponent2() throws FileNotFoundException, IOException{
+		return new Component(
+				"F6", loadBytes("8_r_0.pdf"), loadBytes("8_l_0.pdf"), null, null, 3, true, 
+				getFilterCategory());
+	}
+	
+	private Component getFilterComponent() throws FileNotFoundException, IOException{
+		return new Component(
+				"F5", loadBytes("7_r_0.pdf"), loadBytes("7_l_0.pdf"), null, null, 3, true, 
+				getFilterCategory());
+	}
+	
+	private Category getFilterCategory(){
+		return new Category("Filter", 3, 3, 3, true);
+	}
+	
+	private Category getVentilationCategory(){
+		return new Category("Ventilation", 3, 3, 3, true);
+	}
 
-	private byte[] loadBytes(InputStream in) throws FileNotFoundException,
+	private byte[] loadBytes(String name) throws FileNotFoundException,
 			IOException {
-		byte[] r = new byte[in.available()];
-		in.read(r);
-		return r;
-
+		try(InputStream in = BundleUtil.getStreamForFile(
+				ImageTreeModelMock.class, "test/"+name)){
+			byte[] r = new byte[in.available()];
+			in.read(r);
+			return r;
+		}
 	}
 
 }

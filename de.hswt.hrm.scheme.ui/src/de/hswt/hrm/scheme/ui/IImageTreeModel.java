@@ -1,15 +1,15 @@
 package de.hswt.hrm.scheme.ui;
 
-import de.hswt.hrm.scheme.model.RenderedGridImage;
+import de.hswt.hrm.scheme.model.RenderedComponent;
 
 /**
- * This Interface describes an class that can return GridImages.
+ * This Interface describes an class that can return RenderedComponents.
  * 
  * @author Michael Sieger
  *
  */
 public interface IImageTreeModel {
     
-    public RenderedGridImage[] getImages();
+    public RenderedComponent[] getImages();
 
 }
