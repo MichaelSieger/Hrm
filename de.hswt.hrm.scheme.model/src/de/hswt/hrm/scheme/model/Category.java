@@ -37,7 +37,7 @@ public class Category {
 	}
 
 	public void setName(String name) {
-		checkArgument(name != null);
+		checkNotNull(name);
 		checkArgument(!name.trim().isEmpty());
 		this.name = name;
 	}

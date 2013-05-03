@@ -1,6 +1,7 @@
 package de.hswt.hrm.scheme.model;
 
-import static com.google.common.base.Preconditions.*;
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Represents a Component
@@ -19,9 +20,11 @@ public class Component {
     private byte[] downUpImage;
     private int quantifier;
     private boolean isRated;
+    private Category category;
     
     public Component(int id, String name, byte[] leftRightImage, byte[] rightLeftImage,
-            byte[] upDownImage, byte[] downUpImage, int quantifier, boolean isRated) {
+            byte[] upDownImage, byte[] downUpImage, int quantifier, boolean isRated,
+            Category category) {
         super();
         this.id = id;
         setName(name);
@@ -31,12 +34,14 @@ public class Component {
         setDownUpImage(downUpImage);
         setQuantifier(quantifier);
         setRated(isRated);
+        setCategory(category);
     }
     
     public Component(String name, byte[] leftRightImage, byte[] rightLeftImage,
-            byte[] upDownImage, byte[] downUpImage, int quantifier, boolean isRated) {
+            byte[] upDownImage, byte[] downUpImage, int quantifier, boolean isRated,
+            Category category) {
         this(-1, name, leftRightImage, rightLeftImage, 
-                upDownImage, downUpImage, quantifier, isRated);
+                upDownImage, downUpImage, quantifier, isRated, category);
     }
 
     public int getId() {
@@ -47,9 +52,18 @@ public class Component {
         return name;
     }
 
-    public void setName(String name) {
+    public Category getCategory() {
+		return category;
+	}
+
+	public void setCategory(Category category) {
+		checkNotNull(category);
+		this.category = category;
+	}
+
+	public void setName(String name) {
         //The name must be a non empty string
-        checkArgument(name != null);
+		checkNotNull(name);
         checkArgument(!name.trim().isEmpty());
         this.name = name;
     }
@@ -68,7 +82,7 @@ public class Component {
     }
 
     public void setRightLeftImage(byte[] rightLeftImage) {
-        checkArgument(rightLeftImage != null);
+    	checkNotNull(rightLeftImage);
         this.rightLeftImage = rightLeftImage;
     }
 
@@ -77,7 +91,7 @@ public class Component {
     }
 
     public void setUpDownImage(byte[] upDownImage) {
-        checkArgument(upDownImage != null);
+    	checkNotNull(upDownImage);
         this.upDownImage = upDownImage;
     }
 
@@ -86,7 +100,7 @@ public class Component {
     }
 
     public void setDownUpImage(byte[] downUpImage) {
-        checkArgument(downUpImage != null);
+    	checkNotNull(downUpImage);
         this.downUpImage = downUpImage;
     }
 
