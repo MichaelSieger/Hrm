@@ -2,6 +2,8 @@ package de.hswt.hrm.scheme.model;
 
 import static com.google.common.base.Preconditions.*;
 
+import com.google.common.base.Preconditions;
+
 /**
  * Represents a Component
  * 
@@ -19,9 +21,11 @@ public class Component {
     private byte[] downUpImage;
     private int quantifier;
     private boolean isRated;
+    private Category category;
     
     public Component(int id, String name, byte[] leftRightImage, byte[] rightLeftImage,
-            byte[] upDownImage, byte[] downUpImage, int quantifier, boolean isRated) {
+            byte[] upDownImage, byte[] downUpImage, int quantifier, boolean isRated,
+            Category category) {
         super();
         this.id = id;
         setName(name);
@@ -31,12 +35,14 @@ public class Component {
         setDownUpImage(downUpImage);
         setQuantifier(quantifier);
         setRated(isRated);
+        setCategory(category);
     }
     
     public Component(String name, byte[] leftRightImage, byte[] rightLeftImage,
-            byte[] upDownImage, byte[] downUpImage, int quantifier, boolean isRated) {
+            byte[] upDownImage, byte[] downUpImage, int quantifier, boolean isRated,
+            Category category) {
         this(-1, name, leftRightImage, rightLeftImage, 
-                upDownImage, downUpImage, quantifier, isRated);
+                upDownImage, downUpImage, quantifier, isRated, category);
     }
 
     public int getId() {
@@ -47,7 +53,16 @@ public class Component {
         return name;
     }
 
-    public void setName(String name) {
+    public Category getCategory() {
+		return category;
+	}
+
+	public void setCategory(Category category) {
+		Preconditions.checkNotNull(category);
+		this.category = category;
+	}
+
+	public void setName(String name) {
         //The name must be a non empty string
         checkArgument(name != null);
         checkArgument(!name.trim().isEmpty());
