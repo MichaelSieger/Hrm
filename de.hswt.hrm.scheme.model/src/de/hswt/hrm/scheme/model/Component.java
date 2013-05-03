@@ -40,7 +40,7 @@ public class Component {
     	checkArgument(!(leftRightImage == null &&
 				rightLeftImage == null &&
 				upDownImage == null && 
-				downUpImage == null));
+				downUpImage == null), NO_IMAGE_ERROR);
     }
     
     public Component(String name, byte[] leftRightImage, byte[] rightLeftImage,
