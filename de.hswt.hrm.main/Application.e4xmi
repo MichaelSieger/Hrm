@@ -7,6 +7,7 @@
           <children xsi:type="basic:PartStack" xmi:id="_ucxpapSXEeKKYob9VrLbBA">
             <children xsi:type="basic:Part" xmi:id="_EVCGgKXlEeK_d5AKUI3Qzg" elementId="de.hswt.hrm.main.part.0" contributionURI="bundleclass://de.hswt.hrm.contact.ui/de.hswt.hrm.contact.ui.part.ContactPart" label="Kunden"/>
             <children xsi:type="basic:Part" xmi:id="_FPaEEKXlEeK_d5AKUI3Qzg" elementId="de.hswt.hrm.main.part.1" contributionURI="bundleclass://de.hswt.hrm.place.ui/de.hswt.hrm.place.ui.part.PlacePart" label="Standorte"/>
+            <children xsi:type="basic:Part" xmi:id="_-I-C0LNLEeKdGYIwwO47yQ" elementId="de.hswt.hrm.main.part.3" contributionURI="bundleclass://de.hswt.hrm.plant.ui/de.hswt.hrm.plant.ui.PlantPart" label="Anlagen"/>
             <children xsi:type="basic:Part" xmi:id="_cxCQ4LGiEeKNWb92nqkQxg" elementId="de.hswt.hrm.main.part.2" contributionURI="bundleclass://de.hswt.hrm.scheme.ui/de.hswt.hrm.scheme.ui.part.SchemePart" label="Scheme"/>
           </children>
         </children>
