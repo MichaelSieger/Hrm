@@ -1,0 +1,24 @@
+<Composite xmlns="http://www.eclipse.org/xwt/presentation" xmlns:x="http://www.eclipse.org/xwt" x:Class="de.hswt.hrm.plant.ui.xwt.PlantWizardWindow">
+	<Composite.layout>
+		<GridLayout numColumns="2"/>
+	</Composite.layout>
+	<Section text="Pflichtfelder" x:Style="(p1:Section).EXPANDED | (p1:Section).TITLE_BAR" x:Name="Obligatory">
+		<Section.layoutData>
+			<GridData grabExcessHorizontalSpace="true" widthHint="277" horizontalAlignment="FILL" horizontalSpan="2"/>
+		</Section.layoutData>
+		<Section.client>
+			<Composite>
+				<Composite.layout>
+					<GridLayout numColumns="2"/>
+				</Composite.layout>
+				<Label text="Bla:"/>
+				<Text x:Style="BORDER" x:Name="Bla">
+					<Text.layoutData>
+						<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
+					</Text.layoutData>
+				</Text>
+			</Composite>
+		</Section.client>	
+	</Section>
+</Composite>
+<!-- Forms API -->
