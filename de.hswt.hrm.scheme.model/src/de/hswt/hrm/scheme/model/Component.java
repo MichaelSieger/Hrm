@@ -10,6 +10,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
  *
  */
 public class Component {
+	
+	private static final String NO_IMAGE_ERROR = "All Images are null";
     
     private final int id;
 
@@ -28,13 +30,17 @@ public class Component {
         super();
         this.id = id;
         setName(name);
-        setLeftRightImage(leftRightImage);
-        setRightLeftImage(rightLeftImage);
-        setUpDownImage(upDownImage);
-        setDownUpImage(downUpImage);
+        this.leftRightImage = leftRightImage;
+        this.rightLeftImage = rightLeftImage;
+        this.upDownImage = upDownImage;
+        this.downUpImage = downUpImage;
         setQuantifier(quantifier);
         setRated(isRated);
         setCategory(category);
+    	checkArgument(!(leftRightImage == null &&
+				rightLeftImage == null &&
+				upDownImage == null && 
+				downUpImage == null));
     }
     
     public Component(String name, byte[] leftRightImage, byte[] rightLeftImage,
@@ -73,7 +79,10 @@ public class Component {
     }
 
     public void setLeftRightImage(byte[] leftRightImage) {
-    	checkForAllImagesNull();
+    	if(leftRightImage == null){
+    		checkArgument(rightLeftImage != null || upDownImage != null || downUpImage != null, 
+    						NO_IMAGE_ERROR);
+    	}
         this.leftRightImage = leftRightImage;
     }
 
@@ -82,7 +91,10 @@ public class Component {
     }
 
     public void setRightLeftImage(byte[] rightLeftImage) {
-    	checkForAllImagesNull();
+    	if(rightLeftImage != null){
+    		checkArgument(leftRightImage != null || upDownImage != null || downUpImage != null, 
+					NO_IMAGE_ERROR);
+    	}
         this.rightLeftImage = rightLeftImage;
     }
 
@@ -91,7 +103,10 @@ public class Component {
     }
 
     public void setUpDownImage(byte[] upDownImage) {
-    	checkForAllImagesNull();
+    	if(upDownImage != null){
+    		checkArgument(rightLeftImage != null || leftRightImage != null || downUpImage != null, 
+					NO_IMAGE_ERROR);
+    	}
         this.upDownImage = upDownImage;
     }
 
@@ -100,7 +115,10 @@ public class Component {
     }
 
     public void setDownUpImage(byte[] downUpImage) {
-    	checkForAllImagesNull();
+    	if(downUpImage != null){
+    		checkArgument(rightLeftImage != null || leftRightImage != null || upDownImage != null, 
+					NO_IMAGE_ERROR);
+    	}
         this.downUpImage = downUpImage;
     }
 
@@ -119,12 +137,5 @@ public class Component {
 
     public void setRated(boolean isRated) {
         this.isRated = isRated;
-    }
-    
-    private void checkForAllImagesNull(){
-    	checkArgument(!(leftRightImage == null &&
-    					rightLeftImage == null &&
-    					upDownImage == null && 
-    					downUpImage == null));
     }
 }
