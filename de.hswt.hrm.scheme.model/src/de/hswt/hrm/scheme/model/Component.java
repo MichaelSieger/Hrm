@@ -1,8 +1,7 @@
 package de.hswt.hrm.scheme.model;
 
-import static com.google.common.base.Preconditions.*;
-
-import com.google.common.base.Preconditions;
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Represents a Component
