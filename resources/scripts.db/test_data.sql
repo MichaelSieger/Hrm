@@ -52,9 +52,9 @@ INSERT INTO `hrm`.`Component` (`Component_Name`, `Component_Symbol_LR`, `Compone
 ------------------------------------------------------------
 -- Insert 3 different schemes in the `Scheme` Table
 ------------------------------------------------------------
-INSERT INTO `hrm`.`Scheme` (`Scheme_Timestamp`, `Scheme_Plant_FK`) VALUES ('2012-05-01 12:01:10', '1');
-INSERT INTO `hrm`.`Scheme` (`Scheme_Timestamp`, `Scheme_Plant_FK`) VALUES ('2013-05-02 13:01:20', '2');
-INSERT INTO `hrm`.`Scheme` (`Scheme_Timestamp`, `Scheme_Plant_FK`) VALUES ('2000-05-03 14:01:30', '2');
+INSERT INTO `hrm`.`Scheme` (`Scheme_Plant_FK`) VALUES ('1');
+INSERT INTO `hrm`.`Scheme` (`Scheme_Plant_FK`) VALUES ('2');
+INSERT INTO `hrm`.`Scheme` (`Scheme_Plant_FK`) VALUES ('2');
 
 ------------------------------------------------------------
 -- Insert 3 different current states in the `State_Current` Table

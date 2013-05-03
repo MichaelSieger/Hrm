@@ -123,7 +123,7 @@ ENGINE = InnoDB;
 CREATE  TABLE IF NOT EXISTS `Session` (
   `Session_Uuid` VARCHAR(36) NOT NULL ,
   `Session_User` VARCHAR(30) NOT NULL ,
-  `Session_Timestamp` DATETIME NOT NULL ,
+  `Session_Timestamp` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
   PRIMARY KEY (`Session_Uuid`) ,
   UNIQUE INDEX `Session_Uuid_UNIQUE` (`Session_Uuid` ASC) )
 ENGINE = InnoDB;
@@ -134,7 +134,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `Scheme` (
   `Scheme_ID` INT NOT NULL AUTO_INCREMENT ,
-  `Scheme_Timestamp` DATETIME NOT NULL ,
+  `Scheme_Timestamp` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
   `Scheme_Plant_FK` INT NULL ,
   PRIMARY KEY (`Scheme_ID`) ,
   INDEX `Scheme_Plant_IDx` (`Scheme_Plant_FK` ASC) ,
@@ -299,7 +299,7 @@ CREATE  TABLE IF NOT EXISTS `Lock` (
   `Lock_Table` VARCHAR(45) NOT NULL ,
   `Lock_Row_ID` INT NOT NULL ,
   `Lock_Uuid_FK` VARCHAR(36) NOT NULL ,
-  `Lock_Timestamp` DATETIME NULL ,
+  `Lock_Timestamp` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP  ,
   PRIMARY KEY (`Lock_Table`, `Lock_Row_ID`) ,
   INDEX `Lock_Uuid_IDx` (`Lock_Uuid_FK` ASC) ,
   CONSTRAINT `Lock_Uuid_FK`
