@@ -17,7 +17,7 @@ public class PlantPart {
         try {
 
             // Obtain root element of the XWT file
-            final Composite comp = (Composite) XWT.load(parent, url);
+            XWT.load(parent, url);
         }
         catch (Exception e) {
             e.printStackTrace();
