@@ -20,7 +20,7 @@ public class RenderedComponent {
 		this.component = component;
 		this.leftRight = leftRight;
 		this.rightLeft = rightLeft;
-		this.topDown = topDown;
+		this.upDown = topDown;
 		this.downUp = downUp;
 	}
 
@@ -37,7 +37,7 @@ public class RenderedComponent {
 	}
 
 	public ThumbnailImage getTopDown() {
-		return topDown;
+		return upDown;
 	}
 
 	public ThumbnailImage getDownUp() {
