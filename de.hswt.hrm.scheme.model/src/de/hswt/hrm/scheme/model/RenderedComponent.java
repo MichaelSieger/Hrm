@@ -44,4 +44,25 @@ public class RenderedComponent {
 		return downUp;
 	}
 
+	/**
+	 * Returnes the image by the given direction
+	 * 
+	 * @param d
+	 * @return
+	 */
+	public ThumbnailImage getByDirection(Direction d){
+		switch(d){
+		case downUp:
+			return downUp;
+		case upDown:
+			return upDown;
+		case leftRight:
+			return leftRight;
+		case rightLeft:
+			return rightLeft;
+		default:
+			throw new RuntimeException("There are more than 4 directions?");
+		}
+	}
+
 }
