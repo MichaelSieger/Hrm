@@ -60,6 +60,9 @@ public class ComponentConverter {
 	}
 	
 	private static ThumbnailImage createImage(Display display, byte[] data, int w, int h) throws IOException{
+		if(data == null){
+			return null;
+		}
 		ByteBuffer buf = ByteBuffer.wrap(data);
 		PDFFile pdffile = new PDFFile(buf);
 		if(pdffile.getNumPages() != 1){
