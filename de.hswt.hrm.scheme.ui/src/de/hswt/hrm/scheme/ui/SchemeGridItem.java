@@ -3,7 +3,9 @@ package de.hswt.hrm.scheme.ui;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 
-import de.hswt.hrm.scheme.model.RenderedGridImage;
+import de.hswt.hrm.scheme.model.Category;
+import de.hswt.hrm.scheme.model.Direction;
+import de.hswt.hrm.scheme.model.RenderedComponent;
 
 /**
  * Contains the propertys of a image in the SchemeGrid.
@@ -13,24 +15,45 @@ import de.hswt.hrm.scheme.model.RenderedGridImage;
  */
 public class SchemeGridItem {
 	
-	private RenderedGridImage renderedGridImage;
+	private RenderedComponent renderedComponent;
+	private Direction direction;
 	private int x;
 	private int y;
 	
-	public SchemeGridItem(RenderedGridImage renderedGridImage, int x, int y) {
+	public SchemeGridItem(RenderedComponent renderedComponent, Direction direction, 
+								int x, int y) {
 		super();
-		this.renderedGridImage = renderedGridImage;
+		this.renderedComponent = renderedComponent;
+		this.direction = direction;
 		this.x = x;
 		this.y = y;
 	}
+	
+	
 
-	public RenderedGridImage getRenderedGridImage() {
-		return renderedGridImage;
+	public RenderedComponent getRenderedComponent() {
+		return renderedComponent;
 	}
 
-	public void setRenderedGridImage(RenderedGridImage renderedGridImage) {
-		this.renderedGridImage = renderedGridImage;
+
+
+	public void setRenderedComponent(RenderedComponent renderedComponent) {
+		this.renderedComponent = renderedComponent;
 	}
+
+
+
+	public Direction getDirection() {
+		return direction;
+	}
+
+
+
+	public void setDirection(Direction direction) {
+		this.direction = direction;
+	}
+
+
 
 	public int getX() {
 		return x;
@@ -63,9 +86,10 @@ public class SchemeGridItem {
     }
     
     Rectangle getBoundingBox(){
+    	Category c = renderedComponent.getComponent().getCategory();
         return new Rectangle(x, y, 
-        		renderedGridImage.getGridImage().getWidth(),
-        		renderedGridImage.getGridImage().getHeight());
+        		c.getWidth(),
+        		c.getHeight());
     }
 
 }
