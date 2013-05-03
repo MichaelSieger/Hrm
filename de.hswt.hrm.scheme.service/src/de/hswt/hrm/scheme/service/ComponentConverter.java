@@ -16,16 +16,17 @@ import org.eclipse.swt.widgets.Display;
 import com.sun.pdfview.PDFFile;
 import com.sun.pdfview.PDFPage;
 
-import de.hswt.hrm.scheme.model.GridImage;
-import de.hswt.hrm.scheme.model.RenderedGridImage;
+import de.hswt.hrm.scheme.model.Component;
+import de.hswt.hrm.scheme.model.RenderedComponent;
+import de.hswt.hrm.scheme.model.ThumbnailImage;
 
 /**
- * This class converts GridImages to RenderedGridImages
+ * This class converts Components to RenderedComponents
  * 
  * @author Michael Sieger
  * 
  */
-public class GridImageConverter {
+public class ComponentConverter {
     
     private static final ImageObserver observer = new ImageObserver(){
 
@@ -47,24 +48,34 @@ public class GridImageConverter {
 	 * @return
 	 * @throws IOException
 	 */
-	public static RenderedGridImage convert(Display display, GridImage gridImage)
+	public static RenderedComponent convert(Display display, Component component)
 			throws IOException {
-		ByteBuffer buf = ByteBuffer.wrap(gridImage.getImage());
+		final int w = component.getCategory().getWidth();
+		final int h = component.getCategory().getHeight();
+		return new RenderedComponent(component, 
+				createImage(display, component.getLeftRightImage(), w, h), 
+				createImage(display, component.getRightLeftImage(), w, h), 
+				createImage(display, component.getUpDownImage(), w, h), 
+				createImage(display, component.getDownUpImage(), w, h));
+	}
+	
+	private static ThumbnailImage createImage(Display display, byte[] data, int w, int h) throws IOException{
+		ByteBuffer buf = ByteBuffer.wrap(data);
 		PDFFile pdffile = new PDFFile(buf);
 		if(pdffile.getNumPages() != 1){
 			throw new NotSinglePageException(
 					String.format("An image must be single page but has %d", pdffile.getNumPages()));
 		}
 		PDFPage page = pdffile.getPage(0);
-		return new RenderedGridImage(
+		return new ThumbnailImage(
 				getSWTImage(
 					display,
-					renderImage(page, gridImage.getWidth() * PPG_THUMBNAIL,
-							gridImage.getHeight() * PPG_THUMBNAIL)), 
+					renderImage(page, w * PPG_THUMBNAIL,
+							h * PPG_THUMBNAIL)), 
 				getSWTImage(
 					display,
-					renderImage(page, gridImage.getWidth() * PPG,
-							gridImage.getHeight() * PPG)), gridImage);
+					renderImage(page, w * PPG,
+							h * PPG)));
 	}
 
 	private static BufferedImage renderImage(final PDFPage page, final int w,
