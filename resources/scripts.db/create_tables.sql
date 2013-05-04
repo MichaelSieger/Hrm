@@ -155,6 +155,7 @@ CREATE  TABLE IF NOT EXISTS `Scheme_Component` (
   `Scheme_Component_Component_FK` INT NULL ,
   `Scheme_Component_X_Position` INT NULL ,
   `Scheme_Component_Y_Position` INT NULL ,
+  `Scheme_Component_Direction` INT NULL ,
   PRIMARY KEY (`Scheme_Component_ID`) ,
   INDEX `Scheme_Component_Scheme_FK` (`Scheme_Component_Scheme_FK` ASC) ,
   INDEX `Scheme_Component_Component_FK` (`Scheme_Component_Component_FK` ASC) ,

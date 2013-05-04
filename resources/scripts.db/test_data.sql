@@ -57,6 +57,13 @@ INSERT INTO `hrm`.`Scheme` (`Scheme_Plant_FK`) VALUES ('2');
 INSERT INTO `hrm`.`Scheme` (`Scheme_Plant_FK`) VALUES ('2');
 
 ------------------------------------------------------------
+-- Insert 3 different schemes in the `Scheme` Table
+------------------------------------------------------------
+INSERT INTO `hrm`.`Scheme_Component` (`Scheme_Component_Scheme_FK`, `Scheme_Component_Component_FK`, `Scheme_Component_X_Position`, `Scheme_Component_Y_Position`, `Scheme_Component_Direction`) VALUES ('1', '1', '1', '1', '2');
+INSERT INTO `hrm`.`Scheme_Component` (`Scheme_Component_Scheme_FK`, `Scheme_Component_Component_FK`, `Scheme_Component_X_Position`, `Scheme_Component_Y_Position`, `Scheme_Component_Direction`) VALUES ('1', '2', '1', '4', '2');
+INSERT INTO `hrm`.`Scheme_Component` (`Scheme_Component_Scheme_FK`, `Scheme_Component_Component_FK`, `Scheme_Component_X_Position`, `Scheme_Component_Y_Position`, `Scheme_Component_Direction`) VALUES ('3', '3', '1', '1', '0');
+
+------------------------------------------------------------
 -- Insert 3 different current states in the `State_Current` Table
 ------------------------------------------------------------
 INSERT INTO `hrm`.`State_Current` (`State_Current_Name`, `State_Current_Text`) VALUES ('Ist-Status 1', 'Ich bin der erste Ist-Zustand');
