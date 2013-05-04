@@ -1,5 +1,7 @@
 package de.hswt.hrm.contact.ui.event;
 
+import java.util.Collection;
+
 import org.eclipse.e4.xwt.XWT;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.wizard.WizardDialog;
@@ -27,10 +29,19 @@ public class ContactEventHandler {
 
     }
 
+    // TODO check for better solution
     public void onSelection(Event event) {
         Button b = (Button) event.widget;
-        WizardDialog dialog = new WizardDialog(b.getShell(), new ContactWizard(null));
+        ContactWizard cw = new ContactWizard(null);
+        WizardDialog dialog = new WizardDialog(b.getShell(), cw);
         dialog.open();
+        if (cw.getContact() != null) {
+            TableViewer tf = (TableViewer) XWT.findElementByName(b, "contactTable");
+            @SuppressWarnings("unchecked")
+            Collection<Contact> c = (Collection<Contact>) tf.getInput();
+            c.add(cw.getContact());
+            tf.refresh();
+        }
     }
 
     public void onKeyUp(Event event) {
@@ -56,7 +67,8 @@ public class ContactEventHandler {
      * contact from the selected column of the TableViewer. The Contact is passed to the
      * ContactWizard. When the Wizard has finished, the contact will be updated in the Database
      * 
-     * @param event Even which occured within SWT
+     * @param event
+     *            Event which occured within SWT
      */
     public void onMouseDoubleClick(Event event) {
         TableViewer tv = (TableViewer) XWT.findElementByName(event.widget, "contactTable");
