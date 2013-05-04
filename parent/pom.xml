@@ -91,42 +91,44 @@
 	</build>
 
 	<modules>
-		<module>../de.hswt.hrm.main</module>
+		<module>../de.hswt.hrm.common</module>
+		<module>../de.hswt.hrm.common.locking.jdbc</module>
+		<module>../de.hswt.hrm.common.locking.jdbc.test</module>
+		<module>../de.hswt.hrm.common.test</module>
+		<module>../de.hswt.hrm.common.ui.swt</module>
+		<module>../de.hswt.hrm.commons.dbutils</module>
 		<module>../de.hswt.hrm.contact.dao.core</module>
+		<module>../de.hswt.hrm.contact.dao.jdbc</module>
+		<module>../de.hswt.hrm.contact.dao.jdbc.test</module>
 		<module>../de.hswt.hrm.contact.feature</module>
 		<module>../de.hswt.hrm.contact.model</module>
-		<module>../de.hswt.hrm.common</module>
+		<module>../de.hswt.hrm.contact.service</module>
+		<module>../de.hswt.hrm.contact.service.test</module>
+		<module>../de.hswt.hrm.contact.ui</module>
 		<module>../de.hswt.hrm.jdbc.mariadb</module>
+		<module>../de.hswt.hrm.log.config</module>
+		<module>../de.hswt.hrm.main</module>
 		<module>../de.hswt.hrm.main.feature</module>
+		<module>../de.hswt.hrm.pdfrenderer</module>
 		<module>../de.hswt.hrm.place.dao.core</module>
 		<module>../de.hswt.hrm.place.dao.jdbc</module>
 		<module>../de.hswt.hrm.place.feature</module>
 		<module>../de.hswt.hrm.place.model</module>
 		<module>../de.hswt.hrm.place.service</module>
-		<module>../de.hswt.hrm.contact.service</module>
-		<module>../de.hswt.hrm.contact.dao.jdbc</module>
-		<module>../de.hswt.hrm.test</module>
-		<module>../de.hswt.hrm.contact.dao.jdbc.test</module>
-		<module>../de.hswt.hrm.common.test</module>
-		<module>../de.hswt.hrm.contact.ui</module>
-		<module>../de.hswt.hrm.contact.service.test</module>
 		<module>../de.hswt.hrm.place.service.test</module>
-		<module>../de.hswt.hrm.repository</module>
-		<module>../de.hswt.hrm.thirdparty.feature</module>
-		<module>../de.hswt.hrm.commons.dbutils</module>
 		<module>../de.hswt.hrm.place.ui</module>
-		<module>../de.hswt.hrm.log.config</module>
-		<module>../de.hswt.hrm.pdfrenderer</module>
-		<module>../de.hswt.hrm.common.ui.swt</module>
 		<module>../de.hswt.hrm.plant.dao.core</module>
 		<module>../de.hswt.hrm.plant.dao.jdbc</module>
+		<module>../de.hswt.hrm.plant.feature</module>
 		<module>../de.hswt.hrm.plant.model</module>
 		<module>../de.hswt.hrm.plant.service</module>
 		<module>../de.hswt.hrm.plant.ui</module>
-		<module>../de.hswt.hrm.plant.feature</module>
+<!--		<module>../de.hswt.hrm.plantimagemigration</module> -->
+		<module>../de.hswt.hrm.repository</module>
 		<module>../de.hswt.hrm.scheme.model</module>
 		<module>../de.hswt.hrm.scheme.service</module>
 		<module>../de.hswt.hrm.scheme.ui</module>
-		<module>../de.hswt.hrm.common.locking.jdbc</module>
+		<module>../de.hswt.hrm.test</module>
+		<module>../de.hswt.hrm.thirdparty.feature</module>
 	</modules>
 </project>
