@@ -13,6 +13,7 @@ import static com.google.common.base.Strings.*;
 import org.apache.commons.dbutils.DbUtils;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 
 import de.hswt.hrm.common.Config;
 import de.hswt.hrm.common.Config.Keys;
@@ -68,11 +69,16 @@ public abstract class AbstractDatabaseTest {
 	    }
 	}
 	
+	@BeforeClass
+	public static void loadConfigfile() throws IOException {
+	    // load configuration
+        Config config = Config.getInstance();
+        config.load(Paths.get("../resources/hrm.properties"));	    
+	}
+	
     @Before
     public void createDatabase() throws DatabaseException, IOException {
-        // load configuration
         Config config = Config.getInstance();
-        config.load(Paths.get("../resources/hrm.properties"));
         
         // remove database name
         config.setProperty(Keys.DB_NAME, "");
