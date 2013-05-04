@@ -1,7 +1,10 @@
 package de.hswt.hrm.common.locking.jdbc;
 
+import java.sql.SQLException;
+
 import org.junit.Test;
 
+import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.ElementNotFoundException;
 import static org.junit.Assert.*;
 
@@ -9,7 +12,7 @@ public class SessionTest {
     private final String LABEL = "Test-Session";
     
     @Test
-    public void testBeginSession() {
+    public void testBeginSession() throws DatabaseException, SQLException {
         SessionService service = SessionService.getInstance();
         Session session = service.startSession(LABEL);
         
@@ -21,7 +24,7 @@ public class SessionTest {
     }
     
     @Test(expected=ElementNotFoundException.class)
-    public void testEndSession() {
+    public void testEndSession() throws DatabaseException, SQLException {
         SessionService service = SessionService.getInstance();
         SessionDao dao = SessionDao.getInstance();
         
@@ -34,7 +37,7 @@ public class SessionTest {
     }
     
     @Test(expected=NullPointerException.class)
-    public void testSessionWithoutLabel() {
+    public void testSessionWithoutLabel() throws DatabaseException, SQLException {
         SessionService service = SessionService.getInstance();
         
         service.startSession(null);
