@@ -17,6 +17,7 @@ public class ContactWizard extends Wizard {
 
     private static final Logger LOG = LoggerFactory.getLogger(ContactWizard.class);
     private ContactWizardPageOne first;
+    private Contact contact;
 
     public ContactWizard(Contact c) {
         first = new ContactWizardPageOne("First Page", c);
@@ -50,10 +51,10 @@ public class ContactWizard extends Wizard {
 
     private boolean editExistingCustomer() {
 
-        Contact c = null;
+        
 
         try {
-            c = ContactService.findById(first.getContact().getId());
+            contact = ContactService.findById(first.getContact().getId());
 
         }
         catch (DatabaseException e1) {
@@ -69,12 +70,12 @@ public class ContactWizard extends Wizard {
         String city = mandatoryWidgets.get("city").getText();
         String zipCode = mandatoryWidgets.get("zipCode").getText();
 
-        c.setFirstName(firstName);
-        c.setLastName(lastName);
-        c.setStreet(street);
-        c.setStreetNo(streetNumber);
-        c.setCity(city);
-        c.setPostCode(zipCode);
+        contact.setFirstName(firstName);
+        contact.setLastName(lastName);
+        contact.setStreet(street);
+        contact.setStreetNo(streetNumber);
+        contact.setCity(city);
+        contact.setPostCode(zipCode);
 
         HashMap<String, Text> optionalWidgets = first.getOptionalWidgets();
         String shortcut = optionalWidgets.get("shortcut").getText();
@@ -83,20 +84,20 @@ public class ContactWizard extends Wizard {
         String mobilePhone = optionalWidgets.get("mobilePhone").getText();
         String email = optionalWidgets.get("email").getText();
 
-        c.setShortcut(shortcut);
-        c.setPhone(phone);
-        c.setMobile(mobilePhone);
-        c.setFax(fax);
-        c.setEmail(email);
+        contact.setShortcut(shortcut);
+        contact.setPhone(phone);
+        contact.setMobile(mobilePhone);
+        contact.setFax(fax);
+        contact.setEmail(email);
 
         try {
-            ContactService.update(c);
+            ContactService.update(contact);
         }
         catch (ElementNotFoundException e) {
-            LOG.error("Element " + c + " not found in Database", e);
+            LOG.error("Element " + contact + " not found in Database", e);
         }
         catch (SaveException e) {
-            LOG.error("Could not save Element: " + c + "into Database", e);
+            LOG.error("Could not save Element: " + contact + "into Database", e);
         }
 
         return true;
@@ -112,7 +113,7 @@ public class ContactWizard extends Wizard {
         String city = mandatoryWidgets.get("city").getText();
         String zipCode = mandatoryWidgets.get("zipCode").getText();
 
-        Contact newContact = new Contact(lastName, firstName, street, streetNumber, zipCode, city);
+        contact = new Contact(lastName, firstName, street, streetNumber, zipCode, city);
 
         HashMap<String, Text> optionalWidgets = first.getOptionalWidgets();
         String shortcut = optionalWidgets.get("shortcut").getText();
@@ -121,20 +122,24 @@ public class ContactWizard extends Wizard {
         String mobilePhone = optionalWidgets.get("mobilePhone").getText();
         String email = optionalWidgets.get("email").getText();
 
-        newContact.setShortcut(shortcut);
-        newContact.setPhone(phone);
-        newContact.setMobile(mobilePhone);
-        newContact.setFax(fax);
-        newContact.setEmail(email);
+        contact.setShortcut(shortcut);
+        contact.setPhone(phone);
+        contact.setMobile(mobilePhone);
+        contact.setFax(fax);
+        contact.setEmail(email);
 
         try {
-            ContactService.insert(newContact);
+            ContactService.insert(contact);
         }
         catch (SaveException e) {
-            LOG.error("Could not save Element: " + newContact + "into Database", e);
+            LOG.error("Could not save Element: " + contact + "into Database", e);
         }
 
         return true;
+    }
+
+    public Contact getContact() {
+        return contact;
     }
 
 }
