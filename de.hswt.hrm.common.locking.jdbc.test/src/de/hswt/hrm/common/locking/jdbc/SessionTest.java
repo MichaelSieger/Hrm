@@ -6,9 +6,10 @@ import org.junit.Test;
 
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.ElementNotFoundException;
+import de.hswt.hrm.test.database.AbstractDatabaseTest;
 import static org.junit.Assert.*;
 
-public class SessionTest {
+public class SessionTest extends AbstractDatabaseTest {
     private final String LABEL = "Test-Session";
     
     @Test
@@ -36,7 +37,7 @@ public class SessionTest {
         dao.findByUuid(session.getUuid());
     }
     
-    @Test(expected=NullPointerException.class)
+    @Test(expected=IllegalStateException.class)
     public void testSessionWithoutLabel() throws DatabaseException, SQLException {
         SessionService service = SessionService.getInstance();
         

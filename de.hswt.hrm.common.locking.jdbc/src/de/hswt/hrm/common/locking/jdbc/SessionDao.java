@@ -37,7 +37,7 @@ final class SessionDao {
     
     public Collection<Session> findAll() throws SQLException, DatabaseException {
         final String query =
-                "SELECT Session_Uuid, Session_Name, Session_Timestamp "
+                "SELECT Session_Uuid, Session_User, Session_Timestamp "
                         + "FROM `Session`;";
         
         try (Connection con = DatabaseFactory.getConnection()) {
@@ -58,7 +58,7 @@ final class SessionDao {
         }
         
         final String query =
-                "SELECT Session_Uuid, Session_Name, Session_Timestamp "
+                "SELECT Session_Uuid, Session_User, Session_Timestamp "
                         + "FROM `Session` "
                         + "WHERE Session_Uuid = :uuid;";
         
@@ -89,14 +89,14 @@ final class SessionDao {
         }
         
         final String query =
-                "INSERT INTO `Session` (Session_Uuid, Session_Name) "
-                        + "VALUES (:uuid, :name);";
+                "INSERT INTO `Session` (Session_Uuid, Session_User) "
+                        + "VALUES (:uuid, :user);";
         final String uuid = UUID.randomUUID().toString();
         
         try (Connection con = DatabaseFactory.getConnection()) {
             try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
                 stmt.setParameter("uuid", uuid);
-                stmt.setParameter("name", label);
+                stmt.setParameter("user", label);
                 
                 int affectedRows = stmt.executeUpdate();
                 
