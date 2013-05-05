@@ -9,31 +9,30 @@
 		<Section.client>
 			<Composite>
 				<Composite.layout>
-					<GridLayout numColumns="2"/>
+					<GridLayout numColumns="4"/>
 				</Composite.layout>
 				<Label text="Bezeichnung: "/>
-				<Text x:Style="BORDER" x:Name="Name">
+				<Text x:Style="BORDER" x:Name="name">
 					<Text.layoutData>
 						<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
 					</Text.layoutData>
 				</Text>
 				<Label text="Standort: "/>
-				<Text text="Dropdown ?" x:Style="BORDER" x:Name="Place"/>
+				<Text text="Dropdown ?" x:Style="BORDER" x:Name="place"/>
 				<Label text="Nächste Inspektion: "/>
-				<Text x:Style="BORDER" x:Name="NextInspection">
+				<Text x:Style="BORDER" x:Name="nextInspection">
 					<Text.layoutData>
 						<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
 					</Text.layoutData>
 				</Text>
 				<Label text="Intervall (Jahre): "/>
-				<Text x:Style="BORDER" x:Name="InspectionIntervall">
+				<Text x:Style="BORDER" x:Name="inspectionIntervall">
 					<Text.layoutData>
 						<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
 					</Text.layoutData>
 				</Text>
 				<Label text="Anlagenschema: "/>
-				<Text text="Dropdown ?" x:Style="BORDER" x:Name="Scheme"/>
-				<Label/>
+				<Text text="Dropdown ?" x:Style="BORDER" x:Name="scheme"/>
 				<Button text="neues Schema" x:Name="newScheme"/>
 			</Composite>
 		</Section.client>	
