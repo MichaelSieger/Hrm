@@ -43,7 +43,7 @@ public class ContactWizard extends Wizard {
     @Override
     public boolean performFinish() {
 
-        if (contact.isPresent()) {
+        if (!contact.isPresent()) {
             return insertNewContact();
         }
 
@@ -132,6 +132,7 @@ public class ContactWizard extends Wizard {
 
         try {
             ContactService.insert(c);
+            contact = Optional.fromNullable(c);
         }
         catch (SaveException e) {
             LOG.error("Could not save Element: " + contact + "into Database", e);

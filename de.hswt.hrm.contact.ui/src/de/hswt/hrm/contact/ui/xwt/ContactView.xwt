@@ -5,11 +5,11 @@
 		<GridLayout />
 	</Composite.layout>
 	<Text x:name="searchText" x:Style="SEARCH"
-		FocusOutEvent="onFocusOut" KeyUpEvent="onKeyUp" FocusInEvent="onFocusIn" text="Suche" />
+		FocusOutEvent="leaveText" KeyUpEvent="onKeyUp" FocusInEvent="enterText" text="Suche" />
 	<TableViewer x:name="contactTable" x:Style="BORDER">
 		<TableViewer.table headerVisible="true"
-			linesVisible="true" MouseDoubleClickEvent="onMouseDoubleClick" />
+			linesVisible="true" MouseDoubleClickEvent="tableEntrySelected" />
 	</TableViewer>
 	<Button x:name="addContact" text="Kunden Hinzufügen"
-		SelectionEvent="onSelection" />
+		SelectionEvent="buttonSelected" />
 </Composite>

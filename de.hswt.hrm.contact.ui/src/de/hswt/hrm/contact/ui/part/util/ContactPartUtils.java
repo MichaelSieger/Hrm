@@ -34,7 +34,7 @@ public final class ContactPartUtils {
 
     public static Optional<Contact> showWizard(Shell shell, Optional<Contact> contact) {
 
-        ContactWizard cw = new ContactWizard(null);
+        ContactWizard cw = new ContactWizard(contact);
         WizardDialog wd = new WizardDialog(shell, cw);
         wd.open();
         return cw.getContact();

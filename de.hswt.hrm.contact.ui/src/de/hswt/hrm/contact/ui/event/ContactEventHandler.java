@@ -13,6 +13,7 @@ import com.google.common.base.Optional;
 
 import de.hswt.hrm.contact.model.Contact;
 import de.hswt.hrm.contact.ui.filter.ContactFilter;
+import de.hswt.hrm.contact.ui.part.util.ContactPartUtils;
 import de.hswt.hrm.contact.ui.wizard.ContactWizard;
 
 public class ContactEventHandler {
@@ -20,7 +21,9 @@ public class ContactEventHandler {
     private static final String DEFAULT_SEARCH_STRING = "Suche";
     private static final String EMPTY = "";
 
-    public void onFocusOut(Event event) {
+    private Contact contact;
+
+    public void leaveText(Event event) {
 
         Text text = (Text) event.widget;
         if (text.getText().isEmpty()) {
@@ -32,18 +35,22 @@ public class ContactEventHandler {
     }
 
     // TODO check for better solution
-    public void onSelection(Event event) {
+    public void buttonSelected(Event event) {
         Button b = (Button) event.widget;
-        ContactWizard cw = new ContactWizard(null);
-        WizardDialog dialog = new WizardDialog(b.getShell(), cw);
-        dialog.open();
-        // if (cw.getContact() != null) {
-        // TableViewer tf = (TableViewer) XWT.findElementByName(b, "contactTable");
-        // @SuppressWarnings("unchecked")
-        // Collection<Contact> c = (Collection<Contact>) tf.getInput();
-        // c.add(cw.getContact());
-        // tf.refresh();
-        // }
+        Optional<Contact> newContact = ContactPartUtils.showWizard(event.display.getActiveShell(),
+                Optional.fromNullable(contact));
+
+        TableViewer tf = (TableViewer) XWT.findElementByName(b, "contactTable");
+        @SuppressWarnings("unchecked")
+        Collection<Contact> c = (Collection<Contact>) tf.getInput();
+        if (newContact.isPresent()) {
+            System.out.println("is present");
+            c.add(newContact.get());
+            tf.refresh();
+        }
+        else {
+            System.out.println("is not present");
+        }
     }
 
     public void onKeyUp(Event event) {
@@ -56,7 +63,7 @@ public class ContactEventHandler {
 
     }
 
-    public void onFocusIn(Event event) {
+    public void enterText(Event event) {
         Text text = (Text) event.widget;
         if (text.getText().equals(DEFAULT_SEARCH_STRING)) {
             text.setText(EMPTY);
@@ -72,7 +79,7 @@ public class ContactEventHandler {
      * @param event
      *            Event which occured within SWT
      */
-    public void onMouseDoubleClick(Event event) {
+    public void tableEntrySelected(Event event) {
         TableViewer tv = (TableViewer) XWT.findElementByName(event.widget, "contactTable");
         // obtain the contact in the column where the doubleClick happend
         Contact c = (Contact) tv.getElementAt(tv.getTable().getSelectionIndex());
