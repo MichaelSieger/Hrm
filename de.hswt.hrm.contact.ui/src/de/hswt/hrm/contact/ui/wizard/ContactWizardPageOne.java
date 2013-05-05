@@ -14,6 +14,8 @@ import org.eclipse.swt.widgets.Text;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.base.Optional;
+
 import de.hswt.hrm.contact.model.Contact;
 
 public class ContactWizardPageOne extends WizardPage {
@@ -21,9 +23,9 @@ public class ContactWizardPageOne extends WizardPage {
     private static final Logger LOG = LoggerFactory.getLogger(ContactWizardPageOne.class);
 
     private Composite container;
-    private Contact contact;
+    private Optional<Contact> contact;
 
-    public ContactWizardPageOne(String pageName, Contact contact) {
+    public ContactWizardPageOne(String pageName, Optional<Contact> contact) {
         super(pageName);
         this.contact = contact;
         setDescription(createDiscription());
@@ -47,7 +49,7 @@ public class ContactWizardPageOne extends WizardPage {
             LOG.error("An error occured", e);
         }
 
-        if (this.contact != null) {
+        if (this.contact.isPresent()) {
             fillMandatoryFields((container));
         }
 
@@ -59,17 +61,17 @@ public class ContactWizardPageOne extends WizardPage {
     private void fillMandatoryFields(Composite Container) {
 
         Text t = (Text) XWT.findElementByName(container, "firstName");
-        t.setText(contact.getFirstName());
+        t.setText(contact.get().getFirstName());
         t = (Text) XWT.findElementByName(container, "lastName");
-        t.setText(contact.getLastName());
+        t.setText(contact.get().getLastName());
         t = (Text) XWT.findElementByName(container, "street");
-        t.setText(contact.getStreet());
+        t.setText(contact.get().getStreet());
         t = (Text) XWT.findElementByName(container, "streetNumber");
-        t.setText(contact.getStreetNo());
+        t.setText(contact.get().getStreetNo());
         t = (Text) XWT.findElementByName(container, "city");
-        t.setText(contact.getCity());
+        t.setText(contact.get().getCity());
         t = (Text) XWT.findElementByName(container, "zipCode");
-        t.setText(contact.getPostCode());
+        t.setText(contact.get().getPostCode());
 
     }
 
@@ -124,7 +126,7 @@ public class ContactWizardPageOne extends WizardPage {
         }
     }
 
-    public Contact getContact() {
+    public Optional<Contact> getContact() {
         return contact;
     }
 }

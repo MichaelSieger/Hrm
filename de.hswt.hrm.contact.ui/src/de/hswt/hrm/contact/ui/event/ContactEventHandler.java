@@ -9,6 +9,8 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Text;
 
+import com.google.common.base.Optional;
+
 import de.hswt.hrm.contact.model.Contact;
 import de.hswt.hrm.contact.ui.filter.ContactFilter;
 import de.hswt.hrm.contact.ui.wizard.ContactWizard;
@@ -35,13 +37,13 @@ public class ContactEventHandler {
         ContactWizard cw = new ContactWizard(null);
         WizardDialog dialog = new WizardDialog(b.getShell(), cw);
         dialog.open();
-        if (cw.getContact() != null) {
-            TableViewer tf = (TableViewer) XWT.findElementByName(b, "contactTable");
-            @SuppressWarnings("unchecked")
-            Collection<Contact> c = (Collection<Contact>) tf.getInput();
-            c.add(cw.getContact());
-            tf.refresh();
-        }
+        // if (cw.getContact() != null) {
+        // TableViewer tf = (TableViewer) XWT.findElementByName(b, "contactTable");
+        // @SuppressWarnings("unchecked")
+        // Collection<Contact> c = (Collection<Contact>) tf.getInput();
+        // c.add(cw.getContact());
+        // tf.refresh();
+        // }
     }
 
     public void onKeyUp(Event event) {
@@ -74,7 +76,8 @@ public class ContactEventHandler {
         TableViewer tv = (TableViewer) XWT.findElementByName(event.widget, "contactTable");
         // obtain the contact in the column where the doubleClick happend
         Contact c = (Contact) tv.getElementAt(tv.getTable().getSelectionIndex());
-        WizardDialog wd = new WizardDialog(tv.getTable().getShell(), new ContactWizard(c));
+        WizardDialog wd = new WizardDialog(tv.getTable().getShell(), new ContactWizard(
+                Optional.fromNullable(c)));
         wd.open();
 
     }

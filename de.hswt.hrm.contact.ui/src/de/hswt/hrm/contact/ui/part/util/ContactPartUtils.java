@@ -6,6 +6,7 @@ import java.util.Map;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
+import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -15,8 +16,13 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TableColumn;
+
+import com.google.common.base.Optional;
+
 import de.hswt.hrm.contact.model.Contact;
+import de.hswt.hrm.contact.ui.wizard.ContactWizard;
 
 public final class ContactPartUtils {
 
@@ -24,6 +30,14 @@ public final class ContactPartUtils {
 
     private ContactPartUtils() {
 
+    }
+
+    public static Optional<Contact> showWizard(Shell shell, Optional<Contact> contact) {
+
+        ContactWizard cw = new ContactWizard(null);
+        WizardDialog wd = new WizardDialog(shell, cw);
+        wd.open();
+        return cw.getContact();
     }
 
     public static Map<String, String> getDefaultColumnHeaders() {
