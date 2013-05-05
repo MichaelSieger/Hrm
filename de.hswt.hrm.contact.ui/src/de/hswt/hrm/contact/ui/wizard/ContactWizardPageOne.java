@@ -126,7 +126,4 @@ public class ContactWizardPageOne extends WizardPage {
         }
     }
 
-    public Optional<Contact> getContact() {
-        return contact;
-    }
 }
