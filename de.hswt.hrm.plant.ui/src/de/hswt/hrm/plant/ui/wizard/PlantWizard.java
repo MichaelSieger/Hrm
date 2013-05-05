@@ -15,6 +15,11 @@ public class PlantWizard extends Wizard {
     public void addPages() {
         addPage(first);
     }
+    
+    @Override
+    public boolean canFinish() {
+        return first.isPageComplete();
+    }
 
     @Override
     public boolean performFinish() {
