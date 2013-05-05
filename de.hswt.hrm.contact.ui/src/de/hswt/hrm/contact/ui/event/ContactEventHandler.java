@@ -4,21 +4,31 @@ import java.util.Collection;
 
 import org.eclipse.e4.xwt.XWT;
 import org.eclipse.jface.viewers.TableViewer;
-import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Text;
 
+import com.google.common.base.Optional;
+
 import de.hswt.hrm.contact.model.Contact;
 import de.hswt.hrm.contact.ui.filter.ContactFilter;
-import de.hswt.hrm.contact.ui.wizard.ContactWizard;
+import de.hswt.hrm.contact.ui.part.util.ContactPartUtils;
 
 public class ContactEventHandler {
 
     private static final String DEFAULT_SEARCH_STRING = "Suche";
     private static final String EMPTY = "";
+    private Collection<Contact> contacs;
+    private Contact contact;
 
-    public void onFocusOut(Event event) {
+    /**
+     * This event is called whenever the Search Text Field is leaved. If the the field is blank, the
+     * value of the Field {@link #DEFAULT_SEARCH_STRING} is inserted.
+     * 
+     * @param event
+     *            Event which occured in SWT
+     */
+    public void leaveText(Event event) {
 
         Text text = (Text) event.widget;
         if (text.getText().isEmpty()) {
@@ -29,21 +39,32 @@ public class ContactEventHandler {
 
     }
 
-    // TODO check for better solution
-    public void onSelection(Event event) {
+    /**
+     * This Event is called whenever the add buttion is pressed.
+     * 
+     * @param event
+     */
+    @SuppressWarnings("unchecked")
+    public void buttonSelected(Event event) {
+        contact = null;
         Button b = (Button) event.widget;
-        ContactWizard cw = new ContactWizard(null);
-        WizardDialog dialog = new WizardDialog(b.getShell(), cw);
-        dialog.open();
-        if (cw.getContact() != null) {
-            TableViewer tf = (TableViewer) XWT.findElementByName(b, "contactTable");
-            @SuppressWarnings("unchecked")
-            Collection<Contact> c = (Collection<Contact>) tf.getInput();
-            c.add(cw.getContact());
-            tf.refresh();
+        Optional<Contact> newContact = ContactPartUtils.showWizard(event.display.getActiveShell(),
+                Optional.fromNullable(contact));
+
+        TableViewer tv = (TableViewer) XWT.findElementByName(b, "contactTable");
+
+        this.contacs = (Collection<Contact>) tv.getInput();
+        if (newContact.isPresent()) {
+            contacs.add(newContact.get());
+            tv.refresh();
         }
     }
 
+    /**
+     * This event is called whenever a Text is entered into the Search textField
+     * 
+     * @param event
+     */
     public void onKeyUp(Event event) {
 
         Text searchText = (Text) event.widget;
@@ -54,7 +75,12 @@ public class ContactEventHandler {
 
     }
 
-    public void onFocusIn(Event event) {
+    /**
+     * This event is called whenever the Search text field is entered
+     * 
+     * @param event
+     */
+    public void enterText(Event event) {
         Text text = (Text) event.widget;
         if (text.getText().equals(DEFAULT_SEARCH_STRING)) {
             text.setText(EMPTY);
@@ -70,12 +96,26 @@ public class ContactEventHandler {
      * @param event
      *            Event which occured within SWT
      */
-    public void onMouseDoubleClick(Event event) {
-        TableViewer tv = (TableViewer) XWT.findElementByName(event.widget, "contactTable");
-        // obtain the contact in the column where the doubleClick happend
-        Contact c = (Contact) tv.getElementAt(tv.getTable().getSelectionIndex());
-        WizardDialog wd = new WizardDialog(tv.getTable().getShell(), new ContactWizard(c));
-        wd.open();
+    @SuppressWarnings("unchecked")
+    public void tableEntrySelected(Event event) {
 
+        TableViewer tv = (TableViewer) XWT.findElementByName(event.widget, "contactTable");
+
+        // obtain the contact in the column where the doubleClick happend
+        contact = (Contact) tv.getElementAt(tv.getTable().getSelectionIndex());
+
+        Optional<Contact> updateContact = ContactPartUtils.showWizard(
+                event.display.getActiveShell(), Optional.fromNullable(contact));
+
+        this.contacs = (Collection<Contact>) tv.getInput();
+
+        if (updateContact.isPresent()) {
+            // Maybe it is better to programm against List<E> Interface and use get insted of remove
+            // and add
+            contacs.remove(contact);
+            contacs.add(updateContact.get());
+            tv.refresh();
+
+        }
     }
 }
