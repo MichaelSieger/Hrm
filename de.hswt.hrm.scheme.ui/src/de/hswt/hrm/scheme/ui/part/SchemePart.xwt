@@ -1,12 +1,12 @@
-<Composite xmlns="http://www.eclipse.org/xwt/presentation" xmlns:x="http://www.eclipse.org/xwt" x:Class="de.hswt.hrm.plant.ui.SchemeBuilderFrame">
+<Composite xmlns="http://www.eclipse.org/xwt/presentation" xmlns:x="http://www.eclipse.org/xwt" x:Class="de.hswt.hrm.plant.ui.SchemeBuilderFrame" bounds="0,-2,517,260">
 	<Composite.layout>
 		<FormLayout/>
 	</Composite.layout>
-	<Tree x:Style="BORDER" x:Name="tree">
+	<Tree x:Style="BORDER" x:Name="tree" width="203">
 		<Tree.layoutData>
 			<FormData>
 				<FormData.right>
-					<FormAttachment numerator="0" offset="131"/>
+					<FormAttachment numerator="0" offset="251"/>
 				</FormData.right>
 				<FormData.top>
 					<FormAttachment numerator="0" offset="10"/>
@@ -20,7 +20,7 @@
 			</FormData>
 		</Tree.layoutData>
 	</Tree>
-	<ScrolledComposite x:Style="BORDER | H_SCROLL | V_SCROLL" x:Name="schemeComposite">
+	<ScrolledComposite x:Style="BORDER | H_SCROLL | V_SCROLL" x:Name="schemeComposite" width="328">
 		<ScrolledComposite.layoutData>
 			<FormData>
 				<FormData.left>
