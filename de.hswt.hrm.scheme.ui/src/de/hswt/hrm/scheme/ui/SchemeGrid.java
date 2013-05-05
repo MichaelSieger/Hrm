@@ -29,10 +29,11 @@ public class SchemeGrid extends Canvas{
     private final List<SchemeGridItem> images = new ArrayList<>();
     private final int width, height;
     
-    public SchemeGrid(Composite parent, int style, int width, int height) {
+    public SchemeGrid(Composite parent, int style, int width, int height, int pixelPerGrid) {
         super(parent, style);
         this.width = width;
         this.height = height;
+        setPixelPerGrid(pixelPerGrid);
         super.addPaintListener(new PaintListener() {
 
             @Override
@@ -191,6 +192,10 @@ public class SchemeGrid extends Canvas{
      */
 	public SchemeGridItem removeImagePixel(int x, int y) {
 		return removeImage(getGridX(x), getGridY(y));
+	}
+
+	public void setPixelPerGrid(int ppg) {
+		setSize(width*ppg, height*ppg);
 	}
 
 }

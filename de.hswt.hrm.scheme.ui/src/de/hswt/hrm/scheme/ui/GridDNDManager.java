@@ -96,24 +96,13 @@ public class GridDNDManager {
 			@Override
 			public void dragSetData(DragSourceEvent ev) {
 				if(dragging != null){
-					ev.data = dragging.toString();
+					ev.data = " ";
 				}
 			}
 			
 			@Override
 			public void dragFinished(DragSourceEvent ev) {
-				if(dragging != null){	//The drag was finished but no drop occured
-					try {
-						grid.setImage(dragging);
-					} catch (PlaceOccupiedException | IllegalArgumentException e) {
-						/*
-						 * Das kann eigentlich nicht passieren, weil der Startpunkt
-						 * vor dem Drag nicht belegt war.
-						 */
-						e.printStackTrace();
-					}
-					dragging = null;
-				}
+				dragging = null;
 			}
 		});
 	}

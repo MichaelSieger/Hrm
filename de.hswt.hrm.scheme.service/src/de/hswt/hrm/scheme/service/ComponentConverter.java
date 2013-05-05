@@ -37,8 +37,16 @@ public class ComponentConverter {
         
     };
 
-	private static final int PPG = 100, // Pixel per grid
-			PPG_THUMBNAIL = 10;
+    /**
+     * Pixel per grid for the images
+     */
+	private static final int PPG = 100;
+	
+	/**
+	 * Size of the Thumbnails (Is always the same)
+	 */
+	private static final int THUMB_WIDTH = 50,
+								THUMB_HEIGHT = 50;
 
 	/**
 	 * Converts a GridImage to a RenderedGridImage
@@ -77,8 +85,8 @@ public class ComponentConverter {
 								h * PPG)),
 				getSWTImage(
 					display,
-					renderImage(page, w * PPG_THUMBNAIL,
-							h * PPG_THUMBNAIL)));
+					renderImage(page, THUMB_WIDTH,
+							THUMB_HEIGHT)));
 	}
 
 	private static BufferedImage renderImage(final PDFPage page, final int w,

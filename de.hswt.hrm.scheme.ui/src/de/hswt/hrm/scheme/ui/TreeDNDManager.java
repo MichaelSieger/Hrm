@@ -91,10 +91,10 @@ public class TreeDNDManager {
         src.addDragListener(new DragSourceListener() {
 
             @Override
-            public void dragStart(DragSourceEvent ev) {
+            public void dragStart(DragSourceEvent ev) { 
                 TreeItem[] items = tree.getSelection();
                 if (items.length != 1) {
-                    throw new RuntimeException("Only one item is accepted for dragging");
+                    throw new RuntimeException("Only one item is accepted for dragging");   
                 }
                 dragging = (TreeData) items[0].getData();
             }
@@ -102,7 +102,7 @@ public class TreeDNDManager {
             @Override
             public void dragSetData(DragSourceEvent ev) {
             	if(dragging != null){
-            		ev.data = dragging.toString();
+            		ev.data = " ";
             	}
             }
 
