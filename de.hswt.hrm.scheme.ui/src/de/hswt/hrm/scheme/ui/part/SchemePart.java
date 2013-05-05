@@ -15,6 +15,8 @@ import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Slider;
 import org.eclipse.swt.widgets.Tree;
@@ -32,6 +34,8 @@ import de.hswt.hrm.scheme.ui.TreeManager;
  *
  */
 public class SchemePart {
+	
+	private static final RGB WHITE = new RGB(255, 255, 255);
 	
 	private static final int DRAG_OPS = DND.DROP_COPY, DROP_OPS = DND.DROP_COPY;
 	
@@ -51,6 +55,7 @@ public class SchemePart {
 			new TreeManager(ImageTreeModelFactory.create(parent.getDisplay()),
 					 tree);
 			grid = new SchemeGrid(getSchemeComposite(), SWT.NONE, 40, 20, 40);
+			grid.setBackground(new Color(root.getDisplay(), WHITE));
 			getSchemeComposite().setContent(grid);
 	        DropTarget dt = new DropTarget(grid, DROP_OPS);
 	        dt.setTransfer(new Transfer[] { TextTransfer.getInstance() });
