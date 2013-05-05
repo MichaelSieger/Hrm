@@ -46,7 +46,7 @@ public class SchemePart {
 			Tree tree = getTree();
 			new TreeManager(ImageTreeModelFactory.create(parent.getDisplay()),
 					 tree);
-			grid = new SchemeGrid(getSchemeComposite(), SWT.NONE, 40, 20);
+			grid = new SchemeGrid(getSchemeComposite(), SWT.NONE, 40, 20, 40);
 			getSchemeComposite().setContent(grid);
 	        DropTarget dt = new DropTarget(grid, DROP_OPS);
 	        dt.setTransfer(new Transfer[] { TextTransfer.getInstance() });
