@@ -33,9 +33,24 @@
 					<FormAttachment numerator="0" offset="10"/>
 				</FormData.top>
 				<FormData.bottom>
-					<FormAttachment offset="-10" numerator="100"/>
+					<FormAttachment offset="-38" numerator="100"/>
 				</FormData.bottom>
 			</FormData>
 		</ScrolledComposite.layoutData>
 	</ScrolledComposite>
+	<Slider x:Name="zoomSlider">
+		<Slider.layoutData>
+			<FormData>
+				<FormData.left>
+					<FormAttachment numerator="100" offset="-236"/>
+				</FormData.left>
+				<FormData.bottom>
+					<FormAttachment offset="-10" numerator="100"/>
+				</FormData.bottom>
+				<FormData.right>
+					<FormAttachment numerator="100" offset="-10"/>
+				</FormData.right>
+			</FormData>
+		</Slider.layoutData>
+	</Slider>
 </Composite>
