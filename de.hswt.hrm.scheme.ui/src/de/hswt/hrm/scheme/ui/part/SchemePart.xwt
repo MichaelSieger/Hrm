@@ -2,43 +2,40 @@
 	<Composite.layout>
 		<FormLayout/>
 	</Composite.layout>
-	<Composite x:Name="schemeComposite">
-		<Composite.layout>
-			<FillLayout/>
-		</Composite.layout>
-		<Composite.layoutData>
-			<FormData>
-				<FormData.bottom>
-					<FormAttachment numerator="100" offset="-10"/>
-				</FormData.bottom>
-				<FormData.left>
-					<FormAttachment offset="186" numerator="0"/>
-				</FormData.left>
-				<FormData.top>
-					<FormAttachment numerator="0" offset="10"/>
-				</FormData.top>
-				<FormData.right>
-					<FormAttachment numerator="100" offset="-10"/>
-				</FormData.right>
-			</FormData>
-		</Composite.layoutData>
-	</Composite>
 	<Tree x:Style="BORDER" x:Name="tree">
 		<Tree.layoutData>
 			<FormData>
 				<FormData.right>
-					<FormAttachment control="{Binding ElementName=schemeComposite}" offset="-9"/>
+					<FormAttachment numerator="0" offset="131"/>
 				</FormData.right>
-				<FormData.left>
-					<FormAttachment numerator="0" offset="10"/>
-				</FormData.left>
 				<FormData.top>
 					<FormAttachment numerator="0" offset="10"/>
 				</FormData.top>
+				<FormData.left>
+					<FormAttachment numerator="0" offset="10"/>
+				</FormData.left>
 				<FormData.bottom>
 					<FormAttachment numerator="100" offset="-10"/>
 				</FormData.bottom>
 			</FormData>
 		</Tree.layoutData>
 	</Tree>
+	<ScrolledComposite x:Style="BORDER | H_SCROLL | V_SCROLL" x:Name="schemeComposite">
+		<ScrolledComposite.layoutData>
+			<FormData>
+				<FormData.left>
+					<FormAttachment offset="6" control="{Binding ElementName=tree}"/>
+				</FormData.left>
+				<FormData.right>
+					<FormAttachment numerator="100" offset="-10"/>
+				</FormData.right>
+				<FormData.top>
+					<FormAttachment numerator="0" offset="10"/>
+				</FormData.top>
+				<FormData.bottom>
+					<FormAttachment offset="-10" numerator="100"/>
+				</FormData.bottom>
+			</FormData>
+		</ScrolledComposite.layoutData>
+	</ScrolledComposite>
 </Composite>
