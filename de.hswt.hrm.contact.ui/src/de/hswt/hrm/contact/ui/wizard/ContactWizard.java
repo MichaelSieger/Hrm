@@ -40,17 +40,23 @@ public class ContactWizard extends Wizard {
 
     @Override
     public boolean performFinish() {
-        if (contact.isPresent()) {
+        if (!contact.isPresent()) {
+            LOG.debug("contact is not present");
+            return insertNewContact();
+
+        }
+        else {
+            LOG.debug("contact is present");
             return editExistingCustomer();
         }
-        return insertNewContact();
+
     }
 
     private boolean editExistingCustomer() {
         Contact c = this.contact.get();
         try {
             c = ContactService.findById(c.getId());
-            setContent(contact);
+            c = setContent(contact);
             ContactService.update(c);
             contact = Optional.fromNullable(c);
 
