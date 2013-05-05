@@ -7,11 +7,13 @@ import javax.annotation.PostConstruct;
 import org.eclipse.e4.xwt.IConstants;
 import org.eclipse.e4.xwt.XWT;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DragSource;
 import org.eclipse.swt.dnd.DropTarget;
 import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Tree;
 
@@ -45,6 +47,7 @@ public class SchemePart {
 			new TreeManager(ImageTreeModelFactory.create(parent.getDisplay()),
 					 tree);
 			grid = new SchemeGrid(getSchemeComposite(), SWT.NONE, 40, 20);
+			getSchemeComposite().setContent(grid);
 	        DropTarget dt = new DropTarget(grid, DROP_OPS);
 	        dt.setTransfer(new Transfer[] { TextTransfer.getInstance() });
 	        DragSource treeDragSource = new DragSource(tree, DRAG_OPS);
@@ -63,8 +66,8 @@ public class SchemePart {
 		return (Tree) XWT.findElementByName(root, "tree");
 	}
 
-	private Composite getSchemeComposite() {
-		return (Composite) XWT.findElementByName(root, "schemeComposite");
+	private ScrolledComposite getSchemeComposite() {
+		return (ScrolledComposite) XWT.findElementByName(root, "schemeComposite");
 	}
 
 }
