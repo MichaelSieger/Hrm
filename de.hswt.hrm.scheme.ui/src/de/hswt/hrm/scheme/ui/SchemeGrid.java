@@ -33,7 +33,7 @@ public class SchemeGrid extends Canvas{
         super(parent, style);
         this.width = width;
         this.height = height;
-        this.setSize(width*pixelPerGrid, height*pixelPerGrid);
+        setPixelPerGrid(pixelPerGrid);
         super.addPaintListener(new PaintListener() {
 
             @Override
@@ -192,6 +192,10 @@ public class SchemeGrid extends Canvas{
      */
 	public SchemeGridItem removeImagePixel(int x, int y) {
 		return removeImage(getGridX(x), getGridY(y));
+	}
+
+	public void setPixelPerGrid(int ppg) {
+		setSize(width*ppg, height*ppg);
 	}
 
 }
