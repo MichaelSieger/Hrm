@@ -36,6 +36,7 @@ public class ImageTreeModelMock implements IImageTreeModel {
 					getVentilationComponent(),
 					getFilterComponent(),
 					getFilterComponent2(),
+					getBioMesureComponent()
 					};
 			RenderedComponent[] rc = new RenderedComponent[c.length];
 			for(int i = 0; i < rc.length; i++){
@@ -46,6 +47,14 @@ public class ImageTreeModelMock implements IImageTreeModel {
 			e.printStackTrace();
 			return null;
 		}
+	}
+	
+	
+	
+	private Component getBioMesureComponent() throws FileNotFoundException, IOException{
+		return new Component("Keimmessung", loadBytes("pkk1d.pdf"), loadBytes("pkk1l.pdf"),
+							  loadBytes("pkk1r.pdf"), loadBytes("pkk1u.pdf"), 1, true,
+							  getMeasureCategory());
 	}
 	
 	private Component getVentilationComponent() throws FileNotFoundException, IOException{
@@ -64,6 +73,10 @@ public class ImageTreeModelMock implements IImageTreeModel {
 		return new Component(
 				"F5", loadBytes("7_r_0.pdf"), loadBytes("7_l_0.pdf"), null, null, 3, true, 
 				getFilterCategory());
+	}
+	
+	private Category getMeasureCategory(){
+		return new Category("Messungen", 1, 1, 0, false);
 	}
 	
 	private Category getFilterCategory(){
