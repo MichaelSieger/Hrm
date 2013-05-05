@@ -71,12 +71,10 @@ public class ContactWizard extends Wizard {
     }
 
     private boolean insertNewContact() {
-        Contact c = null;
-        c = setValues(Optional.fromNullable(c));
+        Contact c = setValues(Optional.<Contact>absent());
 
         try {
-            c = ContactService.insert(c);
-            contact = Optional.of(c);
+            contact = Optional.of(ContactService.insert(c));
         }
         catch (SaveException e) {
             LOG.error("Could not save Element: " + contact + "into Database", e);
