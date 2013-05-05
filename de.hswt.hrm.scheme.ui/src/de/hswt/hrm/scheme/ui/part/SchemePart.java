@@ -87,12 +87,17 @@ public class SchemePart {
 			
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				grid.setPixelPerGrid(getZoomSlider().getSelection());
+				updateZoom();
 			}
 			
 			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {}
 		});
+		updateZoom();
+	}
+	
+	private void updateZoom(){
+		grid.setPixelPerGrid(getZoomSlider().getSelection());
 	}
 
 }
