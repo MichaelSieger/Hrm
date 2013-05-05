@@ -43,12 +43,11 @@ public class ContactWizard extends Wizard {
     @Override
     public boolean performFinish() {
 
-        if (!contact.isPresent()) {
-            return insertNewContact();
+        if (contact.isPresent()) {
+            return editExistingCustomer();
         }
 
-        return editExistingCustomer();
-
+        return insertNewContact();
     }
 
     private boolean editExistingCustomer() {
@@ -94,6 +93,7 @@ public class ContactWizard extends Wizard {
 
         try {
             ContactService.update(c);
+            contact = Optional.fromNullable(c);
         }
         catch (ElementNotFoundException e) {
             LOG.error("Element " + contact + " not found in Database", e);
@@ -131,7 +131,7 @@ public class ContactWizard extends Wizard {
         c.setEmail(email);
 
         try {
-            ContactService.insert(c);
+            c = ContactService.insert(c);
             contact = Optional.fromNullable(c);
         }
         catch (SaveException e) {
