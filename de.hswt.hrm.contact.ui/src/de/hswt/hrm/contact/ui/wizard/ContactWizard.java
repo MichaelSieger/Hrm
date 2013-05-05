@@ -40,25 +40,26 @@ public class ContactWizard extends Wizard {
 
     @Override
     public boolean performFinish() {
-        if (!contact.isPresent()) {
-            LOG.debug("contact is not present");
-            return insertNewContact();
-
+        if (contact.isPresent()) {
+            return editExistingCustomer();
         }
         else {
-            LOG.debug("contact is present");
-            return editExistingCustomer();
+            return insertNewContact();
         }
 
     }
 
     private boolean editExistingCustomer() {
+        // At this point we already know that the contact exists
         Contact c = this.contact.get();
         try {
+            // Update contact from the Database
             c = ContactService.findById(c.getId());
-            c = setContent(contact);
+            // set the values to the fields from the WizardPage
+            c = setValues(contact);
+            // Update contact in the Database
             ContactService.update(c);
-            contact = Optional.fromNullable(c);
+            contact = Optional.of(c);
 
         }
         catch (DatabaseException e1) {
@@ -71,11 +72,11 @@ public class ContactWizard extends Wizard {
 
     private boolean insertNewContact() {
         Contact c = null;
-        c = setContent(Optional.fromNullable(c));
+        c = setValues(Optional.fromNullable(c));
 
         try {
             c = ContactService.insert(c);
-            contact = Optional.fromNullable(c);
+            contact = Optional.of(c);
         }
         catch (SaveException e) {
             LOG.error("Could not save Element: " + contact + "into Database", e);
@@ -84,11 +85,7 @@ public class ContactWizard extends Wizard {
         return true;
     }
 
-    public Optional<Contact> getContact() {
-        return contact;
-    }
-
-    private Contact setContent(Optional<Contact> c) {
+    private Contact setValues(Optional<Contact> c) {
 
         Contact contact;
 
@@ -130,6 +127,10 @@ public class ContactWizard extends Wizard {
 
         return contact;
 
+    }
+
+    public Optional<Contact> getContact() {
+        return contact;
     }
 
 }

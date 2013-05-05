@@ -21,6 +21,13 @@ public class ContactEventHandler {
     private Collection<Contact> contacs;
     private Contact contact;
 
+    /**
+     * This event is called whenever the Search Text Field is leaved. If the the field is blank, the
+     * value of the Field {@link #DEFAULT_SEARCH_STRING} is inserted.
+     * 
+     * @param event
+     *            Event which occured in SWT
+     */
     public void leaveText(Event event) {
 
         Text text = (Text) event.widget;
@@ -32,8 +39,11 @@ public class ContactEventHandler {
 
     }
 
-    // TODO check for better solution
-
+    /**
+     * This Event is called whenever the add buttion is pressed.
+     * 
+     * @param event
+     */
     @SuppressWarnings("unchecked")
     public void buttonSelected(Event event) {
         contact = null;
@@ -50,6 +60,11 @@ public class ContactEventHandler {
         }
     }
 
+    /**
+     * This event is called whenever a Text is entered into the Search textField
+     * 
+     * @param event
+     */
     public void onKeyUp(Event event) {
 
         Text searchText = (Text) event.widget;
@@ -60,6 +75,11 @@ public class ContactEventHandler {
 
     }
 
+    /**
+     * This event is called whenever the Search text field is entered
+     * 
+     * @param event
+     */
     public void enterText(Event event) {
         Text text = (Text) event.widget;
         if (text.getText().equals(DEFAULT_SEARCH_STRING)) {
@@ -78,14 +98,20 @@ public class ContactEventHandler {
      */
     @SuppressWarnings("unchecked")
     public void tableEntrySelected(Event event) {
+
         TableViewer tv = (TableViewer) XWT.findElementByName(event.widget, "contactTable");
+
         // obtain the contact in the column where the doubleClick happend
         contact = (Contact) tv.getElementAt(tv.getTable().getSelectionIndex());
+
         Optional<Contact> updateContact = ContactPartUtils.showWizard(
                 event.display.getActiveShell(), Optional.fromNullable(contact));
 
         this.contacs = (Collection<Contact>) tv.getInput();
+
         if (updateContact.isPresent()) {
+            // Maybe it is better to programm against List<E> Interface and use get insted of remove
+            // and add
             contacs.remove(contact);
             contacs.add(updateContact.get());
             tv.refresh();
