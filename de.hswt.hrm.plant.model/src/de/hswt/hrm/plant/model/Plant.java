@@ -2,7 +2,6 @@ package de.hswt.hrm.plant.model;
 
 import com.google.common.base.Optional;
 import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Strings.isNullOrEmpty;
 
 import de.hswt.hrm.place.model.Place;
@@ -20,9 +19,10 @@ public class Plant {
     // das gemeint?
     private int numberOfElements;
     private String description;
-    private Place place;
+    
 
     // optional
+    private Place place;
     private int constructionYear;
     private String manufactor;
     private String type;
@@ -82,12 +82,11 @@ public class Plant {
         this.description = description;
     }
 
-    public Place getPlace() {
-        return place;
+    public Optional<Place> getPlace() {
+        return Optional.fromNullable(place);
     }
 
     public void setPlace(Place place) {
-        checkNotNull(place, IS_MANDATORY);
         this.place = place;
     }
 
