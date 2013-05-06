@@ -16,8 +16,9 @@ import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.ElementNotFoundException;
 import de.hswt.hrm.common.database.exception.SaveException;
 import de.hswt.hrm.common.exception.NotImplementedException;
-import de.hswt.hrm.plant.dao.core.IPlantDao;
 import de.hswt.hrm.plant.model.Plant;
+import de.hswt.hrm.plant.dao.core.IPlantDao;
+
 
 public class PlantDao implements IPlantDao {
 
@@ -45,8 +46,37 @@ public class PlantDao implements IPlantDao {
 
     @Override
     public Plant findById(int id) throws DatabaseException, ElementNotFoundException {
-        return null;
+        checkArgument(id >= 0, "Id must not be negative.");
+
+        final String query = "SELECT Plant_ID, Plant_Place_FK, Plant_Inspection_Intervall, "
+                + "Plant_Manufacturer, Plant_Year_Of_Construction, Plant_Type"
+                + "Plant_Airperformance, Plant_Motorpower, Plant_Motor_Rpm, Plant_Ventilatorperformance, "
+                + "Plant_Current, Plant_Voltage, Plant_Note, Plant_Description FROM Plant " 
+                + "WHERE Plant_ID =:id;";;
+
+        try (Connection con = DatabaseFactory.getConnection()) {
+            try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
+                stmt.setParameter("id", id);
+                ResultSet result = stmt.executeQuery();
+
+                Collection<Plant> plants = fromResultSet(result);
+                DbUtils.closeQuietly(result);
+                
+                if (plants.size() < 1) {
+                    throw new ElementNotFoundException();
+                }
+                else if (plants.size() > 1) {
+                    throw new DatabaseException("ID '" + id + "' is not unique.");
+                }
+
+                return plants.iterator().next();
+            }
+        }
+        catch (SQLException e) {
+            throw new DatabaseException(e);
+        }
     }
+
 
     /**
      * @see {@link IPlantDao#insert(Plant)}
