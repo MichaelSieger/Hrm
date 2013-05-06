@@ -33,7 +33,6 @@
 				</Text>
 				<Label text="Anlagenschema: "/>
 				<Text text="Dropdown ?" x:Style="BORDER" x:Name="scheme"/>
-				<Button text="neues Schema" x:Name="newScheme"/>
 			</Composite>
 		</Section.client>	
 	</Section>
