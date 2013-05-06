@@ -85,7 +85,7 @@ public class PlantDao implements IPlantDao {
                 + "Plant_Manufacturer, Plant_Year_Of_Construction, Plant_Type"
                 + "Plant_Airperformance, Plant_Motorpower, Plant_Motor_Rpm, Plant_Ventilatorperformance, "
                 + "Plant_Current, Plant_Voltage, Plant_Note, Plant_Description) "
-                + "VALUES (:plantPlaceFk, :inspectionIntervall, :constructionYear, :manufactor, :type, "
+                + "VALUES (:plantPlaceFk, :inspectionIntervall, :manufactor, :constructionYear, :type, "
                 + ":airPerformance, :motorPower, :motorRpm, :ventilatorPerformance, :current, :voltage,"
                 + ":note, :description);";
 
@@ -147,7 +147,49 @@ public class PlantDao implements IPlantDao {
 
     @Override
     public void update(Plant plant) throws ElementNotFoundException, SaveException {
+        checkNotNull(plant, "Plant must not be null.");
 
+        if (plant.getId() < 0) {
+            throw new ElementNotFoundException("Element has no valid ID.");
+        }
+
+        final String query = "UPDATE Plant SET " + "Plant_Place_FK = :plantPlaceFk, "
+                + "Plant_Inspection_Intervall = :inspectionIntervall, "
+                + "Plant_Manufacturer = :manufactor, "
+                + "Plant_Year_Of_Construction = :constructionYear, " + "Plant_Type = :type, "
+                + "Plant_Airperformance = :airPerformance, " + "Plant_Motorpower = :motorPower, "
+                + "Plant_Motor_Rpm = :motorRpm, "
+                + "Plant_Ventilatorperformance = :ventilatorPerformance, "
+                + "Plant_Current = :current, " + "Plant_Voltage = :voltage "
+                + "Plant_Note = :note, " + "Plant_Description = :description"
+                + "WHERE Plant_ID = :id;";
+
+        try (Connection con = DatabaseFactory.getConnection()) {
+            try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
+                stmt.setParameter("description", plant.getDescription());
+                stmt.setParameter("inspectionIntervall", plant.getInspectionInterval());
+                stmt.setParameter("plantPlaceFk", plant.getPlace().get().getId());
+                stmt.setParameter("constructionYear", plant.getConstructionYear().orNull());
+                stmt.setParameter("manufactor", plant.getManufactor().orNull());
+                stmt.setParameter("type", plant.getType().orNull());
+                stmt.setParameter("airPerformance", plant.getAirPerformance().orNull());
+                stmt.setParameter("motorPower", plant.getMotorPower().orNull());
+                stmt.setParameter("motorRpm", plant.getMotorRpm().orNull());
+                stmt.setParameter("ventilatorPerformance", plant.getVentilatorPerformance()
+                        .orNull());
+                stmt.setParameter("current", plant.getCurrent().orNull());
+                stmt.setParameter("voltage", plant.getVoltage().orNull());
+                stmt.setParameter("note", plant.getNote().orNull());
+
+                int affectedRows = stmt.executeUpdate();
+                if (affectedRows != 1) {
+                    throw new SaveException();
+                }
+            }
+        }
+        catch (SQLException | DatabaseException e) {
+            throw new SaveException(e);
+        }
     }
 
     private Collection<Plant> fromResultSet(ResultSet rs) throws SQLException {
