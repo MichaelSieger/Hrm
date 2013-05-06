@@ -40,18 +40,17 @@ public class Plant {
     public Plant(int inspectionInterval, int numberOfElements, final String description,
             final Place place) {
 
-        this(-1, inspectionInterval, numberOfElements, description, place);
+        this(-1, inspectionInterval, numberOfElements, description);
 
     }
 
-    public Plant(int id, int inspectionInterval, int numberOfElements, final String description,
-            final Place place) {
+    public Plant(int id, int inspectionInterval, int numberOfElements, final String description) {
 
         this.id = id;
         setInspectionInterval(inspectionInterval);
         setNumberOfElements(numberOfElements);
         setDescription(description);
-        setPlace(place);
+
     }
 
     public int getId() {
