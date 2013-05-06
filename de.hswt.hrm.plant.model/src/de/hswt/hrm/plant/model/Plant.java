@@ -37,8 +37,7 @@ public class Plant {
     private static final String IS_MANDATORY = "Field is a mandatory.";
     private static final String INVALID_NUMBER = "%d is an invalid number.%n Must be greater 0";
 
-    public Plant(int inspectionInterval, int numberOfElements, final String description,
-            final Place place) {
+    public Plant(int inspectionInterval, int numberOfElements, final String description) {
 
         this(-1, inspectionInterval, numberOfElements, description);
 
@@ -50,7 +49,6 @@ public class Plant {
         setInspectionInterval(inspectionInterval);
         setNumberOfElements(numberOfElements);
         setDescription(description);
-
     }
 
     public int getId() {
