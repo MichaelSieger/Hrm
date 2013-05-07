@@ -1,6 +1,8 @@
 package de.hswt.hrm.contact.ui.part;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.jface.viewers.ColumnLabelProvider;
@@ -21,6 +23,7 @@ import org.eclipse.swt.widgets.TableColumn;
 
 import com.google.common.base.Optional;
 
+import de.hswt.hrm.common.ui.swt.table.ColumnDescription;
 import de.hswt.hrm.contact.model.Contact;
 import de.hswt.hrm.contact.ui.wizard.ContactWizard;
 
@@ -39,8 +42,13 @@ public final class ContactPartUtil {
         wd.open();
         return cw.getContact();
     }
-    
-    
+
+    public static List<ColumnDescription<Contact>> getColumns() {
+        List<ColumnDescription<Contact>> columns = new ArrayList<>();
+
+        return columns;
+
+    }
 
     public static Map<String, String> getDefaultColumnHeaders() {
 
