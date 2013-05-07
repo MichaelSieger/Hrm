@@ -8,6 +8,7 @@ import javax.annotation.PostConstruct;
 
 import org.eclipse.e4.xwt.IConstants;
 import org.eclipse.e4.xwt.XWT;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.widgets.Composite;
@@ -15,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.hswt.hrm.common.database.exception.DatabaseException;
+import de.hswt.hrm.common.ui.swt.table.ColumnComparator;
 import de.hswt.hrm.common.ui.swt.table.ColumnDescription;
 import de.hswt.hrm.common.ui.swt.table.TableViewerController;
 import de.hswt.hrm.contact.model.Contact;
@@ -25,19 +27,12 @@ public class ContactPart {
 
     private TableViewer viewer;
     private Collection<Contact> contacts;
-    private ContactFilter filter;
-    private ContactComperator c;
 
     private final static Logger LOG = LoggerFactory.getLogger(ContactPart.class);
 
     @PostConstruct
     public void postConstruct(Composite parent) {
 
-        LOG.debug("entering method postConstruct");
-
-        filter = new ContactFilter();
-        c = new ContactComperator();
-        // URL to the Paths defining XWT file
         URL url = ContactPart.class.getClassLoader().getResource(
                 "de/hswt/hrm/contact/ui/xwt/ContactView" + IConstants.XWT_EXTENSION_SUFFIX);
 
@@ -47,43 +42,47 @@ public class ContactPart {
             final Composite comp = (Composite) XWT.load(parent, url);
             // Obtain TableViwer to fill it with data
             viewer = (TableViewer) XWT.findElementByName(comp, "contactTable");
-
+            initializeTable(parent, viewer);
+            refreshTable(parent);
         }
         catch (Exception e) {
             e.printStackTrace();
         }
 
-        initalizeTable(parent, viewer);
-
     }
 
-    /**
-     * Initializes the TableViewer.\n First it tries to get all Contacts from the Database.
-     * Afterwards, the column headers will be created using
-     * {@link ContactPartUtil#createColumns(Composite, TableViewer, java.util.Map)}
-     * 
-     * 
-     * @param parent
-     * @param viewer
-     */
-    private void initalizeTable(Composite parent, TableViewer viewer) {
-
+    private void refreshTable(Composite parent) {
         try {
             contacts = ContactService.findAll();
+            viewer.setInput(contacts);
         }
         catch (DatabaseException e) {
-            e.printStackTrace();
-        }
+            LOG.error("Unable to retrieve list of contacts.", e);
 
+            MessageDialog.openError(parent.getShell(), "Connection Error",
+                    "Could not load contacts from Database.");
+        }
+    }
+
+    private void initializeTable(Composite parent, TableViewer viewer) {
         List<ColumnDescription<Contact>> columns = ContactPartUtil.getColumns();
 
+        // Create columns in tableviewer
         TableViewerController<Contact> filler = new TableViewerController<>(viewer);
         filler.createColumns(columns);
 
-        viewer.setContentProvider(ArrayContentProvider.getInstance());
-        viewer.setInput(contacts);
-        viewer.addFilter(filter);
-        viewer.setComparator(c);
+        // Enable column selection
+        filler.createColumnSelectionMenu();
 
+        // Enable sorting
+        ColumnComparator<Contact> comperator = new ColumnComparator<>(columns);
+        filler.enableSorting(comperator);
+
+        // Add dataprovider that handles our collection
+        viewer.setContentProvider(ArrayContentProvider.getInstance());
+
+        // Enable filtering
+        viewer.addFilter(new ContactFilter());
     }
+
 }
