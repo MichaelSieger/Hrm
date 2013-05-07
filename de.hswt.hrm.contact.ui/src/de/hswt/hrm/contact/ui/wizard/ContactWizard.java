@@ -24,8 +24,13 @@ public class ContactWizard extends Wizard {
 
         this.contact = contact;
         first = new ContactWizardPageOne("First Page", contact);
-        setWindowTitle("Neuen Kontakt hinzufügen");
-
+        
+        if (contact.isPresent()) {
+            setWindowTitle("Kontakt bearbeiten");
+        }
+        else {
+            setWindowTitle("Neuen Kontakt anlegen");
+        }
     }
 
     @Override
@@ -71,12 +76,10 @@ public class ContactWizard extends Wizard {
     }
 
     private boolean insertNewContact() {
-        Contact c = null;
-        c = setValues(Optional.fromNullable(c));
+        Contact c = setValues(Optional.<Contact>absent());
 
         try {
-            c = ContactService.insert(c);
-            contact = Optional.of(c);
+            contact = Optional.of(ContactService.insert(c));
         }
         catch (SaveException e) {
             LOG.error("Could not save Element: " + contact + "into Database", e);
@@ -86,8 +89,6 @@ public class ContactWizard extends Wizard {
     }
 
     private Contact setValues(Optional<Contact> c) {
-
-        Contact contact;
 
         HashMap<String, Text> mandatoryWidgets = first.getMandatoryWidgets();
         String firstName = mandatoryWidgets.get("firstName").getText();
@@ -104,6 +105,7 @@ public class ContactWizard extends Wizard {
         String mobilePhone = optionalWidgets.get("mobilePhone").getText();
         String email = optionalWidgets.get("email").getText();
 
+        Contact contact;
         if (c.isPresent()) {
 
             contact = c.get();
@@ -119,6 +121,7 @@ public class ContactWizard extends Wizard {
         else {
             contact = new Contact(lastName, firstName, street, streetNumber, zipCode, city);
         }
+        
         contact.setShortcut(shortcut);
         contact.setPhone(phone);
         contact.setMobile(mobilePhone);
