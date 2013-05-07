@@ -2,6 +2,9 @@ package de.hswt.hrm.scheme.ui;
 
 import java.awt.Toolkit;
 
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.ITreeSelection;
+import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DragSource;
 import org.eclipse.swt.dnd.DragSourceEvent;
@@ -21,14 +24,14 @@ import org.eclipse.swt.widgets.TreeItem;
  */
 public class TreeDNDManager {
 
-    private final Tree tree;
+    private final TreeViewer tree;
     private final SchemeGrid grid;
     private final DropTarget dt;
     private final DragSource src;
 
     private TreeData dragging;
 
-    public TreeDNDManager(Tree tree, SchemeGrid grid, DropTarget dt, DragSource src) {
+    public TreeDNDManager(TreeViewer tree, SchemeGrid grid, DropTarget dt, DragSource src) {
         super();
         this.tree = tree;
         this.grid = grid;
@@ -92,11 +95,13 @@ public class TreeDNDManager {
 
             @Override
             public void dragStart(DragSourceEvent ev) { 
-                TreeItem[] items = tree.getSelection();
-                if (items.length != 1) {
-                    throw new RuntimeException("Only one item is accepted for dragging");   
+                ITreeSelection sel = (ITreeSelection) tree.getSelection();
+                if(!sel.isEmpty()){
+                    if (sel.size() != 1) {
+                        throw new RuntimeException("Only one item is accepted for dragging");   
+                    }
+                    dragging = (TreeData) sel.getFirstElement();
                 }
-                dragging = (TreeData) items[0].getData();
             }
 
             @Override
