@@ -1,33 +1,35 @@
 package de.hswt.hrm.common.ui.swt.table;
 
 import java.util.Comparator;
-import java.util.Map;
+import java.util.List;
 
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerComparator;
-import org.eclipse.swt.widgets.TableColumn;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkArgument;
 
 public class ColumnComparator<T> extends ViewerComparator {
-    private final Map<TableColumn, Comparator<T>> comparators;
+    private final List<ColumnDescription<T>> descriptions;
+    private int currentColIndex = -1;
     private Direction dir = Direction.ASCENDING;
-    private TableColumn currentCol;
     
-    public ColumnComparator(Map<TableColumn, Comparator<T>> comparators) {
+    public ColumnComparator(final List<ColumnDescription<T>> descriptions) {
         super();
         
-        checkNotNull(comparators, "You have to specify map of table comparators.");
-        checkArgument(comparators.size() > 0, "You have to specify a non empty map of table comparators.");
-        this.comparators = comparators;
+        checkNotNull(descriptions, "You have to specify the list of column descriptions.");
+        checkArgument(descriptions.size() > 0, "You have to specify a non empty list of column descriptions.");
+        this.descriptions = descriptions;
     }
     
     @Override
     public int compare(Viewer viewer, Object e1, Object e2) {
-        Comparator<T> comparator = comparators.get(currentCol);
-        if (comparator == null) {
+        Comparator<T> comparator = null;
+        if (currentColIndex < 0) {
             // We use the first column if none is selected
-        	comparator = comparators.values().iterator().next();
+            comparator = descriptions.get(0).getComparator();
+        }
+        else {
+            comparator = descriptions.get(currentColIndex).getComparator();
         }
         
         // TODO check instance!
@@ -45,8 +47,8 @@ public class ColumnComparator<T> extends ViewerComparator {
         return result;
     }
     
-    public void setCurrentColumn(TableColumn curCol) {
-        currentCol = curCol;
+    public void setCurrentColumnIndex(final int index) {
+        this.currentColIndex = index;
     }
     
     public void setDirection(Direction dir) {
