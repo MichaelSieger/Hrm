@@ -26,6 +26,10 @@ public class PlaceWizard extends Wizard {
             setWindowTitle("Neuen Standort hinzufügen");
         }
     }
+    
+    public Optional<Place> getPlace() {
+        return place;
+    }
 
     @Override
     public void addPages() {

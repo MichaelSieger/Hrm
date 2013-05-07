@@ -29,7 +29,6 @@ import de.hswt.hrm.place.service.PlaceService;
 import de.hswt.hrm.place.ui.filter.PlaceFilter;
 
 public class PlacePart {
-	
 	private final static Logger LOG = LoggerFactory.getLogger(PlacePart.class);
 
 	private TableViewer viewer;

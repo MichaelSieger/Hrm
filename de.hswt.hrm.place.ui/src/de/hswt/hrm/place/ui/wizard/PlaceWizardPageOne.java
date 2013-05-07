@@ -29,10 +29,6 @@ public class PlaceWizardPageOne extends WizardPage {
         super(pageName);
         this.place = place;
         setDescription(createDiscription());
-        
-        if (place.isPresent()) {
-            updateFields(place.get());
-        }
     }
 
     private String createDiscription() {
@@ -60,6 +56,10 @@ public class PlaceWizardPageOne extends WizardPage {
     	    LOG.error("Could not load PlaceWizardPageOne XWT file.", e);
     	    return;
 		}
+    	
+        if (place.isPresent()) {
+            updateFields(place.get());
+        }
     	
     	setKeyListener();
         setControl(container);
