@@ -1,4 +1,4 @@
-package de.hswt.hrm.contact.ui.part.util;
+package de.hswt.hrm.contact.ui.part;
 
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerComparator;
