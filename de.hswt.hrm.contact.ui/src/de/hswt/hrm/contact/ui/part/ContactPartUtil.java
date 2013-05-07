@@ -39,6 +39,8 @@ public final class ContactPartUtil {
         wd.open();
         return cw.getContact();
     }
+    
+    
 
     public static Map<String, String> getDefaultColumnHeaders() {
 
