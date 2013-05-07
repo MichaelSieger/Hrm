@@ -5,7 +5,6 @@ import java.util.Collection;
 
 import javax.annotation.PostConstruct;
 
-import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.xwt.IConstants;
 import org.eclipse.e4.xwt.XWT;
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -54,14 +53,6 @@ public class ContactPart {
         }
 
         initalizeTable(parent, viewer);
-
-    }
-
-    /*
-     * 
-     */
-    @Focus
-    public void onFocus() {
 
     }
 

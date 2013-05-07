@@ -95,7 +95,6 @@ public class ContactEventHandler {
      * @param event
      *            Event which occured within SWT
      */
-    @SuppressWarnings("unchecked")
     public void tableEntrySelected(Event event) {
 
         TableViewer tv = (TableViewer) XWT.findElementByName(event.widget, "contactTable");
@@ -106,15 +105,8 @@ public class ContactEventHandler {
         Optional<Contact> updateContact = ContactPartUtils.showWizard(
                 event.display.getActiveShell(), Optional.fromNullable(selectedContact));
 
-//        Collection<Contact> contacs = (Collection<Contact>) tv.getInput();
-
         if (updateContact.isPresent()) {
-            // Maybe it is better to programm against List<E> Interface and use get insted of remove
-            // and add
-//            contacs.remove(selectedContact);
-//            contacs.add(updateContact.get());
             tv.refresh();
-
         }
     }
 }

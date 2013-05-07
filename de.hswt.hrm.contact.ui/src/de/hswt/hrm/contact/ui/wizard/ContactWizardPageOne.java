@@ -32,9 +32,11 @@ public class ContactWizardPageOne extends WizardPage {
     }
 
     private String createDiscription() {
-        StringBuffer sb = new StringBuffer();
-        sb.append("Neuen Kunden hinzufügen");
-        return sb.toString();
+        if (contact.isPresent()) {
+            return "Kontakt bearbeiten";
+        }
+
+        return "Neuen Kontakt anlegen";
     }
 
     @Override
@@ -50,7 +52,7 @@ public class ContactWizardPageOne extends WizardPage {
         }
 
         if (this.contact.isPresent()) {
-            fillMandatoryFields((container));
+            updateFields((container));
         }
 
         setKeyListener();
@@ -58,21 +60,32 @@ public class ContactWizardPageOne extends WizardPage {
         setPageComplete(false);
     }
 
-    private void fillMandatoryFields(Composite Container) {
-
+    private void updateFields(Composite Container) {
+        Contact c = contact.get();
+        
         Text t = (Text) XWT.findElementByName(container, "firstName");
-        t.setText(contact.get().getFirstName());
+        t.setText(c.getFirstName());
         t = (Text) XWT.findElementByName(container, "lastName");
-        t.setText(contact.get().getLastName());
+        t.setText(c.getLastName());
         t = (Text) XWT.findElementByName(container, "street");
-        t.setText(contact.get().getStreet());
+        t.setText(c.getStreet());
         t = (Text) XWT.findElementByName(container, "streetNumber");
-        t.setText(contact.get().getStreetNo());
+        t.setText(c.getStreetNo());
         t = (Text) XWT.findElementByName(container, "city");
-        t.setText(contact.get().getCity());
+        t.setText(c.getCity());
         t = (Text) XWT.findElementByName(container, "zipCode");
-        t.setText(contact.get().getPostCode());
-
+        t.setText(c.getPostCode());
+        
+        t = (Text) XWT.findElementByName(container, "phone");
+        t.setText(c.getPhone().or(""));
+        t = (Text) XWT.findElementByName(container, "fax");
+        t.setText(c.getFax().or(""));
+        t = (Text) XWT.findElementByName(container, "mobilePhone");
+        t.setText(c.getMobile().or(""));
+        t = (Text) XWT.findElementByName(container, "email");
+        t.setText(c.getEmail().or(""));
+        t = (Text) XWT.findElementByName(container, "shortcut");
+        t.setText(c.getShortcut().or(""));
     }
 
     public HashMap<String, Text> getMandatoryWidgets() {
