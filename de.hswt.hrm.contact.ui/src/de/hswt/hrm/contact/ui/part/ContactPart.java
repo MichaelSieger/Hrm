@@ -57,7 +57,7 @@ public class ContactPart {
     /**
      * Initializes the TableViewer.\n First it tries to get all Contacts from the Database.
      * Afterwards, the column headers will be created using
-     * {@link ContactPartUtils#createColumns(Composite, TableViewer, java.util.Map)}
+     * {@link ContactPartUtil#createColumns(Composite, TableViewer, java.util.Map)}
      * 
      * 
      * @param parent
@@ -71,7 +71,7 @@ public class ContactPart {
         catch (DatabaseException e) {
             e.printStackTrace();
         }
-        ContactPartUtils.createColumns(parent, viewer, ContactPartUtils.getDefaultColumnHeaders(),
+        ContactPartUtil.createColumns(parent, viewer, ContactPartUtil.getDefaultColumnHeaders(),
                 c);
         viewer.setContentProvider(ArrayContentProvider.getInstance());
         viewer.setInput(contacts);

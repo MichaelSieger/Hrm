@@ -24,11 +24,11 @@ import com.google.common.base.Optional;
 import de.hswt.hrm.contact.model.Contact;
 import de.hswt.hrm.contact.ui.wizard.ContactWizard;
 
-public final class ContactPartUtils {
+public final class ContactPartUtil {
 
     private final static int WIDTH = 120;
 
-    private ContactPartUtils() {
+    private ContactPartUtil() {
 
     }
 
