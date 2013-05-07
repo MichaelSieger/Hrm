@@ -2,50 +2,53 @@
 	<Composite.layout>
 		<FormLayout/>
 	</Composite.layout>
-	<Tree x:Style="BORDER" x:Name="tree" width="203">
-		<Tree.layoutData>
-			<FormData>
-				<FormData.right>
-					<FormAttachment numerator="0" offset="251"/>
-				</FormData.right>
-				<FormData.top>
-					<FormAttachment numerator="0" offset="10"/>
-				</FormData.top>
-				<FormData.left>
-					<FormAttachment numerator="0" offset="10"/>
-				</FormData.left>
-				<FormData.bottom>
-					<FormAttachment numerator="100" offset="-10"/>
-				</FormData.bottom>
-			</FormData>
-		</Tree.layoutData>
-	</Tree>
 	<ScrolledComposite x:Style="BORDER | H_SCROLL | V_SCROLL" x:Name="schemeComposite" width="328">
 		<ScrolledComposite.layoutData>
 			<FormData>
-				<FormData.left>
-					<FormAttachment offset="6" control="{Binding ElementName=tree}"/>
-				</FormData.left>
+				<FormData.bottom>
+					<FormAttachment numerator="100" offset="-60"/>
+				</FormData.bottom>
 				<FormData.right>
 					<FormAttachment numerator="100" offset="-10"/>
 				</FormData.right>
+				<FormData.left>
+					<FormAttachment numerator="0" offset="210"/>
+				</FormData.left>
 				<FormData.top>
 					<FormAttachment numerator="0" offset="10"/>
 				</FormData.top>
-				<FormData.bottom>
-					<FormAttachment offset="-38" numerator="100"/>
-				</FormData.bottom>
 			</FormData>
 		</ScrolledComposite.layoutData>
 	</ScrolledComposite>
-	<Slider x:Name="zoomSlider">
+	<TreeViewer x:Style="BORDER" x:Name="tree">
+		<TreeViewer.tree>
+			<TreeViewer.tree.layoutData>
+				<FormData>
+					<FormData.right>
+						<FormAttachment numerator="0" offset="200"/>
+					</FormData.right>
+					<FormData.top>
+						<FormAttachment numerator="0" offset="10"/>
+					</FormData.top>
+					<FormData.left>
+						<FormAttachment numerator="0" offset="10"/>
+					</FormData.left>
+					<FormData.bottom>
+						<FormAttachment numerator="100" offset="-10"/>
+					</FormData.bottom>
+				</FormData>
+			</TreeViewer.tree.layoutData>
+		</TreeViewer.tree>
+	</TreeViewer>
+	<Slider x:Name = "zoomSlider">
 		<Slider.layoutData>
 			<FormData>
 				<FormData.left>
-					<FormAttachment numerator="100" offset="-236"/>
+					<FormAttachment numerator="100" offset="-200"/>
 				</FormData.left>
+			
 				<FormData.bottom>
-					<FormAttachment offset="-10" numerator="100"/>
+					<FormAttachment numerator="100" offset="-10"/>
 				</FormData.bottom>
 				<FormData.right>
 					<FormAttachment numerator="100" offset="-10"/>
