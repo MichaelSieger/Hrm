@@ -1,9 +1,6 @@
 package de.hswt.hrm.common.ui.swt.table;
 
-import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
@@ -22,24 +19,19 @@ public class TableViewerController<T> {
         this.viewer = viewer;
     }
     
-    public Map<TableColumn, Comparator<T>> createColumns(
+    public void createColumns(
     		final List<ColumnDescription<T>> columnDescriptions) {
 
         if (viewer == null || columnDescriptions.size() < 1) {
-            return null;
+            return;
         }
 
-        Map<TableColumn, Comparator<T>> comparators = new HashMap<TableColumn, Comparator<T>>();
         for (int i = 0; i < columnDescriptions.size(); i++) {
             ColumnDescription<T> desc = columnDescriptions.get(i);
             TableViewerColumn col = createTableViewerColumn(desc.getHeader(), desc.getWidth(),
                     viewer, i);
             col.setLabelProvider(desc.getLabelProvider());
-            
-            comparators.put(col.getColumn(), desc.getComparator());
         }
-        
-        return comparators;
     }
     
     public void createColumnSelectionMenu() {

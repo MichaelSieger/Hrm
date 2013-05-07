@@ -1,5 +1,7 @@
 package de.hswt.hrm.common.ui.swt.table;
 
+import java.util.Arrays;
+
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -37,8 +39,8 @@ public class SortingSelectionAdapter<T> extends SelectionAdapter {
         
         lastSelection = currentCol;
         
-//        int computed = Arrays.asList(viewer.getTable().getColumns()).indexOf(e.getSource());
-        comparator.setCurrentColumn(currentCol);
+        int columnIndex = Arrays.asList(viewer.getTable().getColumns()).indexOf(e.getSource());
+        comparator.setCurrentColumnIndex(columnIndex);
         comparator.setDirection(dir);
         viewer.getTable().setSortDirection(dir.getValue());
         viewer.getTable().setSortColumn(currentCol);

@@ -4,12 +4,12 @@
 	<Composite.layout>
 		<GridLayout />
 	</Composite.layout>
-	<Text x:name="searchText" x:Style="SEARCH" text="Suche (Name, Location, Area)"
-		FocusOutEvent="onFocusOut" FocusInEvent="onFocusIn" KeyUpEvent="onKeyUp" />
+	<Text x:name="searchText" x:Style="SEARCH" text="Suche"
+		FocusOutEvent="leaveText" KeyUpEvent="onKeyUp" FocusInEvent="enterText" />
 	<TableViewer x:name="placeTable" x:Style="BORDER">
 		<TableViewer.table headerVisible="true"
-			linesVisible="true" />
+			linesVisible="true" MouseDoubleClickEvent="tableEntrySelected" />
 	</TableViewer>
 	<Button x:name="addPlace" text="Standort Hinzufügen"
-		SelectionEvent="onSelection" />
+		SelectionEvent="buttonSelected" />
 </Composite>
