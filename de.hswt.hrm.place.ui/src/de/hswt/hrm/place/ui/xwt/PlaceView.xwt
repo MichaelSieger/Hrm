@@ -2,14 +2,34 @@
 	xmlns:x="http://www.eclipse.org/xwt" xmlns:p1="clr-namespace:de.hswt.hrm.place.ui.xwt"
 	x:Class="de.hswt.hrm.place.ui.event.PlaceEventHandler">
 	<Composite.layout>
-		<GridLayout />
+		<GridLayout numColumns="5" makeColumnsEqualWidth="true"/>
 	</Composite.layout>
+	<Label/>
+	<Label/>
+	<Label/>
 	<Text x:name="searchText" x:Style="SEARCH" text="Suche"
-		FocusOutEvent="leaveText" KeyUpEvent="onKeyUp" FocusInEvent="enterText" />
+		FocusOutEvent="leaveText" KeyUpEvent="onKeyUp" FocusInEvent="enterText" >
+		<Text.layoutData>
+			<GridData horizontalAlignment="FILL"/>
+		</Text.layoutData>
+	</Text>
+	<Label/>
 	<TableViewer x:name="placeTable" x:Style="BORDER">
 		<TableViewer.table headerVisible="true"
-			linesVisible="true" MouseDoubleClickEvent="tableEntrySelected" />
+			linesVisible="true" MouseDoubleClickEvent="tableEntrySelected" >
+			<TableViewer.table.layoutData>
+				<GridData verticalSpan="5" horizontalSpan="4" horizontalAlignment="FILL" widthHint="860" verticalAlignment="FILL" grabExcessVerticalSpace="true" grabExcessHorizontalSpace="true"/>
+			</TableViewer.table.layoutData>
+		</TableViewer.table>
 	</TableViewer>
-	<Button x:name="addPlace" text="Standort Hinzufügen"
-		SelectionEvent="buttonSelected" />
+	<Button x:name="addPlace" text="Neuer Standort"
+		SelectionEvent="buttonSelected" >
+		<Button.layoutData>
+			<GridData horizontalAlignment="CENTER"/>
+		</Button.layoutData>
+	</Button>
+	<Label/>
+	<Label/>
+	<Label/>
+	<Label/>
 </Composite>
