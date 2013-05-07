@@ -12,7 +12,7 @@ import com.google.common.base.Optional;
 
 import de.hswt.hrm.contact.model.Contact;
 import de.hswt.hrm.contact.ui.filter.ContactFilter;
-import de.hswt.hrm.contact.ui.part.ContactPartUtils;
+import de.hswt.hrm.contact.ui.part.ContactPartUtil;
 
 public class ContactEventHandler {
 
@@ -47,7 +47,7 @@ public class ContactEventHandler {
     public void buttonSelected(Event event) {
         contact = null;
         Button b = (Button) event.widget;
-        Optional<Contact> newContact = ContactPartUtils.showWizard(event.display.getActiveShell(),
+        Optional<Contact> newContact = ContactPartUtil.showWizard(event.display.getActiveShell(),
                 Optional.fromNullable(contact));
 
         TableViewer tv = (TableViewer) XWT.findElementByName(b, "contactTable");
@@ -102,7 +102,7 @@ public class ContactEventHandler {
         // obtain the contact in the column where the doubleClick happend
         Contact selectedContact = (Contact) tv.getElementAt(tv.getTable().getSelectionIndex());
 
-        Optional<Contact> updateContact = ContactPartUtils.showWizard(
+        Optional<Contact> updateContact = ContactPartUtil.showWizard(
                 event.display.getActiveShell(), Optional.fromNullable(selectedContact));
 
         if (updateContact.isPresent()) {
