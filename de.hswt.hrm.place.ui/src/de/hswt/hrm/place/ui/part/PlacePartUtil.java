@@ -15,7 +15,11 @@ import de.hswt.hrm.place.model.Place;
 import de.hswt.hrm.place.ui.wizard.PlaceWizard;
 
 
-public class PlacePartUtil {
+public final class PlacePartUtil {
+    
+    public PlacePartUtil(){
+        
+    }
     
     public static Optional<Place> showWizard(Shell shell, Optional<Place> place) {
 
