@@ -12,7 +12,7 @@ import com.google.common.base.Optional;
 
 import de.hswt.hrm.contact.model.Contact;
 import de.hswt.hrm.contact.ui.filter.ContactFilter;
-import de.hswt.hrm.contact.ui.part.util.ContactPartUtils;
+import de.hswt.hrm.contact.ui.part.ContactPartUtils;
 
 public class ContactEventHandler {
 
