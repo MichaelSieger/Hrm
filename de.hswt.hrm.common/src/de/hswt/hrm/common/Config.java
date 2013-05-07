@@ -81,9 +81,10 @@ public final class Config {
      * Holds the possible keys from the configuration.
      */
     public static class Keys {
-        public static final String DB_HOST = "db_host";
-        public static final String DB_USER = "db_user";
-        public static final String DB_PASSWORD = "db_password";
-        public static final String DB_NAME = "db_name";
+        public static final String DB_HOST = "db.host";
+        public static final String DB_USER = "db.user";
+        public static final String DB_PASSWORD = "db.password";
+        public static final String DB_NAME = "db.name";
+        public static final String DB_LOCKING = "db.locking.enabled";
     }
 }
