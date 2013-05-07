@@ -2,6 +2,7 @@ package de.hswt.hrm.contact.ui.part;
 
 import java.net.URL;
 import java.util.Collection;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 
@@ -14,6 +15,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.hswt.hrm.common.database.exception.DatabaseException;
+import de.hswt.hrm.common.ui.swt.table.ColumnDescription;
+import de.hswt.hrm.common.ui.swt.table.TableViewerController;
 import de.hswt.hrm.contact.model.Contact;
 import de.hswt.hrm.contact.service.ContactService;
 import de.hswt.hrm.contact.ui.filter.ContactFilter;
@@ -71,8 +74,12 @@ public class ContactPart {
         catch (DatabaseException e) {
             e.printStackTrace();
         }
-        ContactPartUtil.createColumns(parent, viewer, ContactPartUtil.getDefaultColumnHeaders(),
-                c);
+
+        List<ColumnDescription<Contact>> columns = ContactPartUtil.getColumns();
+
+        TableViewerController<Contact> filler = new TableViewerController<>(viewer);
+        filler.createColumns(columns);
+
         viewer.setContentProvider(ArrayContentProvider.getInstance());
         viewer.setInput(contacts);
         viewer.addFilter(filter);

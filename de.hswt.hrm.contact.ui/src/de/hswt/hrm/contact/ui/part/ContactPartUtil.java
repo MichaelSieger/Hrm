@@ -1,25 +1,12 @@
 package de.hswt.hrm.contact.ui.part;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 
 import org.eclipse.jface.viewers.ColumnLabelProvider;
-import org.eclipse.jface.viewers.TableViewer;
-import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.wizard.WizardDialog;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.Menu;
-import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.TableColumn;
 
 import com.google.common.base.Optional;
 
@@ -28,8 +15,6 @@ import de.hswt.hrm.contact.model.Contact;
 import de.hswt.hrm.contact.ui.wizard.ContactWizard;
 
 public final class ContactPartUtil {
-
-    private final static int WIDTH = 120;
 
     private ContactPartUtil() {
 
@@ -45,172 +30,185 @@ public final class ContactPartUtil {
 
     public static List<ColumnDescription<Contact>> getColumns() {
         List<ColumnDescription<Contact>> columns = new ArrayList<>();
+        columns.add(getLastNameColumn());
+        columns.add(getFirstNameColumn());
+        columns.add(getStreetColumn());
+        columns.add(getStreetNoColumn());
+        columns.add(getPostCodeColumn());
+        columns.add(getCityColumn());
+        columns.add(getShortcutColumn());
+        columns.add(getPhoneColumn());
+        columns.add(getFaxColumn());
+        columns.add(getMobileColumn());
+        columns.add(getEmailColumn());
 
         return columns;
 
     }
 
-    public static Map<String, String> getDefaultColumnHeaders() {
-
-        // TODO Multilanguage support
-
-        Map<String, String> columnHeaders = new HashMap<String, String>();
-
-        columnHeaders.put("lastName", "Nachname");
-        columnHeaders.put("firstName", "Vorname");
-        columnHeaders.put("street", "Strasse");
-        columnHeaders.put("streetNo", "Hausnummer");
-        columnHeaders.put("postCode", "Postleitzahl");
-        columnHeaders.put("city", "Stadt");
-        columnHeaders.put("shortcut", "Kürzel");
-        columnHeaders.put("phone", "Telefonnummer");
-        columnHeaders.put("fax", "Fax");
-        columnHeaders.put("mobile", "Mobil");
-        columnHeaders.put("email", "E-mail");
-
-        return columnHeaders;
-    }
-
-    /*
-     * vogella, check license
-     */
-    public static void createColumns(Composite parent, TableViewer viewer,
-            Map<String, String> columnHeaders, final ContactComperator comparator) {
-
-        Menu headerMenu = new Menu(viewer.getTable());
-        viewer.getTable().setMenu(headerMenu);
-
-        // LastName
-        TableViewerColumn col = createTableViewerColumn(columnHeaders.get("lastName"), WIDTH,
-                viewer, 0, comparator);
-        col.setLabelProvider(new ColumnLabelProvider() {
+    private static ColumnDescription<Contact> getLastNameColumn() {
+        return new ColumnDescription<>("Last Name", new ColumnLabelProvider() {
             @Override
             public String getText(Object element) {
                 Contact c = (Contact) element;
                 return c.getLastName();
             }
+        }, new Comparator<Contact>() {
+            @Override
+            public int compare(Contact c1, Contact c2) {
+                return c1.getLastName().compareToIgnoreCase(c2.getLastName());
+            }
         });
-        createMenuItem(headerMenu, col.getColumn());
+    }
 
-        // firstName
-        col = createTableViewerColumn(columnHeaders.get("firstName"), WIDTH, viewer, 1, comparator);
-        col.setLabelProvider(new ColumnLabelProvider() {
+    private static ColumnDescription<Contact> getFirstNameColumn() {
+        return new ColumnDescription<>("First Name", new ColumnLabelProvider() {
             @Override
             public String getText(Object element) {
                 Contact c = (Contact) element;
                 return c.getFirstName();
             }
+        }, new Comparator<Contact>() {
+            @Override
+            public int compare(Contact c1, Contact c2) {
+                return c1.getFirstName().compareToIgnoreCase(c2.getFirstName());
+            }
         });
-        createMenuItem(headerMenu, col.getColumn());
+    }
 
-        // street
-        col = createTableViewerColumn(columnHeaders.get("street"), WIDTH, viewer, 2, comparator);
-        col.setLabelProvider(new ColumnLabelProvider() {
+    private static ColumnDescription<Contact> getStreetColumn() {
+        return new ColumnDescription<>("Street", new ColumnLabelProvider() {
             @Override
             public String getText(Object element) {
                 Contact c = (Contact) element;
                 return c.getStreet();
             }
+        }, new Comparator<Contact>() {
+            @Override
+            public int compare(Contact c1, Contact c2) {
+                return c1.getStreet().compareTo(c2.getStreet());
+            }
         });
-        createMenuItem(headerMenu, col.getColumn());
+    }
 
-        // streetNo
-        col = createTableViewerColumn(columnHeaders.get("streetNo"), WIDTH, viewer, 3, comparator);
-        col.setLabelProvider(new ColumnLabelProvider() {
+    private static ColumnDescription<Contact> getStreetNoColumn() {
+        return new ColumnDescription<>("Street No.", new ColumnLabelProvider() {
             @Override
             public String getText(Object element) {
                 Contact c = (Contact) element;
                 return c.getStreetNo();
             }
+        }, new Comparator<Contact>() {
+            @Override
+            public int compare(Contact c1, Contact c2) {
+                return c1.getStreetNo().compareToIgnoreCase(c2.getStreetNo());
+            }
         });
-        createMenuItem(headerMenu, col.getColumn());
+    }
 
-        // postCode
-        col = createTableViewerColumn(columnHeaders.get("postCode"), WIDTH, viewer, 4, comparator);
-        col.setLabelProvider(new ColumnLabelProvider() {
+    private static ColumnDescription<Contact> getPostCodeColumn() {
+        return new ColumnDescription<>("Post Code", new ColumnLabelProvider() {
             @Override
             public String getText(Object element) {
                 Contact c = (Contact) element;
                 return c.getPostCode();
             }
+        }, new Comparator<Contact>() {
+            @Override
+            public int compare(Contact c1, Contact c2) {
+                return c1.getPostCode().compareToIgnoreCase(c2.getPostCode());
+            }
         });
-        createMenuItem(headerMenu, col.getColumn());
+    }
 
-        // city
-        col = createTableViewerColumn(columnHeaders.get("city"), WIDTH, viewer, 5, comparator);
-        col.setLabelProvider(new ColumnLabelProvider() {
+    private static ColumnDescription<Contact> getCityColumn() {
+        return new ColumnDescription<>("City", new ColumnLabelProvider() {
             @Override
             public String getText(Object element) {
                 Contact c = (Contact) element;
                 return c.getCity();
             }
+        }, new Comparator<Contact>() {
+            @Override
+            public int compare(Contact c1, Contact c2) {
+                return c1.getCity().compareToIgnoreCase(c2.getCity());
+            }
         });
-        createMenuItem(headerMenu, col.getColumn());
-        // mobile
-        col = createTableViewerColumn(columnHeaders.get("mobile"), WIDTH, viewer, 6, comparator);
-        col.setLabelProvider(new ColumnLabelProvider() {
+    }
+
+    private static ColumnDescription<Contact> getShortcutColumn() {
+        return new ColumnDescription<>("Shortcut", new ColumnLabelProvider() {
+            @Override
+            public String getText(Object element) {
+                Contact c = (Contact) element;
+                return c.getShortcut().get();
+            }
+        }, new Comparator<Contact>() {
+            @Override
+            public int compare(Contact c1, Contact c2) {
+                return c1.getShortcut().get().compareToIgnoreCase(c2.getShortcut().get());
+            }
+        });
+    }
+
+    private static ColumnDescription<Contact> getPhoneColumn() {
+        return new ColumnDescription<>("Phone No.", new ColumnLabelProvider() {
+            @Override
+            public String getText(Object element) {
+                Contact c = (Contact) element;
+                return c.getPhone().get();
+            }
+        }, new Comparator<Contact>() {
+            @Override
+            public int compare(Contact c1, Contact c2) {
+                return c1.getPhone().get().compareToIgnoreCase(c2.getPhone().get());
+            }
+        });
+    }
+
+    private static ColumnDescription<Contact> getFaxColumn() {
+        return new ColumnDescription<>("Fax No.", new ColumnLabelProvider() {
+            @Override
+            public String getText(Object element) {
+                Contact c = (Contact) element;
+                return c.getFax().get();
+            }
+        }, new Comparator<Contact>() {
+            @Override
+            public int compare(Contact c1, Contact c2) {
+                return c1.getFax().get().compareToIgnoreCase(c2.getFax().get());
+            }
+        });
+    }
+
+    private static ColumnDescription<Contact> getMobileColumn() {
+        return new ColumnDescription<>("Mobile No.", new ColumnLabelProvider() {
             @Override
             public String getText(Object element) {
                 Contact c = (Contact) element;
                 return c.getMobile().get();
-
             }
-        });
-        createMenuItem(headerMenu, col.getColumn());
-
-    }
-
-    /*
-     * vogella, check license
-     */
-    private static void createMenuItem(Menu parent, final TableColumn column) {
-        final MenuItem itemName = new MenuItem(parent, SWT.CHECK);
-        itemName.setText(column.getText());
-        itemName.setSelection(column.getResizable());
-        itemName.addListener(SWT.Selection, new Listener() {
-            public void handleEvent(Event event) {
-                if (itemName.getSelection()) {
-                    column.setWidth(WIDTH);
-                    column.setResizable(true);
-                }
-                else {
-                    column.setWidth(0);
-                    column.setResizable(false);
-                }
-            }
-        });
-
-    }
-
-    /*
-     * vogella, check license
-     */
-    private static TableViewerColumn createTableViewerColumn(String title, int bound,
-            TableViewer viewer, int colNumber, final ContactComperator comparator) {
-        TableViewerColumn viewerColumn = new TableViewerColumn(viewer, SWT.NONE);
-        TableColumn column = viewerColumn.getColumn();
-        column.setText(title);
-        column.setWidth(bound);
-        column.setResizable(true);
-        column.setMoveable(true);
-        column.addSelectionListener(getSelectionAdapter(viewer, column, colNumber, comparator));
-        return viewerColumn;
-    }
-
-    private static SelectionListener getSelectionAdapter(final TableViewer viewer,
-            final TableColumn column, final int index, final ContactComperator comparator) {
-        SelectionAdapter selectionAdapter = new SelectionAdapter() {
+        }, new Comparator<Contact>() {
             @Override
-            public void widgetSelected(SelectionEvent e) {
-
-                comparator.setColumn(index);
-                int dir = comparator.getDirection();
-                viewer.getTable().setSortDirection(dir);
-                viewer.getTable().setSortColumn(column);
-                viewer.refresh();
-
+            public int compare(Contact c1, Contact c2) {
+                return c1.getMobile().get().compareToIgnoreCase(c2.getMobile().get());
             }
-        };
-        return selectionAdapter;
+        });
     }
+
+    private static ColumnDescription<Contact> getEmailColumn() {
+        return new ColumnDescription<>("E-Mail", new ColumnLabelProvider() {
+            @Override
+            public String getText(Object element) {
+                Contact c = (Contact) element;
+                return c.getEmail().get();
+            }
+        }, new Comparator<Contact>() {
+            @Override
+            public int compare(Contact c1, Contact c2) {
+                return c1.getEmail().get().compareToIgnoreCase(c2.getEmail().get());
+            }
+        });
+    }
+
 }
