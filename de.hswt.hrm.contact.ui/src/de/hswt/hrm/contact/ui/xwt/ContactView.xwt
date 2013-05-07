@@ -25,7 +25,7 @@
 	<Button x:name="addContact" text="Neuer Kunde"
 		SelectionEvent="buttonSelected" >
 		<Button.layoutData>
-			<GridData horizontalAlignment="CENTER"/>
+			<GridData horizontalAlignment="FILL"/>
 		</Button.layoutData>
 	</Button>
 	<Label/>

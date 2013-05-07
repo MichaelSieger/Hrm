@@ -25,7 +25,7 @@
 	<Button x:name="addPlace" text="Neuer Standort"
 		SelectionEvent="buttonSelected" >
 		<Button.layoutData>
-			<GridData horizontalAlignment="CENTER"/>
+			<GridData horizontalAlignment="FILL"/>
 		</Button.layoutData>
 	</Button>
 	<Label/>
