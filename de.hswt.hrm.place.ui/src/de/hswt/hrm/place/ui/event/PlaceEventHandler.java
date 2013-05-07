@@ -3,19 +3,24 @@ package de.hswt.hrm.place.ui.event;
 import java.util.Collection;
 
 import org.eclipse.e4.xwt.XWT;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Text;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Optional;
 
+import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.place.model.Place;
+import de.hswt.hrm.place.service.PlaceService;
 import de.hswt.hrm.place.ui.filter.PlaceFilter;
 import de.hswt.hrm.place.ui.part.PlacePartUtil;
 
 public class PlaceEventHandler {
-//    private final static Logger LOG = LoggerFactory.getLogger(PlaceEventHandler.class);
+    private final static Logger LOG = LoggerFactory.getLogger(PlaceEventHandler.class);
     private static final String DEFAULT_SEARCH_STRING = "Suche";
     private static final String EMPTY = "";
 	 
@@ -79,25 +84,22 @@ public class PlaceEventHandler {
         Place selectedPlace = (Place) tv.getElementAt(tv.getTable().getSelectionIndex());
 
         // Refresh the selected place with values from the database
-//        try {
-            
-            // TODO: check how to handle that correctly (instance!!!)
-//            selectedPlace = PlaceService.findById(selectedPlace.getId());
-            
+        try {
+            PlaceService.refresh(selectedPlace);
             Optional<Place> updatedPlace = PlacePartUtil.showWizard(
                     event.display.getActiveShell(), Optional.of(selectedPlace));
 
             if (updatedPlace.isPresent()) {
                 tv.refresh();
             }
-//        }
-//        catch (DatabaseException e) {
-//            LOG.error("Could not retrieve the place from database.", e);
-//            
-//            // TODO: übersetzen
-//            MessageDialog.openError(event.display.getActiveShell(), "Connection Error",
-//                    "Could not update selected place from database.");
-//        }
+        }
+        catch (DatabaseException e) {
+            LOG.error("Could not retrieve the place from database.", e);
+
+            // TODO: übersetzen
+            MessageDialog.openError(event.display.getActiveShell(), "Connection Error",
+                    "Could not update selected place from database.");
+        }
     }
 
 	public void onKeyUp(Event event) {
