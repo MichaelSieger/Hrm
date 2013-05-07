@@ -24,7 +24,7 @@ public class PlantDao implements IPlantDao {
     public Collection<Plant> findAll() throws DatabaseException {
 
         final String query = "SELECT Plant_ID, Plant_Place_FK, Plant_Inspection_Intervall, "
-                + "Plant_Manufacturer, Plant_Year_Of_Construction, Plant_Type"
+                + "Plant_Manufacturer, Plant_Year_Of_Construction, Plant_Type "
                 + "Plant_Airperformance, Plant_Motorpower, Plant_Motor_Rpm, Plant_Ventilatorperformance, "
                 + "Plant_Current, Plant_Voltage, Plant_Note, Plant_Description FROM Plant ;";
 
@@ -47,7 +47,7 @@ public class PlantDao implements IPlantDao {
         checkArgument(id >= 0, "Id must not be negative.");
 
         final String query = "SELECT Plant_ID, Plant_Inspection_Intervall, "
-                + "Plant_Manufacturer, Plant_Year_Of_Construction, Plant_Type"
+                + "Plant_Manufacturer, Plant_Year_Of_Construction, Plant_Type "
                 + "Plant_Airperformance, Plant_Motorpower, Plant_Motor_Rpm, Plant_Ventilatorperformance, "
                 + "Plant_Current, Plant_Voltage, Plant_Note, Plant_Description FROM Plant "
                 + "WHERE Plant_ID =:id;";
@@ -82,11 +82,11 @@ public class PlantDao implements IPlantDao {
     @Override
     public Plant insert(Plant plant) throws SaveException {
         final String query = "INSERT INTO Plant (Plant_Place_FK, Plant_Inspection_Intervall, "
-                + "Plant_Manufacturer, Plant_Year_Of_Construction, Plant_Type"
+                + "Plant_Manufacturer, Plant_Year_Of_Construction, Plant_Type "
                 + "Plant_Airperformance, Plant_Motorpower, Plant_Motor_Rpm, Plant_Ventilatorperformance, "
                 + "Plant_Current, Plant_Voltage, Plant_Note, Plant_Description) "
                 + "VALUES (:plantPlaceFk, :inspectionIntervall, :manufactor, :constructionYear, :type, "
-                + ":airPerformance, :motorPower, :motorRpm, :ventilatorPerformance, :current, :voltage,"
+                + ":airPerformance, :motorPower, :motorRpm, :ventilatorPerformance, :current, :voltage, "
                 + ":note, :description);";
 
         try (Connection con = DatabaseFactory.getConnection()) {
@@ -161,7 +161,7 @@ public class PlantDao implements IPlantDao {
                 + "Plant_Motor_Rpm = :motorRpm, "
                 + "Plant_Ventilatorperformance = :ventilatorPerformance, "
                 + "Plant_Current = :current, " + "Plant_Voltage = :voltage "
-                + "Plant_Note = :note, " + "Plant_Description = :description"
+                + "Plant_Note = :note, " + "Plant_Description = :description "
                 + "WHERE Plant_ID = :id;";
 
         try (Connection con = DatabaseFactory.getConnection()) {
