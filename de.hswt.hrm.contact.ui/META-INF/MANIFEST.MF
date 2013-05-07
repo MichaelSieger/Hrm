@@ -14,13 +14,14 @@ Require-Bundle: javax.inject,
  ch.qos.logback.core;bundle-version="1.0.0",
  org.slf4j.api;bundle-version="1.6.4",
  org.eclipse.e4.xwt.forms;bundle-version="0.9.1",
- org.eclipse.ui.forms;bundle-version="3.5.200"
+ org.eclipse.ui.forms;bundle-version="3.5.200",
+ com.google.guava;bundle-version="10.0.1"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: de.hswt.hrm.contact.ui.event,
  de.hswt.hrm.contact.ui.part
-Import-Package: com.google.common.base,
- de.hswt.hrm.common,
+Import-Package: de.hswt.hrm.common,
  de.hswt.hrm.common.database.exception,
+ de.hswt.hrm.common.ui.swt.table,
  de.hswt.hrm.contact.model,
  de.hswt.hrm.contact.service,
  org.eclipse.e4.ui.di,
