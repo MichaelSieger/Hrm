@@ -18,7 +18,6 @@ public class ContactEventHandler {
 
     private static final String DEFAULT_SEARCH_STRING = "Suche";
     private static final String EMPTY = "";
-    private Collection<Contact> contacs;
     private Contact contact;
 
     /**
@@ -53,7 +52,7 @@ public class ContactEventHandler {
 
         TableViewer tv = (TableViewer) XWT.findElementByName(b, "contactTable");
 
-        this.contacs = (Collection<Contact>) tv.getInput();
+        Collection<Contact> contacs = (Collection<Contact>) tv.getInput();
         if (newContact.isPresent()) {
             contacs.add(newContact.get());
             tv.refresh();
@@ -96,26 +95,18 @@ public class ContactEventHandler {
      * @param event
      *            Event which occured within SWT
      */
-    @SuppressWarnings("unchecked")
     public void tableEntrySelected(Event event) {
 
         TableViewer tv = (TableViewer) XWT.findElementByName(event.widget, "contactTable");
 
         // obtain the contact in the column where the doubleClick happend
-        contact = (Contact) tv.getElementAt(tv.getTable().getSelectionIndex());
+        Contact selectedContact = (Contact) tv.getElementAt(tv.getTable().getSelectionIndex());
 
         Optional<Contact> updateContact = ContactPartUtils.showWizard(
-                event.display.getActiveShell(), Optional.fromNullable(contact));
-
-        this.contacs = (Collection<Contact>) tv.getInput();
+                event.display.getActiveShell(), Optional.fromNullable(selectedContact));
 
         if (updateContact.isPresent()) {
-            // Maybe it is better to programm against List<E> Interface and use get insted of remove
-            // and add
-            contacs.remove(contact);
-            contacs.add(updateContact.get());
             tv.refresh();
-
         }
     }
 }

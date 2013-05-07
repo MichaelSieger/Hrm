@@ -62,11 +62,22 @@ public class ContactService {
      * Refreshes a given contact with values from the database.
      * 
      * @param contact
-     * @return
      * @throws ElementNotFoundException
      * @throws DatabaseException
      */
-    public static Contact refresh(Contact contact) throws ElementNotFoundException, DatabaseException {
-        return dao.findById(contact.getId());
+    public static void refresh(Contact contact) throws ElementNotFoundException, DatabaseException {
+        Contact fromDb = dao.findById(contact.getId());
+        
+        contact.setCity(fromDb.getCity());
+        contact.setEmail(fromDb.getEmail().orNull());
+        contact.setFax(fromDb.getFax().orNull());
+        contact.setFirstName(fromDb.getFirstName());
+        contact.setLastName(fromDb.getLastName());
+        contact.setMobile(fromDb.getMobile().orNull());
+        contact.setPhone(fromDb.getPhone().orNull());
+        contact.setPostCode(fromDb.getPostCode());
+        contact.setShortcut(fromDb.getShortcut().orNull());
+        contact.setStreet(fromDb.getStreet());
+        contact.setStreetNo(fromDb.getStreetNo());
     }
 }

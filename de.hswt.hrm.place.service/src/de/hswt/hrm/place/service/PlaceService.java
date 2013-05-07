@@ -57,12 +57,19 @@ public class PlaceService {
 	/**
      * Refreshes a given place with values from the database.
      * 
-     * @param contact
-     * @return
+     * @param contact Which gets updated.
      * @throws ElementNotFoundException
      * @throws DatabaseException
      */
-	public static Place refresh(Place place) throws ElementNotFoundException, DatabaseException {
-	    return dao.findById(place.getId());
+	public static void refresh(Place place) throws ElementNotFoundException, DatabaseException {
+	    Place fromDb = dao.findById(place.getId());
+	    
+	    place.setArea(fromDb.getArea());
+	    place.setCity(fromDb.getCity());
+	    place.setLocation(fromDb.getLocation());
+	    place.setPlaceName(fromDb.getPlaceName());
+	    place.setPostCode(fromDb.getPostCode());
+	    place.setStreet(fromDb.getStreet());
+	    place.setStreetNo(fromDb.getStreetNo());
 	}
 }
