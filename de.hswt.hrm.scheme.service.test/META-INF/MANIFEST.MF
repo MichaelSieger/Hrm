@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Test
+Bundle-SymbolicName: de.hswt.hrm.scheme.service.test
+Bundle-Version: 0.0.1.qualifier
+Fragment-Host: de.hswt.hrm.scheme.service;bundle-version="0.0.1"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Require-Bundle: org.junit;bundle-version="4.10.0"
