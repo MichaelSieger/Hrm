@@ -130,5 +130,10 @@
 		<module>../de.hswt.hrm.scheme.ui</module>
 		<module>../de.hswt.hrm.test</module>
 		<module>../de.hswt.hrm.thirdparty.feature</module>
+		<module>../de.hswt.hrm.catalog.dao.core</module>
+		<module>../de.hswt.hrm.catalog.dao.jdbc</module>
+		<module>../de.hswt.hrm.catalog.feature</module>
+		<module>../de.hswt.hrm.catalog.model</module>
+		<module>../de.hswt.hrm.catalog.service</module>
 	</modules>
 </project>
