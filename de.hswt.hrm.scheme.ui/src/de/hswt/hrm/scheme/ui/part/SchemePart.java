@@ -6,6 +6,7 @@ import javax.annotation.PostConstruct;
 
 import org.eclipse.e4.xwt.IConstants;
 import org.eclipse.e4.xwt.XWT;
+import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.dnd.DND;
@@ -51,20 +52,21 @@ public class SchemePart {
 
 		try {
 			root = (Composite) XWT.load(parent, url);
-			Tree tree = getTree();
-			new TreeManager(ImageTreeModelFactory.create(parent.getDisplay()),
-					 tree);
+			TreeViewer tree = getTree();
+			tree.setContentProvider(new TreeContentProvider());
+			//new TreeManager(ImageTreeModelFactory.create(parent.getDisplay()),
+			//		 tree);
 			grid = new SchemeGrid(getSchemeComposite(), SWT.NONE, 40, 20, 40);
 			grid.setBackground(new Color(root.getDisplay(), WHITE));
 			getSchemeComposite().setContent(grid);
 	        DropTarget dt = new DropTarget(grid, DROP_OPS);
 	        dt.setTransfer(new Transfer[] { TextTransfer.getInstance() });
-	        DragSource treeDragSource = new DragSource(tree, DRAG_OPS);
-	        treeDragSource.setTransfer(new Transfer[] { TextTransfer.getInstance()});
-	        DragSource gridDragSource = new DragSource(grid, DRAG_OPS);
-	        gridDragSource.setTransfer(new Transfer[]{TextTransfer.getInstance()});
-			new TreeDNDManager(getTree(), grid, dt, treeDragSource);
-			new GridDNDManager(grid, dt, gridDragSource);
+	        //DragSource treeDragSource = new DragSource(tree, DRAG_OPS);
+	        //treeDragSource.setTransfer(new Transfer[] { TextTransfer.getInstance()});
+	        //DragSource gridDragSource = new DragSource(grid, DRAG_OPS);
+	        //gridDragSource.setTransfer(new Transfer[]{TextTransfer.getInstance()});
+			//new TreeDNDManager(getTree(), grid, dt, treeDragSource);
+			//new GridDNDManager(grid, dt, gridDragSource);
 			createSlider();
 		} catch (Throwable e) {
 			throw new Error("Unable to load ", e);
@@ -76,8 +78,8 @@ public class SchemePart {
 		return (Slider) XWT.findElementByName(root, "zoomSlider");
 	}
 	
-	private Tree getTree() {
-		return (Tree) XWT.findElementByName(root, "tree");
+	private TreeViewer getTree() {
+		return (TreeViewer) XWT.findElementByName(root, "tree");
 	}
 
 	private ScrolledComposite getSchemeComposite() {

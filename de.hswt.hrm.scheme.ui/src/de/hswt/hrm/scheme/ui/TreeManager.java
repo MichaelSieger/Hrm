@@ -2,6 +2,7 @@ package de.hswt.hrm.scheme.ui;
 
 import java.util.HashMap;
 
+import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
@@ -21,9 +22,9 @@ import de.hswt.hrm.scheme.model.ThumbnailImage;
 public class TreeManager {
 
     private final IImageTreeModel model;
-    private final Tree tree;
+    private final TreeViewer tree;
 
-    public TreeManager(IImageTreeModel model, Tree tree) {
+    public TreeManager(IImageTreeModel model, TreeViewer tree) {
         super();
         this.model = model;
         this.tree = tree;
