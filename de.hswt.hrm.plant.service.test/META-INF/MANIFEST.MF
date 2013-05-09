@@ -5,5 +5,8 @@ Bundle-SymbolicName: de.hswt.hrm.plant.service.test
 Bundle-Version: 0.0.1.qualifier
 Fragment-Host: de.hswt.hrm.plant.service;bundle-version="0.0.1"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Require-Bundle: org.junit;bundle-version="4.10.0"
-Import-Package: de.hswt.hrm.test.database
+Require-Bundle: org.junit;bundle-version="4.10.0",
+ com.google.guava;bundle-version="10.0.1"
+Import-Package: de.hswt.hrm.place.model,
+ de.hswt.hrm.plant.model,
+ de.hswt.hrm.test.database
