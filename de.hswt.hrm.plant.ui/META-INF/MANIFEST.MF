@@ -6,5 +6,13 @@ Bundle-Version: 0.0.1.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Import-Package: org.eclipse.e4.xwt,
  org.eclipse.e4.xwt.forms,
- org.eclipse.swt.widgets
+ org.eclipse.swt.widgets,
+ de.hswt.hrm.plant.model
 Require-Bundle: org.eclipse.jface;bundle-version="3.8.102"
+Require-Bundle: org.eclipse.e4.xwt;bundle-version="0.9.1",
+ org.eclipse.jface;bundle-version="3.8.102",
+ org.eclipse.core.databinding,
+ org.eclipse.core.databinding.observable,
+ org.eclipse.jface.databinding,
+ org.slf4j.api;bundle-version="1.6.4"
+Export-Package: de.hswt.hrm.plant.ui.event

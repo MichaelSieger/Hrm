@@ -1,8 +1,8 @@
-<Composite xmlns="http://www.eclipse.org/xwt/presentation" xmlns:x="http://www.eclipse.org/xwt" x:Class="de.hswt.hrm.plant.ui.xwt.PlantWizardWindow">
+<Composite xmlns="http://www.eclipse.org/xwt/presentation" xmlns:x="http://www.eclipse.org/xwt" x:Class="de.hswt.hrm.plant.ui.xwt.PlantWizardWindow" xmlns:p1="clr-namespace:java.lang">
 	<Composite.layout>
 		<GridLayout numColumns="2"/>
 	</Composite.layout>
-	<Section text="Pflichtfelder" x:Style="(p1:Section).EXPANDED | (p1:Section).TITLE_BAR" x:Name="Obligatory">
+	<Section text="Pflichtfelder" x:Style="(p1:Section).EXPANDED | (p1:Section).TITLE_BAR" x:Name="Mandatory">
 		<Section.layoutData>
 			<GridData grabExcessHorizontalSpace="true" widthHint="277" horizontalAlignment="FILL" horizontalSpan="2"/>
 		</Section.layoutData>
@@ -11,8 +11,20 @@
 				<Composite.layout>
 					<GridLayout numColumns="2"/>
 				</Composite.layout>
-				<Label text="Bla:"/>
-				<Text x:Style="BORDER" x:Name="Bla">
+				<Label text="Bezeichnung: "/>
+				<Text x:Style="BORDER" x:Name="Name">
+					<Text.layoutData>
+						<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
+					</Text.layoutData>
+				</Text>
+				<Label text="Standort: "/>
+				<Text text="Dropdown?" x:Style="BORDER" x:Name="Place">
+					<Text.layoutData>
+						<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
+					</Text.layoutData>
+				</Text>
+				<Label text="Nächste Inspektion: "/>
+				<Text x:Style="BORDER" x:Name="NextInspection">
 					<Text.layoutData>
 						<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
 					</Text.layoutData>

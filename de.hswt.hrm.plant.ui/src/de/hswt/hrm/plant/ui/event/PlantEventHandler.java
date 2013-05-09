@@ -8,11 +8,10 @@ import de.hswt.hrm.plant.ui.wizard.PlantWizard;
 
 public class PlantEventHandler {
 
-    public void clickButton(Event event) {
+    public void onSelection(Event event) {
         System.out.println("Klick");
         Button b = (Button) event.widget;
         WizardDialog dialog = new WizardDialog(b.getShell(), new PlantWizard());
         dialog.open();
     }
-
 }
