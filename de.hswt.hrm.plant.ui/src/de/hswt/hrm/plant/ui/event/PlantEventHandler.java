@@ -10,7 +10,7 @@ public class PlantEventHandler {
 
     public void onSelection(Event event) {
         Button b = (Button) event.widget;
-        WizardDialog dialog = new WizardDialog(b.getShell(), new PlantWizard());
+        WizardDialog dialog = new WizardDialog(b.getShell(), new PlantWizard(null));
         dialog.open();
     }
 }
