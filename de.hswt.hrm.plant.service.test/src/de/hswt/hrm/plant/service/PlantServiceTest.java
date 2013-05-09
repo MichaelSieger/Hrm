@@ -9,8 +9,15 @@ import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.ElementNotFoundException;
 import de.hswt.hrm.place.model.Place;
 import de.hswt.hrm.plant.model.Plant;
+import de.hswt.hrm.test.database.AbstractDatabaseTest;
 
-public class PlantServiceTest {
+public class PlantServiceTest extends AbstractDatabaseTest {
+    
+    private Place createPlace() {
+        Place place = new Place("Somewhere", "11123", "SimCity", "Skywalkerway 5", "110a",
+                "Todesstern", "Laser");
+        return place;
+    }
     
     private void comparePlantFields(final Plant expected, final Plant actual) {
         assertEquals("AirPerformance not set correclty.", 
@@ -46,7 +53,9 @@ public class PlantServiceTest {
     @Test
     public void testFindAll() throws DatabaseException {
         Plant plant1 = new Plant(6, "Test plant");
+        plant1.setPlace(createPlace());
         Plant plant2 = new Plant(12, "Another test plant");
+        plant2.setPlace(createPlace());
         PlantService.insert(plant1);
         PlantService.insert(plant2);
         
@@ -57,6 +66,7 @@ public class PlantServiceTest {
     @Test
     public void testFindById() throws ElementNotFoundException, DatabaseException {
         Plant expected = new Plant(12, "Another test plant");
+        expected.setPlace(createPlace());
         Plant parsed = PlantService.insert(expected);
         
         Plant retrieved = PlantService.findById(parsed.getId());
@@ -66,7 +76,7 @@ public class PlantServiceTest {
     
     @Test
     public void testInsert() throws ElementNotFoundException, DatabaseException {
-        Place place = new Place("Somewhere", "11123", "SimCity", "Skywalkerway 5", "110a", "Todesstern", "\"Laser\"");
+        Place place = createPlace();
         Plant expected = new Plant(12, "Another test plant");
         expected.setAirPerformance("Best performance ever!");
         expected.setConstructionYear(2012);
@@ -90,6 +100,7 @@ public class PlantServiceTest {
     @Test
     public void testUpdate() throws ElementNotFoundException, DatabaseException {
         Plant expected = new Plant(12, "Another test plant");
+        expected.setPlace(createPlace());
         Plant parsed = PlantService.insert(expected);
         
         parsed.setAirPerformance("Best performance ever!");
