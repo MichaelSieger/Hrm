@@ -22,7 +22,7 @@
 			</TableViewer.table.layoutData>
 		</TableViewer.table>
 	</TableViewer>
-	<Button x:name="addPlant" text="Neuer Standort"
+	<Button x:name="addPlant" text="Neue Anlage"
 		SelectionEvent="buttonSelected" >
 		<Button.layoutData>
 			<GridData horizontalAlignment="FILL"/>
