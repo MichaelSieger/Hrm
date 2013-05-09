@@ -13,6 +13,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import de.hswt.hrm.common.database.DatabaseFactory;
 import de.hswt.hrm.common.database.NamedParameterStatement;
+import de.hswt.hrm.common.database.SqlQueryBuilder;
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.ElementNotFoundException;
 import de.hswt.hrm.common.database.exception.SaveException;
@@ -23,9 +24,12 @@ public class PlaceDao implements IPlaceDao {
 
     @Override
     public Collection<Place> findAll() throws DatabaseException {
-        final String query = "SELECT Place_ID, Place_Name, Place_Zip_Code, Place_City, "
-                + "Place_Street, Place_Street_Number, Place_Location, Place_Area FROM Place;";
-
+        SqlQueryBuilder builder = new SqlQueryBuilder();
+        builder.select(TABLE_NAME, Fields.ID, Fields.NAME, Fields.POSTCODE, Fields.CITY, 
+                Fields.STREET, Fields.STREET_NO, Fields.LOCATION, Fields.AREA);
+        
+        final String query = builder.toString();
+        
         try (Connection con = DatabaseFactory.getConnection()) {
             try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
                 ResultSet result = stmt.executeQuery();
@@ -45,13 +49,16 @@ public class PlaceDao implements IPlaceDao {
     public Place findById(int id) throws DatabaseException, ElementNotFoundException {
         checkArgument(id >= 0, "Id must not be negative.");
 
-        final String query = "SELECT Place_ID, Place_Name, Place_Zip_Code, Place_City, "
-                + "Place_Street, Place_Street_Number, Place_Location, Place_Area FROM Place "
-                + "WHERE Place_ID = :id;";
+        SqlQueryBuilder builder = new SqlQueryBuilder();
+        builder.select(TABLE_NAME, Fields.ID, Fields.NAME, Fields.POSTCODE, Fields.CITY, 
+                Fields.STREET, Fields.STREET_NO, Fields.LOCATION, Fields.AREA);
+        builder.where(Fields.ID);
+        
+        final String query = builder.toString();
 
         try (Connection con = DatabaseFactory.getConnection()) {
             try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
-                stmt.setParameter("id", id);
+                stmt.setParameter(Fields.ID, id);
                 ResultSet result = stmt.executeQuery();
 
                 Collection<Place> places = fromResultSet(result);
@@ -77,21 +84,21 @@ public class PlaceDao implements IPlaceDao {
      */
     @Override
     public Place insert(Place place) throws SaveException {
-        final String query = "INSERT INTO Place (Place_Name, Place_Zip_Code, "
-                + "Place_City, Place_Street, Place_Street_Number, Place_Location, "
-                + "Place_Area) "
-                + "VALUES (:placeName, :zipCode, :city, :street, :streetNumber, :location, "
-                + ":area);";
+        SqlQueryBuilder builder = new SqlQueryBuilder();
+        builder.insert(TABLE_NAME, Fields.NAME, Fields.POSTCODE, Fields.CITY, Fields.STREET,
+                Fields.STREET_NO, Fields.LOCATION, Fields.AREA);
+        
+        final String query = builder.toString();
 
         try (Connection con = DatabaseFactory.getConnection()) {
             try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
-                stmt.setParameter("placeName", place.getPlaceName());
-                stmt.setParameter("zipCode", place.getPostCode());
-                stmt.setParameter("city", place.getCity());
-                stmt.setParameter("street", place.getStreet());
-                stmt.setParameter("streetNumber", place.getStreetNo());
-                stmt.setParameter("location", place.getLocation());
-                stmt.setParameter("area", place.getArea());
+                stmt.setParameter(Fields.NAME, place.getPlaceName());
+                stmt.setParameter(Fields.POSTCODE, place.getPostCode());
+                stmt.setParameter(Fields.CITY, place.getCity());
+                stmt.setParameter(Fields.STREET, place.getStreet());
+                stmt.setParameter(Fields.STREET_NO, place.getStreetNo());
+                stmt.setParameter(Fields.LOCATION, place.getLocation());
+                stmt.setParameter(Fields.AREA, place.getArea());
 
                 int affectedRows = stmt.executeUpdate();
                 if (affectedRows != 1) {
@@ -129,21 +136,23 @@ public class PlaceDao implements IPlaceDao {
             throw new ElementNotFoundException("Element has no valid ID.");
         }
 
-        final String query = "UPDATE Place SET " + "Place_Name = :placeName, "
-                + "Place_Zip_Code = :zipCode, " + "Place_City = :city, "
-                + "Place_Street = :street, " + "Place_Street_Number = :streetNumber, "
-                + "Place_Location = :location, " + "Place_Area = :area " + "WHERE Place_ID = :id;";
+        SqlQueryBuilder builder = new SqlQueryBuilder();
+        builder.update(TABLE_NAME, Fields.NAME, Fields.POSTCODE, Fields.CITY, Fields.STREET,
+                Fields.STREET_NO, Fields.LOCATION, Fields.AREA);
+        builder.where(Fields.ID);
+        
+        final String query = builder.toString();
 
         try (Connection con = DatabaseFactory.getConnection()) {
             try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
-                stmt.setParameter("id", place.getId());
-                stmt.setParameter("placeName", place.getPlaceName());
-                stmt.setParameter("zipCode", place.getPostCode());
-                stmt.setParameter("city", place.getCity());
-                stmt.setParameter("street", place.getStreet());
-                stmt.setParameter("streetNumber", place.getStreetNo());
-                stmt.setParameter("location", place.getLocation());
-                stmt.setParameter("area", place.getArea());
+                stmt.setParameter(Fields.ID, place.getId());
+                stmt.setParameter(Fields.NAME, place.getPlaceName());
+                stmt.setParameter(Fields.POSTCODE, place.getPostCode());
+                stmt.setParameter(Fields.CITY, place.getCity());
+                stmt.setParameter(Fields.STREET, place.getStreet());
+                stmt.setParameter(Fields.STREET_NO, place.getStreetNo());
+                stmt.setParameter(Fields.LOCATION, place.getLocation());
+                stmt.setParameter(Fields.AREA, place.getArea());
 
                 int affectedRows = stmt.executeUpdate();
                 if (affectedRows != 1) {
@@ -161,14 +170,14 @@ public class PlaceDao implements IPlaceDao {
         Collection<Place> placeList = new ArrayList<>();
 
         while (rs.next()) {
-            int id = rs.getInt("Place_ID");
-            String placeName = rs.getString("Place_Name");
-            String postCode = rs.getString("Place_Zip_Code");
-            String city = rs.getString("Place_City");
-            String street = rs.getString("Place_Street");
-            String streetNo = rs.getString("Place_Street_Number");
-            String location = rs.getString("Place_Location");
-            String area = rs.getString("Place_Area");
+            int id = rs.getInt(Fields.ID);
+            String placeName = rs.getString(Fields.NAME);
+            String postCode = rs.getString(Fields.POSTCODE);
+            String city = rs.getString(Fields.CITY);
+            String street = rs.getString(Fields.STREET);
+            String streetNo = rs.getString(Fields.STREET_NO);
+            String location = rs.getString(Fields.LOCATION);
+            String area = rs.getString(Fields.AREA);
 
             Place place = new Place(id, placeName, postCode, city, street, streetNo, location, area);
 
@@ -176,5 +185,17 @@ public class PlaceDao implements IPlaceDao {
         }
 
         return placeList;
+    }
+    
+    private static final String TABLE_NAME = "Place";
+    private static class Fields {
+        public static final String ID = "Place_ID";
+        public static final String NAME = "Place_Name";
+        public static final String POSTCODE = "Place_Zip_Code";
+        public static final String CITY = "Place_City";
+        public static final String STREET = "Place_Street";
+        public static final String STREET_NO = "Place_Street_Number";
+        public static final String LOCATION = "Place_Location";
+        public static final String AREA = "Place_Area";
     }
 }
