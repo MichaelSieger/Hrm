@@ -37,4 +37,19 @@ public class NamedParameterStatementTest {
         }
     }
     
+    @Test
+    public void testKeysWithUnderscores() throws SQLException {
+        final String query = "INSERT INTO (Col_1, Col_2) VALUES (:col_1, :col_2);";
+        
+        try (NamedParameterStatement stmt = new NamedParameterStatement(null, query)) {
+            stmt.setParameter("col_1", 5);
+            stmt.setParameter("col_2", "val_2");
+            
+            assertEquals("Keys with underscore not replaced correctly.",
+                    "INSERT INTO (Col_1, Col_2) VALUES (5, 'val_2');",
+                    stmt.getParsedQuery());
+            
+        }
+    }
+    
 }
