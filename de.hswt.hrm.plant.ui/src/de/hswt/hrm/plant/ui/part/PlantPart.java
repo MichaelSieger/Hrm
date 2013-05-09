@@ -1,4 +1,4 @@
-package de.hswt.hrm.plant.ui;
+package de.hswt.hrm.plant.ui.part;
 
 import java.net.URL;
 import java.util.Collection;
