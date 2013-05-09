@@ -47,7 +47,7 @@ public class PlantWizardPageOne extends WizardPage {
         catch (Exception e) {
             LOG.error("An error occured: ", e);
         }
-        if (plant != null) {
+        if (this.plant.isPresent()) {
             updateFields(container);
         }
         setControl(container);
