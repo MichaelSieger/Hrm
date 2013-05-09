@@ -4,10 +4,12 @@ Bundle-Name: Ui
 Bundle-SymbolicName: de.hswt.hrm.plant.ui
 Bundle-Version: 0.0.1.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Import-Package: org.eclipse.e4.xwt,
+Import-Package: de.hswt.hrm.common.database.exception,
+ de.hswt.hrm.plant.model,
+ de.hswt.hrm.plant.service,
+ org.eclipse.e4.xwt,
  org.eclipse.e4.xwt.forms,
- org.eclipse.swt.widgets,
- de.hswt.hrm.plant.model
+ org.eclipse.swt.widgets
 Require-Bundle: org.eclipse.jface;bundle-version="3.8.102"
 Require-Bundle: org.eclipse.e4.xwt;bundle-version="0.9.1",
  org.eclipse.jface;bundle-version="3.8.102",
