@@ -6,8 +6,12 @@ import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.ElementNotFoundException;
 import de.hswt.hrm.common.database.exception.SaveException;
 import de.hswt.hrm.plant.model.Plant;
+import de.hswt.hrm.place.model.Place;
 import de.hswt.hrm.plant.dao.core.IPlantDao;
 import de.hswt.hrm.plant.dao.jdbc.PlantDao;
+import de.hswt.hrm.place.dao.core.IPlaceDao;
+import de.hswt.hrm.place.dao.jdbc.PlaceDao;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 public final class PlantService {
 
@@ -15,14 +19,15 @@ public final class PlantService {
 
     }
 
-    private static IPlantDao dao = new PlantDao();
+    private static IPlantDao plantDao = new PlantDao();
+    private static IPlaceDao placeDao = new PlaceDao();
 
     /**
      * @return All plants from storage.
      * @throws DatabaseException
      */
     public static Collection<Plant> findAll() throws DatabaseException {
-        return dao.findAll();
+        return plantDao.findAll();
     }
 
     /**
@@ -32,7 +37,7 @@ public final class PlantService {
      * @throws DatabaseException
      */
     public static Plant findById(int id) throws ElementNotFoundException, DatabaseException {
-        return dao.findById(id);
+        return plantDao.findById(id);
     }
 
     /**
@@ -44,8 +49,15 @@ public final class PlantService {
      * @throws SaveException
      *             If the Plant could not be inserted.
      */
-    public static Plant insert(Plant Plant) throws SaveException {
-        return dao.insert(Plant);
+    public static Plant insert(Plant plant) throws SaveException {
+        checkNotNull(plant.getPlace().orNull(), "Place is mandatory.");
+        Place place = plant.getPlace().get();
+        if (place.getId() < 0) {
+            Place inserted = placeDao.insert(place);
+            plant.setPlace(inserted);
+        }
+
+        return plantDao.insert(plant);
     }
 
     /**
@@ -59,11 +71,11 @@ public final class PlantService {
      *             If the Plant could not be updated.
      */
     public static void update(Plant Plant) throws ElementNotFoundException, SaveException {
-        dao.update(Plant);
+        plantDao.update(Plant);
     }
 
     public static void refresh(Plant plant) throws ElementNotFoundException, DatabaseException {
-        Plant fromDb = dao.findById(plant.getId());
+        Plant fromDb = plantDao.findById(plant.getId());
         plant.setAirPerformance(fromDb.getAirPerformance().orNull());
         plant.setConstructionYear(fromDb.getConstructionYear().orNull());
         plant.setCurrent(fromDb.getCurrent().orNull());
