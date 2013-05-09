@@ -4,7 +4,10 @@ Bundle-Name: Service
 Bundle-SymbolicName: de.hswt.hrm.plant.service
 Bundle-Version: 0.0.1.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Import-Package: de.hswt.hrm.common.database.exception,
+Import-Package: com.google.common.base,
+ de.hswt.hrm.common.database.exception,
+ de.hswt.hrm.place.dao.core,
+ de.hswt.hrm.place.dao.jdbc,
  de.hswt.hrm.place.model,
  de.hswt.hrm.plant.dao.core,
  de.hswt.hrm.plant.dao.jdbc,
