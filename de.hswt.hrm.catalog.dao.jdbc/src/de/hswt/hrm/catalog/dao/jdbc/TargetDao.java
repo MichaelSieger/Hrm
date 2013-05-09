@@ -59,17 +59,17 @@ public class TargetDao implements ITargetDao {
                 stmt.setParameter(Fields.ID, id);
                 ResultSet result = stmt.executeQuery();
 
-                Collection<Target> activities = fromResultSet(result);
+                Collection<Target> targets = fromResultSet(result);
                 DbUtils.closeQuietly(result);
 
-                if (activities.size() < 1) {
+                if (targets.size() < 1) {
                     throw new ElementNotFoundException();
                 }
-                else if (activities.size() > 1) {
+                else if (targets.size() > 1) {
                     throw new DatabaseException("ID '" + id + "' is not unique.");
                 }
 
-                return activities.iterator().next();
+                return targets.iterator().next();
             }
         }
         catch (SQLException e) {
