@@ -26,7 +26,7 @@ public final class Activity {
         setText(text);
     }
 
-    public String getname() {
+    public String getName() {
         return name;
     }
 
