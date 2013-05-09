@@ -82,7 +82,7 @@ public class PlantDao implements IPlantDao {
     @Override
     public Plant insert(Plant plant) throws SaveException {
         final String query = "INSERT INTO Plant (Plant_Place_FK, Plant_Inspection_Interval, "
-                + "Plant_Manufacturer, Plant_Year_Of_Construction, Plant_Type "
+                + "Plant_Manufacturer, Plant_Year_Of_Construction, Plant_Type, "
                 + "Plant_Airperformance, Plant_Motorpower, Plant_Motor_Rpm, Plant_Ventilatorperformance, "
                 + "Plant_Current, Plant_Voltage, Plant_Note, Plant_Description) "
                 + "VALUES (:plantPlaceFk, :inspectionInterval, :manufactor, :constructionYear, :type, "
