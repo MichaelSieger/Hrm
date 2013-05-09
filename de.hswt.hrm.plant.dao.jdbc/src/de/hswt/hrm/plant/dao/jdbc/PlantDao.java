@@ -24,7 +24,7 @@ public class PlantDao implements IPlantDao {
     public Collection<Plant> findAll() throws DatabaseException {
 
         final String query = "SELECT Plant_ID, Plant_Place_FK, Plant_Inspection_Interval, "
-                + "Plant_Manufacturer, Plant_Year_Of_Construction, Plant_Type "
+                + "Plant_Manufacturer, Plant_Year_Of_Construction, Plant_Type, "
                 + "Plant_Airperformance, Plant_Motorpower, Plant_Motor_Rpm, Plant_Ventilatorperformance, "
                 + "Plant_Current, Plant_Voltage, Plant_Note, Plant_Description FROM Plant ;";
 
@@ -47,7 +47,7 @@ public class PlantDao implements IPlantDao {
         checkArgument(id >= 0, "Id must not be negative.");
 
         final String query = "SELECT Plant_ID, Plant_Inspection_Interval, "
-                + "Plant_Manufacturer, Plant_Year_Of_Construction, Plant_Type "
+                + "Plant_Manufacturer, Plant_Year_Of_Construction, Plant_Type, "
                 + "Plant_Airperformance, Plant_Motorpower, Plant_Motor_Rpm, Plant_Ventilatorperformance, "
                 + "Plant_Current, Plant_Voltage, Plant_Note, Plant_Description FROM Plant "
                 + "WHERE Plant_ID =:id;";
@@ -160,12 +160,13 @@ public class PlantDao implements IPlantDao {
                 + "Plant_Airperformance = :airPerformance, " + "Plant_Motorpower = :motorPower, "
                 + "Plant_Motor_Rpm = :motorRpm, "
                 + "Plant_Ventilatorperformance = :ventilatorPerformance, "
-                + "Plant_Current = :current, " + "Plant_Voltage = :voltage "
+                + "Plant_Current = :current, " + "Plant_Voltage = :voltage, "
                 + "Plant_Note = :note, " + "Plant_Description = :description "
                 + "WHERE Plant_ID = :id;";
 
         try (Connection con = DatabaseFactory.getConnection()) {
             try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
+                stmt.setParameter("id", plant.getId());
                 stmt.setParameter("description", plant.getDescription());
                 stmt.setParameter("inspectionInterval", plant.getInspectionInterval());
                 stmt.setParameter("plantPlaceFk", plant.getPlace().get().getId());
