@@ -23,7 +23,7 @@ public class PlantDao implements IPlantDao {
     @Override
     public Collection<Plant> findAll() throws DatabaseException {
 
-        final String query = "SELECT Plant_ID, Plant_Place_FK, Plant_Inspection_Intervall, "
+        final String query = "SELECT Plant_ID, Plant_Place_FK, Plant_Inspection_Interval, "
                 + "Plant_Manufacturer, Plant_Year_Of_Construction, Plant_Type "
                 + "Plant_Airperformance, Plant_Motorpower, Plant_Motor_Rpm, Plant_Ventilatorperformance, "
                 + "Plant_Current, Plant_Voltage, Plant_Note, Plant_Description FROM Plant ;";
@@ -46,7 +46,7 @@ public class PlantDao implements IPlantDao {
     public Plant findById(int id) throws DatabaseException, ElementNotFoundException {
         checkArgument(id >= 0, "Id must not be negative.");
 
-        final String query = "SELECT Plant_ID, Plant_Inspection_Intervall, "
+        final String query = "SELECT Plant_ID, Plant_Inspection_Interval, "
                 + "Plant_Manufacturer, Plant_Year_Of_Construction, Plant_Type "
                 + "Plant_Airperformance, Plant_Motorpower, Plant_Motor_Rpm, Plant_Ventilatorperformance, "
                 + "Plant_Current, Plant_Voltage, Plant_Note, Plant_Description FROM Plant "
@@ -81,18 +81,18 @@ public class PlantDao implements IPlantDao {
      */
     @Override
     public Plant insert(Plant plant) throws SaveException {
-        final String query = "INSERT INTO Plant (Plant_Place_FK, Plant_Inspection_Intervall, "
+        final String query = "INSERT INTO Plant (Plant_Place_FK, Plant_Inspection_Interval, "
                 + "Plant_Manufacturer, Plant_Year_Of_Construction, Plant_Type "
                 + "Plant_Airperformance, Plant_Motorpower, Plant_Motor_Rpm, Plant_Ventilatorperformance, "
                 + "Plant_Current, Plant_Voltage, Plant_Note, Plant_Description) "
-                + "VALUES (:plantPlaceFk, :inspectionIntervall, :manufactor, :constructionYear, :type, "
+                + "VALUES (:plantPlaceFk, :inspectionInterval, :manufactor, :constructionYear, :type, "
                 + ":airPerformance, :motorPower, :motorRpm, :ventilatorPerformance, :current, :voltage, "
                 + ":note, :description);";
 
         try (Connection con = DatabaseFactory.getConnection()) {
             try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
                 stmt.setParameter("description", plant.getDescription());
-                stmt.setParameter("inspectionIntervall", plant.getInspectionInterval());
+                stmt.setParameter("inspectionInterval", plant.getInspectionInterval());
                 stmt.setParameter("plantPlaceFk", plant.getPlace().get().getId());
                 stmt.setParameter("constructionYear", plant.getConstructionYear().orNull());
                 stmt.setParameter("manufactor", plant.getManufactor().orNull());
@@ -154,7 +154,7 @@ public class PlantDao implements IPlantDao {
         }
 
         final String query = "UPDATE Plant SET " + "Plant_Place_FK = :plantPlaceFk, "
-                + "Plant_Inspection_Intervall = :inspectionIntervall, "
+                + "Plant_Inspection_Interval = :inspectionInterval, "
                 + "Plant_Manufacturer = :manufactor, "
                 + "Plant_Year_Of_Construction = :constructionYear, " + "Plant_Type = :type, "
                 + "Plant_Airperformance = :airPerformance, " + "Plant_Motorpower = :motorPower, "
@@ -167,7 +167,7 @@ public class PlantDao implements IPlantDao {
         try (Connection con = DatabaseFactory.getConnection()) {
             try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
                 stmt.setParameter("description", plant.getDescription());
-                stmt.setParameter("inspectionIntervall", plant.getInspectionInterval());
+                stmt.setParameter("inspectionInterval", plant.getInspectionInterval());
                 stmt.setParameter("plantPlaceFk", plant.getPlace().get().getId());
                 stmt.setParameter("constructionYear", plant.getConstructionYear().orNull());
                 stmt.setParameter("manufactor", plant.getManufactor().orNull());
@@ -197,17 +197,17 @@ public class PlantDao implements IPlantDao {
         Collection<Plant> plantList = new ArrayList<>();
 
         while (rs.next()) {
-            // "SELECT Plant_ID, Plant_Place_FK, Plant_Inspection_Intervall, "
+            // "SELECT Plant_ID, Plant_Place_FK, Plant_Inspection_Interval, "
             // + "Plant_Manufacturer, Plant_Year_Of_Construction, Plant_Type"
             // +
             // "Plant_Airperformance, Plant_Motorpower, Plant_Motor_Rpm, Plant_Ventilatorperformance, "
             // + "Plant_Current, Plant_Voltage, Plant_Note, Plant_Description FROM Plant ;";
 
             int id = rs.getInt("plant_ID");
-            int inspectionIntervall = rs.getInt("Plant_Inspection_Intervall");
+            int inspectionInterval = rs.getInt("Plant_Inspection_Interval");
             String description = rs.getString("Plant_Description");
 
-            Plant plant = new Plant(id, inspectionIntervall, description);
+            Plant plant = new Plant(id, inspectionInterval, description);
             plant.setConstructionYear(rs.getInt("Plant_Year_Of_Construction"));
             plant.setManufactor(rs.getString("Plant_Manufacturer"));
             plant.setType(rs.getString("Plant_Type"));
