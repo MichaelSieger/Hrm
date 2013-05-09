@@ -86,5 +86,6 @@ public final class Config {
         public static final String DB_PASSWORD = "db.password";
         public static final String DB_NAME = "db.name";
         public static final String DB_LOCKING = "db.locking.enabled";
+        public static final String SESSION_UUID = "session.uuid";
     }
 }
