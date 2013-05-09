@@ -78,7 +78,7 @@ public class Plant {
     }
 
     public void setDescription(String description) {
-        checkArgument(isNullOrEmpty(description), IS_MANDATORY);
+        checkArgument(!isNullOrEmpty(description), IS_MANDATORY);
         this.description = description;
     }
 
