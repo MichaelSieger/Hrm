@@ -86,6 +86,7 @@ public class ContactWizardPageOne extends WizardPage {
         t.setText(c.getEmail().or(""));
         t = (Text) XWT.findElementByName(container, "shortcut");
         t.setText(c.getShortcut().or(""));
+        t.setText(contact.getPostCode());
     }
 
     public HashMap<String, Text> getMandatoryWidgets() {

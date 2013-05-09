@@ -53,7 +53,7 @@ public class Plant {
     public int getId() {
         return id;
     }
-
+    
     public int getInspectionInterval() {
         return inspectionInterval;
     }
