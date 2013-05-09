@@ -1,5 +1,10 @@
 package de.hswt.hrm.plant.service;
 
-public class PlantService {
+import de.hswt.hrm.plant.dao.jdbc.PlantDao;
+
+public final class PlantService {
+    
+    private PlantDao dao;
+    
 
 }

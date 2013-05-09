@@ -4,3 +4,4 @@ Bundle-Name: Service
 Bundle-SymbolicName: de.hswt.hrm.plant.service
 Bundle-Version: 0.0.1.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Import-Package: de.hswt.hrm.plant.dao.jdbc
