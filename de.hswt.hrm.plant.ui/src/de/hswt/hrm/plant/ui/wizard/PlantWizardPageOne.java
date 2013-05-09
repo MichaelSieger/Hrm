@@ -14,6 +14,8 @@ import org.eclipse.swt.widgets.Text;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.base.Optional;
+
 import de.hswt.hrm.plant.model.Plant;
 
 public class PlantWizardPageOne extends WizardPage {
@@ -21,12 +23,19 @@ public class PlantWizardPageOne extends WizardPage {
     private static final Logger LOG = LoggerFactory.getLogger(PlantWizardPageOne.class);
     
     private Composite container;
-    private Plant plant;
+    private Optional<Plant> plant;
     
-    public PlantWizardPageOne(String title, Plant plant) {
+    public PlantWizardPageOne(String title, Optional<Plant> plant) {
         super(title);
         this.plant = plant;
-        setDescription("Neue Anlage hinzufügen oder bestehende verändern.");
+        setDescription(createDescription());
+    }
+    
+    private String createDescription() {
+        if (plant.isPresent()) {
+            return "Anlage bearbeiten";
+        }
+        return "Neue Anlage erstellen";
     }
 
     public void createControl(Composite parent) {
@@ -39,34 +48,51 @@ public class PlantWizardPageOne extends WizardPage {
             LOG.error("An error occured: ", e);
         }
         if (plant != null) {
-            fillMandatoryFields(container);
+            updateFields(container);
         }
         setControl(container);
         setKeyListener();
         setPageComplete(false);
     }
     
-    private void fillMandatoryFields(Composite Container) {
-        Text t = (Text) XWT.findElementByName(container, "description");
-        t.setText(plant.getDescription());
-        //TODO place
-        //TODO nextInspection
-        //TODO scheme 
-        t = (Text) XWT.findElementByName(container, "inspectionIntervall");
-        t.setText(Integer.toString(plant.getInspectionInterval()));
-    }
-    
-    
+    private void updateFields(Composite c) {
+        Plant p = plant.get();
+        Text t = (Text) XWT.findElementByName(c, "description");
+        t.setText(p.getDescription());
+        //TODO place - mandatory?
+        //TODO nextInspection / inspectionIntervall ?
+        //TODO scheme
+        
+        t = (Text) XWT.findElementByName(c, "manufactor");
+        t.setText(p.getManufactor().or(""));
+        t = (Text) XWT.findElementByName(c, "constructionYear");
+        t.setText(p.getConstructionYear().orNull().toString());
+        t = (Text) XWT.findElementByName(c, "type");
+        t.setText(p.getType().or(""));
+        t = (Text) XWT.findElementByName(c, "airPerformance");
+        t.setText(p.getAirPerformance().or(""));
+        t = (Text) XWT.findElementByName(c, "motorPower");
+        t.setText(p.getMotorPower().or(""));
+        t = (Text) XWT.findElementByName(c, "ventilatorPerformance");
+        t.setText(p.getVentilatorPerformance().or(""));
+        t = (Text) XWT.findElementByName(c, "motorRPM");
+        t.setText(p.getMotorRpm().or(""));
+        t = (Text) XWT.findElementByName(c, "current");
+        t.setText(p.getCurrent().or(""));
+        t = (Text) XWT.findElementByName(c, "voltage");
+        t.setText(p.getVoltage().or(""));
+        t = (Text) XWT.findElementByName(c, "note");
+        t.setText(p.getNote().or(""));
+    }    
     
     public HashMap<String, Text> getMandatoryWidgets() {
         HashMap<String, Text> widgets = new HashMap<String, Text>();
         widgets.put("description", (Text) XWT.findElementByName(container, "description"));
-        //TODO place
-        //widgets.put("place", (Text) XWT.findElementByName(container, "place"));
+        //TODO place - mandatory?
+        //TODO nextInspection / inspectionIntervall ?
         widgets.put("nextInspection", (Text) XWT.findElementByName(container, "nextInspection"));
         widgets.put("inspectionIntervall", (Text) XWT.findElementByName(container, "inspectionIntervall"));
         //TODO scheme
-        //widgets.put("scheme", (Text) XWT.findElementByName(container, "scheme"));
         return widgets;
     }
     
@@ -113,8 +139,4 @@ public class PlantWizardPageOne extends WizardPage {
         }
     }
     
-    public Plant getPlant() {
-        return plant;
-    }
-
 }

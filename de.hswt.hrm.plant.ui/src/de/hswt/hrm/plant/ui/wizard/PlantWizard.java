@@ -1,17 +1,28 @@
 package de.hswt.hrm.plant.ui.wizard;
 
 import org.eclipse.jface.wizard.Wizard;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.common.base.Optional;
 
 import de.hswt.hrm.plant.model.Plant;
 
 public class PlantWizard extends Wizard {
     
+    private static final Logger LOG = LoggerFactory.getLogger(PlantWizard.class);
     private PlantWizardPageOne first;
+    private Optional<Plant> plant;
 
-    public PlantWizard() {
-        Plant p = null;
-        first = new PlantWizardPageOne("Erste Seite", p);
-        setWindowTitle("Neue Anlage hinzufügen");
+    public PlantWizard(Optional<Plant> plant) {
+        this.plant = plant;
+        first = new PlantWizardPageOne("Erste Seite", plant);
+        
+        if (plant.isPresent()) {
+            setWindowTitle("Anlage bearbeiten");
+        } else {
+            setWindowTitle("Neue Anlage erstellen");
+        } 
     }
 
     @Override
@@ -26,10 +37,10 @@ public class PlantWizard extends Wizard {
 
     @Override
     public boolean performFinish() {
-        if (first.getPlant() == null) {
-            return insertNewPlant();
-        } else {
+        if (plant.isPresent()) {
             return editExistingPlant();
+        } else {
+            return insertNewPlant();
         }
     }
     
@@ -41,6 +52,10 @@ public class PlantWizard extends Wizard {
     private boolean editExistingPlant() {
         //TODO edit an existing plant
         return false;
+    }
+    
+    public Optional<Plant> getPlant() {
+        return plant;
     }
 
 }
