@@ -122,6 +122,7 @@
 		<module>../de.hswt.hrm.plant.feature</module>
 		<module>../de.hswt.hrm.plant.model</module>
 		<module>../de.hswt.hrm.plant.service</module>
+		<module>../de.hswt.hrm.plant.service.test</module>
 		<module>../de.hswt.hrm.plant.ui</module>
 <!--		<module>../de.hswt.hrm.plantimagemigration</module> -->
 		<module>../de.hswt.hrm.repository</module>
