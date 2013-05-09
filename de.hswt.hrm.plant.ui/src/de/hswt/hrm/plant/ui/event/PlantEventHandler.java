@@ -97,7 +97,7 @@ public class PlantEventHandler {
      */
     public void tableEntrySelected(Event event) {
 
-        TableViewer tv = (TableViewer) XWT.findElementByName(event.widget, "PlantTable");
+        TableViewer tv = (TableViewer) XWT.findElementByName(event.widget, "plantTable");
 
         // obtain the Plant in the column where the doubleClick happend
         Plant selectedPlant = (Plant) tv.getElementAt(tv.getTable().getSelectionIndex());
