@@ -1,24 +1,113 @@
-<Composite xmlns="http://www.eclipse.org/xwt/presentation" xmlns:x="http://www.eclipse.org/xwt" x:Class="de.hswt.hrm.plant.ui.xwt.PlantWizardWindow">
+<Composite xmlns="http://www.eclipse.org/xwt/presentation" xmlns:x="http://www.eclipse.org/xwt" x:Class="de.hswt.hrm.plant.ui.xwt.PlantWizardWindow" xmlns:p1="clr-namespace:java.lang">
 	<Composite.layout>
-		<GridLayout numColumns="2"/>
+		<GridLayout numColumns="3"/>
 	</Composite.layout>
-	<Section text="Pflichtfelder" x:Style="(p1:Section).EXPANDED | (p1:Section).TITLE_BAR" x:Name="Obligatory">
+	<Section text="Pflichtfelder" x:Style="(p1:Section).EXPANDED | (p1:Section).TITLE_BAR" x:Name="Mandatory">
 		<Section.layoutData>
-			<GridData grabExcessHorizontalSpace="true" widthHint="277" horizontalAlignment="FILL" horizontalSpan="2"/>
+			<GridData grabExcessHorizontalSpace="true" widthHint="277" horizontalAlignment="FILL" horizontalSpan="3"/>
 		</Section.layoutData>
 		<Section.client>
 			<Composite>
 				<Composite.layout>
-					<GridLayout numColumns="2"/>
+					<GridLayout numColumns="4"/>
 				</Composite.layout>
-				<Label text="Bla:"/>
-				<Text x:Style="BORDER" x:Name="Bla">
+				<Label text="Bezeichnung: "/>
+				<Text x:Style="BORDER" x:Name="description">
 					<Text.layoutData>
 						<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
 					</Text.layoutData>
 				</Text>
+				<Label text="Standort: "/>
+				<Text text="Dropdown ?" x:Style="BORDER" x:Name="place"/>
+				<Label text="Nächste Inspektion: "/>
+				<Text x:Style="BORDER" x:Name="nextInspection">
+					<Text.layoutData>
+						<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
+					</Text.layoutData>
+				</Text>
+				<Label text="Intervall (Jahre): "/>
+				<Text x:Style="BORDER" x:Name="inspectionIntervall">
+					<Text.layoutData>
+						<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
+					</Text.layoutData>
+				</Text>
+				<Label text="Anlagenschema: "/>
+				<Text text="Dropdown ?" x:Style="BORDER" x:Name="scheme"/>
 			</Composite>
 		</Section.client>	
+	</Section>
+	<Section text="Optionale Felder" x:Style="(p1:Section).EXPANDED | (p1:Section).TITLE_BAR" x:Name="Optional">
+		<Section.layoutData>
+				<GridData grabExcessHorizontalSpace="true" widthHint="277" horizontalAlignment="FILL" horizontalSpan="3"/>
+			</Section.layoutData>
+			<Section.client>
+				<Composite>
+					<Composite.layout>
+						<GridLayout numColumns="4"/>
+					</Composite.layout>
+					<Label text="Hersteller: "/>
+					<Text x:Style="BORDER" x:Name="manufactor">
+						<Text.layoutData>
+							<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
+						</Text.layoutData>
+					</Text>
+					<Label text="Baujahr: "/>
+					<Text x:Style="BORDER" x:Name="constructionYear">
+						<Text.layoutData>
+							<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
+						</Text.layoutData>
+					</Text>
+					<Label text="Typ: "/>
+					<Text x:Style="BORDER" x:Name="type">
+						<Text.layoutData>
+							<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
+						</Text.layoutData>
+					</Text>
+					<Label/><Label/>
+					<Label text="Luftleistung: "/>
+					<Text x:Style="BORDER" x:Name="airPerformance">
+						<Text.layoutData>
+							<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
+						</Text.layoutData>
+					</Text>
+					<Label text="Motorleistung: "/>
+					<Text x:Style="BORDER" x:Name="motorPower">
+						<Text.layoutData>
+							<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
+						</Text.layoutData>
+					</Text>
+					<Label text="Ventilatorleistung: "/>
+					<Text x:Style="BORDER" x:Name="ventilatorPerformance">
+						<Text.layoutData>
+							<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
+						</Text.layoutData>
+					</Text>
+					<Label text="Motordrehzahl: "/>
+					<Text x:Style="BORDER" x:Name="motorRPM">
+						<Text.layoutData>
+							<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
+						</Text.layoutData>
+					</Text>
+					<Label text="Nennstrom: "/>
+					<Text x:Style="BORDER" x:Name="current">
+						<Text.layoutData>
+							<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
+						</Text.layoutData>
+					</Text>
+					<Label text="Spannung: "/>
+					<Text x:Style="BORDER" x:Name="voltage">
+						<Text.layoutData>
+							<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
+						</Text.layoutData>
+					</Text>
+					<Label text="Bemerkungen: "/>
+					<Text x:Style="BORDER" x:Name="note">
+						<Text.layoutData>
+							<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
+						</Text.layoutData>
+					</Text>
+				</Composite>
+			</Section.client>
 	</Section>
 </Composite>
 <!-- Forms API -->
