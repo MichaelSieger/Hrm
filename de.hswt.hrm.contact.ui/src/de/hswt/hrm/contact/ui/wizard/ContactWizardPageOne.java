@@ -61,7 +61,7 @@ public class ContactWizardPageOne extends WizardPage {
     }
 
     private void updateFields(Composite Container) {
-        Contact c = contact.get();
+ Contact c = contact.get();
         
         Text t = (Text) XWT.findElementByName(container, "firstName");
         t.setText(c.getFirstName());
@@ -86,7 +86,6 @@ public class ContactWizardPageOne extends WizardPage {
         t.setText(c.getEmail().or(""));
         t = (Text) XWT.findElementByName(container, "shortcut");
         t.setText(c.getShortcut().or(""));
-        t.setText(contact.getPostCode());
     }
 
     public HashMap<String, Text> getMandatoryWidgets() {
