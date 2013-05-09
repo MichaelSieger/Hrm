@@ -1,7 +1,6 @@
 package de.hswt.hrm.plant.ui.part;
 
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -20,7 +19,6 @@ import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.ui.swt.table.ColumnComparator;
 import de.hswt.hrm.common.ui.swt.table.ColumnDescription;
 import de.hswt.hrm.common.ui.swt.table.TableViewerController;
-import de.hswt.hrm.place.model.Place;
 import de.hswt.hrm.plant.model.Plant;
 import de.hswt.hrm.plant.service.PlantService;
 import de.hswt.hrm.plant.ui.filter.PlantFilter;
