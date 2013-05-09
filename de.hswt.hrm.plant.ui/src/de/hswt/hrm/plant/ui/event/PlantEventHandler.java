@@ -97,17 +97,18 @@ public class PlantEventHandler {
      */
     public void tableEntrySelected(Event event) {
 
-        TableViewer tv = (TableViewer) XWT.findElementByName(event.widget, "plantTable");
-
-        // obtain the Plant in the column where the doubleClick happend
-        Plant selectedPlant = (Plant) tv.getElementAt(tv.getTable().getSelectionIndex());
-
-        Optional<Plant> updatePlant = PlantPartUtil.showWizard(
-                event.display.getActiveShell(), Optional.fromNullable(selectedPlant));
-
-        if (updatePlant.isPresent()) {
-            tv.refresh();
-        }
+        //TODO Wizzard
+//        TableViewer tv = (TableViewer) XWT.findElementByName(event.widget, "plantTable");
+//
+//        // obtain the Plant in the column where the doubleClick happend
+//        Plant selectedPlant = (Plant) tv.getElementAt(tv.getTable().getSelectionIndex());
+//
+//        Optional<Plant> updatePlant = PlantPartUtil.showWizard(
+//                event.display.getActiveShell(), Optional.fromNullable(selectedPlant));
+//
+//        if (updatePlant.isPresent()) {
+//            tv.refresh();
+//        }
     }
 
 }

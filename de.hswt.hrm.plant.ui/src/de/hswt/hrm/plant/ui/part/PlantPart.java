@@ -55,11 +55,11 @@ public class PlantPart {
             plants = PlantService.findAll();
             viewer.setInput(plants);
 
-            MessageDialog.openError(parent.getShell(), "Connection Error",
-                    "Could not load Plants from Database.");
         }
 
         catch (DatabaseException e) {
+            MessageDialog.openError(parent.getShell(), "Connection Error",
+                    "Could not load Plants from Database.");
             LOG.error("Unable to retrieve list of plants.", e);
 
         }
