@@ -67,6 +67,18 @@ public final class PlantService {
         plant.setAirPerformance(fromDb.getAirPerformance().orNull());
         plant.setConstructionYear(fromDb.getConstructionYear().orNull());
         plant.setCurrent(fromDb.getCurrent().orNull());
+        plant.setDescription(fromDb.getDescription());
+        plant.setInspectionInterval(fromDb.getInspectionInterval());
+        plant.setManufactor(fromDb.getManufactor().orNull());
+        plant.setMotorPower(fromDb.getMotorPower().orNull());
+        plant.setMotorPower(fromDb.getMotorPower().orNull());
+        plant.setNote(fromDb.getNote().orNull());
+        plant.setNumberOfElements(fromDb.getNumberOfElements());
+        plant.setPlace(fromDb.getPlace().orNull());
+        plant.setType(fromDb.getType().orNull());
+        plant.setVentilatorPerformance(fromDb.getVentilatorPerformance().orNull());
+        plant.setVoltage(fromDb.getVoltage().orNull());
+
     }
 
 }
