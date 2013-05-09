@@ -207,7 +207,7 @@ public class NamedParameterStatement implements AutoCloseable {
             }
             
             if (keyStartFound) {
-                if (Character.isLetterOrDigit(c)) {
+                if (Character.isLetterOrDigit(c) || c == '_' || c == '-') {
                     currentKey.append(c);
                 }
                 else {
