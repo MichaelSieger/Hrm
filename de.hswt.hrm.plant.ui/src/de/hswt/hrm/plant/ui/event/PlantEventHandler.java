@@ -11,6 +11,8 @@ import org.eclipse.swt.widgets.Text;
 import com.google.common.base.Optional;
 
 import de.hswt.hrm.plant.model.Plant;
+import de.hswt.hrm.plant.ui.filter.PlantFilter;
+import de.hswt.hrm.plant.ui.part.PlantPartUtil;
 
 public class PlantEventHandler {
 
@@ -46,7 +48,7 @@ public class PlantEventHandler {
         plant = null;
         Button b = (Button) event.widget;
         Optional<Plant> newPlant = PlantPartUtil.showWizard(event.display.getActiveShell(),
-                Optional.fromNullable(Plant));
+                Optional.fromNullable(plant));
 
         TableViewer tv = (TableViewer) XWT.findElementByName(b, "PlantTable");
 
