@@ -1,8 +1,13 @@
 package de.hswt.hrm.plant.service;
 
+import java.util.Collection;
+
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+import de.hswt.hrm.common.database.exception.DatabaseException;
+import de.hswt.hrm.common.database.exception.ElementNotFoundException;
+import de.hswt.hrm.place.model.Place;
 import de.hswt.hrm.plant.model.Plant;
 
 public class PlantServiceTest {
@@ -39,18 +44,58 @@ public class PlantServiceTest {
     }
     
     @Test
-    public void testFindAll() {
+    public void testFindAll() throws DatabaseException {
         Plant plant1 = new Plant(6, "Test plant");
         Plant plant2 = new Plant(12, "Another test plant");
+        PlantService.insert(plant1);
+        PlantService.insert(plant2);
+        
+        Collection<Plant> plants = PlantService.findAll();
+        assertEquals("Count of retrieved plants does not match", 2, plants.size());
     }
     
     @Test
-    public void testFindById() {
+    public void testFindById() throws ElementNotFoundException, DatabaseException {
+        Plant expected = new Plant(12, "Another test plant");
+        Plant parsed = PlantService.insert(expected);
         
+        Plant retrieved = PlantService.findById(parsed.getId());
+        assertEquals("ID not set correctly.", parsed.getId(), retrieved.getId());
+        comparePlantFields(expected, retrieved);
     }
     
     @Test
-    public void testUpdate() {
+    public void testInsert() throws ElementNotFoundException, DatabaseException {
+        Place place = new Place("Somewhere", "11123", "SimCity", "Skywalkerway 5", "110a", "Todesstern", "\"Laser\"");
+        Plant expected = new Plant(12, "Another test plant");
+        expected.setAirPerformance("Best performance ever!");
+        expected.setConstructionYear(2012);
+        expected.setCurrent("12 A");
+        expected.setManufactor("ACME Labs");
+        expected.setMotorPower("30 PS");
+        expected.setMotorRpm("1500 RPM");
+        expected.setNote("Remember, remember the 5th of November..");
+        expected.setNumberOfElements(10);
+        expected.setPlace(place);
+        expected.setType("Don't know");
+        expected.setVentilatorPerformance("Best performance ever!");
+        expected.setVoltage("220 V");
+        Plant parsed = PlantService.insert(expected);
         
+        comparePlantFields(expected, parsed);
+        Plant retrieved = PlantService.findById(parsed.getId());
+        comparePlantFields(expected, retrieved);
+    }
+    
+    @Test
+    public void testUpdate() throws ElementNotFoundException, DatabaseException {
+        Plant expected = new Plant(12, "Another test plant");
+        Plant parsed = PlantService.insert(expected);
+        
+        parsed.setAirPerformance("Best performance ever!");
+        PlantService.update(parsed);
+        
+        Plant retrieved = PlantService.findById(parsed.getId());
+        comparePlantFields(parsed, retrieved);
     }
 }
