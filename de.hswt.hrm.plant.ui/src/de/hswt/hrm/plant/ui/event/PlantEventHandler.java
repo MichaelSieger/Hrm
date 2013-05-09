@@ -50,7 +50,7 @@ public class PlantEventHandler {
         Optional<Plant> newPlant = PlantPartUtil.showWizard(event.display.getActiveShell(),
                 Optional.fromNullable(plant));
 
-        TableViewer tv = (TableViewer) XWT.findElementByName(b, "PlantTable");
+        TableViewer tv = (TableViewer) XWT.findElementByName(b, "plantTable");
 
         Collection<Plant> contacs = (Collection<Plant>) tv.getInput();
         if (newPlant.isPresent()) {

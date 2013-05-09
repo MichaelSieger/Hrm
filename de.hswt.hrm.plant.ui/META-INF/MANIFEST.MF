@@ -5,6 +5,8 @@ Bundle-SymbolicName: de.hswt.hrm.plant.ui
 Bundle-Version: 0.0.1.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Import-Package: de.hswt.hrm.common.database.exception,
+ de.hswt.hrm.common.ui.swt.table,
+ de.hswt.hrm.place.model,
  de.hswt.hrm.plant.model,
  de.hswt.hrm.plant.service,
  org.eclipse.e4.xwt,
@@ -15,3 +17,4 @@ Require-Bundle: org.eclipse.jface;bundle-version="3.8.102",
  ch.qos.logback.core;bundle-version="1.0.0",
  org.slf4j.api;bundle-version="1.6.4",
  com.google.guava;bundle-version="10.0.1"
+Export-Package: de.hswt.hrm.plant.ui.event
