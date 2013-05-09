@@ -5,20 +5,22 @@ import java.util.Comparator;
 import java.util.List;
 
 import org.eclipse.jface.viewers.ColumnLabelProvider;
+import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.Shell;
 
 import com.google.common.base.Optional;
 
 import de.hswt.hrm.common.ui.swt.table.ColumnDescription;
 import de.hswt.hrm.plant.model.Plant;
+import de.hswt.hrm.plant.ui.wizard.PlantWizard;
 
 public class PlantPartUtil {
 
     public static Optional<Plant> showWizard(Shell activeShell, Optional<Plant> fromNullable) {
-
-        // TODO
-        return null;
-
+        PlantWizard pw = new PlantWizard(fromNullable);
+        WizardDialog wd = new WizardDialog(activeShell, pw);
+        wd.open();
+        return pw.getPlant();
     }
 
     public static List<ColumnDescription<Plant>> getColumns() {
