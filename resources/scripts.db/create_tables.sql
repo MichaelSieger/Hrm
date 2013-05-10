@@ -81,7 +81,7 @@ CREATE  TABLE IF NOT EXISTS `Category` (
   `Category_Height` VARCHAR(45) NULL ,
   `Category_Width` VARCHAR(45) NULL ,
   `Category_Default_Qualifier` VARCHAR(45) NULL ,
-  `Category_Default_bool_Rating` TINYINT(1) NULL ,
+  `Category_Default_Bool_Rating` TINYINT(1) NULL ,
   `Category_Catalog_FK` INT NULL ,
   PRIMARY KEY (`Category_ID`) ,
   INDEX `Category_Catalog_FK` (`Category_Catalog_FK` ASC) ,
