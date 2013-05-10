@@ -8,5 +8,5 @@
    <property 
    		name="service.context.key" 
    		type="String" 
-   		value="PlaceDao" />
+   		value="de.hswt.hrm.place.dao.core.IPlaceDao" />
 </scr:component>
