@@ -1,9 +1,9 @@
 package de.hswt.hrm.scheme.model;
 
 import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Strings.isNullOrEmpty;
 
-import com.google.common.base.Optional;
 
 /**
  * Represents a Component
@@ -29,7 +29,7 @@ public class Component {
     private static final String INVALID_NUMBER = "%d is an invalid number.%n Must be greater 0";
 
     public Component(int id, String name, byte[] leftRightImage, byte[] rightLeftImage,
-            byte[] upDownImage, byte[] downUpImage, int quantifier, boolean boolRating) {
+            byte[] upDownImage, byte[] downUpImage, int quantifier, boolean boolRating, Category category) {
         super();
         this.id = id;
         setName(name);
@@ -45,9 +45,9 @@ public class Component {
     }
 
     public Component(String name, byte[] leftRightImage, byte[] rightLeftImage, byte[] upDownImage,
-            byte[] downUpImage, int quantifier, boolean boolRating) {
+            byte[] downUpImage, int quantifier, boolean boolRating, Category category) {
         this(-1, name, leftRightImage, rightLeftImage, upDownImage, downUpImage, quantifier,
-                boolRating);
+                boolRating, category);
     }
 
     public int getId() {
@@ -58,12 +58,14 @@ public class Component {
         return name;
     }
 
-    public Optional<Category> getCategory() {
-        return Optional.fromNullable(category);
+    public void setCategory(Category category) {
+        checkNotNull(category);
+        this.category = category;
+
     }
 
-    public void setCategory(Category category) {
-        this.category = category;
+    public Category getCategory() {
+        return category;
     }
 
     public void setName(String name) {
