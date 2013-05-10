@@ -7,7 +7,14 @@ import org.eclipse.swt.graphics.Image;
 
 import de.hswt.hrm.scheme.model.Direction;
 import de.hswt.hrm.scheme.model.RenderedComponent;
+import de.hswt.hrm.scheme.ui.DirectedRenderedComponent;
 
+/**
+ * This class represents a Component in the SchemeTreeViewer
+ * 
+ * @author Michael Sieger
+ *
+ */
 public class ComponentTreeItem implements SchemeTreeItem{
 	
 	private final RenderedComponent c;
@@ -51,6 +58,11 @@ public class ComponentTreeItem implements SchemeTreeItem{
 
 	@Override
 	public Image getImage() {
+		return null;
+	}
+
+	@Override
+	public DirectedRenderedComponent getDragItem() {
 		return null;
 	}
 

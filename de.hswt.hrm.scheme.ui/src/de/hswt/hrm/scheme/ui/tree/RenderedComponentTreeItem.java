@@ -4,6 +4,7 @@ import org.eclipse.swt.graphics.Image;
 
 import de.hswt.hrm.scheme.model.Direction;
 import de.hswt.hrm.scheme.model.RenderedComponent;
+import de.hswt.hrm.scheme.ui.DirectedRenderedComponent;
 
 /**
  * This class represents a direction in the SchemeTreeViewer
@@ -44,6 +45,11 @@ public class RenderedComponentTreeItem implements SchemeTreeItem{
 	@Override
 	public Image getImage() {
 		return comp.getByDirection(dir).getThumbnail();
+	}
+
+	@Override
+	public DirectedRenderedComponent getDragItem() {
+		return new DirectedRenderedComponent(comp, dir);
 	}
 
 }

@@ -7,6 +7,7 @@ import org.eclipse.swt.graphics.Image;
 
 import de.hswt.hrm.scheme.model.Category;
 import de.hswt.hrm.scheme.model.RenderedComponent;
+import de.hswt.hrm.scheme.ui.DirectedRenderedComponent;
 
 /**
  * This class represents a Category in the SchemeTreeViewer
@@ -52,6 +53,11 @@ public class CategoryTreeItem implements SchemeTreeItem{
 
 	@Override
 	public Image getImage() {
+		return null;
+	}
+
+	@Override
+	public DirectedRenderedComponent getDragItem() {
 		return null;
 	}
 	
