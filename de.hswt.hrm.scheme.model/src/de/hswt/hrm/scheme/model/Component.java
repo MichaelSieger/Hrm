@@ -1,8 +1,9 @@
 package de.hswt.hrm.scheme.model;
 
 import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Strings.isNullOrEmpty;
+
+import com.google.common.base.Optional;
 
 /**
  * Represents a Component
@@ -20,7 +21,7 @@ public class Component {
     private byte[] upDownImage;
     private byte[] downUpImage;
     private int quantifier;
-    private boolean isRated;
+    private boolean boolRating;
     private Category category;
 
     private static final String NO_IMAGE_ERROR = "All Images are null";
@@ -28,8 +29,7 @@ public class Component {
     private static final String INVALID_NUMBER = "%d is an invalid number.%n Must be greater 0";
 
     public Component(int id, String name, byte[] leftRightImage, byte[] rightLeftImage,
-            byte[] upDownImage, byte[] downUpImage, int quantifier, boolean isRated,
-            Category category) {
+            byte[] upDownImage, byte[] downUpImage, int quantifier, boolean boolRating) {
         super();
         this.id = id;
         setName(name);
@@ -38,17 +38,16 @@ public class Component {
         this.upDownImage = upDownImage;
         this.downUpImage = downUpImage;
         setQuantifier(quantifier);
-        setRated(isRated);
-        setCategory(category);
+        setBoolRating(boolRating);
         checkArgument(
                 !(leftRightImage == null && rightLeftImage == null && upDownImage == null && downUpImage == null),
                 NO_IMAGE_ERROR);
     }
 
     public Component(String name, byte[] leftRightImage, byte[] rightLeftImage, byte[] upDownImage,
-            byte[] downUpImage, int quantifier, boolean isRated, Category category) {
+            byte[] downUpImage, int quantifier, boolean boolRating, Category category) {
         this(-1, name, leftRightImage, rightLeftImage, upDownImage, downUpImage, quantifier,
-                isRated, category);
+                boolRating);
     }
 
     public int getId() {
@@ -59,12 +58,11 @@ public class Component {
         return name;
     }
 
-    public Category getCategory() {
-        return category;
+    public Optional<Category> getCategory() {
+        return Optional.fromNullable(category);
     }
 
     public void setCategory(Category category) {
-        checkNotNull(category);
         this.category = category;
     }
 
@@ -135,11 +133,11 @@ public class Component {
         this.quantifier = quantifier;
     }
 
-    public boolean isRated() {
-        return isRated;
+    public boolean getBoolRating() {
+        return boolRating;
     }
 
-    public void setRated(boolean isRated) {
-        this.isRated = isRated;
+    public void setBoolRating(boolean boolRating) {
+        this.boolRating = boolRating;
     }
 }
