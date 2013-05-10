@@ -8,6 +8,12 @@ import org.eclipse.swt.graphics.Image;
 import de.hswt.hrm.scheme.model.Category;
 import de.hswt.hrm.scheme.model.RenderedComponent;
 
+/**
+ * This class represents a Category in the SchemeTreeViewer
+ * 
+ * @author Michael Sieger
+ *
+ */
 public class CategoryTreeItem implements SchemeTreeItem{
 	
 	private final Category c;

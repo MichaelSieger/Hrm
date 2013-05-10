@@ -5,6 +5,12 @@ import org.eclipse.swt.graphics.Image;
 import de.hswt.hrm.scheme.model.Direction;
 import de.hswt.hrm.scheme.model.RenderedComponent;
 
+/**
+ * This class represents a direction in the SchemeTreeViewer
+ * 
+ * @author Michael Sieger
+ *
+ */
 public class RenderedComponentTreeItem implements SchemeTreeItem{
 	
 	private final RenderedComponent comp;
