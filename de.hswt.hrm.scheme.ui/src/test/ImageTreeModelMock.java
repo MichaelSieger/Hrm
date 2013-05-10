@@ -15,7 +15,7 @@ import de.hswt.hrm.scheme.model.Category;
 import de.hswt.hrm.scheme.model.Component;
 import de.hswt.hrm.scheme.model.RenderedComponent;
 import de.hswt.hrm.scheme.service.ComponentConverter;
-import de.hswt.hrm.scheme.ui.IImageTreeModel;
+import de.hswt.hrm.scheme.ui.tree.IImageTreeModel;
 
 /**
  * A Mock for the grid image tree data.

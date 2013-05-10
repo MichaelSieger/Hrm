@@ -24,10 +24,10 @@ import org.eclipse.swt.widgets.Slider;
 import org.eclipse.swt.widgets.Tree;
 
 import de.hswt.hrm.scheme.ui.GridDNDManager;
-import de.hswt.hrm.scheme.ui.ImageTreeModelFactory;
 import de.hswt.hrm.scheme.ui.SchemeGrid;
-import de.hswt.hrm.scheme.ui.TreeContentProvider;
 import de.hswt.hrm.scheme.ui.TreeDNDManager;
+import de.hswt.hrm.scheme.ui.tree.ImageTreeModelFactory;
+import de.hswt.hrm.scheme.ui.tree.TreeContentProvider;
 
 /**
  * This is the Part for the scheme builder frame.

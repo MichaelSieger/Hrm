@@ -1,4 +1,4 @@
-package de.hswt.hrm.scheme.ui;
+package de.hswt.hrm.scheme.ui.tree;
 
 import de.hswt.hrm.scheme.model.Direction;
 import de.hswt.hrm.scheme.model.RenderedComponent;

@@ -16,6 +16,8 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
+import de.hswt.hrm.scheme.ui.tree.TreeData;
+
 /**
  * This class manages the drag and drop from the tree to the SchemeGrid
  * 

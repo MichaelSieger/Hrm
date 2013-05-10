@@ -1,4 +1,4 @@
-package de.hswt.hrm.scheme.ui;
+package de.hswt.hrm.scheme.ui.tree;
 
 import java.util.Collection;
 import java.util.List;
