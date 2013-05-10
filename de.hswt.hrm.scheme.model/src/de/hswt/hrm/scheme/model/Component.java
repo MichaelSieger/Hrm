@@ -45,7 +45,7 @@ public class Component {
     }
 
     public Component(String name, byte[] leftRightImage, byte[] rightLeftImage, byte[] upDownImage,
-            byte[] downUpImage, int quantifier, boolean boolRating, Category category) {
+            byte[] downUpImage, int quantifier, boolean boolRating) {
         this(-1, name, leftRightImage, rightLeftImage, upDownImage, downUpImage, quantifier,
                 boolRating);
     }
