@@ -68,10 +68,10 @@ public class SchemeGrid extends Canvas{
         		0, 
         		imageBounds.width, 
         		imageBounds.height, 
-        		Math.round(quadW * rec.x), 
-        		Math.round(quadH * rec.y),
-                Math.round(quadW * rec.width), 
-                Math.round(quadH * rec.height));
+        		Math.round(quadW * rec.x) + 1, 
+        		Math.round(quadH * rec.y) + 1,
+                Math.round(quadW * rec.width) - 1, 
+                Math.round(quadH * rec.height) - 1);
     }
 
     private void drawHorizontalLines(GC gc) {
