@@ -38,10 +38,10 @@ INSERT INTO `hrm`.`Catalog` (`Catalog_Name`) VALUES ('Katalog_Heizung');
 ------------------------------------------------------------
 -- Insert 4 different categories in the `Category` Table
 ------------------------------------------------------------
-INSERT INTO `hrm`.`Category` (`Category_Name`, `Category_Height`, `Category_Width`, `Category_Default_Qualifier`, `Category_Default_Bool_Rating`, `Category_Catalog_FK`) VALUES ('Filter', '4', '4', '1', '1', '1');
-INSERT INTO `hrm`.`Category` (`Category_Name`, `Category_Height`, `Category_Width`, `Category_Default_Qualifier`, `Category_Default_Bool_Rating`, `Category_Catalog_FK`) VALUES ('Motor', '4', '2', '1', '1', '2');
-INSERT INTO `hrm`.`Category` (`Category_Name`, `Category_Height`, `Category_Width`, `Category_Default_Qualifier`, `Category_Default_Bool_Rating`, `Category_Catalog_FK`) VALUES ('Heizung', '3', '3', '3', '0', '3');
-INSERT INTO `hrm`.`Category` (`Category_Name`, `Category_Height`, `Category_Width`, `Category_Default_Qualifier`, `Category_Default_Bool_Rating`, `Category_Catalog_FK`) VALUES ('Spezial Filter', '2', '2', '3', '0', '1');
+INSERT INTO `hrm`.`Category` (`Category_Name`, `Category_Height`, `Category_Width`, `Category_Default_Quantifier`, `Category_Default_Bool_Rating`, `Category_Catalog_FK`) VALUES ('Filter', '4', '4', '1', '1', '1');
+INSERT INTO `hrm`.`Category` (`Category_Name`, `Category_Height`, `Category_Width`, `Category_Default_Quantifier`, `Category_Default_Bool_Rating`, `Category_Catalog_FK`) VALUES ('Motor', '4', '2', '1', '1', '2');
+INSERT INTO `hrm`.`Category` (`Category_Name`, `Category_Height`, `Category_Width`, `Category_Default_Quantifier`, `Category_Default_Bool_Rating`, `Category_Catalog_FK`) VALUES ('Heizung', '3', '3', '3', '0', '3');
+INSERT INTO `hrm`.`Category` (`Category_Name`, `Category_Height`, `Category_Width`, `Category_Default_Quantifier`, `Category_Default_Bool_Rating`, `Category_Catalog_FK`) VALUES ('Spezial Filter', '2', '2', '3', '0', '1');
 ------------------------------------------------------------
 -- Insert 3 different components in the `Component` Table
 ------------------------------------------------------------
