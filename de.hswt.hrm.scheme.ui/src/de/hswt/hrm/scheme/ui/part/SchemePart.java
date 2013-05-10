@@ -27,6 +27,7 @@ import de.hswt.hrm.scheme.ui.GridDNDManager;
 import de.hswt.hrm.scheme.ui.SchemeGrid;
 import de.hswt.hrm.scheme.ui.TreeDNDManager;
 import de.hswt.hrm.scheme.ui.tree.ImageTreeModelFactory;
+import de.hswt.hrm.scheme.ui.tree.SchemeTreeLabelProvider;
 import de.hswt.hrm.scheme.ui.tree.TreeContentProvider;
 
 /**
@@ -36,6 +37,8 @@ import de.hswt.hrm.scheme.ui.tree.TreeContentProvider;
  *
  */
 public class SchemePart {
+	
+	private static final Transfer[] TRANSFER = new Transfer[] {TextTransfer.getInstance()};
 	
 	private static final RGB WHITE = new RGB(255, 255, 255);
 	
@@ -53,29 +56,40 @@ public class SchemePart {
 
 		try {
 			root = (Composite) XWT.load(parent, url);
-			TreeViewer tree = getTree();
-			tree.setContentProvider(new TreeContentProvider());
-			tree.setLabelProvider(new LabelProvider());
-			tree.setInput(ImageTreeModelFactory.create(
-			        parent.getDisplay()).getImages());
-			//new TreeManager(ImageTreeModelFactory.create(parent.getDisplay()),
-			//		 tree);
+			initTree();
 			grid = new SchemeGrid(getSchemeComposite(), SWT.NONE, 40, 20, 40);
 			grid.setBackground(new Color(root.getDisplay(), WHITE));
 			getSchemeComposite().setContent(grid);
-	        DropTarget dt = new DropTarget(grid, DROP_OPS);
-	        dt.setTransfer(new Transfer[] { TextTransfer.getInstance() });
-	        //DragSource treeDragSource = new DragSource(tree, DRAG_OPS);
-	        //treeDragSource.setTransfer(new Transfer[] { TextTransfer.getInstance()});
-	        //DragSource gridDragSource = new DragSource(grid, DRAG_OPS);
-	        //gridDragSource.setTransfer(new Transfer[]{TextTransfer.getInstance()});
-			//new TreeDNDManager(getTree(), grid, dt, treeDragSource);
-			//new GridDNDManager(grid, dt, gridDragSource);
+	        DropTarget gridDropTarget = new DropTarget(grid, DROP_OPS);
+	        gridDropTarget.setTransfer(TRANSFER);
+	        DragSource gridDragSource = new DragSource(grid, DRAG_OPS);
+	        gridDragSource.setTransfer(TRANSFER);
+	        initTreeDND(gridDropTarget);
+			initGridDND(gridDropTarget, gridDragSource);
 			createSlider();
 		} catch (Throwable e) {
 			throw new Error("Unable to load ", e);
 		}
-
+	}
+	
+	private void initTreeDND(DropTarget gridDropTarget){
+		TreeDNDManager m = new TreeDNDManager(getTree(), grid);
+		getTree().addDragSupport(DRAG_OPS, TRANSFER, m);
+		gridDropTarget.addDropListener(m);
+	}
+	
+	private void initGridDND(DropTarget gridDropTarget, DragSource gridDragSource){
+		GridDNDManager gridDND = new GridDNDManager(grid);
+		gridDropTarget.addDropListener(gridDND);
+		gridDragSource.addDragListener(gridDND);
+	}
+	
+	private void initTree(){
+		TreeViewer tree = getTree();
+		tree.setContentProvider(new TreeContentProvider());
+		tree.setLabelProvider(new SchemeTreeLabelProvider());
+		tree.setInput(ImageTreeModelFactory.create(
+		        root.getDisplay()).getImages());
 	}
 
 	private Slider getZoomSlider(){
