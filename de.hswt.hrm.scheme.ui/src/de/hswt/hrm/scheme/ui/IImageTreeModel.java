@@ -1,5 +1,7 @@
 package de.hswt.hrm.scheme.ui;
 
+import java.util.List;
+
 import de.hswt.hrm.scheme.model.RenderedComponent;
 
 /**
@@ -10,6 +12,6 @@ import de.hswt.hrm.scheme.model.RenderedComponent;
  */
 public interface IImageTreeModel {
     
-    public RenderedComponent[] getImages();
+    public List<RenderedComponent> getImages();
 
 }

@@ -6,6 +6,7 @@ import javax.annotation.PostConstruct;
 
 import org.eclipse.e4.xwt.IConstants;
 import org.eclipse.e4.xwt.XWT;
+import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
@@ -25,8 +26,8 @@ import org.eclipse.swt.widgets.Tree;
 import de.hswt.hrm.scheme.ui.GridDNDManager;
 import de.hswt.hrm.scheme.ui.ImageTreeModelFactory;
 import de.hswt.hrm.scheme.ui.SchemeGrid;
+import de.hswt.hrm.scheme.ui.TreeContentProvider;
 import de.hswt.hrm.scheme.ui.TreeDNDManager;
-import de.hswt.hrm.scheme.ui.TreeManager;
 
 /**
  * This is the Part for the scheme builder frame.
@@ -54,6 +55,9 @@ public class SchemePart {
 			root = (Composite) XWT.load(parent, url);
 			TreeViewer tree = getTree();
 			tree.setContentProvider(new TreeContentProvider());
+			tree.setLabelProvider(new LabelProvider());
+			tree.setInput(ImageTreeModelFactory.create(
+			        parent.getDisplay()).getImages());
 			//new TreeManager(ImageTreeModelFactory.create(parent.getDisplay()),
 			//		 tree);
 			grid = new SchemeGrid(getSchemeComposite(), SWT.NONE, 40, 20, 40);
