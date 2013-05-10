@@ -95,7 +95,7 @@ public class CategoryDao implements ICategoryDao {
                 stmt.setParameter(Fields.NAME, category.getName());
                 stmt.setParameter(Fields.HEIGHT, category.getHeight());
                 stmt.setParameter(Fields.WIDTH, category.getWidth());
-                stmt.setParameter(Fields.DEFAULT_QUANTIFIER, category.getDefaultQualifier());
+                stmt.setParameter(Fields.DEFAULT_QUANTIFIER, category.getDefaultQuantifier());
                 stmt.setParameter(Fields.DEFAULT_BOOL_RATING, category.getDefaultBoolRating());
                 // TODO finish category.getCatalog() first
                 // stmt.setParameter(Fields.CATALOG, category.getCatalog().get().getId());
@@ -112,7 +112,7 @@ public class CategoryDao implements ICategoryDao {
                         // Create new Category with id
                         Category inserted = new Category(id, category.getName(),
                                 category.getHeight(), category.getWidth(),
-                                category.getDefaultQualifier(), category.getDefaultBoolRating());
+                                category.getDefaultQuantifier(), category.getDefaultBoolRating());
                         // TODO finish category.setCatalog() first
                         // inserted.setCatalog(catagory.getCatalog().orNull());
                         return inserted;
@@ -150,10 +150,10 @@ public class CategoryDao implements ICategoryDao {
                 stmt.setParameter(Fields.NAME, category.getName());
                 stmt.setParameter(Fields.HEIGHT, category.getHeight());
                 stmt.setParameter(Fields.WIDTH, category.getWidth());
-                stmt.setParameter(Fields.DEFAULT_QUANTIFIER, category.getDefaultQualifier());
+                stmt.setParameter(Fields.DEFAULT_QUANTIFIER, category.getDefaultQuantifier());
                 stmt.setParameter(Fields.DEFAULT_BOOL_RATING, category.getDefaultBoolRating());
                 // TODO finish category.getCatalog() first
-                // stmt.setParameter(Fields.CATALOG, category.getNote().orNull());
+                // stmt.setParameter(Fields.CATALOG, category.getCatalog().get().getId());
 
                 int affectedRows = stmt.executeUpdate();
                 if (affectedRows != 1) {
