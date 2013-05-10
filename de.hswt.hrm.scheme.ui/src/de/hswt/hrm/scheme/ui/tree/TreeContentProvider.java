@@ -1,18 +1,14 @@
 package de.hswt.hrm.scheme.ui.tree;
 
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
-import com.google.common.base.Function;
-import com.google.common.base.Predicate;
-import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 
 import de.hswt.hrm.scheme.model.Category;
-import de.hswt.hrm.scheme.model.Component;
 import de.hswt.hrm.scheme.model.RenderedComponent;
 
 public class TreeContentProvider implements ITreeContentProvider{
@@ -32,45 +28,37 @@ public class TreeContentProvider implements ITreeContentProvider{
 
     @Override
     public Object[] getElements(Object inputElement) {
-        return getCategorys();
+    	Category[] cats = getCategorys();
+    	SchemeTreeItem[] items = new CategoryTreeItem[cats.length];
+    	for(int i = 0; i < items.length; i++){
+    		items[i] = new CategoryTreeItem(cats[i], getRenderedComponents(cats[i]));
+    	}
+        return items;
     }
 
     @Override
     public Object[] getChildren(final Object parentElement) {
-    	final Class<?> clazz = parentElement.getClass();
-        final Category category = (Category) parentElement;
-        Collection<Component> f = 
-                Collections2.filter(getComponents(), new Predicate<Component>() {
-                    @Override
-                    public boolean apply(Component c){
-                        return category.equals(
-                                c.getCategory());
-                    }
-                });
-        Component[] result = new Component[f.size()];
-        f.toArray(result);
-        return result;
-    }
-    
-    private Collection<Component> getComponents(){
-    	return Collections2.transform(comps, new Function<RenderedComponent, Component>() {
-    		public Component apply(RenderedComponent c){
-    			return c.getComponent();
-    		}
-		});
+    	return ((SchemeTreeItem) parentElement).getChildren();
     }
 
     @Override
     public Object getParent(Object element) {
-        if(element.getClass() == Component.class){
-            return ((Component)element).getCategory();
-        }
-        return null;
+    	return ((SchemeTreeItem) element).getParent();
     }
 
     @Override
     public boolean hasChildren(Object element) {
-        return element.getClass() == Category.class || element.getClass() == Component.class;
+        return ((SchemeTreeItem) element).hasChildren();
+    }
+    
+    private List<RenderedComponent> getRenderedComponents(Category cat){
+    	List<RenderedComponent> result = new ArrayList<RenderedComponent>();
+    	for(RenderedComponent c : comps){
+    		if(c.getComponent().getCategory().equals(cat)){
+    			result.add(c);
+    		}
+    	}
+    	return result;
     }
     
     private Category[] getCategorys(){
