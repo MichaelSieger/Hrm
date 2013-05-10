@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -34,19 +35,11 @@ public class ImageTreeModelMock implements IImageTreeModel {
 	@Override
 	public List<RenderedComponent> getImages() {
 		try{
-			Component[] c = new Component[]
-					{
-					getVentilationComponent(),
-					getFilterComponent(),
-					getFilterComponent2(),
-					getBioMesureComponent()
-					};
-			RenderedComponent[] rc = new RenderedComponent[c.length];
-			for(int i = 0; i < rc.length; i++){
-				rc[i] = ComponentConverter.convert(display, c[i]);
-			}
-			new ArrayList(rc);
-			return rc;
+			return Arrays.asList(
+					ComponentConverter.convert(display, getVentilationComponent()),
+					ComponentConverter.convert(display, getFilterComponent()),
+					ComponentConverter.convert(display, getFilterComponent2()),
+					ComponentConverter.convert(display, getBioMesureComponent()));
 		}catch(Exception e){
 			e.printStackTrace();
 			return null;
