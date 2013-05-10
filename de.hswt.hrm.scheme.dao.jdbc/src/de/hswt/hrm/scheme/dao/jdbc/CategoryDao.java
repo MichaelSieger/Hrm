@@ -26,7 +26,7 @@ public class CategoryDao implements ICategoryDao {
     public Collection<Category> findAll() throws DatabaseException {
         SqlQueryBuilder builder = new SqlQueryBuilder();
         builder.select(TABLE_NAME, Fields.ID, Fields.NAME, Fields.HEIGHT, Fields.WIDTH,
-                Fields.DEFAULT_QUALIFIER, Fields.DEFAULT_BOOL_RATING, Fields.CATALOG);
+                Fields.DEFAULT_QUANTIFIER, Fields.DEFAULT_BOOL_RATING, Fields.CATALOG);
 
         final String query = builder.toString();
 
@@ -51,7 +51,7 @@ public class CategoryDao implements ICategoryDao {
 
         SqlQueryBuilder builder = new SqlQueryBuilder();
         builder.select(TABLE_NAME, Fields.ID, Fields.NAME, Fields.HEIGHT, Fields.WIDTH,
-                Fields.DEFAULT_QUALIFIER, Fields.DEFAULT_BOOL_RATING, Fields.CATALOG);
+                Fields.DEFAULT_QUANTIFIER, Fields.DEFAULT_BOOL_RATING, Fields.CATALOG);
         builder.where(Fields.ID);
 
         final String query = builder.toString();
@@ -86,7 +86,7 @@ public class CategoryDao implements ICategoryDao {
     public Category insert(Category category) throws SaveException {
         SqlQueryBuilder builder = new SqlQueryBuilder();
         builder.insert(TABLE_NAME, Fields.ID, Fields.NAME, Fields.HEIGHT, Fields.WIDTH,
-                Fields.DEFAULT_QUALIFIER, Fields.DEFAULT_BOOL_RATING, Fields.CATALOG);
+                Fields.DEFAULT_QUANTIFIER, Fields.DEFAULT_BOOL_RATING, Fields.CATALOG);
 
         final String query = builder.toString();
 
@@ -95,7 +95,7 @@ public class CategoryDao implements ICategoryDao {
                 stmt.setParameter(Fields.NAME, category.getName());
                 stmt.setParameter(Fields.HEIGHT, category.getHeight());
                 stmt.setParameter(Fields.WIDTH, category.getWidth());
-                stmt.setParameter(Fields.DEFAULT_QUALIFIER, category.getDefaultQualifier());
+                stmt.setParameter(Fields.DEFAULT_QUANTIFIER, category.getDefaultQualifier());
                 stmt.setParameter(Fields.DEFAULT_BOOL_RATING, category.getDefaultBoolRating());
                 // TODO finish category.getCatalog() first
                 // stmt.setParameter(Fields.CATALOG, category.getCatalog().get().getId());
@@ -139,7 +139,7 @@ public class CategoryDao implements ICategoryDao {
 
         SqlQueryBuilder builder = new SqlQueryBuilder();
         builder.update(TABLE_NAME, Fields.ID, Fields.NAME, Fields.HEIGHT, Fields.WIDTH,
-                Fields.DEFAULT_QUALIFIER, Fields.DEFAULT_BOOL_RATING, Fields.CATALOG);
+                Fields.DEFAULT_QUANTIFIER, Fields.DEFAULT_BOOL_RATING, Fields.CATALOG);
         builder.where(Fields.ID);
 
         final String query = builder.toString();
@@ -150,7 +150,7 @@ public class CategoryDao implements ICategoryDao {
                 stmt.setParameter(Fields.NAME, category.getName());
                 stmt.setParameter(Fields.HEIGHT, category.getHeight());
                 stmt.setParameter(Fields.WIDTH, category.getWidth());
-                stmt.setParameter(Fields.DEFAULT_QUALIFIER, category.getDefaultQualifier());
+                stmt.setParameter(Fields.DEFAULT_QUANTIFIER, category.getDefaultQualifier());
                 stmt.setParameter(Fields.DEFAULT_BOOL_RATING, category.getDefaultBoolRating());
                 // TODO finish category.getCatalog() first
                 // stmt.setParameter(Fields.CATALOG, category.getNote().orNull());
@@ -175,7 +175,7 @@ public class CategoryDao implements ICategoryDao {
             String name = rs.getString(Fields.NAME);
             int width = rs.getInt(Fields.WIDTH);
             int heigth = rs.getInt(Fields.HEIGHT);
-            int defaultQualifier = rs.getInt(Fields.DEFAULT_QUALIFIER);
+            int defaultQualifier = rs.getInt(Fields.DEFAULT_QUANTIFIER);
             boolean defaultBoolRating = rs.getBoolean(Fields.DEFAULT_BOOL_RATING);
 
             Category category = new Category(id, name, width, heigth, defaultQualifier,
@@ -194,7 +194,7 @@ public class CategoryDao implements ICategoryDao {
         public static final String NAME = "Category_Name";
         public static final String HEIGHT = "Category_Height";
         public static final String WIDTH = "Category_Width";
-        public static final String DEFAULT_QUALIFIER = "Category_Default_Qualifier";
+        public static final String DEFAULT_QUANTIFIER = "Category_Default_Quantifier";
         public static final String DEFAULT_BOOL_RATING = "Category_Bool_Rating";
         public static final String CATALOG = "Category_Catalog_FK";
     }
