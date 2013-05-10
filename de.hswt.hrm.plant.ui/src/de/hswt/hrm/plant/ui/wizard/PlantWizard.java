@@ -109,7 +109,9 @@ public class PlantWizard extends Wizard {
             //TODO scheme
         }
         plant.setManufactor(manufactor);
-        plant.setConstructionYear(Integer.parseInt(constructionYear));
+        if (!constructionYear.equals("")) {
+            plant.setConstructionYear(Integer.parseInt(constructionYear));
+        }        
         plant.setType(type);
         plant.setAirPerformance(airPerformance);
         plant.setMotorPower(motorPower);
