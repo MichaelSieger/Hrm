@@ -3,6 +3,9 @@ package test;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import org.eclipse.swt.widgets.Display;
 
@@ -29,7 +32,7 @@ public class ImageTreeModelMock implements IImageTreeModel {
 	}
 
 	@Override
-	public RenderedComponent[] getImages() {
+	public List<RenderedComponent> getImages() {
 		try{
 			Component[] c = new Component[]
 					{
@@ -42,6 +45,7 @@ public class ImageTreeModelMock implements IImageTreeModel {
 			for(int i = 0; i < rc.length; i++){
 				rc[i] = ComponentConverter.convert(display, c[i]);
 			}
+			new ArrayList(rc);
 			return rc;
 		}catch(Exception e){
 			e.printStackTrace();
