@@ -66,4 +66,10 @@ public class ComponentTreeItem implements SchemeTreeItem{
 		return null;
 	}
 
+	public RenderedComponent getRenderedComponent() {
+		return c;
+	}
+	
+	
+
 }
