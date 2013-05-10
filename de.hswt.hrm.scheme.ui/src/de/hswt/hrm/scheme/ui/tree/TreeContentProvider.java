@@ -64,7 +64,10 @@ public class TreeContentProvider implements ITreeContentProvider{
     private Category[] getCategorys(){
         List<Category> cats = Lists.newArrayList();
         for(RenderedComponent c : comps){
-            cats.add(c.getComponent().getCategory());
+        	final Category category = c.getComponent().getCategory();
+        	if(!cats.contains(category)){
+        		cats.add(category);
+        	}
         }
         Category[] r = new Category[cats.size()];
         cats.toArray(r);
