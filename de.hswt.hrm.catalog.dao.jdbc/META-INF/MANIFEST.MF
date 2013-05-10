@@ -4,3 +4,9 @@ Bundle-Name: Jdbc
 Bundle-SymbolicName: de.hswt.hrm.catalog.dao.jdbc
 Bundle-Version: 0.0.1.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Import-Package: com.google.common.base,
+ de.hswt.hrm.catalog.dao.core,
+ de.hswt.hrm.catalog.model,
+ de.hswt.hrm.common.database,
+ de.hswt.hrm.common.database.exception,
+ org.apache.commons.dbutils
