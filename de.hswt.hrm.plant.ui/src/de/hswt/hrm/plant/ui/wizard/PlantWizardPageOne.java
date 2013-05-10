@@ -90,7 +90,6 @@ public class PlantWizardPageOne extends WizardPage {
         widgets.put("description", (Text) XWT.findElementByName(container, "description"));
         //TODO place - mandatory?
         //TODO nextInspection / inspectionIntervall ?
-        widgets.put("nextInspection", (Text) XWT.findElementByName(container, "nextInspection"));
         widgets.put("inspectionIntervall", (Text) XWT.findElementByName(container, "inspectionIntervall"));
         //TODO scheme
         return widgets;
