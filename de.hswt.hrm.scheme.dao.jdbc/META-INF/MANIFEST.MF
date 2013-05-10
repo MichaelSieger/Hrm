@@ -5,6 +5,7 @@ Bundle-SymbolicName: de.hswt.hrm.scheme.dao.jdbc
 Bundle-Version: 0.0.1.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Import-Package: com.google.common.base,
+ de.hswt.hrm.catalog.model,
  de.hswt.hrm.common.database,
  de.hswt.hrm.common.database.exception,
  de.hswt.hrm.scheme.dao.core,
