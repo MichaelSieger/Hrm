@@ -28,7 +28,7 @@
 						<FormAttachment numerator="0" offset="200"/>
 					</FormData.right>
 					<FormData.top>
-						<FormAttachment numerator="0" offset="10"/>
+						<FormAttachment numerator="0" offset="40"/>
 					</FormData.top>
 					<FormData.left>
 						<FormAttachment numerator="0" offset="10"/>
@@ -56,4 +56,19 @@
 			</FormData>
 		</Slider.layoutData>
 	</Slider>
+	<Text x:Style="BORDER" x:Name = "searchtext">
+		<Text.layoutData>
+			<FormData>
+				<FormData.left>
+					<FormAttachment numerator="0" offset="10"/>
+				</FormData.left>
+				<FormData.right>
+					<FormAttachment numerator="0" offset="200"/>
+				</FormData.right>
+				<FormData.top>
+					<FormAttachment numerator="0" offset="10"/>
+				</FormData.top>
+			</FormData>
+		</Text.layoutData>
+	</Text>
 </Composite>
