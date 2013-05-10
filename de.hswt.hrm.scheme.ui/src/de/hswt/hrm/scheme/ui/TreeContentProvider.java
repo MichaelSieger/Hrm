@@ -6,6 +6,7 @@ import java.util.List;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
+import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
@@ -36,18 +37,27 @@ public class TreeContentProvider implements ITreeContentProvider{
 
     @Override
     public Object[] getChildren(final Object parentElement) {
+    	final Class<?> clazz = parentElement.getClass();
         final Category category = (Category) parentElement;
-        Collection<RenderedComponent> f = 
-                Collections2.filter(comps, new Predicate<RenderedComponent>() {
+        Collection<Component> f = 
+                Collections2.filter(getComponents(), new Predicate<Component>() {
                     @Override
-                    public boolean apply(RenderedComponent c){
+                    public boolean apply(Component c){
                         return category.equals(
-                                c.getComponent().getCategory());
+                                c.getCategory());
                     }
                 });
-        RenderedComponent[] result = new RenderedComponent[f.size()];
+        Component[] result = new Component[f.size()];
         f.toArray(result);
         return result;
+    }
+    
+    private Collection<Component> getComponents(){
+    	return Collections2.transform(comps, new Function<RenderedComponent, Component>() {
+    		public Component apply(RenderedComponent c){
+    			return c.getComponent();
+    		}
+		});
     }
 
     @Override
@@ -60,7 +70,7 @@ public class TreeContentProvider implements ITreeContentProvider{
 
     @Override
     public boolean hasChildren(Object element) {
-        return element.getClass() == Category.class;
+        return element.getClass() == Category.class || element.getClass() == Component.class;
     }
     
     private Category[] getCategorys(){
