@@ -39,7 +39,7 @@
 				</FormData>
 			</TreeViewer.tree.layoutData>
 		</TreeViewer.tree>
-	</TreeViewer>
+	<TreeViewer.control></TreeViewer.control></TreeViewer>
 	<Slider x:Name = "zoomSlider">
 		<Slider.layoutData>
 			<FormData>
