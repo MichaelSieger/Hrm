@@ -16,13 +16,13 @@ public class Category {
     private String name;
     private int width;
     private int height;
-    private int defaultQualifier;
+    private int defaultQuantifier;
     private boolean defaultBoolRating;
 
     private static final String IS_MANDATORY = "Field is a mandatory.";
     private static final String INVALID_NUMBER = "%d is an invalid number.%n Must be greater 0";
 
-    public Category(int id, String name, int width, int height, int defaultQualifier,
+    public Category(int id, String name, int width, int height, int defaultQuantifier,
             boolean defaultBoolRating) {
 
         this.id = id;
@@ -30,13 +30,13 @@ public class Category {
         setName(name);
         setWidth(width);
         setHeight(height);
-        setDefaultQualifier(defaultQualifier);
+        setDefaultQuantifier(defaultQuantifier);
         setDefaultBoolRating(defaultBoolRating);
     }
 
-    public Category(String name, int width, int height, int defaultQualifier,
+    public Category(String name, int width, int height, int defaultQuantifier,
             boolean defaultBoolRating) {
-        this(-1, name, width, height, defaultQualifier, defaultBoolRating);
+        this(-1, name, width, height, defaultQuantifier, defaultBoolRating);
     }
 
     public String getName() {
@@ -66,13 +66,13 @@ public class Category {
         this.height = height;
     }
 
-    public int getDefaultQualifier() {
-        return defaultQualifier;
+    public int getDefaultQuantifier() {
+        return defaultQuantifier;
     }
 
-    public void setDefaultQualifier(int defaultQualifier) {
-        checkArgument(defaultQualifier > 0, INVALID_NUMBER, defaultQualifier);
-        this.defaultQualifier = defaultQualifier;
+    public void setDefaultQuantifier(int defaultQuantifier) {
+        checkArgument(defaultQuantifier > 0, INVALID_NUMBER, defaultQuantifier);
+        this.defaultQuantifier = defaultQuantifier;
     }
 
     public boolean getDefaultBoolRating() {
@@ -104,7 +104,7 @@ public class Category {
         result = prime * result + id;
         result = prime * result + (defaultBoolRating ? 1231 : 1237);
         result = prime * result + ((name == null) ? 0 : name.hashCode());
-        result = prime * result + defaultQualifier;
+        result = prime * result + defaultQuantifier;
         result = prime * result + width;
         return result;
     }
@@ -137,7 +137,7 @@ public class Category {
         else if (!name.equals(other.name)) {
             return false;
         }
-        if (defaultQualifier != other.defaultQualifier) {
+        if (defaultQuantifier != other.defaultQuantifier) {
             return false;
         }
         if (width != other.width) {
