@@ -10,7 +10,8 @@ import static com.google.common.base.Strings.isNullOrEmpty;
  * 
  */
 public class Category {
-
+    // TODO create category.getCatalog() first
+    // private Catalog catalog;
     private final int id;
     private String name;
     private int width;
@@ -81,6 +82,15 @@ public class Category {
     public void setDefaultBoolRating(boolean defaultBoolRating) {
         this.defaultBoolRating = defaultBoolRating;
     }
+
+    // TODO create category.getCatalog() first
+    // public Optional<Catalog> getCatalog() {
+    // return Optional.fromNullable(catalog);
+    // }
+    //
+    // public void setCatalog(Catalog catalog) {
+    // this.catalog = catalog;
+    // }
 
     public int getId() {
         return id;
