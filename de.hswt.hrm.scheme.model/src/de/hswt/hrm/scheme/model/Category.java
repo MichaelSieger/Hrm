@@ -15,25 +15,27 @@ public class Category {
     private String name;
     private int width;
     private int height;
-    private int qualifier;
-    private boolean isRated;
+    private int defaultQualifier;
+    private boolean defaultBoolRating;
 
     private static final String IS_MANDATORY = "Field is a mandatory.";
     private static final String INVALID_NUMBER = "%d is an invalid number.%n Must be greater 0";
 
-    public Category(int id, String name, int width, int height, int qualifier, boolean isRated) {
+    public Category(int id, String name, int width, int height, int defaultQualifier,
+            boolean defaultBoolRating) {
 
         this.id = id;
 
         setName(name);
         setWidth(width);
         setHeight(height);
-        setQualifier(qualifier);
-        setRated(isRated);
+        setDefaultQualifier(defaultQualifier);
+        setDefaultBoolRating(defaultBoolRating);
     }
 
-    public Category(String name, int width, int height, int qualifier, boolean isRated) {
-        this(-1, name, width, height, qualifier, isRated);
+    public Category(String name, int width, int height, int defaultQualifier,
+            boolean defaultBoolRating) {
+        this(-1, name, width, height, defaultQualifier, defaultBoolRating);
     }
 
     public String getName() {
@@ -63,21 +65,21 @@ public class Category {
         this.height = height;
     }
 
-    public int getQualifier() {
-        return qualifier;
+    public int getDefaultQualifier() {
+        return defaultQualifier;
     }
 
-    public void setQualifier(int qualifier) {
-        checkArgument(qualifier > 0, INVALID_NUMBER, qualifier);
-        this.qualifier = qualifier;
+    public void setDefaultQualifier(int defaultQualifier) {
+        checkArgument(defaultQualifier > 0, INVALID_NUMBER, defaultQualifier);
+        this.defaultQualifier = defaultQualifier;
     }
 
-    public boolean isRated() {
-        return isRated;
+    public boolean getDefaultBoolRating() {
+        return defaultBoolRating;
     }
 
-    public void setRated(boolean isRated) {
-        this.isRated = isRated;
+    public void setDefaultBoolRating(boolean defaultBoolRating) {
+        this.defaultBoolRating = defaultBoolRating;
     }
 
     public int getId() {
@@ -90,9 +92,9 @@ public class Category {
         int result = 1;
         result = prime * result + height;
         result = prime * result + id;
-        result = prime * result + (isRated ? 1231 : 1237);
+        result = prime * result + (defaultBoolRating ? 1231 : 1237);
         result = prime * result + ((name == null) ? 0 : name.hashCode());
-        result = prime * result + qualifier;
+        result = prime * result + defaultQualifier;
         result = prime * result + width;
         return result;
     }
@@ -115,7 +117,7 @@ public class Category {
         if (id != other.id) {
             return false;
         }
-        if (isRated != other.isRated) {
+        if (defaultBoolRating != other.defaultBoolRating) {
             return false;
         }
         if (name == null) {
@@ -125,7 +127,7 @@ public class Category {
         else if (!name.equals(other.name)) {
             return false;
         }
-        if (qualifier != other.qualifier) {
+        if (defaultQualifier != other.defaultQualifier) {
             return false;
         }
         if (width != other.width) {
