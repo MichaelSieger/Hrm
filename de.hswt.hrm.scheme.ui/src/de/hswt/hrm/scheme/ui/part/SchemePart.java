@@ -6,6 +6,10 @@ import javax.annotation.PostConstruct;
 
 import org.eclipse.e4.xwt.IConstants;
 import org.eclipse.e4.xwt.XWT;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.ITreeViewerListener;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.TreeExpansionEvent;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
@@ -209,6 +213,11 @@ public class SchemePart {
 	private void updatePatternFilter(String text){
 		filter.setPattern(text);
 		tree.refresh();
+		if(text.trim().length() == 0){
+			tree.collapseAll();
+		}else{
+			tree.expandAll();
+		}
 	}
 
 }
