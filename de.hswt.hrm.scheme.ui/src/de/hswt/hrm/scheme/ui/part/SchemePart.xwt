@@ -20,24 +20,22 @@
 			</FormData>
 		</ScrolledComposite.layoutData>
 	</ScrolledComposite>
-	<FilteredTree x:Style="BORDER" x:Name="tree">
-		<FilteredTree.tree>
-			<FilteredTree.tree.layoutData>
-				<FormData>
-					<FormData.right>
-						<FormAttachment numerator="0" offset="200"/>
-					</FormData.right>
-					<FormData.top>
-						<FormAttachment numerator="0" offset="40"/>
-					</FormData.top>
-					<FormData.left>
-						<FormAttachment numerator="0" offset="10"/>
-					</FormData.left>
-					<FormData.bottom>
-						<FormAttachment numerator="100" offset="-10"/>
-					</FormData.bottom>
-				</FormData>
-			</FilteredTree.tree.layoutData>
+	<Composite x:Style="BORDER" x:Name="treecontainer">
+		<Composite.tree>
+			<FormData>
+				<FormData.right>
+					<FormAttachment numerator="0" offset="200"/>
+				</FormData.right>
+				<FormData.top>
+					<FormAttachment numerator="0" offset="40"/>
+				</FormData.top>
+				<FormData.left>
+					<FormAttachment numerator="0" offset="10"/>
+				</FormData.left>
+				<FormData.bottom>
+					<FormAttachment numerator="100" offset="-10"/>
+				</FormData.bottom>
+			</FormData>
 		</FilteredTree.tree>
 	<FilteredTree.control></FilteredTree.control></FilteredTree>
 	<Slider x:Name = "zoomSlider">
