@@ -37,6 +37,7 @@ public class Component {
         this.rightLeftImage = rightLeftImage;
         this.upDownImage = upDownImage;
         this.downUpImage = downUpImage;
+        setCategory(category);
         setQuantifier(quantifier);
         setBoolRating(boolRating);
         checkArgument(
