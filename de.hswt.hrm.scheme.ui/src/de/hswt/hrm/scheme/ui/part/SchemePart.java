@@ -154,7 +154,7 @@ public class SchemePart {
 		formData.top = new FormAttachment(0, 10);
 		formData.left = new FormAttachment(0, 10);
 		formData.right = new FormAttachment(0, 200);
-		formData.bottom = new FormAttachment(100, -10);
+		formData.bottom = new FormAttachment(100, -50);
 		filteredTree.setLayoutData(formData);
 		tree = filteredTree.getViewer();
 		tree.setContentProvider(new TreeContentProvider());
