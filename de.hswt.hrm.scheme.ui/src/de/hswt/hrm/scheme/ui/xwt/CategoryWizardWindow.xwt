@@ -1,0 +1,24 @@
+<Composite xmlns="http://www.eclipse.org/xwt/presentation" xmlns:x="http://www.eclipse.org/xwt" x:Class="de.hswt.hrm.scheme.ui.xwt.CategoryWizardWindow" xmlns:p1="clr-namespace:java.lang">
+	<Composite.layout>
+		<GridLayout numColumns="3"/>
+	</Composite.layout>
+	<Section text="Pflichtfelder" x:Style="(p1:Section).EXPANDED | (p1:Section).TITLE_BAR" x:Name="Mandatory">
+		<Section.layoutData>
+			<GridData grabExcessHorizontalSpace="true" widthHint="277" horizontalAlignment="FILL" horizontalSpan="3"/>
+		</Section.layoutData>
+		<Section.client>
+			<Composite>
+				<Composite.layout>
+					<GridLayout numColumns="4"/>
+				</Composite.layout>
+				<Label text="Bezeichnung: "/>
+				<Text x:Style="BORDER" x:Name="description">
+					<Text.layoutData>
+						<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
+					</Text.layoutData>
+				</Text>
+			</Composite>
+		</Section.client>	
+	</Section>
+</Composite>
+<!-- Forms API -->
