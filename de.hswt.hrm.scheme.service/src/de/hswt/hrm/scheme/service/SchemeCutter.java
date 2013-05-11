@@ -24,7 +24,7 @@ public class SchemeCutter {
 		}
 		for(SchemeComponent c : comps){
 			SchemeComponent nComp = new SchemeComponent(
-					c.getX() - minX, c.getY() - minY, c.getDirection());
+					c.getX() - minX, c.getY() - minY, c.getDirection(), c.getComponent());
 			result.add(nComp);
 		}
 		return result;
