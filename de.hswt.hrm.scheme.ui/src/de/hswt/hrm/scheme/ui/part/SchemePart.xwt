@@ -24,9 +24,6 @@
 	<Slider x:Name = "zoomSlider">
 		<Slider.layoutData>
 			<FormData>
-				<FormData.top>
-					<FormAttachment numerator="0" offset="274"/>
-				</FormData.top>
 
 				<FormData.left>
 					<FormAttachment numerator="100" offset="-200"/>
