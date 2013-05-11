@@ -24,27 +24,6 @@ public class SchemeTreePatternFilter extends PatternFilter{
 	protected boolean isLeafMatch(Viewer viewer, Object element) {
 		return hasParentMatch((SchemeTreeItem) element);
 	}
-	
-	/**
-	 * Does the item or any of the children match the search word?
-	 * 
-	 * @param item
-	 * @return
-	 */
-	private boolean hasChildMatch(SchemeTreeItem item){
-		if(wordMatches(item.getText())){
-			return true;
-		}
-		SchemeTreeItem[] childs = item.getChildren();
-		if(childs != null){
-			for(SchemeTreeItem c : childs){
-				if(hasChildMatch(c)){
-					return true;
-				}
-			}
-		}
-		return false;
-	}
 
 	/**
 	 * Does the item or any of the children match the search word?

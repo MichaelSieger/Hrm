@@ -3,8 +3,6 @@ package de.hswt.hrm.scheme.ui.tree;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 
-import de.hswt.hrm.scheme.model.Component;
-
 /**
  * Filters the tree by Component names
  * 
