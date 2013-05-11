@@ -4,17 +4,25 @@ import org.eclipse.swt.graphics.Image;
 
 import de.hswt.hrm.scheme.ui.DirectedRenderedComponent;
 
-public interface SchemeTreeItem {
+public abstract class SchemeTreeItem {
 	
-	public SchemeTreeItem[] getChildren();
+	private final SchemeTreeItem parent;
 	
-	public boolean hasChildren();
+	public SchemeTreeItem(SchemeTreeItem parent){
+		this.parent = parent;
+	}
 	
-	public SchemeTreeItem getParent();
+	public abstract SchemeTreeItem[] getChildren();
 	
-	public String getText();
+	public abstract boolean hasChildren();
 	
-	public Image getImage();
+	public SchemeTreeItem getParent(){
+		return parent;
+	}
 	
-	public DirectedRenderedComponent getDragItem();
+	public abstract String getText();
+	
+	public abstract Image getImage();
+	
+	public abstract DirectedRenderedComponent getDragItem();
 }

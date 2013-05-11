@@ -15,12 +15,13 @@ import de.hswt.hrm.scheme.ui.DirectedRenderedComponent;
  * @author Michael Sieger
  *
  */
-public class CategoryTreeItem implements SchemeTreeItem{
+public class CategoryTreeItem extends SchemeTreeItem{
 	
 	private final Category c;
 	private final Collection<RenderedComponent> renComps;
 	
 	public CategoryTreeItem(Category c, Collection<RenderedComponent> renComps){
+		super(null);
 		this.c = c;
 		this.renComps = renComps;
 	}
@@ -31,7 +32,7 @@ public class CategoryTreeItem implements SchemeTreeItem{
 		Iterator<RenderedComponent> it = renComps.iterator();
 		for(int i = 0; i < cTreeItems.length; i++){
 			RenderedComponent c = it.next();
-			cTreeItems[i] = new ComponentTreeItem(c);
+			cTreeItems[i] = new ComponentTreeItem(this, c);
 		}
 		return cTreeItems;
 	}

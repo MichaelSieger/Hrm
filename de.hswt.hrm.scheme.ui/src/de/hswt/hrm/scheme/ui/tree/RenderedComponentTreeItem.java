@@ -12,12 +12,13 @@ import de.hswt.hrm.scheme.ui.DirectedRenderedComponent;
  * @author Michael Sieger
  *
  */
-public class RenderedComponentTreeItem implements SchemeTreeItem{
+public class RenderedComponentTreeItem extends SchemeTreeItem{
 	
 	private final RenderedComponent comp;
 	private final Direction dir;
 	
-	public RenderedComponentTreeItem(RenderedComponent comp, Direction dir){
+	public RenderedComponentTreeItem(ComponentTreeItem parent, RenderedComponent comp, Direction dir){
+		super(parent);
 		this.comp = comp;
 		this.dir = dir;
 	}
@@ -30,11 +31,6 @@ public class RenderedComponentTreeItem implements SchemeTreeItem{
 	@Override
 	public boolean hasChildren() {
 		return false;
-	}
-
-	@Override
-	public SchemeTreeItem getParent() {
-		return null;
 	}
 
 	@Override

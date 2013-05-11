@@ -15,11 +15,12 @@ import de.hswt.hrm.scheme.ui.DirectedRenderedComponent;
  * @author Michael Sieger
  *
  */
-public class ComponentTreeItem implements SchemeTreeItem{
+public class ComponentTreeItem extends SchemeTreeItem{
 	
 	private final RenderedComponent c;
 	
-	public ComponentTreeItem(RenderedComponent c){
+	public ComponentTreeItem(CategoryTreeItem parent, RenderedComponent c){
+		super(parent);
 		this.c = c;
 	}
 
@@ -37,18 +38,13 @@ public class ComponentTreeItem implements SchemeTreeItem{
 	
 	private void addDirection(List<SchemeTreeItem> list, Direction d){
 		if(c.getByDirection(d) != null){
-			list.add(new RenderedComponentTreeItem(c, d));
+			list.add(new RenderedComponentTreeItem(this, c, d));
 		}
 	}
 
 	@Override
 	public boolean hasChildren() {
 		return true;
-	}
-
-	@Override
-	public SchemeTreeItem getParent() {
-		return null;
 	}
 
 	@Override
