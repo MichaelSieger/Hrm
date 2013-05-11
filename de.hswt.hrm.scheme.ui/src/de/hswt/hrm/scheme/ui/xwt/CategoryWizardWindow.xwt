@@ -2,7 +2,7 @@
 	<Composite.layout>
 		<GridLayout numColumns="3"/>
 	</Composite.layout>
-	<Section text="Pflichtfelder" x:Style="(p1:Section).EXPANDED | (p1:Section).TITLE_BAR" x:Name="Mandatory">
+	<Section text="Allgemein" x:Style="(p1:Section).EXPANDED | (p1:Section).TITLE_BAR" x:Name="Mandatory">
 		<Section.layoutData>
 			<GridData grabExcessHorizontalSpace="true" widthHint="277" horizontalAlignment="FILL" horizontalSpan="3"/>
 		</Section.layoutData>
@@ -11,8 +11,42 @@
 				<Composite.layout>
 					<GridLayout numColumns="4"/>
 				</Composite.layout>
-				<Label text="Bezeichnung: "/>
-				<Text x:Style="BORDER" x:Name="description">
+				<Label text="Name: "/>
+				<Text x:Style="BORDER" x:Name="name">
+					<Text.layoutData>
+						<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
+					</Text.layoutData>
+				</Text>
+				<Label text="Gewichtung: "/>
+				<Text x:Style="BORDER" x:Name="defaultQuantifier">
+					<Text.layoutData>
+						<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
+					</Text.layoutData>
+				</Text>
+				<Label/>
+				<Label/>
+				<Label/>
+				<Button x:Style="CHECK" x:Name="defaultBoolRating" text="wird bewertet"/>
+				</Composite>
+		</Section.client>	
+	</Section>
+		<Section text="Schemaeditor" x:Style="(p1:Section).EXPANDED | (p1:Section).TITLE_BAR" x:Name="Schemeeditor">
+		<Section.layoutData>
+			<GridData grabExcessHorizontalSpace="true" widthHint="277" horizontalAlignment="FILL" horizontalSpan="3"/>
+		</Section.layoutData>
+		<Section.client>
+			<Composite>
+				<Composite.layout>
+					<GridLayout numColumns="4"/>
+				</Composite.layout>
+				<Label text="Breite: "/>
+				<Text x:Style="BORDER" x:Name="width">
+					<Text.layoutData>
+						<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
+					</Text.layoutData>
+				</Text>
+				<Label text="Höhe: "/>
+				<Text x:Style="BORDER" x:Name="height">
 					<Text.layoutData>
 						<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
 					</Text.layoutData>
