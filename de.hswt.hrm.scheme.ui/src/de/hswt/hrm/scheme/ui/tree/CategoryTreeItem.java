@@ -21,6 +21,9 @@ public class CategoryTreeItem extends SchemeTreeItem{
 	private final Collection<RenderedComponent> renComps;
 	
 	public CategoryTreeItem(Category c, Collection<RenderedComponent> renComps){
+		/*
+		 * Category is top level -> no parent
+		 */
 		super(null);
 		this.c = c;
 		this.renComps = renComps;

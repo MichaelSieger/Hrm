@@ -11,8 +11,17 @@ import com.google.common.collect.Lists;
 import de.hswt.hrm.scheme.model.Category;
 import de.hswt.hrm.scheme.model.RenderedComponent;
 
+/**
+ * Implements the ITreeContentProvider Interface for the SchemeTree.
+ * 
+ * @author Michael Sieger
+ *
+ */
 public class TreeContentProvider implements ITreeContentProvider{
     
+	/**
+	 * A List of all RenderedComponents
+	 */
     private List<RenderedComponent> comps;
 
     @Override
@@ -51,6 +60,10 @@ public class TreeContentProvider implements ITreeContentProvider{
         return ((SchemeTreeItem) element).hasChildren();
     }
     
+    /**
+     * @param cat The Category
+     * @return All RenderedComponents with this Category
+     */
     private List<RenderedComponent> getRenderedComponents(Category cat){
     	List<RenderedComponent> result = new ArrayList<RenderedComponent>();
     	for(RenderedComponent c : comps){
@@ -61,6 +74,11 @@ public class TreeContentProvider implements ITreeContentProvider{
     	return result;
     }
     
+    /**
+     * Returns all categorys bases on those in comps
+     * 
+     * @return 
+     */
     private Category[] getCategorys(){
         List<Category> cats = Lists.newArrayList();
         for(RenderedComponent c : comps){

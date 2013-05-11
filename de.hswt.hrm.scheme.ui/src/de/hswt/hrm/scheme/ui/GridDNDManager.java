@@ -1,7 +1,5 @@
 package de.hswt.hrm.scheme.ui;
 
-import java.awt.Toolkit;
-
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.dnd.DragSourceListener;
@@ -10,7 +8,7 @@ import org.eclipse.swt.dnd.DropTargetListener;
 import org.eclipse.swt.graphics.Point;
 
 /**
- * This class manages the drag and drop in the intern of the SchemeGrid
+ * This class manages the drag and drop in the intern of the SchemeGrid.
  * 
  * @author Michael Sieger
  *
@@ -45,6 +43,10 @@ public class GridDNDManager implements DragSourceListener, DropTargetListener{
 	
 	@Override
 	public void dragFinished(DragSourceEvent ev) {
+		/*
+		 * dragging is not null, if it was dropped outside of the grid.
+		 * Thow it away in this case.
+		 */
 		dragging = null;
 	}
 
@@ -61,7 +63,6 @@ public class GridDNDManager implements DragSourceListener, DropTargetListener{
                 grid.setImageAtPixel(dragging.getRenderedComponent(), dragging.getDirection(), 
                 						x, y);
             } catch (PlaceOccupiedException | IllegalArgumentException e) {
-                Toolkit.getDefaultToolkit().beep();
                 try {
 					grid.setImage(dragging);
 				} catch (PlaceOccupiedException | IllegalArgumentException e1) {

@@ -24,6 +24,10 @@ public class TreeDNDManager implements DragSourceListener, DropTargetListener{
     private final TreeViewer tree;
     private final SchemeGrid grid;
 
+    /**
+     * The item that is dragged at the moment. 
+     * Null if nothing is dragged.
+     */
     private DirectedRenderedComponent dragging;
 
     public TreeDNDManager(TreeViewer tree, SchemeGrid grid) {
@@ -47,12 +51,19 @@ public class TreeDNDManager implements DragSourceListener, DropTargetListener{
     @Override
     public void dragSetData(DragSourceEvent ev) {
     	if(dragging != null){
+    		/*
+    		 * SWT wants us to set this field.
+    		 */
     		ev.data = " ";
     	}
     }
 
     @Override
     public void dragFinished(DragSourceEvent arg0) {
+    	/*
+    	 * dragging is not null, if the item was not dropped in the schemeGrid.
+    	 * Throw it away in this case.
+    	 */
     	dragging = null;
     }
 
@@ -73,8 +84,7 @@ public class TreeDNDManager implements DragSourceListener, DropTargetListener{
             }
         }
         /*
-         * Else case means, that an item from an different gui was dropped which is not
-         * allowed
+         * Else case means, that an item from an different gui was dropped which is ignored
          */
     }
 

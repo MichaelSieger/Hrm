@@ -6,10 +6,6 @@ import javax.annotation.PostConstruct;
 
 import org.eclipse.e4.xwt.IConstants;
 import org.eclipse.e4.xwt.XWT;
-import org.eclipse.jface.viewers.ISelectionChangedListener;
-import org.eclipse.jface.viewers.ITreeViewerListener;
-import org.eclipse.jface.viewers.SelectionChangedEvent;
-import org.eclipse.jface.viewers.TreeExpansionEvent;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
@@ -49,8 +45,14 @@ import de.hswt.hrm.scheme.ui.tree.TreeContentProvider;
  */
 public class SchemePart {
 	
+	/**
+	 * The DND transfer type
+	 */
 	private static final Transfer[] TRANSFER = new Transfer[] {TextTransfer.getInstance()};
 	
+	/**
+	 * The background color of the scheme editor.
+	 */
 	private static final RGB EDITOR_BACKGROUND = new RGB(255, 255, 255);
 	
 	private static final int DRAG_OPS = DND.DROP_COPY, DROP_OPS = DND.DROP_COPY;
@@ -140,6 +142,9 @@ public class SchemePart {
 	}
 	
 	private void initTree(){
+		/*
+		 * A FilteredTree cant be created in XWT, so its done here
+		 */
 		filter = new SchemeTreePatternFilter();
 		final FilteredTree filteredTree = new FilteredTree(root, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL, 
 				filter, true);
