@@ -24,6 +24,9 @@
 	<Slider x:Name = "zoomSlider">
 		<Slider.layoutData>
 			<FormData>
+				<FormData.top>
+					<FormAttachment numerator="0" offset="274"/>
+				</FormData.top>
 
 				<FormData.left>
 					<FormAttachment numerator="100" offset="-200"/>
@@ -37,6 +40,32 @@
 			</FormData>
 		</Slider.layoutData>
 	</Slider>
+	<Button text="Speichern" x:Name="savebtn">
+		<Button.layoutData>
+			<FormData>
+
+				<FormData.bottom>
+					<FormAttachment numerator="100" offset="-10"/>
+				</FormData.bottom>
+				<FormData.left>
+					<FormAttachment numerator="0" offset="10"/>
+				</FormData.left>
+			</FormData>
+		</Button.layoutData>
+	</Button>
+	<Button text="Abbrechen" x:Name="abortbtn">
+		<Button.layoutData>
+			<FormData>
+
+				<FormData.bottom>
+					<FormAttachment numerator="100" offset="-10" />
+				</FormData.bottom>
+				<FormData.left>
+					<FormAttachment control="{Binding ElementName=savebtn}" offset="5"/>
+				</FormData.left>
+			</FormData>
+		</Button.layoutData>
+	</Button>
 
 
 </Composite>
