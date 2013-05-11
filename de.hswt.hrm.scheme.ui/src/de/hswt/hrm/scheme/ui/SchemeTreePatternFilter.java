@@ -14,11 +14,6 @@ import de.hswt.hrm.scheme.ui.tree.SchemeTreeItem;
  *
  */
 public class SchemeTreePatternFilter extends PatternFilter{
-	
-	@Override
-	protected boolean isParentMatch(Viewer viewer, Object element) {
-		return super.isParentMatch(viewer, element);
-	}
 
 	@Override
 	protected boolean isLeafMatch(Viewer viewer, Object element) {
