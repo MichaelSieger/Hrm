@@ -16,6 +16,8 @@ import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseWheelListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
@@ -124,6 +126,13 @@ public class SchemePart {
 		grid = new SchemeGrid(getSchemeComposite(), SWT.NONE, 40, 20, 40);
 		grid.setBackground(new Color(root.getDisplay(), EDITOR_BACKGROUND));
 		getSchemeComposite().setContent(grid);
+		grid.addMouseWheelListener(new MouseWheelListener() {
+			
+			@Override
+			public void mouseScrolled(MouseEvent e) {
+				addZoom(e.count);
+			}
+		});
 	}
 	
 	private void initTree(){
@@ -164,6 +173,16 @@ public class SchemePart {
 			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {}
 		});
+		updateZoom();
+	}
+	
+	/*
+	 * setter
+	 */
+	
+	private void addZoom(int amount){
+		Slider slider = getZoomSlider();
+		slider.setSelection(slider.getSelection() + amount);
 		updateZoom();
 	}
 	
