@@ -45,22 +45,33 @@ public class SchemePart {
 	
 	private static final Transfer[] TRANSFER = new Transfer[] {TextTransfer.getInstance()};
 	
-	private static final RGB WHITE = new RGB(255, 255, 255);
+	private static final RGB EDITOR_BACKGROUND = new RGB(255, 255, 255);
 	
 	private static final int DRAG_OPS = DND.DROP_COPY, DROP_OPS = DND.DROP_COPY;
 	
+	/**
+	 * The pixel per grid range. Defines how far you can zoom in and out
+	 */
 	private static final int MIN_PPG = 20, MAX_PPG = 70;
 
+	/**
+	 * The topmost gui parent
+	 */
 	private Composite root;
-	
+
 	private SchemeGrid grid;
 	
 	private TreeViewer tree;
 	
+	/**
+	 * The PatternFilter defines which TreeItems are visible for a given search pattern
+	 */
 	private PatternFilter filter;
 	
+	/*
+	 * DND items for the grid
+	 */
 	private DragSource gridDragSource;
-	
 	private DropTarget gridDropTarget;
 
 	@PostConstruct
@@ -76,12 +87,16 @@ public class SchemePart {
 			initGridDragSource();
 	        initTreeDND();
 			initGridDND();
-			createSlider();
+			initSlider();
 
 		} catch (Throwable e) {
 			throw new Error("Unable to load ", e);
 		}
 	}
+	
+	/*
+	 * init gui elements
+	 */
 	
 	private void initGridDragSource(){
         gridDragSource = new DragSource(grid, DRAG_OPS);
@@ -107,7 +122,7 @@ public class SchemePart {
 	
 	private void initSchemeGrid(){
 		grid = new SchemeGrid(getSchemeComposite(), SWT.NONE, 40, 20, 40);
-		grid.setBackground(new Color(root.getDisplay(), WHITE));
+		grid.setBackground(new Color(root.getDisplay(), EDITOR_BACKGROUND));
 		getSchemeComposite().setContent(grid);
 	}
 	
@@ -134,16 +149,8 @@ public class SchemePart {
 		tree.setInput(ImageTreeModelFactory.create(
 		        root.getDisplay()).getImages());
 	}
-
-	private Slider getZoomSlider(){
-		return (Slider) XWT.findElementByName(root, "zoomSlider");
-	}
-
-	private ScrolledComposite getSchemeComposite() {
-		return (ScrolledComposite) XWT.findElementByName(root, "schemeComposite");
-	}
-
-	private void createSlider(){
+	
+	private void initSlider(){
 		Slider zoomSlider = getZoomSlider();
 		zoomSlider.setMaximum(MAX_PPG);
 		zoomSlider.setMinimum(MIN_PPG);
@@ -159,7 +166,23 @@ public class SchemePart {
 		});
 		updateZoom();
 	}
+	
+	/*
+	 * getter
+	 */
 
+	private Slider getZoomSlider(){
+		return (Slider) XWT.findElementByName(root, "zoomSlider");
+	}
+
+	private ScrolledComposite getSchemeComposite() {
+		return (ScrolledComposite) XWT.findElementByName(root, "schemeComposite");
+	}
+
+	/*
+	 * updates
+	 */
+	
 	private void updateZoom(){
 		grid.setPixelPerGrid(getZoomSlider().getSelection());
 	}
