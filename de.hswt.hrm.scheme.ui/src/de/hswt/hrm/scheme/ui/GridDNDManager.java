@@ -18,6 +18,10 @@ import org.eclipse.swt.graphics.Point;
 public class GridDNDManager implements DragSourceListener, DropTargetListener{
 	
 	private final SchemeGrid grid;
+	
+	/**
+	 * The item that is dragged at the moment. Null if no drag is running.
+	 */
 	private SchemeGridItem dragging;
 	
 	public GridDNDManager(SchemeGrid grid){
@@ -32,6 +36,9 @@ public class GridDNDManager implements DragSourceListener, DropTargetListener{
 	@Override
 	public void dragSetData(DragSourceEvent ev) {
 		if(dragging != null){
+			/*
+			 * SWT wants the data field to be filled
+			 */
 			ev.data = " ";
 		}
 	}
