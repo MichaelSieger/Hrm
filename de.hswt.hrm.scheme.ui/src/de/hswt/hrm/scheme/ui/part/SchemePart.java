@@ -6,9 +6,7 @@ import javax.annotation.PostConstruct;
 
 import org.eclipse.e4.xwt.IConstants;
 import org.eclipse.e4.xwt.XWT;
-import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TreeViewer;
-import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.dnd.DND;
@@ -22,22 +20,19 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.RGB;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Slider;
-import org.eclipse.swt.widgets.Text;
-import org.eclipse.swt.widgets.Tree;
 import org.eclipse.ui.dialogs.FilteredTree;
 import org.eclipse.ui.dialogs.PatternFilter;
 
 import de.hswt.hrm.scheme.ui.GridDNDManager;
 import de.hswt.hrm.scheme.ui.SchemeGrid;
+import de.hswt.hrm.scheme.ui.SchemeTreePatternFilter;
 import de.hswt.hrm.scheme.ui.TreeDNDManager;
 import de.hswt.hrm.scheme.ui.tree.ImageTreeModelFactory;
 import de.hswt.hrm.scheme.ui.tree.SchemeTreeLabelProvider;
-import de.hswt.hrm.scheme.ui.tree.SchemeTreeViewerFilter;
 import de.hswt.hrm.scheme.ui.tree.TreeContentProvider;
 
 /**
@@ -47,8 +42,6 @@ import de.hswt.hrm.scheme.ui.tree.TreeContentProvider;
  *
  */
 public class SchemePart {
-	
-	private static final String SEARCH_TEXT = "Suche";
 	
 	private static final Transfer[] TRANSFER = new Transfer[] {TextTransfer.getInstance()};
 	
@@ -103,7 +96,7 @@ public class SchemePart {
 	}
 	
 	private void initTree(){
-		filter = new PatternFilter();
+		filter = new SchemeTreePatternFilter();
 		final FilteredTree filteredTree = new FilteredTree(root, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL, 
 				filter, true);
 		filteredTree.getFilterControl().addModifyListener(new ModifyListener() {
