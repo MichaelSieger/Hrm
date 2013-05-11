@@ -3,6 +3,8 @@ package test;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
+import java.util.List;
 
 import org.eclipse.swt.widgets.Display;
 
@@ -11,7 +13,7 @@ import de.hswt.hrm.scheme.model.Category;
 import de.hswt.hrm.scheme.model.Component;
 import de.hswt.hrm.scheme.model.RenderedComponent;
 import de.hswt.hrm.scheme.service.ComponentConverter;
-import de.hswt.hrm.scheme.ui.IImageTreeModel;
+import de.hswt.hrm.scheme.ui.tree.IImageTreeModel;
 
 /**
  * A Mock for the grid image tree data.
@@ -29,20 +31,13 @@ public class ImageTreeModelMock implements IImageTreeModel {
 	}
 
 	@Override
-	public RenderedComponent[] getImages() {
+	public List<RenderedComponent> getImages() {
 		try{
-			Component[] c = new Component[]
-					{
-					getVentilationComponent(),
-					getFilterComponent(),
-					getFilterComponent2(),
-					getBioMesureComponent()
-					};
-			RenderedComponent[] rc = new RenderedComponent[c.length];
-			for(int i = 0; i < rc.length; i++){
-				rc[i] = ComponentConverter.convert(display, c[i]);
-			}
-			return rc;
+			return Arrays.asList(
+					ComponentConverter.convert(display, getVentilationComponent()),
+					ComponentConverter.convert(display, getFilterComponent()),
+					ComponentConverter.convert(display, getFilterComponent2()),
+					ComponentConverter.convert(display, getBioMesureComponent()));
 		}catch(Exception e){
 			e.printStackTrace();
 			return null;

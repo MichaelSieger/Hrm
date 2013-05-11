@@ -14,17 +14,19 @@ public class SchemeComponent {
     private int x;
     private int y;
     private Direction direction;
+    private Component component;
     
     
-    public SchemeComponent(int id, int x, int y, Direction direction) {
+    public SchemeComponent(int id, int x, int y, Direction direction, Component component) {
         this.id = id;
         setX(x);
         setY(y);
         setDirection(direction);
+        setComponent(component);
     }
     
-    public SchemeComponent(int x, int y, Direction direction){
-        this(-1, x, y, direction);
+    public SchemeComponent(int x, int y, Direction direction, Component component){
+        this(-1, x, y, direction, component);
     }
 
     public Direction getDirection() {
@@ -56,6 +58,16 @@ public class SchemeComponent {
     public void setY(int y) {
         this.y = y;
     }
+
+	public Component getComponent() {
+		return component;
+	}
+
+	public void setComponent(Component component) {
+		checkNotNull(component);
+		this.component = component;
+	}
+    
     
     
 }

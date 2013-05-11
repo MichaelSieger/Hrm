@@ -44,12 +44,22 @@ public class SchemeGrid extends Canvas{
       
     }
 
+    /**
+     * Draws the widget into this GC object
+     * 
+     * @param gc
+     */
     private void draw(GC gc) {
         drawHorizontalLines(gc);
         drawVerticalLines(gc);
         drawImages(gc);
     }
 
+    /**
+     * Draws all images
+     * 
+     * @param gc
+     */
     private void drawImages(GC gc) {
         for(SchemeGridItem item : images){
             drawImage(gc, 
@@ -59,6 +69,13 @@ public class SchemeGrid extends Canvas{
         }
     }
 
+    /**
+     * Draws a single image.
+     * 
+     * @param gc
+     * @param image The image
+     * @param rec The space where the image shall be drawn
+     */
     private void drawImage(GC gc, Image image, Rectangle rec) {
         final float quadW = getQuadWidth();
         final float quadH = getQuadHeight();
@@ -68,12 +85,17 @@ public class SchemeGrid extends Canvas{
         		0, 
         		imageBounds.width, 
         		imageBounds.height, 
-        		Math.round(quadW * rec.x), 
-        		Math.round(quadH * rec.y),
-                Math.round(quadW * rec.width), 
-                Math.round(quadH * rec.height));
+        		Math.round(quadW * rec.x) + 1, 
+        		Math.round(quadH * rec.y) + 1,
+                Math.round(quadW * rec.width) - 1, 
+                Math.round(quadH * rec.height) - 1);
     }
 
+    /**
+     * Draws the horizontal lines. One line per gridbox.
+     * 
+     * @param gc
+     */
     private void drawHorizontalLines(GC gc) {
         Rectangle rec = this.getBounds();
         final float quadH = getQuadHeight();
@@ -83,7 +105,12 @@ public class SchemeGrid extends Canvas{
         }
         gc.drawLine(0, rec.height-1, rec.width, rec.height-1);
     }
-
+    
+    /**
+     * Draws the vertical lines. One line per gridbox.
+     * 
+     * @param gc
+     */
     private void drawVerticalLines(GC gc) {
         Rectangle rec = this.getBounds();
         final float quadW = getQuadWidth();
@@ -94,10 +121,16 @@ public class SchemeGrid extends Canvas{
         gc.drawLine(rec.width-1, 0, rec.width-1, rec.height);
     }
 
+    /**
+     * @return The pixel width of a gridbox
+     */
     private float getQuadWidth() {
         return ((float) getBounds().width) / width;
     }
-
+    
+    /**
+     * @return The pixel height of a gridbox
+     */
     private float getQuadHeight() {
         return ((float) getBounds().height) / height;
     }
@@ -126,10 +159,8 @@ public class SchemeGrid extends Canvas{
      * The image is placed at the given grid position.
      * Throws an IllegalArgumentException if the image is outside of the grid
      * 
-     * @param item
-     * @param x
-     * @param y
-     * @throws PlaceOccupiedException
+     * @param item The item to be placed
+     * @throws PlaceOccupiedException If the space is occupied already
      */
     public void setImage(SchemeGridItem item) throws PlaceOccupiedException {
     	Rectangle r = item.getBoundingBox();
@@ -148,10 +179,11 @@ public class SchemeGrid extends Canvas{
      * The image is placed at the given position in pixel.
      * The image snaps to the nearest grid position.
      * 
-     * @param image
-     * @param x
-     * @param y
-     * @throws PlaceOccupiedException
+     * @param image The item to be placed
+     * @param direction The rotation direction of the image
+     * @param x The x position in pixel
+     * @param y The y position in pixel
+     * @throws PlaceOccupiedException If the space is occupied already
      */
     public void setImageAtPixel(RenderedComponent image, Direction direction, int x, int y) throws PlaceOccupiedException{
     	setImage(new SchemeGridItem(image, direction, getGridX(x), getGridY(y)));
@@ -194,6 +226,11 @@ public class SchemeGrid extends Canvas{
 		return removeImage(getGridX(x), getGridY(y));
 	}
 
+	/**
+	 * Sets the pixel per grid value.
+	 * 
+	 * @param ppg how many pixel does a gridbox use
+	 */
 	public void setPixelPerGrid(int ppg) {
 		setSize(width*ppg, height*ppg);
 	}
