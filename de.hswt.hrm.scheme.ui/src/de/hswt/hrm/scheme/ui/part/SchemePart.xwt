@@ -24,6 +24,7 @@
 	<Slider x:Name = "zoomSlider">
 		<Slider.layoutData>
 			<FormData>
+
 				<FormData.left>
 					<FormAttachment numerator="100" offset="-200"/>
 				</FormData.left>
@@ -54,22 +55,5 @@
 			</FormData>
 		</Text.layoutData>
 	</Text>
-	<Composite>
-		<Composite.layoutData>
-			<FormData>
-				<FormData.bottom>
-					<FormAttachment numerator="100" offset="-10"/>
-				</FormData.bottom>
-				<FormData.left>
-					<FormAttachment numerator="0" offset="10"/>
-				</FormData.left>
-				<FormData.right>
-					<FormAttachment numerator="0" offset="200"/>
-				</FormData.right>
-				<FormData.top>
-					<FormAttachment numerator="0" offset="10"/>
-				</FormData.top>
-			</FormData>
-		</Composite.layoutData>
-	</Composite>
+
 </Composite>
