@@ -2,17 +2,17 @@ package de.hswt.hrm.scheme.model;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Strings.isNullOrEmpty;
+
 
 /**
  * Represents a Component
  * 
  * @author Michael Sieger
- *
+ * 
  */
 public class Component {
-	
-	private static final String NO_IMAGE_ERROR = "All Images are null";
-    
+
     private final int id;
 
     private String name;
@@ -21,12 +21,15 @@ public class Component {
     private byte[] upDownImage;
     private byte[] downUpImage;
     private int quantifier;
-    private boolean isRated;
+    private boolean boolRating;
     private Category category;
-    
+
+    private static final String NO_IMAGE_ERROR = "All Images are null";
+    private static final String IS_MANDATORY = "Field is a mandatory.";
+    private static final String INVALID_NUMBER = "%d is an invalid number.%n Must be greater 0";
+
     public Component(int id, String name, byte[] leftRightImage, byte[] rightLeftImage,
-            byte[] upDownImage, byte[] downUpImage, int quantifier, boolean isRated,
-            Category category) {
+            byte[] upDownImage, byte[] downUpImage, int quantifier, boolean boolRating, Category category) {
         super();
         this.id = id;
         setName(name);
@@ -35,19 +38,16 @@ public class Component {
         this.upDownImage = upDownImage;
         this.downUpImage = downUpImage;
         setQuantifier(quantifier);
-        setRated(isRated);
-        setCategory(category);
-    	checkArgument(!(leftRightImage == null &&
-				rightLeftImage == null &&
-				upDownImage == null && 
-				downUpImage == null), NO_IMAGE_ERROR);
+        setBoolRating(boolRating);
+        checkArgument(
+                !(leftRightImage == null && rightLeftImage == null && upDownImage == null && downUpImage == null),
+                NO_IMAGE_ERROR);
     }
-    
-    public Component(String name, byte[] leftRightImage, byte[] rightLeftImage,
-            byte[] upDownImage, byte[] downUpImage, int quantifier, boolean isRated,
-            Category category) {
-        this(-1, name, leftRightImage, rightLeftImage, 
-                upDownImage, downUpImage, quantifier, isRated, category);
+
+    public Component(String name, byte[] leftRightImage, byte[] rightLeftImage, byte[] upDownImage,
+            byte[] downUpImage, int quantifier, boolean boolRating, Category category) {
+        this(-1, name, leftRightImage, rightLeftImage, upDownImage, downUpImage, quantifier,
+                boolRating, category);
     }
 
     public int getId() {
@@ -58,19 +58,19 @@ public class Component {
         return name;
     }
 
+    public void setCategory(Category category) {
+        checkNotNull(category);
+        this.category = category;
+
+    }
+
     public Category getCategory() {
-		return category;
-	}
+        return category;
+    }
 
-	public void setCategory(Category category) {
-		checkNotNull(category);
-		this.category = category;
-	}
-
-	public void setName(String name) {
-        //The name must be a non empty string
-		checkNotNull(name);
-        checkArgument(!name.trim().isEmpty());
+    public void setName(String name) {
+        // The name must be a non empty string
+        checkArgument(!isNullOrEmpty(name), IS_MANDATORY);
         this.name = name;
     }
 
@@ -78,11 +78,12 @@ public class Component {
         return leftRightImage;
     }
 
+    // TODO ask Michi
     public void setLeftRightImage(byte[] leftRightImage) {
-    	if(leftRightImage == null){
-    		checkArgument(rightLeftImage != null || upDownImage != null || downUpImage != null, 
-    						NO_IMAGE_ERROR);
-    	}
+        if (leftRightImage == null) {
+            checkArgument(rightLeftImage != null || upDownImage != null || downUpImage != null,
+                    NO_IMAGE_ERROR);
+        }
         this.leftRightImage = leftRightImage;
     }
 
@@ -90,11 +91,12 @@ public class Component {
         return rightLeftImage;
     }
 
+    // TODO ask Michi
     public void setRightLeftImage(byte[] rightLeftImage) {
-    	if(rightLeftImage != null){
-    		checkArgument(leftRightImage != null || upDownImage != null || downUpImage != null, 
-					NO_IMAGE_ERROR);
-    	}
+        if (rightLeftImage != null) {
+            checkArgument(leftRightImage != null || upDownImage != null || downUpImage != null,
+                    NO_IMAGE_ERROR);
+        }
         this.rightLeftImage = rightLeftImage;
     }
 
@@ -102,11 +104,12 @@ public class Component {
         return upDownImage;
     }
 
+    // TODO ask Michi
     public void setUpDownImage(byte[] upDownImage) {
-    	if(upDownImage != null){
-    		checkArgument(rightLeftImage != null || leftRightImage != null || downUpImage != null, 
-					NO_IMAGE_ERROR);
-    	}
+        if (upDownImage != null) {
+            checkArgument(rightLeftImage != null || leftRightImage != null || downUpImage != null,
+                    NO_IMAGE_ERROR);
+        }
         this.upDownImage = upDownImage;
     }
 
@@ -114,11 +117,12 @@ public class Component {
         return downUpImage;
     }
 
+    // TODO ask Michi
     public void setDownUpImage(byte[] downUpImage) {
-    	if(downUpImage != null){
-    		checkArgument(rightLeftImage != null || leftRightImage != null || upDownImage != null, 
-					NO_IMAGE_ERROR);
-    	}
+        if (downUpImage != null) {
+            checkArgument(rightLeftImage != null || leftRightImage != null || upDownImage != null,
+                    NO_IMAGE_ERROR);
+        }
         this.downUpImage = downUpImage;
     }
 
@@ -127,15 +131,15 @@ public class Component {
     }
 
     public void setQuantifier(int quantifier) {
-        checkArgument(quantifier >= 0);
+        checkArgument(quantifier > 0, INVALID_NUMBER, quantifier);
         this.quantifier = quantifier;
     }
 
-    public boolean isRated() {
-        return isRated;
+    public boolean getBoolRating() {
+        return boolRating;
     }
 
-    public void setRated(boolean isRated) {
-        this.isRated = isRated;
+    public void setBoolRating(boolean boolRating) {
+        this.boolRating = boolRating;
     }
 }

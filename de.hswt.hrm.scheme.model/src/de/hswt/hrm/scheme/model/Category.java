@@ -1,123 +1,149 @@
 package de.hswt.hrm.scheme.model;
 
-import static com.google.common.base.Preconditions.*;
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Strings.isNullOrEmpty;
 
 /**
  * Represents a Category
  * 
  * @author Michael Sieger
- *
+ * 
  */
 public class Category {
-	
-	private final int id;
-	private String name;
-	private int width;
-	private int height;
-	private int qualifier;
-	private boolean isRated;
-	
-	public Category(int id, String name, int width, int height, int qualifier,
-			boolean isRated) {
-		this.id = id;
-		setName(name);
-		setWidth(width);
-		setHeight(height);
-		setQualifier(qualifier);
-		setRated(isRated);
-	}
-	
-	public Category(String name, int width, int height, int qualifier,
-			boolean isRated) {
-		this(-1, name, width, height, qualifier, isRated);
-	}
+    // TODO create category.getCatalog() first
+    // private Catalog catalog;
+    private final int id;
+    private String name;
+    private int width;
+    private int height;
+    private int defaultQuantifier;
+    private boolean defaultBoolRating;
 
-	public String getName() {
-		return name;
-	}
+    private static final String IS_MANDATORY = "Field is a mandatory.";
+    private static final String INVALID_NUMBER = "%d is an invalid number.%n Must be greater 0";
 
-	public void setName(String name) {
-		checkNotNull(name);
-		checkArgument(!name.trim().isEmpty());
-		this.name = name;
-	}
+    public Category(int id, String name, int width, int height, int defaultQuantifier,
+            boolean defaultBoolRating) {
 
-	public int getWidth() {
-		return width;
-	}
+        this.id = id;
 
-	public void setWidth(int width) {
-		this.width = width;
-	}
+        setName(name);
+        setWidth(width);
+        setHeight(height);
+        setDefaultQuantifier(defaultQuantifier);
+        setDefaultBoolRating(defaultBoolRating);
+    }
 
-	public int getHeight() {
-		return height;
-	}
+    public Category(String name, int width, int height, int defaultQuantifier,
+            boolean defaultBoolRating) {
+        this(-1, name, width, height, defaultQuantifier, defaultBoolRating);
+    }
 
-	public void setHeight(int height) {
-		this.height = height;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public int getQualifier() {
-		return qualifier;
-	}
+    public void setName(String name) {
+        checkArgument(!isNullOrEmpty(name), IS_MANDATORY);
+        this.name = name;
+    }
 
-	public void setQualifier(int qualifier) {
-		this.qualifier = qualifier;
-	}
+    public int getWidth() {
+        return width;
+    }
 
-	public boolean isRated() {
-		return isRated;
-	}
+    public void setWidth(int width) {
+        checkArgument(width > 0, INVALID_NUMBER, width);
+        this.width = width;
+    }
 
-	public void setRated(boolean isRated) {
-		this.isRated = isRated;
-	}
+    public int getHeight() {
+        return height;
+    }
 
-	public int getId() {
-		return id;
-	}
+    public void setHeight(int height) {
+        checkArgument(height > 0, INVALID_NUMBER, height);
+        this.height = height;
+    }
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + height;
-		result = prime * result + id;
-		result = prime * result + (isRated ? 1231 : 1237);
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result + qualifier;
-		result = prime * result + width;
-		return result;
-	}
+    public int getDefaultQuantifier() {
+        return defaultQuantifier;
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Category other = (Category) obj;
-		if (height != other.height)
-			return false;
-		if (id != other.id)
-			return false;
-		if (isRated != other.isRated)
-			return false;
-		if (name == null) {
-			if (other.name != null)
-				return false;
-		} else if (!name.equals(other.name))
-			return false;
-		if (qualifier != other.qualifier)
-			return false;
-		if (width != other.width)
-			return false;
-		return true;
-	}
-	
-	
+    public void setDefaultQuantifier(int defaultQuantifier) {
+        checkArgument(defaultQuantifier > 0, INVALID_NUMBER, defaultQuantifier);
+        this.defaultQuantifier = defaultQuantifier;
+    }
+
+    public boolean getDefaultBoolRating() {
+        return defaultBoolRating;
+    }
+
+    public void setDefaultBoolRating(boolean defaultBoolRating) {
+        this.defaultBoolRating = defaultBoolRating;
+    }
+
+    // TODO create category.getCatalog() first
+    // public Optional<Catalog> getCatalog() {
+    // return Optional.fromNullable(catalog);
+    // }
+    //
+    // public void setCatalog(Catalog catalog) {
+    // this.catalog = catalog;
+    // }
+
+    public int getId() {
+        return id;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + height;
+        result = prime * result + id;
+        result = prime * result + (defaultBoolRating ? 1231 : 1237);
+        result = prime * result + ((name == null) ? 0 : name.hashCode());
+        result = prime * result + defaultQuantifier;
+        result = prime * result + width;
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        Category other = (Category) obj;
+        if (height != other.height) {
+            return false;
+        }
+        if (id != other.id) {
+            return false;
+        }
+        if (defaultBoolRating != other.defaultBoolRating) {
+            return false;
+        }
+        if (name == null) {
+            if (other.name != null)
+                return false;
+        }
+        else if (!name.equals(other.name)) {
+            return false;
+        }
+        if (defaultQuantifier != other.defaultQuantifier) {
+            return false;
+        }
+        if (width != other.width) {
+            return false;
+        }
+        return true;
+    }
 
 }
