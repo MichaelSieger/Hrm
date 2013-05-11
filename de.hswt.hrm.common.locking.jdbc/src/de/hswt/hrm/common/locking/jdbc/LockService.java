@@ -11,10 +11,18 @@ import de.hswt.hrm.common.database.exception.DatabaseException;
 import static com.google.common.base.Preconditions.checkArgument;
 
 
-public class LockService {
+public class LockService implements ILockService {
     private final static Logger LOG = LoggerFactory.getLogger(LockService.class);
     private static final LockDao DAO = LockDao.getInstance();
     private final String session;
+    
+    public LockService() throws DatabaseException, SQLException {
+        SessionService sessionService = SessionService.getInstance();
+        // TODO: Change session label to computer- / username
+        Session session = sessionService.startSession("Session from LockService ctor");
+        
+        this.session = session.getUuid();
+    }
     
     public LockService(final String session) {
         this.session = session;
