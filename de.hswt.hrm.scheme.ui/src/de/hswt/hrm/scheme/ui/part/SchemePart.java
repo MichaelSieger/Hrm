@@ -58,6 +58,10 @@ public class SchemePart {
 	private TreeViewer tree;
 	
 	private PatternFilter filter;
+	
+	private DragSource gridDragSource;
+	
+	private DropTarget gridDropTarget;
 
 	@PostConstruct
 	public void postConstruct(Composite parent) {
@@ -67,15 +71,11 @@ public class SchemePart {
 		try {
 			root = (Composite) XWT.load(parent, url);
 			initTree();
-			grid = new SchemeGrid(getSchemeComposite(), SWT.NONE, 40, 20, 40);
-			grid.setBackground(new Color(root.getDisplay(), WHITE));
-			getSchemeComposite().setContent(grid);
-	        DropTarget gridDropTarget = new DropTarget(grid, DROP_OPS);
-	        gridDropTarget.setTransfer(TRANSFER);
-	        DragSource gridDragSource = new DragSource(grid, DRAG_OPS);
-	        gridDragSource.setTransfer(TRANSFER);
-	        initTreeDND(gridDropTarget);
-			initGridDND(gridDropTarget, gridDragSource);
+			initSchemeGrid();
+			initGridDropTarget();
+			initGridDragSource();
+	        initTreeDND();
+			initGridDND();
 			createSlider();
 
 		} catch (Throwable e) {
@@ -83,16 +83,32 @@ public class SchemePart {
 		}
 	}
 	
-	private void initTreeDND(DropTarget gridDropTarget){
+	private void initGridDragSource(){
+        gridDragSource = new DragSource(grid, DRAG_OPS);
+        gridDragSource.setTransfer(TRANSFER);
+	}
+	
+	private void initGridDropTarget(){
+        gridDropTarget = new DropTarget(grid, DROP_OPS);
+        gridDropTarget.setTransfer(TRANSFER);
+	}
+	
+	private void initTreeDND(){
 		TreeDNDManager m = new TreeDNDManager(tree, grid);
 		tree.addDragSupport(DRAG_OPS, TRANSFER, m);
 		gridDropTarget.addDropListener(m);
 	}
 	
-	private void initGridDND(DropTarget gridDropTarget, DragSource gridDragSource){
+	private void initGridDND(){
 		GridDNDManager gridDND = new GridDNDManager(grid);
 		gridDropTarget.addDropListener(gridDND);
 		gridDragSource.addDragListener(gridDND);
+	}
+	
+	private void initSchemeGrid(){
+		grid = new SchemeGrid(getSchemeComposite(), SWT.NONE, 40, 20, 40);
+		grid.setBackground(new Color(root.getDisplay(), WHITE));
+		getSchemeComposite().setContent(grid);
 	}
 	
 	private void initTree(){
