@@ -1,8 +1,8 @@
-<Composite xmlns="http://www.eclipse.org/xwt/presentation" xmlns:x="http://www.eclipse.org/xwt" x:Class="de.hswt.hrm.plant.ui.SchemeBuilderFrame" bounds="0,-2,517,260">
+<Composite xmlns="http://www.eclipse.org/xwt/presentation" xmlns:x="http://www.eclipse.org/xwt" x:Class="de.hswt.hrm.plant.ui.SchemeBuilderFrame">
 	<Composite.layout>
 		<FormLayout/>
 	</Composite.layout>
-	<ScrolledComposite x:Style="BORDER | H_SCROLL | V_SCROLL" x:Name="schemeComposite" width="328">
+	<ScrolledComposite x:Style="BORDER | H_SCROLL | V_SCROLL" x:Name="schemeComposite">
 		<ScrolledComposite.layoutData>
 			<FormData>
 				<FormData.bottom>
@@ -20,31 +20,13 @@
 			</FormData>
 		</ScrolledComposite.layoutData>
 	</ScrolledComposite>
-	<Composite x:Style="BORDER" x:Name="treecontainer">
-		<Composite.tree>
-			<FormData>
-				<FormData.right>
-					<FormAttachment numerator="0" offset="200"/>
-				</FormData.right>
-				<FormData.top>
-					<FormAttachment numerator="0" offset="40"/>
-				</FormData.top>
-				<FormData.left>
-					<FormAttachment numerator="0" offset="10"/>
-				</FormData.left>
-				<FormData.bottom>
-					<FormAttachment numerator="100" offset="-10"/>
-				</FormData.bottom>
-			</FormData>
-		</FilteredTree.tree>
-	<FilteredTree.control></FilteredTree.control></FilteredTree>
+	
 	<Slider x:Name = "zoomSlider">
 		<Slider.layoutData>
 			<FormData>
 				<FormData.left>
 					<FormAttachment numerator="100" offset="-200"/>
 				</FormData.left>
-			
 				<FormData.bottom>
 					<FormAttachment numerator="100" offset="-10"/>
 				</FormData.bottom>
@@ -54,9 +36,12 @@
 			</FormData>
 		</Slider.layoutData>
 	</Slider>
-	<Text x:Style="BORDER" x:Name = "">
+	<Text x:Style="BORDER" x:Name = "searchtext">
 		<Text.layoutData>
 			<FormData>
+				<FormData.bottom>
+					<FormAttachment/>
+				</FormData.bottom>
 				<FormData.left>
 					<FormAttachment numerator="0" offset="10"/>
 				</FormData.left>
@@ -69,4 +54,22 @@
 			</FormData>
 		</Text.layoutData>
 	</Text>
+	<Composite>
+		<Composite.layoutData>
+			<FormData>
+				<FormData.bottom>
+					<FormAttachment numerator="100" offset="-10"/>
+				</FormData.bottom>
+				<FormData.left>
+					<FormAttachment numerator="0" offset="10"/>
+				</FormData.left>
+				<FormData.right>
+					<FormAttachment numerator="0" offset="200"/>
+				</FormData.right>
+				<FormData.top>
+					<FormAttachment numerator="0" offset="10"/>
+				</FormData.top>
+			</FormData>
+		</Composite.layoutData>
+	</Composite>
 </Composite>
