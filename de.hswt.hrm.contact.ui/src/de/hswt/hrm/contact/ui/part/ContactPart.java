@@ -33,6 +33,8 @@ public class ContactPart {
     @PostConstruct
     public void postConstruct(Composite parent) {
 
+        LOG.debug("entering method postConstruct");
+
         URL url = ContactPart.class.getClassLoader().getResource(
                 "de/hswt/hrm/contact/ui/xwt/ContactView" + IConstants.XWT_EXTENSION_SUFFIX);
 
