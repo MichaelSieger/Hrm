@@ -32,6 +32,7 @@ public class ImageTreeModelMock implements IImageTreeModel {
 
 	@Override
 	public List<RenderedComponent> getImages() {
+		
 		try{
 			return Arrays.asList(
 					ComponentConverter.convert(display, getVentilationComponent()),
@@ -71,7 +72,7 @@ public class ImageTreeModelMock implements IImageTreeModel {
 	}
 	
 	private Category getMeasureCategory(){
-		return new Category("Messungen", 1, 1, 0, false);
+		return new Category("Messungen", 1, 1, 1, false);
 	}
 	
 	private Category getFilterCategory(){
