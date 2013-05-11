@@ -22,11 +22,15 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.RGB;
+import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.FormAttachment;
+import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Slider;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.ui.dialogs.FilteredTree;
+import org.eclipse.ui.dialogs.PatternFilter;
 
 import de.hswt.hrm.scheme.ui.GridDNDManager;
 import de.hswt.hrm.scheme.ui.SchemeGrid;
@@ -55,7 +59,10 @@ public class SchemePart {
 	private static final int MIN_PPG = 20, MAX_PPG = 70;
 
 	private Composite root;
+	
 	private SchemeGrid grid;
+	
+	private TreeViewer tree;
 
 	@PostConstruct
 	public void postConstruct(Composite parent) {
@@ -82,8 +89,8 @@ public class SchemePart {
 	}
 	
 	private void initTreeDND(DropTarget gridDropTarget){
-		TreeDNDManager m = new TreeDNDManager(getTree().getViewer(), grid);
-		getTree().getViewer().addDragSupport(DRAG_OPS, TRANSFER, m);
+		TreeDNDManager m = new TreeDNDManager(tree, grid);
+		tree.addDragSupport(DRAG_OPS, TRANSFER, m);
 		gridDropTarget.addDropListener(m);
 	}
 	
@@ -94,10 +101,19 @@ public class SchemePart {
 	}
 	
 	private void initTree(){
-		FilteredTree tree = getTree();
-		tree.getViewer().setContentProvider(new TreeContentProvider());
-		tree.getViewer().setLabelProvider(new SchemeTreeLabelProvider());
-		tree.getViewer().setInput(ImageTreeModelFactory.create(
+		PatternFilter filter = new PatternFilter();
+		FilteredTree filteredTree = new FilteredTree(root, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL, 
+				filter, true);
+		FormData formData = new FormData();
+		formData.top = new FormAttachment(0, 10);
+		formData.left = new FormAttachment(0, 10);
+		formData.right = new FormAttachment(0, 200);
+		formData.bottom = new FormAttachment(100, -10);
+		filteredTree.setLayoutData(formData);
+		tree = filteredTree.getViewer();
+		tree.setContentProvider(new TreeContentProvider());
+		tree.setLabelProvider(new SchemeTreeLabelProvider());
+		tree.setInput(ImageTreeModelFactory.create(
 		        root.getDisplay()).getImages());
 		//tree.setFilters(new ViewerFilter[]{
 		//		new SchemeTreeViewerFilter(getSearchText().getText())});
@@ -106,11 +122,7 @@ public class SchemePart {
 	private Slider getZoomSlider(){
 		return (Slider) XWT.findElementByName(root, "zoomSlider");
 	}
-	
-	private FilteredTree getTree() {
-		return (FilteredTree) XWT.findElementByName(root, "tree");
-	}
-	
+
 	private Text getSearchText(){
 		return (Text) XWT.findElementByName(root, "searchtext");
 	}
@@ -149,7 +161,7 @@ public class SchemePart {
 	}
 	
 	private void updateTreeFilter(){
-		getTree().getViewer().refresh();
+		tree.refresh();
 	}
 	
 	private void updateZoom(){
