@@ -63,6 +63,8 @@ public class SchemePart {
 	private SchemeGrid grid;
 	
 	private TreeViewer tree;
+	
+	private PatternFilter filter;
 
 	@PostConstruct
 	public void postConstruct(Composite parent) {
@@ -82,7 +84,7 @@ public class SchemePart {
 	        initTreeDND(gridDropTarget);
 			initGridDND(gridDropTarget, gridDragSource);
 			createSlider();
-			createSearchText();
+
 		} catch (Throwable e) {
 			throw new Error("Unable to load ", e);
 		}
@@ -101,9 +103,16 @@ public class SchemePart {
 	}
 	
 	private void initTree(){
-		PatternFilter filter = new PatternFilter();
-		FilteredTree filteredTree = new FilteredTree(root, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL, 
+		filter = new PatternFilter();
+		final FilteredTree filteredTree = new FilteredTree(root, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL, 
 				filter, true);
+		filteredTree.getFilterControl().addModifyListener(new ModifyListener() {
+			
+			@Override
+			public void modifyText(ModifyEvent e) {
+				updatePatternFilter(filteredTree.getFilterControl().getText());
+			}
+		});
 		FormData formData = new FormData();
 		formData.top = new FormAttachment(0, 10);
 		formData.left = new FormAttachment(0, 10);
@@ -115,16 +124,10 @@ public class SchemePart {
 		tree.setLabelProvider(new SchemeTreeLabelProvider());
 		tree.setInput(ImageTreeModelFactory.create(
 		        root.getDisplay()).getImages());
-		//tree.setFilters(new ViewerFilter[]{
-		//		new SchemeTreeViewerFilter(getSearchText().getText())});
 	}
 
 	private Slider getZoomSlider(){
 		return (Slider) XWT.findElementByName(root, "zoomSlider");
-	}
-
-	private Text getSearchText(){
-		return (Text) XWT.findElementByName(root, "searchtext");
 	}
 
 	private ScrolledComposite getSchemeComposite() {
@@ -147,25 +150,14 @@ public class SchemePart {
 		});
 		updateZoom();
 	}
-	
-	private void createSearchText(){
-		Text text = getSearchText();
-		text.setMessage(SEARCH_TEXT);
-		text.addModifyListener(new ModifyListener() {
-			
-			@Override
-			public void modifyText(ModifyEvent e) {
-				updateTreeFilter();
-			}
-		});
-	}
-	
-	private void updateTreeFilter(){
-		tree.refresh();
-	}
-	
+
 	private void updateZoom(){
 		grid.setPixelPerGrid(getZoomSlider().getSelection());
+	}
+	
+	private void updatePatternFilter(String text){
+		filter.setPattern(text);
+		tree.refresh();
 	}
 
 }
