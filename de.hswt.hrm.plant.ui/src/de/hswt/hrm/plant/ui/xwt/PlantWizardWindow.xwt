@@ -17,22 +17,36 @@
 						<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
 					</Text.layoutData>
 				</Text>
-				<Label text="Standort: "/>
-				<Text text="Dropdown ?" x:Style="BORDER" x:Name="place"/>
+				<Label text="Standort: ">
+					<Label.layoutData>
+						<GridData horizontalAlignment="RIGHT"/>
+					</Label.layoutData>
+				</Label>
+				<Combo x:Name="place">
+					<Combo.layoutData>
+						<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
+					</Combo.layoutData>
+				</Combo>
 				<Label text="Nächste Inspektion: "/>
 				<Text x:Style="BORDER" x:Name="nextInspection">
 					<Text.layoutData>
 						<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
 					</Text.layoutData>
 				</Text>
+				<Label text="Anlagenschema: "/>
+				<Combo x:Name="scheme">
+					<Combo.layoutData>
+						<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
+					</Combo.layoutData>
+				</Combo>
 				<Label text="Intervall (Jahre): "/>
 				<Text x:Style="BORDER" x:Name="inspectionIntervall">
 					<Text.layoutData>
 						<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
 					</Text.layoutData>
 				</Text>
-				<Label text="Anlagenschema: "/>
-				<Text text="Dropdown ?" x:Style="BORDER" x:Name="scheme"/>
+				<Label/>
+				<Label/>
 			</Composite>
 		</Section.client>	
 	</Section>
