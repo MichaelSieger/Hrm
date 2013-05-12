@@ -3,7 +3,6 @@
 
 <product name="de.hswt.hrm.main" uid="de.hswt.hrm" id="de.hswt.hrm.main.product" application="org.eclipse.e4.ui.workbench.swt.E4Application" version="1.0.0.qualifier" useFeatures="true" includeLaunchers="true">
 
-
    <configIni use="default">
    </configIni>
 
@@ -22,7 +21,6 @@
          <bmp/>
       </win>
    </launcher>
-
 
    <vm>
    </vm>
@@ -223,6 +221,7 @@ This Agreement is governed by the laws of the State of New York and the intellec
       <feature id="org.eclipse.emf.common"/>
       <feature id="de.hswt.hrm.thirdparty.feature" version="0.0.1.qualifier"/>
       <feature id="de.hswt.hrm.plant.feature" version="0.0.1.qualifier"/>
+      <feature id="de.hswt.hrm.catalog.feature" version="0.0.1.qualifier"/>
    </features>
 
    <configurations>
