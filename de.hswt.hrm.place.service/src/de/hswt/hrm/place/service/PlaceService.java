@@ -2,24 +2,52 @@ package de.hswt.hrm.place.service;
 
 import java.util.Collection;
 
+import javax.inject.Inject;
+import javax.inject.Named;
+
+import org.eclipse.e4.core.di.annotations.Creatable;
+import org.eclipse.e4.core.di.annotations.Optional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.ElementNotFoundException;
 import de.hswt.hrm.common.database.exception.SaveException;
+import de.hswt.hrm.common.locking.jdbc.ILockService;
+import de.hswt.hrm.common.locking.jdbc.LockService;
 import de.hswt.hrm.place.dao.core.IPlaceDao;
 import de.hswt.hrm.place.dao.jdbc.PlaceDao;
 import de.hswt.hrm.place.model.Place;
 
+@Creatable
 public class PlaceService {
-	
-	private PlaceService() { }
-	
-	private static IPlaceDao dao = new PlaceDao();
+    private final static Logger LOG = LoggerFactory.getLogger(PlaceService.class);
+    
+    @Inject
+    @Optional
+	private ILockService lockService;
+    
+    private IPlaceDao dao;
+    
+    @Inject
+	public PlaceService(IPlaceDao placeDao) {
+	    this.dao = placeDao;
+	}
 	
 	/**
      * @return All places from storage.
      * @throws DatabaseException 
      */
-	public static Collection<Place> findAll() throws DatabaseException {
+	public Collection<Place> findAll() throws DatabaseException {
+	    if (lockService != null) {
+	        LOG.debug("Lock service injected.");
+	    }
+	    else {
+	        LOG.debug("Lock service NOT injected.");
+	    }
+	    if (dao != null) {
+	        LOG.debug("place dao injected.");
+	    }
 		return dao.findAll();
 	}
 	
@@ -28,7 +56,7 @@ public class PlaceService {
      * @return Place with the given id.
      * @throws DatabaseException 
      */
-	public static Place findById(int id) throws ElementNotFoundException, DatabaseException {
+	public Place findById(int id) throws ElementNotFoundException, DatabaseException {
 		return dao.findById(id);
 	}
 	
@@ -39,7 +67,7 @@ public class PlaceService {
      * @return The created place.
      * @throws SaveException If the place could not be inserted.
      */
-	public static Place insert(Place place) throws SaveException {
+	public Place insert(Place place) throws SaveException {
 		return dao.insert(place);
 	}
 	
@@ -50,7 +78,7 @@ public class PlaceService {
      * @throws ElementNotFoundException If the given place is not present in the database.
      * @throws SaveException If the place could not be updated.
      */
-	public static void update(Place place) throws ElementNotFoundException, SaveException {
+	public void update(Place place) throws ElementNotFoundException, SaveException {
 		dao.update(place);
 	}
 	
@@ -61,7 +89,7 @@ public class PlaceService {
      * @throws ElementNotFoundException
      * @throws DatabaseException
      */
-	public static void refresh(Place place) throws ElementNotFoundException, DatabaseException {
+	public void refresh(Place place) throws ElementNotFoundException, DatabaseException {
 	    Place fromDb = dao.findById(place.getId());
 	    
 	    place.setArea(fromDb.getArea());

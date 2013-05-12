@@ -13,6 +13,7 @@ public class JdbcPlaceDaoContextFunktion extends ContextFunction {
 
     @Override
     public Object compute(IEclipseContext context) {
+        // Create place dao and inject context as it might need it for further injection
         IPlaceDao placeDao = ContextInjectionFactory.make(PlaceDao.class, context);
         context.set(IPlaceDao.class, placeDao);
         

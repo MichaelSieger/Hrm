@@ -5,10 +5,15 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Collection;
 
+import org.eclipse.e4.core.contexts.ContextInjectionFactory;
+import org.eclipse.e4.core.contexts.EclipseContextFactory;
+import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.junit.Test;
 
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.ElementNotFoundException;
+import de.hswt.hrm.place.dao.core.IPlaceDao;
+import de.hswt.hrm.place.dao.jdbc.PlaceDao;
 import de.hswt.hrm.place.model.Place;
 import de.hswt.hrm.test.database.AbstractDatabaseTest;
 
@@ -23,6 +28,16 @@ public class PlaceServiceTest extends AbstractDatabaseTest {
         assertEquals("Street not set correctly.", expected.getStreet(), actual.getStreet());
         assertEquals("StreetNo not set correctly.", expected.getStreetNo(), actual.getStreetNo());
     }
+    
+    private PlaceService createInjectedPlaceService() {
+        IPlaceDao dao = new PlaceDao();
+        
+        IEclipseContext context = EclipseContextFactory.create();
+        context.set(IPlaceDao.class, dao);
+        PlaceService service = ContextInjectionFactory.make(PlaceService.class, context);
+        
+        return service;
+    }
 
     @Test
     public void testFindAll() throws DatabaseException {
@@ -30,10 +45,12 @@ public class PlaceServiceTest extends AbstractDatabaseTest {
                 "Some Area");
         Place p2 = new Place("Another place", "65461", "Gotham City", "Bat-Avenue", "558",
                 "Bat-Cave", "No idea");
-        PlaceService.insert(p1);
-        PlaceService.insert(p2);
+        
+        PlaceService service = createInjectedPlaceService();
+        service.insert(p1);
+        service.insert(p2);
 
-        Collection<Place> places = PlaceService.findAll();
+        Collection<Place> places = service.findAll();
         assertEquals("Count of retrieved places does not match.", 2, places.size());
     }
 
@@ -41,9 +58,11 @@ public class PlaceServiceTest extends AbstractDatabaseTest {
     public void testFindById() throws ElementNotFoundException, DatabaseException {
         Place expected = new Place("place Name", "55464", "SomeCity", "Street", "113a", "Location",
                 "Some Area");
-        Place parsed = PlaceService.insert(expected);
+        
+        PlaceService service = createInjectedPlaceService();
+        Place parsed = service.insert(expected);
 
-        Place retrieved = PlaceService.findById(parsed.getId());
+        Place retrieved = service.findById(parsed.getId());
         comparePlaceFields(expected, retrieved);
     }
 
@@ -52,11 +71,12 @@ public class PlaceServiceTest extends AbstractDatabaseTest {
         Place expected = new Place("place Name", "55464", "SomeCity", "Street", "113a", "Location",
                 "Some Area");
 
-        Place parsed = PlaceService.insert(expected);
+        PlaceService service = createInjectedPlaceService();
+        Place parsed = service.insert(expected);
         comparePlaceFields(expected, parsed);
         assertTrue("ID not set correctly.", parsed.getId() >= 0);
 
-        Place retrieved = PlaceService.findById(parsed.getId());
+        Place retrieved = service.findById(parsed.getId());
         comparePlaceFields(expected, retrieved);
         assertEquals("Requested object does not equal parsed one.", parsed, retrieved);
     }
@@ -65,17 +85,19 @@ public class PlaceServiceTest extends AbstractDatabaseTest {
     public void testUpdate() throws ElementNotFoundException, DatabaseException {
         Place expected = new Place("place Name", "55464", "SomeCity", "Street", "113a", "Location",
                 "Some Area");
-        Place parsed = PlaceService.insert(expected);
+        
+        PlaceService service = createInjectedPlaceService();
+        Place parsed = service.insert(expected);
 
         Place p2 = new Place("Another place", "65461", "Gotham City", "Bat-Avenue", "558",
                 "Bat-Cave", "No idea");
-        PlaceService.insert(p2);
+        service.insert(p2);
 
         parsed.setCity("A Changed City");
         parsed.setStreet("Best Street Ever");
-        PlaceService.update(parsed);
+        service.update(parsed);
 
-        Place retrieved = PlaceService.findById(parsed.getId());
+        Place retrieved = service.findById(parsed.getId());
         comparePlaceFields(parsed, retrieved);
         assertEquals("Requested object does not equal updated one.", parsed, retrieved);
     }

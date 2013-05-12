@@ -45,4 +45,5 @@
   <addons xmi:id="_ucxCRZSXEeKKYob9VrLbBA" elementId="org.eclipse.e4.ui.workbench.commands.model" contributionURI="bundleclass://org.eclipse.e4.ui.workbench/org.eclipse.e4.ui.internal.workbench.addons.CommandProcessingAddon"/>
   <addons xmi:id="_ucxCRpSXEeKKYob9VrLbBA" elementId="org.eclipse.e4.ui.workbench.contexts.model" contributionURI="bundleclass://org.eclipse.e4.ui.workbench/org.eclipse.e4.ui.internal.workbench.addons.ContextProcessingAddon"/>
   <addons xmi:id="_ucxCR5SXEeKKYob9VrLbBA" elementId="org.eclipse.e4.ui.workbench.bindings.model" contributionURI="bundleclass://org.eclipse.e4.ui.workbench.swt/org.eclipse.e4.ui.workbench.swt.util.BindingProcessingAddon"/>
+  <addons xmi:id="_gc6_QLliEeKVRP0amNmbmg" elementId="de.hswt.hrm.place.service" contributionURI="bundleclass://de.hswt.hrm.place.service/de.hswt.hrm.place.service.PlaceService"/>
 </application:Application>
