@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+import org.eclipse.e4.core.contexts.ContextInjectionFactory;
+import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.Shell;
@@ -21,12 +23,20 @@ public final class PlacePartUtil {
         
     }
     
-    public static Optional<Place> showWizard(Shell shell, Optional<Place> place) {
-
-        PlaceWizard pw = new PlaceWizard(place);
-        WizardDialog wd = new WizardDialog(shell, pw);
+    public static Optional<Place> showWizard(IEclipseContext context, Shell shell,
+            Optional<Place> place) {
+        
+        // TODO: partly move to extra plugin
+        
+        // Create wizard with injection support
+        PlaceWizard wizard = new PlaceWizard(place);
+        ContextInjectionFactory.inject(wizard, context);
+        
+        
+        // Show wizard
+        WizardDialog wd = new WizardDialog(shell, wizard);
         wd.open();
-        return pw.getPlace();
+        return wizard.getPlace();
     }
     
     public static List<ColumnDescription<Place>> getColumns() {

@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 public final class Hrm {
 
     private static final Logger LOG = LoggerFactory.getLogger(Hrm.class);
+    private static boolean initialized = false;
 
     private Hrm() {
     }
@@ -26,6 +27,11 @@ public final class Hrm {
      * Initializes the application. (E. g. load configuration file)
      */
     public static void init() {
+        // Check if we've already initialized
+        if (initialized) {
+            return;
+        }
+        
         // Try to find the current config
         Path configPath = getConfigPath().resolve("hrm.properties");
         if (!Files.exists(configPath)) {
@@ -42,6 +48,7 @@ public final class Hrm {
                 // Close resources
                 targetFile.close();
                 configFile.close();
+                LOG.info("New configuration written to: '" + configPath.toString() + "'.");
             }
             catch (IOException e) {
                 LOG.error("Could not create default configuration file from bundle.", e);
@@ -53,10 +60,18 @@ public final class Hrm {
         Config cfg = Config.getInstance();
         try {
             cfg.load(configPath);
+            LOG.info("Configuration load successfully.");
+            
+            boolean lockingEnabled = cfg.getBoolean(Config.Keys.DB_LOCKING);
+            if (lockingEnabled) {
+                LOG.info("DB locking enabled.");
+            }
         }
         catch (IOException e) {
             LOG.error("Could not load configuration at '" + configPath.toString() + "'.", e);
         }
+        
+        initialized = true;
     }
 
     /**

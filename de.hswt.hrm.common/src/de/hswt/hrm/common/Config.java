@@ -57,6 +57,29 @@ public final class Config {
     public String getProperty(String key) {
         return props.getProperty(key);
     }
+    
+    /**
+     * Return boolean representation of the given key. The following scheme is used
+     * to get the correct representation:
+     * 1. If value equals ignore case to "1", "yes" or "true", true is returned.
+     * 2. Otherwise return false (even when the key is not present).
+     * If you want to check if the key exists before retrieving it you can use "containsKey".
+     * 
+     * @param key
+     * @return True if the value equals ignore case to "1", "yes" or "true", otherwise false.
+     */
+    public boolean getBoolean(final String key) {
+        String value = props.getProperty(key, "").toLowerCase();
+        if (value.equals("1") || value.equals("true") || value.equals("yes")) {
+            return true;
+        }
+        
+        return false;
+    }
+    
+    public boolean containsKey(String key) {
+        return props.containsKey(key);
+    }
 
     /**
      * You mostly should use keys from {@link Keys} for the key.
@@ -81,9 +104,11 @@ public final class Config {
      * Holds the possible keys from the configuration.
      */
     public static class Keys {
-        public static final String DB_HOST = "db_host";
-        public static final String DB_USER = "db_user";
-        public static final String DB_PASSWORD = "db_password";
-        public static final String DB_NAME = "db_name";
+        public static final String DB_HOST = "db.host";
+        public static final String DB_USER = "db.user";
+        public static final String DB_PASSWORD = "db.password";
+        public static final String DB_NAME = "db.name";
+        public static final String DB_LOCKING = "db.locking.enabled";
+        public static final String SESSION_UUID = "session.uuid";
     }
 }

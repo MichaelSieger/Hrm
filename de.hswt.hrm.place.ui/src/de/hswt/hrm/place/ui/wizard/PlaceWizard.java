@@ -1,5 +1,7 @@
 package de.hswt.hrm.place.ui.wizard;
 
+import javax.inject.Inject;
+
 import org.eclipse.jface.wizard.Wizard;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +17,9 @@ public class PlaceWizard extends Wizard {
     private static final Logger LOG = LoggerFactory.getLogger(PlaceWizard.class);
     private PlaceWizardPageOne first;
     private Optional<Place> place;
+    
+    @Inject
+    private PlaceService placeService;
 
     public PlaceWizard(Optional<Place> place) {
         this.place = place;
@@ -52,9 +57,13 @@ public class PlaceWizard extends Wizard {
     }
     
     private boolean editExistingPlace() {
+        if (placeService == null) {
+            LOG.error("PlaceService not injected to PlaceWizard.");
+        }
+        
         try {
             Place p = first.getPlace();
-            PlaceService.update(p);
+            placeService.update(p);
             place = Optional.of(p);
         }
         catch (DatabaseException e) {
@@ -66,9 +75,13 @@ public class PlaceWizard extends Wizard {
     }
 
     private boolean insertNewPlace() {
+        if (placeService == null) {
+            LOG.error("PlaceService not injected to PlaceWizard.");
+        }
+        
         try {
             Place p = first.getPlace();
-            place = Optional.of(PlaceService.insert(p));
+            place = Optional.of(placeService.insert(p));
         }
         catch (SaveException e) {
             LOG.error("Could not insert place into database", e);

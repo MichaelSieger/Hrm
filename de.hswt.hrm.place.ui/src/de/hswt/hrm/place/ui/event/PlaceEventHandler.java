@@ -2,6 +2,9 @@ package de.hswt.hrm.place.ui.event;
 
 import java.util.Collection;
 
+import javax.inject.Inject;
+
+import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.xwt.XWT;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.TableViewer;
@@ -19,11 +22,27 @@ import de.hswt.hrm.place.service.PlaceService;
 import de.hswt.hrm.place.ui.filter.PlaceFilter;
 import de.hswt.hrm.place.ui.part.PlacePartUtil;
 
-public class PlaceEventHandler {
+public class PlaceEventHandler extends XWT {
     private final static Logger LOG = LoggerFactory.getLogger(PlaceEventHandler.class);
     private static final String DEFAULT_SEARCH_STRING = "Suche";
     private static final String EMPTY = "";
+    private final IEclipseContext context;
+    private final PlaceService placeService;
 	 
+    @Inject
+    public PlaceEventHandler(IEclipseContext context, PlaceService placeService) {
+        if (context == null) {
+            LOG.error("EclipseContext was not injected to PlaceEventHandler.");
+        }
+        
+        if (placeService == null) {
+            LOG.error("PlaceService was not injected to PlaceEventHandler.");
+        }
+        
+        this.context = context;
+        this.placeService = placeService;
+    }
+    
     /**
      * This event is called whenever the Search Text Field is leaved. If the the field is blank, the
      * value of the Field {@link #DEFAULT_SEARCH_STRING} is inserted.
@@ -65,7 +84,9 @@ public class PlaceEventHandler {
 	@SuppressWarnings("unchecked")
     public void buttonSelected(Event event) {
         Button b = (Button) event.widget;
-        Optional<Place> newPlace = PlacePartUtil.showWizard(event.display.getActiveShell(),
+        Optional<Place> newPlace = PlacePartUtil.showWizard(
+                context, 
+                event.display.getActiveShell(),
                 Optional.<Place>absent());
 
         if (newPlace.isPresent()) {
@@ -85,9 +106,11 @@ public class PlaceEventHandler {
 
         // Refresh the selected place with values from the database
         try {
-            PlaceService.refresh(selectedPlace);
+            placeService.refresh(selectedPlace);
             Optional<Place> updatedPlace = PlacePartUtil.showWizard(
-                    event.display.getActiveShell(), Optional.of(selectedPlace));
+                    context,
+                    event.display.getActiveShell(),
+                    Optional.of(selectedPlace));
 
             if (updatedPlace.isPresent()) {
                 tv.refresh();
