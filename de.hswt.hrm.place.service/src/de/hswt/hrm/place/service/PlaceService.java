@@ -38,7 +38,7 @@ public class PlaceService {
 	    }
 
 	    Config cfg = Config.getInstance();
-	    lockingEnabled = cfg.getProperty(Config.Keys.DB_LOCKING) == "1" ? true : false;
+	    lockingEnabled = cfg.getProperty(Config.Keys.DB_LOCKING, "").equals("1") ? true : false;
 	    
 	    if (lockingEnabled && lockService == null) {
 	        LOG.error("Locking is enabled but the LockService was not injected to PlaceService.");
@@ -84,6 +84,14 @@ public class PlaceService {
      * @throws SaveException If the place could not be updated.
      */
 	public void update(Place place) throws ElementNotFoundException, SaveException {
+	    if (lockingEnabled) {
+	        // Check if user has lock for the place
+	        if (!lockService.hasLockFor(ILockService.TBL_PLACE, place.getId())) {
+	            LOG.error("Current session has no lock for ID + " + place.getId());
+	            throw new IllegalStateException("Current session has no lock for the given place.");
+	        }
+	    }
+	    
 		dao.update(place);
 	}
 	

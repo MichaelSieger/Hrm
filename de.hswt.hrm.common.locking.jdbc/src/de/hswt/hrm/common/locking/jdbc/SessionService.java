@@ -27,4 +27,7 @@ public final class SessionService {
         DAO.delete(session.getUuid());
     }
     
+    public Session findSessionByUuid(final String uuid) throws DatabaseException, SQLException {
+        return DAO.findByUuid(uuid);
+    }
 }

@@ -61,6 +61,11 @@ public final class Hrm {
         try {
             cfg.load(configPath);
             LOG.info("Configuration load successfully.");
+            
+            boolean lockingEnabled = cfg.getProperty(Config.Keys.DB_LOCKING, "").equals("1") ? true : false;
+            if (lockingEnabled) {
+                LOG.info("DB Locking enabled.");
+            }
         }
         catch (IOException e) {
             LOG.error("Could not load configuration at '" + configPath.toString() + "'.", e);
