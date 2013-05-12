@@ -152,6 +152,10 @@ public class PlantWizardPageOne extends WizardPage {
                 return false;
             }
         }
+        Combo combo = (Combo) XWT.findElementByName(container, "place");
+        if (combo.getSelectionIndex()==-1){
+            return false;
+        }
         return true;
     }
     
