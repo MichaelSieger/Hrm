@@ -39,7 +39,7 @@ public class PlaceService {
 	    }
 
 	    Config cfg = Config.getInstance();
-	    lockingEnabled = cfg.getProperty(Config.Keys.DB_LOCKING, "").equals("1") ? true : false;
+	    lockingEnabled = cfg.getBoolean(Config.Keys.DB_LOCKING);
 	    
 	    if (lockingEnabled && lockService == null) {
 	        LOG.error("Locking is enabled but the LockService was not injected to PlaceService.");
