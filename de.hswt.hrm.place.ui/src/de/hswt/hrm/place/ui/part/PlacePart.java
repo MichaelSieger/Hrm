@@ -27,6 +27,7 @@ import de.hswt.hrm.common.locking.jdbc.ILockService;
 import de.hswt.hrm.common.ui.swt.table.ColumnComparator;
 import de.hswt.hrm.common.ui.swt.table.ColumnDescription;
 import de.hswt.hrm.common.ui.swt.table.TableViewerController;
+import de.hswt.hrm.common.ui.xwt.XwtHelper;
 import de.hswt.hrm.place.model.Place;
 import de.hswt.hrm.place.service.PlaceService;
 import de.hswt.hrm.place.ui.event.PlaceEventHandler;
@@ -57,11 +58,7 @@ public class PlacePart {
 		    
 		    // TODO: partly move to extra plugin
 		    // Load XWT with injection ready event handler
-		    Map<String, Object> options = new HashMap<>();
-		    options.put(IXWTLoader.CONTAINER_PROPERTY, parent);
-		    options.put(IXWTLoader.CLASS_PROPERTY, eventHandler);
-		    
-			final Composite composite = (Composite) XWT.loadWithOptions(url, options);
+		    final Composite composite = XwtHelper.loadWithEventHandler(parent, url, eventHandler);
 			LOG.debug("XWT load successfully.");
 			
 			viewer = (TableViewer) XWT.findElementByName(composite, "placeTable");
