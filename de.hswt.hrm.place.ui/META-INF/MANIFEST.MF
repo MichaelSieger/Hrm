@@ -22,6 +22,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Import-Package: de.hswt.hrm.common.database.exception,
  de.hswt.hrm.common.locking.jdbc,
  de.hswt.hrm.common.ui.swt.table,
+ de.hswt.hrm.common.ui.xwt,
  de.hswt.hrm.place.model,
  de.hswt.hrm.place.service
 Export-Package: de.hswt.hrm.place.ui.event,

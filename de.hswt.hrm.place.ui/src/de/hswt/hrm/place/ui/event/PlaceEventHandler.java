@@ -22,7 +22,7 @@ import de.hswt.hrm.place.service.PlaceService;
 import de.hswt.hrm.place.ui.filter.PlaceFilter;
 import de.hswt.hrm.place.ui.part.PlacePartUtil;
 
-public class PlaceEventHandler extends XWT {
+public class PlaceEventHandler {
     private final static Logger LOG = LoggerFactory.getLogger(PlaceEventHandler.class);
     private static final String DEFAULT_SEARCH_STRING = "Suche";
     private static final String EMPTY = "";
