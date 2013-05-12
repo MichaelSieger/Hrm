@@ -15,6 +15,7 @@ import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.ElementNotFoundException;
 import de.hswt.hrm.common.database.exception.SaveException;
 import de.hswt.hrm.common.locking.jdbc.ILockService;
+import de.hswt.hrm.common.locking.jdbc.LockException;
 import de.hswt.hrm.common.locking.jdbc.LockService;
 import de.hswt.hrm.place.dao.core.IPlaceDao;
 import de.hswt.hrm.place.dao.jdbc.PlaceDao;
@@ -88,7 +89,7 @@ public class PlaceService {
 	        // Check if user has lock for the place
 	        if (!lockService.hasLockFor(ILockService.TBL_PLACE, place.getId())) {
 	            LOG.error("Current session has no lock for ID + " + place.getId());
-	            throw new IllegalStateException("Current session has no lock for the given place.");
+	            throw new LockException("Current session has no lock for the given place.");
 	        }
 	    }
 	    

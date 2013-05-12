@@ -21,6 +21,7 @@ import de.hswt.hrm.common.database.exception.ElementNotFoundException;
 import de.hswt.hrm.common.database.exception.SaveException;
 import de.hswt.hrm.common.locking.jdbc.ILockService;
 import de.hswt.hrm.common.locking.jdbc.Lock;
+import de.hswt.hrm.common.locking.jdbc.LockException;
 import de.hswt.hrm.common.locking.jdbc.LockService;
 import de.hswt.hrm.place.dao.core.IPlaceDao;
 import de.hswt.hrm.place.dao.jdbc.PlaceDao;
@@ -133,7 +134,7 @@ public class PlaceServiceTest extends AbstractDatabaseTest {
         assertEquals("Requested object does not equal updated one.", parsed, retrieved);
     }
     
-    @Test(expected=IllegalStateException.class)
+    @Test(expected=LockException.class)
     public void testFailWithoutLock() throws DatabaseException, SQLException {
         Config cfg = Config.getInstance();
         // First we have to enalbe locking
