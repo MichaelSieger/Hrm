@@ -9,4 +9,5 @@ Import-Package: de.hswt.hrm.place.dao.jdbc,
  de.hswt.hrm.plant.dao.core,
  de.hswt.hrm.test.database
 Require-Bundle: org.junit;bundle-version="4.10.0",
- org.eclipse.e4.core.contexts;bundle-version="1.2.0"
+ org.eclipse.e4.core.contexts;bundle-version="1.2.0",
+ com.google.guava;bundle-version="10.0.1"
