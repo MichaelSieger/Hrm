@@ -7,6 +7,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Import-Package: de.hswt.hrm.common.database.exception,
  de.hswt.hrm.common.ui.swt.table,
  de.hswt.hrm.place.model,
+ de.hswt.hrm.place.service,
  de.hswt.hrm.plant.model,
  de.hswt.hrm.plant.service,
  org.eclipse.e4.xwt,
