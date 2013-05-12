@@ -30,6 +30,7 @@ public class PlantWizardPageOne extends WizardPage {
     
     private Composite container;
     private Optional<Plant> plant;
+    private Collection<Place> places;
     
     public PlantWizardPageOne(String title, Optional<Plant> plant) {
         super(title);
@@ -64,16 +65,27 @@ public class PlantWizardPageOne extends WizardPage {
     
     private void initPlaces() {
         Combo combo = (Combo) XWT.findElementByName(container, "place");
-        Collection<Place> places;
         try {
             places = PlaceService.findAll();
-            for (Iterator<Place> i=places.iterator(); i.hasNext();){
+            for (Iterator<Place> i=places.iterator(); i.hasNext();) {
                 String placeName = i.next().getPlaceName();
                 combo.add(placeName);
             }
         } catch (DatabaseException e) {
             LOG.error("An Error occured: ", e);
         }        
+    }
+    
+    public Optional<Place> getSelectedPlace() {
+        Place selectedPlace = null;
+        Combo combo = (Combo) XWT.findElementByName(container, "place");
+        String selectedPlaceName = combo.getItem(combo.getSelectionIndex());
+        for (Iterator<Place> i=places.iterator(); i.hasNext();) {
+           if (selectedPlaceName.equals(i.next().getPlaceName())){
+               selectedPlace = i.next();
+           }
+        }
+        return Optional.fromNullable(selectedPlace);
     }
         
     private void updateFields(Composite c) {

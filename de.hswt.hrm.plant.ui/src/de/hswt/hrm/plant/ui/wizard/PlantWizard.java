@@ -11,6 +11,7 @@ import com.google.common.base.Optional;
 
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.SaveException;
+import de.hswt.hrm.place.model.Place;
 import de.hswt.hrm.plant.model.Plant;
 import de.hswt.hrm.plant.service.PlantService;
 
@@ -80,6 +81,8 @@ public class PlantWizard extends Wizard {
         HashMap<String, Text> mandatoryWidgets = first.getMandatoryWidgets();
         String description = mandatoryWidgets.get("description").getText();
         //TODO place - mandatory?
+        // Bessere implementierung als mit Null?
+        Place place = first.getSelectedPlace().orNull();
         //TODO nextInspection / inspectionIntervall?
         String inspectionIntervall = mandatoryWidgets.get("inspectionIntervall").getText();
         //TODO scheme
@@ -100,14 +103,15 @@ public class PlantWizard extends Wizard {
         if (p.isPresent()) {
             plant = p.get();
             plant.setDescription(description);
-            //TODO place? nextInspection?
+            //TODO nextInspection?
             plant.setInspectionInterval(Integer.parseInt(inspectionIntervall));
             //TODO scheme
         } else {
             plant = new Plant(Integer.parseInt(inspectionIntervall), description);
-            //TODO place? nextInspection?
+            //TODO nextInspection?
             //TODO scheme
         }
+        plant.setPlace(place);
         plant.setManufactor(manufactor);
         if (!constructionYear.equals("")) {
             plant.setConstructionYear(Integer.parseInt(constructionYear));
