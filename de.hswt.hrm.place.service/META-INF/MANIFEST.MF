@@ -8,7 +8,6 @@ Import-Package: de.hswt.hrm.common,
  de.hswt.hrm.common.database.exception,
  de.hswt.hrm.common.locking.jdbc,
  de.hswt.hrm.place.dao.core,
- de.hswt.hrm.place.dao.jdbc,
  de.hswt.hrm.place.model
 Export-Package: de.hswt.hrm.place.service
 Require-Bundle: org.eclipse.e4.core.di;bundle-version="1.2.0",

@@ -3,7 +3,6 @@ package de.hswt.hrm.common.locking.jdbc;
 import java.sql.SQLException;
 
 import org.eclipse.e4.core.contexts.ContextFunction;
-import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -2,6 +2,11 @@ package de.hswt.hrm.common.locking.jdbc;
 
 public class LockException extends RuntimeException {
 
+    /**
+     * Auto generated.
+     */
+    private static final long serialVersionUID = 7909369107318688837L;
+
     public LockException() {
         super();
     }

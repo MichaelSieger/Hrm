@@ -3,8 +3,6 @@ package de.hswt.hrm.place.service;
 import java.util.Collection;
 
 import javax.inject.Inject;
-import javax.inject.Named;
-
 import org.eclipse.e4.core.di.annotations.Creatable;
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.slf4j.Logger;
@@ -16,9 +14,7 @@ import de.hswt.hrm.common.database.exception.ElementNotFoundException;
 import de.hswt.hrm.common.database.exception.SaveException;
 import de.hswt.hrm.common.locking.jdbc.ILockService;
 import de.hswt.hrm.common.locking.jdbc.LockException;
-import de.hswt.hrm.common.locking.jdbc.LockService;
 import de.hswt.hrm.place.dao.core.IPlaceDao;
-import de.hswt.hrm.place.dao.jdbc.PlaceDao;
 import de.hswt.hrm.place.model.Place;
 
 @Creatable

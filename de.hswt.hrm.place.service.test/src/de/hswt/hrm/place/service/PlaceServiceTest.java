@@ -18,7 +18,6 @@ import com.google.common.base.Optional;
 import de.hswt.hrm.common.Config;
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.ElementNotFoundException;
-import de.hswt.hrm.common.database.exception.SaveException;
 import de.hswt.hrm.common.locking.jdbc.ILockService;
 import de.hswt.hrm.common.locking.jdbc.Lock;
 import de.hswt.hrm.common.locking.jdbc.LockException;
