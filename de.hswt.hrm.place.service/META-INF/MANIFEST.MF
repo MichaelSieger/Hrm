@@ -4,7 +4,8 @@ Bundle-Name: Service
 Bundle-SymbolicName: de.hswt.hrm.place.service
 Bundle-Version: 0.0.1.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Import-Package: de.hswt.hrm.common.database.exception,
+Import-Package: de.hswt.hrm.common,
+ de.hswt.hrm.common.database.exception,
  de.hswt.hrm.common.locking.jdbc,
  de.hswt.hrm.place.dao.core,
  de.hswt.hrm.place.dao.jdbc,

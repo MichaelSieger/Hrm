@@ -10,6 +10,7 @@ import org.eclipse.e4.core.di.annotations.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.hswt.hrm.common.Config;
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.ElementNotFoundException;
 import de.hswt.hrm.common.database.exception.SaveException;
@@ -22,16 +23,29 @@ import de.hswt.hrm.place.model.Place;
 @Creatable
 public class PlaceService {
     private final static Logger LOG = LoggerFactory.getLogger(PlaceService.class);
+
+    private final IPlaceDao dao;
+	private final ILockService lockService;
+	private final boolean lockingEnabled;
     
     @Inject
-    @Optional
-	private ILockService lockService;
-    
-    private IPlaceDao dao;
-    
-    @Inject
-	public PlaceService(IPlaceDao placeDao) {
+	public PlaceService(IPlaceDao placeDao, @Optional ILockService lockService) {
 	    this.dao = placeDao;
+	    this.lockService = lockService;
+	    
+	    if (dao == null) {
+	        LOG.error("PlaceDao not injected to PlaceService.");
+	    }
+
+	    Config cfg = Config.getInstance();
+	    lockingEnabled = cfg.getProperty(Config.Keys.DB_LOCKING) == "1" ? true : false;
+	    
+	    if (lockingEnabled && lockService == null) {
+	        LOG.error("Locking is enabled but the LockService was not injected to PlaceService.");
+	    }
+	    else if (lockService != null) {
+	        LOG.info("LockService injected to PlaceService");
+	    }
 	}
 	
 	/**
@@ -39,15 +53,6 @@ public class PlaceService {
      * @throws DatabaseException 
      */
 	public Collection<Place> findAll() throws DatabaseException {
-	    if (lockService != null) {
-	        LOG.debug("Lock service injected.");
-	    }
-	    else {
-	        LOG.debug("Lock service NOT injected.");
-	    }
-	    if (dao != null) {
-	        LOG.debug("place dao injected.");
-	    }
 		return dao.findAll();
 	}
 	
