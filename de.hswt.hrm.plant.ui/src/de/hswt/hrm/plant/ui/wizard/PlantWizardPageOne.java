@@ -1,7 +1,9 @@
 package de.hswt.hrm.plant.ui.wizard;
 
 import java.net.URL;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 
 import org.eclipse.e4.xwt.IConstants;
 import org.eclipse.e4.xwt.XWT;
@@ -9,6 +11,7 @@ import org.eclipse.e4.xwt.forms.XWTForms;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 import org.slf4j.Logger;
@@ -16,6 +19,9 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Optional;
 
+import de.hswt.hrm.common.database.exception.DatabaseException;
+import de.hswt.hrm.place.model.Place;
+import de.hswt.hrm.place.service.PlaceService;
 import de.hswt.hrm.plant.model.Plant;
 
 public class PlantWizardPageOne extends WizardPage {
@@ -51,15 +57,32 @@ public class PlantWizardPageOne extends WizardPage {
             updateFields(container);
         }
         setControl(container);
+        initPlaces();
         setKeyListener();
         setPageComplete(false);
     }
     
+    private void initPlaces() {
+        Combo combo = (Combo) XWT.findElementByName(container, "place");
+        Collection<Place> places;
+        try {
+            places = PlaceService.findAll();
+            for (Iterator<Place> i=places.iterator(); i.hasNext();){
+                String placeName = i.next().getPlaceName();
+                combo.add(placeName);
+            }
+        } catch (DatabaseException e) {
+            LOG.error("An Error occured: ", e);
+        }        
+    }
+        
     private void updateFields(Composite c) {
         Plant p = plant.get();
         Text t = (Text) XWT.findElementByName(c, "description");
         t.setText(p.getDescription());
-        //TODO place - mandatory?
+        Combo combo = (Combo) XWT.findElementByName(container, "place");
+        String placeName = p.getPlace().get().getPlaceName();
+        combo.select(combo.indexOf(placeName));
         //TODO nextInspection / inspectionIntervall ?
         //TODO scheme
         
