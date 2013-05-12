@@ -11,3 +11,4 @@ Import-Package: com.google.common.base,
  de.hswt.hrm.scheme.dao.core,
  de.hswt.hrm.scheme.model,
  org.apache.commons.dbutils
+Export-Package: de.hswt.hrm.scheme.dao.jdbc
