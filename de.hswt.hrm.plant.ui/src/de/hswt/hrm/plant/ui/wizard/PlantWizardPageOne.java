@@ -27,17 +27,17 @@ import de.hswt.hrm.plant.model.Plant;
 public class PlantWizardPageOne extends WizardPage {
 
     private static final Logger LOG = LoggerFactory.getLogger(PlantWizardPageOne.class);
-    
+
     private Composite container;
     private Optional<Plant> plant;
     private Collection<Place> places;
-    
+
     public PlantWizardPageOne(String title, Optional<Plant> plant) {
         super(title);
         this.plant = plant;
         setDescription(createDescription());
     }
-    
+
     private String createDescription() {
         if (plant.isPresent()) {
             return "Anlage bearbeiten";
@@ -62,20 +62,21 @@ public class PlantWizardPageOne extends WizardPage {
         setKeyListener();
         setPageComplete(false);
     }
-    
+
     private void initPlaces() {
         Combo combo = (Combo) XWT.findElementByName(container, "place");
-        try {
-            places = PlaceService.findAll();
-            for (Iterator<Place> i=places.iterator(); i.hasNext();) {
-                String placeName = i.next().getPlaceName();
-                combo.add(placeName);
-            }
-        } catch (DatabaseException e) {
-            LOG.error("An Error occured: ", e);
-        }        
+        // try {
+        // TODO DI
+        // places = PlaceService.findAll();
+        // for (Iterator<Place> i=places.iterator(); i.hasNext();) {
+        // String placeName = i.next().getPlaceName();
+        // combo.add(placeName);
+        // }
+        // } catch (DatabaseException e) {
+        // LOG.error("An Error occured: ", e);
+        // }
     }
-    
+
     public Optional<Place> getSelectedPlace() {
         Place selectedPlace = null;
         Combo combo = (Combo) XWT.findElementByName(container, "place");
@@ -83,13 +84,13 @@ public class PlantWizardPageOne extends WizardPage {
         Iterator<Place> i = places.iterator();
         while (i.hasNext()) {
             Place actual = i.next();
-           if (selectedPlaceName.equals(actual.getPlaceName())){
-               selectedPlace = actual;
-           }
+            if (selectedPlaceName.equals(actual.getPlaceName())) {
+                selectedPlace = actual;
+            }
         }
         return Optional.fromNullable(selectedPlace);
     }
-        
+
     private void updateFields(Composite c) {
         Plant p = plant.get();
         Text t = (Text) XWT.findElementByName(c, "description");
@@ -97,9 +98,9 @@ public class PlantWizardPageOne extends WizardPage {
         Combo combo = (Combo) XWT.findElementByName(container, "place");
         String placeName = p.getPlace().get().getPlaceName();
         combo.select(combo.indexOf(placeName));
-        //TODO nextInspection / inspectionIntervall ?
-        //TODO scheme
-        
+        // TODO nextInspection / inspectionIntervall ?
+        // TODO scheme
+
         t = (Text) XWT.findElementByName(c, "manufactor");
         t.setText(p.getManufactor().or(""));
         t = (Text) XWT.findElementByName(c, "constructionYear");
@@ -120,18 +121,19 @@ public class PlantWizardPageOne extends WizardPage {
         t.setText(p.getVoltage().or(""));
         t = (Text) XWT.findElementByName(c, "note");
         t.setText(p.getNote().or(""));
-    }    
-    
+    }
+
     public HashMap<String, Text> getMandatoryWidgets() {
         HashMap<String, Text> widgets = new HashMap<String, Text>();
         widgets.put("description", (Text) XWT.findElementByName(container, "description"));
-        //TODO place - mandatory?
-        //TODO nextInspection / inspectionIntervall ?
-        widgets.put("inspectionIntervall", (Text) XWT.findElementByName(container, "inspectionIntervall"));
-        //TODO scheme
+        // TODO place - mandatory?
+        // TODO nextInspection / inspectionIntervall ?
+        widgets.put("inspectionIntervall",
+                (Text) XWT.findElementByName(container, "inspectionIntervall"));
+        // TODO scheme
         return widgets;
     }
-    
+
     public HashMap<String, Text> getOptionalWidgets() {
         HashMap<String, Text> widgets = new HashMap<String, Text>();
         widgets.put("manufactor", (Text) XWT.findElementByName(container, "manufactor"));
@@ -139,14 +141,15 @@ public class PlantWizardPageOne extends WizardPage {
         widgets.put("type", (Text) XWT.findElementByName(container, "type"));
         widgets.put("airPerformance", (Text) XWT.findElementByName(container, "airPerformance"));
         widgets.put("motorPower", (Text) XWT.findElementByName(container, "motorPower"));
-        widgets.put("ventilatorPerformance", (Text) XWT.findElementByName(container, "ventilatorPerformance"));
+        widgets.put("ventilatorPerformance",
+                (Text) XWT.findElementByName(container, "ventilatorPerformance"));
         widgets.put("motorRPM", (Text) XWT.findElementByName(container, "motorRPM"));
         widgets.put("current", (Text) XWT.findElementByName(container, "current"));
         widgets.put("voltage", (Text) XWT.findElementByName(container, "voltage"));
         widgets.put("note", (Text) XWT.findElementByName(container, "note"));
         return widgets;
     }
-    
+
     @Override
     public boolean isPageComplete() {
         for (Text textField : getMandatoryWidgets().values()) {
@@ -155,12 +158,12 @@ public class PlantWizardPageOne extends WizardPage {
             }
         }
         Combo combo = (Combo) XWT.findElementByName(container, "place");
-        if (combo.getSelectionIndex()==-1){
+        if (combo.getSelectionIndex() == -1) {
             return false;
         }
         return true;
     }
-    
+
     public void setKeyListener() {
         HashMap<String, Text> widgets = getMandatoryWidgets();
         for (Text text : widgets.values()) {
@@ -178,5 +181,5 @@ public class PlantWizardPageOne extends WizardPage {
             });
         }
     }
-    
+
 }
