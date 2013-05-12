@@ -80,9 +80,11 @@ public class PlantWizardPageOne extends WizardPage {
         Place selectedPlace = null;
         Combo combo = (Combo) XWT.findElementByName(container, "place");
         String selectedPlaceName = combo.getItem(combo.getSelectionIndex());
-        for (Iterator<Place> i=places.iterator(); i.hasNext();) {
-           if (selectedPlaceName.equals(i.next().getPlaceName())){
-               selectedPlace = i.next();
+        Iterator<Place> i = places.iterator();
+        while (i.hasNext()) {
+            Place actual = i.next();
+           if (selectedPlaceName.equals(actual.getPlaceName())){
+               selectedPlace = actual;
            }
         }
         return Optional.fromNullable(selectedPlace);
