@@ -140,5 +140,6 @@
 		<module>../de.hswt.hrm.catalog.model</module>
 		<module>../de.hswt.hrm.catalog.service</module>
 		<module>../de.hswt.hrm.common.ui.xwt</module>
+		<module>../de.hswt.hrm.catalog.ui</module>
 	</modules>
 </project>
