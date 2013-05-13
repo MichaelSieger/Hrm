@@ -3,12 +3,13 @@ package de.hswt.hrm.contact.service;
 import java.util.Collection;
 
 import org.eclipse.e4.core.di.annotations.Creatable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.ElementNotFoundException;
 import de.hswt.hrm.common.database.exception.SaveException;
 import de.hswt.hrm.contact.dao.core.IContactDao;
-import de.hswt.hrm.contact.dao.jdbc.ContactDao;
 import de.hswt.hrm.contact.model.Contact;
 
 /**
@@ -17,17 +18,17 @@ import de.hswt.hrm.contact.model.Contact;
 @Creatable
 public class ContactService {
 
-    private ContactService() {
-    };
+    private final static Logger LOG = LoggerFactory.getLogger(ContactService.class);
+
+    private final IContactDao dao = null;
 
     // @Inject
-    private static IContactDao dao = new ContactDao();
 
     /**
      * @return All contacts from storage.
      * @throws DatabaseException
      */
-    public static Collection<Contact> findAll() throws DatabaseException {
+    public Collection<Contact> findAll() throws DatabaseException {
         return dao.findAll();
     }
 
@@ -37,7 +38,7 @@ public class ContactService {
      * @return Contact with the given id.
      * @throws DatabaseException
      */
-    public static Contact findById(int id) throws DatabaseException {
+    public Contact findById(int id) throws DatabaseException {
         return dao.findById(id);
     }
 
@@ -50,7 +51,7 @@ public class ContactService {
      * @throws SaveException
      *             If the contact could not be inserted.
      */
-    public static Contact insert(Contact contact) throws SaveException {
+    public Contact insert(Contact contact) throws SaveException {
         return dao.insert(contact);
     }
 
@@ -64,7 +65,7 @@ public class ContactService {
      * @throws SaveException
      *             If the contact could not be updated.
      */
-    public static void update(Contact contact) throws ElementNotFoundException, SaveException {
+    public void update(Contact contact) throws ElementNotFoundException, SaveException {
         dao.update(contact);
     }
 
@@ -75,7 +76,7 @@ public class ContactService {
      * @throws ElementNotFoundException
      * @throws DatabaseException
      */
-    public static void refresh(Contact contact) throws ElementNotFoundException, DatabaseException {
+    public void refresh(Contact contact) throws ElementNotFoundException, DatabaseException {
         Contact fromDb = dao.findById(contact.getId());
 
         contact.setCity(fromDb.getCity());
