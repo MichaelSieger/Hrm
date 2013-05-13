@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" name="de.hswt.hrm.contact.dao.jdbc">
    <implementation class="de.hswt.hrm.contact.dao.jdbc.JdbcContactDaoContextFunction"/>
-   <property name="service.context.key" type="String" value="de.hswt.hrm.contact.dao.core.IContactDao"/>
    <service>
-      <provide interface="org.eclipse.e4.core.contexts.IContextFunction"/>
+      <provide interface= "org.eclipse.e4.core.contexts.IContextFunction"/>
    </service>
+   
+    <property name="service.context.key"
+    type="String"
+    value="de.hswt.hrm.contact.dao.core.IContactDao"/>
 </scr:component>

@@ -1,16 +1,25 @@
 package de.hswt.hrm.contact.dao.jdbc;
 
 import org.eclipse.e4.core.contexts.ContextFunction;
+import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import de.hswt.hrm.contact.dao.core.IContactDao;
 
 public class JdbcContactDaoContextFunction extends ContextFunction {
-    
-    private final static Logger LOG = Logger
+
+    private final static Logger LOG = LoggerFactory.getLogger(JdbcContactDaoContextFunction.class);
 
     @Override
     public Object compute(IEclipseContext context) {
-        // TODO Auto-generated method stub
-        return null;
+        // Create contact dao and inject context as it might need it for further injection
+        IContactDao contactDao = ContextInjectionFactory.make(ContactDao.class, context);
+        context.set(IContactDao.class, contactDao);
+
+        LOG.debug("Made ContactDao available in Eclipse Context");
+        return contactDao;
     }
 
 }
