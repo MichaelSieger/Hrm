@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+import org.eclipse.e4.core.contexts.ContextInjectionFactory;
+import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.Shell;
@@ -20,9 +22,12 @@ public final class ContactPartUtil {
 
     }
 
-    public static Optional<Contact> showWizard(Shell shell, Optional<Contact> contact) {
+    public static Optional<Contact> showWizard(IEclipseContext context, Shell shell,
+            Optional<Contact> contact) {
 
         ContactWizard cw = new ContactWizard(contact);
+        ContextInjectionFactory.inject(cw, context);
+
         WizardDialog wd = new WizardDialog(shell, cw);
         wd.open();
         return cw.getContact();
