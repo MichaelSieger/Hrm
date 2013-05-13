@@ -2,6 +2,8 @@ package de.hswt.hrm.contact.ui.wizard;
 
 import java.util.HashMap;
 
+import javax.inject.Inject;
+
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.widgets.Text;
 import org.slf4j.Logger;
@@ -19,6 +21,9 @@ public class ContactWizard extends Wizard {
     private static final Logger LOG = LoggerFactory.getLogger(ContactWizard.class);
     private ContactWizardPageOne first;
     private Optional<Contact> contact;
+    
+    @Inject
+    private ContactService contactService;
 
     public ContactWizard(Optional<Contact> contact) {
 
@@ -59,11 +64,11 @@ public class ContactWizard extends Wizard {
          Contact c = this.contact.get();
          try {
          // Update contact from the Database
-         c = ContactService.findById(c.getId());
+         c = contactService.findById(c.getId());
          // set the values to the fields from the WizardPage
          c = setValues(contact);
          // Update contact in the Database
-         ContactService.update(c);
+         contactService.update(c);
          contact = Optional.of(c);
         
          }
@@ -79,7 +84,7 @@ public class ContactWizard extends Wizard {
         Contact c = setValues(Optional.<Contact> absent());
 
          try {
-         contact = Optional.of(ContactService.insert(c));
+         contact = Optional.of(contactService.insert(c));
          }
          catch (SaveException e) {
          LOG.error("Could not save Element: " + contact + "into Database", e);
