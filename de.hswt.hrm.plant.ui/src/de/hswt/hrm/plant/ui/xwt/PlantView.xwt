@@ -2,35 +2,38 @@
 	xmlns:x="http://www.eclipse.org/xwt" xmlns:p1="clr-namespace:de.hswt.hrm.plant.ui.xwt"
 	x:Class="de.hswt.hrm.plant.ui.event.PlantEventHandler">
 	<Composite.layout>
-		<GridLayout numColumns="5" makeColumnsEqualWidth="true"/>
+		<GridLayout numColumns="5" makeColumnsEqualWidth="true" />
 	</Composite.layout>
-	<Label/>
-	<Label/>
-	<Label/>
 	<Text x:name="searchText" x:Style="SEARCH" text="Suche"
-		FocusOutEvent="leaveText" KeyUpEvent="onKeyUp" FocusInEvent="enterText" >
+		FocusOutEvent="leaveText" KeyUpEvent="onKeyUp" FocusInEvent="enterText">
 		<Text.layoutData>
-			<GridData horizontalAlignment="FILL"/>
+			<GridData horizontalAlignment="FILL" verticalAlignment="FILL"
+				horizontalSpan="4" />
 		</Text.layoutData>
 	</Text>
-	<Label/>
+	<Label />
 	<TableViewer x:name="plantTable" x:Style="BORDER">
 		<TableViewer.table headerVisible="true"
-			linesVisible="true" MouseDoubleClickEvent="tableEntrySelected" >
+			linesVisible="true" MouseDoubleClickEvent="tableEntrySelected">
 			<TableViewer.table.layoutData>
-				<GridData verticalSpan="5" horizontalSpan="4" horizontalAlignment="FILL" widthHint="860" verticalAlignment="FILL" grabExcessVerticalSpace="true" grabExcessHorizontalSpace="true"/>
+				<GridData verticalSpan="5" horizontalSpan="4"
+					horizontalAlignment="FILL" widthHint="860" verticalAlignment="FILL"
+					grabExcessVerticalSpace="true" grabExcessHorizontalSpace="true" />
 			</TableViewer.table.layoutData>
 		</TableViewer.table>
 	</TableViewer>
-	<Button x:name="addPlant" text="Neue Anlage"
-		SelectionEvent="buttonSelected" >
+	<Button x:name="addPlant" text="Neue Anlage" SelectionEvent="buttonSelected">
 		<Button.layoutData>
-			<GridData horizontalAlignment="FILL"/>
+			<GridData horizontalAlignment="FILL" />
 		</Button.layoutData>
 	</Button>
-	<Label/>
-	<Label/>
-	<Label/>
-	<Label/>
+	<Button text="Anlage Bearbeiten" SelectionEvent="tableEntrySelected">
+		<Button.layoutData>
+			<GridData horizontalAlignment="FILL" />
+		</Button.layoutData>
+	</Button>
+	<Label />
+	<Label />
+	<Label />
 </Composite>
 <!-- Forms API -->

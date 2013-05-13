@@ -89,26 +89,26 @@ public class PlantEventHandler {
 
     /**
      * This method is called whenever a doubleClick onto the Tableviewer occurs. It obtains the
-     * Plant from the selected column of the TableViewer. The Plant is passed to the
-     * PlantWizard. When the Wizard has finished, the Plant will be updated in the Database
+     * Plant from the selected column of the TableViewer. The Plant is passed to the PlantWizard.
+     * When the Wizard has finished, the Plant will be updated in the Database
      * 
      * @param event
      *            Event which occured within SWT
      */
     public void tableEntrySelected(Event event) {
 
-        //TODO Wizzard
-//        TableViewer tv = (TableViewer) XWT.findElementByName(event.widget, "plantTable");
-//
-//        // obtain the Plant in the column where the doubleClick happend
-//        Plant selectedPlant = (Plant) tv.getElementAt(tv.getTable().getSelectionIndex());
-//
-//        Optional<Plant> updatePlant = PlantPartUtil.showWizard(
-//                event.display.getActiveShell(), Optional.fromNullable(selectedPlant));
-//
-//        if (updatePlant.isPresent()) {
-//            tv.refresh();
-//        }
+        // TODO Wizzard
+        // TableViewer tv = (TableViewer) XWT.findElementByName(event.widget, "plantTable");
+        //
+        // // obtain the Plant in the column where the doubleClick happend
+        // Plant selectedPlant = (Plant) tv.getElementAt(tv.getTable().getSelectionIndex());
+        //
+        // Optional<Plant> updatePlant = PlantPartUtil.showWizard(
+        // event.display.getActiveShell(), Optional.fromNullable(selectedPlant));
+        //
+        // if (updatePlant.isPresent()) {
+        // tv.refresh();
+        // }
     }
 
 }

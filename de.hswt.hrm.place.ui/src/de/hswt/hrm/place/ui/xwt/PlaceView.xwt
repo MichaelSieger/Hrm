@@ -4,13 +4,10 @@
 	<Composite.layout>
 		<GridLayout numColumns="5" makeColumnsEqualWidth="true"/>
 	</Composite.layout>
-	<Label/>
-	<Label/>
-	<Label/>
 	<Text x:name="searchText" x:Style="SEARCH" text="Suche"
 		FocusOutEvent="leaveText" KeyUpEvent="onKeyUp" FocusInEvent="enterText" >
 		<Text.layoutData>
-			<GridData horizontalAlignment="FILL"/>
+			<GridData horizontalAlignment="FILL" horizontalSpan="4"/>
 		</Text.layoutData>
 	</Text>
 	<Label/>
@@ -28,7 +25,11 @@
 			<GridData horizontalAlignment="FILL"/>
 		</Button.layoutData>
 	</Button>
-	<Label/>
+	<Button text="Standort Bearbeiten" SelectionEvent="tableEntrySelected">
+		<Button.layoutData>
+			<GridData horizontalAlignment="FILL"/>
+		</Button.layoutData>
+	</Button>
 	<Label/>
 	<Label/>
 	<Label/>
