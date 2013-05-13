@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Ui
+Bundle-SymbolicName: de.hswt.hrm.catalog.ui
+Bundle-Version: 0.0.1.qualifier
+Require-Bundle: javax.annotation,
+ javax.inject
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Import-Package: org.eclipse.swt.widgets
