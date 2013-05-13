@@ -5,7 +5,10 @@ import java.util.Collection;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.inject.Inject;
 
+import org.eclipse.e4.core.contexts.ContextInjectionFactory;
+import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.xwt.IConstants;
 import org.eclipse.e4.xwt.XWT;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -19,19 +22,23 @@ import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.ui.swt.table.ColumnComparator;
 import de.hswt.hrm.common.ui.swt.table.ColumnDescription;
 import de.hswt.hrm.common.ui.swt.table.TableViewerController;
+import de.hswt.hrm.common.ui.xwt.XwtHelper;
 import de.hswt.hrm.contact.model.Contact;
 import de.hswt.hrm.contact.service.ContactService;
+import de.hswt.hrm.contact.ui.event.ContactEventHandler;
 import de.hswt.hrm.contact.ui.filter.ContactFilter;
 
 public class ContactPart {
+    private final static Logger LOG = LoggerFactory.getLogger(ContactPart.class);
+
+    @Inject
+    private ContactService contactService;
 
     private TableViewer viewer;
     private Collection<Contact> contacts;
 
-    private final static Logger LOG = LoggerFactory.getLogger(ContactPart.class);
-
     @PostConstruct
-    public void postConstruct(Composite parent) {
+    public void postConstruct(Composite parent, IEclipseContext context) {
 
         LOG.debug("entering method postConstruct");
 
@@ -40,22 +47,30 @@ public class ContactPart {
 
         try {
 
+            ContactEventHandler eventHandler = ContextInjectionFactory.make(
+                    ContactEventHandler.class, context);
             // Obtain root element of the XWT file
-            final Composite comp = (Composite) XWT.load(parent, url);
+            final Composite comp = XwtHelper.loadWithEventHandler(parent, url, eventHandler);
+            LOG.debug("XWT load successfully");
+
             // Obtain TableViwer to fill it with data
             viewer = (TableViewer) XWT.findElementByName(comp, "contactTable");
             initializeTable(parent, viewer);
             refreshTable(parent);
         }
         catch (Exception e) {
-            e.printStackTrace();
+            LOG.error("Could not load XWT file from resource", e);
+        }
+
+        if (contactService == null) {
+            LOG.error("ContactService not injected to ContactPart");
         }
 
     }
 
     private void refreshTable(Composite parent) {
         try {
-            contacts = ContactService.findAll();
+            contacts = contactService.findAll();
             viewer.setInput(contacts);
         }
         catch (DatabaseException e) {
