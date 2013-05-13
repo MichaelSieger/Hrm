@@ -24,7 +24,7 @@ public class ContactWizard extends Wizard {
 
         this.contact = contact;
         first = new ContactWizardPageOne("First Page", contact);
-        
+
         if (contact.isPresent()) {
             setWindowTitle("Kontakt bearbeiten");
         }
@@ -55,35 +55,35 @@ public class ContactWizard extends Wizard {
     }
 
     private boolean editExistingCustomer() {
-        // At this point we already know that the contact exists
-        Contact c = this.contact.get();
-        try {
-            // Update contact from the Database
-            c = ContactService.findById(c.getId());
-            // set the values to the fields from the WizardPage
-            c = setValues(contact);
-            // Update contact in the Database
-            ContactService.update(c);
-            contact = Optional.of(c);
-
-        }
-        catch (DatabaseException e1) {
-            LOG.error("An error occured", e1);
-        }
+         // At this point we already know that the contact exists
+         Contact c = this.contact.get();
+         try {
+         // Update contact from the Database
+         c = ContactService.findById(c.getId());
+         // set the values to the fields from the WizardPage
+         c = setValues(contact);
+         // Update contact in the Database
+         ContactService.update(c);
+         contact = Optional.of(c);
+        
+         }
+         catch (DatabaseException e1) {
+         LOG.error("An error occured", e1);
+         }
 
         return true;
 
     }
 
     private boolean insertNewContact() {
-        Contact c = setValues(Optional.<Contact>absent());
+        Contact c = setValues(Optional.<Contact> absent());
 
-        try {
-            contact = Optional.of(ContactService.insert(c));
-        }
-        catch (SaveException e) {
-            LOG.error("Could not save Element: " + contact + "into Database", e);
-        }
+         try {
+         contact = Optional.of(ContactService.insert(c));
+         }
+         catch (SaveException e) {
+         LOG.error("Could not save Element: " + contact + "into Database", e);
+         }
 
         return true;
     }
@@ -121,7 +121,7 @@ public class ContactWizard extends Wizard {
         else {
             contact = new Contact(lastName, firstName, street, streetNumber, zipCode, city);
         }
-        
+
         contact.setShortcut(shortcut);
         contact.setPhone(phone);
         contact.setMobile(mobilePhone);

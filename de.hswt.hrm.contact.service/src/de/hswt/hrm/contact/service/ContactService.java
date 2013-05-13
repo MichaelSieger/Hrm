@@ -2,6 +2,8 @@ package de.hswt.hrm.contact.service;
 
 import java.util.Collection;
 
+import javax.inject.Inject;
+
 import org.eclipse.e4.core.di.annotations.Creatable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,9 +22,16 @@ public class ContactService {
 
     private final static Logger LOG = LoggerFactory.getLogger(ContactService.class);
 
-    private final IContactDao dao = null;
+    private final IContactDao dao;
 
-    // @Inject
+    @Inject
+    public ContactService(IContactDao dao) {
+        this.dao = dao;
+
+        if (dao == null) {
+            LOG.error("ContactDao not injected to ContactService.");
+        }
+    }
 
     /**
      * @return All contacts from storage.
