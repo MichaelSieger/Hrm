@@ -39,7 +39,7 @@ public class PlacePart {
     @Inject
     @Optional
     private ILockService lockService;
-
+    
     private TableViewer viewer;
     private Collection<Place> places = null;
 

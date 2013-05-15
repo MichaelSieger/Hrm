@@ -4,3 +4,10 @@ Bundle-Name: Service
 Bundle-SymbolicName: de.hswt.hrm.catalog.service
 Bundle-Version: 0.0.1.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Require-Bundle: org.eclipse.e4.core.di;bundle-version="1.2.0",
+ ch.qos.logback.classic;bundle-version="1.0.0",
+ ch.qos.logback.core;bundle-version="1.0.0",
+ org.slf4j.api;bundle-version="1.6.4",
+ javax.inject;bundle-version="1.0.0",
+ com.google.guava;bundle-version="10.0.1"
+Export-Package: de.hswt.hrm.catalog.service

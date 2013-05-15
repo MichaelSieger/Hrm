@@ -4,9 +4,18 @@ Bundle-Name: Jdbc
 Bundle-SymbolicName: de.hswt.hrm.catalog.dao.jdbc
 Bundle-Version: 0.0.1.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Import-Package: com.google.common.base,
- de.hswt.hrm.catalog.dao.core,
+Import-Package: de.hswt.hrm.catalog.dao.core,
  de.hswt.hrm.catalog.model,
  de.hswt.hrm.common.database,
- de.hswt.hrm.common.database.exception,
- org.apache.commons.dbutils
+ de.hswt.hrm.common.database.exception
+Bundle-ActivationPolicy: lazy
+Require-Bundle: com.google.guava;bundle-version="10.0.1",
+ de.hswt.hrm.commons.dbutils;bundle-version="0.0.1",
+ org.eclipse.equinox.ds;bundle-version="1.4.1",
+ org.eclipse.equinox.util;bundle-version="1.0.400",
+ org.eclipse.e4.core.di;bundle-version="1.2.0",
+ org.eclipse.e4.core.contexts;bundle-version="1.2.0"
+Service-Component: OSGI-INF/activity-component.xml,
+ OSGI-INF/current-component.xml,
+ OSGI-INF/target-component.xml
+Export-Package: de.hswt.hrm.catalog.dao.jdbc
