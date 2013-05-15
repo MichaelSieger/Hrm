@@ -109,6 +109,7 @@
 		<module>../de.hswt.hrm.log.config</module>
 		<module>../de.hswt.hrm.main</module>
 		<module>../de.hswt.hrm.main.feature</module>
+		<module>../de.hswt.hrm.mockito</module>
 		<module>../de.hswt.hrm.pdfrenderer</module>
 		<module>../de.hswt.hrm.place.dao.core</module>
 		<module>../de.hswt.hrm.place.dao.jdbc</module>
@@ -140,6 +141,7 @@
 		<module>../de.hswt.hrm.catalog.feature</module>
 		<module>../de.hswt.hrm.catalog.model</module>
 		<module>../de.hswt.hrm.catalog.service</module>
+		<module>../de.hswt.hrm.catalog.service.test</module>
 		<module>../de.hswt.hrm.common.ui.xwt</module>
 		<module>../de.hswt.hrm.catalog.ui</module>
 		<module>../de.hswt.hrm.mockito</module>
