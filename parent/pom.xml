@@ -141,5 +141,6 @@
 		<module>../de.hswt.hrm.catalog.service</module>
 		<module>../de.hswt.hrm.common.ui.xwt</module>
 		<module>../de.hswt.hrm.catalog.ui</module>
+		<module>../de.hswt.hrm.mockito</module>
 	</modules>
 </project>
