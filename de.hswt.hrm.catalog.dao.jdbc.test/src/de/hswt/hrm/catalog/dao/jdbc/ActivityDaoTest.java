@@ -43,6 +43,23 @@ public class ActivityDaoTest extends AbstractDatabaseTest {
     @Test
     public void testUpdateActivity() throws ElementNotFoundException, DatabaseException {
 
+        Activity act1 = new Activity("FirstActivity", "FirstText");
+
+        ActivityDao dao = new ActivityDao();
+        Activity parsed = dao.insert(act1);
+
+        // We add another contact to ensure that the update affects just one row.
+        Activity act2 = new Activity("SecondActivity", "SecondText");
+        dao.insert(act2);
+
+        parsed.setText("Some City");
+        parsed.setName("someone@example.com");
+        dao.update(parsed);
+
+        Activity requested = dao.findById(parsed.getId());
+        compareActivityFields(parsed, requested);
+        assertEquals("Requested object does not equal updated one.", parsed, requested);
+
     }
 
     @Test
