@@ -4,6 +4,8 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Strings.isNullOrEmpty;
 
+import com.google.common.base.Optional;
+
 
 /**
  * Represents a Component
@@ -29,26 +31,42 @@ public class Component {
     private static final String INVALID_NUMBER = "%d is an invalid number.%n Must be greater 0";
 
     public Component(int id, String name, byte[] leftRightImage, byte[] rightLeftImage,
-            byte[] upDownImage, byte[] downUpImage, int quantifier, boolean boolRating, Category category) {
-        super();
-        this.id = id;
+            byte[] upDownImage, byte[] downUpImage, int quantifier, boolean boolRating) {
+    	// FIXME: correct constructor
+    	this.id = id;
         setName(name);
         this.leftRightImage = leftRightImage;
         this.rightLeftImage = rightLeftImage;
         this.upDownImage = upDownImage;
         this.downUpImage = downUpImage;
-        setCategory(category);
         setQuantifier(quantifier);
         setBoolRating(boolRating);
         checkArgument(
                 !(leftRightImage == null && rightLeftImage == null && upDownImage == null && downUpImage == null),
                 NO_IMAGE_ERROR);
     }
+    
+//    public Component(int id, String name, byte[] leftRightImage, byte[] rightLeftImage,
+//            byte[] upDownImage, byte[] downUpImage, int quantifier, boolean boolRating, Category category) {
+//        super();
+//        this.id = id;
+//        setName(name);
+//        this.leftRightImage = leftRightImage;
+//        this.rightLeftImage = rightLeftImage;
+//        this.upDownImage = upDownImage;
+//        this.downUpImage = downUpImage;
+//        setCategory(category);
+//        setQuantifier(quantifier);
+//        setBoolRating(boolRating);
+//        checkArgument(
+//                !(leftRightImage == null && rightLeftImage == null && upDownImage == null && downUpImage == null),
+//                NO_IMAGE_ERROR);
+//    }
 
     public Component(String name, byte[] leftRightImage, byte[] rightLeftImage, byte[] upDownImage,
-            byte[] downUpImage, int quantifier, boolean boolRating, Category category) {
+            byte[] downUpImage, int quantifier, boolean boolRating) {
         this(-1, name, leftRightImage, rightLeftImage, upDownImage, downUpImage, quantifier,
-                boolRating, category);
+                boolRating);
     }
 
     public int getId() {
@@ -65,8 +83,8 @@ public class Component {
 
     }
 
-    public Category getCategory() {
-        return category;
+    public Optional<Category> getCategory() {
+        return Optional.fromNullable(category);
     }
 
     public void setName(String name) {

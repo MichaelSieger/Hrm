@@ -82,7 +82,8 @@ public class TreeContentProvider implements ITreeContentProvider{
     private Category[] getCategorys(){
         List<Category> cats = Lists.newArrayList();
         for(RenderedComponent c : comps){
-        	final Category category = c.getComponent().getCategory();
+        	// FIXME: add null value check if necessary
+        	final Category category = c.getComponent().getCategory().get();
         	if(!cats.contains(category)){
         		cats.add(category);
         	}

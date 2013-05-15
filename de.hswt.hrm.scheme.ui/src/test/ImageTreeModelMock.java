@@ -48,27 +48,31 @@ public class ImageTreeModelMock implements IImageTreeModel {
 	
 	
 	private Component getBioMesureComponent() throws FileNotFoundException, IOException{
-		return new Component("Keimmessung", loadBytes("pkk1d.pdf"), loadBytes("pkk1l.pdf"),
-							  loadBytes("pkk1r.pdf"), loadBytes("pkk1u.pdf"), 1, true,
-							  getMeasureCategory());
+		Component c = new Component("Keimmessung", loadBytes("pkk1d.pdf"), loadBytes("pkk1l.pdf"),
+							  loadBytes("pkk1r.pdf"), loadBytes("pkk1u.pdf"), 1, true);
+		c.setCategory(getMeasureCategory());
+		return c;
 	}
 	
 	private Component getVentilationComponent() throws FileNotFoundException, IOException{
-		return new Component(
-				"Außenluft", loadBytes("1_0.pdf"), loadBytes("1_l_0.pdf"), null, null, 3, true, 
-				getVentilationCategory());
+		Component c = new Component(
+				"Außenluft", loadBytes("1_0.pdf"), loadBytes("1_l_0.pdf"), null, null, 3, true);
+		c.setCategory(getVentilationCategory());
+		return c;
 	}
 	
 	private Component getFilterComponent2() throws FileNotFoundException, IOException{
-		return new Component(
-				"F6", loadBytes("8_r_0.pdf"), loadBytes("8_l_0.pdf"), null, null, 3, true, 
-				getFilterCategory());
+		Component c = new Component(
+				"F6", loadBytes("8_r_0.pdf"), loadBytes("8_l_0.pdf"), null, null, 3, true);
+		c.setCategory(getFilterCategory());
+		return c;
 	}
 	
 	private Component getFilterComponent() throws FileNotFoundException, IOException{
-		return new Component(
-				"F5", loadBytes("7_r_0.pdf"), loadBytes("7_l_0.pdf"), null, null, 3, true, 
-				getFilterCategory());
+		Component c = new Component(
+				"F5", loadBytes("7_r_0.pdf"), loadBytes("7_l_0.pdf"), null, null, 3, true);
+		c.setCategory(getFilterCategory());
+		return c;
 	}
 	
 	private Category getMeasureCategory(){
