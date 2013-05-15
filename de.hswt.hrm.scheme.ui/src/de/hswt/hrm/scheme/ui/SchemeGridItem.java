@@ -84,7 +84,8 @@ public class SchemeGridItem {
     }
     
     Rectangle getBoundingBox(){
-    	Category c = renderedComponent.getComponent().getCategory();
+    	// FIXME: add null value check if necessary
+    	Category c = renderedComponent.getComponent().getCategory().get();
         return new Rectangle(x, y, 
         		c.getWidth(),
         		c.getHeight());

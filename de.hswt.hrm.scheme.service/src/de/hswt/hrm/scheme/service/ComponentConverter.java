@@ -58,8 +58,9 @@ public class ComponentConverter {
 	 */
 	public static RenderedComponent convert(Display display, Component component)
 			throws IOException {
-		final int w = component.getCategory().getWidth();
-		final int h = component.getCategory().getHeight();
+		// FIXME: add null value check if necessary
+		final int w = component.getCategory().get().getWidth();
+		final int h = component.getCategory().get().getHeight();
 		return new RenderedComponent(component, 
 				createImage(display, component.getLeftRightImage(), w, h), 
 				createImage(display, component.getRightLeftImage(), w, h), 

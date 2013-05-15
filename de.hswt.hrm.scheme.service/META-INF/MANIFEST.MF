@@ -4,12 +4,13 @@ Bundle-Name: Service
 Bundle-SymbolicName: de.hswt.hrm.scheme.service
 Bundle-Version: 0.0.1.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Import-Package: com.sun.pdfview,
- de.hswt.hrm.common.database.exception,
+Import-Package: de.hswt.hrm.common.database.exception,
  de.hswt.hrm.plant.model,
  de.hswt.hrm.scheme.dao.core,
  de.hswt.hrm.scheme.dao.jdbc,
  de.hswt.hrm.scheme.model,
  org.eclipse.swt.graphics
 Export-Package: de.hswt.hrm.scheme.service
-Require-Bundle: org.eclipse.swt;bundle-version="3.100.1"
+Require-Bundle: org.eclipse.swt;bundle-version="3.100.1",
+ com.google.guava;bundle-version="10.0.1",
+ de.hswt.hrm.pdfrenderer;bundle-version="0.0.1"
