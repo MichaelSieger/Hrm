@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Test
 Bundle-SymbolicName: de.hswt.hrm.catalog.dao.jdbc.test
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 0.0.1.qualifier
 Fragment-Host: de.hswt.hrm.catalog.dao.jdbc;bundle-version="0.0.1"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Require-Bundle: de.hswt.hrm.test;bundle-version="0.0.1",
