@@ -19,7 +19,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.hswt.hrm.catalog.dao.core.IActivityDao;
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.locking.jdbc.ILockService;
 import de.hswt.hrm.common.ui.swt.table.ColumnComparator;
@@ -41,9 +40,6 @@ public class PlacePart {
     @Optional
     private ILockService lockService;
     
-    @Inject
-    private IActivityDao activityDao;
-
     private TableViewer viewer;
     private Collection<Place> places = null;
 

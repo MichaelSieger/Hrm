@@ -19,8 +19,7 @@ Require-Bundle: javax.annotation,
  org.eclipse.e4.core.di;bundle-version="1.2.0",
  org.eclipse.e4.core.contexts;bundle-version="1.2.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Import-Package: de.hswt.hrm.catalog.dao.core,
- de.hswt.hrm.common.database.exception,
+Import-Package: de.hswt.hrm.common.database.exception,
  de.hswt.hrm.common.locking.jdbc,
  de.hswt.hrm.common.ui.swt.table,
  de.hswt.hrm.common.ui.xwt,
