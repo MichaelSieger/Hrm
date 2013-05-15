@@ -11,3 +11,7 @@ Require-Bundle: org.eclipse.e4.core.di;bundle-version="1.2.0",
  javax.inject;bundle-version="1.0.0",
  com.google.guava;bundle-version="10.0.1"
 Export-Package: de.hswt.hrm.catalog.service
+Import-Package: de.hswt.hrm.catalog.dao.core,
+ de.hswt.hrm.catalog.model,
+ de.hswt.hrm.common,
+ de.hswt.hrm.common.exception
