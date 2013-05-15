@@ -13,28 +13,44 @@ import de.hswt.hrm.test.database.AbstractDatabaseTest;
 
 public class ActivityDaoTest extends AbstractDatabaseTest {
 
+    private void compareActivityFields(final Activity expected, final Activity actual) {
+        assertEquals("Name not set correctly.", expected.getName(), actual.getName());
+        assertEquals("Text not set correctly.", expected.getText(), actual.getText());
+
+    }
+
     @Test
     public void testInsertActivity() throws ElementNotFoundException, DatabaseException {
         final String name = "ActivityName";
         final String text = "Get outta here ...";
 
-        Activity a = new Activity(name, text);
+        Activity expected = new Activity(name, text);
 
+        // Check return value from insert
         ActivityDao dao = new ActivityDao();
-        Activity inserted = dao.insert(a);
-        assertTrue("ID is invalid.", inserted.getId() >= 0);
-        assertEquals("Name set wrong.", name, inserted.getName());
-        assertEquals("Text set wrong.", text, inserted.getText());
+        Activity parsed = dao.insert(expected);
+        compareActivityFields(expected, parsed);
+        assertTrue("ID not set correctly.", parsed.getId() >= 0);
 
-        // Freshly retrieve vom DB
-        Activity requested = dao.findById(inserted.getId());
+        // Request from database
+        Activity requested = dao.findById(parsed.getId());
+        compareActivityFields(expected, requested);
+        assertEquals("Requested object does not equal parsed one.", parsed, requested);
+    }
 
-        // Check fields
-        assertEquals("Name not saved correctly.", name, requested.getName());
-        assertEquals("Text not saved correctly.", text, requested.getText());
+    @Test
+    public void testUpdateActivity() throws ElementNotFoundException, DatabaseException {
 
-        // Check equals
-        assertTrue("Queried object does not equal inserted one.", requested.equals(inserted));
+    }
+
+    @Test
+    public void testFindAllActivity() throws ElementNotFoundException, DatabaseException {
+
+    }
+
+    @Test
+    public void testFindByIdActivity() throws ElementNotFoundException, DatabaseException {
+
     }
 
 }
