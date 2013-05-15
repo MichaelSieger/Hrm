@@ -49,17 +49,23 @@ public class ActivityDaoTest extends AbstractDatabaseTest {
     public void testFindAllActivity() throws ElementNotFoundException, DatabaseException {
         Activity act1 = new Activity("FirstActivity", "FirstText");
         Activity act2 = new Activity("SecondActivity", "SecondText");
-        
+
         ActivityDao dao = new ActivityDao();
         dao.insert(act1);
         dao.insert(act2);
-        
+
         Collection<Activity> activity = dao.findAll();
         assertEquals("Count of retrieved activities does not match.", 2, activity.size());
     }
 
     @Test
     public void testFindByIdActivity() throws ElementNotFoundException, DatabaseException {
+        Activity expected = new Activity("FirstActivity", "FirstText");
+        ActivityDao dao = new ActivityDao();
+        Activity parsed = dao.insert(expected);
+
+        Activity requested = dao.findById(parsed.getId());
+        compareActivityFields(expected, requested);
 
     }
 
