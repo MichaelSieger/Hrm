@@ -3,6 +3,8 @@ package de.hswt.hrm.catalog.dao.jdbc;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Collection;
+
 import org.junit.Test;
 
 import de.hswt.hrm.common.database.exception.DatabaseException;
@@ -45,7 +47,15 @@ public class ActivityDaoTest extends AbstractDatabaseTest {
 
     @Test
     public void testFindAllActivity() throws ElementNotFoundException, DatabaseException {
-
+        Activity act1 = new Activity("FirstActivity", "FirstText");
+        Activity act2 = new Activity("SecondActivity", "SecondText");
+        
+        ActivityDao dao = new ActivityDao();
+        dao.insert(act1);
+        dao.insert(act2);
+        
+        Collection<Activity> activity = dao.findAll();
+        assertEquals("Count of retrieved activities does not match.", 2, activity.size());
     }
 
     @Test
