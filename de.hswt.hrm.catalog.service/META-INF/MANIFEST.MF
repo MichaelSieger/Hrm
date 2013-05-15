@@ -14,4 +14,5 @@ Export-Package: de.hswt.hrm.catalog.service
 Import-Package: de.hswt.hrm.catalog.dao.core,
  de.hswt.hrm.catalog.model,
  de.hswt.hrm.common,
+ de.hswt.hrm.common.database.exception,
  de.hswt.hrm.common.exception
