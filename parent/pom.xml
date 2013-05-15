@@ -136,6 +136,7 @@
 		<module>../de.hswt.hrm.scheme.service.test</module>
 		<module>../de.hswt.hrm.catalog.dao.core</module>
 		<module>../de.hswt.hrm.catalog.dao.jdbc</module>
+		<module>../de.hswt.hrm.catalog.dao.jdbc.test</module>
 		<module>../de.hswt.hrm.catalog.feature</module>
 		<module>../de.hswt.hrm.catalog.model</module>
 		<module>../de.hswt.hrm.catalog.service</module>
