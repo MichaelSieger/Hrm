@@ -6,7 +6,7 @@ import static com.google.common.base.Strings.isNullOrEmpty;
 /**
  * Represents a contact.
  */
-public final class Current {
+public final class Current implements ICatalogItem {
     private int id;
     private String name;
     private String text;
