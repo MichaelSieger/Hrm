@@ -1,6 +1,7 @@
 package de.hswt.hrm.scheme.ui.part;
 
 import java.net.URL;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 
@@ -29,6 +30,8 @@ import org.eclipse.swt.widgets.Slider;
 import org.eclipse.ui.dialogs.FilteredTree;
 import org.eclipse.ui.dialogs.PatternFilter;
 
+import de.hswt.hrm.scheme.model.RenderedComponent;
+import de.hswt.hrm.scheme.ui.DirectedRenderedComponent;
 import de.hswt.hrm.scheme.ui.GridDNDManager;
 import de.hswt.hrm.scheme.ui.SchemeGrid;
 import de.hswt.hrm.scheme.ui.SchemeTreePatternFilter;
@@ -81,9 +84,13 @@ public class SchemePart {
 	 */
 	private DragSource gridDragSource;
 	private DropTarget gridDropTarget;
+	
+	private List<RenderedComponent> comps;
 
 	@PostConstruct
 	public void postConstruct(Composite parent) {
+	    comps = ImageTreeModelFactory.create(
+                root.getDisplay()).getImages(); 
 		URL url = SchemePart.class.getResource(
 				SchemePart.class.getSimpleName() + IConstants.XWT_EXTENSION_SUFFIX);
 
@@ -164,8 +171,7 @@ public class SchemePart {
 		tree = filteredTree.getViewer();
 		tree.setContentProvider(new TreeContentProvider());
 		tree.setLabelProvider(new SchemeTreeLabelProvider());
-		tree.setInput(ImageTreeModelFactory.create(
-		        root.getDisplay()).getImages());
+		tree.setInput(comps);
 	}
 	
 	private void initSlider(){
@@ -224,5 +230,9 @@ public class SchemePart {
 			tree.expandAll();
 		}
 	}
+
+    public int getRenderedComponentId(DirectedRenderedComponent comp) {
+        return comps.indexOf(comp);
+    }
 
 }
