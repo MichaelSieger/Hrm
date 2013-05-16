@@ -39,16 +39,31 @@ public class CurrentDaoTest extends AbstractDatabaseTest {
 
     @Test
     public void testUpdateCurrent() throws ElementNotFoundException, DatabaseException {
+        Current cur1 = new Current("FirstCurrent", "FirstText");
+
+        CurrentDao dao = new CurrentDao();
+        Current parsed = dao.insert(cur1);
+
+        // We add another current to ensure that the update affects just one row.
+        Current cur2 = new Current("SecondCurrent", "SecondText");
+        dao.insert(cur2);
+
+        parsed.setText("Some Test");
+        parsed.setName("Some Name");
+        dao.update(parsed);
+
+        Current requested = dao.findById(parsed.getId());
+        compareCurrentFields(parsed, requested);
+        assertEquals("Requested object does not equal updated one.", parsed, requested);
+    }
+
+    @Test
+    public void testFindAllCurrent() throws ElementNotFoundException, DatabaseException {
 
     }
 
     @Test
-    public void testFindAllActivity() throws ElementNotFoundException, DatabaseException {
-
-    }
-
-    @Test
-    public void testFindByIdActivity() throws ElementNotFoundException, DatabaseException {
+    public void testFindByIdCurrent() throws ElementNotFoundException, DatabaseException {
 
     }
 
