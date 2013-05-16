@@ -3,6 +3,8 @@ package de.hswt.hrm.catalog.dao.jdbc;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Collection;
+
 import org.junit.Test;
 
 import de.hswt.hrm.catalog.model.Current;
@@ -59,7 +61,15 @@ public class CurrentDaoTest extends AbstractDatabaseTest {
 
     @Test
     public void testFindAllCurrent() throws ElementNotFoundException, DatabaseException {
+        Current cur1 = new Current("FirstCurrent", "FirstText");
+        Current cur2 = new Current("SecondCurrent", "SecondText");
 
+        CurrentDao dao = new CurrentDao();
+        dao.insert(cur1);
+        dao.insert(cur2);
+
+        Collection<Current> current = dao.findAll();
+        assertEquals("Count of retrieved currents does not match.", 2, current.size());
     }
 
     @Test
