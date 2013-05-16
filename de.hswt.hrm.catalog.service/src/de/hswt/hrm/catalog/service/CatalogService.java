@@ -1,10 +1,6 @@
 package de.hswt.hrm.catalog.service;
 
 import java.util.Collection;
-import java.util.Collections;
-import java.util.Iterator;
-
-import javax.activity.InvalidActivityException;
 import javax.inject.Inject;
 
 import org.eclipse.e4.core.di.annotations.Creatable;
@@ -22,7 +18,8 @@ import de.hswt.hrm.catalog.model.Current;
 import de.hswt.hrm.catalog.model.ICatalogItem;
 import de.hswt.hrm.catalog.model.Target;
 import de.hswt.hrm.common.database.exception.DatabaseException;
-import de.hswt.hrm.common.exception.NotImplementedException;
+import de.hswt.hrm.common.database.exception.ElementNotFoundException;
+import de.hswt.hrm.common.database.exception.SaveException;
 
 @Creatable
 public class CatalogService {
@@ -48,40 +45,40 @@ public class CatalogService {
 		return Iterables.concat(activityDao.findAll(), currentDao.findAll(), targetDao.findAll());
 	}
 	
-	Collection<Activity> findAllActivity() {
-		throw new NotImplementedException();
+	Collection<Activity> findAllActivity() throws DatabaseException {
+		return activityDao.findAll();
 	}
 	
-	Collection<Current> findAllCurrent() {
-		throw new NotImplementedException();
+	Collection<Current> findAllCurrent() throws DatabaseException {
+		return currentDao.findAll();
 	}
 	
-	Collection<Target> findAllTarget() {
-		throw new NotImplementedException();
+	Collection<Target> findAllTarget() throws DatabaseException {
+		return targetDao.findAll();
 	}
 	
-	Activity insertActivity(Activity activity) {
-		throw new NotImplementedException();
+	Activity insertActivity(Activity activity) throws SaveException {
+		return activityDao.insert(activity);
 	}
 	
-	Current insertCurrent(Current current) {
-		throw new NotImplementedException();
+	Current insertCurrent(Current current) throws SaveException {
+		return currentDao.insert(current);
 	}
 	
-	Target insertTarget(Target target) {
-		throw new NotImplementedException();
+	Target insertTarget(Target target) throws SaveException {
+		return targetDao.insert(target);
 	}
 	
-	void updateActivity(Activity activity) {
-		throw new NotImplementedException();
+	void updateActivity(Activity activity) throws ElementNotFoundException, SaveException {
+		activityDao.update(activity);
 	}
 	
-	void updateCurrent(Current current) {
-		throw new NotImplementedException();
+	void updateCurrent(Current current) throws ElementNotFoundException, SaveException {
+		currentDao.update(current);
 	}
 	
-	void updateTarget(Target target) {
-		throw new NotImplementedException();
+	void updateTarget(Target target) throws ElementNotFoundException, SaveException {
+		targetDao.update(target);
 	}
 	
 	
