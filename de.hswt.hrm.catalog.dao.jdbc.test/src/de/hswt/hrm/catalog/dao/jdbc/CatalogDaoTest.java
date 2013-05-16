@@ -37,7 +37,21 @@ public class CatalogDaoTest extends AbstractDatabaseTest {
 
     @Test
     public void testUpdateCatalog() throws ElementNotFoundException, DatabaseException {
+        Catalog cat1 = new Catalog("FirstCatalog");
 
+        CatalogDao dao = new CatalogDao();
+        Catalog parsed = dao.insert(cat1);
+
+        // We add another catalog to ensure that the update affects just one row.
+        Catalog cat2 = new Catalog("SecondCatalog");
+        dao.insert(cat2);
+
+        parsed.setName("Some Name");
+        dao.update(parsed);
+
+        Catalog requested = dao.findById(parsed.getId());
+        compareCatalogFields(parsed, requested);
+        assertEquals("Requested object does not equal updated one.", parsed, requested);
     }
 
     @Test
