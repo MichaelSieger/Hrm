@@ -9,21 +9,25 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Iterables;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkState;
 
 import de.hswt.hrm.catalog.dao.core.IActivityDao;
 import de.hswt.hrm.catalog.dao.core.ICurrentDao;
 import de.hswt.hrm.catalog.dao.core.ITargetDao;
 import de.hswt.hrm.catalog.model.Activity;
+import de.hswt.hrm.catalog.model.Catalog;
 import de.hswt.hrm.catalog.model.Current;
 import de.hswt.hrm.catalog.model.ICatalogItem;
 import de.hswt.hrm.catalog.model.Target;
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.ElementNotFoundException;
 import de.hswt.hrm.common.database.exception.SaveException;
+import de.hswt.hrm.common.exception.NotImplementedException;
 
 @Creatable
 public class CatalogService {
 	private final static Logger LOG = LoggerFactory.getLogger(CatalogService.class);
+	private final static String NO_ID_ERROR = "You cannot update an item if it does not have an ID.";
 
 	private final IActivityDao activityDao;
 	private final ICurrentDao currentDao;
@@ -37,49 +41,132 @@ public class CatalogService {
 		checkNotNull("Target DAO must be injected properly.", targetDao);
 		
 		this.activityDao = activityDao;
+		LOG.info("ActivityDao injected into CatalogService.");
 		this.currentDao = currentDao;
+		LOG.info("CurrentDao injected into CatalogService.");
 		this.targetDao = targetDao;
+		LOG.info("TargetDao injected into CatalogService.");
 	}
 	
-	Iterable<ICatalogItem> findAllCatalogItem() throws DatabaseException {
+	public Iterable<ICatalogItem> findAllCatalogItem() throws DatabaseException {
 		return Iterables.concat(activityDao.findAll(), currentDao.findAll(), targetDao.findAll());
 	}
 	
-	Collection<Activity> findAllActivity() throws DatabaseException {
+	public Collection<Activity> findAllActivity() throws DatabaseException {
 		return activityDao.findAll();
 	}
 	
-	Collection<Current> findAllCurrent() throws DatabaseException {
+	public Activity findActivityById(final int id) throws ElementNotFoundException, DatabaseException {
+		return activityDao.findById(id);
+	}
+	
+	public Collection<Current> findAllCurrent() throws DatabaseException {
 		return currentDao.findAll();
 	}
 	
-	Collection<Target> findAllTarget() throws DatabaseException {
+	public Current findCurrentById(final int id) throws ElementNotFoundException, DatabaseException {
+		return currentDao.findById(id);
+	}
+	
+	public Collection<Target> findAllTarget() throws DatabaseException {
 		return targetDao.findAll();
 	}
 	
-	Activity insertActivity(Activity activity) throws SaveException {
+	public Target findTargetById(final int id) throws ElementNotFoundException, DatabaseException {
+		return targetDao.findById(id);
+	}
+	
+	public Activity insertActivity(Activity activity) throws SaveException {
 		return activityDao.insert(activity);
 	}
 	
-	Current insertCurrent(Current current) throws SaveException {
+	public Current insertCurrent(Current current) throws SaveException {
 		return currentDao.insert(current);
 	}
 	
-	Target insertTarget(Target target) throws SaveException {
+	public Target insertTarget(Target target) throws SaveException {
 		return targetDao.insert(target);
 	}
 	
-	void updateActivity(Activity activity) throws ElementNotFoundException, SaveException {
+	public void updateActivity(Activity activity) throws ElementNotFoundException, SaveException {
 		activityDao.update(activity);
 	}
 	
-	void updateCurrent(Current current) throws ElementNotFoundException, SaveException {
+	public void updateCurrent(Current current) throws ElementNotFoundException, SaveException {
 		currentDao.update(current);
 	}
 	
-	void updateTarget(Target target) throws ElementNotFoundException, SaveException {
+	public void updateTarget(Target target) throws ElementNotFoundException, SaveException {
 		targetDao.update(target);
 	}
 	
+	public Collection<Catalog> findAllCatalog() {
+		throw new NotImplementedException(); 
+	}
 	
+	public Catalog findCatalogById(final int id) {
+		throw new NotImplementedException();
+	}
+	
+	public Catalog insertCatalog(final Catalog catalog) {
+		throw new NotImplementedException();
+	}
+	
+	public void updateCatlaog(final Catalog catalog) {
+		throw new NotImplementedException();
+	}
+	
+	/**
+	 *
+	 * 
+	 * @param activity
+	 * @throws ElementNotFoundException
+	 * @throws DatabaseException
+	 * @throws IllegalStateException If activity does not have a valid id.
+	 */
+	public void refresh(Activity activity) throws ElementNotFoundException, DatabaseException {
+		checkState(activity.getId() >= 0, NO_ID_ERROR);
+		
+		Activity fromDb = findActivityById(activity.getId());
+		
+		activity.setName(fromDb.getName());
+		activity.setText(fromDb.getText());
+	}
+	
+	/**
+	 * 
+	 * @param current
+	 * @throws ElementNotFoundException
+	 * @throws DatabaseException
+	 * @throws IllegalStateException If current does not have a valid id.
+	 */
+	public void refresh(Current current) throws ElementNotFoundException, DatabaseException {
+		checkState(current.getId() >= 0, NO_ID_ERROR);
+		
+		Current fromDb = findCurrentById(current.getId());
+		
+		current.setName(fromDb.getName());
+		current.setText(fromDb.getText());
+	}
+	
+	/**
+	 * 
+	 * @param target
+	 * @throws ElementNotFoundException
+	 * @throws DatabaseException
+	 * @throws IllegalStateException If target does not have a valid id.
+	 */
+	public void refresh(Target target) throws ElementNotFoundException, DatabaseException {
+		checkState(target.getId() >= 0, NO_ID_ERROR);
+		
+		Target fromDb = findTargetById(target.getId());
+		
+		target.setName(fromDb.getName());
+		target.setText(fromDb.getText());
+	}
+	
+	public void refresh(Catalog catalog) {
+		
+		throw new NotImplementedException();
+	}
 }
