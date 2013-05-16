@@ -74,7 +74,12 @@ public class CurrentDaoTest extends AbstractDatabaseTest {
 
     @Test
     public void testFindByIdCurrent() throws ElementNotFoundException, DatabaseException {
+        Current expected = new Current("FirstCurrent", "FirstText");
+        CurrentDao dao = new CurrentDao();
+        Current parsed = dao.insert(expected);
 
+        Current requested = dao.findById(parsed.getId());
+        compareCurrentFields(expected, requested);
     }
 
 }
