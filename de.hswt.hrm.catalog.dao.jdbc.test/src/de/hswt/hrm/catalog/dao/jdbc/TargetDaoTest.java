@@ -74,7 +74,12 @@ public class TargetDaoTest extends AbstractDatabaseTest {
 
     @Test
     public void testFindByIdTarget() throws ElementNotFoundException, DatabaseException {
+        Target expected = new Target("FirstTarget", "FirstText");
+        TargetDao dao = new TargetDao();
+        Target parsed = dao.insert(expected);
 
+        Target requested = dao.findById(parsed.getId());
+        compareTargetFields(expected, requested);
     }
 
 }
