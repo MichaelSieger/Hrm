@@ -16,8 +16,16 @@ public class DragData
     private final int y;
     private final Direction direction;
     
-    public DragData(SchemePart part, DirectedRenderedComponent comp){
-        id = part.getRenderedComponentId(comp);
+    public DragData(SchemePart part, SchemeGridItem item){
+        id = part.getRenderedComponentId(item.getRenderedComponent());
+        x = item.getX();
+        y = item.getY();
+        direction = item.getDirection();
+    }
+    
+    public SchemeGridItem getSchemeGridItem(SchemePart part){
+        return new SchemeGridItem(
+                part.getRenderedComponent(id), direction, x, y);
     }
 
 }
