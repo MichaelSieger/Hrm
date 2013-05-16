@@ -231,7 +231,7 @@ public class SchemePart {
 		}
 	}
 
-    public int getRenderedComponentId(DirectedRenderedComponent comp) {
+    public int getRenderedComponentId(RenderedComponent comp) {
         return comps.indexOf(comp);
     }
 
