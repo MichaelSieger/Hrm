@@ -235,4 +235,8 @@ public class SchemePart {
         return comps.indexOf(comp);
     }
 
+    public RenderedComponent getRenderedComponent(int id) {
+        return comps.get(id);
+    }
+
 }
