@@ -38,17 +38,32 @@ public class TargetDaoTest extends AbstractDatabaseTest {
     }
 
     @Test
-    public void testUpdateActivity() throws ElementNotFoundException, DatabaseException {
+    public void testUpdateTarget() throws ElementNotFoundException, DatabaseException {
+        Target tar1 = new Target("FirstTarget", "FirstText");
+
+        TargetDao dao = new TargetDao();
+        Target parsed = dao.insert(tar1);
+
+        // We add another target to ensure that the update affects just one row.
+        Target tar2 = new Target("SecondTarget", "SecondText");
+        dao.insert(tar2);
+
+        parsed.setText("Some Test");
+        parsed.setName("Some Name");
+        dao.update(parsed);
+
+        Target requested = dao.findById(parsed.getId());
+        compareTargetFields(parsed, requested);
+        assertEquals("Requested object does not equal updated one.", parsed, requested);
+    }
+
+    @Test
+    public void testFindAllTarget() throws ElementNotFoundException, DatabaseException {
 
     }
 
     @Test
-    public void testFindAllActivity() throws ElementNotFoundException, DatabaseException {
-
-    }
-
-    @Test
-    public void testFindByIdActivity() throws ElementNotFoundException, DatabaseException {
+    public void testFindByIdTarget() throws ElementNotFoundException, DatabaseException {
 
     }
 
