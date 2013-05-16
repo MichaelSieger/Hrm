@@ -71,7 +71,12 @@ public class CatalogDaoTest extends AbstractDatabaseTest {
 
     @Test
     public void testFindByIdCatalog() throws ElementNotFoundException, DatabaseException {
+        Catalog expected = new Catalog("FirstCatalog");
+        CatalogDao dao = new CatalogDao();
+        Catalog parsed = dao.insert(expected);
 
+        Catalog requested = dao.findById(parsed.getId());
+        compareCatalogFields(expected, requested);
     }
 
 }
