@@ -3,6 +3,8 @@ package de.hswt.hrm.catalog.dao.jdbc;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Collection;
+
 import org.junit.Test;
 
 import de.hswt.hrm.catalog.model.Catalog;
@@ -56,7 +58,15 @@ public class CatalogDaoTest extends AbstractDatabaseTest {
 
     @Test
     public void testFindAllCatalog() throws ElementNotFoundException, DatabaseException {
+        Catalog cat1 = new Catalog("FirstCatalog");
+        Catalog cat2 = new Catalog("SecondCatalog");
 
+        CatalogDao dao = new CatalogDao();
+        dao.insert(cat1);
+        dao.insert(cat2);
+
+        Collection<Catalog> catalog = dao.findAll();
+        assertEquals("Count of retrieved catalogs does not match.", 2, catalog.size());
     }
 
     @Test
