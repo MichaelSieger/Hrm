@@ -158,9 +158,9 @@ public class ActivityDao implements IActivityDao {
             String name = rs.getString(Fields.NAME);
             String text = rs.getString(Fields.TEXT);
 
-            Activity place = new Activity(id, name, text);
+            Activity activity = new Activity(id, name, text);
 
-            placeList.add(place);
+            placeList.add(activity);
         }
 
         return placeList;
