@@ -3,6 +3,8 @@ package de.hswt.hrm.catalog.dao.jdbc;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Collection;
+
 import org.junit.Test;
 
 import de.hswt.hrm.catalog.model.Target;
@@ -59,7 +61,15 @@ public class TargetDaoTest extends AbstractDatabaseTest {
 
     @Test
     public void testFindAllTarget() throws ElementNotFoundException, DatabaseException {
+        Target tar1 = new Target("FirstTarget", "FirstText");
+        Target tar2 = new Target("SecondTarget", "SecondText");
 
+        TargetDao dao = new TargetDao();
+        dao.insert(tar1);
+        dao.insert(tar2);
+
+        Collection<Target> target = dao.findAll();
+        assertEquals("Count of retrieved target does not match.", 2, target.size());
     }
 
     @Test
