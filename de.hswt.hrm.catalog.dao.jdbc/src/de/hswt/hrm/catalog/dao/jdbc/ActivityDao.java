@@ -33,10 +33,10 @@ public class ActivityDao implements IActivityDao {
             try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
                 ResultSet result = stmt.executeQuery();
 
-                Collection<Activity> places = fromResultSet(result);
+                Collection<Activity> activities = fromResultSet(result);
                 DbUtils.closeQuietly(result);
 
-                return places;
+                return activities;
             }
         }
         catch (SQLException e) {
@@ -78,7 +78,7 @@ public class ActivityDao implements IActivityDao {
     }
 
     /**
-     * @see {@link IPlaceDao#insert(Place)}
+     * @see {@link IActivityDao#insert(Activity)}
      */
     @Override
     public Activity insert(Activity activity) throws SaveException {
@@ -151,7 +151,7 @@ public class ActivityDao implements IActivityDao {
 
     private Collection<Activity> fromResultSet(ResultSet rs) throws SQLException {
         checkNotNull(rs, "Result must not be null.");
-        Collection<Activity> placeList = new ArrayList<>();
+        Collection<Activity> activityList = new ArrayList<>();
 
         while (rs.next()) {
             int id = rs.getInt(Fields.ID);
@@ -160,10 +160,10 @@ public class ActivityDao implements IActivityDao {
 
             Activity activity = new Activity(id, name, text);
 
-            placeList.add(activity);
+            activityList.add(activity);
         }
 
-        return placeList;
+        return activityList;
     }
 
     private static final String TABLE_NAME = "State_Activity";
