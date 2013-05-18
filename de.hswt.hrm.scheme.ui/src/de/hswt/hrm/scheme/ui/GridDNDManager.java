@@ -1,11 +1,15 @@
 package de.hswt.hrm.scheme.ui;
 
+import java.util.List;
+
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.dnd.DragSourceListener;
 import org.eclipse.swt.dnd.DropTargetEvent;
 import org.eclipse.swt.dnd.DropTargetListener;
 import org.eclipse.swt.graphics.Point;
+
+import de.hswt.hrm.scheme.model.RenderedComponent;
 
 /**
  * This class manages the drag and drop in the intern of the SchemeGrid.
@@ -20,15 +24,21 @@ public class GridDNDManager implements DragSourceListener, DropTargetListener{
 	/**
 	 * The item that is dragged at the moment. Null if no drag is running.
 	 */
-	private SchemeGridItem dragging;
+	private DragData dragging;
 	
-	public GridDNDManager(SchemeGrid grid){
+	private List<RenderedComponent> comps;
+	
+	public GridDNDManager(SchemeGrid grid, List<RenderedComponent> comps){
 		this.grid = grid;
+		this.comps = comps;
 	}
 
 	@Override
 	public void dragStart(DragSourceEvent ev) {
-        dragging = grid.removeImagePixel(ev.x, ev.y);
+	    SchemeGridItem item = grid.removeImagePixel(ev.x, ev.y);
+	    RenderedComponent c = item.getRenderedComponent();
+        dragging = new DragData(comps.indexOf(c), 
+                item.getX(), item.getY(), item.getDirection());
 	}
 	
 	@Override
@@ -60,18 +70,20 @@ public class GridDNDManager implements DragSourceListener, DropTargetListener{
             final int x = ev.x - loc.x;
             final int y = ev.y - loc.y;
             try {
-                grid.setImageAtPixel(dragging.getRenderedComponent(), dragging.getDirection(), 
-                						x, y);
+                grid.setImageAtPixel(
+                        comps.get(dragging.getId()), 
+                        dragging.getDirection(), 
+                		x, y);
             } catch (PlaceOccupiedException | IllegalArgumentException e) {
-                try {
-					grid.setImage(dragging);
-				} catch (PlaceOccupiedException | IllegalArgumentException e1) {
+                //try {
+				//	grid.setImage(dragging);
+				//} catch (PlaceOccupiedException | IllegalArgumentException e1) {
 					/*
 					 * Das kann eigentlich nicht passieren, weil der Startpunkt
 					 * vor dem Drag nicht belegt war.
 					 */
-					e1.printStackTrace();
-				}
+					//e1.printStackTrace();
+				//}
             }
             dragging = null;
         }
