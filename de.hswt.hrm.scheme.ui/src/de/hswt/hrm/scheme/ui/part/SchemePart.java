@@ -119,6 +119,7 @@ public class SchemePart {
 	
 	private void initGridDropTargetListener(){
 		gridListener = new GridDropTargetListener(grid, comps);
+		gridDropTarget.addDropListener(gridListener);
 	}
 	
 	private void initGridDragSource(){
@@ -134,12 +135,10 @@ public class SchemePart {
 	private void initTreeDND(){
 		TreeDNDManager m = new TreeDNDManager(tree, grid, comps);
 		tree.addDragSupport(DRAG_OPS, TRANSFER, m);
-		gridDropTarget.addDropListener(gridListener);
 	}
 	
 	private void initGridDND(){
 		GridDNDManager gridDND = new GridDNDManager(grid, comps);
-		gridDropTarget.addDropListener(gridListener);
 		gridDragSource.addDragListener(gridDND);
 	}
 	
