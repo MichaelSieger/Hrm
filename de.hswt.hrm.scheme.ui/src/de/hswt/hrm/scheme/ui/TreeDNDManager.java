@@ -1,6 +1,7 @@
 package de.hswt.hrm.scheme.ui;
 
 import java.awt.Toolkit;
+import java.util.List;
 
 import org.eclipse.jface.viewers.ITreeSelection;
 import org.eclipse.jface.viewers.TreeViewer;
@@ -11,6 +12,7 @@ import org.eclipse.swt.dnd.DropTargetEvent;
 import org.eclipse.swt.dnd.DropTargetListener;
 import org.eclipse.swt.graphics.Point;
 
+import de.hswt.hrm.scheme.model.RenderedComponent;
 import de.hswt.hrm.scheme.ui.tree.SchemeTreeItem;
 
 /**
@@ -19,95 +21,40 @@ import de.hswt.hrm.scheme.ui.tree.SchemeTreeItem;
  * @author Michael Sieger
  * 
  */
-public class TreeDNDManager implements DragSourceListener, DropTargetListener{
+public class TreeDNDManager implements DragSourceListener{
 
     private final TreeViewer tree;
     private final SchemeGrid grid;
+    
+    private final List<RenderedComponent> comps;
 
-    /**
-     * The item that is dragged at the moment. 
-     * Null if nothing is dragged.
-     */
-    private DirectedRenderedComponent dragging;
-
-    public TreeDNDManager(TreeViewer tree, SchemeGrid grid) {
+    public TreeDNDManager(TreeViewer tree, SchemeGrid grid, List<RenderedComponent> comps) {
         super();
         this.tree = tree;
         this.grid = grid;
+        this.comps = comps;
     }
 
     @Override
     public void dragStart(DragSourceEvent ev) { 
+    	
+    }
+
+    @Override
+    public void dragSetData(DragSourceEvent ev) {
         ITreeSelection sel = (ITreeSelection) tree.getSelection();
         if(!sel.isEmpty()){
             if (sel.size() != 1) {
                 throw new RuntimeException("Only one item is accepted for dragging");   
             }
-            dragging = ((SchemeTreeItem) sel.getFirstElement())
-            		.getDragItem();
+            SchemeTreeItem item = ((SchemeTreeItem) sel.getFirstElement());
+            ev.data = new DragData(comps.indexOf(
+            		item.getDragItem().getRenderedComponent()), item.getDragItem().getDirection());
         }
-    }
-
-    @Override
-    public void dragSetData(DragSourceEvent ev) {
-    	if(dragging != null){
-    		/*
-    		 * SWT wants us to set this field.
-    		 */
-    		ev.data = " ";
-    	}
     }
 
     @Override
     public void dragFinished(DragSourceEvent arg0) {
-    	/*
-    	 * dragging is not null, if the item was not dropped in the schemeGrid.
-    	 * Throw it away in this case.
-    	 */
-    	dragging = null;
-    }
-
-    @Override
-    public void dropAccept(DropTargetEvent arg0) {
-    }
-
-    @Override
-    public void drop(DropTargetEvent ev) {
-        if (dragging != null) {
-            Point loc = grid.toDisplay(0, 0);
-            try {
-            	grid.setImageAtPixel(dragging.getRenderedComponent(), dragging.getDirection(), 
-            							ev.x - loc.x, ev.y - loc.y);
-            }
-            catch (PlaceOccupiedException | IllegalArgumentException e) {
-                Toolkit.getDefaultToolkit().beep();
-            }
-        }
-        /*
-         * Else case means, that an item from an different gui was dropped which is ignored
-         */
-    }
-
-    @Override
-    public void dragOver(DropTargetEvent arg0) {
-    }
-
-    @Override
-    public void dragOperationChanged(DropTargetEvent arg0) {
-    }
-
-    @Override
-    public void dragLeave(DropTargetEvent ev) {
-    	if(dragging != null) {
-    		ev.detail = DND.DROP_NONE;
-    	}
-    }
-
-    @Override
-    public void dragEnter(DropTargetEvent ev) {
-    	if(dragging != null){
-    		ev.detail = DND.DROP_COPY;
-    	}
     }
 
 }
