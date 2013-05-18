@@ -1,8 +1,10 @@
 package de.hswt.hrm.scheme.ui;
 
 import java.io.Serializable;
+import java.util.List;
 
 import de.hswt.hrm.scheme.model.Direction;
+import de.hswt.hrm.scheme.model.RenderedComponent;
 
 public class DragData 
     implements Serializable
@@ -47,6 +49,14 @@ public class DragData
         return direction;
     }
     
-    
+    /**
+     * Created the SchemeGridItem, that is DragData is representing
+     * 
+     * @param comps0
+     * @return
+     */
+    public SchemeGridItem toSchemeGridItem(List<RenderedComponent> comps){
+    	return new SchemeGridItem(comps.get(id), direction, x, y);
+    }
 
 }
