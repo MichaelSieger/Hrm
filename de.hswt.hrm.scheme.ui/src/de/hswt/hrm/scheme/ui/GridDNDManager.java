@@ -36,9 +36,13 @@ public class GridDNDManager implements DragSourceListener, DropTargetListener{
 	@Override
 	public void dragStart(DragSourceEvent ev) {
 	    SchemeGridItem item = grid.removeImagePixel(ev.x, ev.y);
-	    RenderedComponent c = item.getRenderedComponent();
-        dragging = new DragData(comps.indexOf(c), 
-                item.getX(), item.getY(), item.getDirection());
+	    if(item != null){
+		    RenderedComponent c = item.getRenderedComponent();
+	        dragging = new DragData(comps.indexOf(c), 
+	                item.getX(), item.getY(), item.getDirection());
+	    }else{
+	    	ev.doit = false;
+	    }
 	}
 	
 	@Override
