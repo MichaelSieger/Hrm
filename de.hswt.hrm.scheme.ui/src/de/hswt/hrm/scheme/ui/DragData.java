@@ -3,7 +3,6 @@ package de.hswt.hrm.scheme.ui;
 import java.io.Serializable;
 
 import de.hswt.hrm.scheme.model.Direction;
-import de.hswt.hrm.scheme.ui.part.SchemePart;
 
 public class DragData 
     implements Serializable
@@ -23,6 +22,10 @@ public class DragData
         this.y = y;
         this.direction = direction;
     }
+    
+    public DragData(int id, Direction direction){
+    	this(id, -1, -1, direction);
+    }
 
     public int getId() {
         return id;
@@ -34,6 +37,10 @@ public class DragData
 
     public int getY() {
         return y;
+    }
+    
+    public boolean hasPosition(){
+    	return x == -1 && y == -1;
     }
 
     public Direction getDirection() {
