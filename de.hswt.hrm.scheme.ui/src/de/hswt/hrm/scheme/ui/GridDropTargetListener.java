@@ -1,5 +1,5 @@
 package de.hswt.hrm.scheme.ui;
-import java.util.Collection;
+
 import java.util.List;
 
 import org.eclipse.swt.dnd.DND;
@@ -14,8 +14,7 @@ public class GridDropTargetListener implements DropTargetListener {
 	private final SchemeGrid grid;
 	private final List<RenderedComponent> comps;
 
-	public GridDropTargetListener(SchemeGrid grid,
-			List<RenderedComponent> comps) {
+	public GridDropTargetListener(SchemeGrid grid, List<RenderedComponent> comps) {
 		super();
 		this.grid = grid;
 		this.comps = comps;
@@ -27,8 +26,10 @@ public class GridDropTargetListener implements DropTargetListener {
 
 	@Override
 	public void drop(DropTargetEvent ev) {
+		System.out.println("Drop");
 		DragData dragging = (DragData) ev.data;
 		if (dragging != null) {
+			SchemeGridItem item = dragging.toSchemeGridItem(comps);
 			Point loc = grid.toDisplay(0, 0);
 			final int x = ev.x - loc.x;
 			final int y = ev.y - loc.y;
@@ -36,18 +37,14 @@ public class GridDropTargetListener implements DropTargetListener {
 				grid.setImageAtPixel(comps.get(dragging.getId()),
 						dragging.getDirection(), x, y);
 			} catch (PlaceOccupiedException | IllegalArgumentException e) {
-				// try {
-				// grid.setImage(dragging);
-				// } catch (PlaceOccupiedException | IllegalArgumentException
-				// e1) {
-				/*
-				 * Das kann eigentlich nicht passieren, weil der Startpunkt vor
-				 * dem Drag nicht belegt war.
-				 */
-				// e1.printStackTrace();
-				// }
+				try {
+					if(dragging.hasPosition()){
+						grid.setImage(item);
+					}
+				} catch (PlaceOccupiedException | IllegalArgumentException e1) {
+					e1.printStackTrace();
+				}
 			}
-			dragging = null;
 		}
 	}
 
