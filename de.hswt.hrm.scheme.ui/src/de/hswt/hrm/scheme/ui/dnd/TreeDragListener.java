@@ -11,7 +11,7 @@ import de.hswt.hrm.scheme.model.RenderedComponent;
 import de.hswt.hrm.scheme.ui.tree.SchemeTreeItem;
 
 /**
- * This class manages the drag and drop from the tree to the SchemeGrid
+ * This class manages the drag from the tree to the SchemeGrid
  * 
  * @author Michael Sieger
  * 

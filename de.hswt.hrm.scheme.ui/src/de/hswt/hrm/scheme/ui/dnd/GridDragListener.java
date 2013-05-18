@@ -10,7 +10,7 @@ import de.hswt.hrm.scheme.ui.SchemeGrid;
 import de.hswt.hrm.scheme.ui.SchemeGridItem;
 
 /**
- * This class manages the drag and drop in the intern of the SchemeGrid.
+ * This class manages the drag in the intern of the SchemeGrid.
  * 
  * @author Michael Sieger
  *

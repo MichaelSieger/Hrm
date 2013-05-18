@@ -12,6 +12,12 @@ import de.hswt.hrm.scheme.ui.PlaceOccupiedException;
 import de.hswt.hrm.scheme.ui.SchemeGrid;
 import de.hswt.hrm.scheme.ui.SchemeGridItem;
 
+/**
+ * Handles the drop in the SchemeGrid
+ * 
+ * @author Michael Sieger
+ *
+ */
 public class GridDropTargetListener implements DropTargetListener {
 
 	private final SchemeGrid grid;
@@ -29,7 +35,6 @@ public class GridDropTargetListener implements DropTargetListener {
 
 	@Override
 	public void drop(DropTargetEvent ev) {
-		System.out.println("Drop");
 		DragData dragging = (DragData) ev.data;
 		if (dragging != null) {
 			SchemeGridItem item = dragging.toSchemeGridItem(comps);
