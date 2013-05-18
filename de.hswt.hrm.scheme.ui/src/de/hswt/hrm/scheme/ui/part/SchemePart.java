@@ -89,13 +89,13 @@ public class SchemePart {
 
 	@PostConstruct
 	public void postConstruct(Composite parent) {
-	    comps = ImageTreeModelFactory.create(
-                root.getDisplay()).getImages(); 
 		URL url = SchemePart.class.getResource(
 				SchemePart.class.getSimpleName() + IConstants.XWT_EXTENSION_SUFFIX);
 
 		try {
 			root = (Composite) XWT.load(parent, url);
+		    comps = ImageTreeModelFactory.create(
+		                root.getDisplay()).getImages(); 
 			initTree();
 			initSchemeGrid();
 			initGridDropTarget();
@@ -130,7 +130,7 @@ public class SchemePart {
 	}
 	
 	private void initGridDND(){
-		GridDNDManager gridDND = new GridDNDManager(grid);
+		GridDNDManager gridDND = new GridDNDManager(grid, comps);
 		gridDropTarget.addDropListener(gridDND);
 		gridDragSource.addDragListener(gridDND);
 	}
