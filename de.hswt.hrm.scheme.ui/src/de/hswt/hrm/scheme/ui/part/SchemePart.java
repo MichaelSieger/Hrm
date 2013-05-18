@@ -133,7 +133,7 @@ public class SchemePart {
 	}
 	
 	private void initTreeDND(){
-		TreeDNDManager m = new TreeDNDManager(tree, grid, comps);
+		TreeDNDManager m = new TreeDNDManager(tree, comps);
 		tree.addDragSupport(DRAG_OPS, TRANSFER, m);
 	}
 	

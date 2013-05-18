@@ -1,16 +1,11 @@
 package de.hswt.hrm.scheme.ui;
 
-import java.awt.Toolkit;
 import java.util.List;
 
 import org.eclipse.jface.viewers.ITreeSelection;
 import org.eclipse.jface.viewers.TreeViewer;
-import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.dnd.DragSourceListener;
-import org.eclipse.swt.dnd.DropTargetEvent;
-import org.eclipse.swt.dnd.DropTargetListener;
-import org.eclipse.swt.graphics.Point;
 
 import de.hswt.hrm.scheme.model.RenderedComponent;
 import de.hswt.hrm.scheme.ui.tree.SchemeTreeItem;
@@ -24,14 +19,12 @@ import de.hswt.hrm.scheme.ui.tree.SchemeTreeItem;
 public class TreeDNDManager implements DragSourceListener{
 
     private final TreeViewer tree;
-    private final SchemeGrid grid;
     
     private final List<RenderedComponent> comps;
 
-    public TreeDNDManager(TreeViewer tree, SchemeGrid grid, List<RenderedComponent> comps) {
+    public TreeDNDManager(TreeViewer tree, List<RenderedComponent> comps) {
         super();
         this.tree = tree;
-        this.grid = grid;
         this.comps = comps;
     }
 
