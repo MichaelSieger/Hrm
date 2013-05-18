@@ -6,15 +6,37 @@ import java.util.List;
 import de.hswt.hrm.scheme.model.Direction;
 import de.hswt.hrm.scheme.model.RenderedComponent;
 
+/**
+ * This class represents a object, that is dragged in the SchemePart.
+ * It is a Serializable version of DirectedRenderedComponent, which is not
+ * Serialized by itself for Performance reasons.
+ * 
+ * @author Michael Sieger
+ *
+ */
 public class DragData 
     implements Serializable
 {
     private static final long serialVersionUID = 3635333453619223967L;
     
-    
+    /**
+     * The index in the RenderedComponent set.
+     */
     private final int id;
+    
+    /**
+     * The x position in the grid, can be -1 for no Position
+     */
     private final int x;
+    
+    /**
+     * The y position in the grid, can be -1 for no Position
+     */
     private final int y;
+    
+    /**
+     * The direction
+     */
     private final Direction direction;
     
     public DragData(int id, int x, int y, Direction direction) {
@@ -41,6 +63,12 @@ public class DragData
         return y;
     }
     
+    /**
+     * Does this DragData have a position.
+     * This is false, if it is dragged from the Tree for example.
+     * 
+     * @return
+     */
     public boolean hasPosition(){
     	return x == -1 && y == -1;
     }
@@ -50,7 +78,7 @@ public class DragData
     }
     
     /**
-     * Created the SchemeGridItem, that is DragData is representing
+     * Creates the SchemeGridItem, that is DragData is representing
      * 
      * @param comps0
      * @return
