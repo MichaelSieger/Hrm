@@ -31,11 +31,11 @@ import org.eclipse.ui.dialogs.PatternFilter;
 
 import de.hswt.hrm.scheme.model.RenderedComponent;
 import de.hswt.hrm.scheme.ui.DragDataTransfer;
-import de.hswt.hrm.scheme.ui.GridDNDManager;
+import de.hswt.hrm.scheme.ui.GridDragListener;
 import de.hswt.hrm.scheme.ui.GridDropTargetListener;
 import de.hswt.hrm.scheme.ui.SchemeGrid;
 import de.hswt.hrm.scheme.ui.SchemeTreePatternFilter;
-import de.hswt.hrm.scheme.ui.TreeDNDManager;
+import de.hswt.hrm.scheme.ui.TreeDragListener;
 import de.hswt.hrm.scheme.ui.tree.ImageTreeModelFactory;
 import de.hswt.hrm.scheme.ui.tree.SchemeTreeLabelProvider;
 import de.hswt.hrm.scheme.ui.tree.TreeContentProvider;
@@ -133,12 +133,12 @@ public class SchemePart {
 	}
 	
 	private void initTreeDND(){
-		TreeDNDManager m = new TreeDNDManager(tree, comps);
+		TreeDragListener m = new TreeDragListener(tree, comps);
 		tree.addDragSupport(DRAG_OPS, TRANSFER, m);
 	}
 	
 	private void initGridDND(){
-		GridDNDManager gridDND = new GridDNDManager(grid, comps);
+		GridDragListener gridDND = new GridDragListener(grid, comps);
 		gridDragSource.addDragListener(gridDND);
 	}
 	

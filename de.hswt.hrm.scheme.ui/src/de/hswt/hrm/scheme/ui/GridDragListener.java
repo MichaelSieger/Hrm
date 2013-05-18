@@ -13,7 +13,7 @@ import de.hswt.hrm.scheme.model.RenderedComponent;
  * @author Michael Sieger
  *
  */
-public class GridDNDManager implements DragSourceListener{
+public class GridDragListener implements DragSourceListener{
 	
 	private final SchemeGrid grid;
 	
@@ -21,7 +21,7 @@ public class GridDNDManager implements DragSourceListener{
 	
 	private int startX, startY;
 
-	public GridDNDManager(SchemeGrid grid, List<RenderedComponent> comps){
+	public GridDragListener(SchemeGrid grid, List<RenderedComponent> comps){
 		this.grid = grid;
 		this.comps = comps;
 	}

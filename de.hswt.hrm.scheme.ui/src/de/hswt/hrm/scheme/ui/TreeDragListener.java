@@ -16,13 +16,13 @@ import de.hswt.hrm.scheme.ui.tree.SchemeTreeItem;
  * @author Michael Sieger
  * 
  */
-public class TreeDNDManager implements DragSourceListener{
+public class TreeDragListener implements DragSourceListener{
 
     private final TreeViewer tree;
     
     private final List<RenderedComponent> comps;
 
-    public TreeDNDManager(TreeViewer tree, List<RenderedComponent> comps) {
+    public TreeDragListener(TreeViewer tree, List<RenderedComponent> comps) {
         super();
         this.tree = tree;
         this.comps = comps;
