@@ -1,5 +1,8 @@
 package de.hswt.hrm.scheme.ui;
 
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.FlavorMap;
+import java.awt.datatransfer.SystemFlavorMap;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -13,12 +16,23 @@ import com.google.common.base.Throwables;
 
 public class DragDataTransfer extends ByteArrayTransfer{
 	
-	private static final String NAME = "dragData";
-	private static final int ID = registerType(NAME);
+	private static final DragDataTransfer INST = new DragDataTransfer();
+	
+	private static final String MIME_TYPE = "custom/dragData";
+	private static final int ID = registerType(MIME_TYPE);
+	
+	public DragDataTransfer(){
+		DataFlavor f = new DataFlavor(MIME_TYPE, "dragData");
+		FlavorMap map = SystemFlavorMap.getDefaultFlavorMap();
+		if(map instanceof SystemFlavorMap){
+			SystemFlavorMap systemMap = (SystemFlavorMap) map;
+			systemMap.addFlavorForUnencodedNative(MIME_TYPE, f);
+		}
+	}
 
 	@Override
 	protected String[] getTypeNames() {
-		return new String[]{NAME};
+		return new String[]{MIME_TYPE};
 	}
 
 	@Override
@@ -60,5 +74,9 @@ public class DragDataTransfer extends ByteArrayTransfer{
 	}
 	
 	
+	
+	public static DragDataTransfer getInstance(){
+		return INST;
+	}
 
 }
