@@ -14,6 +14,12 @@ import org.eclipse.swt.dnd.TransferData;
 
 import com.google.common.base.Throwables;
 
+/**
+ * This class convert DragData objects to a plattform specific representation.
+ * 
+ * @author Michael Sieger
+ *
+ */
 public class DragDataTransfer extends ByteArrayTransfer{
 	
 	private static final DragDataTransfer INST = new DragDataTransfer();
@@ -72,9 +78,7 @@ public class DragDataTransfer extends ByteArrayTransfer{
 			throw Throwables.propagate(e);
 		} 
 	}
-	
-	
-	
+
 	public static DragDataTransfer getInstance(){
 		return INST;
 	}
