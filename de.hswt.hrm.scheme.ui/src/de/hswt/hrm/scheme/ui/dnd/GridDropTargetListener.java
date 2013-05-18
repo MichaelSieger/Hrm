@@ -1,4 +1,4 @@
-package de.hswt.hrm.scheme.ui;
+package de.hswt.hrm.scheme.ui.dnd;
 
 import java.util.List;
 
@@ -8,6 +8,9 @@ import org.eclipse.swt.dnd.DropTargetListener;
 import org.eclipse.swt.graphics.Point;
 
 import de.hswt.hrm.scheme.model.RenderedComponent;
+import de.hswt.hrm.scheme.ui.PlaceOccupiedException;
+import de.hswt.hrm.scheme.ui.SchemeGrid;
+import de.hswt.hrm.scheme.ui.SchemeGridItem;
 
 public class GridDropTargetListener implements DropTargetListener {
 

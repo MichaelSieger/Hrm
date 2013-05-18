@@ -30,12 +30,12 @@ import org.eclipse.ui.dialogs.FilteredTree;
 import org.eclipse.ui.dialogs.PatternFilter;
 
 import de.hswt.hrm.scheme.model.RenderedComponent;
-import de.hswt.hrm.scheme.ui.DragDataTransfer;
-import de.hswt.hrm.scheme.ui.GridDragListener;
-import de.hswt.hrm.scheme.ui.GridDropTargetListener;
 import de.hswt.hrm.scheme.ui.SchemeGrid;
 import de.hswt.hrm.scheme.ui.SchemeTreePatternFilter;
-import de.hswt.hrm.scheme.ui.TreeDragListener;
+import de.hswt.hrm.scheme.ui.dnd.DragDataTransfer;
+import de.hswt.hrm.scheme.ui.dnd.GridDragListener;
+import de.hswt.hrm.scheme.ui.dnd.GridDropTargetListener;
+import de.hswt.hrm.scheme.ui.dnd.TreeDragListener;
 import de.hswt.hrm.scheme.ui.tree.ImageTreeModelFactory;
 import de.hswt.hrm.scheme.ui.tree.SchemeTreeLabelProvider;
 import de.hswt.hrm.scheme.ui.tree.TreeContentProvider;

@@ -1,10 +1,11 @@
-package de.hswt.hrm.scheme.ui;
+package de.hswt.hrm.scheme.ui.dnd;
 
 import java.io.Serializable;
 import java.util.List;
 
 import de.hswt.hrm.scheme.model.Direction;
 import de.hswt.hrm.scheme.model.RenderedComponent;
+import de.hswt.hrm.scheme.ui.SchemeGridItem;
 
 /**
  * This class represents a object, that is dragged in the SchemePart.

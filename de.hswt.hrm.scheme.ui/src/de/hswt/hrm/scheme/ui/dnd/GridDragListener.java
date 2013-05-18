@@ -1,4 +1,4 @@
-package de.hswt.hrm.scheme.ui;
+package de.hswt.hrm.scheme.ui.dnd;
 
 import java.util.List;
 
@@ -6,6 +6,8 @@ import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.dnd.DragSourceListener;
 
 import de.hswt.hrm.scheme.model.RenderedComponent;
+import de.hswt.hrm.scheme.ui.SchemeGrid;
+import de.hswt.hrm.scheme.ui.SchemeGridItem;
 
 /**
  * This class manages the drag and drop in the intern of the SchemeGrid.

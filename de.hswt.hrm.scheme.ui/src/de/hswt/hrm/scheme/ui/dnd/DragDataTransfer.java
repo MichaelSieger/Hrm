@@ -1,4 +1,4 @@
-package de.hswt.hrm.scheme.ui;
+package de.hswt.hrm.scheme.ui.dnd;
 
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.FlavorMap;
