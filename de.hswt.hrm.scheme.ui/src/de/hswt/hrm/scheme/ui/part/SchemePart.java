@@ -13,7 +13,6 @@ import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DragSource;
 import org.eclipse.swt.dnd.DropTarget;
-import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -31,8 +30,9 @@ import org.eclipse.ui.dialogs.FilteredTree;
 import org.eclipse.ui.dialogs.PatternFilter;
 
 import de.hswt.hrm.scheme.model.RenderedComponent;
-import de.hswt.hrm.scheme.ui.DirectedRenderedComponent;
+import de.hswt.hrm.scheme.ui.DragDataTransfer;
 import de.hswt.hrm.scheme.ui.GridDNDManager;
+import de.hswt.hrm.scheme.ui.GridDropTargetListener;
 import de.hswt.hrm.scheme.ui.SchemeGrid;
 import de.hswt.hrm.scheme.ui.SchemeTreePatternFilter;
 import de.hswt.hrm.scheme.ui.TreeDNDManager;
@@ -51,7 +51,7 @@ public class SchemePart {
 	/**
 	 * The DND transfer type
 	 */
-	private static final Transfer[] TRANSFER = new Transfer[] {TextTransfer.getInstance()};
+	private static final Transfer[] TRANSFER = new Transfer[] {DragDataTransfer.getInstance()};
 	
 	/**
 	 * The background color of the scheme editor.
@@ -85,6 +85,8 @@ public class SchemePart {
 	private DragSource gridDragSource;
 	private DropTarget gridDropTarget;
 	
+	private GridDropTargetListener gridListener;
+	
 	private List<RenderedComponent> comps;
 
 	@PostConstruct
@@ -95,11 +97,13 @@ public class SchemePart {
 		try {
 			root = (Composite) XWT.load(parent, url);
 		    comps = ImageTreeModelFactory.create(
-		                root.getDisplay()).getImages(); 
+		                root.getDisplay()).getImages();
+		    
 			initTree();
 			initSchemeGrid();
 			initGridDropTarget();
 			initGridDragSource();
+			initGridDropTargetListener();
 	        initTreeDND();
 			initGridDND();
 			initSlider();
@@ -113,6 +117,10 @@ public class SchemePart {
 	 * init gui elements
 	 */
 	
+	private void initGridDropTargetListener(){
+		gridListener = new GridDropTargetListener(grid, comps);
+	}
+	
 	private void initGridDragSource(){
         gridDragSource = new DragSource(grid, DRAG_OPS);
         gridDragSource.setTransfer(TRANSFER);
@@ -124,14 +132,14 @@ public class SchemePart {
 	}
 	
 	private void initTreeDND(){
-		TreeDNDManager m = new TreeDNDManager(tree, grid);
+		TreeDNDManager m = new TreeDNDManager(tree, grid, comps);
 		tree.addDragSupport(DRAG_OPS, TRANSFER, m);
-		gridDropTarget.addDropListener(m);
+		gridDropTarget.addDropListener(gridListener);
 	}
 	
 	private void initGridDND(){
 		GridDNDManager gridDND = new GridDNDManager(grid, comps);
-		gridDropTarget.addDropListener(gridDND);
+		gridDropTarget.addDropListener(gridListener);
 		gridDragSource.addDragListener(gridDND);
 	}
 	
