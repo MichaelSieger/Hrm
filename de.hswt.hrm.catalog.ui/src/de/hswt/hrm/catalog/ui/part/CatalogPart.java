@@ -6,8 +6,7 @@ import org.eclipse.swt.widgets.Composite;
 
 /**
  * This class will contain a simple TV to Display all available "Soll/Ist/Maßnahmen"
- * @author knacht
- *
+ * 
  */
 public class CatalogPart {
 

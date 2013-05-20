@@ -19,13 +19,13 @@
 			</TableViewer.table.layoutData>
 		</TableViewer.table>
 	</TableViewer>
-	<Button x:name="addContact" text="Neuer Kunde"
+	<Button x:name="addContact" text="New"
 		SelectionEvent="buttonSelected" >
 		<Button.layoutData>
 			<GridData horizontalAlignment="FILL"/>
 		</Button.layoutData>
 	</Button>
-	<Button text="Kunden Bearbeiten" SelectionEvent="tableEntrySelected">
+	<Button text="Edit" SelectionEvent="tableEntrySelected">
 		<Button.layoutData>
 			<GridData horizontalAlignment="FILL"/>
 		</Button.layoutData>

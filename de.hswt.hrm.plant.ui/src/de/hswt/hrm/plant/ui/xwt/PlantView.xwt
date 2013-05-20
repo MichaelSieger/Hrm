@@ -22,12 +22,12 @@
 			</TableViewer.table.layoutData>
 		</TableViewer.table>
 	</TableViewer>
-	<Button x:name="addPlant" text="Neue Anlage" SelectionEvent="buttonSelected">
+	<Button x:name="addPlant" text="New" SelectionEvent="buttonSelected">
 		<Button.layoutData>
 			<GridData horizontalAlignment="FILL" />
 		</Button.layoutData>
 	</Button>
-	<Button text="Anlage Bearbeiten" SelectionEvent="tableEntrySelected">
+	<Button text="Edit" SelectionEvent="tableEntrySelected">
 		<Button.layoutData>
 			<GridData horizontalAlignment="FILL" />
 		</Button.layoutData>

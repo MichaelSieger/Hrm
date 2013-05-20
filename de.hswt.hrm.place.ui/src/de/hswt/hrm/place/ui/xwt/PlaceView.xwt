@@ -19,13 +19,13 @@
 			</TableViewer.table.layoutData>
 		</TableViewer.table>
 	</TableViewer>
-	<Button x:name="addPlace" text="Neuer Standort"
+	<Button x:name="addPlace" text="New"
 		SelectionEvent="buttonSelected" >
 		<Button.layoutData>
 			<GridData horizontalAlignment="FILL"/>
 		</Button.layoutData>
 	</Button>
-	<Button text="Standort Bearbeiten" SelectionEvent="tableEntrySelected">
+	<Button text="Edit" SelectionEvent="tableEntrySelected">
 		<Button.layoutData>
 			<GridData horizontalAlignment="FILL"/>
 		</Button.layoutData>
