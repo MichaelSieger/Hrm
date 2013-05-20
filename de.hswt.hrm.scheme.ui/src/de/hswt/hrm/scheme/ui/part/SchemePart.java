@@ -25,12 +25,16 @@ import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Slider;
 import org.eclipse.ui.dialogs.FilteredTree;
 import org.eclipse.ui.dialogs.PatternFilter;
 
 import de.hswt.hrm.scheme.model.RenderedComponent;
+import de.hswt.hrm.scheme.ui.ItemClickListener;
 import de.hswt.hrm.scheme.ui.SchemeGrid;
+import de.hswt.hrm.scheme.ui.SchemeGridItem;
 import de.hswt.hrm.scheme.ui.SchemeTreePatternFilter;
 import de.hswt.hrm.scheme.ui.dnd.DragData;
 import de.hswt.hrm.scheme.ui.dnd.DragDataTransfer;
@@ -48,6 +52,8 @@ import de.hswt.hrm.scheme.ui.tree.TreeContentProvider;
  *
  */
 public class SchemePart {
+	
+	private static final String DELETE = "Löschen";
 	
 	/**
 	 * The DND transfer type
@@ -110,6 +116,7 @@ public class SchemePart {
 	        initTreeDND();
 			initGridDND();
 			initSlider();
+			initItemClickListener();
 
 		} catch (Throwable e) {
 			throw new Error("Unable to load ", e);
@@ -119,6 +126,19 @@ public class SchemePart {
 	/*
 	 * init gui elements
 	 */
+	
+	private void initItemClickListener(){
+		grid.setItemClickListener(new ItemClickListener() {
+			
+			@Override
+			public void itemClicked(SchemeGridItem item) {
+				Menu menu = new Menu(root.getShell(), SWT.POP_UP);
+				MenuItem delete = new MenuItem(menu, SWT.PUSH);
+				delete.setText(DELETE);
+				menu.setVisible(true);
+			}
+		});
+	}
 	
 	private void initGridDropTargetListener(){
 		gridListener = new GridDropTargetListener(grid, comps, this);
