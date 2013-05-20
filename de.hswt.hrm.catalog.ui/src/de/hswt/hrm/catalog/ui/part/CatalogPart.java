@@ -24,6 +24,7 @@ import de.hswt.hrm.catalog.model.ICatalogItem;
 import de.hswt.hrm.catalog.model.Target;
 import de.hswt.hrm.catalog.service.CatalogService;
 import de.hswt.hrm.catalog.ui.event.CatalogEventHandler;
+import de.hswt.hrm.catalog.ui.filter.CatalogFilter;
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.locking.jdbc.ILockService;
 import de.hswt.hrm.common.ui.swt.table.ColumnComparator;
@@ -120,8 +121,8 @@ public class CatalogPart {
         // Add dataprovider that handles our collection
         viewer.setContentProvider(ArrayContentProvider.getInstance());
 
-        // // Enable filtering
-        // viewer.addFilter(new CatalogFilter());
+        // Enable filtering
+        viewer.addFilter(new CatalogFilter());
     }
 
 }

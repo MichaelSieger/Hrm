@@ -7,8 +7,7 @@ public class CatalogFilter extends ViewerFilter {
 
     @Override
     public boolean select(Viewer viewer, Object parentElement, Object element) {
-        // TODO Auto-generated method stub
-        return false;
+        return true;
     }
 
 }
