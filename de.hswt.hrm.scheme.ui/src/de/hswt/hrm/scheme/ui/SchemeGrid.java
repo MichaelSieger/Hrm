@@ -304,6 +304,7 @@ public class SchemeGrid extends Canvas {
 
 	public void clearColors() {
 		colors.clear();
+		this.redraw();
 	}
 
 	public void setColor(Color shadowColor, int x, int y, int w, int h) {
