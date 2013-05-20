@@ -71,7 +71,7 @@ public class DragData
      * @return
      */
     public boolean hasPosition(){
-    	return x == -1 && y == -1;
+    	return !(x == -1 && y == -1);
     }
 
     public Direction getDirection() {
