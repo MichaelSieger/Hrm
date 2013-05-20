@@ -1,5 +1,5 @@
 package de.hswt.hrm.scheme.dao.core;
 
-public interface ISchemeDAO {
+public interface ISchemeDao {
 
 }
