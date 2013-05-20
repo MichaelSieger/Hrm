@@ -131,11 +131,13 @@ public class SchemePart {
 		grid.setItemClickListener(new ItemClickListener() {
 			
 			@Override
-			public void itemClicked(SchemeGridItem item) {
-				Menu menu = new Menu(root.getShell(), SWT.POP_UP);
-				MenuItem delete = new MenuItem(menu, SWT.PUSH);
-				delete.setText(DELETE);
-				menu.setVisible(true);
+			public void itemClicked(MouseEvent e, SchemeGridItem item) {
+				if(e.button == 3){		//right mouse click
+					Menu menu = new Menu(root.getShell(), SWT.POP_UP);
+					MenuItem delete = new MenuItem(menu, SWT.PUSH);
+					delete.setText(DELETE);
+					menu.setVisible(true);
+				}
 			}
 		});
 	}
