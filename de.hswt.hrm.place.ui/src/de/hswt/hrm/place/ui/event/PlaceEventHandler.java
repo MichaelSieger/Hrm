@@ -43,37 +43,6 @@ public class PlaceEventHandler {
         this.placeService = placeService;
     }
     
-    /**
-     * This event is called whenever the Search Text Field is leaved. If the the field is blank, the
-     * value of the Field {@link #DEFAULT_SEARCH_STRING} is inserted.
-     * 
-     * @param event
-     *            Event which occured in SWT
-     */
-    public void leaveText(Event event) {
-
-        Text text = (Text) event.widget;
-        if (text.getText().isEmpty()) {
-            text.setText(DEFAULT_SEARCH_STRING);
-        }
-        TableViewer tf = (TableViewer) XWT.findElementByName(text, "contactTable");
-        tf.refresh();
-
-    }
-    
-    /**
-     * This event is called whenever the Search text field is entered
-     * 
-     * @param event
-     */
-    public void enterText(Event event) {
-        Text text = (Text) event.widget;
-        if (text.getText().equals(DEFAULT_SEARCH_STRING)) {
-            text.setText(EMPTY);
-        }
-
-    }
-    
 	public void onFocusOut(Event event) {
 		Text text = (Text) event.widget;
 		text.setText("Suche (Location,Area,City)");
@@ -124,13 +93,5 @@ public class PlaceEventHandler {
                     "Could not update selected place from database.");
         }
     }
-
-	public void onKeyUp(Event event) {
-		Text searchText = (Text) event.widget;
-		TableViewer tf = (TableViewer) XWT.findElementByName(searchText, "placeTable");
-		PlaceFilter f = (PlaceFilter) tf.getFilters()[0];
-		f.setSearchString(searchText.getText());
-		tf.refresh();
-	}
 
 }
