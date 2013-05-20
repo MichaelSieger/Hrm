@@ -1,6 +1,10 @@
 package de.hswt.hrm.catalog.service;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
+
 import javax.inject.Inject;
 
 import org.eclipse.e4.core.di.annotations.Creatable;
@@ -48,8 +52,18 @@ public class CatalogService {
 		LOG.info("TargetDao injected into CatalogService.");
 	}
 	
-	public Iterable<ICatalogItem> findAllCatalogItem() throws DatabaseException {
-		return Iterables.concat(activityDao.findAll(), currentDao.findAll(), targetDao.findAll());
+	public Collection<ICatalogItem> findAllCatalogItem() throws DatabaseException {
+	    Collection<Activity> activities = activityDao.findAll();
+	    Collection<Current> currents = currentDao.findAll();
+	    Collection<Target> targets = targetDao.findAll();
+	    
+	    int itemsSize = activities.size() + currents.size() + targets.size();
+	    List<ICatalogItem> items = new ArrayList<>(itemsSize);
+	    items.addAll(activities);
+	    items.addAll(currents);
+	    items.addAll(targets);
+	    
+		return items;
 	}
 	
 	public Collection<Activity> findAllActivity() throws DatabaseException {
