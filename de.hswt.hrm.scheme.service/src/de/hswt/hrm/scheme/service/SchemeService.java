@@ -2,6 +2,10 @@ package de.hswt.hrm.scheme.service;
 
 import java.util.Collection;
 
+import javax.inject.Inject;
+
+import org.eclipse.e4.core.di.annotations.Creatable;
+
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkArgument;
 
@@ -14,13 +18,17 @@ import de.hswt.hrm.scheme.model.SchemeComponent;
 /**
  * Service class which should be used to interact with the storage system for scheme.
  */
+@Creatable
 public class SchemeService {
 	
     private final ISchemeDao schemeDao;
     private final ISchemeComponentDao schemeComponentDao;
     
-    // FIXME: add @inject
+    @Inject
     public SchemeService(final ISchemeDao schemeDao, final ISchemeComponentDao schemeComponentDao) {
+        checkNotNull(schemeDao, "SchemeDao must be injected properly.");
+        checkNotNull(schemeComponentDao, "SchemeComponentDao must be injected properly");
+        
         this.schemeDao = schemeDao;
         this.schemeComponentDao = schemeComponentDao;
     }
