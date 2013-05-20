@@ -18,7 +18,7 @@ import org.slf4j.LoggerFactory;
 
 import de.hswt.hrm.catalog.model.ICatalogItem;
 import de.hswt.hrm.catalog.service.CatalogService;
-import de.hswt.hrm.catalog.ui.xwt.event.CatalogItemEventHandler;
+import de.hswt.hrm.catalog.ui.xwt.event.CatalogEventHandler;
 import de.hswt.hrm.common.locking.jdbc.ILockService;
 import de.hswt.hrm.common.ui.xwt.XwtHelper;
 
@@ -44,11 +44,11 @@ public class CatalogPart {
     public void postConstruct(Composite parent,IEclipseContext context) {
 
         URL url = CatalogPart.class.getClassLoader().getResource(
-                "de/hswt/hrm/catalog/ui/xwt/CatalogItemView" + IConstants.XWT_EXTENSION_SUFFIX);
+                "de/hswt/hrm/catalog/ui/xwt/CatalogView" + IConstants.XWT_EXTENSION_SUFFIX);
 
          try {
          // Create an instance of the event handler that is able to use DI
-          CatalogItemEventHandler eventHandler = ContextInjectionFactory.make(CatalogItemEventHandler.class,
+          CatalogEventHandler eventHandler = ContextInjectionFactory.make(CatalogEventHandler.class,
           context);
         
          // TODO: partly move to extra plugin
@@ -63,6 +63,14 @@ public class CatalogPart {
          }
          catch (Exception e) {
          LOG.error("Could not load XWT file from resource", e);
+         }
+         
+         if (catalogService == null) {
+             LOG.error("catalogService not injected to CatalogPart.");
+         }
+
+         if (lockService != null) {
+             LOG.debug("LockService injected to CatalogPart.");
          }
 
     }
