@@ -1,0 +1,66 @@
+<Composite xmlns="http://www.eclipse.org/xwt/presentation"
+	xmlns:x="http://www.eclipse.org/xwt" xmlns:p1="clr-namespace:de.hswt.hrm.scheme.ui.xwt"
+	x:Class="de.hswt.hrm.scheme.ui.event.CategoryEventHandler">
+	<Composite.layout>
+		<GridLayout makeColumnsEqualWidth="true" />
+	</Composite.layout>
+	<SashForm>
+		<SashForm.layoutData>
+			<GridData verticalAlignment="FILL" horizontalSpan="3" grabExcessHorizontalSpace="true" grabExcessVerticalSpace="true"/>
+		</SashForm.layoutData>
+		<Composite x:name="westColumn">
+			<Composite.layout>
+				<GridLayout/>
+			</Composite.layout>
+			<Text x:name="searchText" x:Style="SEARCH"
+			FocusOutEvent="" KeyUpEvent="" FocusInEvent="" text="Suche" >
+				<Text.layoutData>
+					<GridData horizontalAlignment="FILL" horizontalSpan="4" verticalAlignment="FILL"/>
+				</Text.layoutData>
+			</Text>
+			<TableViewer x:name="categoryTable" x:Style="BORDER">
+				<TableViewer.table headerVisible="true" linesVisible="true" MouseDoubleClickEvent="" >
+					<TableViewer.table.layoutData>
+						<GridData horizontalAlignment="FILL" horizontalSpan="5" verticalSpan="5" widthHint="350" 
+						verticalAlignment="FILL" grabExcessVerticalSpace="true" grabExcessHorizontalSpace="true"/>
+					</TableViewer.table.layoutData>
+				</TableViewer.table>
+			</TableViewer>
+		</Composite>
+		<Composite x:name="centerColumn">
+			<Composite.layout>
+				<GridLayout makeColumnsEqualWidth="true"/>
+			</Composite.layout>
+			<SashForm x:Style="VERTICAL">
+				<SashForm.layoutData>
+					<GridData horizontalAlignment="FILL" verticalSpan="3" grabExcessHorizontalSpace="true" grabExcessVerticalSpace="true" verticalAlignment="FILL"/>
+				</SashForm.layoutData>
+				<Composite x:name="centerNorth">
+					<Composite.layout>
+						<GridLayout makeColumnsEqualWidth="true"/>
+					</Composite.layout>
+					<Label text="table 1"/>
+				</Composite>
+				<Composite x:name="centerMid">
+					<Composite.layout>
+						<GridLayout makeColumnsEqualWidth="true"/>
+					</Composite.layout>
+					<Label text="table 2"/>
+				</Composite>
+				<Composite x:name="centerSouth">
+				<Composite.layout>
+						<GridLayout makeColumnsEqualWidth="true"/>
+					</Composite.layout>
+					<Label text="table 3"/>
+				</Composite>
+			</SashForm>
+		</Composite>
+		<Composite x:name="eastColumn">
+			<Composite.layout>
+				<GridLayout numColumns="1"/>
+			</Composite.layout>
+			<Label text="Buttons:"/>
+			<Label text="New Category etc"/>
+		</Composite>
+	</SashForm>
+</Composite>
