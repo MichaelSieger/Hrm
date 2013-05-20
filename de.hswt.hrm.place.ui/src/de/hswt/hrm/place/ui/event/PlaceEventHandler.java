@@ -24,39 +24,74 @@ import de.hswt.hrm.place.ui.part.PlacePartUtil;
 
 public class PlaceEventHandler {
     private final static Logger LOG = LoggerFactory.getLogger(PlaceEventHandler.class);
-    private static final String DEFAULT_SEARCH_STRING = "Suche";
+    private static final String DEFAULT_SEARCH_STRING = "Search";
     private static final String EMPTY = "";
     private final IEclipseContext context;
     private final PlaceService placeService;
-	 
+
     @Inject
     public PlaceEventHandler(IEclipseContext context, PlaceService placeService) {
         if (context == null) {
             LOG.error("EclipseContext was not injected to PlaceEventHandler.");
         }
-        
+
         if (placeService == null) {
             LOG.error("PlaceService was not injected to PlaceEventHandler.");
         }
-        
+
         this.context = context;
         this.placeService = placeService;
     }
-    
-	public void onFocusOut(Event event) {
-		Text text = (Text) event.widget;
-		text.setText("Suche (Location,Area,City)");
-		TableViewer tf = (TableViewer) XWT.findElementByName(text, "placeTable");
-		tf.refresh();
-	}
 
-	@SuppressWarnings("unchecked")
+    /**
+     * - * This event is called whenever the Search Text Field is leaved. If the the field is blank,
+     * the - * value of the Field {@link #DEFAULT_SEARCH_STRING} is inserted. - * - * @param event -
+     * * Event which occured in SWT -
+     */
+    public void leaveText(Event event) {
+
+        Text text = (Text) event.widget;
+        if (text.getText().isEmpty()) {
+            text.setText(DEFAULT_SEARCH_STRING);
+        }
+        TableViewer tf = (TableViewer) XWT.findElementByName(text, "placeTable");
+        tf.refresh();
+
+    }
+
+    /**
+     * This event is called whenever the Search text field is entered
+     * 
+     * @param event
+     */
+    public void enterText(Event event) {
+        Text text = (Text) event.widget;
+        if (text.getText().equals(DEFAULT_SEARCH_STRING)) {
+            text.setText(EMPTY);
+        }
+
+    }
+
+    public void onKeyUp(Event event) {
+        Text searchText = (Text) event.widget;
+        TableViewer tf = (TableViewer) XWT.findElementByName(searchText, "placeTable");
+        PlaceFilter f = (PlaceFilter) tf.getFilters()[0];
+        f.setSearchString(searchText.getText());
+        tf.refresh();
+    }
+
+    public void onFocusOut(Event event) {
+        Text text = (Text) event.widget;
+        text.setText("Suche (Location,Area,City)");
+        TableViewer tf = (TableViewer) XWT.findElementByName(text, "placeTable");
+        tf.refresh();
+    }
+
+    @SuppressWarnings("unchecked")
     public void buttonSelected(Event event) {
         Button b = (Button) event.widget;
-        Optional<Place> newPlace = PlacePartUtil.showWizard(
-                context, 
-                event.display.getActiveShell(),
-                Optional.<Place>absent());
+        Optional<Place> newPlace = PlacePartUtil.showWizard(context,
+                event.display.getActiveShell(), Optional.<Place> absent());
 
         if (newPlace.isPresent()) {
             TableViewer tv = (TableViewer) XWT.findElementByName(b, "placeTable");
@@ -64,9 +99,9 @@ public class PlaceEventHandler {
             places.add(newPlace.get());
             tv.refresh();
         }
-	}
-	
-	public void tableEntrySelected(Event event) {
+    }
+
+    public void tableEntrySelected(Event event) {
 
         TableViewer tv = (TableViewer) XWT.findElementByName(event.widget, "placeTable");
 
@@ -76,10 +111,8 @@ public class PlaceEventHandler {
         // Refresh the selected place with values from the database
         try {
             placeService.refresh(selectedPlace);
-            Optional<Place> updatedPlace = PlacePartUtil.showWizard(
-                    context,
-                    event.display.getActiveShell(),
-                    Optional.of(selectedPlace));
+            Optional<Place> updatedPlace = PlacePartUtil.showWizard(context,
+                    event.display.getActiveShell(), Optional.of(selectedPlace));
 
             if (updatedPlace.isPresent()) {
                 tv.refresh();
