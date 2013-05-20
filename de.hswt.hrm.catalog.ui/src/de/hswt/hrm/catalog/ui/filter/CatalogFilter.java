@@ -5,9 +5,26 @@ import org.eclipse.jface.viewers.ViewerFilter;
 
 public class CatalogFilter extends ViewerFilter {
 
-    @Override
-    public boolean select(Viewer viewer, Object parentElement, Object element) {
-        return true;
+    private String searchString;
+
+    public void setSearchString(String substring) {
+        searchString = (".*" + substring + ".*").toLowerCase();
+
     }
 
+    @Override
+    public boolean select(Viewer viewer, Object parentElement, Object element) {
+
+        if (searchString == null || searchString.length() == 0) {
+            return true;
+        }
+
+        String s = "Maßnahme";
+        if (s.matches(searchString)) {
+            return true;
+        }
+
+        return false;
+
+    }
 }

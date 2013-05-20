@@ -1,6 +1,6 @@
 <Composite xmlns="http://www.eclipse.org/xwt/presentation"
 	xmlns:x="http://www.eclipse.org/xwt" xmlns:p1="clr-namespace:de.hswt.hrm.place.ui.xwt"
-	x:Class="de.hswt.hrm.catalog.ui.event.CataloItemEventHandler">
+	x:Class="de.hswt.hrm.catalog.ui.event.CatalogEventHandler">
 	<Composite.layout>
 		<GridLayout numColumns="5" makeColumnsEqualWidth="true" />
 	</Composite.layout>
@@ -30,10 +30,10 @@
 			<GridData horizontalAlignment="FILL" />
 		</Button.layoutData>
 	</Button>
-	<Button x:Style="CHECK" text="All" />
-	<Button x:Style="CHECK" text="Soll" />
-	<Button x:Style="CHECK" text="Ist" />
-	<Button x:Style="CHECK" text="Maßnahme">
+	<Button x:Style="CHECK" text="All" SelectionEvent="onSelection" />
+	<Button x:Style="CHECK" text="Soll" SelectionEvent="onSelection" />
+	<Button x:Style="CHECK" text="Ist" SelectionEvent="onSelection" />
+	<Button x:Style="CHECK" text="Maßnahme" SelectionEvent="onSelection">
 		<Button.layoutData>
 			<GridData grabExcessVerticalSpace="true" verticalAlignment="TOP" />
 		</Button.layoutData>
