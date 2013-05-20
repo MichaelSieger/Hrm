@@ -39,19 +39,40 @@
 					<Composite.layout>
 						<GridLayout makeColumnsEqualWidth="true"/>
 					</Composite.layout>
-					<Label text="table 1"/>
+					<TableViewer x:name="targetTable" x:Style="BORDER">
+						<TableViewer.table headerVisible="true" linesVisible="true" MouseDoubleClickEvent="" >
+							<TableViewer.table.layoutData>
+								<GridData horizontalAlignment="FILL" horizontalSpan="5" verticalSpan="5" widthHint="350" 
+								verticalAlignment="FILL" grabExcessVerticalSpace="true" grabExcessHorizontalSpace="true"/>
+							</TableViewer.table.layoutData>
+						</TableViewer.table>
+					</TableViewer>
 				</Composite>
 				<Composite x:name="centerMid">
 					<Composite.layout>
 						<GridLayout makeColumnsEqualWidth="true"/>
 					</Composite.layout>
-					<Label text="table 2"/>
+					<TableViewer x:name="currentTable" x:Style="BORDER">
+						<TableViewer.table headerVisible="true" linesVisible="true" MouseDoubleClickEvent="" >
+							<TableViewer.table.layoutData>
+								<GridData horizontalAlignment="FILL" horizontalSpan="5" verticalSpan="5" widthHint="350" 
+								verticalAlignment="FILL" grabExcessVerticalSpace="true" grabExcessHorizontalSpace="true"/>
+							</TableViewer.table.layoutData>
+						</TableViewer.table>
+					</TableViewer>
 				</Composite>
 				<Composite x:name="centerSouth">
-				<Composite.layout>
+					<Composite.layout>
 						<GridLayout makeColumnsEqualWidth="true"/>
 					</Composite.layout>
-					<Label text="table 3"/>
+					<TableViewer x:name="activityTable" x:Style="BORDER">
+						<TableViewer.table headerVisible="true" linesVisible="true" MouseDoubleClickEvent="" >
+							<TableViewer.table.layoutData>
+								<GridData horizontalAlignment="FILL" horizontalSpan="5" verticalSpan="5" widthHint="350" 
+								verticalAlignment="FILL" grabExcessVerticalSpace="true" grabExcessHorizontalSpace="true"/>
+							</TableViewer.table.layoutData>
+						</TableViewer.table>
+					</TableViewer>
 				</Composite>
 			</SashForm>
 		</Composite>
