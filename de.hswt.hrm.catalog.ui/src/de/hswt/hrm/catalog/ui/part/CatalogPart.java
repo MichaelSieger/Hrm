@@ -13,6 +13,8 @@ public class CatalogPart {
     @PostConstruct
     public void postConstruct(Composite parent) {
 
+        System.out.println("hello world");
+
     }
 
 }
