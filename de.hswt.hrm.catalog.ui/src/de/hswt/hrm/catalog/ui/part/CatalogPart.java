@@ -1,7 +1,6 @@
 package de.hswt.hrm.catalog.ui.part;
 
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -18,10 +17,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.hswt.hrm.catalog.model.Activity;
-import de.hswt.hrm.catalog.model.Current;
 import de.hswt.hrm.catalog.model.ICatalogItem;
-import de.hswt.hrm.catalog.model.Target;
 import de.hswt.hrm.catalog.service.CatalogService;
 import de.hswt.hrm.catalog.ui.event.CatalogEventHandler;
 import de.hswt.hrm.catalog.ui.filter.CatalogFilter;
@@ -91,12 +87,7 @@ public class CatalogPart {
         try {
             items = catalogService.findAllCatalogItem();
 
-            List<ICatalogItem> a = new ArrayList<>();
-            a.add(new Activity("myActivityNameName", "Hallo Welt  Maßnahme Beschriebung"));
-            a.add(new Current("myCurrentName", "Hallo Welt ist Beschriebung"));
-            a.add(new Target("myTargetName", "Hallo Welt soll Beschriebung"));
-
-            viewer.setInput(a);
+            viewer.setInput(items);
         }
         catch (DatabaseException e) {
             // TODO Auto-generated catch block
