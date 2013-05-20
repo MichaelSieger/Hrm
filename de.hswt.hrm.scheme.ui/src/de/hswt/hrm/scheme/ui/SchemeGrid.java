@@ -315,4 +315,10 @@ public class SchemeGrid extends Canvas {
 		listener = l;
 	}
 
+
+	public void removeItem(SchemeGridItem item) {
+		images.remove(item);
+		this.redraw();
+	}
+
 }
