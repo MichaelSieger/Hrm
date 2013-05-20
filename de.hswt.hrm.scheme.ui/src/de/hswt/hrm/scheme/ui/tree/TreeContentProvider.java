@@ -6,6 +6,7 @@ import java.util.List;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
+import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 
 import de.hswt.hrm.scheme.model.Category;
@@ -67,7 +68,8 @@ public class TreeContentProvider implements ITreeContentProvider{
     private List<RenderedComponent> getRenderedComponents(Category cat){
     	List<RenderedComponent> result = new ArrayList<RenderedComponent>();
     	for(RenderedComponent c : comps){
-    		if(c.getComponent().getCategory().equals(cat)){
+    		Optional<Category> cCat = c.getComponent().getCategory();
+    		if(cCat.isPresent() && cCat.get().equals(cat)){
     			result.add(c);
     		}
     	}
@@ -82,10 +84,11 @@ public class TreeContentProvider implements ITreeContentProvider{
     private Category[] getCategorys(){
         List<Category> cats = Lists.newArrayList();
         for(RenderedComponent c : comps){
-        	// FIXME: add null value check if necessary
-        	final Category category = c.getComponent().getCategory().get();
-        	if(!cats.contains(category)){
-        		cats.add(category);
+        	final Optional<Category> category = c.getComponent().getCategory();
+        	if(category.isPresent()){
+            	if(!cats.contains(category.get())){
+            		cats.add(category.get());
+            	}
         	}
         }
         Category[] r = new Category[cats.size()];

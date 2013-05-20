@@ -3,6 +3,8 @@ package de.hswt.hrm.scheme.ui;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 
+import com.google.common.base.Optional;
+
 import de.hswt.hrm.scheme.model.Category;
 import de.hswt.hrm.scheme.model.Direction;
 import de.hswt.hrm.scheme.model.RenderedComponent;
@@ -84,8 +86,11 @@ public class SchemeGridItem {
     }
     
     Rectangle getBoundingBox(){
-    	// FIXME: add null value check if necessary
-    	Category c = renderedComponent.getComponent().getCategory().get();
+    	Optional<Category> op = renderedComponent.getComponent().getCategory();
+    	if(!op.isPresent()){
+    		throw new IllegalArgumentException("The Category may not be absent here");
+    	}
+    	Category c = op.get();
         return new Rectangle(x, y, 
         		c.getWidth(),
         		c.getHeight());
