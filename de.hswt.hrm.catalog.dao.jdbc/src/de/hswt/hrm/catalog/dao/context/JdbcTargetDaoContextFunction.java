@@ -6,9 +6,7 @@ import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.hswt.hrm.catalog.dao.core.IActivityDao;
 import de.hswt.hrm.catalog.dao.core.ITargetDao;
-import de.hswt.hrm.catalog.dao.jdbc.ActivityDao;
 import de.hswt.hrm.catalog.dao.jdbc.TargetDao;
 
 public class JdbcTargetDaoContextFunction extends ContextFunction {
