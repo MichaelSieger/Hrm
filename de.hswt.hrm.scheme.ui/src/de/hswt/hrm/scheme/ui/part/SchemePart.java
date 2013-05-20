@@ -4,6 +4,7 @@ import java.net.URL;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.inject.Inject;
 
 import org.eclipse.e4.xwt.IConstants;
 import org.eclipse.e4.xwt.XWT;
@@ -30,8 +31,11 @@ import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Slider;
 import org.eclipse.ui.dialogs.FilteredTree;
 import org.eclipse.ui.dialogs.PatternFilter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import de.hswt.hrm.scheme.model.RenderedComponent;
+import de.hswt.hrm.scheme.service.SchemeService;
 import de.hswt.hrm.scheme.ui.ItemClickListener;
 import de.hswt.hrm.scheme.ui.SchemeGrid;
 import de.hswt.hrm.scheme.ui.SchemeGridItem;
@@ -52,8 +56,11 @@ import de.hswt.hrm.scheme.ui.tree.TreeContentProvider;
  *
  */
 public class SchemePart {
-	
+    private final static Logger LOG = LoggerFactory.getLogger(SchemePart.class);
 	private static final String DELETE = "Löschen";
+	
+	@Inject
+	SchemeService schemeService;
 	
 	/**
 	 * The DND transfer type
@@ -100,6 +107,10 @@ public class SchemePart {
 
 	@PostConstruct
 	public void postConstruct(Composite parent) {
+	    if (schemeService == null) {
+	        LOG.error("SchemeService not properly injected to SchemePart.");
+	    }
+	    
 		URL url = SchemePart.class.getResource(
 				SchemePart.class.getSimpleName() + IConstants.XWT_EXTENSION_SUFFIX);
 
