@@ -14,6 +14,7 @@ Require-Bundle: javax.annotation,
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Import-Package: de.hswt.hrm.catalog.model,
  de.hswt.hrm.catalog.service,
+ de.hswt.hrm.common.database.exception,
  de.hswt.hrm.common.locking.jdbc,
  de.hswt.hrm.common.ui.xwt,
  org.eclipse.e4.core.contexts,

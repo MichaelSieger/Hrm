@@ -1,7 +1,6 @@
 package de.hswt.hrm.catalog.ui.part;
 
 import java.net.URL;
-import java.util.Collection;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -19,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import de.hswt.hrm.catalog.model.ICatalogItem;
 import de.hswt.hrm.catalog.service.CatalogService;
 import de.hswt.hrm.catalog.ui.xwt.event.CatalogEventHandler;
+import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.locking.jdbc.ILockService;
 import de.hswt.hrm.common.ui.xwt.XwtHelper;
 
@@ -38,51 +38,58 @@ public class CatalogPart {
     private ILockService lockService;
 
     private TableViewer viewer;
-    private Collection<ICatalogItem> items;
+    private Iterable<ICatalogItem> items;
 
     @PostConstruct
-    public void postConstruct(Composite parent,IEclipseContext context) {
+    public void postConstruct(Composite parent, IEclipseContext context) {
 
         URL url = CatalogPart.class.getClassLoader().getResource(
                 "de/hswt/hrm/catalog/ui/xwt/CatalogView" + IConstants.XWT_EXTENSION_SUFFIX);
 
-         try {
-         // Create an instance of the event handler that is able to use DI
-          CatalogEventHandler eventHandler = ContextInjectionFactory.make(CatalogEventHandler.class,
-          context);
-        
-         // TODO: partly move to extra plugin
-         // Load XWT with injection ready event handler
-         final Composite composite = XwtHelper.loadWithEventHandler(parent, url, eventHandler);
-         LOG.debug("XWT load successfully.");
-        
-         viewer = (TableViewer) XWT.findElementByName(composite, "placeTable");
-         initializeTable(parent, viewer);
+        try {
+            // Create an instance of the event handler that is able to use DI
+            CatalogEventHandler eventHandler = ContextInjectionFactory.make(
+                    CatalogEventHandler.class, context);
+
+            // TODO: partly move to extra plugin
+            // Load XWT with injection ready event handler
+            final Composite composite = XwtHelper.loadWithEventHandler(parent, url, eventHandler);
+            LOG.debug("XWT load successfully.");
+
+            viewer = (TableViewer) XWT.findElementByName(composite, "catalogTable");
+
+            initializeTable(parent, viewer);
             refreshTable(parent);
 
-         }
-         catch (Exception e) {
-         LOG.error("Could not load XWT file from resource", e);
-         }
-         
-         if (catalogService == null) {
-             LOG.error("catalogService not injected to CatalogPart.");
-         }
+        }
+        catch (Exception e) {
+            LOG.error("Could not load XWT file from resource", e);
+        }
 
-         if (lockService != null) {
-             LOG.debug("LockService injected to CatalogPart.");
-         }
+        if (catalogService == null) {
+            LOG.error("catalogService not injected to CatalogPart.");
+        }
+
+        if (lockService != null) {
+            LOG.debug("LockService injected to CatalogPart.");
+        }
 
     }
 
     private void refreshTable(Composite parent) {
-        // TODO Auto-generated method stub
-        
+
+        try {
+            catalogService.findAllCatalogItem();
+        }
+        catch (DatabaseException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
     private void initializeTable(Composite parent, TableViewer viewer2) {
         // TODO Auto-generated method stub
-        
+
     }
 
 }

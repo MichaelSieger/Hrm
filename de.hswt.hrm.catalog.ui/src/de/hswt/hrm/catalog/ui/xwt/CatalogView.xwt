@@ -10,7 +10,7 @@
 		</Text.layoutData>
 	</Text>
 	<Label />
-	<TableViewer x:name="placeTable" x:Style="BORDER">
+	<TableViewer x:name="catalogTable" x:Style="BORDER">
 		<TableViewer.table headerVisible="true"
 			linesVisible="true">
 			<TableViewer.table.layoutData>
