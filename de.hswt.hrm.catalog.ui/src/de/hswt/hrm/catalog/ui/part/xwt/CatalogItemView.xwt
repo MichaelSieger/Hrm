@@ -1,0 +1,4 @@
+<Composite xmlns="http://www.eclipse.org/xwt/presentation"
+	xmlns:x="http://www.eclipse.org/xwt" xmlns:p1="clr-namespace:de.hswt.hrm.place.ui.xwt"
+	x:Class="de.hswt.hrm.place.ui.event.PlaceEventHandler">
+</Composite>	
