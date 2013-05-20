@@ -8,6 +8,7 @@ import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.dnd.DragSourceListener;
 
 import de.hswt.hrm.scheme.model.RenderedComponent;
+import de.hswt.hrm.scheme.ui.SchemeGrid;
 import de.hswt.hrm.scheme.ui.tree.SchemeTreeItem;
 
 /**
@@ -19,15 +20,16 @@ import de.hswt.hrm.scheme.ui.tree.SchemeTreeItem;
 public class TreeDragListener implements DragSourceListener{
 
     private final TreeViewer tree;
-    
     private final List<RenderedComponent> comps;
+    private final SchemeGrid grid;
     
     private DragData dragging;
 
-    public TreeDragListener(TreeViewer tree, List<RenderedComponent> comps) {
+    public TreeDragListener(TreeViewer tree, List<RenderedComponent> comps, SchemeGrid grid) {
         super();
         this.tree = tree;
         this.comps = comps;
+        this.grid = grid;
     }
 
     @Override
@@ -53,7 +55,8 @@ public class TreeDragListener implements DragSourceListener{
 
     @Override
     public void dragFinished(DragSourceEvent arg0) {
-    	
+    	dragging = null;
+    	grid.clearColors();
     }
     
     public DragData getDraggingItem(){

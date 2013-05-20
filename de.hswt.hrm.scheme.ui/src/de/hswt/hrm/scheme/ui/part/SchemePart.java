@@ -168,7 +168,7 @@ public class SchemePart {
 	}
 	
 	private void initTreeDND(){
-		treeDragListener = new TreeDragListener(tree, comps);
+		treeDragListener = new TreeDragListener(tree, comps, grid);
 		tree.addDragSupport(DRAG_OPS, TRANSFER, treeDragListener);
 	}
 	
