@@ -1,0 +1,41 @@
+<Composite xmlns="http://www.eclipse.org/xwt/presentation"
+	xmlns:x="http://www.eclipse.org/xwt" xmlns:p1="clr-namespace:de.hswt.hrm.place.ui.xwt"
+	x:Class="de.hswt.hrm.catalog.ui.event.CataloItemEventHandler">
+	<Composite.layout>
+		<GridLayout numColumns="5" makeColumnsEqualWidth="true" />
+	</Composite.layout>
+	<Text x:name="searchText" x:Style="SEARCH" text="Search">
+		<Text.layoutData>
+			<GridData horizontalAlignment="FILL" horizontalSpan="4" />
+		</Text.layoutData>
+	</Text>
+	<Label />
+	<TableViewer x:name="placeTable" x:Style="BORDER">
+		<TableViewer.table headerVisible="true"
+			linesVisible="true">
+			<TableViewer.table.layoutData>
+				<GridData verticalSpan="6" horizontalSpan="4"
+					horizontalAlignment="FILL" widthHint="860" verticalAlignment="FILL"
+					grabExcessVerticalSpace="true" grabExcessHorizontalSpace="true" />
+			</TableViewer.table.layoutData>
+		</TableViewer.table>
+	</TableViewer>
+	<Button x:name="addPlace" text="New">
+		<Button.layoutData>
+			<GridData horizontalAlignment="FILL" />
+		</Button.layoutData>
+	</Button>
+	<Button text="Edit">
+		<Button.layoutData>
+			<GridData horizontalAlignment="FILL" />
+		</Button.layoutData>
+	</Button>
+	<Button x:Style="CHECK" text="All" />
+	<Button x:Style="CHECK" text="Soll" />
+	<Button x:Style="CHECK" text="Ist" />
+	<Button x:Style="CHECK" text="Maßnahme">
+		<Button.layoutData>
+			<GridData grabExcessVerticalSpace="true" verticalAlignment="TOP" />
+		</Button.layoutData>
+	</Button>
+</Composite>	
