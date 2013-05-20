@@ -32,6 +32,7 @@ import org.eclipse.ui.dialogs.PatternFilter;
 import de.hswt.hrm.scheme.model.RenderedComponent;
 import de.hswt.hrm.scheme.ui.SchemeGrid;
 import de.hswt.hrm.scheme.ui.SchemeTreePatternFilter;
+import de.hswt.hrm.scheme.ui.dnd.DragData;
 import de.hswt.hrm.scheme.ui.dnd.DragDataTransfer;
 import de.hswt.hrm.scheme.ui.dnd.GridDragListener;
 import de.hswt.hrm.scheme.ui.dnd.GridDropTargetListener;
@@ -79,6 +80,8 @@ public class SchemePart {
 	 */
 	private PatternFilter filter;
 	
+	private List<RenderedComponent> comps;
+	
 	/*
 	 * DND items for the grid
 	 */
@@ -86,8 +89,8 @@ public class SchemePart {
 	private DropTarget gridDropTarget;
 	
 	private GridDropTargetListener gridListener;
-	
-	private List<RenderedComponent> comps;
+	private GridDragListener gridDragListener;
+	private TreeDragListener treeDragListener;
 
 	@PostConstruct
 	public void postConstruct(Composite parent) {
@@ -118,7 +121,7 @@ public class SchemePart {
 	 */
 	
 	private void initGridDropTargetListener(){
-		gridListener = new GridDropTargetListener(grid, comps);
+		gridListener = new GridDropTargetListener(grid, comps, this);
 		gridDropTarget.addDropListener(gridListener);
 	}
 	
@@ -133,13 +136,13 @@ public class SchemePart {
 	}
 	
 	private void initTreeDND(){
-		TreeDragListener m = new TreeDragListener(tree, comps);
-		tree.addDragSupport(DRAG_OPS, TRANSFER, m);
+		treeDragListener = new TreeDragListener(tree, comps);
+		tree.addDragSupport(DRAG_OPS, TRANSFER, treeDragListener);
 	}
 	
 	private void initGridDND(){
-		GridDragListener gridDND = new GridDragListener(grid, comps);
-		gridDragSource.addDragListener(gridDND);
+		gridDragListener = new GridDragListener(grid, comps);
+		gridDragSource.addDragListener(gridDragListener);
 	}
 	
 	private void initSchemeGrid(){
@@ -245,5 +248,18 @@ public class SchemePart {
     public RenderedComponent getRenderedComponent(int id) {
         return comps.get(id);
     }
+
+	public DragData getDraggingItem() {
+		DragData i1 = gridDragListener.getDraggingItem();
+		DragData i2 = treeDragListener.getDraggingItem();
+		if(i1 == null && i2 == null){
+			throw new RuntimeException("No drag and drop is running");
+		}
+		if(i1 != null){
+			return i1;
+		}else{
+			return i2;
+		}
+	}
 
 }

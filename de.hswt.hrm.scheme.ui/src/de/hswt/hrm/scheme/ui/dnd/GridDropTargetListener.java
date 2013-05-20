@@ -5,12 +5,17 @@ import java.util.List;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DropTargetEvent;
 import org.eclipse.swt.dnd.DropTargetListener;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Point;
 
+import com.google.common.base.Optional;
+
+import de.hswt.hrm.scheme.model.Category;
 import de.hswt.hrm.scheme.model.RenderedComponent;
 import de.hswt.hrm.scheme.ui.PlaceOccupiedException;
 import de.hswt.hrm.scheme.ui.SchemeGrid;
 import de.hswt.hrm.scheme.ui.SchemeGridItem;
+import de.hswt.hrm.scheme.ui.part.SchemePart;
 
 /**
  * Handles the drop in the SchemeGrid
@@ -18,15 +23,17 @@ import de.hswt.hrm.scheme.ui.SchemeGridItem;
  * @author Michael Sieger
  *
  */
-public class GridDropTargetListener implements DropTargetListener {
+public class GridDropTargetListener implements DropTargetListener { 
 
 	private final SchemeGrid grid;
 	private final List<RenderedComponent> comps;
+	private final SchemePart part;
 
-	public GridDropTargetListener(SchemeGrid grid, List<RenderedComponent> comps) {
+	public GridDropTargetListener(SchemeGrid grid, List<RenderedComponent> comps, SchemePart part) {
 		super();
 		this.grid = grid;
 		this.comps = comps;
+		this.part = part;
 	}
 
 	@Override
@@ -57,7 +64,24 @@ public class GridDropTargetListener implements DropTargetListener {
 	}
 
 	@Override
-	public void dragOver(DropTargetEvent arg0) {
+	public void dragOver(DropTargetEvent ev) {
+		DragData data = part.getDraggingItem();
+		if(data != null){
+			SchemeGridItem item = data.toSchemeGridItem(comps);
+			Optional<Category> c = item.getRenderedComponent().getComponent().getCategory();
+			if(!c.isPresent()){
+				throw new IllegalArgumentException("The Category must be present here");
+			}
+			final Point org = grid.toDisplay(0, 0);
+			final int x = ev.x - org.x;
+			final int y = ev.y - org.y;
+			grid.clearColors();
+			grid.setColor(getShadowColor(), x, y, c.get().getWidth(), c.get().getHeight());
+		}
+	}
+	
+	private Color getShadowColor(){
+		return new Color(grid.getDisplay(), 255, 165, 0);
 	}
 
 	@Override
