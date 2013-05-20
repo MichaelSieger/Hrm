@@ -1,5 +1,7 @@
 package de.hswt.hrm.scheme.ui;
 
+import org.eclipse.swt.events.MouseEvent;
+
 /**
  * Listens for a item click.
  * 
@@ -8,6 +10,6 @@ package de.hswt.hrm.scheme.ui;
  */
 public interface ItemClickListener {
 	
-	void itemClicked(SchemeGridItem item);
+	void itemClicked(MouseEvent e, SchemeGridItem item);
 
 }

@@ -65,7 +65,7 @@ public class SchemeGrid extends Canvas {
 			public void mouseUp(MouseEvent e) {
 				SchemeGridItem item = getImage(getGridX(e.x), getGridY(e.y));
 				if(item != null){
-					listener.itemClicked(item);
+					listener.itemClicked(e, item);
 				}
 			}
 
