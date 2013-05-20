@@ -1,5 +1,7 @@
 package de.hswt.hrm.scheme.dao.core;
 
-public interface ISchemeDao {
+import de.hswt.hrm.scheme.model.Scheme;
 
+public interface ISchemeDao {
+    Scheme insert(final Scheme scheme);
 }
