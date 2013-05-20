@@ -107,6 +107,9 @@ public class PlaceEventHandler {
 
         // obtain the place in the column where the doubleClick happend
         Place selectedPlace = (Place) tv.getElementAt(tv.getTable().getSelectionIndex());
+        if (selectedPlace == null) {
+            return;
+        }
 
         // Refresh the selected place with values from the database
         try {

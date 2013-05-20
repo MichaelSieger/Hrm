@@ -128,6 +128,9 @@ public class ContactEventHandler {
 
         // obtain the contact in the column where the doubleClick happend
         Contact selectedContact = (Contact) tv.getElementAt(tv.getTable().getSelectionIndex());
+        if (selectedContact == null) {
+            return;
+        }
         try {
             contactService.refresh(selectedContact);
             Optional<Contact> updatedPlace = ContactPartUtil.showWizard(context,
