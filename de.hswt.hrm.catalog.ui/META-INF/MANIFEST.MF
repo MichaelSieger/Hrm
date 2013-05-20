@@ -6,6 +6,16 @@ Bundle-Version: 0.0.1.qualifier
 Require-Bundle: javax.annotation,
  javax.inject,
  org.eclipse.ui.forms;bundle-version="3.5.200",
- org.eclipse.jface;bundle-version="3.8.102"
+ org.eclipse.jface;bundle-version="3.8.102",
+ ch.qos.logback.classic;bundle-version="1.0.0",
+ ch.qos.logback.core;bundle-version="1.0.0",
+ org.slf4j.api;bundle-version="1.6.4",
+ org.eclipse.e4.core.di;bundle-version="1.2.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Import-Package: org.eclipse.swt.widgets
+Import-Package: de.hswt.hrm.catalog.model,
+ de.hswt.hrm.catalog.service,
+ de.hswt.hrm.common.locking.jdbc,
+ de.hswt.hrm.common.ui.xwt,
+ org.eclipse.e4.core.contexts,
+ org.eclipse.e4.xwt,
+ org.eclipse.swt.widgets
