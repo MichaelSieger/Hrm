@@ -4,7 +4,9 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 
 import de.hswt.hrm.catalog.model.Activity;
+import de.hswt.hrm.catalog.model.Current;
 import de.hswt.hrm.catalog.model.ICatalogItem;
+import de.hswt.hrm.catalog.model.Target;
 
 public class CatalogFilter extends ViewerFilter {
 
@@ -31,15 +33,18 @@ public class CatalogFilter extends ViewerFilter {
             matches = true;
             break;
         case "Maßnahme":
-            if (i instanceof Activity) {
-                matches = true;
-            }
-            else
-                matches = false;
+            matches = (i instanceof Activity);
+            break;
+
+        case "Soll":
+            matches = (i instanceof Target);
+            break;
+
+        case "Ist":
+            matches = (i instanceof Current);
+            break;
 
         }
-
         return matches;
-
     }
 }
