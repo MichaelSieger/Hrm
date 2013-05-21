@@ -73,10 +73,13 @@ public class CategoryWizardPageOne extends WizardPage {
         HashMap<String, Text> widgets = new HashMap<String, Text>();
         widgets.put("name", (Text) XWT.findElementByName(container, "name"));
         widgets.put("defaultQuantifier", (Text) XWT.findElementByName(container, "defaultQuantifier"));
-        //TODO defaultBoolRating
         widgets.put("width", (Text) XWT.findElementByName(container, "width"));
         widgets.put("height", (Text) XWT.findElementByName(container, "height"));
         return widgets;
+    }
+    
+    public Button getBoolRatingCheckbox() {
+        return (Button) XWT.findElementByName(container, "defaultBoolRating");
     }
     
     public boolean isPageComplete() {

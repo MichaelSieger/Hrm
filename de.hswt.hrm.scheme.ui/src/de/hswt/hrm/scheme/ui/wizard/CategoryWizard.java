@@ -78,7 +78,8 @@ public class CategoryWizard extends Wizard {
         HashMap<String, Text> mandatoryWidgets = first.getMandatoryWidgets();
         String name = mandatoryWidgets.get("name").getText();
         int defaultQuantifier = Integer.parseInt(mandatoryWidgets.get("defaultQuantifier").getText());
-        //TODO defaultBooleanRating
+        //TODO defaultBoolRating
+        boolean defaultBoolRating = first.getBoolRatingCheckbox().getSelection();
         int width = Integer.parseInt(mandatoryWidgets.get("width").getText());
         int height = Integer.parseInt(mandatoryWidgets.get("height").getText());
         
@@ -87,13 +88,12 @@ public class CategoryWizard extends Wizard {
             category = c.get();
             category.setName(name);
             category.setDefaultQuantifier(defaultQuantifier);
-            //TODO defaultBooleanRating
+            category.setDefaultBoolRating(defaultBoolRating);
             category.setWidth(width);
             category.setHeight(height);
         } else {
-            //TODO defaultBooleanRating - for testing true
             category = new Category(name, width, height, defaultQuantifier,
-                    true);
+                    defaultBoolRating);
         }
         
         return category;
