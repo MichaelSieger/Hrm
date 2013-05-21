@@ -2,7 +2,7 @@
 	<Composite.layout>
 		<GridLayout numColumns="3"/>
 	</Composite.layout>
-	<Section text="Allgemein" x:Style="(p1:Section).EXPANDED | (p1:Section).TITLE_BAR" x:Name="Mandatory">
+	<Section text="Allgemein" x:Style="(p1:Section).EXPANDED | (p1:Section).TITLE_BAR" x:Name="General">
 		<Section.layoutData>
 			<GridData grabExcessHorizontalSpace="true" widthHint="277" horizontalAlignment="FILL" horizontalSpan="3"/>
 		</Section.layoutData>
@@ -30,7 +30,7 @@
 				</Composite>
 		</Section.client>	
 	</Section>
-		<Section text="Schemaeditor" x:Style="(p1:Section).EXPANDED | (p1:Section).TITLE_BAR" x:Name="Schemeeditor">
+	<Section text="Schemaeditor" x:Style="(p1:Section).EXPANDED | (p1:Section).TITLE_BAR" x:Name="Schemeeditor">
 		<Section.layoutData>
 			<GridData grabExcessHorizontalSpace="true" widthHint="277" horizontalAlignment="FILL" horizontalSpan="3"/>
 		</Section.layoutData>
