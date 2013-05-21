@@ -14,6 +14,18 @@ public class CatalogEventHandler {
         Button b = (Button) event.widget;
         TableViewer tf = (TableViewer) XWT.findElementByName(b, "catalogTable");
         CatalogFilter f = (CatalogFilter) tf.getFilters()[0];
+
+        if (b.getText().equalsIgnoreCase("all")) {
+            f.setSearchString("");
+            tf.refresh();
+            return;
+        }
+
+        else if (b.getText().equalsIgnoreCase("maßnahme")) {
+            f.setSearchString(b.getText());
+            tf.refresh();
+            return;
+        }
         f.setSearchString(b.getText());
         tf.refresh();
     }
