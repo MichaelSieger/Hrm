@@ -78,7 +78,6 @@ public class CategoryWizard extends Wizard {
         HashMap<String, Text> mandatoryWidgets = first.getMandatoryWidgets();
         String name = mandatoryWidgets.get("name").getText();
         int defaultQuantifier = Integer.parseInt(mandatoryWidgets.get("defaultQuantifier").getText());
-        //TODO defaultBoolRating
         boolean defaultBoolRating = first.getBoolRatingCheckbox().getSelection();
         int width = Integer.parseInt(mandatoryWidgets.get("width").getText());
         int height = Integer.parseInt(mandatoryWidgets.get("height").getText());
