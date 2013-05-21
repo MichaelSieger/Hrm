@@ -51,7 +51,7 @@ public class CategoryWizardPageOne extends WizardPage {
             updateFields(container);
         }
         setControl(container);
-        //setKeyListener();
+        setKeyListener();
         setPageComplete(false);
     }
     
