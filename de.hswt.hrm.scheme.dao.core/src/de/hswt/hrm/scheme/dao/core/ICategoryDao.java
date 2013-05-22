@@ -5,7 +5,7 @@ import java.util.Collection;
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.ElementNotFoundException;
 import de.hswt.hrm.common.database.exception.SaveException;
-import de.hswt.hrm.scheme.model.Category;
+import de.hswt.hrm.component.model.Category;
 
 /**
  * Defines all the public methods to interact with the storage system for categorys.

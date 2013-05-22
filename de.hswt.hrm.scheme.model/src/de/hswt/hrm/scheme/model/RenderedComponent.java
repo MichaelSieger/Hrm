@@ -1,5 +1,7 @@
 package de.hswt.hrm.scheme.model;
 
+import de.hswt.hrm.component.model.Component;
+
 /**
  * Represents a Component with all images beeing rendered
  * 

@@ -2,7 +2,7 @@ package de.hswt.hrm.scheme.dao.core;
 
 import java.util.Collection;
 
-import de.hswt.hrm.scheme.model.Component;
+import de.hswt.hrm.component.model.Component;
 import de.hswt.hrm.scheme.model.Scheme;
 import de.hswt.hrm.scheme.model.SchemeComponent;
 

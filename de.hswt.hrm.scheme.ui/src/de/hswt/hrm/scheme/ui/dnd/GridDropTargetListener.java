@@ -10,7 +10,7 @@ import org.eclipse.swt.graphics.Point;
 
 import com.google.common.base.Optional;
 
-import de.hswt.hrm.scheme.model.Category;
+import de.hswt.hrm.component.model.Category;
 import de.hswt.hrm.scheme.model.RenderedComponent;
 import de.hswt.hrm.scheme.ui.PlaceOccupiedException;
 import de.hswt.hrm.scheme.ui.SchemeGrid;

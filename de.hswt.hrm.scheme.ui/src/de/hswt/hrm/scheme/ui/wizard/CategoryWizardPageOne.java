@@ -17,7 +17,7 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Optional;
 
-import de.hswt.hrm.scheme.model.Category;
+import de.hswt.hrm.component.model.Category;
 
 public class CategoryWizardPageOne extends WizardPage {
     

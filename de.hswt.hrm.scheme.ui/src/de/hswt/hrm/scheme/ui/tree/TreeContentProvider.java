@@ -9,7 +9,7 @@ import org.eclipse.jface.viewers.Viewer;
 import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 
-import de.hswt.hrm.scheme.model.Category;
+import de.hswt.hrm.component.model.Category;
 import de.hswt.hrm.scheme.model.RenderedComponent;
 
 /**

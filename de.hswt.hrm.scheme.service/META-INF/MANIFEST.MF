@@ -5,6 +5,7 @@ Bundle-SymbolicName: de.hswt.hrm.scheme.service
 Bundle-Version: 0.0.1.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Import-Package: de.hswt.hrm.common.database.exception,
+ de.hswt.hrm.component.model,
  de.hswt.hrm.plant.model,
  de.hswt.hrm.scheme.dao.core,
  de.hswt.hrm.scheme.dao.jdbc,

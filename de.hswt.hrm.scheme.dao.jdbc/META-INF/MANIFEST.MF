@@ -7,6 +7,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Import-Package: de.hswt.hrm.catalog.model,
  de.hswt.hrm.common.database,
  de.hswt.hrm.common.database.exception,
+ de.hswt.hrm.component.model,
  de.hswt.hrm.scheme.dao.core,
  de.hswt.hrm.scheme.model
 Export-Package: de.hswt.hrm.scheme.dao.jdbc

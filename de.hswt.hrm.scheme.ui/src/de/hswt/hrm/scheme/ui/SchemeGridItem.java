@@ -5,7 +5,7 @@ import org.eclipse.swt.graphics.Rectangle;
 
 import com.google.common.base.Optional;
 
-import de.hswt.hrm.scheme.model.Category;
+import de.hswt.hrm.component.model.Category;
 import de.hswt.hrm.scheme.model.Direction;
 import de.hswt.hrm.scheme.model.RenderedComponent;
 

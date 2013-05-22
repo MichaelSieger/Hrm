@@ -5,7 +5,7 @@ import java.util.Iterator;
 
 import org.eclipse.swt.graphics.Image;
 
-import de.hswt.hrm.scheme.model.Category;
+import de.hswt.hrm.component.model.Category;
 import de.hswt.hrm.scheme.model.RenderedComponent;
 import de.hswt.hrm.scheme.ui.DirectedRenderedComponent;
 

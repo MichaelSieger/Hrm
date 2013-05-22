@@ -1,4 +1,4 @@
-package de.hswt.hrm.scheme.model;
+package de.hswt.hrm.component.model;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Strings.isNullOrEmpty;

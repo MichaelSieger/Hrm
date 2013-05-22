@@ -16,7 +16,7 @@ import org.eclipse.swt.widgets.Display;
 import com.sun.pdfview.PDFFile;
 import com.sun.pdfview.PDFPage;
 
-import de.hswt.hrm.scheme.model.Component;
+import de.hswt.hrm.component.model.Component;
 import de.hswt.hrm.scheme.model.RenderedComponent;
 import de.hswt.hrm.scheme.model.ThumbnailImage;
 

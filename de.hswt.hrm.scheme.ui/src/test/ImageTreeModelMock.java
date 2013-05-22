@@ -9,8 +9,8 @@ import java.util.List;
 import org.eclipse.swt.widgets.Display;
 
 import de.hswt.hrm.common.BundleUtil;
-import de.hswt.hrm.scheme.model.Category;
-import de.hswt.hrm.scheme.model.Component;
+import de.hswt.hrm.component.model.Category;
+import de.hswt.hrm.component.model.Component;
 import de.hswt.hrm.scheme.model.RenderedComponent;
 import de.hswt.hrm.scheme.service.ComponentConverter;
 import de.hswt.hrm.scheme.ui.tree.IImageTreeModel;

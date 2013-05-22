@@ -17,7 +17,7 @@ import de.hswt.hrm.common.database.SqlQueryBuilder;
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.ElementNotFoundException;
 import de.hswt.hrm.common.database.exception.SaveException;
-import de.hswt.hrm.scheme.model.Component;
+import de.hswt.hrm.component.model.Component;
 import de.hswt.hrm.scheme.dao.core.IComponentDao;
 
 public class ComponentDao implements IComponentDao {

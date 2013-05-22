@@ -26,6 +26,7 @@ Require-Bundle: com.google.guava;bundle-version="10.0.1",
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Import-Package: de.hswt.hrm.common,
  de.hswt.hrm.common.database.exception,
+ de.hswt.hrm.component.model,
  de.hswt.hrm.place.ui.part,
  de.hswt.hrm.scheme.model,
  de.hswt.hrm.scheme.service,

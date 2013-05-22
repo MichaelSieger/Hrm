@@ -1,6 +1,7 @@
 package de.hswt.hrm.scheme.model;
 
 import static com.google.common.base.Preconditions.*;
+import de.hswt.hrm.component.model.Component;
 
 /**
  * This class represents the position of a component in a scheme grid.
