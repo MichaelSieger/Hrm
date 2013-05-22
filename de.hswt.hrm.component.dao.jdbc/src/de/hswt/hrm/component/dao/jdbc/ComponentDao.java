@@ -1,4 +1,4 @@
-package de.hswt.hrm.scheme.dao.jdbc;
+package de.hswt.hrm.component.dao.jdbc;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -17,8 +17,8 @@ import de.hswt.hrm.common.database.SqlQueryBuilder;
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.ElementNotFoundException;
 import de.hswt.hrm.common.database.exception.SaveException;
+import de.hswt.hrm.component.dao.core.IComponentDao;
 import de.hswt.hrm.component.model.Component;
-import de.hswt.hrm.scheme.dao.core.IComponentDao;
 
 public class ComponentDao implements IComponentDao {
 

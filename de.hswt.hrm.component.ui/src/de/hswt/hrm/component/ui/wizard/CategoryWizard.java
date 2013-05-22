@@ -1,4 +1,4 @@
-package de.hswt.hrm.scheme.ui.wizard;
+package de.hswt.hrm.component.ui.wizard;
 
 import java.util.HashMap;
 

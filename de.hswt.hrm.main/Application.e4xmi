@@ -10,6 +10,7 @@
             <children xsi:type="basic:Part" xmi:id="_-I-C0LNLEeKdGYIwwO47yQ" elementId="de.hswt.hrm.main.part.3" contributionURI="bundleclass://de.hswt.hrm.plant.ui/de.hswt.hrm.plant.ui.part.PlantPart" label="Anlagen"/>
             <children xsi:type="basic:Part" xmi:id="_cxCQ4LGiEeKNWb92nqkQxg" elementId="de.hswt.hrm.main.part.2" contributionURI="bundleclass://de.hswt.hrm.scheme.ui/de.hswt.hrm.scheme.ui.part.SchemePart" label="Scheme"/>
             <children xsi:type="basic:Part" xmi:id="_vau4kMFIEeKATZQj1LmyXg" elementId="de.hswt.hrm.main.part.4" contributionURI="bundleclass://de.hswt.hrm.catalog.ui/de.hswt.hrm.catalog.ui.part.CatalogPart" label="Catalog"/>
+            <children xsi:type="basic:Part" xmi:id="_Pw_4UMLVEeKAYZFE7MIZtQ" elementId="de.hswt.hrm.main.part.0" contributionURI="bundleclass://de.hswt.hrm.component.ui/de.hswt.hrm.component.ui.part.CategoryPart" label="Category"/>
           </children>
         </children>
       </children>

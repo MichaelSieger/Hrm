@@ -1,4 +1,4 @@
-package de.hswt.hrm.scheme.dao.core;
+package de.hswt.hrm.component.dao.core;
 
 import java.util.Collection;
 
