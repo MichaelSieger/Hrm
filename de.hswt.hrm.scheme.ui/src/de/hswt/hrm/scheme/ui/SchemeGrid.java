@@ -27,6 +27,9 @@ import de.hswt.hrm.scheme.model.RenderedComponent;
  * 
  */
 public class SchemeGrid extends Canvas {
+	
+	private static final int ENLARGE_TRESH = 5;
+	private static final int ENLARGE = 5;
 
 	private final List<SchemeGridItem> images = new ArrayList<>();
 	private final List<Colorbox> colors = new ArrayList<>();
@@ -34,7 +37,7 @@ public class SchemeGrid extends Canvas {
 	/**
 	 * Width and Height in grid
 	 */
-	private final int width, height;
+	private int width, height;
 	
 	/**
 	 * A item that is listening for a item click
@@ -219,7 +222,24 @@ public class SchemeGrid extends Canvas {
 			}
 		}
 		images.add(item);
+		enlarge(r.x + r.width, r.y + r.height);
 		this.redraw();
+	}
+	
+	/**
+	 * Enlarges the grid by ENLARGE, if the distance of the point to the border
+	 * is below ENLARGE_TRESH.
+	 * 
+	 * @param x
+	 * @param y
+	 */
+	private void enlarge(int x, int y){
+		if(width - x < ENLARGE_TRESH){
+			width += ENLARGE;
+		}
+		if(height - y < ENLARGE_TRESH) {
+			height += ENLARGE;
+		}
 	}
 
 	/**
