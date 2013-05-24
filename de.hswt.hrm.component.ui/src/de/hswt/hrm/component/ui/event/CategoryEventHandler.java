@@ -72,6 +72,7 @@ public class CategoryEventHandler {
      * category will be updated in the database.
      * @param event
      */
+    @SuppressWarnings("static-access")
     public void tableEntrySelected(Event event) {
         TableViewer tViewer = (TableViewer) XWT.findElementByName(event.widget, "categoryTable");
         
@@ -103,6 +104,7 @@ public class CategoryEventHandler {
         Button b = (Button) event.widget;
         Optional<Category> newCat = CategoryPartUtil.showWizard(event.display.getActiveShell(), Optional.fromNullable(category));
         TableViewer tViewer = (TableViewer) XWT.findElementByName(b, "categoryTable");
+        @SuppressWarnings("unchecked")
         Collection<Category> categories = (Collection<Category>) tViewer.getInput();
         if (newCat.isPresent()) {
             categories.add(newCat.get());
