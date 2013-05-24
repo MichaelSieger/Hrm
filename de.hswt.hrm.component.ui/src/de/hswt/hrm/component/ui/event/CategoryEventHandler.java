@@ -1,5 +1,7 @@
 package de.hswt.hrm.component.ui.event;
 
+import java.util.Collection;
+
 import org.eclipse.e4.xwt.XWT;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.TableViewer;
@@ -92,5 +94,20 @@ public class CategoryEventHandler {
         }
     }
     
+    /**
+     * Called whenever the add button is pressed.
+     * @param event
+     */
+    public void buttonSelected(Event event) {
+        category = null;
+        Button b = (Button) event.widget;
+        Optional<Category> newCat = CategoryPartUtil.showWizard(event.display.getActiveShell(), Optional.fromNullable(category));
+        TableViewer tViewer = (TableViewer) XWT.findElementByName(b, "categoryTable");
+        Collection<Category> categories = (Collection<Category>) tViewer.getInput();
+        if (newCat.isPresent()) {
+            categories.add(newCat.get());
+            tViewer.refresh();
+        }
+    }
 
 }
