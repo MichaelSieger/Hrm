@@ -12,7 +12,7 @@ import com.google.common.base.Optional;
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.SaveException;
 import de.hswt.hrm.component.model.Category;
-import de.hswt.hrm.scheme.service.CategoryService;
+import de.hswt.hrm.component.service.CategoryService;
 
 public class CategoryWizard extends Wizard {
     
