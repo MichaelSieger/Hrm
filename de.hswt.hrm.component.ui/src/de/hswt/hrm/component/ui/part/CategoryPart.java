@@ -29,7 +29,7 @@ public class CategoryPart {
     
     private final static Logger LOG = LoggerFactory.getLogger(CategoryPart.class);
     
-    private CategoryService categoryService;
+    private CategoryService categoryService = new CategoryService();
     
     private TableViewer viewer;
     private Collection<Category> categories;
