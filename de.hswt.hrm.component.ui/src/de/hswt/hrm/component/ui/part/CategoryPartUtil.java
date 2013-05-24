@@ -105,7 +105,7 @@ public class CategoryPartUtil {
     }
 
     private static ColumnDescription<Category> getHeight() {
-        return new ColumnDescription<>("Breite", new ColumnLabelProvider() {
+        return new ColumnDescription<>("Höhe", new ColumnLabelProvider() {
             @Override
             public String getText(Object element) {
                 Category cat = (Category) element;
