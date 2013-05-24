@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Service
+Bundle-SymbolicName: de.hswt.hrm.component.service
+Bundle-Version: 0.0.1.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Import-Package: de.hswt.hrm.common.database.exception,
+ de.hswt.hrm.component.dao.core,
+ de.hswt.hrm.component.dao.jdbc,
+ de.hswt.hrm.component.model
+Export-Package: de.hswt.hrm.component.service
