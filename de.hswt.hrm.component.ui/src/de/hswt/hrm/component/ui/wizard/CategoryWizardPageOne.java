@@ -41,7 +41,7 @@ public class CategoryWizardPageOne extends WizardPage {
 
     public void createControl(Composite parent) {
         URL url = CategoryWizardPageOne.class.getClassLoader().getResource(
-                "de/hswt/hrm/scheme/ui/xwt/CategoryWizardWindow"+IConstants.XWT_EXTENSION_SUFFIX);
+                "de/hswt/hrm/component/ui/xwt/CategoryWizardWindow"+IConstants.XWT_EXTENSION_SUFFIX);
         try {
             container = (Composite) XWTForms.load(parent, url);
         } catch (Exception e) {
