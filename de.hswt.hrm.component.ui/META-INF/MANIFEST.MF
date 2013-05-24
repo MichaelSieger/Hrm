@@ -23,6 +23,7 @@ Require-Bundle: org.eclipse.swt;bundle-version="3.100.1",
  javax.inject,
  org.eclipse.e4.core.contexts;bundle-version="1.2.0"
 Import-Package: de.hswt.hrm.common.database.exception,
+ de.hswt.hrm.common.ui.swt.table,
  de.hswt.hrm.component.model,
  de.hswt.hrm.component.service,
  de.hswt.hrm.scheme.service
