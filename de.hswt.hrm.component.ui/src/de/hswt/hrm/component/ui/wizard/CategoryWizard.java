@@ -97,5 +97,9 @@ public class CategoryWizard extends Wizard {
         
         return category;
     }
+    
+    public Optional<Category> getCategory() {
+        return category;
+    }
 
 }
