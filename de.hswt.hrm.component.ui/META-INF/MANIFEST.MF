@@ -29,3 +29,4 @@ Import-Package: de.hswt.hrm.catalog.service,
  de.hswt.hrm.component.model,
  de.hswt.hrm.component.service
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Export-Package: de.hswt.hrm.component.ui.event
