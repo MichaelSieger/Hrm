@@ -23,7 +23,7 @@ import de.hswt.hrm.common.ui.xwt.XwtHelper;
 import de.hswt.hrm.component.model.Category;
 import de.hswt.hrm.component.ui.event.CategoryEventHandler;
 import de.hswt.hrm.component.ui.filter.CategoryFilter;
-import de.hswt.hrm.scheme.service.CategoryService;
+import de.hswt.hrm.component.service.CategoryService;
 
 public class CategoryPart {
     
