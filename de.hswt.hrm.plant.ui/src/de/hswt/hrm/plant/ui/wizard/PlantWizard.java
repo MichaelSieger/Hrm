@@ -2,6 +2,10 @@ package de.hswt.hrm.plant.ui.wizard;
 
 import java.util.HashMap;
 
+import org.eclipse.e4.core.contexts.ContextInjectionFactory;
+import org.eclipse.e4.core.contexts.IEclipseContext;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.widgets.Text;
 import org.slf4j.Logger;
@@ -19,11 +23,14 @@ public class PlantWizard extends Wizard {
     
     private static final Logger LOG = LoggerFactory.getLogger(PlantWizard.class);
     private PlantWizardPageOne first;
+    private PlantWizardPageTwo second;
     private Optional<Plant> plant;
 
-    public PlantWizard(Optional<Plant> plant) {
+    public PlantWizard(IEclipseContext context, Optional<Plant> plant) {
         this.plant = plant;
         first = new PlantWizardPageOne("Erste Seite", plant);
+        second = new PlantWizardPageTwo("Zweite Seite", plant);
+        ContextInjectionFactory.inject(second, context);
         
         if (plant.isPresent()) {
             setWindowTitle("Anlage bearbeiten");
@@ -35,11 +42,12 @@ public class PlantWizard extends Wizard {
     @Override
     public void addPages() {
         addPage(first);
+        addPage(second);
     }
     
     @Override
     public boolean canFinish() {
-        return first.isPageComplete();
+    	return first.isPageComplete() && second.isPageComplete();
     }
 
     @Override
@@ -82,7 +90,7 @@ public class PlantWizard extends Wizard {
         String description = mandatoryWidgets.get("description").getText();
         //TODO place - mandatory?
         // Bessere implementierung als mit Null?
-        Place place = first.getSelectedPlace().orNull();
+//        Place place = first.getSelectedPlace().orNull();
         //TODO nextInspection / inspectionIntervall?
         String inspectionIntervall = mandatoryWidgets.get("inspectionIntervall").getText();
         //TODO scheme
@@ -111,7 +119,7 @@ public class PlantWizard extends Wizard {
             //TODO nextInspection?
             //TODO scheme
         }
-        plant.setPlace(place);
+//        plant.setPlace(place);
         plant.setManufactor(manufactor);
         if (!constructionYear.equals("")) {
             plant.setConstructionYear(Integer.parseInt(constructionYear));
@@ -124,6 +132,11 @@ public class PlantWizard extends Wizard {
         plant.setCurrent(current);
         plant.setVoltage(voltage);
         plant.setNote(note);
+        
+        TableViewer viewer = second.getTableViewer();
+        IStructuredSelection sel =  (IStructuredSelection) viewer.getSelection();
+        Place selectedPlace = (Place) sel.getFirstElement();
+        plant.setPlace(selectedPlace);
         
         return plant;
     }

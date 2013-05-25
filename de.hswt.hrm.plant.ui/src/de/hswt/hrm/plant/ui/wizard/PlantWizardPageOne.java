@@ -58,38 +58,10 @@ public class PlantWizardPageOne extends WizardPage {
             updateFields(container);
         }
         setControl(container);
-        initPlaces();
         setKeyListener();
         setPageComplete(false);
     }
 
-    private void initPlaces() {
-        Combo combo = (Combo) XWT.findElementByName(container, "place");
-        // try {
-        // TODO DI
-        // places = PlaceService.findAll();
-        // for (Iterator<Place> i=places.iterator(); i.hasNext();) {
-        // String placeName = i.next().getPlaceName();
-        // combo.add(placeName);
-        // }
-        // } catch (DatabaseException e) {
-        // LOG.error("An Error occured: ", e);
-        // }
-    }
-
-    public Optional<Place> getSelectedPlace() {
-        Place selectedPlace = null;
-        Combo combo = (Combo) XWT.findElementByName(container, "place");
-        String selectedPlaceName = combo.getItem(combo.getSelectionIndex());
-        Iterator<Place> i = places.iterator();
-        while (i.hasNext()) {
-            Place actual = i.next();
-            if (selectedPlaceName.equals(actual.getPlaceName())) {
-                selectedPlace = actual;
-            }
-        }
-        return Optional.fromNullable(selectedPlace);
-    }
 
     private void updateFields(Composite c) {
         Plant p = plant.get();
@@ -156,10 +128,6 @@ public class PlantWizardPageOne extends WizardPage {
             if (textField.getText().length() == 0) {
                 return false;
             }
-        }
-        Combo combo = (Combo) XWT.findElementByName(container, "place");
-        if (combo.getSelectionIndex() == -1) {
-            return false;
         }
         return true;
     }

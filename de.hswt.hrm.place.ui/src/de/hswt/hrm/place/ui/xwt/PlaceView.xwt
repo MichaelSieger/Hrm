@@ -1,6 +1,6 @@
 <Composite xmlns="http://www.eclipse.org/xwt/presentation"
-	xmlns:x="http://www.eclipse.org/xwt" xmlns:p1="clr-namespace:de.hswt.hrm.place.ui.xwt"
-	x:Class="de.hswt.hrm.place.ui.event.PlaceEventHandler">
+	xmlns:x="http://www.eclipse.org/xwt" xmlns:p1="clr-namespace:de.hswt.hrm.place.ui.xwt">
+<!-- 	x:Class="de.hswt.hrm.place.ui.event.PlaceEventHandler"> -->
 	<Composite.layout>
 		<GridLayout numColumns="5" makeColumnsEqualWidth="true"/>
 	</Composite.layout>
@@ -25,7 +25,7 @@
 			<GridData horizontalAlignment="FILL"/>
 		</Button.layoutData>
 	</Button>
-	<Button text="Edit" SelectionEvent="tableEntrySelected">
+	<Button x:name="editPlace" text="Edit" SelectionEvent="tableEntrySelected">
 		<Button.layoutData>
 			<GridData horizontalAlignment="FILL"/>
 		</Button.layoutData>

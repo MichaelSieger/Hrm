@@ -5,7 +5,10 @@ import java.util.Collection;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.inject.Inject;
 
+import org.eclipse.e4.core.contexts.ContextInjectionFactory;
+import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.xwt.IConstants;
 import org.eclipse.e4.xwt.XWT;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -19,26 +22,31 @@ import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.ui.swt.table.ColumnComparator;
 import de.hswt.hrm.common.ui.swt.table.ColumnDescription;
 import de.hswt.hrm.common.ui.swt.table.TableViewerController;
+import de.hswt.hrm.common.ui.xwt.XwtHelper;
 import de.hswt.hrm.plant.model.Plant;
 import de.hswt.hrm.plant.service.PlantService;
+import de.hswt.hrm.plant.ui.event.PlantEventHandler;
 import de.hswt.hrm.plant.ui.filter.PlantFilter;
 
 public class PlantPart {
 
     private TableViewer viewer;
     private Collection<Plant> plants;
+    @Inject
+    private IEclipseContext context;
 
     private final static Logger LOG = LoggerFactory.getLogger(PlantPart.class);
 
     @PostConstruct
     public void postConstruct(Composite parent) {
-
+    	PlantEventHandler eventHandler = ContextInjectionFactory.make(PlantEventHandler.class,context);
         URL url = PlantPart.class.getClassLoader().getResource(
                 "de/hswt/hrm/plant/ui/xwt/PlantView" + IConstants.XWT_EXTENSION_SUFFIX);
 
         try {
             // Obtain root element of the XWT file
-            final Composite comp = (Composite) XWT.load(parent, url);
+//            final Composite comp = (Composite) XWT.load(parent, url);
+            final Composite comp = XwtHelper.loadWithEventHandler(parent, url, eventHandler);
             // Obtain TableViwer to fill it with data
             viewer = (TableViewer) XWT.findElementByName(comp, "plantTable");
             initializeTable(parent, viewer);

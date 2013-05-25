@@ -26,4 +26,6 @@ Import-Package: de.hswt.hrm.common.database.exception,
  de.hswt.hrm.place.model,
  de.hswt.hrm.place.service
 Export-Package: de.hswt.hrm.place.ui.event,
- de.hswt.hrm.place.ui.part
+  de.hswt.hrm.place.ui.filter,
+ de.hswt.hrm.place.ui.part,
+ de.hswt.hrm.place.ui.xwt
