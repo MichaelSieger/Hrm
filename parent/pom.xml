@@ -148,10 +148,9 @@
 		<module>../de.hswt.hrm.component.dao.core</module>
 		<module>../de.hswt.hrm.component.dao.jdbc</module>
 		<module>../de.hswt.hrm.component.ui</module>
-		<module>
-			../../../../workspaces/eclipse/e4-rcp/de.hswt.hrm.component.service
-		</module>
+		
 		<module>../de.hswt.hrm.main.ui</module>
 		<module>../de.hswt.hrm.component.feature</module>
+		<module>../de.hswt.hrm.component.service</module>
 	</modules>
 </project>
