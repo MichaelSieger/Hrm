@@ -12,7 +12,9 @@ import de.hswt.hrm.catalog.model.ICatalogItem;
 import de.hswt.hrm.common.ui.swt.table.ColumnDescription;
 
 public class CatalogPartUtil {
-
+    
+    
+    
     public static List<ColumnDescription<ICatalogItem>> getColumns() {
         List<ColumnDescription<ICatalogItem>> columns = new ArrayList<>();
         columns.add(getPlaceColumn());
@@ -39,8 +41,8 @@ public class CatalogPartUtil {
 
             @Override
             public int compare(ICatalogItem o1, ICatalogItem o2) {
-                // TODO better solution
-                return 's' - 'm';
+                // TODO better and (working) solution
+                return "s".compareTo("i");
             }
 
         });
