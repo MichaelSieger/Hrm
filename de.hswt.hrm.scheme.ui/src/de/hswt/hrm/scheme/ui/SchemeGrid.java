@@ -3,6 +3,7 @@ package de.hswt.hrm.scheme.ui;
 import static com.google.common.base.Preconditions.checkArgument;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.eclipse.swt.events.MouseEvent;
@@ -31,7 +32,7 @@ public class SchemeGrid extends Canvas {
 	private static final int ENLARGE_TRESH = 5;
 	private static final int ENLARGE = 5;
 
-	private final List<SchemeGridItem> images = new ArrayList<>();
+	private List<SchemeGridItem> images = new ArrayList<>();
 	private final List<Colorbox> colors = new ArrayList<>();
 	
 	/**
@@ -342,4 +343,19 @@ public class SchemeGrid extends Canvas {
 		this.redraw();
 	}
 
+	public Collection<SchemeGridItem> getItems() {
+		/*
+		 * Copy everything so that the caller can't play around with internal data.
+		 */
+		List<SchemeGridItem> r = new ArrayList<>();
+		for(SchemeGridItem item : images){
+			r.add(new SchemeGridItem(item));
+		}
+		return r;
+	}
+
+	public void setItems(Collection<SchemeGridItem> c){
+		images = new ArrayList<>(c);
+		redraw();
+	}
 }
