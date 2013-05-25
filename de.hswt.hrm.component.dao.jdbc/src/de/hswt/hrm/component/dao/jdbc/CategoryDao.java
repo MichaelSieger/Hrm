@@ -6,11 +6,17 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import javax.inject.Inject;
+
 import org.apache.commons.dbutils.DbUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import de.hswt.hrm.catalog.dao.core.ICatalogDao;
+import de.hswt.hrm.catalog.model.Catalog;
 import de.hswt.hrm.common.database.DatabaseFactory;
 import de.hswt.hrm.common.database.NamedParameterStatement;
 import de.hswt.hrm.common.database.SqlQueryBuilder;
@@ -21,6 +27,16 @@ import de.hswt.hrm.component.dao.core.ICategoryDao;
 import de.hswt.hrm.component.model.Category;
 
 public class CategoryDao implements ICategoryDao {
+    private final static Logger LOG = LoggerFactory.getLogger(CategoryDao.class);
+    private final ICatalogDao catalogDao;
+    
+    @Inject
+    public CategoryDao(final ICatalogDao catalogDao) {
+        checkNotNull(catalogDao, "Target DAO must be injected properly.");
+        
+        this.catalogDao  = catalogDao;
+        LOG.info("CatalogDao injected into CategoryService.");
+    }
 
     @Override
     public Collection<Category> findAll() throws DatabaseException {
@@ -163,7 +179,9 @@ public class CategoryDao implements ICategoryDao {
         }
     }
 
-    private Collection<Category> fromResultSet(ResultSet rs) throws SQLException {
+    private Collection<Category> fromResultSet(ResultSet rs) 
+            throws SQLException, DatabaseException {
+        
         checkNotNull(rs, "Result must not be null.");
         Collection<Category> categoryList = new ArrayList<>();
 
@@ -174,9 +192,17 @@ public class CategoryDao implements ICategoryDao {
             int heigth = rs.getInt(Fields.HEIGHT);
             int defaultQuantifier = rs.getInt(Fields.DEFAULT_QUANTIFIER);
             boolean defaultBoolRating = rs.getBoolean(Fields.DEFAULT_BOOL_RATING);
+            
+            // Handle dependency
+            int catalogId = rs.getInt(Fields.CATALOG);
+            Catalog catalog = null;
+            if (catalogId >= 0) {
+                catalog = catalogDao.findById(catalogId);
+            }
 
             Category category = new Category(id, name, width, heigth, defaultQuantifier,
                     defaultBoolRating);
+            category.setCatalog(catalog);
 
             categoryList.add(category);
         }

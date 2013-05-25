@@ -4,11 +4,16 @@ Bundle-Name: Jdbc
 Bundle-SymbolicName: de.hswt.hrm.component.dao.jdbc
 Bundle-Version: 0.0.1.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Import-Package: de.hswt.hrm.catalog.model,
+Import-Package: de.hswt.hrm.catalog.dao.core,
+ de.hswt.hrm.catalog.model,
  de.hswt.hrm.common.database,
  de.hswt.hrm.common.database.exception,
  de.hswt.hrm.component.dao.core,
  de.hswt.hrm.component.model
 Require-Bundle: de.hswt.hrm.commons.dbutils;bundle-version="0.0.1",
- com.google.guava;bundle-version="10.0.1"
+ com.google.guava;bundle-version="10.0.1",
+ javax.inject;bundle-version="1.0.0",
+ ch.qos.logback.classic;bundle-version="1.0.0",
+ ch.qos.logback.core;bundle-version="1.0.0",
+ org.slf4j.api;bundle-version="1.6.4"
 Export-Package: de.hswt.hrm.component.dao.jdbc
