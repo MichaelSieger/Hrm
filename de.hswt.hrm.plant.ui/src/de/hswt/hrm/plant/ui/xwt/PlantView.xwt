@@ -34,6 +34,10 @@
 	</Button>
 	<Label />
 	<Label />
-	<Label />
+	<Button text="Back" x:Name="back2Main">
+		<Button.layoutData>
+			<GridData horizontalAlignment="FILL" verticalAlignment="BOTTOM"/>
+		</Button.layoutData>
+	</Button>
 </Composite>
 <!-- Forms API -->

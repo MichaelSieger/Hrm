@@ -9,12 +9,18 @@ import javax.inject.Inject;
 
 import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
+import org.eclipse.e4.ui.workbench.modeling.EPartService;
+import org.eclipse.e4.ui.workbench.modeling.EPartService.PartState;
 import org.eclipse.e4.xwt.IConstants;
 import org.eclipse.e4.xwt.XWT;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,6 +40,9 @@ public class CategoryPart {
     
     @Inject
     private CategoryService categoryService;
+    
+    @Inject
+    EPartService service;
     
     private TableViewer viewer;
     private Collection<Category> categories;
@@ -55,6 +64,20 @@ public class CategoryPart {
 		    viewer = (TableViewer) XWT.findElementByName(comp, "categoryTable");
 		    initializeTable(parent, viewer);
 		    refreshTable(parent);
+		    
+            ((Button) XWT.findElementByName(comp, "back2Main")).addListener(SWT.Selection, new Listener() {
+ 				@Override
+ 				public void handleEvent(Event event) {
+ 					service.findPart("Clients").setVisible(false);
+ 					service.findPart("Places").setVisible(false);
+ 					service.findPart("Plants").setVisible(false);
+ 					service.findPart("Scheme").setVisible(false);
+ 					service.findPart("Catalog").setVisible(false);
+ 					service.findPart("Category").setVisible(false);
+ 					service.findPart("Main").setVisible(true);
+ 					service.showPart("Main", PartState.VISIBLE);
+ 				}
+ 			});
 		} catch (Exception e) {
 		    LOG.error("Could not load XWT file from resource",e);
 		}
