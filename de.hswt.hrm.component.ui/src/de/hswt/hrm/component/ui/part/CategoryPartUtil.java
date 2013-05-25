@@ -75,13 +75,27 @@ public class CategoryPartUtil {
             @Override
             public String getText(Object element) {
                 Category cat = (Category) element;
-                return Boolean.toString(cat.getDefaultBoolRating());
+                if (cat.getDefaultBoolRating()) {
+                    return "Ja";
+                } else {
+                    return "Nein";
+                }
             }
         }, new Comparator<Category>() {
             @Override
             public int compare(Category c1, Category c2) {
-                String bRate1 = Boolean.toString(c1.getDefaultBoolRating());
-                String bRate2 = Boolean.toString(c2.getDefaultBoolRating());
+                String bRate1;
+                String bRate2;
+                if (c1.getDefaultBoolRating()) {
+                    bRate1 = "Ja";
+                } else {
+                    bRate1 = "Nein";
+                }
+                if (c2.getDefaultBoolRating()) {
+                    bRate2 = "Ja";
+                } else {
+                    bRate2 = "Nein";
+                }
                 return bRate1.compareToIgnoreCase(bRate2);
             }
         });
