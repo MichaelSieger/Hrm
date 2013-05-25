@@ -6,6 +6,10 @@ Bundle-Version: 0.0.1.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Import-Package: de.hswt.hrm.common.database.exception,
  de.hswt.hrm.component.dao.core,
- de.hswt.hrm.component.dao.jdbc,
  de.hswt.hrm.component.model
 Export-Package: de.hswt.hrm.component.service
+Require-Bundle: javax.inject;bundle-version="1.0.0",
+ org.eclipse.e4.core.di;bundle-version="1.2.0",
+ ch.qos.logback.classic;bundle-version="1.0.0",
+ ch.qos.logback.core;bundle-version="1.0.0",
+ org.slf4j.api;bundle-version="1.6.4"

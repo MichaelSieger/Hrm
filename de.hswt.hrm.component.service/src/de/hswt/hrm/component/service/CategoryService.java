@@ -2,30 +2,38 @@ package de.hswt.hrm.component.service;
 
 import java.util.Collection;
 
+import javax.inject.Inject;
+
+import org.eclipse.e4.core.di.annotations.Creatable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.ElementNotFoundException;
 import de.hswt.hrm.common.database.exception.SaveException;
 import de.hswt.hrm.component.dao.core.ICategoryDao;
-import de.hswt.hrm.component.dao.jdbc.CategoryDao;
 import de.hswt.hrm.component.model.Category;
 
+/**
+ * Service class which should be used to interact with
+ * the storage system for categories.
+ */
+@Creatable
 public class CategoryService {
+    private final static Logger LOG = LoggerFactory.getLogger(CategoryService.class);
+    private final ICategoryDao categoryDao;
     
-    /**
-     * Service class which schould be used to interact with
-     * the storage system for categories
-     */
-
-    public CategoryService() { };
-    
-    private static ICategoryDao dao = new CategoryDao();
+    @Inject
+    public CategoryService(final ICategoryDao categoryDao) { 
+        this.categoryDao = categoryDao;
+    };
     
     /**
      * @return All categories from storage
      * @throws DatabaseException
      */
-    public static Collection<Category> findAll() throws DatabaseException {
-        return dao.findAll();
+    public Collection<Category> findAll() throws DatabaseException {
+        return categoryDao.findAll();
     }
     
     /**
@@ -33,8 +41,8 @@ public class CategoryService {
      * @return category with the given id
      * @throws DatabaseException
      */
-    public static Category findById(int id) throws DatabaseException {
-        return dao.findById(id);
+    public Category findById(int id) throws DatabaseException {
+        return categoryDao.findById(id);
     }
     
     /**
@@ -44,8 +52,8 @@ public class CategoryService {
      * @return the created category
      * @throws SaveException
      */
-    public static Category insert(Category category) throws SaveException {
-        return dao.insert(category);
+    public Category insert(Category category) throws SaveException {
+        return categoryDao.insert(category);
     }
     
     /**
@@ -55,8 +63,8 @@ public class CategoryService {
      * @throws ElementNotFoundException
      * @throws SaveException
      */
-    public static void update(Category category) throws ElementNotFoundException, SaveException {
-        dao.update(category);
+    public void update(Category category) throws ElementNotFoundException, SaveException {
+        categoryDao.update(category);
     }
     
     /**
@@ -66,8 +74,8 @@ public class CategoryService {
      * @throws ElementNotFoundException
      * @throws DatabaseException
      */
-    public static void refresh(Category category) throws ElementNotFoundException, DatabaseException {
-        Category fromDB = dao.findById(category.getId());
+    public void refresh(Category category) throws ElementNotFoundException, DatabaseException {
+        Category fromDB = categoryDao.findById(category.getId());
         
         category.setName(fromDB.getName());
         category.setDefaultQuantifier(fromDB.getDefaultQuantifier());
