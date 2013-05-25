@@ -152,5 +152,6 @@
 		<module>../de.hswt.hrm.main.ui</module>
 		<module>../de.hswt.hrm.component.feature</module>
 		<module>../de.hswt.hrm.component.service</module>
+		<module>../de.hswt.hrm.i18n</module>
 	</modules>
 </project>
