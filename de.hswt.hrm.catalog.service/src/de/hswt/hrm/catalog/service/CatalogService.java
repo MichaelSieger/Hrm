@@ -37,9 +37,9 @@ public class CatalogService {
 
     @Inject
     public CatalogService(IActivityDao activityDao, ICurrentDao currentDao, ITargetDao targetDao) {
-        checkNotNull("Activity DAO must be injected properly.", activityDao);
-        checkNotNull("Current DAO must be injected properly.", currentDao);
-        checkNotNull("Target DAO must be injected properly.", targetDao);
+        checkNotNull(activityDao, "Activity DAO must be injected properly.");
+        checkNotNull(currentDao, "Current DAO must be injected properly.");
+        checkNotNull(targetDao, "Target DAO must be injected properly.");
 
         this.activityDao = activityDao;
         LOG.info("ActivityDao injected into CatalogService.");

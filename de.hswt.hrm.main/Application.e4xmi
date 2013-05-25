@@ -41,4 +41,6 @@
   <addons xmi:id="_MJxZ4Lv5EeK--OIdmjR5vA" elementId="de.hswt.hrm.contact.service" contributionURI="bundleclass://de.hswt.hrm.contact.service/de.hswt.hrm.contact.service.ContactService"/>
   <addons xmi:id="_0Do9gL1PEeK1fMBlkKf2yg" elementId="de.hswt.hrm.catalog.service" contributionURI="bundleclass://de.hswt.hrm.catalog.service/de.hswt.hrm.catalog.service.CatalogService"/>
   <addons xmi:id="_NJ-FoMFqEeKEA61ED712YQ" elementId="de.hswt.hrm.scheme.service.schemeservice" contributionURI="bundleclass://de.hswt.hrm.scheme.service/de.hswt.hrm.scheme.service.SchemeService"/>
+  <addons xmi:id="_E1sc0MVQEeKWu7dIaesuew" elementId="de.hswt.hrm.component.service.categoryservice" contributionURI="bundleclass://de.hswt.hrm.component.service/de.hswt.hrm.component.service.CategoryService"/>
+  <addons xmi:id="_IHrqoMVTEeKWu7dIaesuew" elementId="de.hswt.hrm.component.service.componentservice" contributionURI="bundleclass://de.hswt.hrm.component.service/de.hswt.hrm.component.service.ComponentService"/>
 </application:Application>

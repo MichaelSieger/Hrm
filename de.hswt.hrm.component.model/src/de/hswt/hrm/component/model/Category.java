@@ -3,6 +3,10 @@ package de.hswt.hrm.component.model;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Strings.isNullOrEmpty;
 
+import com.google.common.base.Optional;
+
+import de.hswt.hrm.catalog.model.Catalog;
+
 /**
  * Represents a Category
  * 
@@ -10,14 +14,15 @@ import static com.google.common.base.Strings.isNullOrEmpty;
  * 
  */
 public class Category {
-    // TODO create category.getCatalog() first
-    // private Catalog catalog;
     private final int id;
     private String name;
     private int width;
     private int height;
     private int defaultQuantifier;
     private boolean defaultBoolRating;
+    
+    // Catalog is optional as we won't force its existence during category creation
+    private Catalog catalog;
 
     private static final String IS_MANDATORY = "Field is a mandatory.";
     private static final String INVALID_NUMBER = "%d is an invalid number.%n Must be greater 0";
@@ -83,14 +88,13 @@ public class Category {
         this.defaultBoolRating = defaultBoolRating;
     }
 
-    // TODO create category.getCatalog() first
-    // public Optional<Catalog> getCatalog() {
-    // return Optional.fromNullable(catalog);
-    // }
-    //
-    // public void setCatalog(Catalog catalog) {
-    // this.catalog = catalog;
-    // }
+     public Optional<Catalog> getCatalog() {
+         return Optional.fromNullable(catalog);
+     }
+    
+     public void setCatalog(Catalog catalog) {
+         this.catalog = catalog;
+     }
 
     public int getId() {
         return id;

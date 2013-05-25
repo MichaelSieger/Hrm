@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+import org.eclipse.e4.core.contexts.ContextInjectionFactory;
+import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.Shell;
@@ -20,8 +22,11 @@ public class CategoryPartUtil {
         
     }
     
-    public static Optional<Category> showWizard(Shell shell, Optional<Category> category) {
+    public static Optional<Category> showWizard(IEclipseContext context, Shell shell,
+            Optional<Category> category) {
+        
         CategoryWizard catWiz = new CategoryWizard(category);
+        ContextInjectionFactory.inject(catWiz, context);
         
         WizardDialog wizDiag = new WizardDialog(shell,catWiz);
         wizDiag.open();
