@@ -1,5 +1,10 @@
 package de.hswt.hrm.catalog.ui.wizzard;
 
+import java.net.URL;
+
+import org.eclipse.e4.xwt.IConstants;
+import org.eclipse.e4.xwt.XWT;
+import org.eclipse.e4.xwt.forms.XWTForms;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
@@ -25,6 +30,17 @@ public class CatalogWizzardPageOne extends WizardPage {
     }
 
     public void createControl(Composite parent) {
+
+        URL url = CatalogWizzardPageOne.class.getClassLoader().getResource(
+                "de/hswt/hrm/catalog/ui/xwt/CatalogWizardWindow" + IConstants.XWT_EXTENSION_SUFFIX);
+
+        try {
+            container = (Composite) XWTForms.load(parent, url);
+        }
+        catch (Exception e) {
+            LOG.error("Coult not load CatalogWizardPageOne XWT file.", e);
+            return;
+        }
 
     }
 
