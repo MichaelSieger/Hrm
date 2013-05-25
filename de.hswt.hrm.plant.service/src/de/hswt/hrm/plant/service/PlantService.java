@@ -2,6 +2,8 @@ package de.hswt.hrm.plant.service;
 
 import java.util.Collection;
 
+import org.eclipse.e4.core.di.annotations.Creatable;
+
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.ElementNotFoundException;
 import de.hswt.hrm.common.database.exception.SaveException;
@@ -13,6 +15,7 @@ import de.hswt.hrm.place.dao.core.IPlaceDao;
 import de.hswt.hrm.place.dao.jdbc.PlaceDao;
 import static com.google.common.base.Preconditions.checkNotNull;
 
+@Creatable
 public final class PlantService {
 
     private PlantService() {
