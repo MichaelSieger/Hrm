@@ -85,7 +85,7 @@ public class CategoryDao implements ICategoryDao {
     @Override
     public Category insert(Category category) throws SaveException {
         SqlQueryBuilder builder = new SqlQueryBuilder();
-        builder.insert(TABLE_NAME, Fields.ID, Fields.NAME, Fields.HEIGHT, Fields.WIDTH,
+        builder.insert(TABLE_NAME, Fields.NAME, Fields.HEIGHT, Fields.WIDTH,
                 Fields.DEFAULT_QUANTIFIER, Fields.DEFAULT_BOOL_RATING, Fields.CATALOG);
 
         final String query = builder.toString();
@@ -98,7 +98,7 @@ public class CategoryDao implements ICategoryDao {
                 stmt.setParameter(Fields.DEFAULT_QUANTIFIER, category.getDefaultQuantifier());
                 stmt.setParameter(Fields.DEFAULT_BOOL_RATING, category.getDefaultBoolRating());
                 // TODO finish category.getCatalog() first
-                // stmt.setParameter(Fields.CATALOG, category.getCatalog().get().getId());
+                //stmt.setParameter(Fields.CATALOG, category.getCatalog().get().getId());
 
                 int affectedRows = stmt.executeUpdate();
                 if (affectedRows != 1) {
@@ -138,7 +138,7 @@ public class CategoryDao implements ICategoryDao {
         }
 
         SqlQueryBuilder builder = new SqlQueryBuilder();
-        builder.update(TABLE_NAME, Fields.ID, Fields.NAME, Fields.HEIGHT, Fields.WIDTH,
+        builder.update(TABLE_NAME, Fields.NAME, Fields.HEIGHT, Fields.WIDTH,
                 Fields.DEFAULT_QUANTIFIER, Fields.DEFAULT_BOOL_RATING, Fields.CATALOG);
         builder.where(Fields.ID);
 
