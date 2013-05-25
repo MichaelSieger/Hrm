@@ -195,7 +195,7 @@ public class CategoryDao implements ICategoryDao {
         public static final String HEIGHT = "Category_Height";
         public static final String WIDTH = "Category_Width";
         public static final String DEFAULT_QUANTIFIER = "Category_Default_Quantifier";
-        public static final String DEFAULT_BOOL_RATING = "Category_Bool_Rating";
+        public static final String DEFAULT_BOOL_RATING = "Category_Default_Bool_Rating";
         public static final String CATALOG = "Category_Catalog_FK";
     }
 }
