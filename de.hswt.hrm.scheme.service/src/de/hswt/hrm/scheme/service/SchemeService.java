@@ -9,6 +9,7 @@ import org.eclipse.e4.core.di.annotations.Creatable;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkArgument;
 
+import de.hswt.hrm.common.database.exception.SaveException;
 import de.hswt.hrm.plant.model.Plant;
 import de.hswt.hrm.scheme.dao.core.ISchemeComponentDao;
 import de.hswt.hrm.scheme.dao.core.ISchemeDao;
@@ -38,8 +39,9 @@ public class SchemeService {
 	 * 
 	 * @param plant The Plant which the Scheme belongs to
 	 * @param components The Scheme defined by its components
+	 * @throws SaveException 
 	 */
-	public void insert(Plant plant, Collection<SchemeComponent> components){
+	public void insert(Plant plant, Collection<SchemeComponent> components) throws SaveException{
 	    checkNotNull(plant, "Plant is mandatory.");
 	    checkArgument(plant.getId() >= 0, "Plant must have a valid ID.");
 	    

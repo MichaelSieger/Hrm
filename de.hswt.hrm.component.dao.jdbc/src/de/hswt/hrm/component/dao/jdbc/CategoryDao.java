@@ -175,10 +175,10 @@ public class CategoryDao implements ICategoryDao {
             String name = rs.getString(Fields.NAME);
             int width = rs.getInt(Fields.WIDTH);
             int heigth = rs.getInt(Fields.HEIGHT);
-            int defaultQualifier = rs.getInt(Fields.DEFAULT_QUANTIFIER);
+            int defaultQuantifier = rs.getInt(Fields.DEFAULT_QUANTIFIER);
             boolean defaultBoolRating = rs.getBoolean(Fields.DEFAULT_BOOL_RATING);
 
-            Category category = new Category(id, name, width, heigth, defaultQualifier,
+            Category category = new Category(id, name, width, heigth, defaultQuantifier,
                     defaultBoolRating);
 
             categoryList.add(category);
