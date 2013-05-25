@@ -4,7 +4,8 @@
 	<Composite.layout>
 		<GridLayout numColumns="5" makeColumnsEqualWidth="true" />
 	</Composite.layout>
-	<Text x:name="searchText" x:Style="SEARCH" text="Search">
+	<Text x:name="searchText" x:Style="SEARCH" text="Search"
+		FocusInEvent="enterText" FocusOutEvent="leaveText" KeyUpEvent="onKeyUp">
 		<Text.layoutData>
 			<GridData horizontalAlignment="FILL" horizontalSpan="4" />
 		</Text.layoutData>
