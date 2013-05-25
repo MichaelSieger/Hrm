@@ -71,7 +71,7 @@ public class CategoryPartUtil {
     }
 
     private static ColumnDescription<Category> getDefaultBoolRating() {
-        return new ColumnDescription<>("bewertet", new ColumnLabelProvider() {
+        return new ColumnDescription<>("Bewertet", new ColumnLabelProvider() {
             @Override
             public String getText(Object element) {
                 Category cat = (Category) element;
