@@ -1,12 +1,18 @@
 package de.hswt.hrm.plant.dao.jdbc;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import javax.inject.Inject;
+
 import org.apache.commons.dbutils.DbUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static com.google.common.base.Preconditions.*;
 
@@ -15,11 +21,23 @@ import de.hswt.hrm.common.database.NamedParameterStatement;
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.ElementNotFoundException;
 import de.hswt.hrm.common.database.exception.SaveException;
+import de.hswt.hrm.place.dao.core.IPlaceDao;
 import de.hswt.hrm.plant.model.Plant;
 import de.hswt.hrm.plant.dao.core.IPlantDao;
 
 public class PlantDao implements IPlantDao {
-
+    private final static Logger LOG = LoggerFactory.getLogger(PlantDao.class);
+    private final IPlaceDao placeDao;
+    
+    @Inject
+    public PlantDao(final IPlaceDao placeDao) {
+        checkNotNull(placeDao, "PlaceDao not injected properly.");
+        
+        this.placeDao = placeDao;
+        LOG.debug("PlaceDao injected into PlantDao.");
+    }
+    
+    
     @Override
     public Collection<Plant> findAll() throws DatabaseException {
 
