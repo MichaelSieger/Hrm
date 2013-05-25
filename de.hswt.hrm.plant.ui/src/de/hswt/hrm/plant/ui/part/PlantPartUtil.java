@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+import org.eclipse.e4.core.contexts.ContextInjectionFactory;
+import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.Shell;
@@ -16,8 +18,12 @@ import de.hswt.hrm.plant.ui.wizard.PlantWizard;
 
 public class PlantPartUtil {
 
-    public static Optional<Plant> showWizard(Shell activeShell, Optional<Plant> fromNullable) {
-        PlantWizard pw = new PlantWizard(fromNullable);
+    public static Optional<Plant> showWizard(IEclipseContext context, Shell activeShell,
+            Optional<Plant> plant) {
+        
+        PlantWizard pw = new PlantWizard(plant);
+        ContextInjectionFactory.inject(pw, context);
+        
         WizardDialog wd = new WizardDialog(activeShell, pw);
         wd.open();
         return pw.getPlant();

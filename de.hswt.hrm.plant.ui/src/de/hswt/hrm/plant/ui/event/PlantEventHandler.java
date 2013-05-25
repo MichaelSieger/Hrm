@@ -1,7 +1,10 @@
 package de.hswt.hrm.plant.ui.event;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.util.Collection;
 
+import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.xwt.XWT;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.widgets.Button;
@@ -11,14 +14,26 @@ import org.eclipse.swt.widgets.Text;
 import com.google.common.base.Optional;
 
 import de.hswt.hrm.plant.model.Plant;
+import de.hswt.hrm.plant.service.PlantService;
 import de.hswt.hrm.plant.ui.filter.PlantFilter;
 import de.hswt.hrm.plant.ui.part.PlantPartUtil;
 
 public class PlantEventHandler {
-
     private static final String DEFAULT_SEARCH_STRING = "Suche";
     private static final String EMPTY = "";
+    private final IEclipseContext context;
+    private final PlantService plantService;
     private Plant plant;
+    
+    public PlantEventHandler(final IEclipseContext context, final PlantService plantService) {
+        checkNotNull(context, "EclipseContext was not injected to PlantEventHandler.");
+        checkNotNull(plantService, "PlantService was not injected to PlantEventHandler.");
+
+        this.context = context;
+        this.plantService = plantService;
+    }
+    
+    
 
     /**
      * This event is called whenever the Search Text Field is leaved. If the the field is blank, the
@@ -47,8 +62,8 @@ public class PlantEventHandler {
     public void buttonSelected(Event event) {
         plant = null;
         Button b = (Button) event.widget;
-        Optional<Plant> newPlant = PlantPartUtil.showWizard(event.display.getActiveShell(),
-                Optional.fromNullable(plant));
+        Optional<Plant> newPlant = PlantPartUtil.showWizard(context, 
+                event.display.getActiveShell(), Optional.fromNullable(plant));
 
         TableViewer tv = (TableViewer) XWT.findElementByName(b, "plantTable");
 
