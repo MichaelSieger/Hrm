@@ -11,6 +11,7 @@ import javax.inject.Inject;
 
 import org.eclipse.e4.xwt.IConstants;
 import org.eclipse.e4.xwt.XWT;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
@@ -28,6 +29,7 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
@@ -42,11 +44,13 @@ import com.google.common.base.Throwables;
 import com.google.common.collect.Collections2;
 
 import de.hswt.hrm.common.database.exception.DatabaseException;
+import de.hswt.hrm.common.database.exception.SaveException;
 import de.hswt.hrm.component.model.Component;
 import de.hswt.hrm.component.service.ComponentService;
 import de.hswt.hrm.plant.model.Plant;
 import de.hswt.hrm.scheme.model.RenderedComponent;
 import de.hswt.hrm.scheme.model.Scheme;
+import de.hswt.hrm.scheme.model.SchemeComponent;
 import de.hswt.hrm.scheme.service.ComponentConverter;
 import de.hswt.hrm.scheme.service.SchemeService;
 import de.hswt.hrm.scheme.ui.ItemClickListener;
@@ -139,24 +143,50 @@ public class SchemePart {
 			initGridDropTargetListener();
 	        initTreeDND();
 			initGridDND();
+			initSaveBtn();
 			initSlider();
 			initItemClickListener();
+			
+			//TODO remove
+			newScheme(new Plant(1, 1, "bla"));
 
 		} catch (Throwable e) {
 			throw new Error("Unable to load ", e);
 		}
 	}
 	
+	/**
+	 * Shows a empty grid. The user can enter a scheme, and save it for the given plant.
+	 * 
+	 * @param plant
+	 */
 	public void newScheme(Plant plant){
 		this.plant = plant;
 	}
 	
-	public void modifyScheme(Scheme scheme){
+	/**
+	 * The given scheme is loaded into the editor. The user can save a 
+	 * new scheme for the given plant.
+	 * 
+	 * @param scheme
+	 * @throws IOException If a pdf file could not be read
+	 */
+	public void modifyScheme(Scheme scheme) throws IOException{
 		if(!scheme.getPlant().isPresent()){
-			throw new RuntimeException("The plant must be present here");
+			throw new IllegalArgumentException("The plant must be present here");
 		}
 		this.plant = scheme.getPlant().get();
-		//TODO schemecomponents
+		grid.setItems(toSchemeGridItems(scheme.getSchemeComponents()));
+	}
+	
+	private List<SchemeGridItem> toSchemeGridItems(Collection<SchemeComponent> sc) throws IOException{
+		List<SchemeGridItem> l = new ArrayList<>();
+		for(SchemeComponent c : sc){
+			l.add(new SchemeGridItem(
+					ComponentConverter.convert(root.getDisplay(), c.getComponent()), 
+					c.getDirection(), c.getX(), c.getY()));
+		}
+		return l;
 	}
 	
 	/*
@@ -267,6 +297,31 @@ public class SchemePart {
 			public void widgetDefaultSelected(SelectionEvent e) {}
 		});
 		updateZoom();
+	}
+	
+	private void initSaveBtn(){
+		Button btn = (Button) XWT.findElementByName(root, "savebtn");
+		btn.addSelectionListener(new SelectionListener() {
+			
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				Collection<SchemeComponent> schemeComps = Collections2.transform(
+						grid.getItems(), new Function<SchemeGridItem, SchemeComponent>(){
+							public SchemeComponent apply(SchemeGridItem item){
+								return item.asSchemeComponent();
+							}
+						});
+				try {
+					schemeService.insert(plant, schemeComps);
+				} catch (SaveException e1) {
+		            MessageDialog.openError(root.getShell(), "Fehler beim Speichern",
+		                    "Das Schema konnte nicht gespeichert werden");
+				}
+			};
+			
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {}
+		});
 	}
 	
 	/*
