@@ -44,7 +44,9 @@ import com.google.common.collect.Collections2;
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.component.model.Component;
 import de.hswt.hrm.component.service.ComponentService;
+import de.hswt.hrm.plant.model.Plant;
 import de.hswt.hrm.scheme.model.RenderedComponent;
+import de.hswt.hrm.scheme.model.Scheme;
 import de.hswt.hrm.scheme.service.ComponentConverter;
 import de.hswt.hrm.scheme.service.SchemeService;
 import de.hswt.hrm.scheme.ui.ItemClickListener;
@@ -105,6 +107,8 @@ public class SchemePart {
 	
 	private List<RenderedComponent> comps;
 	
+	private Plant plant;
+	
 	/*
 	 * DND items for the grid
 	 */
@@ -141,6 +145,18 @@ public class SchemePart {
 		} catch (Throwable e) {
 			throw new Error("Unable to load ", e);
 		}
+	}
+	
+	public void newScheme(Plant plant){
+		this.plant = plant;
+	}
+	
+	public void modifyScheme(Scheme scheme){
+		if(!scheme.getPlant().isPresent()){
+			throw new RuntimeException("The plant must be present here");
+		}
+		this.plant = scheme.getPlant().get();
+		//TODO schemecomponents
 	}
 	
 	/*
