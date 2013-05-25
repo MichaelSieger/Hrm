@@ -1,6 +1,9 @@
 package de.hswt.hrm.scheme.ui.part;
 
+import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -34,7 +37,15 @@ import org.eclipse.ui.dialogs.PatternFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.base.Function;
+import com.google.common.base.Throwables;
+import com.google.common.collect.Collections2;
+
+import de.hswt.hrm.common.database.exception.DatabaseException;
+import de.hswt.hrm.component.model.Component;
+import de.hswt.hrm.component.service.ComponentService;
 import de.hswt.hrm.scheme.model.RenderedComponent;
+import de.hswt.hrm.scheme.service.ComponentConverter;
 import de.hswt.hrm.scheme.service.SchemeService;
 import de.hswt.hrm.scheme.ui.ItemClickListener;
 import de.hswt.hrm.scheme.ui.SchemeGrid;
@@ -45,7 +56,6 @@ import de.hswt.hrm.scheme.ui.dnd.DragDataTransfer;
 import de.hswt.hrm.scheme.ui.dnd.GridDragListener;
 import de.hswt.hrm.scheme.ui.dnd.GridDropTargetListener;
 import de.hswt.hrm.scheme.ui.dnd.TreeDragListener;
-import de.hswt.hrm.scheme.ui.tree.ImageTreeModelFactory;
 import de.hswt.hrm.scheme.ui.tree.SchemeTreeLabelProvider;
 import de.hswt.hrm.scheme.ui.tree.TreeContentProvider;
 
@@ -57,7 +67,7 @@ import de.hswt.hrm.scheme.ui.tree.TreeContentProvider;
  */
 public class SchemePart {
     private final static Logger LOG = LoggerFactory.getLogger(SchemePart.class);
-	private static final String DELETE = "LÃ¶schen";
+	private static final String DELETE = "Löschen";
 	
 	@Inject
 	SchemeService schemeService;
@@ -116,8 +126,7 @@ public class SchemePart {
 
 		try {
 			root = (Composite) XWT.load(parent, url);
-		    comps = ImageTreeModelFactory.create(
-		                root.getDisplay()).getImages();
+			comps = createComps();
 		    
 			initTree();
 			initSchemeGrid();
@@ -305,4 +314,17 @@ public class SchemePart {
 		}
 	}
 
+	private List<RenderedComponent> createComps() throws DatabaseException{
+		Collection<Component> comp = ComponentService.findAll();
+		return new ArrayList<RenderedComponent>(Collections2.transform(comp, 
+				new Function<Component, RenderedComponent>() {
+			public RenderedComponent apply(Component c){
+				try {
+					return ComponentConverter.convert(root.getDisplay(), c);
+				} catch (IOException e) {
+					throw Throwables.propagate(e);
+				}
+			}
+		}));
+	}
 }
