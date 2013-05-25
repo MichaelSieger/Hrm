@@ -8,6 +8,8 @@ import org.eclipse.e4.core.di.annotations.Creatable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.ElementNotFoundException;
 import de.hswt.hrm.common.database.exception.SaveException;
@@ -25,7 +27,10 @@ public class CategoryService {
     
     @Inject
     public CategoryService(final ICategoryDao categoryDao) { 
+        checkNotNull(categoryDao, "CategoryDao not correctly injected.");
+        
         this.categoryDao = categoryDao;
+        LOG.info("CategoryDao injected into CategoryService.");
     };
     
     /**
