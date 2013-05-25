@@ -45,6 +45,9 @@ public class SchemeService {
 	    checkNotNull(plant, "Plant is mandatory.");
 	    checkArgument(plant.getId() >= 0, "Plant must have a valid ID.");
 	    
+	    //Cut away unused space from the scheme
+	    components = SchemeCutter.cut(components);
+	    
 		// We insert a new scheme here !
 	    Scheme scheme = new Scheme();
 	    scheme.setPlant(plant);
