@@ -5,7 +5,10 @@ import java.util.Collection;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.inject.Inject;
 
+import org.eclipse.e4.core.contexts.ContextInjectionFactory;
+import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.xwt.IConstants;
 import org.eclipse.e4.xwt.XWT;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -29,21 +32,23 @@ public class CategoryPart {
     
     private final static Logger LOG = LoggerFactory.getLogger(CategoryPart.class);
     
-    private CategoryService categoryService = new CategoryService();
+    @Inject
+    private CategoryService categoryService;
     
     private TableViewer viewer;
     private Collection<Category> categories;
 
 	@PostConstruct
-	public void postConstruct(Composite parent) {
-		LOG.debug("entering method postConstruct");
-		
+	public void postConstruct(Composite parent, IEclipseContext context) {
 		URL url = CategoryPart.class.getClassLoader().getResource(
 		        "de/hswt/hrm/component/ui/xwt/CategoryView"+IConstants.XWT_EXTENSION_SUFFIX);
 		try {
-		    CategoryEventHandler eventHandler = new CategoryEventHandler();
+		    
+		    CategoryEventHandler eventHandler = ContextInjectionFactory.make(
+		            CategoryEventHandler.class, context);
+		    
 		    //Obtain root element of the XWT file
-		    final Composite comp = XwtHelper.loadWithEventHandler(parent,url,eventHandler);
+		    final Composite comp = XwtHelper.loadWithEventHandler(parent, url, eventHandler);
 		    LOG.debug("XWT loaded successfully");
 		    
 		    //Obtain TableViewer to fill it with data

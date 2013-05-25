@@ -2,6 +2,9 @@ package de.hswt.hrm.component.ui.event;
 
 import java.util.Collection;
 
+import javax.inject.Inject;
+
+import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.xwt.XWT;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.TableViewer;
@@ -20,14 +23,27 @@ import de.hswt.hrm.component.ui.part.CategoryPartUtil;
 import de.hswt.hrm.component.service.CategoryService;
 
 public class CategoryEventHandler {
-    
     private final static Logger LOG = LoggerFactory.getLogger(CategoryEventHandler.class);
     private static final String DEFAULT_SEARCH_STRING = "Suche";
     private static final String EMPTY ="";
+    private final IEclipseContext context;
+    private final CategoryService categoryService;
     private Category category;
     
-    private final CategoryService categoryService = new CategoryService();
+    @Inject
+    public CategoryEventHandler(IEclipseContext context, CategoryService categoryService) {
+        if (context == null) {
+            LOG.error("EclipseContext was not injected to CategoryEventHandler.");
+        }
 
+        if (categoryService == null) {
+            LOG.error("CatgoryService was not injected to CategoryEventHandler.");
+        }
+
+        this.context = context;
+        this.categoryService = categoryService;
+    }
+    
     /**
      * Called whenever the search text field is leaved.
      * If the field is blank, the DEFAULT_SEARCH_STRING is inserted.
@@ -72,7 +88,6 @@ public class CategoryEventHandler {
      * category will be updated in the database.
      * @param event
      */
-    @SuppressWarnings("static-access")
     public void tableEntrySelected(Event event) {
         TableViewer tViewer = (TableViewer) XWT.findElementByName(event.widget, "categoryTable");
         
@@ -83,7 +98,8 @@ public class CategoryEventHandler {
         }
         try {
             categoryService.refresh(selectedCat);
-            Optional<Category> updatedCat = CategoryPartUtil.showWizard(event.display.getActiveShell(), Optional.of(selectedCat));
+            Optional<Category> updatedCat = CategoryPartUtil.showWizard(context,
+                    event.display.getActiveShell(), Optional.of(selectedCat));
             if (updatedCat.isPresent()) {
                 tViewer.refresh();
             }
@@ -102,7 +118,8 @@ public class CategoryEventHandler {
     public void buttonSelected(Event event) {
         category = null;
         Button b = (Button) event.widget;
-        Optional<Category> newCat = CategoryPartUtil.showWizard(event.display.getActiveShell(), Optional.fromNullable(category));
+        Optional<Category> newCat = CategoryPartUtil.showWizard(context,
+                event.display.getActiveShell(), Optional.fromNullable(category));
         TableViewer tViewer = (TableViewer) XWT.findElementByName(b, "categoryTable");
         @SuppressWarnings("unchecked")
         Collection<Category> categories = (Collection<Category>) tViewer.getInput();

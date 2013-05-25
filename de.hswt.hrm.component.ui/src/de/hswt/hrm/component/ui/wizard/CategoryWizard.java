@@ -2,6 +2,8 @@ package de.hswt.hrm.component.ui.wizard;
 
 import java.util.HashMap;
 
+import javax.inject.Inject;
+
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.widgets.Text;
 import org.slf4j.Logger;
@@ -15,8 +17,11 @@ import de.hswt.hrm.component.model.Category;
 import de.hswt.hrm.component.service.CategoryService;
 
 public class CategoryWizard extends Wizard {
-    
     private static final Logger LOG = LoggerFactory.getLogger(CategoryWizard.class);
+    
+    @Inject
+    private CategoryService categoryService;
+    
     private CategoryWizardPageOne first;
     private Optional<Category> category;
     
@@ -52,11 +57,11 @@ public class CategoryWizard extends Wizard {
         Category c = this.category.get();
         try {
             // Update category from DB
-            c = CategoryService.findById(c.getId());
+            c = categoryService.findById(c.getId());
             // Set values to fields from WizardPage
             c = setValues(category);
             // Update category in DB
-            CategoryService.update(c);
+            categoryService.update(c);
             category = Optional.of(c);
         } catch (DatabaseException e) {
             LOG.error("An error occured: ", e);
@@ -67,7 +72,7 @@ public class CategoryWizard extends Wizard {
     private boolean insertNewCategory() {
         Category c = setValues(Optional.<Category>absent());
         try {
-            category = Optional.of(CategoryService.insert(c));
+            category = Optional.of(categoryService.insert(c));
         } catch (SaveException e) {
             LOG.error("Could not save Element: "+category+" into Database", e);
         }
