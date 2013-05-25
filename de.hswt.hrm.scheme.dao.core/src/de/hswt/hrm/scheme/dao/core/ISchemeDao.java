@@ -8,7 +8,7 @@ import de.hswt.hrm.common.database.exception.SaveException;
 import de.hswt.hrm.scheme.model.Scheme;
 
 /**
- * Defines all the public methods to interact with the storage system for plants.
+ * Defines all the public methods to interact with the storage system for schemes.
  */
 public interface ISchemeDao {
     /**
@@ -17,7 +17,7 @@ public interface ISchemeDao {
     Collection<Scheme> findAll() throws DatabaseException;
     
     /**
-     * @param id of the target plant.
+     * @param id of the target scheme.
      * @return Scheme with the given id.
      * @throws ElementNotFoundException If the given id is not present in storage.
      */
