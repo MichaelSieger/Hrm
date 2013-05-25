@@ -8,6 +8,7 @@ import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.dnd.DragSourceListener;
 
 import de.hswt.hrm.scheme.model.RenderedComponent;
+import de.hswt.hrm.scheme.ui.DirectedRenderedComponent;
 import de.hswt.hrm.scheme.ui.SchemeGrid;
 import de.hswt.hrm.scheme.ui.tree.SchemeTreeItem;
 
@@ -40,12 +41,21 @@ public class TreeDragListener implements DragSourceListener{
                 throw new RuntimeException("Only one item is accepted for dragging");   
             }
             SchemeTreeItem item = ((SchemeTreeItem) sel.getFirstElement());
-            dragging = new DragData(comps.indexOf(
-            		item.getDragItem().getRenderedComponent()), item.getDragItem().getDirection());
+            dragging = new DragData(
+            		getItemIndex(item.getDragItem()), item.getDragItem().getDirection());
             ev.image = null;
         }else{
         	ev.doit = false;
         }
+    }
+    
+    private int getItemIndex(DirectedRenderedComponent dc){
+    	for(int i = 0; i < comps.size(); i++){
+    		if(comps.get(i).getComponent().equals(dc.getComponent())){
+    			return i;
+    		}
+    	}
+    	throw new RuntimeException("Internal Error");
     }
 
     @Override
