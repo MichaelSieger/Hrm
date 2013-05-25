@@ -21,5 +21,6 @@ Require-Bundle: de.hswt.hrm.commons.dbutils;bundle-version="0.0.1",
  org.eclipse.e4.core.di;bundle-version="1.2.0",
  org.eclipse.e4.core.contexts;bundle-version="1.2.0"
 Export-Package: de.hswt.hrm.component.dao.jdbc
-Service-Component: OSGI-INF/category-component.xml
+Service-Component: OSGI-INF/category-component.xml,
+ OSGI-INF/component-component.xml
 Bundle-ActivationPolicy: lazy
