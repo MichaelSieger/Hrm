@@ -11,7 +11,7 @@
 		</Text.layoutData>
 	</Text>
 	<Label/>
-	<TableViewer x:name="contactTable" x:Style="BORDER">
+	<TableViewer x:name="contactTable" x:Style="BORDER | FULL_SELECTION">
 		<TableViewer.table headerVisible="true"
 			linesVisible="true" MouseDoubleClickEvent="tableEntrySelected" >
 			<TableViewer.table.layoutData>
