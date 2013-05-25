@@ -32,6 +32,13 @@ public class SchemeGridItem {
 		this.y = y;
 	}
 	
+	public SchemeGridItem(SchemeGridItem item) {
+		this.renderedComponent = item.renderedComponent;
+		this.direction = item.direction;
+		this.x = item.x;
+		this.y = item.y;
+	}
+
 	public SchemeComponent asSchemeComponent(){
 		return new SchemeComponent(x, y, direction, renderedComponent.getComponent());
 	}
