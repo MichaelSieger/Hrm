@@ -5,14 +5,11 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Text;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import de.hswt.hrm.catalog.ui.filter.CatalogFilter;
 
 public class CatalogEventHandler {
 
-    private final static Logger LOG = LoggerFactory.getLogger(CatalogEventHandler.class);
     private static final String DEFAULT_SEARCH_STRING = "Search";
     private static final String EMPTY = "";
 
