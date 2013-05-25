@@ -30,6 +30,15 @@ public class CategoryFilter extends ViewerFilter {
         if (s1.matches(searchString)) {
             return true;
         }
+        // match defaultBoolRating
+        if (cat.getDefaultBoolRating()) {
+            s1 = "ja";
+        } else {
+            s1 = "nein";
+        }
+        if (s1.matches(searchString)) {
+            return true;
+        }
         // match width
         s1 = Integer.toString(cat.getWidth());
         if (s1.matches(searchString)) {
