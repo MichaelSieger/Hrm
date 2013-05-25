@@ -7,6 +7,6 @@
   	<groupId>de.hswt.hrm</groupId>
   	<artifactId>de.hswt.hrm.parent</artifactId>
   	<version>0.0.1-SNAPSHOT</version>
-  	<relativePath>../../../../repositorys/git/hrm/parent</relativePath>
+  	<relativePath>../parent</relativePath>
   </parent>
 </project>
