@@ -16,7 +16,7 @@ import de.hswt.hrm.catalog.model.Activity;
 import de.hswt.hrm.catalog.model.ICatalogItem;
 import de.hswt.hrm.catalog.model.Target;
 import de.hswt.hrm.catalog.service.CatalogService;
-import de.hswt.hrm.component.model.Component;
+import de.hswt.hrm.component.model.Category;
 
 public class CatalogMatchingPart {
 
@@ -35,14 +35,18 @@ public class CatalogMatchingPart {
             final List targets = ((List) XWT.findElementByName(composite, "availableTarget"));
             final List currents = (List) XWT.findElementByName(composite, "availableCurrent");
             final List activities = (List) XWT.findElementByName(composite, "availableActivity");
-            final List components = (List) XWT.findElementByName(composite, "components");
+            final List categories = (List) XWT.findElementByName(composite, "components");
             Collection<ICatalogItem> items = catalogService.findAllCatalogItem();
             initializeAvailableItems(items, targets, currents, activities);
-            Component c = new Component("dummy", new byte[2], new byte[2], new byte[2], new byte[2], 1, true);
-            Component c2 = new Component("dummy2", new byte[2], new byte[2], new byte[2], new byte[2], 1, true);
-            components.add(c.getName());
-            components.add(c2.getName());
 
+            Category c = new Category("Luftfilter", 2, 2, 2, true);
+            Category c2 = new Category("Nacherhitzer", 2, 2, 2, true);
+
+            categories.add(c.getName());
+            categories.add(c2.getName());
+
+            currents.setEnabled(false);
+            activities.setEnabled(false);
         }
         catch (Exception e) {
             e.printStackTrace();
