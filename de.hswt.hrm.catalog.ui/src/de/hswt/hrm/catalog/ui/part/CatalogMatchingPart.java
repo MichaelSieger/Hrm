@@ -15,7 +15,6 @@ import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ListViewer;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.List;
 
 import de.hswt.hrm.catalog.model.Activity;
 import de.hswt.hrm.catalog.model.Current;
@@ -25,16 +24,19 @@ import de.hswt.hrm.catalog.service.CatalogService;
 import de.hswt.hrm.common.ui.swt.table.ColumnDescription;
 import de.hswt.hrm.common.ui.swt.table.TableViewerController;
 import de.hswt.hrm.component.model.Category;
+import de.hswt.hrm.component.service.CategoryService;
 
 public class CatalogMatchingPart {
 
     @Inject
     CatalogService catalogService;
+    @Inject
+    CategoryService categoryService;
 
     TableViewer targets;
     TableViewer currents;
     TableViewer activities;
-    ListViewer categories;
+    ListViewer cats;
 
     @PostConstruct
     public void postConstruct(Composite parent, IEclipseContext context) {
@@ -48,13 +50,12 @@ public class CatalogMatchingPart {
             targets = (TableViewer) XWT.findElementByName(composite, "availableTarget");
             currents = (TableViewer) XWT.findElementByName(composite, "availableCurrent");
             activities = (TableViewer) XWT.findElementByName(composite, "availableActivity");
-            categories = (ListViewer) XWT.findElementByName(composite, "categories");
+            cats = (ListViewer) XWT.findElementByName(composite, "categories");
 
-            Category c = new Category("Luftfilter", 2, 2, 2, true);
-            Category c2 = new Category("Nacherhitzer", 2, 2, 2, true);
-
-            categories.add(c.getName());
-            categories.add(c2.getName());
+            Collection<Category> categories = categoryService.findAll();
+            for (Category c : categories) {
+                cats.add(c.getName());
+            }
 
             Collection<ICatalogItem> items = catalogService.findAllCatalogItem();
 
