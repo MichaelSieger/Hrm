@@ -1,5 +1,5 @@
 package de.hswt.hrm.i18n;
 
-public class Dummy {
+public class I18n {
 
 }
