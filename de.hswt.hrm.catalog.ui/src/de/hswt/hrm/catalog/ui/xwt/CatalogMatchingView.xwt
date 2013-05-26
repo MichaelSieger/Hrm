@@ -33,7 +33,7 @@
 					<GridLayout/>
 				</Composite.layout>
 				<ListViewer x:Style="BORDER | V_SCROLL" x:Name="matchedTarget">
-					<ListViewer.list MouseDownEvent="onMouseDown_3" MouseDoubleClickEvent="onMouseDoubleClick_1">
+					<ListViewer.list MouseDownEvent="onMouseDown_3" MouseDoubleClickEvent="onMouseDoubleClick_1" x:Name="matchedTarget">
 						<ListViewer.list.layoutData>
 							<GridData horizontalAlignment="FILL" verticalAlignment="FILL" grabExcessHorizontalSpace="true" grabExcessVerticalSpace="true"/>
 						</ListViewer.list.layoutData>
@@ -52,7 +52,7 @@
 					<GridLayout/>
 				</Composite.layout>
 				<ListViewer x:Style="BORDER | V_SCROLL">
-					<ListViewer.list>
+					<ListViewer.list x:Name="matchedCurrent">
 						<ListViewer.list.layoutData>
 							<GridData horizontalAlignment="FILL" verticalAlignment="FILL" grabExcessHorizontalSpace="true" grabExcessVerticalSpace="true"/>
 						</ListViewer.list.layoutData>

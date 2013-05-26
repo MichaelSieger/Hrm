@@ -38,6 +38,9 @@ public class CatalogMatchingPart {
     TableViewer currents;
     TableViewer activities;
     ListViewer cats;
+    ListViewer matchedTargets;
+    ListViewer matchedCurrents;
+    ListViewer matchedActivities;
 
     @PostConstruct
     public void postConstruct(Composite parent, IEclipseContext context) {
@@ -51,13 +54,15 @@ public class CatalogMatchingPart {
             targets = (TableViewer) XWT.findElementByName(composite, "availableTarget");
             currents = (TableViewer) XWT.findElementByName(composite, "availableCurrent");
             activities = (TableViewer) XWT.findElementByName(composite, "availableActivity");
-            cats = (ListViewer) XWT.findElementByName(composite, "categories");
+            matchedActivities = (ListViewer) XWT.findElementByName(composite, "matchedActivity");
+            matchedTargets = (ListViewer) XWT.findElementByName(composite, "matchedTargets");
+            matchedCurrents = (ListViewer) XWT.findElementByName(composite, "matchedCurrents");
+             cats = (ListViewer) XWT.findElementByName(composite, "categories");
 
             Collection<Category> categories = categoryService.findAll();
 
             cats.setContentProvider(ArrayContentProvider.getInstance());
             cats.setInput(categories);
-
             cats.setLabelProvider(new LabelProvider() {
                 @Override
                 public String getText(Object element) {
@@ -65,6 +70,30 @@ public class CatalogMatchingPart {
                     return c.getName();
                 }
             });
+
+            matchedActivities.setLabelProvider(new LabelProvider() {
+                @Override
+                public String getText(Object element) {
+                    ICatalogItem i = (ICatalogItem) element;
+                    return i.getName();
+                }
+            });
+            matchedCurrents.setLabelProvider(new LabelProvider() {
+                @Override
+                public String getText(Object element) {
+                    ICatalogItem i = (ICatalogItem) element;
+                    return i.getName();
+                }
+            });
+
+            matchedTargets.setLabelProvider(new LabelProvider() {
+                @Override
+                public String getText(Object element) {
+                    ICatalogItem i = (ICatalogItem) element;
+                    return i.getName();
+                }
+            });
+
             Collection<ICatalogItem> items = catalogService.findAllCatalogItem();
 
             initializeTables(parent, targets, currents, activities, items);
