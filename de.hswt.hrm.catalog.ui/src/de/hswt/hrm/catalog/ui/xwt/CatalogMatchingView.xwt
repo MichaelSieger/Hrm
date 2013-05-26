@@ -13,11 +13,13 @@
 				<Composite.layout>
 					<GridLayout/>
 				</Composite.layout>
-				<List x:Style="BORDER" x:Name="components">
-					<List.layoutData>
-						<GridData horizontalAlignment="FILL" widthHint="400" verticalAlignment="FILL" grabExcessHorizontalSpace="true" grabExcessVerticalSpace="true"/>
-					</List.layoutData>
-				</List>
+				<ListViewer x:Style="BORDER | V_SCROLL" x:Name="categories">
+					<ListViewer.list>
+						<ListViewer.list.layoutData>
+							<GridData horizontalAlignment="FILL" verticalAlignment="FILL" grabExcessHorizontalSpace="true" grabExcessVerticalSpace="true"/>
+						</ListViewer.list.layoutData>
+					</ListViewer.list>
+				</ListViewer>
 			</Composite>
 		</Section.client>
 	</Section>

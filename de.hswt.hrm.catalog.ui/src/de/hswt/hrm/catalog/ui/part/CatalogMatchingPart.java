@@ -12,6 +12,7 @@ import org.eclipse.e4.xwt.IConstants;
 import org.eclipse.e4.xwt.XWT;
 import org.eclipse.e4.xwt.forms.XWTForms;
 import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.ListViewer;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.List;
@@ -33,6 +34,7 @@ public class CatalogMatchingPart {
     TableViewer targets;
     TableViewer currents;
     TableViewer activities;
+    ListViewer categories;
 
     @PostConstruct
     public void postConstruct(Composite parent, IEclipseContext context) {
@@ -46,16 +48,17 @@ public class CatalogMatchingPart {
             targets = (TableViewer) XWT.findElementByName(composite, "availableTarget");
             currents = (TableViewer) XWT.findElementByName(composite, "availableCurrent");
             activities = (TableViewer) XWT.findElementByName(composite, "availableActivity");
+            categories = (ListViewer) XWT.findElementByName(composite, "categories");
 
-            final List categories = (List) XWT.findElementByName(composite, "components");
-            Collection<ICatalogItem> items = catalogService.findAllCatalogItem();
-
-            initializeTables(parent, targets, currents, activities, items);
             Category c = new Category("Luftfilter", 2, 2, 2, true);
             Category c2 = new Category("Nacherhitzer", 2, 2, 2, true);
 
             categories.add(c.getName());
             categories.add(c2.getName());
+
+            Collection<ICatalogItem> items = catalogService.findAllCatalogItem();
+
+            initializeTables(parent, targets, currents, activities, items);
 
         }
         catch (Exception e) {
@@ -125,6 +128,9 @@ public class CatalogMatchingPart {
 
         activities.getTable().getColumn(1).setWidth(0);
         activities.getTable().getColumn(1).setResizable(false);
+
+        activities.getTable().setEnabled(false);
+        currents.getTable().setEnabled(false);
     }
 
 }

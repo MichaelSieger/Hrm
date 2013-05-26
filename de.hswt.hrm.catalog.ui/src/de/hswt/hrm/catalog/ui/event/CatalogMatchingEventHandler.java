@@ -39,8 +39,7 @@ public class CatalogMatchingEventHandler {
         if (matched.getItemCount() == 1) {
             currents = (List) XWT.findElementByName(matched, "availableCurrent");
             currents.setEnabled(true);
-            targets = (List) XWT.findElementByName(matched, "availableTarget");
-            targets.setEnabled(false);
+
         }
 
         else if (matched.getItemCount() == 0) {
@@ -104,7 +103,9 @@ public class CatalogMatchingEventHandler {
         List matchedTarget = (List) XWT.findElementByName(tv, "matchedTarget");
         matchedTarget.add(item.getName());
         tv.remove(item);
-        tv.getTable().setEnabled(false);
+
+        tv = (TableViewer) XWT.findElementByName(tv, "availableCurrent");
+        tv.getTable().setEnabled(true);
 
     }
 }
