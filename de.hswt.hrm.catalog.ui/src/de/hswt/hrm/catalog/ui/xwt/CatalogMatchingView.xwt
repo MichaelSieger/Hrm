@@ -33,7 +33,7 @@
 					<GridLayout/>
 				</Composite.layout>
 				<ListViewer x:Style="BORDER | V_SCROLL" x:Name="matchedTarget">
-					<ListViewer.list MouseDownEvent="onMouseDown_3" MouseDoubleClickEvent="onMouseDoubleClick_1" x:Name="matchedTarget">
+					<ListViewer.list MouseDownEvent="onMouseDown_3" MouseDoubleClickEvent="onMouseDoubleClick_1" x:Name="">
 						<ListViewer.list.layoutData>
 							<GridData horizontalAlignment="FILL" verticalAlignment="FILL" grabExcessHorizontalSpace="true" grabExcessVerticalSpace="true"/>
 						</ListViewer.list.layoutData>
@@ -51,8 +51,8 @@
 				<Composite.layout>
 					<GridLayout/>
 				</Composite.layout>
-				<ListViewer x:Style="BORDER | V_SCROLL">
-					<ListViewer.list x:Name="matchedCurrent">
+				<ListViewer x:Style="BORDER | V_SCROLL" x:Name="matchedCurrent">
+					<ListViewer.list x:Name="">
 						<ListViewer.list.layoutData>
 							<GridData horizontalAlignment="FILL" verticalAlignment="FILL" grabExcessHorizontalSpace="true" grabExcessVerticalSpace="true"/>
 						</ListViewer.list.layoutData>
@@ -70,8 +70,8 @@
 				<Composite.layout>
 					<GridLayout/>
 				</Composite.layout>
-				<ListViewer x:Style="BORDER | V_SCROLL">
-					<ListViewer.list>
+				<ListViewer x:Style="BORDER | V_SCROLL" x:Name="matchedActivity">
+					<ListViewer.list x:Name="">
 						<ListViewer.list.layoutData>
 							<GridData grabExcessHorizontalSpace="true" grabExcessVerticalSpace="true" horizontalAlignment="FILL" verticalAlignment="FILL"/>
 						</ListViewer.list.layoutData>

@@ -55,8 +55,8 @@ public class CatalogMatchingPart {
             currents = (TableViewer) XWT.findElementByName(composite, "availableCurrent");
             activities = (TableViewer) XWT.findElementByName(composite, "availableActivity");
             matchedActivities = (ListViewer) XWT.findElementByName(composite, "matchedActivity");
-            matchedTargets = (ListViewer) XWT.findElementByName(composite, "matchedTargets");
-            matchedCurrents = (ListViewer) XWT.findElementByName(composite, "matchedCurrents");
+            matchedTargets = (ListViewer) XWT.findElementByName(composite, "matchedTarget");
+            matchedCurrents = (ListViewer) XWT.findElementByName(composite, "matchedCurrent");
              cats = (ListViewer) XWT.findElementByName(composite, "categories");
 
             Collection<Category> categories = categoryService.findAll();
