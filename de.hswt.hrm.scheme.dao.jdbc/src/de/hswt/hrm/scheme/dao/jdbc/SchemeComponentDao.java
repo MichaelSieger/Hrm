@@ -9,7 +9,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import javax.inject.Inject;
+
 import org.apache.commons.dbutils.DbUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import de.hswt.hrm.common.database.DatabaseFactory;
 import de.hswt.hrm.common.database.NamedParameterStatement;
@@ -17,23 +21,65 @@ import de.hswt.hrm.common.database.SqlQueryBuilder;
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.ElementNotFoundException;
 import de.hswt.hrm.common.database.exception.SaveException;
+import de.hswt.hrm.component.dao.core.IComponentDao;
 import de.hswt.hrm.component.model.Component;
 import de.hswt.hrm.scheme.dao.core.ISchemeComponentDao;
+import de.hswt.hrm.scheme.dao.core.ISchemeDao;
+import de.hswt.hrm.scheme.model.Direction;
 import de.hswt.hrm.scheme.model.Scheme;
 import de.hswt.hrm.scheme.model.SchemeComponent;
 
 public class SchemeComponentDao implements ISchemeComponentDao {
+    private final static Logger LOG = LoggerFactory.getLogger(SchemeComponentDao.class);
+    private final ISchemeDao schemeDao;
+    private final IComponentDao componentDao;
+    
+    @Inject
+    public SchemeComponentDao(final ISchemeDao schemeDao, final IComponentDao componentDao) {
+        checkNotNull(schemeDao, "SchemeDao not injected properly.");
+        checkNotNull(componentDao, "ComponentDao not injected properly.");
+        
+        this.schemeDao = schemeDao;
+        LOG.debug("SchemeDao injected into SchemeComponentDao.");
+        this.componentDao = componentDao;
+        LOG.debug("ComponentDao injected into SchemeComponentDao.");
+    }
 
     @Override
-    public Collection<Component> findAllComponentByScheme(Scheme scheme) {
-        // TODO Auto-generated method stub
-        return null;
+    public Collection<SchemeComponent> findAllComponentByScheme(final Scheme scheme) 
+            throws DatabaseException {
+        
+        checkArgument(scheme.getId() >= 0, "Scheme has no valid ID.");
+        
+        SqlQueryBuilder builder = new SqlQueryBuilder();
+        builder.select(TABLE_NAME, Fields.ID, Fields.SCHEME, Fields.COMPONENT, Fields.X_POS,
+                Fields.Y_POS, Fields.DIRECTION);
+        builder.where(Fields.SCHEME);
+
+        final String query = builder.toString();
+
+        try (Connection con = DatabaseFactory.getConnection()) {
+            try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
+                stmt.setParameter(Fields.SCHEME, scheme.getId());
+                
+                ResultSet result = stmt.executeQuery();
+
+                Collection<SchemeComponent> schemeComponents = fromResultSet(result);
+                DbUtils.closeQuietly(result);
+
+                return schemeComponents;
+            }
+        }
+        catch (SQLException e) {
+            throw new DatabaseException(e);
+        }
     }
 
     @Override
     public void insertComponent(Scheme scheme, SchemeComponent component) {
-        // TODO Auto-generated method stub
-
+        component.setScheme(scheme);
+        insertSchemeIfNecessary(component);
+        insertComponentIfNecessary(component);
     }
 
     @Override
@@ -95,6 +141,13 @@ public class SchemeComponentDao implements ISchemeComponentDao {
 
     @Override
     public SchemeComponent insert(SchemeComponent schemeComponent) throws SaveException {
+        if (schemeComponent.getId() >= 0) {
+            throw new IllegalStateException("SchemeComponent has already a valid ID.");
+        }
+        
+        insertSchemeIfNecessary(schemeComponent);
+        insertComponentIfNecessary(schemeComponent);
+        
         SqlQueryBuilder builder = new SqlQueryBuilder();
         builder.insert(TABLE_NAME, Fields.COMPONENT, Fields.SCHEME, Fields.X_POS, Fields.Y_POS,
                 Fields.DIRECTION);
@@ -105,11 +158,18 @@ public class SchemeComponentDao implements ISchemeComponentDao {
             try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
 
                 stmt.setParameter(Fields.COMPONENT, schemeComponent.getComponent());
-                // TODO
-                // stmt.setParameter(Fields.SCHEME
                 stmt.setParameter(Fields.X_POS, schemeComponent.getX());
                 stmt.setParameter(Fields.Y_POS, schemeComponent.getY());
                 stmt.setParameter(Fields.DIRECTION, schemeComponent.getDirection());
+                
+                if (schemeComponent.getScheme().isPresent() 
+                        && schemeComponent.getScheme().get().getId() >= 0) {
+                    
+                    stmt.setParameter(Fields.SCHEME, schemeComponent.getScheme().get().getId());
+                }
+                else {
+                    stmt.setParameter(Fields.SCHEME, null);
+                }
 
                 int affectedRows = stmt.executeUpdate();
                 if (affectedRows != 1) {
@@ -119,11 +179,11 @@ public class SchemeComponentDao implements ISchemeComponentDao {
                 try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
                     if (generatedKeys.next()) {
                         int id = generatedKeys.getInt(1);
-                        // TODO wenn Scheme vorhanden dann Konstruktor anpassen !
-                        // Create new Component with id
+
                         SchemeComponent inserted = new SchemeComponent(id, schemeComponent.getX(),
                                 schemeComponent.getY(), schemeComponent.getDirection(),
                                 schemeComponent.getComponent());
+                        inserted.setScheme(schemeComponent.getScheme().orNull());
 
                         return inserted;
                     }
@@ -140,13 +200,17 @@ public class SchemeComponentDao implements ISchemeComponentDao {
     }
 
     @Override
-    public void update(SchemeComponent schemeComponent) throws ElementNotFoundException,
-            SaveException {
+    public void update(SchemeComponent schemeComponent) 
+            throws ElementNotFoundException, SaveException {
+        
         checkNotNull(schemeComponent, "SchemeComponent must not be null.");
 
         if (schemeComponent.getId() < 0) {
             throw new ElementNotFoundException("Element has no valid ID.");
         }
+        
+        insertSchemeIfNecessary(schemeComponent);
+        insertComponentIfNecessary(schemeComponent);
 
         SqlQueryBuilder builder = new SqlQueryBuilder();
         builder.update(TABLE_NAME, Fields.SCHEME, Fields.COMPONENT, Fields.X_POS,
@@ -158,11 +222,17 @@ public class SchemeComponentDao implements ISchemeComponentDao {
         try (Connection con = DatabaseFactory.getConnection()) {
             try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
                 stmt.setParameter(Fields.COMPONENT, schemeComponent.getComponent());
-                // TODO
-                // stmt.setParameter(Fields.SCHEME
                 stmt.setParameter(Fields.X_POS, schemeComponent.getX());
                 stmt.setParameter(Fields.Y_POS, schemeComponent.getY());
                 stmt.setParameter(Fields.DIRECTION, schemeComponent.getDirection());
+                
+                if (schemeComponent.getScheme().isPresent() 
+                        && schemeComponent.getScheme().get().getId() >= 0) {
+                    stmt.setParameter(Fields.SCHEME, schemeComponent.getScheme().get().getId());
+                }
+                else {
+                    stmt.setParameter(Fields.SCHEME, null);
+                }
 
                 int affectedRows = stmt.executeUpdate();
                 if (affectedRows != 1) {
@@ -174,19 +244,38 @@ public class SchemeComponentDao implements ISchemeComponentDao {
             throw new SaveException(e);
         }
     }
+    
+    private void insertSchemeIfNecessary(final SchemeComponent schemeComponent) {
+        throw new RuntimeException();
+    }
+    
+    private void insertComponentIfNecessary(final SchemeComponent schemeComponent) {
+        throw new RuntimeException();
+    }
 
-    private Collection<SchemeComponent> fromResultSet(ResultSet rs) throws SQLException {
+    private Collection<SchemeComponent> fromResultSet(ResultSet rs) throws SQLException, ElementNotFoundException, DatabaseException {
         checkNotNull(rs, "Result must not be null.");
         Collection<SchemeComponent> schemeComponentList = new ArrayList<>();
         while (rs.next()) {
             int id = rs.getInt(Fields.ID);
             int xPos = rs.getInt(Fields.X_POS);
             int yPos = rs.getInt(Fields.Y_POS);
-            // TODO
-            // Direction direction = ??
-            // Component component = ??
-            // TODO null durch direction + component ersetzen
-            SchemeComponent schemeComponent = new SchemeComponent(id, xPos, yPos, null, null);
+            Direction dir = Direction.values()[rs.getInt(Fields.DIRECTION)];
+            int componentId = rs.getInt(Fields.COMPONENT);
+            Component component = null;
+            if (componentId >= 0) {
+                component = componentDao.findById(componentId);
+            }
+            
+            int schemeId = rs.getInt(Fields.SCHEME);
+            Scheme scheme = null;
+            if (schemeId >= 0) {
+                scheme = schemeDao.findById(schemeId);
+            }
+            
+            SchemeComponent schemeComponent = new SchemeComponent(id, xPos, yPos, dir, null);
+            schemeComponent.setComponent(component);
+            schemeComponent.setScheme(scheme);
 
             schemeComponentList.add(schemeComponent);
         }

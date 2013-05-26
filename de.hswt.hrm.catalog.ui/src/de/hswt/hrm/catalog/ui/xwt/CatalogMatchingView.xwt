@@ -13,11 +13,13 @@
 				<Composite.layout>
 					<GridLayout/>
 				</Composite.layout>
-				<List x:Style="BORDER" x:Name="components">
-					<List.layoutData>
-						<GridData horizontalAlignment="FILL" widthHint="400" verticalAlignment="FILL" grabExcessHorizontalSpace="true" grabExcessVerticalSpace="true"/>
-					</List.layoutData>
-				</List>
+				<ListViewer x:Style="BORDER | V_SCROLL" x:Name="categories">
+					<ListViewer.list>
+						<ListViewer.list.layoutData>
+							<GridData horizontalAlignment="FILL" verticalAlignment="FILL" grabExcessHorizontalSpace="true" grabExcessVerticalSpace="true"/>
+						</ListViewer.list.layoutData>
+					</ListViewer.list>
+				</ListViewer>
 			</Composite>
 		</Section.client>
 	</Section>
@@ -30,11 +32,13 @@
 				<Composite.layout>
 					<GridLayout/>
 				</Composite.layout>
-				<List x:Style="BORDER" x:Name="matchedTarget" MouseDoubleClickEvent="onMatchedTargetMouseDoubleClick" size="156, 318">
-					<List.layoutData>
-						<GridData grabExcessVerticalSpace="true" grabExcessHorizontalSpace="true" verticalAlignment="FILL" horizontalAlignment="FILL" widthHint="150" heightHint="200"/>
-					</List.layoutData>
-				</List>
+				<ListViewer x:Style="BORDER | V_SCROLL" x:Name="matchedTarget">
+					<ListViewer.list MouseDownEvent="onMouseDown_3" MouseDoubleClickEvent="onMouseDoubleClick_1" x:Name="">
+						<ListViewer.list.layoutData>
+							<GridData horizontalAlignment="FILL" verticalAlignment="FILL" grabExcessHorizontalSpace="true" grabExcessVerticalSpace="true"/>
+						</ListViewer.list.layoutData>
+					</ListViewer.list>
+				</ListViewer>
 			</Composite>
 		</Section.client>
 	</Section>
@@ -47,11 +51,13 @@
 				<Composite.layout>
 					<GridLayout/>
 				</Composite.layout>
-				<List x:Style="BORDER" size="155, 68">
-					<List.layoutData>
-						<GridData grabExcessVerticalSpace="true" verticalAlignment="FILL" horizontalAlignment="FILL" grabExcessHorizontalSpace="true" widthHint="150"/>
-					</List.layoutData>
-				</List>
+				<ListViewer x:Style="BORDER | V_SCROLL" x:Name="matchedCurrent">
+					<ListViewer.list x:Name="">
+						<ListViewer.list.layoutData>
+							<GridData horizontalAlignment="FILL" verticalAlignment="FILL" grabExcessHorizontalSpace="true" grabExcessVerticalSpace="true"/>
+						</ListViewer.list.layoutData>
+					</ListViewer.list>
+				</ListViewer>
 			</Composite>
 		</Section.client>
 	</Section>
@@ -64,11 +70,13 @@
 				<Composite.layout>
 					<GridLayout/>
 				</Composite.layout>
-				<List x:Style="BORDER" size="151, 68">
-					<List.layoutData>
-						<GridData grabExcessVerticalSpace="true" grabExcessHorizontalSpace="true" horizontalAlignment="FILL" verticalAlignment="FILL" widthHint="150"/>
-					</List.layoutData>
-				</List>
+				<ListViewer x:Style="BORDER | V_SCROLL" x:Name="matchedActivity">
+					<ListViewer.list x:Name="">
+						<ListViewer.list.layoutData>
+							<GridData grabExcessHorizontalSpace="true" grabExcessVerticalSpace="true" horizontalAlignment="FILL" verticalAlignment="FILL"/>
+						</ListViewer.list.layoutData>
+					</ListViewer.list>
+				</ListViewer>
 			</Composite>
 		</Section.client>
 	</Section>
@@ -88,7 +96,7 @@
 					</Text.layoutData>
 				</Text>
 				<Label text="Beschreibung :"/>
-				<Text x:Style="BORDER | WRAP | V_SCROLL | MULTI" x:Name="street">
+				<Text x:Style="BORDER | WRAP | V_SCROLL | MULTI" x:Name="desc">
 					<Text.layoutData>
 						<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL" verticalAlignment="FILL" heightHint="176" widthHint="300" horizontalSpan="3"/>
 					</Text.layoutData>
@@ -96,7 +104,7 @@
 			</Composite>
 		</Section.client>
 	</Section>
-	<Section text="Verfgbare Soll Zustnd" x:Style="(p2:Section).EXPANDED | (p2:Section).TITLE_BAR">
+	<Section text="Verfügbare Soll Zustände" x:Style="(p2:Section).EXPANDED | (p2:Section).TITLE_BAR">
 		<Section.layoutData>
 			<GridData heightHint="314" horizontalAlignment="FILL" verticalAlignment="FILL" grabExcessVerticalSpace="true" grabExcessHorizontalSpace="true"/>
 		</Section.layoutData>
@@ -105,16 +113,17 @@
 				<Composite.layout>
 					<GridLayout/>
 				</Composite.layout>
-				<List x:Style="BORDER" x:Name="availableTarget"
-		MouseDoubleClickEvent="onAvailableTargetMouseDoubleClick" size="156, 289">
-					<List.layoutData>
-						<GridData grabExcessHorizontalSpace="true" grabExcessVerticalSpace="true" verticalAlignment="FILL" horizontalAlignment="FILL" heightHint="200"/>
-					</List.layoutData>
-				</List>
+				<TableViewer x:Style="BORDER | FULL_SELECTION" x:Name="availableTarget">
+					<TableViewer.table headerVisible="true" linesVisible="true" x:Name="" MouseDownEvent="onMouseDown" MouseDoubleClickEvent="onMouseDoubleClick">
+						<TableViewer.table.layoutData>
+							<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL" grabExcessVerticalSpace="true" verticalAlignment="FILL"/>
+						</TableViewer.table.layoutData>
+					</TableViewer.table>
+				</TableViewer>
 			</Composite>
 		</Section.client>
 	</Section>
-	<Section text="Verfgbare Ist" x:Style="(p2:Section).EXPANDED | (p2:Section).TITLE_BAR">
+	<Section text="Verfügbare Ist" x:Style="(p2:Section).EXPANDED | (p2:Section).TITLE_BAR">
 		<Section.layoutData>
 			<GridData verticalAlignment="FILL" horizontalAlignment="FILL" grabExcessVerticalSpace="true" grabExcessHorizontalSpace="true"/>
 		</Section.layoutData>
@@ -123,15 +132,17 @@
 				<Composite.layout>
 					<GridLayout/>
 				</Composite.layout>
-				<List x:Style="BORDER" x:Name="availableCurrent" size="102, 242">
-					<List.layoutData>
-						<GridData horizontalAlignment="FILL" verticalAlignment="FILL" grabExcessVerticalSpace="true" grabExcessHorizontalSpace="true"/>
-					</List.layoutData>
-				</List>
+				<TableViewer x:Style="BORDER | FULL_SELECTION" x:Name="availableCurrent">
+					<TableViewer.table headerVisible="true" linesVisible="true" x:Name="" MouseDownEvent="onMouseDown_1" MouseDoubleClickEvent="onMouseDoubleClick_2">
+						<TableViewer.table.layoutData>
+							<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL" grabExcessVerticalSpace="true" verticalAlignment="FILL"/>
+						</TableViewer.table.layoutData>
+					</TableViewer.table>
+				</TableViewer>
 			</Composite>
 		</Section.client>
 	</Section>
-	<Section text="Verfgbare Manahmen" x:Style="(p2:Section).EXPANDED | (p2:Section).TITLE_BAR">
+	<Section text="Verfügbare Maßnahmen" x:Style="(p2:Section).EXPANDED | (p2:Section).TITLE_BAR">
 		<Section.layoutData>
 			<GridData horizontalAlignment="FILL" verticalAlignment="FILL" grabExcessVerticalSpace="true" grabExcessHorizontalSpace="true"/>
 		</Section.layoutData>
@@ -140,11 +151,13 @@
 				<Composite.layout>
 					<GridLayout/>
 				</Composite.layout>
-				<List x:Style="BORDER" x:Name="availableActivity" size="150, 242">
-					<List.layoutData>
-						<GridData grabExcessVerticalSpace="true" grabExcessHorizontalSpace="true" verticalAlignment="FILL" horizontalAlignment="FILL"/>
-					</List.layoutData>
-				</List>
+				<TableViewer x:Style="BORDER | FULL_SELECTION" x:Name="availableActivity">
+					<TableViewer.table headerVisible="true" linesVisible="true" x:Name="" MouseDownEvent="onMouseDown_2">
+						<TableViewer.table.layoutData>
+							<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL" grabExcessVerticalSpace="true" verticalAlignment="FILL"/>
+						</TableViewer.table.layoutData>
+					</TableViewer.table>
+				</TableViewer>
 			</Composite>
 		</Section.client>
 	</Section>

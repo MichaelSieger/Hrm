@@ -255,6 +255,9 @@ public class NamedParameterStatement implements AutoCloseable {
 
             return value.toString();
         }
+        else if (value instanceof Boolean) {
+            return ((Boolean) value) ? "TRUE" : "FALSE";
+        }
         else {
             return "'" + escape(value.toString()) + "'";
         }

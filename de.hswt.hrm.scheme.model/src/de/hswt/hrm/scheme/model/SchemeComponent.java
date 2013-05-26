@@ -1,6 +1,9 @@
 package de.hswt.hrm.scheme.model;
 
 import static com.google.common.base.Preconditions.*;
+
+import com.google.common.base.Optional;
+
 import de.hswt.hrm.component.model.Component;
 
 /**
@@ -16,6 +19,7 @@ public class SchemeComponent {
     private int y;
     private Direction direction;
     private Component component;
+    private Scheme scheme;
     
     
     public SchemeComponent(int id, int x, int y, Direction direction, Component component) {
@@ -67,6 +71,14 @@ public class SchemeComponent {
 	public void setComponent(Component component) {
 		checkNotNull(component);
 		this.component = component;
+	}
+	
+	public Optional<Scheme> getScheme() {
+	    return Optional.fromNullable(scheme);
+	}
+	
+	public void setScheme(final Scheme scheme) {
+	    this.scheme = scheme;
 	}
     
     
