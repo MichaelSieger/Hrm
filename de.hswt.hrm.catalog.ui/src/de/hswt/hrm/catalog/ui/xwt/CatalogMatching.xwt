@@ -96,7 +96,7 @@
 			</Composite>
 		</Section.client>
 	</Section>
-	<Section text="Verfgbare Soll Zustnd" x:Style="(p2:Section).EXPANDED | (p2:Section).TITLE_BAR">
+	<Section text="Verfügbare Soll Zustände" x:Style="(p2:Section).EXPANDED | (p2:Section).TITLE_BAR">
 		<Section.layoutData>
 			<GridData heightHint="314" horizontalAlignment="FILL" verticalAlignment="FILL" grabExcessVerticalSpace="true" grabExcessHorizontalSpace="true"/>
 		</Section.layoutData>
@@ -114,7 +114,7 @@
 			</Composite>
 		</Section.client>
 	</Section>
-	<Section text="Verfgbare Ist" x:Style="(p2:Section).EXPANDED | (p2:Section).TITLE_BAR">
+	<Section text="Verfügbare Ist" x:Style="(p2:Section).EXPANDED | (p2:Section).TITLE_BAR">
 		<Section.layoutData>
 			<GridData verticalAlignment="FILL" horizontalAlignment="FILL" grabExcessVerticalSpace="true" grabExcessHorizontalSpace="true"/>
 		</Section.layoutData>
@@ -131,7 +131,7 @@
 			</Composite>
 		</Section.client>
 	</Section>
-	<Section text="Verfgbare Manahmen" x:Style="(p2:Section).EXPANDED | (p2:Section).TITLE_BAR">
+	<Section text="Verfügbare Maßnahmen" x:Style="(p2:Section).EXPANDED | (p2:Section).TITLE_BAR">
 		<Section.layoutData>
 			<GridData horizontalAlignment="FILL" verticalAlignment="FILL" grabExcessVerticalSpace="true" grabExcessHorizontalSpace="true"/>
 		</Section.layoutData>

@@ -11,35 +11,6 @@ public class CatalogMatchingEventHandler {
     private List activities;
 
     /**
-     * This event occurs whenever an entry in the lower table is selected
-     * 
-     * @param event
-     */
-    public void onAvailableTargetMouseDoubleClick(Event event) {
-
-        List available = (List) event.widget;
-
-        int i = available.getSelectionIndex();
-
-        if (i == -1) {
-            return;
-        }
-
-        String s = available.getItem(i);
-
-        available.remove(s);
-        List matched = (List) XWT.findElementByName(available, "matchedTarget");
-        matched.add(s);
-
-        if (matched.getItemCount() == 1) {
-            currents = (List) XWT.findElementByName(available, "availableCurrent");
-            currents.setEnabled(true);
-            available.setEnabled(false);
-        }
-
-    }
-
-    /**
      * This event occurs whenever an entry in the upper table is selected
      * 
      * @param event
