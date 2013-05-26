@@ -10,6 +10,8 @@ Import-Package: de.hswt.hrm.catalog.model,
  de.hswt.hrm.component.dao.core,
  de.hswt.hrm.component.dao.jdbc,
  de.hswt.hrm.component.model,
+ de.hswt.hrm.plant.dao.jdbc,
+ de.hswt.hrm.plant.model,
  de.hswt.hrm.scheme.dao.core,
  de.hswt.hrm.scheme.model
 Export-Package: de.hswt.hrm.scheme.dao.jdbc
