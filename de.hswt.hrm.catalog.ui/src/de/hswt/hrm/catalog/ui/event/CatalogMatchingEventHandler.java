@@ -1,6 +1,7 @@
 package de.hswt.hrm.catalog.ui.event;
 
 import org.eclipse.e4.xwt.XWT;
+import org.eclipse.jface.viewers.ListViewer;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.List;
@@ -63,12 +64,48 @@ public class CatalogMatchingEventHandler {
             return;
         }
 
-        List matchedTarget = (List) XWT.findElementByName(tv, "matchedTarget");
-        matchedTarget.add(item.getName());
+        ListViewer matchedTarget = (ListViewer) XWT.findElementByName(tv, "matchedTarget");
+        matchedTarget.add(item);
         tv.remove(item);
 
         tv = (TableViewer) XWT.findElementByName(tv, "availableCurrent");
         tv.getTable().setEnabled(true);
 
+    }
+
+    public void onMouseDown_3(Event event) {
+
+        ListViewer lv = (ListViewer) XWT.findElementByName(event.widget, "matchedTarget");
+        handleSelection(lv);
+    }
+
+    private void handleSelection(ListViewer lv) {
+
+        // obtain the place in the column where the doubleClick happend
+        ICatalogItem selectedEntry = (ICatalogItem) lv.getElementAt(lv.getList()
+                .getSelectionIndex());
+        if (selectedEntry == null) {
+            return;
+        }
+
+        Text desc = (Text) XWT.findElementByName(lv, "desc");
+        desc.setText(selectedEntry.getText());
+
+        Text name = (Text) XWT.findElementByName(lv, "name");
+        name.setText(selectedEntry.getName());
+
+    }
+
+    public void onMouseDoubleClick_1(Event event) {
+        ListViewer lv = (ListViewer) XWT.findElementByName(event.widget, "matchedTarget");
+        ICatalogItem item = (ICatalogItem) lv.getElementAt(lv.getList().getSelectionIndex());
+
+        if (item == null) {
+            return;
+        }
+
+        TableViewer tv = (TableViewer) XWT.findElementByName(lv, "availableTarget");
+        tv.add(item);
+        lv.remove(item);
     }
 }
