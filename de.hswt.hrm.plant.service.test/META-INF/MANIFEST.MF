@@ -9,6 +9,7 @@ Require-Bundle: org.junit;bundle-version="4.10.0",
  com.google.guava;bundle-version="10.0.1",
  de.hswt.hrm.mockito;bundle-version="0.0.1"
 Import-Package: de.hswt.hrm.place.dao.core,
+ de.hswt.hrm.place.dao.jdbc,
  de.hswt.hrm.place.model,
  de.hswt.hrm.plant.dao.core,
  de.hswt.hrm.plant.dao.jdbc,
