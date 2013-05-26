@@ -82,7 +82,7 @@ CREATE  TABLE IF NOT EXISTS `Category` (
   `Category_Width` VARCHAR(45) NULL ,
   `Category_Default_Quantifier` VARCHAR(45) NULL ,
   `Category_Default_Bool_Rating` TINYINT(1) NULL ,
-  `Category_Catalog_FK` INT NULL ,
+  `Category_Catalog_FK` INT NULL DEFAULT NULL ,
   PRIMARY KEY (`Category_ID`) ,
   INDEX `Category_Catalog_FK` (`Category_Catalog_FK` ASC) ,
   CONSTRAINT `Category_Catalog_FK`
