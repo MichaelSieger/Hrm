@@ -16,6 +16,7 @@ import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.widgets.Button;
@@ -30,8 +31,6 @@ import de.hswt.hrm.common.ui.swt.table.ColumnComparator;
 import de.hswt.hrm.common.ui.swt.table.ColumnDescription;
 import de.hswt.hrm.common.ui.swt.table.TableViewerController;
 import de.hswt.hrm.common.ui.xwt.XwtHelper;
-import de.hswt.hrm.place.dao.core.IPlaceDao;
-import de.hswt.hrm.place.dao.jdbc.PlaceDao;
 import de.hswt.hrm.place.model.Place;
 import de.hswt.hrm.place.service.PlaceService;
 import de.hswt.hrm.plant.model.Plant;
@@ -40,8 +39,6 @@ import de.hswt.hrm.plant.ui.event.PlantEventHandler;
 import de.hswt.hrm.place.ui.filter.PlaceFilter;
 import de.hswt.hrm.place.ui.part.PlacePart;
 import de.hswt.hrm.place.ui.part.PlacePartUtil;
-import de.hswt.hrm.place.dao.core.IPlaceDao;
-import de.hswt.hrm.place.dao.jdbc.PlaceDao;
 
 public class PlantWizardPageTwo extends WizardPage{
 	private Composite container;
@@ -49,6 +46,7 @@ public class PlantWizardPageTwo extends WizardPage{
     private Collection<Place> places = null;
     private TableViewer viewer;
     private Button editPlace;
+    private Button back;
 	private static final Logger LOG = LoggerFactory.getLogger(PlantWizardPageTwo.class);
 	@Inject
 	private PlaceService placeService;
@@ -59,7 +57,7 @@ public class PlantWizardPageTwo extends WizardPage{
     public PlantWizardPageTwo(String title, Optional<Plant> plant) {
         super(title);
         this.plant = plant;
-        setDescription("Zugehörigen Standort auswählen");
+        setDescription("Zugehï¿½rigen Standort auswï¿½hlen");
     }
 	@Override
 	public void createControl(Composite parent) {
@@ -71,11 +69,14 @@ public class PlantWizardPageTwo extends WizardPage{
         	container = (Composite) XwtHelper.loadWithEventHandler(parent, url, eventHandler);
             viewer = (TableViewer) XWT.findElementByName(container, "placeTable");
             editPlace = (Button) XWT.findElementByName(container, "editPlace");
+            back = (Button) XWT.findElementByName(container, "back2Main");
             
         }
         catch (Exception e) {
             LOG.error("An error occured: ", e);
         }
+        
+
         setControl(container);
         initializeTable(parent, viewer);
         refreshTable(parent);
@@ -83,8 +84,22 @@ public class PlantWizardPageTwo extends WizardPage{
         
 		
 	}
-	 private void setButtonInvisible() {
+	 private void updateFields(Composite container) {
+		 Plant p = plant.get();
+		 int i = 1;
+		 while(viewer.getElementAt(i) != null){
+			 if(viewer.getElementAt(i).equals(p.getPlace())){
+				 break;
+			 }else{
+				 i++;
+			 }		 
+		 }
+		 Plant a = (Plant) viewer.getData(p.getPlace().get().getPlaceName());
+		 viewer.setSelection(new StructuredSelection(viewer.getElementAt(i)),true);	
+	}
+	private void setButtonInvisible() {
 		editPlace.setVisible(false);
+		back.setVisible(false);
 		
 	}
 	private void refreshTable(Composite parent) {

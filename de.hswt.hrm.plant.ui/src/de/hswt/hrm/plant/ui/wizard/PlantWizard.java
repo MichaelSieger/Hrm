@@ -2,6 +2,7 @@ package de.hswt.hrm.plant.ui.wizard;
 
 import java.util.HashMap;
 
+import javax.inject.Inject;
 import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -20,8 +21,11 @@ import de.hswt.hrm.plant.model.Plant;
 import de.hswt.hrm.plant.service.PlantService;
 
 public class PlantWizard extends Wizard {
-    
     private static final Logger LOG = LoggerFactory.getLogger(PlantWizard.class);
+    
+    @Inject
+    private PlantService plantService;
+    
     private PlantWizardPageOne first;
     private PlantWizardPageTwo second;
     private Optional<Plant> plant;
@@ -63,11 +67,11 @@ public class PlantWizard extends Wizard {
         Plant p = this.plant.get();
         try {
             // Update plant from DB
-            p = PlantService.findById(p.getId());
+            p = plantService.findById(p.getId());
             // Set values to fields from WizardPage
             p = setValues(plant);
             // Update plant in DB
-            PlantService.update(p);
+            plantService.update(p);
             plant = Optional.of(p);
         } catch (DatabaseException e) {
             LOG.error("An error occured", e);
@@ -78,7 +82,7 @@ public class PlantWizard extends Wizard {
     private boolean insertNewPlant() {
         Plant p = setValues(Optional.<Plant>absent());
         try {
-            plant = Optional.of(PlantService.insert(p));
+            plant = Optional.of(plantService.insert(p));
         } catch (SaveException e) {
             LOG.error("Could not save Element: "+ plant +"into Database", e);
         }

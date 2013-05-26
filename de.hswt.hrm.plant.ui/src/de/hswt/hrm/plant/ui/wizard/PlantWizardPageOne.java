@@ -68,10 +68,12 @@ public class PlantWizardPageOne extends WizardPage {
         Text t = (Text) XWT.findElementByName(c, "description");
         t.setText(p.getDescription());
         Combo combo = (Combo) XWT.findElementByName(container, "place");
-        String placeName = p.getPlace().get().getPlaceName();
-        combo.select(combo.indexOf(placeName));
+//        String placeName = p.getPlace().get().getPlaceName();
+//        combo.select(combo.indexOf(placeName));
         // TODO nextInspection / inspectionIntervall ?
         // TODO scheme
+        t = (Text) XWT.findElementByName(c,"inspectionIntervall");
+        t.setText(Integer.toString(p.getInspectionInterval()));
 
         t = (Text) XWT.findElementByName(c, "manufactor");
         t.setText(p.getManufactor().or(""));

@@ -4,13 +4,15 @@ Bundle-Name: Service
 Bundle-SymbolicName: de.hswt.hrm.plant.service
 Bundle-Version: 0.0.1.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Import-Package: com.google.common.base,
- de.hswt.hrm.common.database.exception,
+Import-Package: de.hswt.hrm.common.database.exception,
  de.hswt.hrm.place.dao.core,
- de.hswt.hrm.place.dao.jdbc,
  de.hswt.hrm.place.model,
  de.hswt.hrm.plant.dao.core,
- de.hswt.hrm.plant.dao.jdbc,
  de.hswt.hrm.plant.model
-Require-Bundle: com.google.guava;bundle-version="10.0.1"
+Require-Bundle: com.google.guava;bundle-version="10.0.1",
+ org.eclipse.e4.core.di;bundle-version="1.2.0",
+ javax.inject;bundle-version="1.0.0",
+ ch.qos.logback.classic;bundle-version="1.0.0",
+ ch.qos.logback.core;bundle-version="1.0.0",
+ org.slf4j.api;bundle-version="1.6.4"
 Export-Package: de.hswt.hrm.plant.service

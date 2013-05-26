@@ -1,30 +1,49 @@
 package de.hswt.hrm.plant.ui.event;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.util.Collection;
 
 import javax.inject.Inject;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.xwt.XWT;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Text;
-
-import com.google.common.base.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.hswt.hrm.place.service.PlaceService;
+import com.google.common.base.Optional;
+
+import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.plant.model.Plant;
+import de.hswt.hrm.plant.service.PlantService;
 import de.hswt.hrm.plant.ui.filter.PlantFilter;
+import de.hswt.hrm.plant.ui.part.PlantPart;
 import de.hswt.hrm.plant.ui.part.PlantPartUtil;
 
 public class PlantEventHandler {
+    private final static Logger LOG = LoggerFactory.getLogger(PlantEventHandler.class);
 
     private static final String DEFAULT_SEARCH_STRING = "Suche";
     private static final String EMPTY = "";
+    private final IEclipseContext context;
+    private final PlantService plantService;
     private Plant plant;
+    
+    @Inject
+    public PlantEventHandler(final IEclipseContext context, final PlantService plantService) {
+        checkNotNull(context, "EclipseContext was not injected to PlantEventHandler.");
+        checkNotNull(plantService, "PlantService was not injected to PlantEventHandler.");
+
+        this.context = context;
+        this.plantService = plantService;
+    }
+    
+    
 
     /**
      * This event is called whenever the Search Text Field is leaved. If the the field is blank, the
@@ -33,27 +52,13 @@ public class PlantEventHandler {
      * @param event
      *            Event which occured in SWT
      */
-    private final static Logger LOG = LoggerFactory.getLogger(PlantEventHandler.class);
-    
-    @Inject
-    private IEclipseContext context;
-    
-    
-    @Inject
-    public PlantEventHandler(IEclipseContext context, PlaceService placeService) {
-        if (context == null) {
-            LOG.error("EclipseContext was not injected to PlantEventHandler.");
-        }        
-        this.context = context;
-    }
-    
     public void leaveText(Event event) {
 
         Text text = (Text) event.widget;
         if (text.getText().isEmpty()) {
             text.setText(DEFAULT_SEARCH_STRING);
         }
-        TableViewer tf = (TableViewer) XWT.findElementByName(text, "PlantTable");
+        TableViewer tf = (TableViewer) XWT.findElementByName(text, "plantTable");
         tf.refresh();
 
     }
@@ -67,8 +72,8 @@ public class PlantEventHandler {
     public void buttonSelected(Event event) {
         plant = null;
         Button b = (Button) event.widget;
-        Optional<Plant> newPlant = PlantPartUtil.showWizard(context, event.display.getActiveShell(),
-                Optional.fromNullable(plant));
+        Optional<Plant> newPlant = PlantPartUtil.showWizard(context, 
+                event.display.getActiveShell(), Optional.fromNullable(plant));
 
         TableViewer tv = (TableViewer) XWT.findElementByName(b, "plantTable");
 
@@ -87,7 +92,7 @@ public class PlantEventHandler {
     public void onKeyUp(Event event) {
 
         Text searchText = (Text) event.widget;
-        TableViewer tv = (TableViewer) XWT.findElementByName(searchText, "PlantTable");
+        TableViewer tv = (TableViewer) XWT.findElementByName(searchText, "plantTable");
         PlantFilter filter = (PlantFilter) tv.getFilters()[0];
         filter.setSearchString(searchText.getText());
         tv.refresh();
@@ -129,6 +134,32 @@ public class PlantEventHandler {
         // if (updatePlant.isPresent()) {
         // tv.refresh();
         // }
+    	
+        TableViewer tv = (TableViewer) XWT.findElementByName(event.widget, "plantTable");
+
+        // obtain the place in the column where the doubleClick happend
+        Plant selectedPlant = (Plant) tv.getElementAt(tv.getTable().getSelectionIndex());
+        if (selectedPlant == null) {
+            return;
+        }
+
+        // Refresh the selected place with values from the database
+        try {
+            plantService.refresh(selectedPlant);
+            Optional<Plant> updatedPlant = PlantPartUtil.showWizard(context,
+                    event.display.getActiveShell(), Optional.of(selectedPlant));
+
+            if (updatedPlant.isPresent()) {
+                tv.refresh();
+            }
+        }
+        catch (DatabaseException e) {
+            LOG.error("Could not retrieve the plant from database.", e);
+
+            // TODO: übersetzen
+            MessageDialog.openError(event.display.getActiveShell(), "Connection Error",
+                    "Could not update selected plant from database.");
+        }
     }
 
 }

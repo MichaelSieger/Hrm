@@ -6,6 +6,8 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
+import org.eclipse.e4.ui.workbench.modeling.EPartService;
+import org.eclipse.e4.ui.workbench.modeling.EPartService.PartState;
 import org.eclipse.e4.xwt.IConstants;
 import org.eclipse.e4.xwt.XWT;
 import org.eclipse.jface.viewers.TreeViewer;
@@ -25,7 +27,10 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Slider;
@@ -88,6 +93,9 @@ public class SchemePart {
 	
 	private TreeViewer tree;
 	
+	@Inject
+	EPartService service;
+	
 	/**
 	 * The PatternFilter defines which TreeItems are visible for a given search pattern
 	 */
@@ -128,6 +136,20 @@ public class SchemePart {
 			initGridDND();
 			initSlider();
 			initItemClickListener();
+			
+            ((Button) XWT.findElementByName(root, "abortbtn")).addListener(SWT.Selection, new Listener() {
+ 				@Override
+ 				public void handleEvent(Event event) {
+ 					service.findPart("Clients").setVisible(false);
+ 					service.findPart("Places").setVisible(false);
+ 					service.findPart("Plants").setVisible(false);
+ 					service.findPart("Scheme").setVisible(false);
+ 					service.findPart("Catalog").setVisible(false);
+ 					service.findPart("Category").setVisible(false);
+ 					service.findPart("Main").setVisible(true);
+ 					service.showPart("Main", PartState.VISIBLE);
+ 				}
+ 			});
 
 		} catch (Throwable e) {
 			throw new Error("Unable to load ", e);

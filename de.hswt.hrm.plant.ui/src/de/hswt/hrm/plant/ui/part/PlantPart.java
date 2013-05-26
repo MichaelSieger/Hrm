@@ -35,11 +35,11 @@ import de.hswt.hrm.plant.ui.event.PlantEventHandler;
 import de.hswt.hrm.plant.ui.filter.PlantFilter;
 
 public class PlantPart {
-
+    @Inject
+    private PlantService plantService;
+    
     private TableViewer viewer;
     private Collection<Plant> plants;
-    @Inject
-    private IEclipseContext context;
 
     @Inject
     EPartService service;
@@ -47,15 +47,17 @@ public class PlantPart {
     private final static Logger LOG = LoggerFactory.getLogger(PlantPart.class);
 
     @PostConstruct
-    public void postConstruct(Composite parent) {
-    	PlantEventHandler eventHandler = ContextInjectionFactory.make(PlantEventHandler.class,context);
+    public void postConstruct(Composite parent, IEclipseContext context) {
+
         URL url = PlantPart.class.getClassLoader().getResource(
                 "de/hswt/hrm/plant/ui/xwt/PlantView" + IConstants.XWT_EXTENSION_SUFFIX);
 
         try {
-            // Obtain root element of the XWT file
-//            final Composite comp = (Composite) XWT.load(parent, url);
+            PlantEventHandler eventHandler = ContextInjectionFactory.make(
+                    PlantEventHandler.class, context);
+
             final Composite comp = XwtHelper.loadWithEventHandler(parent, url, eventHandler);
+            
             // Obtain TableViwer to fill it with data
             viewer = (TableViewer) XWT.findElementByName(comp, "plantTable");
             initializeTable(parent, viewer);
@@ -83,7 +85,7 @@ public class PlantPart {
     private void refreshTable(Composite parent) {
 
         try {
-            plants = PlantService.findAll();
+            plants = plantService.findAll();
             viewer.setInput(plants);
 
         }

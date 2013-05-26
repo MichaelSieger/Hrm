@@ -64,4 +64,5 @@ public class CatalogEventHandler {
         f.setSearchString(searchText.getText());
         tf.refresh();
     }
+  
 }
