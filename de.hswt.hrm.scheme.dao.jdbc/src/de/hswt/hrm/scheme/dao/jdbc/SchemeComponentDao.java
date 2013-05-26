@@ -111,7 +111,6 @@ public class SchemeComponentDao implements ISchemeComponentDao {
                 stmt.setParameter(Fields.Y_POS, schemeComponent.getY());
                 stmt.setParameter(Fields.DIRECTION, schemeComponent.getDirection());
 
-
                 int affectedRows = stmt.executeUpdate();
                 if (affectedRows != 1) {
                     throw new SaveException();
@@ -126,7 +125,7 @@ public class SchemeComponentDao implements ISchemeComponentDao {
                                 schemeComponent.getY(), schemeComponent.getDirection(),
                                 schemeComponent.getComponent());
 
-                         return inserted;
+                        return inserted;
                     }
                     else {
                         throw new SaveException("Could not retrieve generated ID.");
@@ -143,8 +142,37 @@ public class SchemeComponentDao implements ISchemeComponentDao {
     @Override
     public void update(SchemeComponent schemeComponent) throws ElementNotFoundException,
             SaveException {
-        // TODO Auto-generated method stub
+        checkNotNull(schemeComponent, "SchemeComponent must not be null.");
 
+        if (schemeComponent.getId() < 0) {
+            throw new ElementNotFoundException("Element has no valid ID.");
+        }
+
+        SqlQueryBuilder builder = new SqlQueryBuilder();
+        builder.update(TABLE_NAME, Fields.ID, Fields.SCHEME, Fields.COMPONENT, Fields.X_POS,
+                Fields.Y_POS, Fields.DIRECTION);
+        builder.where(Fields.ID);
+
+        final String query = builder.toString();
+
+        try (Connection con = DatabaseFactory.getConnection()) {
+            try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
+                stmt.setParameter(Fields.COMPONENT, schemeComponent.getComponent());
+                // TODO
+                // stmt.setParameter(Fields.SCHEME
+                stmt.setParameter(Fields.X_POS, schemeComponent.getX());
+                stmt.setParameter(Fields.Y_POS, schemeComponent.getY());
+                stmt.setParameter(Fields.DIRECTION, schemeComponent.getDirection());
+
+                int affectedRows = stmt.executeUpdate();
+                if (affectedRows != 1) {
+                    throw new SaveException();
+                }
+            }
+        }
+        catch (SQLException | DatabaseException e) {
+            throw new SaveException(e);
+        }
     }
 
     private Collection<SchemeComponent> fromResultSet(ResultSet rs) throws SQLException {
