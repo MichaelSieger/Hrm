@@ -12,6 +12,10 @@ import org.eclipse.e4.xwt.IConstants;
 import org.eclipse.e4.xwt.XWT;
 import org.eclipse.e4.xwt.forms.XWTForms;
 import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.ColumnLabelProvider;
+import org.eclipse.jface.viewers.IBaseLabelProvider;
+import org.eclipse.jface.viewers.ILabelProviderListener;
+import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.ListViewer;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.widgets.Composite;
@@ -53,10 +57,17 @@ public class CatalogMatchingPart {
             cats = (ListViewer) XWT.findElementByName(composite, "categories");
 
             Collection<Category> categories = categoryService.findAll();
-            for (Category c : categories) {
-                cats.add(c.getName());
-            }
 
+            cats.setContentProvider(ArrayContentProvider.getInstance());
+            cats.setInput(categories);
+
+            cats.setLabelProvider(new LabelProvider() {
+                @Override
+                public String getText(Object element) {
+                    Category c = (Category) element;
+                    return c.getName();
+                }
+            });
             Collection<ICatalogItem> items = catalogService.findAllCatalogItem();
 
             initializeTables(parent, targets, currents, activities, items);
