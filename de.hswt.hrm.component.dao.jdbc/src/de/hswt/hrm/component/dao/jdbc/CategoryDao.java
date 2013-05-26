@@ -100,6 +100,12 @@ public class CategoryDao implements ICategoryDao {
      */
     @Override
     public Category insert(Category category) throws SaveException {
+        if (category.getId() >= 0) {
+            throw new IllegalStateException("The category already has an ID.");
+        }
+        
+        insertCatalogIfNecessary(category);
+        
         SqlQueryBuilder builder = new SqlQueryBuilder();
         builder.insert(TABLE_NAME, Fields.NAME, Fields.HEIGHT, Fields.WIDTH,
                 Fields.DEFAULT_QUANTIFIER, Fields.DEFAULT_BOOL_RATING, Fields.CATALOG);
@@ -113,7 +119,12 @@ public class CategoryDao implements ICategoryDao {
                 stmt.setParameter(Fields.WIDTH, category.getWidth());
                 stmt.setParameter(Fields.DEFAULT_QUANTIFIER, category.getDefaultQuantifier());
                 stmt.setParameter(Fields.DEFAULT_BOOL_RATING, category.getDefaultBoolRating());
-                stmt.setParameter(Fields.CATALOG, category.getCatalog().get().getId());
+                if (category.getCatalog().isPresent()) {
+                    stmt.setParameter(Fields.CATALOG, category.getCatalog().get().getId());
+                }
+                else {
+                    stmt.setParameter(Fields.CATALOG, null);
+                }
 
                 int affectedRows = stmt.executeUpdate();
                 if (affectedRows != 1) {
@@ -128,6 +139,7 @@ public class CategoryDao implements ICategoryDao {
                         Category inserted = new Category(id, category.getName(),
                                 category.getHeight(), category.getWidth(),
                                 category.getDefaultQuantifier(), category.getDefaultBoolRating());
+                        inserted.setCatalog(category.getCatalog().orNull());
 
                         return inserted;
                     }
@@ -150,6 +162,8 @@ public class CategoryDao implements ICategoryDao {
         if (category.getId() < 0) {
             throw new ElementNotFoundException("Element has no valid ID.");
         }
+        
+        insertCatalogIfNecessary(category);
 
         SqlQueryBuilder builder = new SqlQueryBuilder();
         builder.update(TABLE_NAME, Fields.NAME, Fields.HEIGHT, Fields.WIDTH,
@@ -179,6 +193,13 @@ public class CategoryDao implements ICategoryDao {
         }
     }
 
+    private void insertCatalogIfNecessary(final Category category) throws SaveException {
+        if (category.getCatalog().isPresent() && category.getCatalog().get().getId() < 0) {
+            Catalog parsed = catalogDao.insert(category.getCatalog().get());
+            category.setCatalog(parsed);
+        }
+    }
+    
     private Collection<Category> fromResultSet(ResultSet rs) 
             throws SQLException, DatabaseException {
         
