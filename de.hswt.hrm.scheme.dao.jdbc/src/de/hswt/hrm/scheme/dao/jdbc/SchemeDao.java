@@ -1,5 +1,6 @@
 package de.hswt.hrm.scheme.dao.jdbc;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.sql.Connection;
@@ -24,9 +25,7 @@ import de.hswt.hrm.plant.dao.jdbc.PlantDao;
 import de.hswt.hrm.scheme.model.Scheme;
 
 public class SchemeDao implements ISchemeDao {
-    
 
-    
     @Override
     public Scheme insert(Scheme scheme) {
         // TODO Auto-generated method stub
@@ -53,13 +52,40 @@ public class SchemeDao implements ISchemeDao {
         catch (SQLException e) {
             throw new DatabaseException(e);
         }
-        
+
     }
 
     @Override
     public Scheme findById(int id) throws DatabaseException, ElementNotFoundException {
-        // TODO Auto-generated method stub
-        return null;
+        checkArgument(id >= 0, "Id must not be negative.");
+
+        SqlQueryBuilder builder = new SqlQueryBuilder();
+        builder.select(TABLE_NAME, Fields.ID, Fields.TIMESTAMP, Fields.PLANT);
+        builder.where(Fields.ID);
+
+        final String query = builder.toString();
+
+        try (Connection con = DatabaseFactory.getConnection()) {
+            try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
+                stmt.setParameter(Fields.ID, id);
+                ResultSet result = stmt.executeQuery();
+
+                Collection<Scheme> schemes = fromResultSet(result);
+                DbUtils.closeQuietly(result);
+
+                if (schemes.size() < 1) {
+                    throw new ElementNotFoundException();
+                }
+                else if (schemes.size() > 1) {
+                    throw new DatabaseException("ID '" + id + "' is not unique.");
+                }
+
+                return schemes.iterator().next();
+            }
+        }
+        catch (SQLException e) {
+            throw new DatabaseException(e);
+        }
     }
 
     @Override
@@ -74,9 +100,9 @@ public class SchemeDao implements ISchemeDao {
 
         while (rs.next()) {
             int id = rs.getInt(Fields.ID);
-            
+
             Timestamp timestamp = rs.getTimestamp("Session_Timestamp");
-          //FIXME
+            // FIXME
             int plantId = rs.getInt(Fields.PLANT);
             Plant plant = null;
             if (plantId >= 0) {
