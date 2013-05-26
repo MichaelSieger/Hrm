@@ -149,7 +149,7 @@ public class SchemeComponentDao implements ISchemeComponentDao {
         }
 
         SqlQueryBuilder builder = new SqlQueryBuilder();
-        builder.update(TABLE_NAME, Fields.ID, Fields.SCHEME, Fields.COMPONENT, Fields.X_POS,
+        builder.update(TABLE_NAME, Fields.SCHEME, Fields.COMPONENT, Fields.X_POS,
                 Fields.Y_POS, Fields.DIRECTION);
         builder.where(Fields.ID);
 
