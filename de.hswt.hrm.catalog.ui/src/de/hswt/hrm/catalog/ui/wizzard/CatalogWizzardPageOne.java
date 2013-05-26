@@ -3,12 +3,9 @@ package de.hswt.hrm.catalog.ui.wizzard;
 import java.net.URL;
 
 import org.eclipse.e4.xwt.IConstants;
-import org.eclipse.e4.xwt.XWT;
 import org.eclipse.e4.xwt.forms.XWTForms;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,5 +47,10 @@ public class CatalogWizzardPageOne extends WizardPage {
         }
 
         return "Neue Soll/Ist/Maßnahme anlegen";
+    }
+
+    public ICatalogItem getItem() {
+        // TODO Auto-generated method stub
+        return null;
     }
 }

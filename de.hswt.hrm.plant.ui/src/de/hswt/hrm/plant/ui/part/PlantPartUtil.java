@@ -21,7 +21,7 @@ public class PlantPartUtil {
     public static Optional<Plant> showWizard(IEclipseContext context, Shell activeShell,
             Optional<Plant> plant) {
         
-        PlantWizard pw = new PlantWizard(plant);
+        PlantWizard pw = new PlantWizard(context, plant);
         ContextInjectionFactory.inject(pw, context);
         
         WizardDialog wd = new WizardDialog(activeShell, pw);
