@@ -1,17 +1,49 @@
 package de.hswt.hrm.catalog.ui.event;
 
+import javax.inject.Inject;
+
+import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.xwt.XWT;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Text;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import com.google.common.base.Optional;
+
+import de.hswt.hrm.catalog.model.Activity;
+import de.hswt.hrm.catalog.model.Current;
+import de.hswt.hrm.catalog.model.ICatalogItem;
+import de.hswt.hrm.catalog.model.Target;
+import de.hswt.hrm.catalog.service.CatalogService;
 import de.hswt.hrm.catalog.ui.filter.CatalogFilter;
+import de.hswt.hrm.catalog.ui.part.CatalogPartUtil;
+import de.hswt.hrm.common.database.exception.DatabaseException;
 
 public class CatalogEventHandler {
 
     private static final String DEFAULT_SEARCH_STRING = "Search";
     private static final String EMPTY = "";
+    private static final Logger LOG = LoggerFactory.getLogger(CatalogEventHandler.class);
+    private final IEclipseContext context;
+    private final CatalogService catalogService;
+
+    @Inject
+    public CatalogEventHandler(IEclipseContext context, CatalogService catalogService) {
+        if (context == null) {
+            LOG.error("EclipseContext was not injected to CatalogEventHandler.");
+        }
+
+        if (catalogService == null) {
+            LOG.error("CatalogService was not injected to CatalogEventHandler.");
+        }
+
+        this.context = context;
+        this.catalogService = catalogService;
+    }
 
     public void onSelection(Event event) {
 
@@ -64,5 +96,47 @@ public class CatalogEventHandler {
         f.setSearchString(searchText.getText());
         tf.refresh();
     }
-  
+
+    public void onMouseDoubleClick(Event event) {
+
+        TableViewer tv = (TableViewer) XWT.findElementByName(event.widget, "catalogTable");
+
+        // obtain the place in the column where the doubleClick happend
+        ICatalogItem selectedItem = (ICatalogItem) tv.getElementAt(tv.getTable()
+                .getSelectionIndex());
+        if (selectedItem == null) {
+            return;
+        }
+
+        // Refresh the selected place with values from the database
+        try {
+
+            if (selectedItem instanceof Activity) {
+                catalogService.refresh((Activity) selectedItem);
+            }
+            else if (selectedItem instanceof Current) {
+                catalogService.refresh((Current) selectedItem);
+            }
+            else {
+                catalogService.refresh((Target) selectedItem);
+            }
+
+            // CatalogService.refresh(selectedItem);
+
+            Optional<ICatalogItem> updatedItem = CatalogPartUtil.showWizard(context,
+                    event.display.getActiveShell(), Optional.of(selectedItem));
+
+            if (updatedItem.isPresent()) {
+                tv.refresh();
+            }
+        }
+        catch (DatabaseException e) {
+            LOG.error("Could not retrieve the CatalogItem from database.", e);
+
+            // TODO: übersetzen
+            MessageDialog.openError(event.display.getActiveShell(), "Connection Error",
+                    "Could not update selected item from database.");
+        }
+
+    }
 }

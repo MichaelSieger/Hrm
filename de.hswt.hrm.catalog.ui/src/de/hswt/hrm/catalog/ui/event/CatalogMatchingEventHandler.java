@@ -108,8 +108,8 @@ public class CatalogMatchingEventHandler {
         tv.add(item);
         lv.remove(item);
     }
+
     public void onMouseDoubleClick_2(Event event) {
-        
-        
+
     }
 }

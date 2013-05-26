@@ -18,31 +18,34 @@ public class CatalogWizzardPageOne extends WizardPage {
     private static final Logger LOG = LoggerFactory.getLogger(CatalogWizzardPageOne.class);
 
     private Composite container;
-    private Optional<ICatalogItem> catalogItem;
+    private Optional<ICatalogItem> item;
 
-    public CatalogWizzardPageOne(String pageName, Optional<ICatalogItem> catalogItem) {
+    public CatalogWizzardPageOne(String pageName, Optional<ICatalogItem> item) {
         super(pageName);
-        this.catalogItem = catalogItem;
+        this.item = item;
         setDescription(createDiscription());
     }
 
     public void createControl(Composite parent) {
 
         URL url = CatalogWizzardPageOne.class.getClassLoader().getResource(
-                "de/hswt/hrm/catalog/ui/xwt/CatalogWizardWindow" + IConstants.XWT_EXTENSION_SUFFIX);
+                "de/hswt/hrm/catalog/ui/xwt/CatalogWizard" + IConstants.XWT_EXTENSION_SUFFIX);
 
         try {
             container = (Composite) XWTForms.load(parent, url);
         }
         catch (Exception e) {
-            LOG.error("Coult not load CatalogWizardPageOne XWT file.", e);
+            LOG.error("Coult not load Wizzard XWT file.", e);
             return;
         }
+        
+        setControl(container);
+        setPageComplete(false);
 
     }
 
     private String createDiscription() {
-        if (catalogItem.isPresent()) {
+        if (item.isPresent()) {
             return "Soll/Ist/Maßnahme bearbeiten";
         }
 
@@ -50,7 +53,11 @@ public class CatalogWizzardPageOne extends WizardPage {
     }
 
     public ICatalogItem getItem() {
-        // TODO Auto-generated method stub
-        return null;
+
+        return updateItem(item);
+    }
+
+    private ICatalogItem updateItem(Optional<ICatalogItem> item2) {
+        return item.get();
     }
 }

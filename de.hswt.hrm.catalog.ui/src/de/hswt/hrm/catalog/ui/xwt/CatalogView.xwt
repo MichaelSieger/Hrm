@@ -13,7 +13,7 @@
 	<Label />
 	<TableViewer x:name="catalogTable" x:Style="BORDER | FULL_SELECTION">
 		<TableViewer.table headerVisible="true"
-			linesVisible="true">
+			linesVisible="true" MouseDoubleClickEvent="onMouseDoubleClick">
 			<TableViewer.table.layoutData>
 				<GridData verticalSpan="7" horizontalSpan="4"
 					horizontalAlignment="FILL" widthHint="860" verticalAlignment="FILL"
