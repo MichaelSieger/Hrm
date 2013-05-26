@@ -2,50 +2,56 @@
 	xmlns:x="http://www.eclipse.org/xwt" xmlns:p1="clr-namespace:de.hswt.hrm.place.ui.xwt"
 	x:Class="de.hswt.hrm.catalog.ui.event.CatalogMatchingEventHandler">
 	<Composite.layout>
-		<GridLayout numColumns="4" makeColumnsEqualWidth="true"/>
+		<GridLayout numColumns="4" makeColumnsEqualWidth="true" />
 	</Composite.layout>
-	<Label text="Bauelemente"/>
-	<Label text="Zugeordnete Soll Zustände"/>
-	<Label text="Zugeordnete IST"/>
-	<Label text="Zugeordnete Maßnahmen"/>
+	<Label text="Bauelemente" />
+	<Label text="Zugeordnete Soll Zustände" />
+	<Label text="Zugeordnete IST" />
+	<Label text="Zugeordnete Maßnahmen" />
 	<List x:Style="BORDER" x:Name="components">
 		<List.layoutData>
-			<GridData heightHint="308" widthHint="189" verticalAlignment="FILL" horizontalAlignment="FILL"/>
+			<GridData heightHint="308" widthHint="189"
+				verticalAlignment="FILL" horizontalAlignment="FILL" />
 		</List.layoutData>
 	</List>
-	<List x:Style="BORDER" x:Name="matchedTarget">
+	<List x:Style="BORDER" x:Name="matchedTarget" MouseDoubleClickEvent="onMatchedTargetMouseDoubleClick">
 		<List.layoutData>
-			<GridData verticalAlignment="FILL" widthHint="86" horizontalAlignment="FILL"/>
-		</List.layoutData>
-	</List>
-	<List x:Style="BORDER">
-		<List.layoutData>
-			<GridData verticalAlignment="FILL" widthHint="148" horizontalAlignment="FILL"/>
+			<GridData verticalAlignment="FILL" widthHint="86"
+				horizontalAlignment="FILL" />
 		</List.layoutData>
 	</List>
 	<List x:Style="BORDER">
 		<List.layoutData>
-			<GridData verticalAlignment="FILL" widthHint="144" horizontalAlignment="FILL"/>
+			<GridData verticalAlignment="FILL" widthHint="148"
+				horizontalAlignment="FILL" />
 		</List.layoutData>
 	</List>
-	<Label/>
-	<Label text="Verfügbare Soll Zustände"/>
-	<Label text="Verfügbare IST"/>
-	<Label text="Verfügbare Maßnahmen"/>
-	<Label/>
-	<List x:Style="BORDER" x:Name="availableTarget" MouseDoubleClickEvent="onAvailableTargetMouseDoubleClick">
+	<List x:Style="BORDER">
 		<List.layoutData>
-			<GridData widthHint="147" heightHint="285" horizontalAlignment="FILL" verticalAlignment="FILL"/>
+			<GridData verticalAlignment="FILL" widthHint="144"
+				horizontalAlignment="FILL" />
 		</List.layoutData>
 	</List>
-	<List x:Style="BORDER" x:Name="availableCurrent" MouseDoubleClickEvent="onAvailableTargetMouseDoubleClick">
+	<Label />
+	<Label text="Verfügbare Soll Zustände" />
+	<Label text="Verfügbare IST" />
+	<Label text="Verfügbare Maßnahmen" />
+	<Label />
+	<List x:Style="BORDER" x:Name="availableTarget"
+		MouseDoubleClickEvent="onAvailableTargetMouseDoubleClick">
 		<List.layoutData>
-			<GridData horizontalAlignment="FILL" verticalAlignment="FILL"/>
+			<GridData widthHint="147" heightHint="285"
+				horizontalAlignment="FILL" verticalAlignment="FILL" />
 		</List.layoutData>
 	</List>
-	<List x:Style="BORDER" x:Name="availableActivity" MouseDoubleClickEvent="onAvailableTargetMouseDoubleClick">
+	<List x:Style="BORDER" x:Name="availableCurrent">
 		<List.layoutData>
-			<GridData horizontalAlignment="FILL" verticalAlignment="FILL"/>
+			<GridData horizontalAlignment="FILL" verticalAlignment="FILL" />
+		</List.layoutData>
+	</List>
+	<List x:Style="BORDER" x:Name="availableActivity">
+		<List.layoutData>
+			<GridData horizontalAlignment="FILL" verticalAlignment="FILL" />
 		</List.layoutData>
 	</List>
 </Composite>
