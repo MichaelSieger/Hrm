@@ -38,7 +38,7 @@ public class CatalogMatchingPart {
     public void postConstruct(Composite parent, IEclipseContext context) {
 
         URL url = CatalogPart.class.getClassLoader().getResource(
-                "de/hswt/hrm/catalog/ui/xwt/CatalogMatching" + IConstants.XWT_EXTENSION_SUFFIX);
+                "de/hswt/hrm/catalog/ui/xwt/CatalogMatchingView" + IConstants.XWT_EXTENSION_SUFFIX);
 
         try {
             final Composite composite = (Composite) XWTForms.load(parent, url);

@@ -88,7 +88,7 @@
 					</Text.layoutData>
 				</Text>
 				<Label text="Beschreibung :"/>
-				<Text x:Style="BORDER | WRAP | V_SCROLL | MULTI" x:Name="street">
+				<Text x:Style="BORDER | WRAP | V_SCROLL | MULTI" x:Name="desc">
 					<Text.layoutData>
 						<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL" verticalAlignment="FILL" heightHint="176" widthHint="300" horizontalSpan="3"/>
 					</Text.layoutData>
@@ -106,7 +106,7 @@
 					<GridLayout/>
 				</Composite.layout>
 				<TableViewer x:Style="BORDER | FULL_SELECTION" x:Name="availableTarget">
-					<TableViewer.table headerVisible="true" linesVisible="true" x:Name="">
+					<TableViewer.table headerVisible="true" linesVisible="true" x:Name="" MouseDownEvent="onMouseDown">
 						<TableViewer.table.layoutData>
 							<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL" grabExcessVerticalSpace="true" verticalAlignment="FILL"/>
 						</TableViewer.table.layoutData>
@@ -125,7 +125,7 @@
 					<GridLayout/>
 				</Composite.layout>
 				<TableViewer x:Style="BORDER | FULL_SELECTION" x:Name="availableCurrent">
-					<TableViewer.table headerVisible="true" linesVisible="true" x:Name="">
+					<TableViewer.table headerVisible="true" linesVisible="true" x:Name="" MouseDownEvent="onMouseDown_1">
 						<TableViewer.table.layoutData>
 							<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL" grabExcessVerticalSpace="true" verticalAlignment="FILL"/>
 						</TableViewer.table.layoutData>
@@ -144,7 +144,7 @@
 					<GridLayout/>
 				</Composite.layout>
 				<TableViewer x:Style="BORDER | FULL_SELECTION" x:Name="availableActivity">
-					<TableViewer.table headerVisible="true" linesVisible="true" x:Name="">
+					<TableViewer.table headerVisible="true" linesVisible="true" x:Name="" MouseDownEvent="onMouseDown_2">
 						<TableViewer.table.layoutData>
 							<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL" grabExcessVerticalSpace="true" verticalAlignment="FILL"/>
 						</TableViewer.table.layoutData>
