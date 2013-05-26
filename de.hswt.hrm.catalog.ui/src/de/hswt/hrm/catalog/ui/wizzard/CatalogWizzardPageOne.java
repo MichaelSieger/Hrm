@@ -51,4 +51,9 @@ public class CatalogWizzardPageOne extends WizardPage {
 
         return "Neue Soll/Ist/Maßnahme anlegen";
     }
+
+    public ICatalogItem getItem() {
+        // TODO Auto-generated method stub
+        return null;
+    }
 }
