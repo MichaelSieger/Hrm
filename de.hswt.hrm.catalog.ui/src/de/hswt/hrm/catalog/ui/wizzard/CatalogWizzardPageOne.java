@@ -9,6 +9,8 @@ import org.eclipse.e4.xwt.forms.XWTForms;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
@@ -18,6 +20,7 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Optional;
 
+import de.hswt.hrm.catalog.model.Activity;
 import de.hswt.hrm.catalog.model.ICatalogItem;
 
 public class CatalogWizzardPageOne extends WizardPage {
@@ -72,13 +75,28 @@ public class CatalogWizzardPageOne extends WizardPage {
                 });
             }
 
+            else if (w instanceof Button) {
+                Button b = (Button) w;
+                b.addSelectionListener(new SelectionListener() {
+
+                    @Override
+                    public void widgetSelected(SelectionEvent e) {
+                        getWizard().getContainer().updateButtons();
+                    }
+
+                    @Override
+                    public void widgetDefaultSelected(SelectionEvent e) {
+                    }
+                });
+            }
+
         }
     }
 
     private HashMap<String, Widget> getWidgets() {
         if (widgets == null) {
             widgets = new HashMap<>();
-            widgets.put(Fields.ACTIVITY, (Button) XWT.findElementByName(container, Fields.NAME));
+            widgets.put(Fields.ACTIVITY, (Button) XWT.findElementByName(container, Fields.ACTIVITY));
             widgets.put(Fields.CURRENT, (Button) XWT.findElementByName(container, Fields.CURRENT));
             widgets.put(Fields.TARGET, (Button) XWT.findElementByName(container, Fields.TARGET));
             widgets.put(Fields.NAME, (Text) XWT.findElementByName(container, Fields.NAME));
@@ -103,28 +121,23 @@ public class CatalogWizzardPageOne extends WizardPage {
         return updateItem(item);
     }
 
-    private ICatalogItem updateItem(Optional<ICatalogItem> item2) {
-        return item.get();
+    private ICatalogItem updateItem(Optional<ICatalogItem> item) {
+
+        HashMap<String, Widget> w = getWidgets();
+
+        Text t = (Text) w.get(Fields.NAME);
+        String s = t.getText();
+        Text t2 = (Text) w.get(Fields.DESCRIPTION);
+        String s2 = t2.getText();
+
+        ICatalogItem a = new Activity(s, s2);
+        return a;
     }
 
     @Override
     public boolean isPageComplete() {
-        for (Widget w : getWidgets().values()) {
-
-            if (w instanceof Text) {
-                Text textField = (Text) w;
-                if (textField.getText().length() == 0) {
-                    return false;
-                }
-                else if (w instanceof Button){
-                    Button b = (Button)w;
-                    return b.isEnabled();
-                }
-            }
-
-           return false;
-        }
-        return false;
+        // FIXME implement Logic
+        return true;
     }
 
     private static final class Fields {
