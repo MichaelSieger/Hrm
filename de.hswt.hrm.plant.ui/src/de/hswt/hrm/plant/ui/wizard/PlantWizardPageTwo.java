@@ -49,6 +49,7 @@ public class PlantWizardPageTwo extends WizardPage{
     private Collection<Place> places = null;
     private TableViewer viewer;
     private Button editPlace;
+    private Button back;
 	private static final Logger LOG = LoggerFactory.getLogger(PlantWizardPageTwo.class);
 	@Inject
 	private PlaceService placeService;
@@ -71,6 +72,7 @@ public class PlantWizardPageTwo extends WizardPage{
         	container = (Composite) XwtHelper.loadWithEventHandler(parent, url, eventHandler);
             viewer = (TableViewer) XWT.findElementByName(container, "placeTable");
             editPlace = (Button) XWT.findElementByName(container, "editPlace");
+            back = (Button) XWT.findElementByName(container, "back2Main");
             
         }
         catch (Exception e) {
@@ -85,6 +87,7 @@ public class PlantWizardPageTwo extends WizardPage{
 	}
 	 private void setButtonInvisible() {
 		editPlace.setVisible(false);
+		back.setVisible(false);
 		
 	}
 	private void refreshTable(Composite parent) {
