@@ -93,23 +93,23 @@ public class CatalogWizard extends Wizard {
             LOG.error("CatalogService not inject to CatalogWizard.");
         }
 
-        try {
-            ICatalogItem i = first.getItem();
-            if (i instanceof Activity) {
-                item = Optional.of(catalogService.insertActivity((Activity) (i)));
-
-            }
-            else if (i instanceof Current) {
-                catalogService.updateCurrent((Current) i);
-            }
-            else {
-                catalogService.updateTarget((Target) i);
-            }
-
-        }
-        catch (SaveException e) {
-            // TODO: handle exception
-        }
+//        try {
+//            ICatalogItem i = first.getItem();
+//            if (i instanceof Activity) {
+//                item = Optional.of(catalogService.insertActivity((Activity) (i)));
+//
+//            }
+//            else if (i instanceof Current) {
+//                catalogService.updateCurrent((Current) i);
+//            }
+//            else {
+//                catalogService.updateTarget((Target) i);
+//            }
+//
+//        }
+//        catch (SaveException e) {
+//            // TODO: handle exception
+//        }
 
         return false;
     }
