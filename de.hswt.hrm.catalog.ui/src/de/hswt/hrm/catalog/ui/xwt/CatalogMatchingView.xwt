@@ -133,7 +133,7 @@
 					<GridLayout/>
 				</Composite.layout>
 				<TableViewer x:Style="BORDER | FULL_SELECTION" x:Name="availableCurrent">
-					<TableViewer.table headerVisible="true" linesVisible="true" x:Name="" MouseDownEvent="onMouseDown_1">
+					<TableViewer.table headerVisible="true" linesVisible="true" x:Name="" MouseDownEvent="onMouseDown_1" MouseDoubleClickEvent="onMouseDoubleClick_2">
 						<TableViewer.table.layoutData>
 							<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL" grabExcessVerticalSpace="true" verticalAlignment="FILL"/>
 						</TableViewer.table.layoutData>

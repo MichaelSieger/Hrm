@@ -57,10 +57,12 @@ public class CatalogMatchingPart {
             matchedActivities = (ListViewer) XWT.findElementByName(composite, "matchedActivity");
             matchedTargets = (ListViewer) XWT.findElementByName(composite, "matchedTarget");
             matchedCurrents = (ListViewer) XWT.findElementByName(composite, "matchedCurrent");
-             cats = (ListViewer) XWT.findElementByName(composite, "categories");
+            //TODO Replace Categories with Catalog
+            cats = (ListViewer) XWT.findElementByName(composite, "categories");
 
             Collection<Category> categories = categoryService.findAll();
 
+            //TODO Implement a better solution
             cats.setContentProvider(ArrayContentProvider.getInstance());
             cats.setInput(categories);
             cats.setLabelProvider(new LabelProvider() {

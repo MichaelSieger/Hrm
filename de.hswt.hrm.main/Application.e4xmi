@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <application:Application xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:advanced="http://www.eclipse.org/ui/2010/UIModel/application/ui/advanced" xmlns:application="http://www.eclipse.org/ui/2010/UIModel/application" xmlns:basic="http://www.eclipse.org/ui/2010/UIModel/application/ui/basic" xmi:id="_ucxCQJSXEeKKYob9VrLbBA" elementId="org.eclipse.e4.ide.application" bindingContexts="_ucxpUJSXEeKKYob9VrLbBA">
+  <children xsi:type="basic:TrimmedWindow" xmi:id="_xt4X0MXmEeK8wLhfKzvFPA" elementId="de.hswt.hrm.main.trimmedwindow.0">
+    <children xsi:type="basic:Part" xmi:id="_yl7aIMXmEeK8wLhfKzvFPA" elementId="de.hswt.hrm.main.part.0" contributionURI="bundleclass://de.hswt.hrm.catalog.ui/de.hswt.hrm.catalog.ui.part.CatalogMatchingPart"/>
+  </children>
   <children xsi:type="basic:Window" xmi:id="_VA6isKgOEeKTs_pgXDL3-A" elementId="de.hswt.hrm.main.MainFrame" selectedElement="_ucxpZ5SXEeKKYob9VrLbBA" label="Hygiene Report Manager">
     <children xsi:type="advanced:PerspectiveStack" xmi:id="_ucxpZ5SXEeKKYob9VrLbBA">
       <children xsi:type="advanced:Perspective" xmi:id="_ucxpaJSXEeKKYob9VrLbBA" label="">
@@ -14,9 +17,6 @@
         </children>
       </children>
     </children>
-  </children>
-  <children xsi:type="basic:TrimmedWindow" xmi:id="_xt4X0MXmEeK8wLhfKzvFPA" elementId="de.hswt.hrm.main.trimmedwindow.0">
-    <children xsi:type="basic:Part" xmi:id="_yl7aIMXmEeK8wLhfKzvFPA" elementId="de.hswt.hrm.main.part.0" contributionURI="bundleclass://de.hswt.hrm.catalog.ui/de.hswt.hrm.catalog.ui.part.CatalogMatchingPart"/>
   </children>
   <handlers xmi:id="_ucxpXpSXEeKKYob9VrLbBA" contributionURI="bundleclass://de.hswt.hrm.main/de.hswt.hrm.main.handlers.AboutHandler" command="_ucxpXZSXEeKKYob9VrLbBA"/>
   <bindingTables xmi:id="_ucxpVZSXEeKKYob9VrLbBA" bindingContext="_ucxpUJSXEeKKYob9VrLbBA">
