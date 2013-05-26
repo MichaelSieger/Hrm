@@ -22,6 +22,7 @@ Import-Package: de.hswt.hrm.catalog.model,
  de.hswt.hrm.common.locking.jdbc,
  de.hswt.hrm.common.ui.swt.table,
  de.hswt.hrm.common.ui.xwt,
+ de.hswt.hrm.component.model,
  org.eclipse.e4.core.contexts,
  org.eclipse.e4.xwt,
  org.eclipse.swt.widgets
