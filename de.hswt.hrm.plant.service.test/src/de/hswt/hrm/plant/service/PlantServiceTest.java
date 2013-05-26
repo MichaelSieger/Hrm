@@ -10,6 +10,7 @@ import static org.junit.Assert.*;
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.ElementNotFoundException;
 import de.hswt.hrm.place.dao.core.IPlaceDao;
+import de.hswt.hrm.place.dao.jdbc.PlaceDao;
 import de.hswt.hrm.place.model.Place;
 import de.hswt.hrm.plant.dao.core.IPlantDao;
 import de.hswt.hrm.plant.dao.jdbc.PlantDao;
@@ -58,7 +59,7 @@ public class PlantServiceTest extends AbstractDatabaseTest {
     
     @Test
     public void testFindAll() throws DatabaseException {
-        IPlaceDao placeDao = mock(IPlaceDao.class);
+        IPlaceDao placeDao = new PlaceDao();
         IPlantDao plantDao = new PlantDao(placeDao);
         PlantService plantService = new PlantService(plantDao);
         
@@ -75,7 +76,7 @@ public class PlantServiceTest extends AbstractDatabaseTest {
     
     @Test
     public void testFindById() throws ElementNotFoundException, DatabaseException {
-        IPlaceDao placeDao = mock(IPlaceDao.class);
+        IPlaceDao placeDao = new PlaceDao();
         IPlantDao plantDao = new PlantDao(placeDao);
         PlantService plantService = new PlantService(plantDao);
         
@@ -90,7 +91,7 @@ public class PlantServiceTest extends AbstractDatabaseTest {
     
     @Test
     public void testInsert() throws ElementNotFoundException, DatabaseException {
-        IPlaceDao placeDao = mock(IPlaceDao.class);
+        IPlaceDao placeDao = new PlaceDao();
         IPlantDao plantDao = new PlantDao(placeDao);
         PlantService plantService = new PlantService(plantDao);
         
@@ -117,7 +118,7 @@ public class PlantServiceTest extends AbstractDatabaseTest {
     
     @Test
     public void testUpdate() throws ElementNotFoundException, DatabaseException {
-        IPlaceDao placeDao = mock(IPlaceDao.class);
+        IPlaceDao placeDao = new PlaceDao();
         IPlantDao plantDao = new PlantDao(placeDao);
         PlantService plantService = new PlantService(plantDao);
         
