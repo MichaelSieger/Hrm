@@ -142,6 +142,7 @@ public class CatalogEventHandler {
 
     }
 
+    @SuppressWarnings("unchecked")
     public void onSelection_1(Event event) {
 
         Button b = (Button) event.widget;
