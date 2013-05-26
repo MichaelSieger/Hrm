@@ -10,14 +10,14 @@
 	<Label text="Zugeordnete Maßnahmen" />
 	<List x:Style="BORDER" x:Name="components">
 		<List.layoutData>
-			<GridData heightHint="308" widthHint="189"
-				verticalAlignment="FILL" horizontalAlignment="FILL" />
+			<GridData heightHint="640" widthHint="189"
+				verticalAlignment="FILL" horizontalAlignment="FILL" grabExcessVerticalSpace="true" verticalSpan="3" />
 		</List.layoutData>
 	</List>
 	<List x:Style="BORDER" x:Name="matchedTarget" MouseDoubleClickEvent="onMatchedTargetMouseDoubleClick">
 		<List.layoutData>
 			<GridData verticalAlignment="FILL" widthHint="86"
-				horizontalAlignment="FILL" />
+				horizontalAlignment="FILL" heightHint="314" />
 		</List.layoutData>
 	</List>
 	<List x:Style="BORDER">
@@ -32,11 +32,9 @@
 				horizontalAlignment="FILL" />
 		</List.layoutData>
 	</List>
-	<Label />
 	<Label text="Verfügbare Soll Zustände" />
 	<Label text="Verfügbare IST" />
 	<Label text="Verfügbare Maßnahmen" />
-	<Label />
 	<List x:Style="BORDER" x:Name="availableTarget"
 		MouseDoubleClickEvent="onAvailableTargetMouseDoubleClick">
 		<List.layoutData>

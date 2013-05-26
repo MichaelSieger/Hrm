@@ -10,46 +10,69 @@ public class CatalogMatchingEventHandler {
     private List currents;
     private List activities;
 
+    /**
+     * This event occurs whenever an entry in the lower table is selected
+     * 
+     * @param event
+     */
     public void onAvailableTargetMouseDoubleClick(Event event) {
 
-        List l = (List) event.widget;
+        List available = (List) event.widget;
 
-        int i = l.getSelectionIndex();
+        int i = available.getSelectionIndex();
 
         if (i == -1) {
             return;
         }
 
-        String s = l.getItem(i);
+        String s = available.getItem(i);
 
-        l.remove(s);
-        List l2 = (List) XWT.findElementByName(l, "matchedTarget");
-        l2.add(s);
-        currents = (List) XWT.findElementByName(l, "availableCurrent");
-        currents.setEnabled(true);
+        available.remove(s);
+        List matched = (List) XWT.findElementByName(available, "matchedTarget");
+        matched.add(s);
+
+        if (matched.getItemCount() == 1) {
+            currents = (List) XWT.findElementByName(available, "availableCurrent");
+            currents.setEnabled(true);
+            available.setEnabled(false);
+        }
 
     }
 
+    /**
+     * This event occurs whenever an entry in the upper table is selected
+     * 
+     * @param event
+     */
     public void onMatchedTargetMouseDoubleClick(Event event) {
 
-        List l = (List) event.widget;
-        int i = l.getSelectionIndex();
+        List matched = (List) event.widget;
+        int i = matched.getSelectionIndex();
 
         if (i == -1) {
             return;
         }
 
-        String s = l.getItem(i);
-        l.remove(s);
-        List l2 = (List) XWT.findElementByName(l, "availableTarget");
+        String s = matched.getItem(i);
+        matched.remove(s);
+        List l2 = (List) XWT.findElementByName(matched, "availableTarget");
         l2.add(s);
         String[] items = l2.getItems();
         java.util.Arrays.sort(items);
         l2.setItems(items);
 
-        if (l.getItemCount() == 0) {
-            currents = (List) XWT.findElementByName(l, "availableCurrent");
+        if (matched.getItemCount() == 1) {
+            currents = (List) XWT.findElementByName(matched, "availableCurrent");
+            currents.setEnabled(true);
+            targets = (List) XWT.findElementByName(matched, "availableTarget");
+            targets.setEnabled(false);
+        }
+
+        else if (matched.getItemCount() == 0) {
+            currents = (List) XWT.findElementByName(matched, "availableCurrent");
             currents.setEnabled(false);
+            targets = (List) XWT.findElementByName(matched, "availableTarget");
+            targets.setEnabled(true);
         }
 
     }
