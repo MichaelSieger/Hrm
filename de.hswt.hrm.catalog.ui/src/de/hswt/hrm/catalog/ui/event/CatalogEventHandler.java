@@ -1,5 +1,7 @@
 package de.hswt.hrm.catalog.ui.event;
 
+import java.util.Collection;
+
 import javax.inject.Inject;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
@@ -139,4 +141,19 @@ public class CatalogEventHandler {
         }
 
     }
+
+    public void onSelection_1(Event event) {
+
+        Button b = (Button) event.widget;
+        Optional<ICatalogItem> newItem = CatalogPartUtil.showWizard(context,
+                event.display.getActiveShell(), Optional.<ICatalogItem> absent());
+
+        if (newItem.isPresent()) {
+            TableViewer tv = (TableViewer) XWT.findElementByName(b, "catalogTable");
+            Collection<ICatalogItem> items = (Collection<ICatalogItem>) tv.getInput();
+            items.add(newItem.get());
+            tv.refresh();
+        }
+    }
+
 }

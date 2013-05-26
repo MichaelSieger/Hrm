@@ -21,7 +21,7 @@
 			</TableViewer.table.layoutData>
 		</TableViewer.table>
 	</TableViewer>
-	<Button x:name="addPlace" text="New">
+	<Button x:name="addPlace" text="New" SelectionEvent="onSelection_1">
 		<Button.layoutData>
 			<GridData horizontalAlignment="FILL" />
 		</Button.layoutData>
