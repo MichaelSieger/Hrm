@@ -8,5 +8,6 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Require-Bundle: org.junit;bundle-version="4.10.0",
  de.hswt.hrm.mockito;bundle-version="0.0.1"
 Import-Package: de.hswt.hrm.catalog.dao.core,
+ de.hswt.hrm.catalog.dao.jdbc,
  de.hswt.hrm.common.exception,
  de.hswt.hrm.test.database

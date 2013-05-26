@@ -7,6 +7,7 @@ import java.util.Collection;
 
 import org.junit.Test;
 import de.hswt.hrm.catalog.dao.core.ICatalogDao;
+import de.hswt.hrm.catalog.dao.jdbc.CatalogDao;
 import de.hswt.hrm.catalog.model.Catalog;
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.ElementNotFoundException;
@@ -31,13 +32,13 @@ public class CategoryDaoTest extends AbstractDatabaseTest {
     
     @Test
     public void testFindAll() throws ElementNotFoundException, DatabaseException {
-        ICatalogDao catalogDao = mock(ICatalogDao.class);
-        when(catalogDao.findById(1)).thenReturn(getCatalog(1));
+        ICatalogDao catalogDao = new CatalogDao();
         ICategoryDao categoryDao = new CategoryDao(catalogDao);
         
         Category cat1 = new Category("Some cat", 4, 4, 1, true);
         Category cat2 = new Category("Some other cat", 2, 4, 1, true);
-        cat2.setCatalog(getCatalog(1));
+        Catalog catalog = catalogDao.insert(getCatalog(-1));
+        cat2.setCatalog(catalog);
         categoryDao.insert(cat1);
         categoryDao.insert(cat2);
         
@@ -47,12 +48,12 @@ public class CategoryDaoTest extends AbstractDatabaseTest {
     
     @Test
     public void testInsert() throws ElementNotFoundException, DatabaseException {
-        ICatalogDao catalogDao = mock(ICatalogDao.class);
-        when(catalogDao.findById(1)).thenReturn(getCatalog(1));
+        ICatalogDao catalogDao = new CatalogDao();
         ICategoryDao categoryDao = new CategoryDao(catalogDao);
         
+        Catalog catalog = catalogDao.insert(getCatalog(-1));
         Category cat = new Category("Some cat", 4, 4, 1, true);
-        cat.setCatalog(getCatalog(1));
+        cat.setCatalog(catalog);
         
         Category parsed = categoryDao.insert(cat);
         compareCategoryFields(cat, parsed);
@@ -65,29 +66,33 @@ public class CategoryDaoTest extends AbstractDatabaseTest {
     
     @Test
     public void testInsertWithNewCatalog() throws ElementNotFoundException, DatabaseException {
-        ICatalogDao catalogDao = mock(ICatalogDao.class);
+        ICatalogDao catalogDao = new CatalogDao();
         ICategoryDao categoryDao = new CategoryDao(catalogDao);
         
         Category cat = new Category("Some cat", 4, 4, 1, true);
         Catalog newCatalog = getCatalog(-1);
         cat.setCatalog(newCatalog);
         
-        categoryDao.insert(cat);
-        verify(catalogDao, times(1)).insert(newCatalog);
+        Category parsed = categoryDao.insert(cat);
+        Category fromDb = categoryDao.findById(parsed.getId());
+        
+        Catalog actual = fromDb.getCatalog().get();
+        assertTrue("Catalog not inserted correctly.", actual.getId() >= 0);
+        assertEquals("Catalog not inserted correctly.", newCatalog.getName(), actual.getName());
     }
     
     @Test
     public void testUpdate() throws ElementNotFoundException, DatabaseException {
-        ICatalogDao catalogDao = mock(ICatalogDao.class);
-        when(catalogDao.findById(1)).thenReturn(getCatalog(1));
-        when(catalogDao.findById(2)).thenReturn(getCatalog(2));
+        ICatalogDao catalogDao = new CatalogDao();
         ICategoryDao categoryDao = new CategoryDao(catalogDao);
         
         Category cat = new Category("Some cat", 4, 4, 1, true);
-        cat.setCatalog(getCatalog(1));
+        Catalog catalog = catalogDao.insert(getCatalog(-1));
         Category parsed = categoryDao.insert(cat);
 
-        parsed.setCatalog(getCatalog(2));
+        Catalog changedCatalog = getCatalog(-1);;
+        changedCatalog.setName("Changed");
+        parsed.setCatalog(changedCatalog);
         parsed.setHeight(2);
         parsed.setName("Updated name");
         categoryDao.update(parsed);
