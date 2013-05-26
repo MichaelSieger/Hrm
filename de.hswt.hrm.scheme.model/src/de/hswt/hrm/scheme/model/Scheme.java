@@ -1,31 +1,83 @@
 package de.hswt.hrm.scheme.model;
 
 import com.google.common.base.Optional;
-
+import java.sql.Timestamp;
 import de.hswt.hrm.plant.model.Plant;
 
 public class Scheme {
     private final int id;
     private Plant plant;
-    
-    public Scheme() {
-        this(-1);
+    private Timestamp timestamp;
+
+    public Scheme(Plant plant, Timestamp timestamp) {
+        this(-1, plant, timestamp);
     }
-    
-    public Scheme(final int id) {
+
+    public Scheme(final int id, Plant plant, Timestamp timestamp) {
         this.id = id;
     }
-    
+
     public int getId() {
         return id;
     }
-    
+
     public Optional<Plant> getPlant() {
         return Optional.fromNullable(plant);
     }
-    
+
     public void setPlant(final Plant plant) {
         this.plant = plant;
     }
 
+    public Timestamp getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Timestamp timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + id;
+        result = prime * result + ((plant == null) ? 0 : plant.hashCode());
+        result = prime * result + ((timestamp == null) ? 0 : timestamp.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        Scheme other = (Scheme) obj;
+        if (id != other.id) {
+            return false;
+        }
+        if (plant == null) {
+            if (other.plant != null) {
+                return false;
+            }
+        }
+        else if (!plant.equals(other.plant)) {
+            return false;
+        }
+        if (timestamp == null) {
+            if (other.timestamp != null) {
+                return false;
+            }
+        }
+        else if (!timestamp.equals(other.timestamp)) {
+            return false;
+        }
+        return true;
+    }
 }
