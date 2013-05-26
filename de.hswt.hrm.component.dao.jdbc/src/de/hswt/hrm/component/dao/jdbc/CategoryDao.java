@@ -6,11 +6,17 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import javax.inject.Inject;
+
 import org.apache.commons.dbutils.DbUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import de.hswt.hrm.catalog.dao.core.ICatalogDao;
+import de.hswt.hrm.catalog.model.Catalog;
 import de.hswt.hrm.common.database.DatabaseFactory;
 import de.hswt.hrm.common.database.NamedParameterStatement;
 import de.hswt.hrm.common.database.SqlQueryBuilder;
@@ -21,6 +27,16 @@ import de.hswt.hrm.component.dao.core.ICategoryDao;
 import de.hswt.hrm.component.model.Category;
 
 public class CategoryDao implements ICategoryDao {
+    private final static Logger LOG = LoggerFactory.getLogger(CategoryDao.class);
+    private final ICatalogDao catalogDao;
+    
+    @Inject
+    public CategoryDao(final ICatalogDao catalogDao) {
+        checkNotNull(catalogDao, "Target DAO must be injected properly.");
+        
+        this.catalogDao  = catalogDao;
+        LOG.info("CatalogDao injected into CategoryService.");
+    }
 
     @Override
     public Collection<Category> findAll() throws DatabaseException {
@@ -84,6 +100,12 @@ public class CategoryDao implements ICategoryDao {
      */
     @Override
     public Category insert(Category category) throws SaveException {
+        if (category.getId() >= 0) {
+            throw new IllegalStateException("The category already has an ID.");
+        }
+        
+        insertCatalogIfNecessary(category);
+        
         SqlQueryBuilder builder = new SqlQueryBuilder();
         builder.insert(TABLE_NAME, Fields.NAME, Fields.HEIGHT, Fields.WIDTH,
                 Fields.DEFAULT_QUANTIFIER, Fields.DEFAULT_BOOL_RATING, Fields.CATALOG);
@@ -97,8 +119,12 @@ public class CategoryDao implements ICategoryDao {
                 stmt.setParameter(Fields.WIDTH, category.getWidth());
                 stmt.setParameter(Fields.DEFAULT_QUANTIFIER, category.getDefaultQuantifier());
                 stmt.setParameter(Fields.DEFAULT_BOOL_RATING, category.getDefaultBoolRating());
-                // TODO finish category.getCatalog() first
-                //stmt.setParameter(Fields.CATALOG, category.getCatalog().get().getId());
+                if (category.getCatalog().isPresent()) {
+                    stmt.setParameter(Fields.CATALOG, category.getCatalog().get().getId());
+                }
+                else {
+                    stmt.setParameter(Fields.CATALOG, null);
+                }
 
                 int affectedRows = stmt.executeUpdate();
                 if (affectedRows != 1) {
@@ -113,8 +139,8 @@ public class CategoryDao implements ICategoryDao {
                         Category inserted = new Category(id, category.getName(),
                                 category.getHeight(), category.getWidth(),
                                 category.getDefaultQuantifier(), category.getDefaultBoolRating());
-                        // TODO finish category.setCatalog() first
-                        // inserted.setCatalog(catagory.getCatalog().orNull());
+                        inserted.setCatalog(category.getCatalog().orNull());
+
                         return inserted;
                     }
                     else {
@@ -136,6 +162,8 @@ public class CategoryDao implements ICategoryDao {
         if (category.getId() < 0) {
             throw new ElementNotFoundException("Element has no valid ID.");
         }
+        
+        insertCatalogIfNecessary(category);
 
         SqlQueryBuilder builder = new SqlQueryBuilder();
         builder.update(TABLE_NAME, Fields.NAME, Fields.HEIGHT, Fields.WIDTH,
@@ -152,8 +180,7 @@ public class CategoryDao implements ICategoryDao {
                 stmt.setParameter(Fields.WIDTH, category.getWidth());
                 stmt.setParameter(Fields.DEFAULT_QUANTIFIER, category.getDefaultQuantifier());
                 stmt.setParameter(Fields.DEFAULT_BOOL_RATING, category.getDefaultBoolRating());
-                // TODO finish category.getCatalog() first
-                // stmt.setParameter(Fields.CATALOG, category.getCatalog().get().getId());
+                stmt.setParameter(Fields.CATALOG, category.getCatalog().get().getId());
 
                 int affectedRows = stmt.executeUpdate();
                 if (affectedRows != 1) {
@@ -166,7 +193,16 @@ public class CategoryDao implements ICategoryDao {
         }
     }
 
-    private Collection<Category> fromResultSet(ResultSet rs) throws SQLException {
+    private void insertCatalogIfNecessary(final Category category) throws SaveException {
+        if (category.getCatalog().isPresent() && category.getCatalog().get().getId() < 0) {
+            Catalog parsed = catalogDao.insert(category.getCatalog().get());
+            category.setCatalog(parsed);
+        }
+    }
+    
+    private Collection<Category> fromResultSet(ResultSet rs) 
+            throws SQLException, DatabaseException {
+        
         checkNotNull(rs, "Result must not be null.");
         Collection<Category> categoryList = new ArrayList<>();
 
@@ -177,9 +213,17 @@ public class CategoryDao implements ICategoryDao {
             int heigth = rs.getInt(Fields.HEIGHT);
             int defaultQuantifier = rs.getInt(Fields.DEFAULT_QUANTIFIER);
             boolean defaultBoolRating = rs.getBoolean(Fields.DEFAULT_BOOL_RATING);
+            
+            // Handle dependency
+            int catalogId = rs.getInt(Fields.CATALOG);
+            Catalog catalog = null;
+            if (catalogId >= 0) {
+                catalog = catalogDao.findById(catalogId);
+            }
 
             Category category = new Category(id, name, width, heigth, defaultQuantifier,
                     defaultBoolRating);
+            category.setCatalog(catalog);
 
             categoryList.add(category);
         }

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+import org.eclipse.e4.core.contexts.ContextInjectionFactory;
+import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.Shell;
@@ -20,8 +22,11 @@ public class CategoryPartUtil {
         
     }
     
-    public static Optional<Category> showWizard(Shell shell, Optional<Category> category) {
+    public static Optional<Category> showWizard(IEclipseContext context, Shell shell,
+            Optional<Category> category) {
+        
         CategoryWizard catWiz = new CategoryWizard(category);
+        ContextInjectionFactory.inject(catWiz, context);
         
         WizardDialog wizDiag = new WizardDialog(shell,catWiz);
         wizDiag.open();
@@ -71,17 +76,31 @@ public class CategoryPartUtil {
     }
 
     private static ColumnDescription<Category> getDefaultBoolRating() {
-        return new ColumnDescription<>("bewertet", new ColumnLabelProvider() {
+        return new ColumnDescription<>("Bewertet", new ColumnLabelProvider() {
             @Override
             public String getText(Object element) {
                 Category cat = (Category) element;
-                return Boolean.toString(cat.getDefaultBoolRating());
+                if (cat.getDefaultBoolRating()) {
+                    return "Ja";
+                } else {
+                    return "Nein";
+                }
             }
         }, new Comparator<Category>() {
             @Override
             public int compare(Category c1, Category c2) {
-                String bRate1 = Boolean.toString(c1.getDefaultBoolRating());
-                String bRate2 = Boolean.toString(c2.getDefaultBoolRating());
+                String bRate1;
+                String bRate2;
+                if (c1.getDefaultBoolRating()) {
+                    bRate1 = "Ja";
+                } else {
+                    bRate1 = "Nein";
+                }
+                if (c2.getDefaultBoolRating()) {
+                    bRate2 = "Ja";
+                } else {
+                    bRate2 = "Nein";
+                }
                 return bRate1.compareToIgnoreCase(bRate2);
             }
         });

@@ -17,16 +17,6 @@
 						<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
 					</Text.layoutData>
 				</Text>
-				<Label text="Standort: ">
-					<Label.layoutData>
-						<GridData horizontalAlignment="RIGHT"/>
-					</Label.layoutData>
-				</Label>
-				<Combo x:Name="place">
-					<Combo.layoutData>
-						<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
-					</Combo.layoutData>
-				</Combo>
 				<Label text="Nächste Inspektion: "/>
 				<Text x:Style="BORDER" x:Name="nextInspection">
 					<Text.layoutData>

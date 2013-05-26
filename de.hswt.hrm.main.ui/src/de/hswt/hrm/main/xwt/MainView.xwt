@@ -1,0 +1,41 @@
+<Composite xmlns="http://www.eclipse.org/xwt/presentation"
+	xmlns:x="http://www.eclipse.org/xwt" x:Class="de.hswt.hrm.main.handlers.MainPartEventHandler">
+	<Composite.layout>
+		<GridLayout numColumns="5" makeColumnsEqualWidth="true"/>
+	</Composite.layout>
+	<Label/>
+	<Button x:Name="toContacts" image="Contacts.jpg" >
+		<Button.layoutData>
+			<GridData verticalAlignment="FILL" horizontalAlignment="FILL"/>
+		</Button.layoutData>
+	</Button>
+	<Label text="Kontakte:&#13;&#10;-Konakte anlegen&#13;&#10;-Kontakte bearbeiten&#13;&#10;&#13;&#10;"/>
+	<Button x:Name="toPlaces" image="Places.jpg" >
+		<Button.layoutData>
+			<GridData horizontalAlignment="FILL" verticalAlignment="FILL"/>
+		</Button.layoutData>
+	</Button>
+	<Label text="Standorte:&#13;&#10;-Standorte anlegen&#13;&#10;-Standorte bearbeiten"/>
+	<Label/>
+	<Button x:Name="toPlants" image="plants.jpg" >
+		<Button.layoutData>
+			<GridData horizontalAlignment="FILL" verticalAlignment="FILL"/>
+		</Button.layoutData>
+	</Button>
+	<Label text="Anlagen:&#13;&#10;-Anlagen anlegen&#13;&#10;-Anlagen bearbeiten"/>
+	<Button x:Name="toScheme" image="plants.jpg" >
+		<Button.layoutData>
+			<GridData verticalAlignment="FILL" horizontalAlignment="FILL"/>
+		</Button.layoutData>
+	</Button>
+	<Label text="Schemaeditor:&#13;&#10;-Schema anlegen&#13;&#10;-Schema bearbeiten"/>
+	<Label/>
+	<Button x:Name="toCatalog" image="plants.jpg">
+		<Button.layoutData>
+			<GridData horizontalAlignment="RIGHT"/>
+		</Button.layoutData>
+	</Button>
+	<Label text="Katalog:&#13;&#10;-Katalog anlegen&#13;&#10;-Katalog bearbeiten"/>
+	<Button x:Name="toCategory" image="plants.jpg"/>
+	<Label text="Kategorie:&#13;&#10;-Kategorien anlegen&#13;&#10;-Kategorien bearbeiten&#13;&#10;"/>
+</Composite>

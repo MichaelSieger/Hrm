@@ -1,0 +1,160 @@
+<Composite xmlns="http://www.eclipse.org/xwt/presentation"
+	xmlns:x="http://www.eclipse.org/xwt" xmlns:p1="clr-namespace:de.hswt.hrm.place.ui.xwt"
+	x:Class="de.hswt.hrm.catalog.ui.event.CatalogMatchingEventHandler" xmlns:p2="clr-namespace:org.eclipse.ui.forms.widgets">
+	<Composite.layout>
+		<GridLayout numColumns="4" />
+	</Composite.layout>
+	<Section text="Bauelemente" x:Style="(p2:Section).EXPANDED | (p2:Section).TITLE_BAR">
+		<Section.layoutData>
+			<GridData horizontalAlignment="FILL" verticalAlignment="FILL" heightHint="314" grabExcessVerticalSpace="true" grabExcessHorizontalSpace="true"/>
+		</Section.layoutData>
+		<Section.client>
+			<Composite>
+				<Composite.layout>
+					<GridLayout/>
+				</Composite.layout>
+				<List x:Style="BORDER" x:Name="components">
+					<List.layoutData>
+						<GridData horizontalAlignment="FILL" widthHint="400" verticalAlignment="FILL" grabExcessHorizontalSpace="true" grabExcessVerticalSpace="true"/>
+					</List.layoutData>
+				</List>
+			</Composite>
+		</Section.client>
+	</Section>
+	<Section text="Zugeordnete Soll Zustnde" x:Style="(p2:Section).EXPANDED | (p2:Section).TITLE_BAR">
+		<Section.layoutData>
+			<GridData grabExcessVerticalSpace="true" horizontalAlignment="FILL" verticalAlignment="FILL" widthHint="300" grabExcessHorizontalSpace="true"/>
+		</Section.layoutData>
+		<Section.client>
+			<Composite>
+				<Composite.layout>
+					<GridLayout/>
+				</Composite.layout>
+				<List x:Style="BORDER" x:Name="matchedTarget" MouseDoubleClickEvent="onMatchedTargetMouseDoubleClick" size="156, 318">
+					<List.layoutData>
+						<GridData grabExcessVerticalSpace="true" grabExcessHorizontalSpace="true" verticalAlignment="FILL" horizontalAlignment="FILL" widthHint="150" heightHint="200"/>
+					</List.layoutData>
+				</List>
+			</Composite>
+		</Section.client>
+	</Section>
+	<Section text="Zugeordnete Ist" x:Style="(p2:Section).EXPANDED | (p2:Section).TITLE_BAR">
+		<Section.layoutData>
+			<GridData grabExcessVerticalSpace="true" verticalAlignment="FILL" horizontalAlignment="FILL" widthHint="300" grabExcessHorizontalSpace="true"/>
+		</Section.layoutData>
+		<Section.client>
+			<Composite>
+				<Composite.layout>
+					<GridLayout/>
+				</Composite.layout>
+				<List x:Style="BORDER" size="155, 68">
+					<List.layoutData>
+						<GridData grabExcessVerticalSpace="true" verticalAlignment="FILL" horizontalAlignment="FILL" grabExcessHorizontalSpace="true" widthHint="150"/>
+					</List.layoutData>
+				</List>
+			</Composite>
+		</Section.client>
+	</Section>
+	<Section text="Zugeordnete Manahmen" x:Style="(p2:Section).EXPANDED | (p2:Section).TITLE_BAR">
+		<Section.layoutData>
+			<GridData grabExcessVerticalSpace="true" horizontalAlignment="FILL" verticalAlignment="FILL" grabExcessHorizontalSpace="true" widthHint="300"/>
+		</Section.layoutData>
+		<Section.client>
+			<Composite>
+				<Composite.layout>
+					<GridLayout/>
+				</Composite.layout>
+				<List x:Style="BORDER" size="151, 68">
+					<List.layoutData>
+						<GridData grabExcessVerticalSpace="true" grabExcessHorizontalSpace="true" horizontalAlignment="FILL" verticalAlignment="FILL" widthHint="150"/>
+					</List.layoutData>
+				</List>
+			</Composite>
+		</Section.client>
+	</Section>
+	<Section text="Informationen" x:Style="(p1:Section).EXPANDED | (p1:Section).TITLE_BAR" x:Name="information">
+		<Section.layoutData>
+			<GridData verticalAlignment="FILL" horizontalAlignment="FILL" grabExcessHorizontalSpace="true"/>
+		</Section.layoutData>
+		<Section.client>
+			<Composite>
+				<Composite.layout>
+					<GridLayout numColumns="4"/>
+				</Composite.layout>
+				<Label text="Name :"/>
+				<Text x:Style="BORDER" x:Name="name">
+					<Text.layoutData>
+						<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL" horizontalSpan="3"/>
+					</Text.layoutData>
+				</Text>
+				<Label text="Beschreibung :"/>
+				<Text x:Style="BORDER | WRAP | V_SCROLL | MULTI" x:Name="street">
+					<Text.layoutData>
+						<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL" verticalAlignment="FILL" heightHint="176" widthHint="300" horizontalSpan="3"/>
+					</Text.layoutData>
+				</Text>
+			</Composite>
+		</Section.client>
+	</Section>
+	<Section text="Verfgbare Soll Zustnd" x:Style="(p2:Section).EXPANDED | (p2:Section).TITLE_BAR">
+		<Section.layoutData>
+			<GridData heightHint="314" horizontalAlignment="FILL" verticalAlignment="FILL" grabExcessVerticalSpace="true" grabExcessHorizontalSpace="true"/>
+		</Section.layoutData>
+		<Section.client>
+			<Composite>
+				<Composite.layout>
+					<GridLayout/>
+				</Composite.layout>
+				<List x:Style="BORDER" x:Name="availableTarget"
+		MouseDoubleClickEvent="onAvailableTargetMouseDoubleClick" size="156, 289">
+					<List.layoutData>
+						<GridData grabExcessHorizontalSpace="true" grabExcessVerticalSpace="true" verticalAlignment="FILL" horizontalAlignment="FILL" heightHint="200"/>
+					</List.layoutData>
+				</List>
+			</Composite>
+		</Section.client>
+	</Section>
+	<Section text="Verfgbare Ist" x:Style="(p2:Section).EXPANDED | (p2:Section).TITLE_BAR">
+		<Section.layoutData>
+			<GridData verticalAlignment="FILL" horizontalAlignment="FILL" grabExcessVerticalSpace="true" grabExcessHorizontalSpace="true"/>
+		</Section.layoutData>
+		<Section.client>
+			<Composite>
+				<Composite.layout>
+					<GridLayout/>
+				</Composite.layout>
+				<List x:Style="BORDER" x:Name="availableCurrent" size="102, 242">
+					<List.layoutData>
+						<GridData horizontalAlignment="FILL" verticalAlignment="FILL" grabExcessVerticalSpace="true" grabExcessHorizontalSpace="true"/>
+					</List.layoutData>
+				</List>
+			</Composite>
+		</Section.client>
+	</Section>
+	<Section text="Verfgbare Manahmen" x:Style="(p2:Section).EXPANDED | (p2:Section).TITLE_BAR">
+		<Section.layoutData>
+			<GridData horizontalAlignment="FILL" verticalAlignment="FILL" grabExcessVerticalSpace="true" grabExcessHorizontalSpace="true"/>
+		</Section.layoutData>
+		<Section.client>
+			<Composite>
+				<Composite.layout>
+					<GridLayout/>
+				</Composite.layout>
+				<List x:Style="BORDER" x:Name="availableActivity" size="150, 242">
+					<List.layoutData>
+						<GridData grabExcessVerticalSpace="true" grabExcessHorizontalSpace="true" verticalAlignment="FILL" horizontalAlignment="FILL"/>
+					</List.layoutData>
+				</List>
+			</Composite>
+		</Section.client>
+	</Section>
+	<Composite xmlns="http://www.eclipse.org/xwt/presentation" xmlns:x="http://www.eclipse.org/xwt">
+	<Composite.layout>
+		<GridLayout/>
+	</Composite.layout>
+</Composite>
+	<Label/>
+	<Label/>
+	<Label/>
+<!-- Forms API -->
+</Composite>

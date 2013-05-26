@@ -2,6 +2,11 @@ package de.hswt.hrm.plant.ui.wizard;
 
 import java.util.HashMap;
 
+import javax.inject.Inject;
+import org.eclipse.e4.core.contexts.ContextInjectionFactory;
+import org.eclipse.e4.core.contexts.IEclipseContext;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.widgets.Text;
 import org.slf4j.Logger;
@@ -16,14 +21,20 @@ import de.hswt.hrm.plant.model.Plant;
 import de.hswt.hrm.plant.service.PlantService;
 
 public class PlantWizard extends Wizard {
-    
     private static final Logger LOG = LoggerFactory.getLogger(PlantWizard.class);
+    
+    @Inject
+    private PlantService plantService;
+    
     private PlantWizardPageOne first;
+    private PlantWizardPageTwo second;
     private Optional<Plant> plant;
 
-    public PlantWizard(Optional<Plant> plant) {
+    public PlantWizard(IEclipseContext context, Optional<Plant> plant) {
         this.plant = plant;
         first = new PlantWizardPageOne("Erste Seite", plant);
+        second = new PlantWizardPageTwo("Zweite Seite", plant);
+        ContextInjectionFactory.inject(second, context);
         
         if (plant.isPresent()) {
             setWindowTitle("Anlage bearbeiten");
@@ -35,11 +46,12 @@ public class PlantWizard extends Wizard {
     @Override
     public void addPages() {
         addPage(first);
+        addPage(second);
     }
     
     @Override
     public boolean canFinish() {
-        return first.isPageComplete();
+    	return first.isPageComplete() && second.isPageComplete();
     }
 
     @Override
@@ -55,11 +67,11 @@ public class PlantWizard extends Wizard {
         Plant p = this.plant.get();
         try {
             // Update plant from DB
-            p = PlantService.findById(p.getId());
+            p = plantService.findById(p.getId());
             // Set values to fields from WizardPage
             p = setValues(plant);
             // Update plant in DB
-            PlantService.update(p);
+            plantService.update(p);
             plant = Optional.of(p);
         } catch (DatabaseException e) {
             LOG.error("An error occured", e);
@@ -70,7 +82,7 @@ public class PlantWizard extends Wizard {
     private boolean insertNewPlant() {
         Plant p = setValues(Optional.<Plant>absent());
         try {
-            plant = Optional.of(PlantService.insert(p));
+            plant = Optional.of(plantService.insert(p));
         } catch (SaveException e) {
             LOG.error("Could not save Element: "+ plant +"into Database", e);
         }
@@ -82,7 +94,7 @@ public class PlantWizard extends Wizard {
         String description = mandatoryWidgets.get("description").getText();
         //TODO place - mandatory?
         // Bessere implementierung als mit Null?
-        Place place = first.getSelectedPlace().orNull();
+//        Place place = first.getSelectedPlace().orNull();
         //TODO nextInspection / inspectionIntervall?
         String inspectionIntervall = mandatoryWidgets.get("inspectionIntervall").getText();
         //TODO scheme
@@ -111,7 +123,7 @@ public class PlantWizard extends Wizard {
             //TODO nextInspection?
             //TODO scheme
         }
-        plant.setPlace(place);
+//        plant.setPlace(place);
         plant.setManufactor(manufactor);
         if (!constructionYear.equals("")) {
             plant.setConstructionYear(Integer.parseInt(constructionYear));
@@ -124,6 +136,11 @@ public class PlantWizard extends Wizard {
         plant.setCurrent(current);
         plant.setVoltage(voltage);
         plant.setNote(note);
+        
+        TableViewer viewer = second.getTableViewer();
+        IStructuredSelection sel =  (IStructuredSelection) viewer.getSelection();
+        Place selectedPlace = (Place) sel.getFirstElement();
+        plant.setPlace(selectedPlace);
         
         return plant;
     }

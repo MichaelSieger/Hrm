@@ -87,7 +87,7 @@ public class ComponentDao implements IComponentDao {
     @Override
     public Component insert(Component component) throws SaveException {
         SqlQueryBuilder builder = new SqlQueryBuilder();
-        builder.insert(TABLE_NAME, Fields.ID, Fields.NAME, Fields.SYMBOL_LR, Fields.SYMBOL_RL,
+        builder.insert(TABLE_NAME,Fields.NAME, Fields.SYMBOL_LR, Fields.SYMBOL_RL,
                 Fields.SYMBOL_UD, Fields.SYMBOL_DU, Fields.QUANTIFIER, Fields.BOOL_RATING,
                 Fields.CATEGORY);
 

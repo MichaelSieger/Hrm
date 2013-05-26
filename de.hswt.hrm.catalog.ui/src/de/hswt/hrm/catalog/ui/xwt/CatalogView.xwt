@@ -4,17 +4,18 @@
 	<Composite.layout>
 		<GridLayout numColumns="5" makeColumnsEqualWidth="true" />
 	</Composite.layout>
-	<Text x:name="searchText" x:Style="SEARCH" text="Search">
+	<Text x:name="searchText" x:Style="SEARCH" text="Search"
+		FocusInEvent="enterText" FocusOutEvent="leaveText" KeyUpEvent="onKeyUp">
 		<Text.layoutData>
 			<GridData horizontalAlignment="FILL" horizontalSpan="4" />
 		</Text.layoutData>
 	</Text>
 	<Label />
-	<TableViewer x:name="catalogTable" x:Style="BORDER">
+	<TableViewer x:name="catalogTable" x:Style="BORDER | FULL_SELECTION">
 		<TableViewer.table headerVisible="true"
 			linesVisible="true">
 			<TableViewer.table.layoutData>
-				<GridData verticalSpan="6" horizontalSpan="4"
+				<GridData verticalSpan="7" horizontalSpan="4"
 					horizontalAlignment="FILL" widthHint="860" verticalAlignment="FILL"
 					grabExcessVerticalSpace="true" grabExcessHorizontalSpace="true" />
 			</TableViewer.table.layoutData>
@@ -33,9 +34,14 @@
 	<Button x:Style="CHECK" text="All" SelectionEvent="onSelection" />
 	<Button x:Style="CHECK" text="Soll" SelectionEvent="onSelection" />
 	<Button x:Style="CHECK" text="Ist" SelectionEvent="onSelection" />
-	<Button x:Style="CHECK" text="Maßnahme" SelectionEvent="onSelection">
+	<Button x:Style="CHECK" text="Manahme" SelectionEvent="onSelection">
 		<Button.layoutData>
 			<GridData grabExcessVerticalSpace="true" verticalAlignment="TOP" />
+		</Button.layoutData>
+	</Button>
+	<Button text="Back" x:Name="back2Main">
+		<Button.layoutData>
+			<GridData horizontalAlignment="FILL"/>
 		</Button.layoutData>
 	</Button>
 </Composite>	

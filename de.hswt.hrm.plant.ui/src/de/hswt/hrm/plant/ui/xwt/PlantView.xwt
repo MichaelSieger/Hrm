@@ -12,7 +12,7 @@
 		</Text.layoutData>
 	</Text>
 	<Label />
-	<TableViewer x:name="plantTable" x:Style="BORDER">
+	<TableViewer x:name="plantTable" x:Style="BORDER | FULL_SELECTION">
 		<TableViewer.table headerVisible="true"
 			linesVisible="true" MouseDoubleClickEvent="tableEntrySelected">
 			<TableViewer.table.layoutData>
@@ -34,6 +34,10 @@
 	</Button>
 	<Label />
 	<Label />
-	<Label />
+	<Button text="Back" x:Name="back2Main">
+		<Button.layoutData>
+			<GridData horizontalAlignment="FILL" verticalAlignment="BOTTOM"/>
+		</Button.layoutData>
+	</Button>
 </Composite>
 <!-- Forms API -->

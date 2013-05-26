@@ -18,7 +18,6 @@ Require-Bundle: com.google.guava;bundle-version="10.0.1",
  org.eclipse.equinox.util;bundle-version="1.0.400",
  org.eclipse.e4.core.di;bundle-version="1.2.0",
  org.eclipse.e4.core.contexts;bundle-version="1.2.0"
-Service-Component: OSGI-INF/activity-component.xml,
- OSGI-INF/current-component.xml,
- OSGI-INF/target-component.xml
+Service-Component: OSGI-INF/activity-component.xml,OSGI-INF/current-component.xml,OSGI-INF/target-component.xml,
+ OSGI-INF/catalog-component.xml
 Export-Package: de.hswt.hrm.catalog.dao.jdbc
