@@ -54,7 +54,7 @@ public class PlantWizardPageTwo extends WizardPage {
         super(title);
         this.plant = plant;
         if (plant.isPresent()) {
-            setDescription("Standort Auswählen für Anlage " + plant.get().getDescription());
+            setDescription("Standort Auswählen für Anlage mit der Bezeichnung: " + plant.get().getDescription());
         }
     }
 
