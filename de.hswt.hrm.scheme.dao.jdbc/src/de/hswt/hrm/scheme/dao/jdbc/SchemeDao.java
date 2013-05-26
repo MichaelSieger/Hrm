@@ -27,7 +27,7 @@ import de.hswt.hrm.scheme.model.Scheme;
 public class SchemeDao implements ISchemeDao {
 
     @Override
-    public Scheme insert(Scheme scheme) {
+    public Scheme insert(Scheme scheme) throws SaveException{
         SqlQueryBuilder builder = new SqlQueryBuilder();
         builder.insert(TABLE_NAME, Fields.TIMESTAMP, Fields.PLANT);
         
@@ -124,8 +124,33 @@ public class SchemeDao implements ISchemeDao {
 
     @Override
     public void update(Scheme scheme) throws ElementNotFoundException, SaveException {
-        // TODO Auto-generated method stub
+        checkNotNull(scheme, "Scheme must not be null.");
 
+        if (scheme.getId() < 0) {
+            throw new ElementNotFoundException("Element has no valid ID.");
+        }
+
+        SqlQueryBuilder builder = new SqlQueryBuilder();
+        builder.update(TABLE_NAME, Fields.TIMESTAMP, Fields.PLANT);
+        builder.where(Fields.ID);
+        
+        final String query = builder.toString();
+
+        try (Connection con = DatabaseFactory.getConnection()) {
+            try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
+                stmt.setParameter(Fields.ID, scheme.getId());
+                stmt.setParameter(Fields.TIMESTAMP, scheme.getTimestamp());
+                stmt.setParameter(Fields.PLANT, scheme.getPlant());
+
+                int affectedRows = stmt.executeUpdate();
+                if (affectedRows != 1) {
+                    throw new SaveException();
+                }
+            }
+        }
+        catch (SQLException | DatabaseException e) {
+            throw new SaveException(e);
+        }
     }
 
     private Collection<Scheme> fromResultSet(ResultSet rs) throws SQLException {
