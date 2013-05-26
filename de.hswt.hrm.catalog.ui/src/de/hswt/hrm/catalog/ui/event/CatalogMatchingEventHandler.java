@@ -9,7 +9,15 @@ public class CatalogMatchingEventHandler {
     public void onAvailableTargetMouseDoubleClick(Event event) {
 
         List l = (List) event.widget;
-        String s = l.getItem(l.getSelectionIndex());
+
+        int i = l.getSelectionIndex();
+
+        if (i == -1) {
+            return;
+        }
+
+        String s = l.getItem(i);
+
         l.remove(s);
         List l2 = (List) XWT.findElementByName(l, "matchedTarget");
         l2.add(s);
@@ -19,7 +27,13 @@ public class CatalogMatchingEventHandler {
     public void onMatchedTargetMouseDoubleClick(Event event) {
 
         List l = (List) event.widget;
-        String s = l.getItem(l.getSelectionIndex());
+        int i = l.getSelectionIndex();
+
+        if (i == -1) {
+            return;
+        }
+
+        String s = l.getItem(i);
         l.remove(s);
         List l2 = (List) XWT.findElementByName(l, "availableTarget");
         l2.add(s);
