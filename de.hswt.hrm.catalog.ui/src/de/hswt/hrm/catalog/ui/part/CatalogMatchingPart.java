@@ -12,7 +12,9 @@ import org.eclipse.e4.xwt.XWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.List;
 
+import de.hswt.hrm.catalog.model.Activity;
 import de.hswt.hrm.catalog.model.ICatalogItem;
+import de.hswt.hrm.catalog.model.Target;
 import de.hswt.hrm.catalog.service.CatalogService;
 
 public class CatalogMatchingPart {
@@ -28,15 +30,33 @@ public class CatalogMatchingPart {
 
         try {
             final Composite composite = (Composite) XWT.load(parent, url);
-            final List l = (List) XWT.findElementByName(composite, "availableTarget");
-            final List l1 = (List) XWT.findElementByName(composite, "availableCurrent");
-            
-            Collection<ICatalogItem> items = catalogService.findAllCatalogItem();
 
+            final List targets = ((List) XWT.findElementByName(composite, "availableTarget"));
+            final List currents = (List) XWT.findElementByName(composite, "availableCurrent");
+            final List activities = (List) XWT.findElementByName(composite, "availableActivity");
+
+            Collection<ICatalogItem> items = catalogService.findAllCatalogItem();
+            initializeAvailableItems(items, targets, currents, activities);
         }
         catch (Exception e) {
             e.printStackTrace();
         }
     }
 
+    private void initializeAvailableItems(Collection<ICatalogItem> items, List targets,
+            List currents, List activities) {
+
+        for (ICatalogItem i : items) {
+            if (i instanceof Activity) {
+                activities.add(i.getName());
+            }
+            else if (i instanceof Target) {
+                targets.add(i.getName());
+            }
+            else {
+                currents.add(i.getName());
+            }
+        }
+
+    }
 }

@@ -38,12 +38,12 @@
 			<GridData widthHint="147" heightHint="285" horizontalAlignment="FILL" verticalAlignment="FILL"/>
 		</List.layoutData>
 	</List>
-	<List x:Style="BORDER">
+	<List x:Style="BORDER" x:Name="availableCurrent" MouseDoubleClickEvent="onAvailableTargetMouseDoubleClick">
 		<List.layoutData>
 			<GridData horizontalAlignment="FILL" verticalAlignment="FILL"/>
 		</List.layoutData>
 	</List>
-	<List x:Style="BORDER">
+	<List x:Style="BORDER" x:Name="availableActivity" MouseDoubleClickEvent="onAvailableTargetMouseDoubleClick">
 		<List.layoutData>
 			<GridData horizontalAlignment="FILL" verticalAlignment="FILL"/>
 		</List.layoutData>
