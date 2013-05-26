@@ -91,4 +91,20 @@ public class CatalogMatchingEventHandler {
         Text name = (Text) XWT.findElementByName(tv, "name");
         name.setText(selectedEntry.getName());
     }
+
+    public void onMouseDoubleClick(Event event) {
+
+        TableViewer tv = (TableViewer) XWT.findElementByName(event.widget, "availableTarget");
+        ICatalogItem item = (ICatalogItem) tv.getElementAt(tv.getTable().getSelectionIndex());
+
+        if (item == null) {
+            return;
+        }
+
+        List matchedTarget = (List) XWT.findElementByName(tv, "matchedTarget");
+        matchedTarget.add(item.getName());
+        tv.remove(item);
+        tv.getTable().setEnabled(false);
+
+    }
 }
