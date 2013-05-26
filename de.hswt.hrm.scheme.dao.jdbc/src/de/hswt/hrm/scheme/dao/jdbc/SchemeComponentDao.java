@@ -95,8 +95,49 @@ public class SchemeComponentDao implements ISchemeComponentDao {
 
     @Override
     public SchemeComponent insert(SchemeComponent schemeComponent) throws SaveException {
-        // TODO Auto-generated method stub
-        return null;
+        SqlQueryBuilder builder = new SqlQueryBuilder();
+        builder.insert(TABLE_NAME, Fields.COMPONENT, Fields.SCHEME, Fields.X_POS, Fields.Y_POS,
+                Fields.DIRECTION);
+
+        final String query = builder.toString();
+
+        try (Connection con = DatabaseFactory.getConnection()) {
+            try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
+
+                stmt.setParameter(Fields.COMPONENT, schemeComponent.getComponent());
+                // TODO
+                // stmt.setParameter(Fields.SCHEME
+                stmt.setParameter(Fields.X_POS, schemeComponent.getX());
+                stmt.setParameter(Fields.Y_POS, schemeComponent.getY());
+                stmt.setParameter(Fields.DIRECTION, schemeComponent.getDirection());
+
+
+                int affectedRows = stmt.executeUpdate();
+                if (affectedRows != 1) {
+                    throw new SaveException();
+                }
+
+                try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        int id = generatedKeys.getInt(1);
+                        // TODO wenn Scheme vorhanden dann Konstruktor anpassen !
+                        // Create new Component with id
+                        SchemeComponent inserted = new SchemeComponent(id, schemeComponent.getX(),
+                                schemeComponent.getY(), schemeComponent.getDirection(),
+                                schemeComponent.getComponent());
+
+                         return inserted;
+                    }
+                    else {
+                        throw new SaveException("Could not retrieve generated ID.");
+                    }
+                }
+            }
+
+        }
+        catch (SQLException | DatabaseException e) {
+            throw new SaveException(e);
+        }
     }
 
     @Override
@@ -113,10 +154,10 @@ public class SchemeComponentDao implements ISchemeComponentDao {
             int id = rs.getInt(Fields.ID);
             int xPos = rs.getInt(Fields.X_POS);
             int yPos = rs.getInt(Fields.Y_POS);
-            //TODO 
-            //Direction direction = ??
-            //Component component = ??
-          //TODO null durch direction + component ersetzen
+            // TODO
+            // Direction direction = ??
+            // Component component = ??
+            // TODO null durch direction + component ersetzen
             SchemeComponent schemeComponent = new SchemeComponent(id, xPos, yPos, null, null);
 
             schemeComponentList.add(schemeComponent);
