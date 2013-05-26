@@ -2,7 +2,7 @@
 	xmlns:x="http://www.eclipse.org/xwt" xmlns:p1="clr-namespace:de.hswt.hrm.place.ui.xwt"
 	x:Class="de.hswt.hrm.catalog.ui.event.CatalogMatchingEventHandler">
 	<Composite.layout>
-		<GridLayout numColumns="4" makeColumnsEqualWidth="true" />
+		<GridLayout numColumns="4" />
 	</Composite.layout>
 	<Label text="Bauelemente" />
 	<Label text="Zugeordnete Soll Zustände" />
@@ -10,8 +10,8 @@
 	<Label text="Zugeordnete Maßnahmen" />
 	<List x:Style="BORDER" x:Name="components">
 		<List.layoutData>
-			<GridData heightHint="640" widthHint="189"
-				verticalAlignment="FILL" horizontalAlignment="FILL" grabExcessVerticalSpace="true" verticalSpan="3" />
+			<GridData heightHint="317" widthHint="189"
+				verticalAlignment="FILL" horizontalAlignment="FILL" grabExcessVerticalSpace="true" />
 		</List.layoutData>
 	</List>
 	<List x:Style="BORDER" x:Name="matchedTarget" MouseDoubleClickEvent="onMatchedTargetMouseDoubleClick">
@@ -32,9 +32,44 @@
 				horizontalAlignment="FILL" />
 		</List.layoutData>
 	</List>
+	<Label/>
 	<Label text="Verfügbare Soll Zustände" />
 	<Label text="Verfügbare IST" />
 	<Label text="Verfügbare Maßnahmen" />
+	<Composite xmlns="http://www.eclipse.org/xwt/presentation" xmlns:x="http://www.eclipse.org/xwt">
+	<Composite.layout>
+		<GridLayout/>
+	</Composite.layout>
+</Composite>
+	<Label/>
+	<Label/>
+	<Label/>
+	<Label/>
+	<Label/>
+	<Label/>
+	<Label/>
+	<Section text="Informationen" x:Style="(p1:Section).EXPANDED | (p1:Section).TITLE_BAR" x:Name="information">
+		<Section.client>
+			<Composite>
+				<Composite.layout>
+					<GridLayout numColumns="4"/>
+				</Composite.layout>
+				<Label text="Name :"/>
+				<Text x:Style="BORDER" x:Name="name">
+					<Text.layoutData>
+						<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL" horizontalSpan="3"/>
+					</Text.layoutData>
+				</Text>
+				<Label text="Beschreibung :"/>
+				<Text x:Style="BORDER | WRAP | V_SCROLL | MULTI" x:Name="street">
+					<Text.layoutData>
+						<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL" verticalAlignment="FILL" heightHint="176" widthHint="300" horizontalSpan="3"/>
+					</Text.layoutData>
+				</Text>
+			</Composite>
+		</Section.client>
+	</Section>
+<!-- Forms API -->
 	<List x:Style="BORDER" x:Name="availableTarget"
 		MouseDoubleClickEvent="onAvailableTargetMouseDoubleClick">
 		<List.layoutData>

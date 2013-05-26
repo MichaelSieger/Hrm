@@ -9,6 +9,7 @@ import javax.inject.Inject;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.xwt.IConstants;
 import org.eclipse.e4.xwt.XWT;
+import org.eclipse.e4.xwt.forms.XWTForms;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.List;
 
@@ -30,7 +31,7 @@ public class CatalogMatchingPart {
                 "de/hswt/hrm/catalog/ui/xwt/CatalogMatching" + IConstants.XWT_EXTENSION_SUFFIX);
 
         try {
-            final Composite composite = (Composite) XWT.load(parent, url);
+            final Composite composite = (Composite) XWTForms.load(parent, url);
 
             final List targets = ((List) XWT.findElementByName(composite, "availableTarget"));
             final List currents = (List) XWT.findElementByName(composite, "availableCurrent");
