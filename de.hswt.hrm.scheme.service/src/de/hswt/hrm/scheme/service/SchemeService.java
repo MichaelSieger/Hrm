@@ -46,8 +46,7 @@ public class SchemeService {
 	    checkArgument(plant.getId() >= 0, "Plant must have a valid ID.");
 	    
 		// We insert a new scheme here !
-	    Scheme scheme = new Scheme();
-	    scheme.setPlant(plant);
+	    Scheme scheme = new Scheme(plant);
 	    scheme = schemeDao.insert(scheme);
 	    
 	    // Add all components

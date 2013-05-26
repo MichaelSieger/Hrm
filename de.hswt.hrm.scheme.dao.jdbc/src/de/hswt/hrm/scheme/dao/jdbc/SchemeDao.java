@@ -10,6 +10,8 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import javax.inject.Inject;
+
 import org.apache.commons.dbutils.DbUtils;
 
 import de.hswt.hrm.common.database.DatabaseFactory;
@@ -18,13 +20,21 @@ import de.hswt.hrm.common.database.SqlQueryBuilder;
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.ElementNotFoundException;
 import de.hswt.hrm.common.database.exception.SaveException;
-import de.hswt.hrm.component.model.Component;
 import de.hswt.hrm.scheme.dao.core.ISchemeDao;
 import de.hswt.hrm.plant.model.Plant;
-import de.hswt.hrm.plant.dao.jdbc.PlantDao;
+import de.hswt.hrm.plant.dao.core.IPlantDao;
 import de.hswt.hrm.scheme.model.Scheme;
 
 public class SchemeDao implements ISchemeDao {
+    private final IPlantDao plantDao;
+    
+    @Inject
+    public SchemeDao(final IPlantDao plantDao) {
+        checkNotNull(plantDao, "PlantDao not injected properly.");
+        
+        this.plantDao = plantDao;
+        // TODO: Add log message
+    }
 
     @Override
     public Scheme insert(Scheme scheme) throws SaveException{
@@ -48,9 +58,8 @@ public class SchemeDao implements ISchemeDao {
                     if (generatedKeys.next()) {
                         int id = generatedKeys.getInt(1);
 
-                        //FIXME denke der AUfruf passt nicht ganz so :)
-                        // Create new Scheme with id
-                        Scheme inserted = new Scheme(id, scheme.getPlant().orNull(), scheme.getTimestamp());
+                        Scheme inserted = new Scheme(id, scheme.getPlant().orNull(), 
+                                scheme.getTimestamp().orNull());
 
                         return inserted;
                     }
@@ -153,7 +162,7 @@ public class SchemeDao implements ISchemeDao {
         }
     }
 
-    private Collection<Scheme> fromResultSet(ResultSet rs) throws SQLException {
+    private Collection<Scheme> fromResultSet(ResultSet rs) throws SQLException, ElementNotFoundException, DatabaseException {
         checkNotNull(rs, "Result must not be null.");
         Collection<Scheme> placeList = new ArrayList<>();
 
@@ -161,7 +170,7 @@ public class SchemeDao implements ISchemeDao {
             int id = rs.getInt(Fields.ID);
 
             Timestamp timestamp = rs.getTimestamp("Session_Timestamp");
-            // FIXME
+            
             int plantId = rs.getInt(Fields.PLANT);
             Plant plant = null;
             if (plantId >= 0) {

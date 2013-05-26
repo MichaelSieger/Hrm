@@ -9,8 +9,8 @@ public class Scheme {
     private Plant plant;
     private Timestamp timestamp;
 
-    public Scheme(Plant plant, Timestamp timestamp) {
-        this(-1, plant, timestamp);
+    public Scheme(Plant plant) {
+        this(-1, plant, null);
     }
 
     public Scheme(final int id, Plant plant, Timestamp timestamp) {
@@ -29,8 +29,8 @@ public class Scheme {
         this.plant = plant;
     }
 
-    public Timestamp getTimestamp() {
-        return timestamp;
+    public Optional<Timestamp> getTimestamp() {
+        return Optional.fromNullable(timestamp);
     }
 
     public void setTimestamp(Timestamp timestamp) {
