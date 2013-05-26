@@ -28,8 +28,42 @@ public class SchemeDao implements ISchemeDao {
 
     @Override
     public Scheme insert(Scheme scheme) {
-        // TODO Auto-generated method stub
-        return null;
+        SqlQueryBuilder builder = new SqlQueryBuilder();
+        builder.insert(TABLE_NAME, Fields.TIMESTAMP, Fields.PLANT);
+        
+        final String query = builder.toString();
+
+        try (Connection con = DatabaseFactory.getConnection()) {
+            try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
+                stmt.setParameter(Fields.TIMESTAMP, scheme.getTimestamp());
+                stmt.setParameter(Fields.PLANT, scheme.getPlant());
+
+
+                int affectedRows = stmt.executeUpdate();
+                if (affectedRows != 1) {
+                    throw new SaveException();
+                }
+
+                try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        int id = generatedKeys.getInt(1);
+
+                        //FIXME denke der AUfruf passt nicht ganz so :)
+                        // Create new Scheme with id
+                        Scheme inserted = new Scheme(id, scheme.getPlant().orNull(), scheme.getTimestamp());
+
+                        return inserted;
+                    }
+                    else {
+                        throw new SaveException("Could not retrieve generated ID.");
+                    }
+                }
+            }
+
+        }
+        catch (SQLException | DatabaseException e) {
+            throw new SaveException(e);
+        }
     }
 
     @Override
