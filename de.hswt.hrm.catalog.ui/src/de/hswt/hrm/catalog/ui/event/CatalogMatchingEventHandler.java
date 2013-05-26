@@ -56,42 +56,28 @@ public class CatalogMatchingEventHandler {
 
         TableViewer tv = (TableViewer) XWT.findElementByName(event.widget, "availableTarget");
 
-        // obtain the place in the column where the doubleClick happend
-        ICatalogItem selectedEntry = (ICatalogItem) tv.getElementAt(tv.getTable()
-                .getSelectionIndex());
-        if (selectedEntry == null) {
-            return;
-        }
-
-        Text desc = (Text) XWT.findElementByName(tv, "desc");
-        desc.setText(selectedEntry.getText());
-        
-        Text name = (Text) XWT.findElementByName(tv, "name");
-        name.setText(selectedEntry.getName());
+        handleSelection(tv);
 
     }
+
     public void onMouseDown_1(Event event) {
-        
+
         TableViewer tv = (TableViewer) XWT.findElementByName(event.widget, "availableCurrent");
 
-        // obtain the place in the column where the doubleClick happend
-        ICatalogItem selectedEntry = (ICatalogItem) tv.getElementAt(tv.getTable()
-                .getSelectionIndex());
-        if (selectedEntry == null) {
-            return;
-        }
+        handleSelection(tv);
 
-        Text desc = (Text) XWT.findElementByName(tv, "desc");
-        desc.setText(selectedEntry.getText());
-        
-        Text name = (Text) XWT.findElementByName(tv, "name");
-        name.setText(selectedEntry.getName());
-        
     }
+
     public void onMouseDown_2(Event event) {
-        
+
         TableViewer tv = (TableViewer) XWT.findElementByName(event.widget, "availableActivity");
 
+        handleSelection(tv);
+
+    }
+
+    private void handleSelection(TableViewer tv) {
+
         // obtain the place in the column where the doubleClick happend
         ICatalogItem selectedEntry = (ICatalogItem) tv.getElementAt(tv.getTable()
                 .getSelectionIndex());
@@ -101,9 +87,8 @@ public class CatalogMatchingEventHandler {
 
         Text desc = (Text) XWT.findElementByName(tv, "desc");
         desc.setText(selectedEntry.getText());
-        
+
         Text name = (Text) XWT.findElementByName(tv, "name");
         name.setText(selectedEntry.getName());
-        
     }
 }
