@@ -62,7 +62,6 @@ public class PlacePart {
             PlaceEventHandler eventHandler = ContextInjectionFactory.make(PlaceEventHandler.class,
                     context);
 
-            // TODO: partly move to extra plugin
             // Load XWT with injection ready event handler
             final Composite composite = XwtHelper.loadWithEventHandler(parent, url, eventHandler);
             LOG.debug("XWT load successfully.");

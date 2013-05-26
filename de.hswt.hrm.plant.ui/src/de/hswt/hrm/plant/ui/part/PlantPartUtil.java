@@ -18,9 +18,12 @@ import de.hswt.hrm.plant.ui.wizard.PlantWizard;
 
 public class PlantPartUtil {
 
-    public static Optional<Plant> showWizard(IEclipseContext context, Shell activeShell, Optional<Plant> fromNullable) {
-        PlantWizard pw = new PlantWizard(context, fromNullable);
+    public static Optional<Plant> showWizard(IEclipseContext context, Shell activeShell,
+            Optional<Plant> plant) {
+        
+        PlantWizard pw = new PlantWizard(context, plant);
         ContextInjectionFactory.inject(pw, context);
+        
         WizardDialog wd = new WizardDialog(activeShell, pw);
         wd.open();
         return pw.getPlant();

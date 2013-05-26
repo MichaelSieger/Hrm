@@ -1,32 +1,39 @@
 package de.hswt.hrm.plant.service;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.util.Collection;
+
+import javax.inject.Inject;
+
+import org.eclipse.e4.core.di.annotations.Creatable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.ElementNotFoundException;
 import de.hswt.hrm.common.database.exception.SaveException;
 import de.hswt.hrm.plant.model.Plant;
-import de.hswt.hrm.place.model.Place;
 import de.hswt.hrm.plant.dao.core.IPlantDao;
-import de.hswt.hrm.plant.dao.jdbc.PlantDao;
-import de.hswt.hrm.place.dao.core.IPlaceDao;
-import de.hswt.hrm.place.dao.jdbc.PlaceDao;
-import static com.google.common.base.Preconditions.checkNotNull;
 
+@Creatable
 public final class PlantService {
-
-    private PlantService() {
-
+    private final static Logger LOG = LoggerFactory.getLogger(PlantService.class);
+    private final IPlantDao plantDao;
+    
+    @Inject
+    public PlantService(final IPlantDao plantDao) {
+        checkNotNull(plantDao, "PlantDao not injected properly.");
+        
+        this.plantDao = plantDao;
+        LOG.debug("PlantDao injected into PlantService.");
     }
-
-    private static IPlantDao plantDao = new PlantDao();
-    private static IPlaceDao placeDao = new PlaceDao();
 
     /**
      * @return All plants from storage.
      * @throws DatabaseException
      */
-    public static Collection<Plant> findAll() throws DatabaseException {
+    public Collection<Plant> findAll() throws DatabaseException {
         return plantDao.findAll();
     }
 
@@ -36,7 +43,7 @@ public final class PlantService {
      * @return Plant with the given id.
      * @throws DatabaseException
      */
-    public static Plant findById(int id) throws ElementNotFoundException, DatabaseException {
+    public Plant findById(int id) throws ElementNotFoundException, DatabaseException {
         return plantDao.findById(id);
     }
 
@@ -49,14 +56,8 @@ public final class PlantService {
      * @throws SaveException
      *             If the Plant could not be inserted.
      */
-    public static Plant insert(Plant plant) throws SaveException {
+    public Plant insert(Plant plant) throws SaveException {
         checkNotNull(plant.getPlace().orNull(), "Place is mandatory.");
-        Place place = plant.getPlace().get();
-        if (place.getId() < 0) {
-            Place inserted = placeDao.insert(place);
-            plant.setPlace(inserted);
-        }
-
         return plantDao.insert(plant);
     }
 
@@ -70,11 +71,11 @@ public final class PlantService {
      * @throws SaveException
      *             If the Plant could not be updated.
      */
-    public static void update(Plant Plant) throws ElementNotFoundException, SaveException {
+    public void update(Plant Plant) throws ElementNotFoundException, SaveException {
         plantDao.update(Plant);
     }
 
-    public static void refresh(Plant plant) throws ElementNotFoundException, DatabaseException {
+    public void refresh(Plant plant) throws ElementNotFoundException, DatabaseException {
         Plant fromDb = plantDao.findById(plant.getId());
         plant.setAirPerformance(fromDb.getAirPerformance().orNull());
         plant.setConstructionYear(fromDb.getConstructionYear().orNull());
@@ -90,7 +91,6 @@ public final class PlantService {
         plant.setType(fromDb.getType().orNull());
         plant.setVentilatorPerformance(fromDb.getVentilatorPerformance().orNull());
         plant.setVoltage(fromDb.getVoltage().orNull());
-
     }
 
 }

@@ -1,5 +1,7 @@
 package de.hswt.hrm.plant.ui.event;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.util.Collection;
 
 import javax.inject.Inject;
@@ -11,25 +13,37 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Text;
-
-import com.google.common.base.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.base.Optional;
+
 import de.hswt.hrm.common.database.exception.DatabaseException;
-import de.hswt.hrm.place.model.Place;
-import de.hswt.hrm.place.service.PlaceService;
-import de.hswt.hrm.place.ui.part.PlacePartUtil;
 import de.hswt.hrm.plant.model.Plant;
 import de.hswt.hrm.plant.service.PlantService;
 import de.hswt.hrm.plant.ui.filter.PlantFilter;
+import de.hswt.hrm.plant.ui.part.PlantPart;
 import de.hswt.hrm.plant.ui.part.PlantPartUtil;
 
 public class PlantEventHandler {
+    private final static Logger LOG = LoggerFactory.getLogger(PlantEventHandler.class);
 
     private static final String DEFAULT_SEARCH_STRING = "Suche";
     private static final String EMPTY = "";
+    private final IEclipseContext context;
+    private final PlantService plantService;
     private Plant plant;
+    
+    @Inject
+    public PlantEventHandler(final IEclipseContext context, final PlantService plantService) {
+        checkNotNull(context, "EclipseContext was not injected to PlantEventHandler.");
+        checkNotNull(plantService, "PlantService was not injected to PlantEventHandler.");
+
+        this.context = context;
+        this.plantService = plantService;
+    }
+    
+    
 
     /**
      * This event is called whenever the Search Text Field is leaved. If the the field is blank, the
@@ -38,20 +52,6 @@ public class PlantEventHandler {
      * @param event
      *            Event which occured in SWT
      */
-    private final static Logger LOG = LoggerFactory.getLogger(PlantEventHandler.class);
-    
-    @Inject
-    private IEclipseContext context;
-    
-    
-    @Inject
-    public PlantEventHandler(IEclipseContext context, PlaceService placeService) {
-        if (context == null) {
-            LOG.error("EclipseContext was not injected to PlantEventHandler.");
-        }        
-        this.context = context;
-    }
-    
     public void leaveText(Event event) {
 
         Text text = (Text) event.widget;
@@ -72,8 +72,8 @@ public class PlantEventHandler {
     public void buttonSelected(Event event) {
         plant = null;
         Button b = (Button) event.widget;
-        Optional<Plant> newPlant = PlantPartUtil.showWizard(context, event.display.getActiveShell(),
-                Optional.fromNullable(plant));
+        Optional<Plant> newPlant = PlantPartUtil.showWizard(context, 
+                event.display.getActiveShell(), Optional.fromNullable(plant));
 
         TableViewer tv = (TableViewer) XWT.findElementByName(b, "plantTable");
 
@@ -145,7 +145,7 @@ public class PlantEventHandler {
 
         // Refresh the selected place with values from the database
         try {
-            PlantService.refresh(selectedPlant);
+            plantService.refresh(selectedPlant);
             Optional<Plant> updatedPlant = PlantPartUtil.showWizard(context,
                     event.display.getActiveShell(), Optional.of(selectedPlant));
 
