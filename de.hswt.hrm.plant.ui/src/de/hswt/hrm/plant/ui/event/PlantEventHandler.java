@@ -6,6 +6,7 @@ import javax.inject.Inject;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.xwt.XWT;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Event;
@@ -15,8 +16,12 @@ import com.google.common.base.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.hswt.hrm.common.database.exception.DatabaseException;
+import de.hswt.hrm.place.model.Place;
 import de.hswt.hrm.place.service.PlaceService;
+import de.hswt.hrm.place.ui.part.PlacePartUtil;
 import de.hswt.hrm.plant.model.Plant;
+import de.hswt.hrm.plant.service.PlantService;
 import de.hswt.hrm.plant.ui.filter.PlantFilter;
 import de.hswt.hrm.plant.ui.part.PlantPartUtil;
 
@@ -129,6 +134,32 @@ public class PlantEventHandler {
         // if (updatePlant.isPresent()) {
         // tv.refresh();
         // }
+    	
+        TableViewer tv = (TableViewer) XWT.findElementByName(event.widget, "plantTable");
+
+        // obtain the place in the column where the doubleClick happend
+        Plant selectedPlant = (Plant) tv.getElementAt(tv.getTable().getSelectionIndex());
+        if (selectedPlant == null) {
+            return;
+        }
+
+        // Refresh the selected place with values from the database
+        try {
+            PlantService.refresh(selectedPlant);
+            Optional<Plant> updatedPlant = PlantPartUtil.showWizard(context,
+                    event.display.getActiveShell(), Optional.of(selectedPlant));
+
+            if (updatedPlant.isPresent()) {
+                tv.refresh();
+            }
+        }
+        catch (DatabaseException e) {
+            LOG.error("Could not retrieve the plant from database.", e);
+
+            // TODO: übersetzen
+            MessageDialog.openError(event.display.getActiveShell(), "Connection Error",
+                    "Could not update selected plant from database.");
+        }
     }
 
 }
