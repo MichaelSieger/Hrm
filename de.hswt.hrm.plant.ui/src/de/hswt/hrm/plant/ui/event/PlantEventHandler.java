@@ -53,7 +53,7 @@ public class PlantEventHandler {
         if (text.getText().isEmpty()) {
             text.setText(DEFAULT_SEARCH_STRING);
         }
-        TableViewer tf = (TableViewer) XWT.findElementByName(text, "PlantTable");
+        TableViewer tf = (TableViewer) XWT.findElementByName(text, "plantTable");
         tf.refresh();
 
     }
@@ -87,7 +87,7 @@ public class PlantEventHandler {
     public void onKeyUp(Event event) {
 
         Text searchText = (Text) event.widget;
-        TableViewer tv = (TableViewer) XWT.findElementByName(searchText, "PlantTable");
+        TableViewer tv = (TableViewer) XWT.findElementByName(searchText, "plantTable");
         PlantFilter filter = (PlantFilter) tv.getFilters()[0];
         filter.setSearchString(searchText.getText());
         tv.refresh();
