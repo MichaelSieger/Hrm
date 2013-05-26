@@ -86,6 +86,20 @@ public class CatalogPart {
  					service.showPart("Main", PartState.VISIBLE);
  				}
  			});
+            
+            ((Button) XWT.findElementByName(composite, "match")).addListener(SWT.Selection, new Listener() {
+                @Override
+                public void handleEvent(Event event) {
+                    service.findPart("Clients").setVisible(false);
+                    service.findPart("Places").setVisible(false);
+                    service.findPart("Plants").setVisible(false);
+                    service.findPart("Scheme").setVisible(false);
+                    service.findPart("Catalog").setVisible(false);
+                    service.findPart("Category").setVisible(false);
+                    service.findPart("Matched").setVisible(true);
+                    service.showPart("Matched", PartState.VISIBLE);
+                }
+            });
 
             initializeTable(parent, viewer);
             refreshTable(parent);

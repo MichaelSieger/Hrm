@@ -112,4 +112,6 @@ public class CatalogMatchingEventHandler {
     public void onMouseDoubleClick_2(Event event) {
 
     }
+    public void onSelection(Event event) {
+    }
 }

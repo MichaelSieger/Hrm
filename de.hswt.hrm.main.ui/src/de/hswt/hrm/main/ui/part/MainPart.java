@@ -30,6 +30,7 @@ public class MainPart {
 	Button toCatalog;
 	Button toCategory;
 	
+	
     @PostConstruct
     public void postConstruct(Composite parent) {
 

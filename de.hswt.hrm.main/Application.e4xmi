@@ -11,6 +11,7 @@
           <children xsi:type="basic:Part" xmi:id="_Pw_4UMLVEeKAYZFE7MIZtQ" elementId="Category" visible="false" contributionURI="bundleclass://de.hswt.hrm.component.ui/de.hswt.hrm.component.ui.part.CategoryPart" label="Category"/>
           <children xsi:type="basic:Part" xmi:id="_DFIlsMVyEeKmB9w3RftN-Q" elementId="Main" contributionURI="bundleclass://de.hswt.hrm.main.ui/de.hswt.hrm.main.ui.part.MainPart" label="MainPart"/>
           <children xsi:type="basic:Part" xmi:id="_cxCQ4LGiEeKNWb92nqkQxg" elementId="Scheme" visible="false" contributionURI="bundleclass://de.hswt.hrm.scheme.ui/de.hswt.hrm.scheme.ui.part.SchemePart" label="Scheme"/>
+          <children xsi:type="basic:Part" xmi:id="_8igKoMYrEeKeMOYiO6AxxQ" elementId="Matched" visible="false" contributionURI="bundleclass://de.hswt.hrm.catalog.ui/de.hswt.hrm.catalog.ui.part.CatalogMatchingPart" label="Matched"/>
         </children>
       </children>
     </children>

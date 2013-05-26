@@ -101,6 +101,30 @@
 						<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL" verticalAlignment="FILL" heightHint="176" widthHint="300" horizontalSpan="3"/>
 					</Text.layoutData>
 				</Text>
+				<Label/>
+				<Label/>
+				<Label/>
+				<Label/>
+				<Label/>
+				<Label/>
+				<Label/>
+				<Label/>
+				<Label/>
+				<Label/>
+				<Label/>
+				<Label/>
+				<Label/>
+				<Label/>
+				<Label/>
+				<Label/>
+				<Button text="Back" SelectionEvent="onSelection" x:Name="back2Main">
+					<Button.layoutData>
+						<GridData horizontalAlignment="FILL"/>
+					</Button.layoutData>
+				</Button>
+				<Label/>
+				<Label/>
+				<Label/>
 			</Composite>
 		</Section.client>
 	</Section>

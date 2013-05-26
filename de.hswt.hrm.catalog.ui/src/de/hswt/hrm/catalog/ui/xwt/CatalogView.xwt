@@ -15,7 +15,7 @@
 		<TableViewer.table headerVisible="true"
 			linesVisible="true" MouseDoubleClickEvent="onMouseDoubleClick">
 			<TableViewer.table.layoutData>
-				<GridData verticalSpan="7" horizontalSpan="4"
+				<GridData verticalSpan="8" horizontalSpan="4"
 					horizontalAlignment="FILL" widthHint="860" verticalAlignment="FILL"
 					grabExcessVerticalSpace="true" grabExcessHorizontalSpace="true" />
 			</TableViewer.table.layoutData>
@@ -37,6 +37,11 @@
 	<Button x:Style="CHECK" text="Manahme" SelectionEvent="onSelection">
 		<Button.layoutData>
 			<GridData grabExcessVerticalSpace="true" verticalAlignment="TOP" />
+		</Button.layoutData>
+	</Button>
+	<Button text="Match" x:Name="match">
+		<Button.layoutData>
+			<GridData horizontalAlignment="FILL"/>
 		</Button.layoutData>
 	</Button>
 	<Button text="Back" x:Name="back2Main">

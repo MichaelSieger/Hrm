@@ -8,6 +8,8 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
+import org.eclipse.e4.ui.workbench.modeling.EPartService;
+import org.eclipse.e4.ui.workbench.modeling.EPartService.PartState;
 import org.eclipse.e4.xwt.IConstants;
 import org.eclipse.e4.xwt.XWT;
 import org.eclipse.e4.xwt.forms.XWTForms;
@@ -15,7 +17,11 @@ import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.ListViewer;
 import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
 
 import de.hswt.hrm.catalog.model.Activity;
 import de.hswt.hrm.catalog.model.Current;
@@ -33,6 +39,8 @@ public class CatalogMatchingPart {
     CatalogService catalogService;
     @Inject
     CategoryService categoryService;
+    @Inject
+    EPartService service;
 
     TableViewer targets;
     TableViewer currents;
@@ -93,6 +101,21 @@ public class CatalogMatchingPart {
                 public String getText(Object element) {
                     ICatalogItem i = (ICatalogItem) element;
                     return i.getName();
+                }
+            });
+            
+            ((Button) XWT.findElementByName(composite, "back2Main")).addListener(SWT.Selection, new Listener() {
+                @Override
+                public void handleEvent(Event event) {
+                    service.findPart("Clients").setVisible(false);
+                    service.findPart("Places").setVisible(false);
+                    service.findPart("Plants").setVisible(false);
+                    service.findPart("Scheme").setVisible(false);
+                    service.findPart("Catalog").setVisible(false);
+                    service.findPart("Category").setVisible(false);
+                    service.findPart("Matched").setVisible(false);
+                    service.findPart("Main").setVisible(true);
+                    service.showPart("Main", PartState.VISIBLE);
                 }
             });
 
