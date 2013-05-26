@@ -32,11 +32,13 @@
 				<Composite.layout>
 					<GridLayout/>
 				</Composite.layout>
-				<List x:Style="BORDER" x:Name="matchedTarget" MouseDoubleClickEvent="onMatchedTargetMouseDoubleClick" size="156, 318">
-					<List.layoutData>
-						<GridData grabExcessVerticalSpace="true" grabExcessHorizontalSpace="true" verticalAlignment="FILL" horizontalAlignment="FILL" widthHint="150" heightHint="200"/>
-					</List.layoutData>
-				</List>
+				<ListViewer x:Style="BORDER | V_SCROLL">
+					<ListViewer.list>
+						<ListViewer.list.layoutData>
+							<GridData horizontalAlignment="FILL" verticalAlignment="FILL" grabExcessHorizontalSpace="true" grabExcessVerticalSpace="true"/>
+						</ListViewer.list.layoutData>
+					</ListViewer.list>
+				</ListViewer>
 			</Composite>
 		</Section.client>
 	</Section>
@@ -49,11 +51,13 @@
 				<Composite.layout>
 					<GridLayout/>
 				</Composite.layout>
-				<List x:Style="BORDER" size="155, 68">
-					<List.layoutData>
-						<GridData grabExcessVerticalSpace="true" verticalAlignment="FILL" horizontalAlignment="FILL" grabExcessHorizontalSpace="true" widthHint="150"/>
-					</List.layoutData>
-				</List>
+				<ListViewer x:Style="BORDER | V_SCROLL">
+					<ListViewer.list>
+						<ListViewer.list.layoutData>
+							<GridData horizontalAlignment="FILL" verticalAlignment="FILL" grabExcessHorizontalSpace="true" grabExcessVerticalSpace="true"/>
+						</ListViewer.list.layoutData>
+					</ListViewer.list>
+				</ListViewer>
 			</Composite>
 		</Section.client>
 	</Section>
@@ -66,11 +70,13 @@
 				<Composite.layout>
 					<GridLayout/>
 				</Composite.layout>
-				<List x:Style="BORDER" size="151, 68">
-					<List.layoutData>
-						<GridData grabExcessVerticalSpace="true" grabExcessHorizontalSpace="true" horizontalAlignment="FILL" verticalAlignment="FILL" widthHint="150"/>
-					</List.layoutData>
-				</List>
+				<ListViewer x:Style="BORDER | V_SCROLL">
+					<ListViewer.list>
+						<ListViewer.list.layoutData>
+							<GridData grabExcessHorizontalSpace="true" grabExcessVerticalSpace="true" horizontalAlignment="FILL" verticalAlignment="FILL"/>
+						</ListViewer.list.layoutData>
+					</ListViewer.list>
+				</ListViewer>
 			</Composite>
 		</Section.client>
 	</Section>
