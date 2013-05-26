@@ -1,5 +1,6 @@
 package de.hswt.hrm.scheme.dao.jdbc;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.sql.Connection;
@@ -60,8 +61,36 @@ public class SchemeComponentDao implements ISchemeComponentDao {
 
     @Override
     public SchemeComponent findById(int id) throws DatabaseException, ElementNotFoundException {
-        // TODO Auto-generated method stub
-        return null;
+        checkArgument(id >= 0, "Id must not be negative.");
+
+        SqlQueryBuilder builder = new SqlQueryBuilder();
+        builder.select(TABLE_NAME, Fields.ID, Fields.SCHEME, Fields.COMPONENT, Fields.X_POS,
+                Fields.Y_POS, Fields.DIRECTION);
+        builder.where(Fields.ID);
+
+        final String query = builder.toString();
+
+        try (Connection con = DatabaseFactory.getConnection()) {
+            try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
+                stmt.setParameter(Fields.ID, id);
+                ResultSet result = stmt.executeQuery();
+
+                Collection<SchemeComponent> schemeComponents = fromResultSet(result);
+                DbUtils.closeQuietly(result);
+
+                if (schemeComponents.size() < 1) {
+                    throw new ElementNotFoundException();
+                }
+                else if (schemeComponents.size() > 1) {
+                    throw new DatabaseException("ID '" + id + "' is not unique.");
+                }
+
+                return schemeComponents.iterator().next();
+            }
+        }
+        catch (SQLException e) {
+            throw new DatabaseException(e);
+        }
     }
 
     @Override
@@ -80,15 +109,15 @@ public class SchemeComponentDao implements ISchemeComponentDao {
     private Collection<SchemeComponent> fromResultSet(ResultSet rs) throws SQLException {
         checkNotNull(rs, "Result must not be null.");
         Collection<SchemeComponent> schemeComponentList = new ArrayList<>();
-
         while (rs.next()) {
             int id = rs.getInt(Fields.ID);
             int xPos = rs.getInt(Fields.X_POS);
             int yPos = rs.getInt(Fields.Y_POS);
-            //TODO fixIT 
+            //TODO 
             //Direction direction = ??
-            //TODO null durch direction ersetzen
-            SchemeComponent schemeComponent = new SchemeComponent(id, xPos, yPos, null);
+            //Component component = ??
+          //TODO null durch direction + component ersetzen
+            SchemeComponent schemeComponent = new SchemeComponent(id, xPos, yPos, null, null);
 
             schemeComponentList.add(schemeComponent);
         }
@@ -107,6 +136,5 @@ public class SchemeComponentDao implements ISchemeComponentDao {
         public static final String DIRECTION = "Scheme_Component_Direction";
 
     }
-
 
 }
