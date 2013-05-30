@@ -1,0 +1,77 @@
+<Composite xmlns="http://www.eclipse.org/xwt/presentation"
+	xmlns:x="http://www.eclipse.org/xwt" x:Class="de.hswt.hrm.contact.ui.wizard.ContactWizardWindow"
+	xmlns:p1="clr-namespace:org.eclipse.ui.forms.widgets">
+	<Composite.layout>
+		<GridLayout numColumns="2" />
+	</Composite.layout>
+	<Section text="Kommunikation" x:Style="(p1:Section).EXPANDED">
+		<Section.layoutData>
+			<GridData horizontalAlignment="FILL" grabExcessHorizontalSpace="true" />
+		</Section.layoutData>
+		<Section.client>
+			<Composite>
+				<Composite.layout>
+					<GridLayout numColumns="6"  />
+				</Composite.layout>
+				<Label text="Telefon :" >
+					<Label.layoutData>
+						<GridData horizontalAlignment="RIGHT"/>
+					</Label.layoutData>
+				</Label>
+				<Text x:Style="BORDER" x:Name="phone">
+					<Text.layoutData>
+						<GridData grabExcessHorizontalSpace="true"
+							horizontalAlignment="FILL" horizontalSpan="2" />
+					</Text.layoutData>
+				</Text>
+				<Label text="Mobil :" >
+					<Label.layoutData>
+						<GridData horizontalAlignment="RIGHT"/>
+					</Label.layoutData>
+				</Label>
+				<Text x:Style="BORDER" x:Name="mobilePhone">
+					<Text.layoutData>
+						<GridData grabExcessHorizontalSpace="true"
+							horizontalAlignment="FILL" horizontalSpan="2" />
+					</Text.layoutData>
+				</Text>
+				<Label text="Fax :" >
+					<Label.layoutData>
+						<GridData horizontalAlignment="RIGHT"/>
+					</Label.layoutData>
+				</Label>
+				<Text x:Style="BORDER" x:Name="fax">
+					<Text.layoutData>
+						<GridData grabExcessHorizontalSpace="true"
+							horizontalAlignment="FILL" horizontalSpan="2" />
+					</Text.layoutData>
+				</Text>
+				<Label text="Email :" >
+					<Label.layoutData>
+						<GridData horizontalAlignment="RIGHT"/>
+					</Label.layoutData>
+				</Label>
+				<Text x:Style="BORDER" x:Name="email">
+					<Text.layoutData>
+						<GridData grabExcessHorizontalSpace="true"
+							horizontalAlignment="FILL" horizontalSpan="2" />
+					</Text.layoutData>
+				</Text>
+				<Label text="Kuerzel :" >
+					<Label.layoutData>
+						<GridData horizontalAlignment="RIGHT"/>
+					</Label.layoutData>
+				</Label>
+				<Text x:Style="BORDER" x:Name="shortcut">
+					<Text.layoutData>
+						<GridData
+							horizontalAlignment="FILL" />
+					</Text.layoutData>
+				</Text>
+				<Label/>
+				<Label/>
+			</Composite>
+		</Section.client>
+	</Section>
+</Composite>
+<!-- Forms API -->
