@@ -15,30 +15,6 @@ public class CatalogMatchingEventHandler {
     private List currents;
     private List activities;
 
-    public void onMouseDown(Event event) {
-
-        TableViewer tv = (TableViewer) XWT.findElementByName(event.widget, "availableTarget");
-
-        handleSelection(tv);
-
-    }
-
-    public void onMouseDown_1(Event event) {
-
-        TableViewer tv = (TableViewer) XWT.findElementByName(event.widget, "availableCurrent");
-
-        handleSelection(tv);
-
-    }
-
-    public void onMouseDown_2(Event event) {
-
-        TableViewer tv = (TableViewer) XWT.findElementByName(event.widget, "availableActivity");
-
-        handleSelection(tv);
-
-    }
-
     private void handleSelection(TableViewer tv) {
 
         // obtain the place in the column where the doubleClick happend
@@ -53,24 +29,6 @@ public class CatalogMatchingEventHandler {
 
         Text name = (Text) XWT.findElementByName(tv, "name");
         name.setText(selectedEntry.getName());
-    }
-
-    public void onMouseDoubleClick(Event event) {
-
-        TableViewer tv = (TableViewer) XWT.findElementByName(event.widget, "availableTarget");
-        ICatalogItem item = (ICatalogItem) tv.getElementAt(tv.getTable().getSelectionIndex());
-
-        if (item == null) {
-            return;
-        }
-
-        ListViewer matchedTarget = (ListViewer) XWT.findElementByName(tv, "matchedTarget");
-        matchedTarget.add(item);
-        tv.remove(item);
-
-        tv = (TableViewer) XWT.findElementByName(tv, "availableCurrent");
-        tv.getTable().setEnabled(true);
-
     }
 
     public void onMouseDown_3(Event event) {
@@ -107,10 +65,6 @@ public class CatalogMatchingEventHandler {
         TableViewer tv = (TableViewer) XWT.findElementByName(lv, "availableTarget");
         tv.add(item);
         lv.remove(item);
-    }
-
-    public void onMouseDoubleClick_2(Event event) {
-
     }
     public void onSelection(Event event) {
     }
