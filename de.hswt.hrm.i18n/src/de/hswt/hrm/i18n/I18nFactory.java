@@ -1,5 +1,8 @@
 package de.hswt.hrm.i18n;
 
+import org.osgi.framework.Bundle;
+import org.osgi.framework.FrameworkUtil;
+
 public class I18nFactory {
 	
 	/**
@@ -7,7 +10,11 @@ public class I18nFactory {
 	 * 
 	 * @param clazz
 	 */
-	public static <T> void createI18n(final Class<T> clazz) {
+	public static <T> I18n createI18n(final Class<T> clazz) {
+		Bundle bundle = FrameworkUtil.getBundle(clazz);
 		
+		// TODO: maybe we can inject the cache class here ..
+		I18n i18n = new I18n(bundle);
+		return i18n;
 	}
 }
