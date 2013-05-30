@@ -12,6 +12,7 @@ import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,10 +20,13 @@ import org.slf4j.LoggerFactory;
 import com.google.common.base.Optional;
 
 import de.hswt.hrm.contact.model.Contact;
+import de.hswt.hrm.contact.ui.part.ContactPartUtil;
+import de.hswt.hrm.i18n.I18n;
+import de.hswt.hrm.i18n.I18nFactory;
 
 public class ContactWizardPageOne extends WizardPage {
-
     private static final Logger LOG = LoggerFactory.getLogger(ContactWizardPageOne.class);
+    private static final I18n I18N = I18nFactory.getI18n(ContactWizardPageOne.class);
 
     private Composite container;
     private Optional<Contact> contact;
@@ -35,10 +39,10 @@ public class ContactWizardPageOne extends WizardPage {
 
     private String createDiscription() {
         if (contact.isPresent()) {
-            return "Kontakt bearbeiten";
+            return I18N.tr("Edit Contact");
         }
 
-        return "Neuen Kontakt anlegen";
+        return I18N.tr("Add Contact");
     }
 
     @Override
@@ -52,16 +56,44 @@ public class ContactWizardPageOne extends WizardPage {
             LOG.error("An error occured", e);
         }
 
+        translate(container);
+        
         if (this.contact.isPresent()) {
-            updateFields((container));
+            updateFields(container);
         }
 
         setKeyListener();
         setControl(container);
         setPageComplete(false);
     }
+    
+    private void setLabelText(final Composite container, final String labelName, 
+    		final String text) {
+    	
+    	Label l = (Label) XWT.findElementByName(container, labelName);
+    	if (l == null) {
+    		LOG.error("Label '" + labelName + "' not found.");
+    		return;
+    	}
+    	
+    	l.setText(text);
+    }
+    
+    private void translate(final Composite container) {
+    	setLabelText(container, "lblFirstName", I18N.tr("Firstname"));
+    	setLabelText(container, "lblLastName", I18N.tr("Lastname"));
+    	setLabelText(container, "lblStreet", I18N.tr("Street"));
+    	setLabelText(container, "lblStreetNumber", I18N.tr("Streetnumber"));
+    	setLabelText(container, "lblCity", I18N.tr("City"));
+    	setLabelText(container, "lblZipCode", I18N.tr("Zipcode"));
+//    	setLabelText(container, "lblPhone", "Phone");
+//    	setLabelText(container, "lblFax", "Fax");
+//    	setLabelText(container, "lblMobilePhone", "Mobile");
+//    	setLabelText(container, "lblEmail", "Email");
+//    	setLabelText(container, "lblShortcut", "Shortcut");
+    }
 
-    private void updateFields(Composite Container) {
+    private void updateFields(final Composite container) {
         Contact c = contact.get();
         
         Text t = (Text) XWT.findElementByName(container, "firstName");

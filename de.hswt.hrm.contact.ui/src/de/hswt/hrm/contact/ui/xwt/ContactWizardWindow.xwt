@@ -14,7 +14,7 @@
 				<Composite.layout>
 					<GridLayout numColumns="4" />
 				</Composite.layout>
-				<Label text="Vorname :" >
+				<Label x:Name="lblFirstName" text="Firstname :">
 					<Label.layoutData>
 						<GridData horizontalAlignment="LEFT"/>
 					</Label.layoutData>
@@ -25,35 +25,35 @@
 							horizontalAlignment="FILL" />
 					</Text.layoutData>
 				</Text>
-				<Label text="Nachname :" />
+				<Label x:Name="lblLastName" text="Lastname :"/>
 				<Text x:Style="BORDER" x:Name="lastName">
 					<Text.layoutData>
 						<GridData grabExcessHorizontalSpace="true"
 							horizontalAlignment="FILL" />
 					</Text.layoutData>
 				</Text>
-				<Label text="Strasse :" />
+				<Label x:Name="lblStreet" text="Street :"/>
 				<Text x:Style="BORDER" x:Name="street">
 					<Text.layoutData>
 						<GridData grabExcessHorizontalSpace="true"
 							horizontalAlignment="FILL" verticalAlignment="BOTTOM" />
 					</Text.layoutData>
 				</Text>
-				<Label text="Hausnr. :" />
+				<Label x:Name="lblStreetNumber" text="Streetnumber :"/>
 				<Text x:Style="BORDER" x:Name="streetNumber">
 					<Text.layoutData>
 						<GridData grabExcessHorizontalSpace="true"
 							horizontalAlignment="FILL" />
 					</Text.layoutData>
 				</Text>
-				<Label text="PLZ:"/>
+				<Label x:Name="lblZipCode" text="Zipcode :"/>
 				<Text x:Style="BORDER" x:Name="zipCode">
 					<Text.layoutData>
 						<GridData grabExcessHorizontalSpace="true"
 							horizontalAlignment="FILL" />
 					</Text.layoutData>
 				</Text>
-				<Label text="Stadt :" />
+				<Label x:Name="lblCity" text="City :"/>
 				<Text x:Style="BORDER" x:Name="city">
 					<Text.layoutData>
 						<GridData grabExcessHorizontalSpace="true"

@@ -63,13 +63,12 @@ public final class I18n {
 			}
     	}
     	
-    	String escaped = escape(key);
-    	if (!translations.containsKey(escaped)) {
-    		LOG.warn("No translation found for '" + escaped + "' in '" 
+    	if (!translations.containsKey(key)) {
+    		LOG.warn("No translation found for '" + escape(key) + "' in '" 
     				+ bundle.getSymbolicName() + "'.");
     	}
         
-        return translations.getProperty(escaped, key);
+        return translations.getProperty(key, key);
     }
     
     /**
@@ -79,7 +78,7 @@ public final class I18n {
      * @return The escaped key.
      */
     private static String escape(final String key) {
-        return key.replaceAll(" ", "\\ ");
+        return key.replace(" ", "\\ ");
     }
 
 }

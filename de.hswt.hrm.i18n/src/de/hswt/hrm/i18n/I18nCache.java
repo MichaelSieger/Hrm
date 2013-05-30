@@ -54,7 +54,7 @@ public class I18nCache {
 		inStream.close();
 
 		cache.put(symbolicName, props);
-		LOG.debug("Translation load form '" + path + "'.");
+		LOG.debug("Translation load from '" + path + "'.");
 		return props;
 	}
 	
