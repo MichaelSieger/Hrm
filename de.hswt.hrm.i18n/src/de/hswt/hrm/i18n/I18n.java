@@ -1,57 +1,40 @@
 package de.hswt.hrm.i18n;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Properties;
 
 import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import de.hswt.hrm.common.BundleUtil;
-
-// FIXME: we have to provide one properties file per bundle!!! 
 public final class I18n {
-    private static Properties cache = new Properties();
-    private static List<String> alreadyLoad = new ArrayList<>();
+	private final static Logger LOG = LoggerFactory.getLogger(I18n.class);
+    private final I18nCache cache;
+    private final Bundle bundle;
+    private Properties translations;
     
-    private I18n() { }
-    
-    private static <T> void load(final Class<T> clazz) throws IOException {
-        Bundle bundle = FrameworkUtil.getBundle(clazz);
-        String symbolicName = bundle.getSymbolicName();
-        
-        if (alreadyLoad.contains(symbolicName)) {
-            return;
-        }
-        
-        // TODO: refactor folder to a separate folder with default "i18n"
-        // TODO: refactor file to the current language..
-        InputStream inStream = BundleUtil.getStreamForFile(bundle, "i18n/de_de.properties");
-        Properties props = loadFromFile(inStream);
-        inStream.close();
-        
-        // TODO: maybe we can simple load into the cache
-        cache.putAll(props);
-        alreadyLoad.add(symbolicName);
+    public I18n(final Bundle bundle) {
+    	this(bundle, new I18nCache());
     }
     
-    private static Properties getCache() {
-        return cache;
+    public I18n(final Bundle bundle, final I18nCache cache) {
+    	this.bundle = bundle;
+    	this.cache = cache;
     }
     
-    private static Properties loadFromFile(final InputStream inStream) throws IOException {
-        Properties props = new Properties();
-        props.load(inStream);
+    public String tr(final String key) {
+    	if (translations == null) {
+    		try {
+				this.translations = cache.getTranslations(bundle);
+			} 
+    		catch (IOException e) {
+				LOG.error("Could not load translation file for bundle '"
+						+ bundle.getSymbolicName() + "'.", e);
+				return key;
+			}
+    	}
         
-        return props;
-    }
-    
-    public static String tr(final String key) {
-        Properties cache = getCache();
-        
-        return cache.getProperty(escape(key), key);
+        return translations.getProperty(escape(key), key);
     }
     
     /**
