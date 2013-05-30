@@ -200,10 +200,10 @@ public class ComponentDao implements IComponentDao {
     private static class Fields {
         public static final String ID = "Component_ID";
         public static final String NAME = "Component_Name";
-        public static final String SYMBOL_LR = "Component_Symbol_LR";
-        public static final String SYMBOL_RL = "Component_Symbol_RL";
-        public static final String SYMBOL_UD = "Component_Symbol_DU";
-        public static final String SYMBOL_DU = "Component_Symbol_UD";
+        public static final String SYMBOL_LR = "Component_Symbol_LR_FK";
+        public static final String SYMBOL_RL = "Component_Symbol_RL_FK";
+        public static final String SYMBOL_UD = "Component_Symbol_DU_FK";
+        public static final String SYMBOL_DU = "Component_Symbol_UD_FK";
         public static final String QUANTIFIER = "Component_Default_Quantifier";
         public static final String BOOL_RATING = "Component_Bool_Rating";
         public static final String CATEGORY = "Component_Category_FK";
