@@ -206,7 +206,7 @@ public class ComponentDao implements IComponentDao {
 
         try (Connection con = DatabaseFactory.getConnection()) {
             try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
-                stmt.setParameter(Fields.ID, id);
+                stmt.setParameter(BlobFields.ID, id);
                 ResultSet result = stmt.executeQuery();
                 if(!result.next()){
                     throw new ElementNotFoundException();
