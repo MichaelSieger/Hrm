@@ -185,6 +185,8 @@ public class SchemePart {
 	 */
 	public void newScheme(Plant plant){
 		this.plant = plant;
+		grid.setItems(new ArrayList<SchemeGridItem>());
+		grid.clearDirty();
 	}
 	
 	/**
@@ -200,6 +202,7 @@ public class SchemePart {
 		}
 		this.plant = scheme.getPlant().get();
 		grid.setItems(toSchemeGridItems(scheme.getSchemeComponents()));
+		grid.clearDirty();
 	}
 	
 	/**
