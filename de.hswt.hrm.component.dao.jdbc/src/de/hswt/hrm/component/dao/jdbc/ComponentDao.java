@@ -1,5 +1,8 @@
 package de.hswt.hrm.component.dao.jdbc;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,23 +13,24 @@ import javax.inject.Inject;
 
 import org.apache.commons.dbutils.DbUtils;
 
-import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
-
 import de.hswt.hrm.common.database.DatabaseFactory;
 import de.hswt.hrm.common.database.NamedParameterStatement;
 import de.hswt.hrm.common.database.SqlQueryBuilder;
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.ElementNotFoundException;
 import de.hswt.hrm.common.database.exception.SaveException;
+import de.hswt.hrm.component.dao.core.ICategoryDao;
 import de.hswt.hrm.component.dao.core.IComponentDao;
-import de.hswt.hrm.component.model.Category;
 import de.hswt.hrm.component.model.Component;
 
 public class ComponentDao implements IComponentDao {
     
+    private final ICategoryDao categoryDao;
+    
     @Inject
-    CategoryDao categoryDao;
+    public ComponentDao(ICategoryDao categoryDao){
+        this.categoryDao = categoryDao;
+    }
 
     @Override
     public Collection<Component> findAll() throws DatabaseException {
