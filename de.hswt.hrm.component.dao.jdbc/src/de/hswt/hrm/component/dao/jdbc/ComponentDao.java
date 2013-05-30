@@ -196,6 +196,7 @@ public class ComponentDao implements IComponentDao {
     }
 
     private static final String TABLE_NAME = "Component";
+    private static final String BLOB_TABLE_NAME = "Component_Picture";
 
     private static class Fields {
         public static final String ID = "Component_ID";
@@ -207,5 +208,11 @@ public class ComponentDao implements IComponentDao {
         public static final String QUANTIFIER = "Component_Default_Quantifier";
         public static final String BOOL_RATING = "Component_Bool_Rating";
         public static final String CATEGORY = "Component_Category_FK";
+    }
+    
+    private static class BlobFields {
+        public static final String ID = "Component_Picture_ID";
+        public static final String FILENAME = "Component_Picture_Filename";
+        public static final String BLOB = "Component_Picture_Blob";
     }
 }
