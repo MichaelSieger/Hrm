@@ -1,13 +1,13 @@
 package de.hswt.hrm.scheme.service;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.util.Collection;
 
 import javax.inject.Inject;
 
 import org.eclipse.e4.core.di.annotations.Creatable;
-
-import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.base.Preconditions.checkArgument;
 
 import de.hswt.hrm.common.database.exception.SaveException;
 import de.hswt.hrm.plant.model.Plant;
@@ -44,6 +44,9 @@ public class SchemeService {
 	public void insert(Plant plant, Collection<SchemeComponent> components) throws SaveException{
 	    checkNotNull(plant, "Plant is mandatory.");
 	    checkArgument(plant.getId() >= 0, "Plant must have a valid ID.");
+	    
+	    //Cut away unused space from the scheme
+	    components = SchemeCutter.cut(components);
 	    
 		// We insert a new scheme here !
 	    Scheme scheme = new Scheme(plant);

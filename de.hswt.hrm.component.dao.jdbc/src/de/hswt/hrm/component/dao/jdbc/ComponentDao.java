@@ -1,15 +1,17 @@
 package de.hswt.hrm.component.dao.jdbc;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.apache.commons.dbutils.DbUtils;
+import javax.inject.Inject;
 
-import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
+import org.apache.commons.dbutils.DbUtils;
 
 import de.hswt.hrm.common.database.DatabaseFactory;
 import de.hswt.hrm.common.database.NamedParameterStatement;
@@ -17,10 +19,18 @@ import de.hswt.hrm.common.database.SqlQueryBuilder;
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.ElementNotFoundException;
 import de.hswt.hrm.common.database.exception.SaveException;
+import de.hswt.hrm.component.dao.core.ICategoryDao;
 import de.hswt.hrm.component.dao.core.IComponentDao;
 import de.hswt.hrm.component.model.Component;
 
 public class ComponentDao implements IComponentDao {
+    
+    private final ICategoryDao categoryDao;
+    
+    @Inject
+    public ComponentDao(ICategoryDao categoryDao){
+        this.categoryDao = categoryDao;
+    }
 
     @Override
     public Collection<Component> findAll() throws DatabaseException {
@@ -34,8 +44,8 @@ public class ComponentDao implements IComponentDao {
         try (Connection con = DatabaseFactory.getConnection()) {
             try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
                 ResultSet result = stmt.executeQuery();
-
                 Collection<Component> components = fromResultSet(result);
+                
                 DbUtils.closeQuietly(result);
 
                 return components;
@@ -185,10 +195,9 @@ public class ComponentDao implements IComponentDao {
             byte[] downUpImage = findBlob(rs.getInt(Fields.SYMBOL_DU));
             int quantifier = rs.getInt(Fields.QUANTIFIER);
             boolean boolRating = rs.getBoolean(Fields.BOOL_RATING);
-
             Component component = new Component(id, name, leftRightImage, rightLeftImage,
                     upDownImage, downUpImage, quantifier, boolRating);
-
+            component.setCategory(categoryDao.findById(rs.getInt(Fields.CATEGORY)));
             componentList.add(component);
         }
 
@@ -206,7 +215,7 @@ public class ComponentDao implements IComponentDao {
 
         try (Connection con = DatabaseFactory.getConnection()) {
             try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
-                stmt.setParameter(Fields.ID, id);
+                stmt.setParameter(BlobFields.ID, id);
                 ResultSet result = stmt.executeQuery();
                 if(!result.next()){
                     throw new ElementNotFoundException();
@@ -231,7 +240,7 @@ public class ComponentDao implements IComponentDao {
         public static final String SYMBOL_RL = "Component_Symbol_RL_FK";
         public static final String SYMBOL_UD = "Component_Symbol_DU_FK";
         public static final String SYMBOL_DU = "Component_Symbol_UD_FK";
-        public static final String QUANTIFIER = "Component_Default_Quantifier";
+        public static final String QUANTIFIER = "Component_Quantifier";
         public static final String BOOL_RATING = "Component_Bool_Rating";
         public static final String CATEGORY = "Component_Category_FK";
     }

@@ -8,6 +8,7 @@ import com.google.common.base.Optional;
 import de.hswt.hrm.component.model.Category;
 import de.hswt.hrm.scheme.model.Direction;
 import de.hswt.hrm.scheme.model.RenderedComponent;
+import de.hswt.hrm.scheme.model.SchemeComponent;
 
 /**
  * Contains the propertys of a image in the SchemeGrid.
@@ -31,7 +32,16 @@ public class SchemeGridItem {
 		this.y = y;
 	}
 	
-	
+	public SchemeGridItem(SchemeGridItem item) {
+		this.renderedComponent = item.renderedComponent;
+		this.direction = item.direction;
+		this.x = item.x;
+		this.y = item.y;
+	}
+
+	public SchemeComponent asSchemeComponent(){
+		return new SchemeComponent(x, y, direction, renderedComponent.getComponent());
+	}
 
 	public RenderedComponent getRenderedComponent() {
 		return renderedComponent;
