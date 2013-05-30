@@ -4,7 +4,7 @@
 	<Composite.layout>
 		<GridLayout numColumns="4" />
 	</Composite.layout>
-	<Section text="Bauelemente" x:Style="(p2:Section).EXPANDED | (p2:Section).TITLE_BAR">
+	<Section text="Kataloge" x:Style="(p2:Section).EXPANDED | (p2:Section).TITLE_BAR" x:Name="">
 		<Section.layoutData>
 			<GridData horizontalAlignment="FILL" verticalAlignment="FILL" heightHint="314" grabExcessVerticalSpace="true" grabExcessHorizontalSpace="true"/>
 		</Section.layoutData>
@@ -13,8 +13,8 @@
 				<Composite.layout>
 					<GridLayout/>
 				</Composite.layout>
-				<ListViewer x:Style="BORDER | V_SCROLL" x:Name="categories">
-					<ListViewer.list>
+				<ListViewer x:Style="BORDER | V_SCROLL" x:Name="catalogs">
+					<ListViewer.list x:Name="">
 						<ListViewer.list.layoutData>
 							<GridData horizontalAlignment="FILL" verticalAlignment="FILL" grabExcessHorizontalSpace="true" grabExcessVerticalSpace="true"/>
 						</ListViewer.list.layoutData>
@@ -156,8 +156,8 @@
 				<Composite.layout>
 					<GridLayout/>
 				</Composite.layout>
-				<ListViewer x:Style="BORDER | V_SCROLL">
-					<ListViewer.list x:Name="availableCurrent">
+				<ListViewer x:Style="BORDER | V_SCROLL" x:Name="availableCurrent">
+					<ListViewer.list x:Name="">
 						<ListViewer.list.layoutData>
 							<GridData heightHint="69" grabExcessHorizontalSpace="true" grabExcessVerticalSpace="true" horizontalAlignment="FILL" verticalAlignment="FILL"/>
 						</ListViewer.list.layoutData>
@@ -175,8 +175,8 @@
 				<Composite.layout>
 					<GridLayout/>
 				</Composite.layout>
-				<ListViewer x:Style="BORDER | V_SCROLL">
-					<ListViewer.list x:Name="availableActivity">
+				<ListViewer x:Style="BORDER | V_SCROLL" x:Name="availableActivity">
+					<ListViewer.list x:Name="">
 						<ListViewer.list.layoutData>
 							<GridData verticalAlignment="FILL" horizontalAlignment="FILL" grabExcessHorizontalSpace="true" grabExcessVerticalSpace="true"/>
 						</ListViewer.list.layoutData>

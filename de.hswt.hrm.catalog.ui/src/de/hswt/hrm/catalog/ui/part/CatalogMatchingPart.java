@@ -23,7 +23,10 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 
+import sun.security.x509.AVA;
+
 import de.hswt.hrm.catalog.model.Activity;
+import de.hswt.hrm.catalog.model.Catalog;
 import de.hswt.hrm.catalog.model.Current;
 import de.hswt.hrm.catalog.model.ICatalogItem;
 import de.hswt.hrm.catalog.model.Target;
@@ -43,7 +46,7 @@ public class CatalogMatchingPart {
 	ListViewer targets;
 	ListViewer currents;
 	ListViewer activities;
-	ListViewer cats;
+	ListViewer catalogs;
 	ListViewer matchedTargets;
 	ListViewer matchedCurrents;
 	ListViewer matchedActivities;
@@ -57,55 +60,6 @@ public class CatalogMatchingPart {
 
 		try {
 			final Composite composite = (Composite) XWTForms.load(parent, url);
-
-			targets = (ListViewer) XWT.findElementByName(composite,
-					"availableTarget");
-			currents = (ListViewer) XWT.findElementByName(composite,
-					"availableCurrent");
-			activities = (ListViewer) XWT.findElementByName(composite,
-					"availableActivity");
-			matchedActivities = (ListViewer) XWT.findElementByName(composite,
-					"matchedActivity");
-			matchedTargets = (ListViewer) XWT.findElementByName(composite,
-					"matchedTarget");
-			matchedCurrents = (ListViewer) XWT.findElementByName(composite,
-					"matchedCurrent");
-			// TODO Replace Categories with Catalog
-			cats = (ListViewer) XWT.findElementByName(composite, "categories");
-
-			// TODO Implement a better solution
-			cats.setContentProvider(ArrayContentProvider.getInstance());
-
-			cats.setLabelProvider(new LabelProvider() {
-				@Override
-				public String getText(Object element) {
-					Category c = (Category) element;
-					return c.getName();
-				}
-			});
-
-			matchedActivities.setLabelProvider(new LabelProvider() {
-				@Override
-				public String getText(Object element) {
-					ICatalogItem i = (ICatalogItem) element;
-					return i.getName();
-				}
-			});
-			matchedCurrents.setLabelProvider(new LabelProvider() {
-				@Override
-				public String getText(Object element) {
-					ICatalogItem i = (ICatalogItem) element;
-					return i.getName();
-				}
-			});
-
-			matchedTargets.setLabelProvider(new LabelProvider() {
-				@Override
-				public String getText(Object element) {
-					ICatalogItem i = (ICatalogItem) element;
-					return i.getName();
-				}
-			});
 
 			((Button) XWT.findElementByName(composite, "back2Main"))
 					.addListener(SWT.Selection, new Listener() {
@@ -123,14 +77,60 @@ public class CatalogMatchingPart {
 						}
 					});
 
-			Collection<ICatalogItem> items = catalogService
-					.findAllCatalogItem();
+			targets = (ListViewer) XWT.findElementByName(composite,
+					"availableTarget");
+			currents = (ListViewer) XWT.findElementByName(composite,
+					"availableCurrent");
+			activities = (ListViewer) XWT.findElementByName(composite,
+					"availableActivity");
+			matchedActivities = (ListViewer) XWT.findElementByName(composite,
+					"matchedActivity");
+			matchedTargets = (ListViewer) XWT.findElementByName(composite,
+					"matchedTarget");
+			matchedCurrents = (ListViewer) XWT.findElementByName(composite,
+					"matchedCurrent");
+			catalogs = (ListViewer) XWT
+					.findElementByName(composite, "catalogs");
 
-			// initializeTables(parent, targets, currents, activities, items);
+			createAvailableLabelProvider(catalogs);
+			createAvailableLabelProvider(activities);
+			createMatchedLabelProvider(matchedTargets);
+			createMatchedLabelProvider(matchedActivities);
+			createMatchedLabelProvider(matchedCurrents);
+
+			Collection<Catalog> catalogsFromDB = catalogService
+					.findAllCatalog();
+
+			catalogs.setInput(catalogsFromDB);
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	private void createAvailableLabelProvider(ListViewer lv) {
+
+		lv.setContentProvider(ArrayContentProvider.getInstance());
+
+		lv.setLabelProvider(new LabelProvider() {
+			@Override
+			public String getText(Object element) {
+				ICatalogItem c = (ICatalogItem) element;
+				return c.getName();
+			}
+		});
+	}
+
+	private void createMatchedLabelProvider(ListViewer lv) {
+
+		matchedTargets.setLabelProvider(new LabelProvider() {
+			@Override
+			public String getText(Object element) {
+				ICatalogItem i = (ICatalogItem) element;
+				return i.getName();
+			}
+		});
+
 	}
 
 	private void initializeTables(Composite parent, TableViewer targets,
