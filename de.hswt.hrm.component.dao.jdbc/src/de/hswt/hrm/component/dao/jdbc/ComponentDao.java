@@ -6,6 +6,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import javax.inject.Inject;
+
 import org.apache.commons.dbutils.DbUtils;
 
 import static com.google.common.base.Preconditions.checkArgument;
@@ -18,9 +20,13 @@ import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.ElementNotFoundException;
 import de.hswt.hrm.common.database.exception.SaveException;
 import de.hswt.hrm.component.dao.core.IComponentDao;
+import de.hswt.hrm.component.model.Category;
 import de.hswt.hrm.component.model.Component;
 
 public class ComponentDao implements IComponentDao {
+    
+    @Inject
+    CategoryDao categoryDao;
 
     @Override
     public Collection<Component> findAll() throws DatabaseException {
@@ -34,8 +40,8 @@ public class ComponentDao implements IComponentDao {
         try (Connection con = DatabaseFactory.getConnection()) {
             try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
                 ResultSet result = stmt.executeQuery();
-
                 Collection<Component> components = fromResultSet(result);
+                
                 DbUtils.closeQuietly(result);
 
                 return components;
@@ -185,10 +191,9 @@ public class ComponentDao implements IComponentDao {
             byte[] downUpImage = findBlob(rs.getInt(Fields.SYMBOL_DU));
             int quantifier = rs.getInt(Fields.QUANTIFIER);
             boolean boolRating = rs.getBoolean(Fields.BOOL_RATING);
-
             Component component = new Component(id, name, leftRightImage, rightLeftImage,
                     upDownImage, downUpImage, quantifier, boolRating);
-
+            component.setCategory(categoryDao.findById(rs.getInt(Fields.CATEGORY)));
             componentList.add(component);
         }
 
