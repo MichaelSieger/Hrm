@@ -114,4 +114,12 @@ public class CatalogMatchingEventHandler {
     }
     public void onSelection(Event event) {
     }
+
+	public List getActivities() {
+		return activities;
+	}
+
+	public void setActivities(List activities) {
+		this.activities = activities;
+	}
 }

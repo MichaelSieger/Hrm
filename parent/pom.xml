@@ -154,5 +154,6 @@
 		<module>../de.hswt.hrm.component.service</module>
 		<module>../de.hswt.hrm.i18n</module>
 		<module>../de.hswt.hrm.component.dao.jdbc.test</module>
+		<module>../de.hswt.hrm.report.latex</module>
 	</modules>
 </project>

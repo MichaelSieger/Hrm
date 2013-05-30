@@ -1,11 +1,12 @@
 package de.hswt.hrm.component.dao.jdbc;
 
-import static org.mockito.Mockito.*;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Collection;
 
 import org.junit.Test;
+
 import de.hswt.hrm.catalog.dao.core.ICatalogDao;
 import de.hswt.hrm.catalog.dao.jdbc.CatalogDao;
 import de.hswt.hrm.catalog.model.Catalog;
