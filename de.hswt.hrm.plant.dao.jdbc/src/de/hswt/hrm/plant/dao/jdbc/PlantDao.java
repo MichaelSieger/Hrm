@@ -29,16 +29,15 @@ import de.hswt.hrm.plant.dao.core.IPlantDao;
 public class PlantDao implements IPlantDao {
     private final static Logger LOG = LoggerFactory.getLogger(PlantDao.class);
     private final IPlaceDao placeDao;
-    
+
     @Inject
     public PlantDao(final IPlaceDao placeDao) {
         checkNotNull(placeDao, "PlaceDao not injected properly.");
-        
+
         this.placeDao = placeDao;
         LOG.debug("PlaceDao injected into PlantDao.");
     }
-    
-    
+
     @Override
     public Collection<Plant> findAll() throws DatabaseException {
 
@@ -103,7 +102,7 @@ public class PlantDao implements IPlantDao {
         // FIXME: we must add a transaction here!
         // Handle dependency
         insertPlaceIfNecessary(plant);
-        
+
         final String query = "INSERT INTO Plant (Plant_Place_FK, "
                 + "Plant_Manufacturer, Plant_Year_Of_Construction, Plant_Type, "
                 + "Plant_Airperformance, Plant_Motorpower, Plant_Motor_Rpm, Plant_Ventilatorperformance, "
@@ -138,8 +137,7 @@ public class PlantDao implements IPlantDao {
                         int id = generatedKeys.getInt(1);
 
                         // Create new plant with id
-                        Plant inserted = new Plant(id, plant.getInspectionInterval(),
-                                plant.getDescription());
+                        Plant inserted = new Plant(id, plant.getDescription());
 
                         inserted.setConstructionYear(plant.getConstructionYear().orNull());
                         inserted.setManufactor(plant.getManufactor().orNull());
@@ -174,7 +172,7 @@ public class PlantDao implements IPlantDao {
         if (plant.getId() < 0) {
             throw new ElementNotFoundException("Element has no valid ID.");
         }
-        
+
         // FIXME: we must add a transaction here!
         // Handle dependency
         insertPlaceIfNecessary(plant);
@@ -216,7 +214,7 @@ public class PlantDao implements IPlantDao {
             throw new SaveException(e);
         }
     }
-    
+
     private void insertPlaceIfNecessary(final Plant plant) throws SaveException {
         if (plant.getPlace().isPresent() && plant.getPlace().get().getId() < 0) {
             Place place = placeDao.insert(plant.getPlace().get());
@@ -224,9 +222,9 @@ public class PlantDao implements IPlantDao {
         }
     }
 
-    private Collection<Plant> fromResultSet(ResultSet rs) 
-            throws SQLException, ElementNotFoundException, DatabaseException {
-        
+    private Collection<Plant> fromResultSet(ResultSet rs) throws SQLException,
+            ElementNotFoundException, DatabaseException {
+
         checkNotNull(rs, "Result must not be null.");
         Collection<Plant> plantList = new ArrayList<>();
 
@@ -251,7 +249,7 @@ public class PlantDao implements IPlantDao {
             plant.setCurrent(rs.getString("Plant_Current"));
             plant.setVoltage(rs.getString("Plant_Voltage"));
             plant.setNote(rs.getString("Plant_Note"));
-            
+
             // handle dependency
             int placeId = rs.getInt("Plant_Place_FK");
             Place place = null;
