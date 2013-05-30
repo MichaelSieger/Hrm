@@ -151,19 +151,19 @@ public class TargetDao implements ITargetDao {
 
     private Collection<Target> fromResultSet(ResultSet rs) throws SQLException {
         checkNotNull(rs, "Result must not be null.");
-        Collection<Target> placeList = new ArrayList<>();
+        Collection<Target> targetList = new ArrayList<>();
 
         while (rs.next()) {
             int id = rs.getInt(Fields.ID);
             String name = rs.getString(Fields.NAME);
             String text = rs.getString(Fields.TEXT);
 
-            Target place = new Target(id, name, text);
+            Target target = new Target(id, name, text);
 
-            placeList.add(place);
+            targetList.add(target);
         }
 
-        return placeList;
+        return targetList;
     }
 
     private static final String TABLE_NAME = "State_Target";
