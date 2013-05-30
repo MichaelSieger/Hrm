@@ -11,6 +11,7 @@ import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
@@ -38,7 +39,7 @@ public class CatalogWizzardPageOne extends WizardPage {
     }
 
     public void createControl(Composite parent) {
-
+        parent.setLayout(new FillLayout());
         URL url = CatalogWizzardPageOne.class.getClassLoader().getResource(
                 "de/hswt/hrm/catalog/ui/xwt/CatalogWizard" + IConstants.XWT_EXTENSION_SUFFIX);
 
