@@ -31,6 +31,7 @@ import de.hswt.hrm.catalog.model.Current;
 import de.hswt.hrm.catalog.model.ICatalogItem;
 import de.hswt.hrm.catalog.model.Target;
 import de.hswt.hrm.catalog.service.CatalogService;
+import de.hswt.hrm.common.ui.swt.list.ListUtil;
 import de.hswt.hrm.common.ui.swt.table.ColumnDescription;
 import de.hswt.hrm.common.ui.swt.table.TableViewerController;
 import de.hswt.hrm.component.model.Category;
@@ -92,7 +93,6 @@ public class CatalogMatchingPart {
 			catalogs = (ListViewer) XWT
 					.findElementByName(composite, "catalogs");
 
-			createAvailableLabelProvider(catalogs);
 			catalogs.setContentProvider(ArrayContentProvider.getInstance());
 			catalogs.setLabelProvider(new LabelProvider() {
 				@Override
@@ -101,10 +101,13 @@ public class CatalogMatchingPart {
 					return c.getName();
 				}
 			});
-			createAvailableLabelProvider(activities);
-			createMatchedLabelProvider(matchedTargets);
-			createMatchedLabelProvider(matchedActivities);
-			createMatchedLabelProvider(matchedCurrents);
+
+			ListUtil.sortList(catalogs);
+
+			createLabelProvider(activities);
+			createLabelProvider(matchedTargets);
+			createLabelProvider(matchedActivities);
+			createLabelProvider(matchedCurrents);
 
 			Collection<Catalog> catalogsFromDB = catalogService
 					.findAllCatalog();
@@ -116,7 +119,7 @@ public class CatalogMatchingPart {
 		}
 	}
 
-	private void createAvailableLabelProvider(ListViewer lv) {
+	private void createLabelProvider(ListViewer lv) {
 
 		lv.setContentProvider(ArrayContentProvider.getInstance());
 
@@ -127,18 +130,6 @@ public class CatalogMatchingPart {
 				return c.getName();
 			}
 		});
-	}
-
-	private void createMatchedLabelProvider(ListViewer lv) {
-
-		matchedTargets.setLabelProvider(new LabelProvider() {
-			@Override
-			public String getText(Object element) {
-				ICatalogItem i = (ICatalogItem) element;
-				return i.getName();
-			}
-		});
-
 	}
 
 	private void initializeTables(Composite parent, TableViewer targets,
@@ -197,17 +188,6 @@ public class CatalogMatchingPart {
 		currents.setInput(c);
 		activities.setInput(a);
 
-		targets.getTable().getColumn(1).setWidth(0);
-		targets.getTable().getColumn(1).setResizable(false);
-
-		currents.getTable().getColumn(1).setWidth(0);
-		currents.getTable().getColumn(1).setResizable(false);
-
-		activities.getTable().getColumn(1).setWidth(0);
-		activities.getTable().getColumn(1).setResizable(false);
-
-		activities.getTable().setEnabled(false);
-		currents.getTable().setEnabled(false);
 	}
 
 }
