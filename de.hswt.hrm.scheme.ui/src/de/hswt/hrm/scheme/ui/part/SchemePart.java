@@ -202,6 +202,13 @@ public class SchemePart {
 		grid.setItems(toSchemeGridItems(scheme.getSchemeComponents()));
 	}
 	
+	/**
+	 * @return Was the grid changed since last modifyScheme() or newScheme() call
+	 */
+	public boolean isDirty(){
+	    return grid.isDirty();
+	}
+	
 	private List<SchemeGridItem> toSchemeGridItems(Collection<SchemeComponent> sc) throws IOException{
 		List<SchemeGridItem> l = new ArrayList<>();
 		for(SchemeComponent c : sc){
