@@ -69,9 +69,6 @@ public class PlantWizardPageOne extends WizardPage {
 //        combo.select(combo.indexOf(placeName));
         // TODO nextInspection / inspectionIntervall ?
         // TODO scheme
-        t = (Text) XWT.findElementByName(c,"inspectionIntervall");
-        t.setText(Integer.toString(p.getInspectionInterval()));
-
         t = (Text) XWT.findElementByName(c, "manufactor");
         t.setText(p.getManufactor().or(""));
         t = (Text) XWT.findElementByName(c, "constructionYear");
