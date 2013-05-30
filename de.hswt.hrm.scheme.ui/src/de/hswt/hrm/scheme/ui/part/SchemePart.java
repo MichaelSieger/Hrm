@@ -77,7 +77,7 @@ import de.hswt.hrm.scheme.ui.tree.TreeContentProvider;
  */
 public class SchemePart {
     private final static Logger LOG = LoggerFactory.getLogger(SchemePart.class);
-	private static final String DELETE = "Löschen";
+	private static final String DELETE = "Lï¿½schen";
 	
 	@Inject
 	SchemeService schemeService;
@@ -158,7 +158,7 @@ public class SchemePart {
 			initItemClickListener();
 			
 			//TODO remove
-			newScheme(new Plant(1, 1, "bla"));
+			newScheme(new Plant(1, "bla"));
             ((Button) XWT.findElementByName(root, "abortbtn")).addListener(SWT.Selection, new Listener() {
  				@Override
  				public void handleEvent(Event event) {
@@ -410,15 +410,18 @@ public class SchemePart {
 
 	private List<RenderedComponent> createComps() throws DatabaseException{
 		Collection<Component> comp = compService.findAll();
-		return new ArrayList<RenderedComponent>(Collections2.transform(comp, 
-				new Function<Component, RenderedComponent>() {
-			public RenderedComponent apply(Component c){
-				try {
-					return ComponentConverter.convert(root.getDisplay(), c);
-				} catch (IOException e) {
-					throw Throwables.propagate(e);
-				}
-			}
-		}));
+		List<RenderedComponent> result = new ArrayList<RenderedComponent>();
+		for(Component c : comp){
+		    //Ignore components without category
+		    if(c.getCategory().isPresent()){
+		        try {
+                    result.add(ComponentConverter.convert(root.getDisplay(), c));
+                }
+                catch (IOException e) {
+                    e.printStackTrace();
+                }
+		    }
+		}
+		return result;
 	}
 }
