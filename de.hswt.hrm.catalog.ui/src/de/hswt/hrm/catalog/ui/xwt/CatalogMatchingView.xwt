@@ -128,7 +128,7 @@
 			</Composite>
 		</Section.client>
 	</Section>
-	<Section text="Verfügbare Soll Zustände" x:Style="(p2:Section).EXPANDED | (p2:Section).TITLE_BAR">
+	<Section text="Verfügbare Soll Zustände" x:Style="(p2:Section).EXPANDED | (p2:Section).TITLE_BAR" x:Name="">
 		<Section.layoutData>
 			<GridData heightHint="314" horizontalAlignment="FILL" verticalAlignment="FILL" grabExcessVerticalSpace="true" grabExcessHorizontalSpace="true"/>
 		</Section.layoutData>
@@ -138,7 +138,7 @@
 					<GridLayout/>
 				</Composite.layout>
 				<ListViewer x:Style="BORDER | V_SCROLL">
-					<ListViewer.list>
+					<ListViewer.list x:Name="availableTarget">
 						<ListViewer.list.layoutData>
 							<GridData horizontalAlignment="FILL" verticalAlignment="FILL" grabExcessHorizontalSpace="true" grabExcessVerticalSpace="true"/>
 						</ListViewer.list.layoutData>
@@ -147,7 +147,7 @@
 			</Composite>
 		</Section.client>
 	</Section>
-	<Section text="Verfügbare Ist" x:Style="(p2:Section).EXPANDED | (p2:Section).TITLE_BAR">
+	<Section text="Verfügbare Ist" x:Style="(p2:Section).EXPANDED | (p2:Section).TITLE_BAR" x:Name="">
 		<Section.layoutData>
 			<GridData verticalAlignment="FILL" horizontalAlignment="FILL" grabExcessVerticalSpace="true" grabExcessHorizontalSpace="true"/>
 		</Section.layoutData>
@@ -157,7 +157,7 @@
 					<GridLayout/>
 				</Composite.layout>
 				<ListViewer x:Style="BORDER | V_SCROLL">
-					<ListViewer.list>
+					<ListViewer.list x:Name="availableCurrent">
 						<ListViewer.list.layoutData>
 							<GridData heightHint="69" grabExcessHorizontalSpace="true" grabExcessVerticalSpace="true" horizontalAlignment="FILL" verticalAlignment="FILL"/>
 						</ListViewer.list.layoutData>
@@ -166,7 +166,7 @@
 			</Composite>
 		</Section.client>
 	</Section>
-	<Section text="Verfügbare Maßnahmen" x:Style="(p2:Section).EXPANDED | (p2:Section).TITLE_BAR">
+	<Section text="Verfügbare Maßnahmen" x:Style="(p2:Section).EXPANDED | (p2:Section).TITLE_BAR" x:Name="">
 		<Section.layoutData>
 			<GridData horizontalAlignment="FILL" verticalAlignment="FILL" grabExcessVerticalSpace="true" grabExcessHorizontalSpace="true"/>
 		</Section.layoutData>
@@ -176,7 +176,7 @@
 					<GridLayout/>
 				</Composite.layout>
 				<ListViewer x:Style="BORDER | V_SCROLL">
-					<ListViewer.list>
+					<ListViewer.list x:Name="availableActivity">
 						<ListViewer.list.layoutData>
 							<GridData verticalAlignment="FILL" horizontalAlignment="FILL" grabExcessHorizontalSpace="true" grabExcessVerticalSpace="true"/>
 						</ListViewer.list.layoutData>
