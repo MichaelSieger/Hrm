@@ -194,6 +194,29 @@ public class ComponentDao implements IComponentDao {
 
         return componentList;
     }
+    
+    public byte[] findBlob(int id) throws DatabaseException{
+        SqlQueryBuilder builder = new SqlQueryBuilder();
+        builder.select(BLOB_TABLE_NAME, BlobFields.BLOB);
+        builder.where(BlobFields.ID);
+        final String query = builder.toString();
+
+        try (Connection con = DatabaseFactory.getConnection()) {
+            try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
+                stmt.setParameter(Fields.ID, id);
+                ResultSet result = stmt.executeQuery();
+                if(!result.next()){
+                    throw new ElementNotFoundException();
+                }
+                byte[] bytes = result.getBytes(BlobFields.BLOB);
+                DbUtils.closeQuietly(result);
+                return bytes;
+            }
+        }
+        catch (SQLException e) {
+            throw new DatabaseException(e);
+        }
+    }
 
     private static final String TABLE_NAME = "Component";
     private static final String BLOB_TABLE_NAME = "Component_Picture";
