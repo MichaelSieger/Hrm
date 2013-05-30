@@ -32,7 +32,6 @@ public class PlantPartUtil {
     public static List<ColumnDescription<Plant>> getColumns() {
 
         List<ColumnDescription<Plant>> columns = new ArrayList<>();
-        columns.add(getInspectionInterval());
         columns.add(getNumberOfElements());
         columns.add(getDescription());
         columns.add(getPlace());
@@ -48,24 +47,6 @@ public class PlantPartUtil {
         columns.add(getNote());
 
         return columns;
-    }
-
-    private static ColumnDescription<Plant> getInspectionInterval() {
-        return new ColumnDescription<Plant>("Inspection Interval", new ColumnLabelProvider() {
-            @Override
-            public String getText(Object element) {
-                Plant p = (Plant) element;
-                return String.valueOf(p.getInspectionInterval());
-            }
-        }, new Comparator<Plant>() {
-
-            @Override
-            public int compare(Plant o1, Plant o2) {
-                return o1.getInspectionInterval() - o2.getInspectionInterval();
-            }// private Place place;
-             // private int constructionYear;
-
-        });
     }
 
     private static ColumnDescription<Plant> getNumberOfElements() {
@@ -118,7 +99,7 @@ public class PlantPartUtil {
 
             @Override
             public int compare(Plant o1, Plant o2) {
-                return o1.getInspectionInterval() - o2.getInspectionInterval();
+                return o1.getPlace().get().getPlaceName().compareToIgnoreCase(o2.getPlace().get().getPlaceName());
             }
 
         });
