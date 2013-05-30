@@ -40,7 +40,6 @@ ENGINE = InnoDB;
 CREATE  TABLE IF NOT EXISTS `Plant` (
   `Plant_ID` INT NOT NULL AUTO_INCREMENT ,
   `Plant_Place_FK` INT NOT NULL ,
-  `Plant_Inspection_Interval` INT(11) NOT NULL ,
   `Plant_Manufacturer` VARCHAR(45) NULL ,
   `Plant_Year_Of_Construction` YEAR NULL ,
   `Plant_Type` VARCHAR(255) NULL ,
