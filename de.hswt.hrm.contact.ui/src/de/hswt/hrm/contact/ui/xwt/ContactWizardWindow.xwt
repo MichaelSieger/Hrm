@@ -11,37 +11,37 @@
 				<Composite.layout>
 					<GridLayout numColumns="2"/>
 				</Composite.layout>
-				<Label text="Vorname :"/>
+				<Label x:Name="lblFirstName" text="Firstname :"/>
 				<Text x:Style="BORDER" x:Name="firstName">
 					<Text.layoutData>
 						<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
 					</Text.layoutData>
 				</Text>
-				<Label text="Nachname :"/>
+				<Label x:Name="lblLastName" text="Lastname :"/>
 				<Text x:Style="BORDER" x:Name="lastName">
 					<Text.layoutData>
 						<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
 					</Text.layoutData>
 				</Text>
-				<Label text="Strasse :"/>
+				<Label x:Name="lblStreet" text="Street :"/>
 				<Text x:Style="BORDER" x:Name="street">
 					<Text.layoutData>
 						<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL" verticalAlignment="BOTTOM"/>
 					</Text.layoutData>
 				</Text>
-				<Label text="Strassennr. :"/>
+				<Label x:Name="lblStreetNumber" text="Streetnumber :"/>
 				<Text x:Style="BORDER" x:Name="streetNumber">
 					<Text.layoutData>
 						<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
 					</Text.layoutData>
 				</Text>
-				<Label text="Stadt :"/>
+				<Label x:Name="lblCity" text="City :"/>
 				<Text x:Style="BORDER" x:Name="city">
 					<Text.layoutData>
 						<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
 					</Text.layoutData>
 				</Text>
-				<Label text="Postleitzahl :">
+				<Label x:Name="lblZipCode" text="Zipcode :">
 					<Label.layoutData>
 						<GridData horizontalAlignment="RIGHT"/>
 					</Label.layoutData>
@@ -63,31 +63,31 @@
 				<Composite.layout>
 					<GridLayout numColumns="2"/>
 				</Composite.layout>
-				<Label text="Telefon :"/>
+				<Label x:Name="lblPhone" text="Phone :"/>
 				<Text x:Style="BORDER" x:Name="phone">
 					<Text.layoutData>
 						<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
 					</Text.layoutData>
 				</Text>
-				<Label text="Fax :"/>
+				<Label x:Name="lblFax" text="Fax :"/>
 				<Text x:Style="BORDER" x:Name="fax">
 					<Text.layoutData>
 						<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
 					</Text.layoutData>
 				</Text>
-				<Label text="Mobil :"/>
+				<Label x:Name="lblMobilePhone" text="Mobile :"/>
 				<Text x:Style="BORDER" x:Name="mobilePhone">
 					<Text.layoutData>
 						<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
 					</Text.layoutData>
 				</Text>
-				<Label text="Email :"/>
+				<Label x:Name="lblEmail" text="Email :"/>
 				<Text x:Style="BORDER" x:Name="email">
 					<Text.layoutData>
 						<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
 					</Text.layoutData>
 				</Text>
-				<Label text="Kuerzel :"/>
+				<Label x:Name="lblShortcut" text="Shortcut :"/>
 				<Text x:Style="BORDER" x:Name="shortcut">
 					<Text.layoutData>
 						<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
