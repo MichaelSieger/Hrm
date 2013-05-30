@@ -94,23 +94,57 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
+-- Table `Component_Picture`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `Component_Picture` (
+  `Component_Picture_ID` INT NOT NULL AUTO_INCREMENT ,
+  `Component_Picture_Blob` LONGBLOB NULL ,
+  `Component_Picture_Filename` VARCHAR(255) NULL ,
+  PRIMARY KEY (`Component_Picture_ID`) )
+ENGINE = InnoDB;
+
+-- -----------------------------------------------------
 -- Table `Component`
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `Component` (
   `Component_ID` INT NOT NULL AUTO_INCREMENT ,
   `Component_Name` VARCHAR(45) NULL ,
-  `Component_Symbol_LR` VARCHAR(255) NULL ,
-  `Component_Symbol_RL` VARCHAR(255) NULL ,
-  `Component_Symbol_UD` VARCHAR(255) NULL ,
-  `Component_Symbol_DU` VARCHAR(255) NULL ,
+  `Component_Symbol_LR_FK` INT NULL ,
+  `Component_Symbol_RL_FK` INT NULL ,
+  `Component_Symbol_UD_FK` INT NULL ,
+  `Component_Symbol_DU_FK` INT NULL ,
   `Component_Quantifier` INT NULL ,
   `Component_Category_FK` INT NULL ,
   `Component_Bool_Rating` TINYINT(1) NULL ,
   PRIMARY KEY (`Component_ID`) ,
   INDEX `Component_Category_FK` (`Component_Category_FK` ASC) ,
+  INDEX `Component_Symbol_LR_FK` (`Component_Symbol_LR_FK` ASC) ,
+  INDEX `Component_Symbol_RL_FK` (`Component_Symbol_RL_FK` ASC) ,
+  INDEX `Component_Symbol_UD_FK` (`Component_Symbol_UD_FK` ASC) ,
+  INDEX `Component_Symbol_DU_FK` (`Component_Symbol_DU_FK` ASC) ,
   CONSTRAINT `Component_Category_FK`
     FOREIGN KEY (`Component_Category_FK` )
     REFERENCES `Category` (`Category_ID` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `Component_Symbol_LR_FK`
+    FOREIGN KEY (`Component_Symbol_LR_FK` )
+    REFERENCES `Component_Picture` (`Component_Picture_ID` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `Component_Symbol_RL_FK`
+    FOREIGN KEY (`Component_Symbol_RL_FK` )
+    REFERENCES `Component_Picture` (`Component_Picture_ID` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `Component_Symbol_UD_FK`
+    FOREIGN KEY (`Component_Symbol_UD_FK` )
+    REFERENCES `Component_Picture` (`Component_Picture_ID` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `Component_Symbol_DU_FK`
+    FOREIGN KEY (`Component_Symbol_DU_FK` )
+    REFERENCES `Component_Picture` (`Component_Picture_ID` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
