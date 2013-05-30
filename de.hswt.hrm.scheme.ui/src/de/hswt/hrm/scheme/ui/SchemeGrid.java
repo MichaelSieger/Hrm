@@ -3,6 +3,7 @@ package de.hswt.hrm.scheme.ui;
 import static com.google.common.base.Preconditions.checkArgument;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.eclipse.swt.events.MouseEvent;
@@ -31,7 +32,7 @@ public class SchemeGrid extends Canvas {
 	private static final int ENLARGE_TRESH = 5;
 	private static final int ENLARGE = 5;
 
-	private final List<SchemeGridItem> images = new ArrayList<>();
+	private List<SchemeGridItem> images = new ArrayList<>();
 	private final List<Colorbox> colors = new ArrayList<>();
 	
 	/**
@@ -43,6 +44,8 @@ public class SchemeGrid extends Canvas {
 	 * A item that is listening for a item click
 	 */
 	private ItemClickListener listener;
+
+	private boolean dirty;
 
 	public SchemeGrid(Composite parent, int style, int width, int height,
 			int pixelPerGrid) {
@@ -222,6 +225,7 @@ public class SchemeGrid extends Canvas {
 			}
 		}
 		images.add(item);
+		dirty = true;
 		enlarge(r.x + r.width, r.y + r.height);
 		this.redraw();
 	}
@@ -273,8 +277,10 @@ public class SchemeGrid extends Canvas {
 	public SchemeGridItem removeImage(int x, int y) {
 		SchemeGridItem res = getImage(x, y);
 		if (res != null) {
-			images.remove(res);
-			this.redraw();
+			if(images.remove(res)){
+			    this.redraw();
+			    dirty = true;
+			}
 			return res;
 		}
 		return null;
@@ -338,8 +344,42 @@ public class SchemeGrid extends Canvas {
 
 
 	public void removeItem(SchemeGridItem item) {
-		images.remove(item);
-		this.redraw();
+		if(images.remove(item)){
+		    dirty = true;
+		    this.redraw();
+		}
+	}
+	
+	/**
+	 * Was the grid changed since last clear
+	 * 
+	 * @return
+	 */
+	public boolean isDirty(){
+	    return dirty;
+	}
+	
+	/**
+	 * Set dirty to false
+	 */
+	public void clearDirty(){
+	    dirty = false;
 	}
 
+	public Collection<SchemeGridItem> getItems() {
+		/*
+		 * Copy everything so that the caller can't play around with internal data.
+		 */
+		List<SchemeGridItem> r = new ArrayList<>();
+		for(SchemeGridItem item : images){
+			r.add(new SchemeGridItem(item));
+		}
+		return r;
+	}
+
+	public void setItems(Collection<SchemeGridItem> c){
+	    dirty = true;
+		images = new ArrayList<>(c);
+		redraw();
+	}
 }

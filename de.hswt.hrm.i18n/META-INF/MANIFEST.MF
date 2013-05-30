@@ -4,3 +4,9 @@ Bundle-Name: I18n
 Bundle-SymbolicName: de.hswt.hrm.i18n
 Bundle-Version: 0.0.1.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Import-Package: de.hswt.hrm.common
+Require-Bundle: org.eclipse.osgi;bundle-version="3.8.2",
+ ch.qos.logback.classic;bundle-version="1.0.0",
+ ch.qos.logback.core;bundle-version="1.0.0",
+ org.slf4j.api;bundle-version="1.6.4"
+Export-Package: de.hswt.hrm.i18n

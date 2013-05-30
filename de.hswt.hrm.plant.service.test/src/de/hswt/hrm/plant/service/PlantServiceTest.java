@@ -34,8 +34,6 @@ public class PlantServiceTest extends AbstractDatabaseTest {
                 expected.getCurrent().orNull(), expected.getCurrent().orNull());
         assertEquals("Description not set correctly.",
                 expected.getDescription(), expected.getDescription());
-        assertEquals("InspectionInterval not set correctly.",
-                expected.getInspectionInterval(), expected.getInspectionInterval());
         assertEquals("Manufactor not set correctly.",
                 expected.getManufactor().orNull(), expected.getManufactor().orNull());
         assertEquals("MotorPower not set correctly.",

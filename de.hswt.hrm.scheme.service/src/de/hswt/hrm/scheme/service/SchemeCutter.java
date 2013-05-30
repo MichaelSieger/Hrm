@@ -7,6 +7,9 @@ import de.hswt.hrm.scheme.model.SchemeComponent;
 
 public class SchemeCutter {
 	
+	//All static
+	private SchemeCutter(){}
+	
 	/**
 	 * Cuts away unused space in the scheme.
 	 * After this the minimum x and y is 0. 
@@ -14,7 +17,7 @@ public class SchemeCutter {
 	 * @param comps
 	 * @return
 	 */
-	public Collection<SchemeComponent> cut(Collection<SchemeComponent> comps){
+	public static Collection<SchemeComponent> cut(Collection<SchemeComponent> comps){
 		Collection<SchemeComponent> result = new ArrayList<>();
 		int minX = Integer.MAX_VALUE;
 		int minY = Integer.MAX_VALUE;

@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Export-Package: org.apache.commons.dbutils,org.apache.commons.dbutils.
  handlers,org.apache.commons.dbutils.wrappers
 Bundle-ClassPath: commons-dbutils-1.5.jar
-Bundle-Version: 0.0.1.201305300945
+Bundle-Version: 0.0.1.201305301323
 Bundle-Name: Dbutils
 Bundle-ManifestVersion: 2
 Bundle-SymbolicName: de.hswt.hrm.commons.dbutils

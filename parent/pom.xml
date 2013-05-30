@@ -7,8 +7,8 @@
 	<packaging>pom</packaging>
 
 	<properties>
-		<tycho.version>0.17.0</tycho.version>
-		<tycho-extras.version>0.17.0</tycho-extras.version>
+		<tycho.version>0.18.0</tycho.version>
+		<tycho-extras.version>0.18.0</tycho-extras.version>
 
 		<juno-repo.url>http://download.eclipse.org/releases/juno</juno-repo.url>
 		<tycho-repo.url>https://oss.sonatype.org/content/groups/public/</tycho-repo.url>
@@ -155,5 +155,6 @@
 		<module>../de.hswt.hrm.i18n</module>
 		<module>../de.hswt.hrm.component.dao.jdbc.test</module>
 		<module>../de.hswt.hrm.report.latex</module>
+		<module>../de.hswt.hrm.commons.validator</module>
 	</modules>
 </project>

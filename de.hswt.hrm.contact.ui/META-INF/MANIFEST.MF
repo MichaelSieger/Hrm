@@ -29,5 +29,6 @@ Import-Package: de.hswt.hrm.common,
  de.hswt.hrm.common.ui.xwt,
  de.hswt.hrm.contact.model,
  de.hswt.hrm.contact.service,
+ de.hswt.hrm.i18n,
  org.eclipse.e4.ui.di,
  org.eclipse.e4.xwt.forms

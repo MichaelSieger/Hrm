@@ -1,33 +1,58 @@
 package de.hswt.hrm.scheme.model;
 
-import com.google.common.base.Optional;
 import java.sql.Timestamp;
+import java.util.Collection;
+import java.util.Collections;
+
+import com.google.common.base.Optional;
+
 import de.hswt.hrm.plant.model.Plant;
 
 public class Scheme {
     private final int id;
     private Plant plant;
-    private Timestamp timestamp;
-
+	private Timestamp timestamp;
+    private Collection<SchemeComponent> schemeComponents;
+    
     public Scheme(Plant plant) {
         this(-1, plant, null);
-    }
-
-    public Scheme(final int id, Plant plant, Timestamp timestamp) {
+	}
+    
+    public Scheme(final int id) {
         this.id = id;
     }
-
+    
+    @SuppressWarnings("unchecked")
+    public Scheme(final int id, final Plant plant, final Timestamp timestamp){
+        this(id, plant, timestamp, Collections.EMPTY_LIST);
+    }
+    
+    public Scheme(final int id, final Plant plant, final Timestamp timestamp, final Collection<SchemeComponent> schemeComponents) {
+        this.id = id;
+        setPlant(plant);
+        setTimestamp(timestamp);
+        setSchemeComponents(schemeComponents);
+    }
+    
     public int getId() {
         return id;
     }
-
+    
     public Optional<Plant> getPlant() {
         return Optional.fromNullable(plant);
     }
-
+    
     public void setPlant(final Plant plant) {
         this.plant = plant;
     }
+
+	public Collection<SchemeComponent> getSchemeComponents() {
+		return schemeComponents;
+	}
+
+	public void setSchemeComponents(Collection<SchemeComponent> schemeComponents) {
+		this.schemeComponents = schemeComponents;
+	}
 
     public Optional<Timestamp> getTimestamp() {
         return Optional.fromNullable(timestamp);

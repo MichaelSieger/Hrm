@@ -15,37 +15,42 @@ import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.SaveException;
 import de.hswt.hrm.contact.model.Contact;
 import de.hswt.hrm.contact.service.ContactService;
+import de.hswt.hrm.contact.ui.part.ContactPartUtil;
+import de.hswt.hrm.i18n.I18n;
+import de.hswt.hrm.i18n.I18nFactory;
 
 public class ContactWizard extends Wizard {
-
     private static final Logger LOG = LoggerFactory.getLogger(ContactWizard.class);
+    private static final I18n I18N = I18nFactory.getI18n(ContactPartUtil.class);
     private ContactWizardPageOne first;
+    private ContactWizardPageTwo second;
     private Optional<Contact> contact;
     
     @Inject
     private ContactService contactService;
 
     public ContactWizard(Optional<Contact> contact) {
-
         this.contact = contact;
         first = new ContactWizardPageOne("First Page", contact);
+        second = new ContactWizardPageTwo("Second Page", contact);
 
         if (contact.isPresent()) {
-            setWindowTitle("Kontakt bearbeiten");
+            setWindowTitle(I18N.tr("Edit Contact"));
         }
         else {
-            setWindowTitle("Neuen Kontakt anlegen");
+            setWindowTitle(I18N.tr("Add Contact"));
         }
     }
 
     @Override
     public void addPages() {
         addPage(first);
+        addPage(second);
     }
 
     @Override
     public boolean canFinish() {
-        return first.isPageComplete();
+        return first.isPageComplete() && second.isPageComplete();
     }
 
     @Override
@@ -103,7 +108,7 @@ public class ContactWizard extends Wizard {
         String city = mandatoryWidgets.get("city").getText();
         String zipCode = mandatoryWidgets.get("zipCode").getText();
 
-        HashMap<String, Text> optionalWidgets = first.getOptionalWidgets();
+        HashMap<String, Text> optionalWidgets = second.getOptionalWidgets();
         String shortcut = optionalWidgets.get("shortcut").getText();
         String phone = optionalWidgets.get("phone").getText();
         String fax = optionalWidgets.get("fax").getText();

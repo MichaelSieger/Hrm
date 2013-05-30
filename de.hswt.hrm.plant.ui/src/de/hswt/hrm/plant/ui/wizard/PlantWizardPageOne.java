@@ -27,7 +27,6 @@ public class PlantWizardPageOne extends WizardPage {
 
     private Composite container;
     private Optional<Plant> plant;
-    private Collection<Place> places;
 
     public PlantWizardPageOne(String title, Optional<Plant> plant) {
         super(title);
@@ -64,14 +63,8 @@ public class PlantWizardPageOne extends WizardPage {
         Plant p = plant.get();
         Text t = (Text) XWT.findElementByName(c, "description");
         t.setText(p.getDescription());
-        Combo combo = (Combo) XWT.findElementByName(container, "place");
-//        String placeName = p.getPlace().get().getPlaceName();
-//        combo.select(combo.indexOf(placeName));
         // TODO nextInspection / inspectionIntervall ?
         // TODO scheme
-        t = (Text) XWT.findElementByName(c,"inspectionIntervall");
-        t.setText(Integer.toString(p.getInspectionInterval()));
-
         t = (Text) XWT.findElementByName(c, "manufactor");
         t.setText(p.getManufactor().or(""));
         t = (Text) XWT.findElementByName(c, "constructionYear");
@@ -97,7 +90,6 @@ public class PlantWizardPageOne extends WizardPage {
     public HashMap<String, Text> getMandatoryWidgets() {
         HashMap<String, Text> widgets = new HashMap<String, Text>();
         widgets.put("description", (Text) XWT.findElementByName(container, "description"));
-        // TODO place - mandatory?
         // TODO nextInspection / inspectionIntervall ?
         widgets.put("inspectionIntervall",
                 (Text) XWT.findElementByName(container, "inspectionIntervall"));

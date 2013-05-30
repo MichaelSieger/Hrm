@@ -322,3 +322,14 @@ CREATE  TABLE IF NOT EXISTS `Lock` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+
+-- -----------------------------------------------------
+-- Table `Picture`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `Picture` (
+  `Picture_ID` INT NOT NULL ,
+  `Picture_Blob` LONGBLOB NULL ,
+  `Picture_Name` VARCHAR(255) NULL ,
+  PRIMARY KEY (`Picture_ID`) )
+ENGINE = InnoDB;
+

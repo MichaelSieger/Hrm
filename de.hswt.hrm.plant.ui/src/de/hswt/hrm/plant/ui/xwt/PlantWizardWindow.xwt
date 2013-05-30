@@ -29,18 +29,12 @@
 						<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
 					</Combo.layoutData>
 				</Combo>
-				<Label text="Intervall (Jahre): "/>
-				<Text x:Style="BORDER" x:Name="inspectionIntervall">
-					<Text.layoutData>
-						<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
-					</Text.layoutData>
-				</Text>
 				<Label/>
 				<Label/>
 			</Composite>
 		</Section.client>	
 	</Section>
-	<Section text="Optionale Felder" x:Style="(p1:Section).EXPANDED | (p1:Section).TITLE_BAR" x:Name="Optional">
+	<Section text="Zusatzinformationen" x:Style="(p1:Section).EXPANDED | (p1:Section).TITLE_BAR" x:Name="Optional">
 		<Section.layoutData>
 				<GridData grabExcessHorizontalSpace="true" widthHint="277" horizontalAlignment="FILL" horizontalSpan="3"/>
 			</Section.layoutData>
@@ -49,7 +43,11 @@
 					<Composite.layout>
 						<GridLayout numColumns="4"/>
 					</Composite.layout>
-					<Label text="Hersteller: "/>
+					<Label text="Hersteller: ">
+						<Label.layoutData>
+							<GridData horizontalAlignment="LEFT"/>
+						</Label.layoutData>
+					</Label>
 					<Text x:Style="BORDER" x:Name="manufactor">
 						<Text.layoutData>
 							<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
@@ -104,10 +102,15 @@
 							<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
 						</Text.layoutData>
 					</Text>
-					<Label text="Bemerkungen: "/>
-					<Text x:Style="BORDER" x:Name="note">
+					<Label/><Label/><Label/><Label/>
+					<Label text="Bemerkungen: ">
+						<Label.layoutData>
+							<GridData verticalAlignment="TOP"/>
+						</Label.layoutData>
+					</Label>
+					<Text x:Style="BORDER | MULTI" x:Name="note">
 						<Text.layoutData>
-							<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
+							<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL" verticalSpan="2" grabExcessVerticalSpace="true" verticalAlignment="FILL" horizontalSpan="3" minimumHeight="100"/>
 						</Text.layoutData>
 					</Text>
 				</Composite>

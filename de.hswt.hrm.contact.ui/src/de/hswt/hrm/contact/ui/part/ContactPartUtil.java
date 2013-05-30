@@ -15,9 +15,12 @@ import com.google.common.base.Optional;
 import de.hswt.hrm.common.ui.swt.table.ColumnDescription;
 import de.hswt.hrm.contact.model.Contact;
 import de.hswt.hrm.contact.ui.wizard.ContactWizard;
+import de.hswt.hrm.i18n.I18n;
+import de.hswt.hrm.i18n.I18nFactory;
 
 public final class ContactPartUtil {
-
+	private static final I18n I18N = I18nFactory.getI18n(ContactPartUtil.class);
+	
     private ContactPartUtil() {
 
     }
