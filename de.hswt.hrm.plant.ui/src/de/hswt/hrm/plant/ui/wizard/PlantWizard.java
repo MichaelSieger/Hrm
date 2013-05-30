@@ -92,11 +92,7 @@ public class PlantWizard extends Wizard {
     private Plant setValues(Optional<Plant> p) {
         HashMap<String, Text> mandatoryWidgets = first.getMandatoryWidgets();
         String description = mandatoryWidgets.get("description").getText();
-        //TODO place - mandatory?
-        // Bessere implementierung als mit Null?
-//        Place place = first.getSelectedPlace().orNull();
-        //TODO nextInspection / inspectionIntervall?
-        String inspectionIntervall = mandatoryWidgets.get("inspectionIntervall").getText();
+        //TODO nextInspection
         //TODO scheme
         
         HashMap<String, Text> optionalWidgets = first.getOptionalWidgets();
@@ -115,11 +111,11 @@ public class PlantWizard extends Wizard {
         if (p.isPresent()) {
             plant = p.get();
             plant.setDescription(description);
-            //TODO nextInspection?
+            //TODO nextInspection
             //TODO scheme
         } else {
-            plant = new Plant(Integer.parseInt(inspectionIntervall), description);
-            //TODO nextInspection?
+            plant = new Plant(description);
+            //TODO nextInspection
             //TODO scheme
         }
         plant.setManufactor(manufactor);
