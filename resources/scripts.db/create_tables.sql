@@ -40,7 +40,6 @@ ENGINE = InnoDB;
 CREATE  TABLE IF NOT EXISTS `Plant` (
   `Plant_ID` INT NOT NULL AUTO_INCREMENT ,
   `Plant_Place_FK` INT NOT NULL ,
-  `Plant_Inspection_Interval` INT(11) NOT NULL ,
   `Plant_Manufacturer` VARCHAR(45) NULL ,
   `Plant_Year_Of_Construction` YEAR NULL ,
   `Plant_Type` VARCHAR(255) NULL ,
@@ -304,27 +303,6 @@ CREATE  TABLE IF NOT EXISTS `Catalog_Activity` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-
--- -----------------------------------------------------
--- Table `Plant_Contact`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `Plant_Contact` (
-  `Plant_Contact_Plant_FK` INT NOT NULL ,
-  `Plant_Contact_Contact_FK` INT NOT NULL ,
-  PRIMARY KEY (`Plant_Contact_Plant_FK`, `Plant_Contact_Contact_FK`) ,
-  INDEX `Plant_Contact_Plant_IDx` (`Plant_Contact_Plant_FK` ASC) ,
-  INDEX `Plant_Contact_Contact_IDx` (`Plant_Contact_Contact_FK` ASC) ,
-  CONSTRAINT `Plant_Contact_Plant_FK`
-    FOREIGN KEY (`Plant_Contact_Plant_FK` )
-    REFERENCES `Plant` (`Plant_ID` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `Plant_Contact_Contact_FK`
-    FOREIGN KEY (`Plant_Contact_Contact_FK` )
-    REFERENCES `Contact` (`Contact_ID` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
