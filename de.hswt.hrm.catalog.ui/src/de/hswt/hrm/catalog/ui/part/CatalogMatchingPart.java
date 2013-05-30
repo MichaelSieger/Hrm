@@ -3,7 +3,6 @@ package de.hswt.hrm.catalog.ui.part;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -17,14 +16,11 @@ import org.eclipse.e4.xwt.forms.XWTForms;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.ListViewer;
-import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
-
-import sun.security.x509.AVA;
 
 import de.hswt.hrm.catalog.model.Activity;
 import de.hswt.hrm.catalog.model.Catalog;
@@ -33,10 +29,6 @@ import de.hswt.hrm.catalog.model.ICatalogItem;
 import de.hswt.hrm.catalog.model.Target;
 import de.hswt.hrm.catalog.service.CatalogService;
 import de.hswt.hrm.common.ui.swt.list.ListUtil;
-import de.hswt.hrm.common.ui.swt.table.ColumnDescription;
-import de.hswt.hrm.common.ui.swt.table.TableViewerController;
-import de.hswt.hrm.component.model.Category;
-import de.hswt.hrm.component.service.CategoryService;
 
 public class CatalogMatchingPart {
 
