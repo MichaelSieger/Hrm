@@ -78,7 +78,7 @@ public class CurrentDao implements ICurrentDao {
     }
 
     /**
-     * @see {@link IPlaceDao#insert(Place)}
+     * @see {@link ICurrentDao#insert(Current)}
      */
     @Override
     public Current insert(Current current) throws SaveException {
@@ -151,19 +151,19 @@ public class CurrentDao implements ICurrentDao {
 
     private Collection<Current> fromResultSet(ResultSet rs) throws SQLException {
         checkNotNull(rs, "Result must not be null.");
-        Collection<Current> placeList = new ArrayList<>();
+        Collection<Current> currentList = new ArrayList<>();
 
         while (rs.next()) {
             int id = rs.getInt(Fields.ID);
             String name = rs.getString(Fields.NAME);
             String text = rs.getString(Fields.TEXT);
 
-            Current place = new Current(id, name, text);
+            Current current = new Current(id, name, text);
 
-            placeList.add(place);
+            currentList.add(current);
         }
 
-        return placeList;
+        return currentList;
     }
 
     private static final String TABLE_NAME = "State_Current";
