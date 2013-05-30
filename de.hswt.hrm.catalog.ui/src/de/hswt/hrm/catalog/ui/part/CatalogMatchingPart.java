@@ -93,6 +93,14 @@ public class CatalogMatchingPart {
 					.findElementByName(composite, "catalogs");
 
 			createAvailableLabelProvider(catalogs);
+			catalogs.setContentProvider(ArrayContentProvider.getInstance());
+			catalogs.setLabelProvider(new LabelProvider() {
+				@Override
+				public String getText(Object element) {
+					Catalog c = (Catalog) element;
+					return c.getName();
+				}
+			});
 			createAvailableLabelProvider(activities);
 			createMatchedLabelProvider(matchedTargets);
 			createMatchedLabelProvider(matchedActivities);
