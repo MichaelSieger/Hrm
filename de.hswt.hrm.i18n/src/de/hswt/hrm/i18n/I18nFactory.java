@@ -10,7 +10,7 @@ public class I18nFactory {
 	 * 
 	 * @param clazz
 	 */
-	public static <T> I18n createI18n(final Class<T> clazz) {
+	public static <T> I18n getI18n(final Class<T> clazz) {
 		Bundle bundle = FrameworkUtil.getBundle(clazz);
 		
 		// TODO: maybe we can inject the cache class here ..
