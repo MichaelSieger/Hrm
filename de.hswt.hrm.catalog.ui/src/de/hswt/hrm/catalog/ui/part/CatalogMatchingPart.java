@@ -3,6 +3,7 @@ package de.hswt.hrm.catalog.ui.part;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -102,8 +103,6 @@ public class CatalogMatchingPart {
 				}
 			});
 
-			ListUtil.sortList(catalogs);
-
 			createLabelProvider(activities);
 			createLabelProvider(matchedTargets);
 			createLabelProvider(matchedActivities);
@@ -111,8 +110,12 @@ public class CatalogMatchingPart {
 
 			Collection<Catalog> catalogsFromDB = catalogService
 					.findAllCatalog();
+			Collection<ICatalogItem> items = catalogService
+					.findAllCatalogItem();
+			fillAvailableViewer(items);
 
 			catalogs.setInput(catalogsFromDB);
+			ListUtil.sortList(catalogs);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -132,47 +135,11 @@ public class CatalogMatchingPart {
 		});
 	}
 
-	private void initializeTables(Composite parent, TableViewer targets,
-			TableViewer currents, TableViewer activities,
-			Collection<ICatalogItem> items) {
-
-		java.util.List<ColumnDescription<ICatalogItem>> columns = CatalogMatchingPartUtil
-				.getColumns();
-
-		// Create columns in tableviewer
-		TableViewerController<ICatalogItem> targetFiller = new TableViewerController<>(
-				targets);
-
-		targetFiller.createColumns(columns);
-
-		// Enable column selection
-		targetFiller.createColumnSelectionMenu();
-
-		// Create columns in tableviewer
-		TableViewerController<ICatalogItem> activityFiller = new TableViewerController<>(
-				activities);
-
-		activityFiller.createColumns(columns);
-
-		// Enable column selection
-		activityFiller.createColumnSelectionMenu();
-
-		// Create columns in tableviewer
-		TableViewerController<ICatalogItem> currentsFiller = new TableViewerController<>(
-				currents);
-
-		currentsFiller.createColumns(columns);
-
-		// Enable column selection
-		currentsFiller.createColumnSelectionMenu();
+	private void fillAvailableViewer(Collection<ICatalogItem> items) {
 
 		Collection<Activity> a = new ArrayList<>();
 		Collection<Current> c = new ArrayList<>();
 		Collection<Target> t = new ArrayList<>();
-
-		targets.setContentProvider(ArrayContentProvider.getInstance());
-		currents.setContentProvider(ArrayContentProvider.getInstance());
-		activities.setContentProvider(ArrayContentProvider.getInstance());
 
 		for (ICatalogItem i : items) {
 			if (i instanceof Activity) {
