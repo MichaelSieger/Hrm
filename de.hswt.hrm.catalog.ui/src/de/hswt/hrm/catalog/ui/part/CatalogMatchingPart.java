@@ -35,165 +35,171 @@ import de.hswt.hrm.component.service.CategoryService;
 
 public class CatalogMatchingPart {
 
-    @Inject
-    CatalogService catalogService;
-    @Inject
-    CategoryService categoryService;
-    @Inject
-    EPartService service;
+	@Inject
+	CatalogService catalogService;
+	@Inject
+	EPartService service;
 
-    ListViewer targets;
-    ListViewer currents;
-    ListViewer activities;
-    ListViewer cats;
-    ListViewer matchedTargets;
-    ListViewer matchedCurrents;
-    ListViewer matchedActivities;
+	ListViewer targets;
+	ListViewer currents;
+	ListViewer activities;
+	ListViewer cats;
+	ListViewer matchedTargets;
+	ListViewer matchedCurrents;
+	ListViewer matchedActivities;
 
-    @PostConstruct
-    public void postConstruct(Composite parent, IEclipseContext context) {
+	@PostConstruct
+	public void postConstruct(Composite parent, IEclipseContext context) {
 
-        URL url = CatalogPart.class.getClassLoader().getResource(
-                "de/hswt/hrm/catalog/ui/xwt/CatalogMatchingView" + IConstants.XWT_EXTENSION_SUFFIX);
+		URL url = CatalogPart.class.getClassLoader().getResource(
+				"de/hswt/hrm/catalog/ui/xwt/CatalogMatchingView"
+						+ IConstants.XWT_EXTENSION_SUFFIX);
 
-        try {
-            final Composite composite = (Composite) XWTForms.load(parent, url);
+		try {
+			final Composite composite = (Composite) XWTForms.load(parent, url);
 
-            targets = (ListViewer) XWT.findElementByName(composite, "availableTarget");
-            currents = (ListViewer) XWT.findElementByName(composite, "availableCurrent");
-            activities = (ListViewer) XWT.findElementByName(composite, "availableActivity");
-            matchedActivities = (ListViewer) XWT.findElementByName(composite, "matchedActivity");
-            matchedTargets = (ListViewer) XWT.findElementByName(composite, "matchedTarget");
-            matchedCurrents = (ListViewer) XWT.findElementByName(composite, "matchedCurrent");
-            //TODO Replace Categories with Catalog
-            cats = (ListViewer) XWT.findElementByName(composite, "categories");
+			targets = (ListViewer) XWT.findElementByName(composite,
+					"availableTarget");
+			currents = (ListViewer) XWT.findElementByName(composite,
+					"availableCurrent");
+			activities = (ListViewer) XWT.findElementByName(composite,
+					"availableActivity");
+			matchedActivities = (ListViewer) XWT.findElementByName(composite,
+					"matchedActivity");
+			matchedTargets = (ListViewer) XWT.findElementByName(composite,
+					"matchedTarget");
+			matchedCurrents = (ListViewer) XWT.findElementByName(composite,
+					"matchedCurrent");
+			// TODO Replace Categories with Catalog
+			cats = (ListViewer) XWT.findElementByName(composite, "categories");
 
-            Collection<Category> categories = categoryService.findAll();
+			// TODO Implement a better solution
+			cats.setContentProvider(ArrayContentProvider.getInstance());
 
-            //TODO Implement a better solution
-            cats.setContentProvider(ArrayContentProvider.getInstance());
-            cats.setInput(categories);
-            cats.setLabelProvider(new LabelProvider() {
-                @Override
-                public String getText(Object element) {
-                    Category c = (Category) element;
-                    return c.getName();
-                }
-            });
+			cats.setLabelProvider(new LabelProvider() {
+				@Override
+				public String getText(Object element) {
+					Category c = (Category) element;
+					return c.getName();
+				}
+			});
 
-            matchedActivities.setLabelProvider(new LabelProvider() {
-                @Override
-                public String getText(Object element) {
-                    ICatalogItem i = (ICatalogItem) element;
-                    return i.getName();
-                }
-            });
-            matchedCurrents.setLabelProvider(new LabelProvider() {
-                @Override
-                public String getText(Object element) {
-                    ICatalogItem i = (ICatalogItem) element;
-                    return i.getName();
-                }
-            });
+			matchedActivities.setLabelProvider(new LabelProvider() {
+				@Override
+				public String getText(Object element) {
+					ICatalogItem i = (ICatalogItem) element;
+					return i.getName();
+				}
+			});
+			matchedCurrents.setLabelProvider(new LabelProvider() {
+				@Override
+				public String getText(Object element) {
+					ICatalogItem i = (ICatalogItem) element;
+					return i.getName();
+				}
+			});
 
-            matchedTargets.setLabelProvider(new LabelProvider() {
-                @Override
-                public String getText(Object element) {
-                    ICatalogItem i = (ICatalogItem) element;
-                    return i.getName();
-                }
-            });
-            
-            ((Button) XWT.findElementByName(composite, "back2Main")).addListener(SWT.Selection, new Listener() {
-                @Override
-                public void handleEvent(Event event) {
-                    service.findPart("Clients").setVisible(false);
-                    service.findPart("Places").setVisible(false);
-                    service.findPart("Plants").setVisible(false);
-                    service.findPart("Scheme").setVisible(false);
-                    service.findPart("Catalog").setVisible(false);
-                    service.findPart("Category").setVisible(false);
-                    service.findPart("Matched").setVisible(false);
-                    service.findPart("Main").setVisible(true);
-                    service.showPart("Main", PartState.VISIBLE);
-                }
-            });
+			matchedTargets.setLabelProvider(new LabelProvider() {
+				@Override
+				public String getText(Object element) {
+					ICatalogItem i = (ICatalogItem) element;
+					return i.getName();
+				}
+			});
 
-            Collection<ICatalogItem> items = catalogService.findAllCatalogItem();
+			((Button) XWT.findElementByName(composite, "back2Main"))
+					.addListener(SWT.Selection, new Listener() {
+						@Override
+						public void handleEvent(Event event) {
+							service.findPart("Clients").setVisible(false);
+							service.findPart("Places").setVisible(false);
+							service.findPart("Plants").setVisible(false);
+							service.findPart("Scheme").setVisible(false);
+							service.findPart("Catalog").setVisible(false);
+							service.findPart("Category").setVisible(false);
+							service.findPart("Matched").setVisible(false);
+							service.findPart("Main").setVisible(true);
+							service.showPart("Main", PartState.VISIBLE);
+						}
+					});
 
-//            initializeTables(parent, targets, currents, activities, items);
+			Collection<ICatalogItem> items = catalogService
+					.findAllCatalogItem();
 
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+			// initializeTables(parent, targets, currents, activities, items);
 
-    private void initializeTables(Composite parent, TableViewer targets, TableViewer currents,
-            TableViewer activities, Collection<ICatalogItem> items) {
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
-        java.util.List<ColumnDescription<ICatalogItem>> columns = CatalogMatchingPartUtil
-                .getColumns();
+	private void initializeTables(Composite parent, TableViewer targets,
+			TableViewer currents, TableViewer activities,
+			Collection<ICatalogItem> items) {
 
-        // Create columns in tableviewer
-        TableViewerController<ICatalogItem> targetFiller = new TableViewerController<>(targets);
+		java.util.List<ColumnDescription<ICatalogItem>> columns = CatalogMatchingPartUtil
+				.getColumns();
 
-        targetFiller.createColumns(columns);
+		// Create columns in tableviewer
+		TableViewerController<ICatalogItem> targetFiller = new TableViewerController<>(
+				targets);
 
-        // Enable column selection
-        targetFiller.createColumnSelectionMenu();
+		targetFiller.createColumns(columns);
 
-        // Create columns in tableviewer
-        TableViewerController<ICatalogItem> activityFiller = new TableViewerController<>(activities);
+		// Enable column selection
+		targetFiller.createColumnSelectionMenu();
 
-        activityFiller.createColumns(columns);
+		// Create columns in tableviewer
+		TableViewerController<ICatalogItem> activityFiller = new TableViewerController<>(
+				activities);
 
-        // Enable column selection
-        activityFiller.createColumnSelectionMenu();
+		activityFiller.createColumns(columns);
 
-        // Create columns in tableviewer
-        TableViewerController<ICatalogItem> currentsFiller = new TableViewerController<>(currents);
+		// Enable column selection
+		activityFiller.createColumnSelectionMenu();
 
-        currentsFiller.createColumns(columns);
+		// Create columns in tableviewer
+		TableViewerController<ICatalogItem> currentsFiller = new TableViewerController<>(
+				currents);
 
-        // Enable column selection
-        currentsFiller.createColumnSelectionMenu();
+		currentsFiller.createColumns(columns);
 
-        Collection<Activity> a = new ArrayList<>();
-        Collection<Current> c = new ArrayList<>();
-        Collection<Target> t = new ArrayList<>();
+		// Enable column selection
+		currentsFiller.createColumnSelectionMenu();
 
-        targets.setContentProvider(ArrayContentProvider.getInstance());
-        currents.setContentProvider(ArrayContentProvider.getInstance());
-        activities.setContentProvider(ArrayContentProvider.getInstance());
+		Collection<Activity> a = new ArrayList<>();
+		Collection<Current> c = new ArrayList<>();
+		Collection<Target> t = new ArrayList<>();
 
-        for (ICatalogItem i : items) {
-            if (i instanceof Activity) {
-                a.add((Activity) i);
-            }
-            else if (i instanceof Current) {
-                c.add((Current) i);
-            }
-            else {
-                t.add((Target) i);
-            }
-        }
+		targets.setContentProvider(ArrayContentProvider.getInstance());
+		currents.setContentProvider(ArrayContentProvider.getInstance());
+		activities.setContentProvider(ArrayContentProvider.getInstance());
 
-        targets.setInput(t);
-        currents.setInput(c);
-        activities.setInput(a);
+		for (ICatalogItem i : items) {
+			if (i instanceof Activity) {
+				a.add((Activity) i);
+			} else if (i instanceof Current) {
+				c.add((Current) i);
+			} else {
+				t.add((Target) i);
+			}
+		}
 
-        targets.getTable().getColumn(1).setWidth(0);
-        targets.getTable().getColumn(1).setResizable(false);
+		targets.setInput(t);
+		currents.setInput(c);
+		activities.setInput(a);
 
-        currents.getTable().getColumn(1).setWidth(0);
-        currents.getTable().getColumn(1).setResizable(false);
+		targets.getTable().getColumn(1).setWidth(0);
+		targets.getTable().getColumn(1).setResizable(false);
 
-        activities.getTable().getColumn(1).setWidth(0);
-        activities.getTable().getColumn(1).setResizable(false);
+		currents.getTable().getColumn(1).setWidth(0);
+		currents.getTable().getColumn(1).setResizable(false);
 
-        activities.getTable().setEnabled(false);
-        currents.getTable().setEnabled(false);
-    }
+		activities.getTable().getColumn(1).setWidth(0);
+		activities.getTable().getColumn(1).setResizable(false);
+
+		activities.getTable().setEnabled(false);
+		currents.getTable().setEnabled(false);
+	}
 
 }
