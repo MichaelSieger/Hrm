@@ -14,7 +14,7 @@
 				<Composite.layout>
 					<GridLayout numColumns="4" />
 				</Composite.layout>
-				<Label x:Name="lblFirstName" text="Firstname :"/>
+				<Label x:Name="lblFirstName" text="Firstname :">
 					<Label.layoutData>
 						<GridData horizontalAlignment="LEFT"/>
 					</Label.layoutData>
@@ -46,7 +46,7 @@
 							horizontalAlignment="FILL" />
 					</Text.layoutData>
 				</Text>
-				<Label x:Name="lblZipCode" text="Zipcode :">
+				<Label x:Name="lblZipCode" text="Zipcode :"/>
 				<Text x:Style="BORDER" x:Name="zipCode">
 					<Text.layoutData>
 						<GridData grabExcessHorizontalSpace="true"

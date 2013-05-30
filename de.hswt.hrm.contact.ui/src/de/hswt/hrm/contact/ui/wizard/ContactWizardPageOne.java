@@ -56,10 +56,10 @@ public class ContactWizardPageOne extends WizardPage {
             LOG.error("An error occured", e);
         }
 
-        translate(parent);
+        translate(container);
         
         if (this.contact.isPresent()) {
-            updateFields((container));
+            updateFields(container);
         }
 
         setKeyListener();
@@ -80,17 +80,17 @@ public class ContactWizardPageOne extends WizardPage {
     }
     
     private void translate(final Composite container) {
-    	setLabelText(container, "lblFirstName", "Firstname");
-    	setLabelText(container, "lblLastName", "Lastname");
-    	setLabelText(container, "lblStreet", "Street");
-    	setLabelText(container, "lblStreetNumber", "Streetnumber");
-    	setLabelText(container, "lblCity", "City");
-    	setLabelText(container, "lblZipCode", "Zipcode");
-    	setLabelText(container, "lblPhone", "Phone");
-    	setLabelText(container, "lblFax", "Fax");
-    	setLabelText(container, "lblMobilePhone", "Mobile");
-    	setLabelText(container, "lblEmail", "Email");
-    	setLabelText(container, "lblShortcut", "Shortcut");
+    	setLabelText(container, "lblFirstName", I18N.tr("Firstname"));
+    	setLabelText(container, "lblLastName", I18N.tr("Lastname"));
+    	setLabelText(container, "lblStreet", I18N.tr("Street"));
+    	setLabelText(container, "lblStreetNumber", I18N.tr("Streetnumber"));
+    	setLabelText(container, "lblCity", I18N.tr("City"));
+    	setLabelText(container, "lblZipCode", I18N.tr("Zipcode"));
+//    	setLabelText(container, "lblPhone", "Phone");
+//    	setLabelText(container, "lblFax", "Fax");
+//    	setLabelText(container, "lblMobilePhone", "Mobile");
+//    	setLabelText(container, "lblEmail", "Email");
+//    	setLabelText(container, "lblShortcut", "Shortcut");
     }
 
     private void updateFields(final Composite container) {
