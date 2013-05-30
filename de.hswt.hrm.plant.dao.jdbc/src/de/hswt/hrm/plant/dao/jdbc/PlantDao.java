@@ -29,20 +29,19 @@ import de.hswt.hrm.plant.dao.core.IPlantDao;
 public class PlantDao implements IPlantDao {
     private final static Logger LOG = LoggerFactory.getLogger(PlantDao.class);
     private final IPlaceDao placeDao;
-    
+
     @Inject
     public PlantDao(final IPlaceDao placeDao) {
         checkNotNull(placeDao, "PlaceDao not injected properly.");
-        
+
         this.placeDao = placeDao;
         LOG.debug("PlaceDao injected into PlantDao.");
     }
-    
-    
+
     @Override
     public Collection<Plant> findAll() throws DatabaseException {
 
-        final String query = "SELECT Plant_ID, Plant_Place_FK, Plant_Inspection_Interval, "
+        final String query = "SELECT Plant_ID, Plant_Place_FK,"
                 + "Plant_Manufacturer, Plant_Year_Of_Construction, Plant_Type, "
                 + "Plant_Airperformance, Plant_Motorpower, Plant_Motor_Rpm, Plant_Ventilatorperformance, "
                 + "Plant_Current, Plant_Voltage, Plant_Note, Plant_Description FROM Plant ;";
@@ -65,7 +64,7 @@ public class PlantDao implements IPlantDao {
     public Plant findById(int id) throws DatabaseException, ElementNotFoundException {
         checkArgument(id >= 0, "Id must not be negative.");
 
-        final String query = "SELECT Plant_ID, Plant_Place_FK, Plant_Inspection_Interval, "
+        final String query = "SELECT Plant_ID, Plant_Place_FK, "
                 + "Plant_Manufacturer, Plant_Year_Of_Construction, Plant_Type, "
                 + "Plant_Airperformance, Plant_Motorpower, Plant_Motor_Rpm, Plant_Ventilatorperformance, "
                 + "Plant_Current, Plant_Voltage, Plant_Note, Plant_Description FROM Plant "
@@ -103,8 +102,8 @@ public class PlantDao implements IPlantDao {
         // FIXME: we must add a transaction here!
         // Handle dependency
         insertPlaceIfNecessary(plant);
-        
-        final String query = "INSERT INTO Plant (Plant_Place_FK, Plant_Inspection_Interval, "
+
+        final String query = "INSERT INTO Plant (Plant_Place_FK, "
                 + "Plant_Manufacturer, Plant_Year_Of_Construction, Plant_Type, "
                 + "Plant_Airperformance, Plant_Motorpower, Plant_Motor_Rpm, Plant_Ventilatorperformance, "
                 + "Plant_Current, Plant_Voltage, Plant_Note, Plant_Description) "
@@ -115,7 +114,6 @@ public class PlantDao implements IPlantDao {
         try (Connection con = DatabaseFactory.getConnection()) {
             try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
                 stmt.setParameter("description", plant.getDescription());
-                stmt.setParameter("inspectionInterval", plant.getInspectionInterval());
                 stmt.setParameter("plantPlaceFk", plant.getPlace().get().getId());
                 stmt.setParameter("constructionYear", plant.getConstructionYear().orNull());
                 stmt.setParameter("manufactor", plant.getManufactor().orNull());
@@ -139,8 +137,7 @@ public class PlantDao implements IPlantDao {
                         int id = generatedKeys.getInt(1);
 
                         // Create new plant with id
-                        Plant inserted = new Plant(id, plant.getInspectionInterval(),
-                                plant.getDescription());
+                        Plant inserted = new Plant(id, plant.getDescription());
 
                         inserted.setConstructionYear(plant.getConstructionYear().orNull());
                         inserted.setManufactor(plant.getManufactor().orNull());
@@ -175,13 +172,12 @@ public class PlantDao implements IPlantDao {
         if (plant.getId() < 0) {
             throw new ElementNotFoundException("Element has no valid ID.");
         }
-        
+
         // FIXME: we must add a transaction here!
         // Handle dependency
         insertPlaceIfNecessary(plant);
 
         final String query = "UPDATE Plant SET " + "Plant_Place_FK = :plantPlaceFk, "
-                + "Plant_Inspection_Interval = :inspectionInterval, "
                 + "Plant_Manufacturer = :manufactor, "
                 + "Plant_Year_Of_Construction = :constructionYear, " + "Plant_Type = :type, "
                 + "Plant_Airperformance = :airPerformance, " + "Plant_Motorpower = :motorPower, "
@@ -195,7 +191,6 @@ public class PlantDao implements IPlantDao {
             try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
                 stmt.setParameter("id", plant.getId());
                 stmt.setParameter("description", plant.getDescription());
-                stmt.setParameter("inspectionInterval", plant.getInspectionInterval());
                 stmt.setParameter("plantPlaceFk", plant.getPlace().get().getId());
                 stmt.setParameter("constructionYear", plant.getConstructionYear().orNull());
                 stmt.setParameter("manufactor", plant.getManufactor().orNull());
@@ -219,7 +214,7 @@ public class PlantDao implements IPlantDao {
             throw new SaveException(e);
         }
     }
-    
+
     private void insertPlaceIfNecessary(final Plant plant) throws SaveException {
         if (plant.getPlace().isPresent() && plant.getPlace().get().getId() < 0) {
             Place place = placeDao.insert(plant.getPlace().get());
@@ -227,9 +222,9 @@ public class PlantDao implements IPlantDao {
         }
     }
 
-    private Collection<Plant> fromResultSet(ResultSet rs) 
-            throws SQLException, ElementNotFoundException, DatabaseException {
-        
+    private Collection<Plant> fromResultSet(ResultSet rs) throws SQLException,
+            ElementNotFoundException, DatabaseException {
+
         checkNotNull(rs, "Result must not be null.");
         Collection<Plant> plantList = new ArrayList<>();
 
@@ -241,10 +236,9 @@ public class PlantDao implements IPlantDao {
             // + "Plant_Current, Plant_Voltage, Plant_Note, Plant_Description FROM Plant ;";
 
             int id = rs.getInt("plant_ID");
-            int inspectionInterval = rs.getInt("Plant_Inspection_Interval");
             String description = rs.getString("Plant_Description");
 
-            Plant plant = new Plant(id, inspectionInterval, description);
+            Plant plant = new Plant(id, description);
             plant.setConstructionYear(rs.getInt("Plant_Year_Of_Construction"));
             plant.setManufactor(rs.getString("Plant_Manufacturer"));
             plant.setType(rs.getString("Plant_Type"));
@@ -255,7 +249,7 @@ public class PlantDao implements IPlantDao {
             plant.setCurrent(rs.getString("Plant_Current"));
             plant.setVoltage(rs.getString("Plant_Voltage"));
             plant.setNote(rs.getString("Plant_Note"));
-            
+
             // handle dependency
             int placeId = rs.getInt("Plant_Place_FK");
             Place place = null;

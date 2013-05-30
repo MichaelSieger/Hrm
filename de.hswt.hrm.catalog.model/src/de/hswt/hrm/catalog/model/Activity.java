@@ -4,7 +4,7 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Strings.isNullOrEmpty;
 
 /**
- * Represents a contact.
+ * Represents a activity.
  */
 public final class Activity implements ICatalogItem {
     private int id;
