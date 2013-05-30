@@ -42,9 +42,9 @@ public class CatalogMatchingPart {
     @Inject
     EPartService service;
 
-    TableViewer targets;
-    TableViewer currents;
-    TableViewer activities;
+    ListViewer targets;
+    ListViewer currents;
+    ListViewer activities;
     ListViewer cats;
     ListViewer matchedTargets;
     ListViewer matchedCurrents;
@@ -59,9 +59,9 @@ public class CatalogMatchingPart {
         try {
             final Composite composite = (Composite) XWTForms.load(parent, url);
 
-            targets = (TableViewer) XWT.findElementByName(composite, "availableTarget");
-            currents = (TableViewer) XWT.findElementByName(composite, "availableCurrent");
-            activities = (TableViewer) XWT.findElementByName(composite, "availableActivity");
+            targets = (ListViewer) XWT.findElementByName(composite, "availableTarget");
+            currents = (ListViewer) XWT.findElementByName(composite, "availableCurrent");
+            activities = (ListViewer) XWT.findElementByName(composite, "availableActivity");
             matchedActivities = (ListViewer) XWT.findElementByName(composite, "matchedActivity");
             matchedTargets = (ListViewer) XWT.findElementByName(composite, "matchedTarget");
             matchedCurrents = (ListViewer) XWT.findElementByName(composite, "matchedCurrent");
@@ -121,7 +121,7 @@ public class CatalogMatchingPart {
 
             Collection<ICatalogItem> items = catalogService.findAllCatalogItem();
 
-            initializeTables(parent, targets, currents, activities, items);
+//            initializeTables(parent, targets, currents, activities, items);
 
         }
         catch (Exception e) {
