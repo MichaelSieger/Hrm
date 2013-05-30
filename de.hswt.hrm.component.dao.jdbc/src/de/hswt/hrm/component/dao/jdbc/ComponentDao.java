@@ -172,17 +172,17 @@ public class ComponentDao implements IComponentDao {
         }
     }
 
-    private Collection<Component> fromResultSet(ResultSet rs) throws SQLException {
+    private Collection<Component> fromResultSet(ResultSet rs) throws SQLException, DatabaseException {
         checkNotNull(rs, "Result must not be null.");
         Collection<Component> componentList = new ArrayList<>();
 
         while (rs.next()) {
             int id = rs.getInt(Fields.ID);
             String name = rs.getString(Fields.NAME);
-            byte[] leftRightImage = rs.getBytes(Fields.SYMBOL_LR);
-            byte[] rightLeftImage = rs.getBytes(Fields.SYMBOL_RL);
-            byte[] upDownImage = rs.getBytes(Fields.SYMBOL_UD);
-            byte[] downUpImage = rs.getBytes(Fields.SYMBOL_DU);
+            byte[] leftRightImage = findBlob(rs.getInt(Fields.SYMBOL_LR));
+            byte[] rightLeftImage = findBlob(rs.getInt(Fields.SYMBOL_RL));
+            byte[] upDownImage = findBlob(rs.getInt(Fields.SYMBOL_UD));
+            byte[] downUpImage = findBlob(rs.getInt(Fields.SYMBOL_DU));
             int quantifier = rs.getInt(Fields.QUANTIFIER);
             boolean boolRating = rs.getBoolean(Fields.BOOL_RATING);
 
@@ -196,6 +196,9 @@ public class ComponentDao implements IComponentDao {
     }
     
     public byte[] findBlob(int id) throws DatabaseException{
+        if(id <= 0){
+            return null;
+        }
         SqlQueryBuilder builder = new SqlQueryBuilder();
         builder.select(BLOB_TABLE_NAME, BlobFields.BLOB);
         builder.where(BlobFields.ID);
