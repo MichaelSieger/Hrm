@@ -7,10 +7,13 @@ import org.osgi.framework.Bundle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.hswt.hrm.common.Config;
+
 public final class I18n {
 	private final static Logger LOG = LoggerFactory.getLogger(I18n.class);
     private final I18nCache cache;
     private final Bundle bundle;
+    private Config config;
     private Properties translations;
     
     public I18n(final Bundle bundle) {
@@ -20,12 +23,17 @@ public final class I18n {
     public I18n(final Bundle bundle, final I18nCache cache) {
     	this.bundle = bundle;
     	this.cache = cache;
+    	
+    	// TODO maybe we can handle config injection better
+    	config = Config.getInstance();
     }
     
     public String tr(final String key) {
     	if (translations == null) {
     		try {
-				this.translations = cache.getTranslations(bundle);
+    			// FIXME: en_en should be the default language
+    			String locale = config.getProperty(Config.Keys.LOCALE, "de_de");
+				this.translations = cache.getTranslations(bundle, locale);
 			} 
     		catch (IOException e) {
 				LOG.error("Could not load translation file for bundle '"
@@ -33,8 +41,14 @@ public final class I18n {
 				return key;
 			}
     	}
+    	
+    	String escaped = escape(key);
+    	if (!translations.containsKey(escaped)) {
+    		LOG.warn("No translation found for '" + escaped + "' in '" 
+    				+ bundle.getSymbolicName() + "'.");
+    	}
         
-        return translations.getProperty(escape(key), key);
+        return translations.getProperty(escaped, key);
     }
     
     /**

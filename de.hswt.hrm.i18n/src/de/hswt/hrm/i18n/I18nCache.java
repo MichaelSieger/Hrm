@@ -7,33 +7,42 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.osgi.framework.Bundle;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import de.hswt.hrm.common.BundleUtil;
 
 public class I18nCache {
+	private final static Logger LOG = LoggerFactory.getLogger(I18nCache.class);
 	private static Map<String, Properties> cache = new HashMap<>();
 	
-	public Properties getTranslations(final Bundle bundle) throws IOException {
-		String symbolicName = bundle.getSymbolicName();
+	public Properties getTranslations(final Bundle bundle, final String locale) 
+			throws IOException {
+		
+		String symbolicName = getSymcolicName(bundle, locale);
 		
 		if (cache.containsKey(symbolicName)) {
 			return cache.get(symbolicName);
 		}
 		
-		return load(bundle);
+		return load(bundle, locale);
 	}
 	
-	private Properties load(final Bundle bundle) throws IOException {
-		String symbolicName = bundle.getSymbolicName();
+	private String getSymcolicName(final Bundle bundle, final String locale) {
+		return bundle.getSymbolicName() + "." + locale;
+	}
+	
+	private Properties load(final Bundle bundle, final String locale) throws IOException {
+		String symbolicName = getSymcolicName(bundle, locale);
 
 		// TODO: refactor folder to a separate folder with default "i18n"
-		// TODO: refactor file to the current language..
-		InputStream inStream = BundleUtil.getStreamForFile(bundle,
-				"i18n/de_de.properties");
+		String path = "resource/i18n/" + locale.toLowerCase() + ".properties";
+		InputStream inStream = BundleUtil.getStreamForFile(bundle, path);
 		Properties props = loadFromFile(inStream);
 		inStream.close();
 
 		cache.put(symbolicName, props);
+		LOG.debug("Translation load form '" + path + "'.");
 		return props;
 	}
 	

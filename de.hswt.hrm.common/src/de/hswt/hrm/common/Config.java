@@ -110,5 +110,6 @@ public final class Config {
         public static final String DB_NAME = "db.name";
         public static final String DB_LOCKING = "db.locking.enabled";
         public static final String SESSION_UUID = "session.uuid";
+        public static final String LOCALE = "locale";
     }
 }
