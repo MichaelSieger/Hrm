@@ -116,14 +116,12 @@ public class PlantWizard extends Wizard {
             plant = p.get();
             plant.setDescription(description);
             //TODO nextInspection?
-            plant.setInspectionInterval(Integer.parseInt(inspectionIntervall));
             //TODO scheme
         } else {
             plant = new Plant(Integer.parseInt(inspectionIntervall), description);
             //TODO nextInspection?
             //TODO scheme
         }
-//        plant.setPlace(place);
         plant.setManufactor(manufactor);
         if (!constructionYear.equals("")) {
             plant.setConstructionYear(Integer.parseInt(constructionYear));
