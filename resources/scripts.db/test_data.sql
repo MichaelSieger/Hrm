@@ -38,16 +38,34 @@ INSERT INTO `hrm`.`Catalog` (`Catalog_Name`) VALUES ('Katalog_Heizung');
 ------------------------------------------------------------
 -- Insert 4 different categories in the `Category` Table
 ------------------------------------------------------------
-INSERT INTO `hrm`.`Category` (`Category_Name`, `Category_Height`, `Category_Width`, `Category_Default_Quantifier`, `Category_Default_Bool_Rating`, `Category_Catalog_FK`) VALUES ('Filter', '4', '4', '1', '1', '1');
-INSERT INTO `hrm`.`Category` (`Category_Name`, `Category_Height`, `Category_Width`, `Category_Default_Quantifier`, `Category_Default_Bool_Rating`, `Category_Catalog_FK`) VALUES ('Motor', '4', '2', '1', '1', '2');
-INSERT INTO `hrm`.`Category` (`Category_Name`, `Category_Height`, `Category_Width`, `Category_Default_Quantifier`, `Category_Default_Bool_Rating`, `Category_Catalog_FK`) VALUES ('Heizung', '3', '3', '3', '0', '3');
-INSERT INTO `hrm`.`Category` (`Category_Name`, `Category_Height`, `Category_Width`, `Category_Default_Quantifier`, `Category_Default_Bool_Rating`, `Category_Catalog_FK`) VALUES ('Spezial Filter', '2', '2', '3', '0', '1');
+INSERT INTO `hrm`.`Category` (`Category_Name`, `Category_Height`, `Category_Width`, `Category_Default_Quantifier`, `Category_Default_Bool_Rating`, `Category_Catalog_FK`) VALUES ('Filter', '2', '2', '1', '1', '1');
+INSERT INTO `hrm`.`Category` (`Category_Name`, `Category_Height`, `Category_Width`, `Category_Default_Quantifier`, `Category_Default_Bool_Rating`, `Category_Catalog_FK`) VALUES ('Ventilation', '2', '2', '1', '1', '2');
+INSERT INTO `hrm`.`Category` (`Category_Name`, `Category_Height`, `Category_Width`, `Category_Default_Quantifier`, `Category_Default_Bool_Rating`, `Category_Catalog_FK`) VALUES ('Zugangspunkt', '1', '1', '3', '0', '3');
+INSERT INTO `hrm`.`Category` (`Category_Name`, `Category_Height`, `Category_Width`, `Category_Default_Quantifier`, `Category_Default_Bool_Rating`, `Category_Catalog_FK`) VALUES ('Schacht', '4', '1', '3', '0', '1');
+
 ------------------------------------------------------------
--- Insert 3 different components in the `Component` Table
+-- Insert 11 different component pictures in the `Component_Picture` Table
 ------------------------------------------------------------
-INSERT INTO `hrm`.`Component` (`Component_Name`, `Component_Symbol_LR`, `Component_Symbol_RL`, `Component_Symbol_UD`, `Component_Symbol_DU`, `Component_Quantifier`, `Component_Category_FK`, `Component_Bool_Rating`) VALUES ('Heizschlange', '/home/bla.pdf', '/home/bla.pdf', '/home/bla.pdf', '/home/bla.pdf', '2', '3', '1');
-INSERT INTO `hrm`.`Component` (`Component_Name`, `Component_Symbol_LR`, `Component_Symbol_RL`, `Component_Symbol_UD`, `Component_Symbol_DU`, `Component_Quantifier`, `Component_Category_FK`, `Component_Bool_Rating`) VALUES ('Feinfilter', '/home/bla.pdf', '/home/bla.pdf', '/home/bla.pdf', '/home/bla.pdf', '1', '4', '');
-INSERT INTO `hrm`.`Component` (`Component_Name`, `Component_Symbol_LR`, `Component_Symbol_RL`, `Component_Symbol_UD`, `Component_Symbol_DU`, `Component_Quantifier`, `Component_Category_FK`, `Component_Bool_Rating`) VALUES ('Motor', '/home/bla.pdf', '/home/bla.pdf', '/home/bla.pdf', '/home/bla.pdf', '', '2', '1');
+INSERT INTO `hrm`.`Component_Picture`(`Component_Picture_Filename`, `Component_Picture_Blob`) VALUES ('1_0.pdf', LOAD_FILE('./data/1_0.pdf'));
+INSERT INTO `hrm`.`Component_Picture`(`Component_Picture_Filename`, `Component_Picture_Blob`) VALUES ('1_l_0.pdf', LOAD_FILE('./data/1_l_0.pdf'));
+INSERT INTO `hrm`.`Component_Picture`(`Component_Picture_Filename`, `Component_Picture_Blob`) VALUES ('7_l_0.pdf', LOAD_FILE('./data/7_l_0.pdf'));
+INSERT INTO `hrm`.`Component_Picture`(`Component_Picture_Filename`, `Component_Picture_Blob`) VALUES ('7_r_0.pdf', LOAD_FILE('./data/7_r_0.pdf'));
+INSERT INTO `hrm`.`Component_Picture`(`Component_Picture_Filename`, `Component_Picture_Blob`) VALUES ('8_l_0.pdf', LOAD_FILE('./data/8_l_0.pdf'));
+INSERT INTO `hrm`.`Component_Picture`(`Component_Picture_Filename`, `Component_Picture_Blob`) VALUES ('8_r_0.pdf', LOAD_FILE('./data/8_r_0.pdf'));
+INSERT INTO `hrm`.`Component_Picture`(`Component_Picture_Filename`, `Component_Picture_Blob`) VALUES ('pkk1d.pdf', LOAD_FILE('./data/pkk1d.pdf'));
+INSERT INTO `hrm`.`Component_Picture`(`Component_Picture_Filename`, `Component_Picture_Blob`) VALUES ('pkk1l.pdf', LOAD_FILE('./data/pkk1l.pdf'));
+INSERT INTO `hrm`.`Component_Picture`(`Component_Picture_Filename`, `Component_Picture_Blob`) VALUES ('pkk1r.pdf', LOAD_FILE('./data/pkk1r.pdf'));
+INSERT INTO `hrm`.`Component_Picture`(`Component_Picture_Filename`, `Component_Picture_Blob`) VALUES ('pkk1u.pdf', LOAD_FILE('./data/pkk1u.pdf'));
+INSERT INTO `hrm`.`Component_Picture`(`Component_Picture_Filename`, `Component_Picture_Blob`) VALUES ('36_0.pdf', LOAD_FILE('./data/36_0.pdf'));
+
+------------------------------------------------------------
+-- Insert 5 different components in the `Component` Table
+------------------------------------------------------------																																																																										
+INSERT INTO `hrm`.`Component` (`Component_Name`, `Component_Symbol_LR_FK`, `Component_Symbol_RL_FK`, `Component_Symbol_UD_FK`, `Component_Symbol_DU_FK`, `Component_Quantifier`, `Component_Category_FK`, `Component_Bool_Rating`) VALUES ('Außenluft', '1', '2', NULL, NULL, '2', '3', '2');
+INSERT INTO `hrm`.`Component` (`Component_Name`, `Component_Symbol_LR_FK`, `Component_Symbol_RL_FK`, `Component_Symbol_UD_FK`, `Component_Symbol_DU_FK`, `Component_Quantifier`, `Component_Category_FK`, `Component_Bool_Rating`) VALUES ('F5', '4', '3', NULL, NULL, '2', '4', '1');
+INSERT INTO `hrm`.`Component` (`Component_Name`, `Component_Symbol_LR_FK`, `Component_Symbol_RL_FK`, `Component_Symbol_UD_FK`, `Component_Symbol_DU_FK`, `Component_Quantifier`, `Component_Category_FK`, `Component_Bool_Rating`) VALUES ('F6', '6', '5', NULL, NULL, '2', '2', '1');
+INSERT INTO `hrm`.`Component` (`Component_Name`, `Component_Symbol_LR_FK`, `Component_Symbol_RL_FK`, `Component_Symbol_UD_FK`, `Component_Symbol_DU_FK`, `Component_Quantifier`, `Component_Category_FK`, `Component_Bool_Rating`) VALUES ('Zugang', '6', '7', '5', '8', '2', '2', '3');
+INSERT INTO `hrm`.`Component` (`Component_Name`, `Component_Symbol_LR_FK`, `Component_Symbol_RL_FK`, `Component_Symbol_UD_FK`, `Component_Symbol_DU_FK`, `Component_Quantifier`, `Component_Category_FK`, `Component_Bool_Rating`) VALUES ('Schacht', '9', NULL, '9', NULL, '2', '2', '3');
 
 ------------------------------------------------------------
 -- Insert 3 different schemes in the `Scheme` Table
@@ -105,8 +123,3 @@ INSERT INTO `hrm`.`Catalog_Target` (`Category_Target_State_Target_FK`, `Category
 INSERT INTO `hrm`.`Catalog_Target` (`Category_Target_State_Target_FK`, `Category_Target_Catalog_FK`) VALUES ('2', '1');
 INSERT INTO `hrm`.`Catalog_Target` (`Category_Target_State_Target_FK`, `Category_Target_Catalog_FK`) VALUES ('2', '3');
 
-------------------------------------------------------------
--- Connect 2 different plants with contacts in the `Plant_Contact` Table
-------------------------------------------------------------
-INSERT INTO `hrm`.`Plant_Contact` (`Plant_Contact_Plant_FK`, `Plant_Contact_Contact_FK`) VALUES ('1','1' );
-INSERT INTO `hrm`.`Plant_Contact` (`Plant_Contact_Plant_FK`, `Plant_Contact_Contact_FK`) VALUES ('2','2' );
