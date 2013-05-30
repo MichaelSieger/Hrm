@@ -15,7 +15,6 @@ import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
-import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.widgets.Button;
@@ -81,21 +80,6 @@ public class PlantWizardPageTwo extends WizardPage {
         refreshTable(parent);
         setButtonInvisible();
 
-    }
-
-    private void updateFields(Composite container) {
-        Plant p = plant.get();
-        int i = 1;
-        while (viewer.getElementAt(i) != null) {
-            if (viewer.getElementAt(i).equals(p.getPlace())) {
-                break;
-            }
-            else {
-                i++;
-            }
-        }
-        Plant a = (Plant) viewer.getData(p.getPlace().get().getPlaceName());
-        viewer.setSelection(new StructuredSelection(viewer.getElementAt(i)), true);
     }
 
     private void setButtonInvisible() {

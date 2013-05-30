@@ -1,15 +1,12 @@
 package de.hswt.hrm.plant.ui.event;
 
-import java.lang.reflect.Array;
 import java.util.Collection;
 
 import javax.inject.Inject;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.xwt.XWT;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.TableViewer;
-import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Text;
@@ -18,9 +15,7 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Optional;
 
-import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.place.model.Place;
-import de.hswt.hrm.place.service.PlaceService;
 import de.hswt.hrm.place.ui.filter.PlaceFilter;
 import de.hswt.hrm.place.ui.part.PlacePartUtil;
 
