@@ -16,7 +16,7 @@
 				</Composite.layout>
 				<Label text="Vorname :" >
 					<Label.layoutData>
-						<GridData horizontalAlignment="RIGHT"/>
+						<GridData horizontalAlignment="LEFT"/>
 					</Label.layoutData>
 				</Label>
 				<Text x:Style="BORDER" x:Name="firstName">
@@ -25,55 +25,35 @@
 							horizontalAlignment="FILL" />
 					</Text.layoutData>
 				</Text>
-				<Label text="Nachname :" >
-					<Label.layoutData>
-						<GridData horizontalAlignment="RIGHT"/>
-					</Label.layoutData>
-				</Label>
+				<Label text="Nachname :" />
 				<Text x:Style="BORDER" x:Name="lastName">
 					<Text.layoutData>
 						<GridData grabExcessHorizontalSpace="true"
 							horizontalAlignment="FILL" />
 					</Text.layoutData>
 				</Text>
-				<Label text="Strasse :" >
-					<Label.layoutData>
-						<GridData horizontalAlignment="RIGHT"/>
-					</Label.layoutData>
-				</Label>
+				<Label text="Strasse :" />
 				<Text x:Style="BORDER" x:Name="street">
 					<Text.layoutData>
 						<GridData grabExcessHorizontalSpace="true"
 							horizontalAlignment="FILL" verticalAlignment="BOTTOM" />
 					</Text.layoutData>
 				</Text>
-				<Label text="Hausnr. :" >
-					<Label.layoutData>
-						<GridData horizontalAlignment="RIGHT"/>
-					</Label.layoutData>
-				</Label>
+				<Label text="Hausnr. :" />
 				<Text x:Style="BORDER" x:Name="streetNumber">
 					<Text.layoutData>
 						<GridData grabExcessHorizontalSpace="true"
 							horizontalAlignment="FILL" />
 					</Text.layoutData>
 				</Text>
-				<Label text="PLZ:">
-					<Label.layoutData>
-						<GridData horizontalAlignment="RIGHT" />
-					</Label.layoutData>
-				</Label>
+				<Label text="PLZ:"/>
 				<Text x:Style="BORDER" x:Name="zipCode">
 					<Text.layoutData>
 						<GridData grabExcessHorizontalSpace="true"
 							horizontalAlignment="FILL" />
 					</Text.layoutData>
 				</Text>
-				<Label text="Stadt :" >
-					<Label.layoutData>
-						<GridData horizontalAlignment="RIGHT"/>
-					</Label.layoutData>
-				</Label>
+				<Label text="Stadt :" />
 				<Text x:Style="BORDER" x:Name="city">
 					<Text.layoutData>
 						<GridData grabExcessHorizontalSpace="true"

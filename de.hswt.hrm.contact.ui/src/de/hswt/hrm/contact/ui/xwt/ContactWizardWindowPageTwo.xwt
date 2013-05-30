@@ -13,55 +13,35 @@
 				<Composite.layout>
 					<GridLayout numColumns="6"  />
 				</Composite.layout>
-				<Label text="Telefon :" >
-					<Label.layoutData>
-						<GridData horizontalAlignment="RIGHT"/>
-					</Label.layoutData>
-				</Label>
+				<Label text="Telefon :" />
 				<Text x:Style="BORDER" x:Name="phone">
 					<Text.layoutData>
 						<GridData grabExcessHorizontalSpace="true"
 							horizontalAlignment="FILL" horizontalSpan="2" />
 					</Text.layoutData>
 				</Text>
-				<Label text="Mobil :" >
-					<Label.layoutData>
-						<GridData horizontalAlignment="RIGHT"/>
-					</Label.layoutData>
-				</Label>
+				<Label text="Mobil :" />
 				<Text x:Style="BORDER" x:Name="mobilePhone">
 					<Text.layoutData>
 						<GridData grabExcessHorizontalSpace="true"
 							horizontalAlignment="FILL" horizontalSpan="2" />
 					</Text.layoutData>
 				</Text>
-				<Label text="Fax :" >
-					<Label.layoutData>
-						<GridData horizontalAlignment="RIGHT"/>
-					</Label.layoutData>
-				</Label>
+				<Label text="Fax :" />
 				<Text x:Style="BORDER" x:Name="fax">
 					<Text.layoutData>
 						<GridData grabExcessHorizontalSpace="true"
 							horizontalAlignment="FILL" horizontalSpan="2" />
 					</Text.layoutData>
 				</Text>
-				<Label text="Email :" >
-					<Label.layoutData>
-						<GridData horizontalAlignment="RIGHT"/>
-					</Label.layoutData>
-				</Label>
+				<Label text="Email :" />
 				<Text x:Style="BORDER" x:Name="email">
 					<Text.layoutData>
 						<GridData grabExcessHorizontalSpace="true"
 							horizontalAlignment="FILL" horizontalSpan="2" />
 					</Text.layoutData>
 				</Text>
-				<Label text="Kuerzel :" >
-					<Label.layoutData>
-						<GridData horizontalAlignment="RIGHT"/>
-					</Label.layoutData>
-				</Label>
+				<Label text="Kuerzel :" />
 				<Text x:Style="BORDER" x:Name="shortcut">
 					<Text.layoutData>
 						<GridData
