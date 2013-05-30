@@ -15,10 +15,13 @@ import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.SaveException;
 import de.hswt.hrm.contact.model.Contact;
 import de.hswt.hrm.contact.service.ContactService;
+import de.hswt.hrm.contact.ui.part.ContactPartUtil;
+import de.hswt.hrm.i18n.I18n;
+import de.hswt.hrm.i18n.I18nFactory;
 
 public class ContactWizard extends Wizard {
-
     private static final Logger LOG = LoggerFactory.getLogger(ContactWizard.class);
+    private static final I18n I18N = I18nFactory.getI18n(ContactPartUtil.class);
     private ContactWizardPageOne first;
     private Optional<Contact> contact;
     
@@ -31,10 +34,10 @@ public class ContactWizard extends Wizard {
         first = new ContactWizardPageOne("First Page", contact);
 
         if (contact.isPresent()) {
-            setWindowTitle("Kontakt bearbeiten");
+            setWindowTitle(I18N.tr("Edit Contact"));
         }
         else {
-            setWindowTitle("Neuen Kontakt anlegen");
+            setWindowTitle(I18N.tr("Add Contact"));
         }
     }
 
