@@ -12,10 +12,22 @@ import org.slf4j.LoggerFactory;
 
 import de.hswt.hrm.common.BundleUtil;
 
+/**
+ * Acts like a common cache for all translation files. This should not be used directly.
+ * Its used by the I18n class.
+ */
 public class I18nCache {
 	private final static Logger LOG = LoggerFactory.getLogger(I18nCache.class);
 	private static Map<String, Properties> cache = new HashMap<>();
 	
+	/**
+	 * Get the translations for a bundle and a locale.
+	 * 
+	 * @param bundle 
+	 * @param locale
+	 * @return Translations for the given bundle and locale.
+	 * @throws IOException
+	 */
 	public Properties getTranslations(final Bundle bundle, final String locale) 
 			throws IOException {
 		

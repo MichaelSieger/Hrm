@@ -3,6 +3,9 @@ package de.hswt.hrm.i18n;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.FrameworkUtil;
 
+/**
+ * Factory class that creates I18n classes.
+ */
 public class I18nFactory {
 	
 	/**
