@@ -14,7 +14,6 @@ public class Plant {
 
     // mandatory fields
     private int id;
-    private int inspectionInterval;
     // Laut Anforderung: Anzahl der Elemente (ergibt sich aus der schematischen Bezeichnung) Wie ist
     // das gemeint?
     private int numberOfElements;
@@ -35,18 +34,16 @@ public class Plant {
     private String note;
 
     private static final String IS_MANDATORY = "Field is a mandatory.";
-    private static final String INVALID_NUMBER = "%d is an invalid number.%n Must be greater 0";
 
-    public Plant(int inspectionInterval, final String description) {
+    public Plant( final String description) {
 
-        this(-1, inspectionInterval,  description);
+        this(-1,  description);
 
     }
 
-    public Plant(int id, int inspectionInterval, final String description) {
+    public Plant(int id, final String description) {
 
         this.id = id;
-        setInspectionInterval(inspectionInterval);
         setDescription(description);
     }
 
@@ -54,14 +51,6 @@ public class Plant {
         return id;
     }
     
-    public int getInspectionInterval() {
-        return inspectionInterval;
-    }
-
-    public void setInspectionInterval(int inspectionInterval) {
-        checkArgument(inspectionInterval > 0, INVALID_NUMBER, inspectionInterval);
-        this.inspectionInterval = inspectionInterval;
-    }
 
     // TODO abklären siehe oben
     public int getNumberOfElements() {
@@ -179,7 +168,6 @@ public class Plant {
         result = prime * result + ((current == null) ? 0 : current.hashCode());
         result = prime * result + ((description == null) ? 0 : description.hashCode());
         result = prime * result + id;
-        result = prime * result + inspectionInterval;
         result = prime * result + ((manufactor == null) ? 0 : manufactor.hashCode());
         result = prime * result + ((motorPower == null) ? 0 : motorPower.hashCode());
         result = prime * result + ((motorRpm == null) ? 0 : motorRpm.hashCode());
@@ -233,9 +221,6 @@ public class Plant {
             return false;
         }
         if (id != other.id) {
-            return false;
-        }
-        if (inspectionInterval != other.inspectionInterval) {
             return false;
         }
         if (manufactor == null) {

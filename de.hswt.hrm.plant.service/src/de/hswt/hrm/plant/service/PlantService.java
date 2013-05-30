@@ -81,7 +81,6 @@ public final class PlantService {
         plant.setConstructionYear(fromDb.getConstructionYear().orNull());
         plant.setCurrent(fromDb.getCurrent().orNull());
         plant.setDescription(fromDb.getDescription());
-        plant.setInspectionInterval(fromDb.getInspectionInterval());
         plant.setManufactor(fromDb.getManufactor().orNull());
         plant.setMotorPower(fromDb.getMotorPower().orNull());
         plant.setMotorPower(fromDb.getMotorPower().orNull());
