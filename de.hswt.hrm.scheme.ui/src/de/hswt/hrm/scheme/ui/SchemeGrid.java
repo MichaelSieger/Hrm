@@ -358,6 +358,13 @@ public class SchemeGrid extends Canvas {
 	public boolean isDirty(){
 	    return dirty;
 	}
+	
+	/**
+	 * Set dirty to false
+	 */
+	public void clearDirty(){
+	    dirty = false;
+	}
 
 	public Collection<SchemeGridItem> getItems() {
 		/*
