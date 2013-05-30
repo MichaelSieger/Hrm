@@ -11,8 +11,6 @@ import org.eclipse.e4.xwt.DefaultLoadingContext;
 import org.eclipse.e4.xwt.IConstants;
 import org.eclipse.e4.xwt.XWT;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
@@ -29,6 +27,7 @@ public class MainPart {
 	Button toScheme;
 	Button toCatalog;
 	Button toCategory;
+	
 	
     @PostConstruct
     public void postConstruct(Composite parent) {

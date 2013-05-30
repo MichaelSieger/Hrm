@@ -2,7 +2,7 @@
 	<Composite.layout>
 		<GridLayout numColumns="3"/>
 	</Composite.layout>
-	<Section text="Pflichtfelder" x:Style="(p1:Section).EXPANDED | (p1:Section).TITLE_BAR" x:Name="Mandatory">
+	<Section x:Style="(p1:Section).EXPANDED | (p1:Section).TITLE_BAR" x:Name="Mandatory">
 		<Section.layoutData>
 			<GridData grabExcessHorizontalSpace="true" widthHint="277" horizontalAlignment="FILL" horizontalSpan="2" heightHint="190"/>
 		</Section.layoutData>
@@ -12,17 +12,21 @@
 					<GridLayout numColumns="4"/>
 				</Composite.layout>
 				<Label/>
-				<Button x:Style="RADIO" text="Soll"/>
-				<Button x:Style="RADIO" text="Ist"/>
-				<Button x:Style="RADIO" text="Maßnahme"/>
+				<Button x:Style="RADIO" text="Soll" x:Name="target"/>
+				<Button x:Style="RADIO" text="Ist" x:Name="current"/>
+				<Button x:Style="RADIO" text="Maßnahme" x:Name="activity"/>
 				<Label text="Name :"/>
 				<Text x:Style="BORDER" x:Name="name">
 					<Text.layoutData>
 						<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL" horizontalSpan="3"/>
 					</Text.layoutData>
 				</Text>
-				<Label text="Beschreibung :"/>
-				<Text x:Style="BORDER | WRAP | V_SCROLL | MULTI" x:Name="street">
+				<Label text="Beschreibung :">
+					<Label.layoutData>
+						<GridData verticalAlignment="TOP"/>
+					</Label.layoutData>
+				</Label>
+				<Text x:Style="BORDER | WRAP | V_SCROLL | MULTI" x:Name="desc">
 					<Text.layoutData>
 						<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL" verticalAlignment="FILL" heightHint="80" widthHint="300" horizontalSpan="3"/>
 					</Text.layoutData>

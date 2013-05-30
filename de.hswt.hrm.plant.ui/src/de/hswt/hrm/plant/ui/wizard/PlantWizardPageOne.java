@@ -3,7 +3,6 @@ package de.hswt.hrm.plant.ui.wizard;
 import java.net.URL;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 
 import org.eclipse.e4.xwt.IConstants;
 import org.eclipse.e4.xwt.XWT;
@@ -19,9 +18,7 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Optional;
 
-import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.place.model.Place;
-import de.hswt.hrm.place.service.PlaceService;
 import de.hswt.hrm.plant.model.Plant;
 
 public class PlantWizardPageOne extends WizardPage {

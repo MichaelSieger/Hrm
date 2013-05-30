@@ -1,11 +1,10 @@
 package de.hswt.hrm.plant.service;
 
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.Collection;
 
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.ElementNotFoundException;

@@ -22,7 +22,6 @@ import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.plant.model.Plant;
 import de.hswt.hrm.plant.service.PlantService;
 import de.hswt.hrm.plant.ui.filter.PlantFilter;
-import de.hswt.hrm.plant.ui.part.PlantPart;
 import de.hswt.hrm.plant.ui.part.PlantPartUtil;
 
 public class PlantEventHandler {
