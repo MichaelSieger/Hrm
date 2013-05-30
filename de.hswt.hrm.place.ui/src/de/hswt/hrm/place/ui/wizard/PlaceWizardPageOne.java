@@ -47,7 +47,7 @@ public class PlaceWizardPageOne extends WizardPage {
 
     @Override
     public void createControl(Composite parent) {
-    	
+    	parent.setLayout(new FillLayout());
     	parent.setLayout(new FillLayout());
     	URL url = PlaceWizardPageOne.class.getClassLoader().getResource(
                 "de/hswt/hrm/place/ui/xwt/PlaceWizardWindow" + IConstants.XWT_EXTENSION_SUFFIX);

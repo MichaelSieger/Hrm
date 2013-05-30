@@ -23,15 +23,16 @@ public class ContactWizard extends Wizard {
     private static final Logger LOG = LoggerFactory.getLogger(ContactWizard.class);
     private static final I18n I18N = I18nFactory.getI18n(ContactPartUtil.class);
     private ContactWizardPageOne first;
+    private ContactWizardPageTwo second;
     private Optional<Contact> contact;
     
     @Inject
     private ContactService contactService;
 
     public ContactWizard(Optional<Contact> contact) {
-
         this.contact = contact;
         first = new ContactWizardPageOne("First Page", contact);
+        second = new ContactWizardPageTwo("Second Page", contact);
 
         if (contact.isPresent()) {
             setWindowTitle(I18N.tr("Edit Contact"));
@@ -44,11 +45,12 @@ public class ContactWizard extends Wizard {
     @Override
     public void addPages() {
         addPage(first);
+        addPage(second);
     }
 
     @Override
     public boolean canFinish() {
-        return first.isPageComplete();
+        return first.isPageComplete() && second.isPageComplete();
     }
 
     @Override
@@ -106,7 +108,7 @@ public class ContactWizard extends Wizard {
         String city = mandatoryWidgets.get("city").getText();
         String zipCode = mandatoryWidgets.get("zipCode").getText();
 
-        HashMap<String, Text> optionalWidgets = first.getOptionalWidgets();
+        HashMap<String, Text> optionalWidgets = second.getOptionalWidgets();
         String shortcut = optionalWidgets.get("shortcut").getText();
         String phone = optionalWidgets.get("phone").getText();
         String fax = optionalWidgets.get("fax").getText();

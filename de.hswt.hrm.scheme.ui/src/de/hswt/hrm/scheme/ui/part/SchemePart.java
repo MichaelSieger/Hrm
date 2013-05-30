@@ -1,6 +1,9 @@
 package de.hswt.hrm.scheme.ui.part;
 
+import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -10,6 +13,7 @@ import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.e4.ui.workbench.modeling.EPartService.PartState;
 import org.eclipse.e4.xwt.IConstants;
 import org.eclipse.e4.xwt.XWT;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
@@ -39,7 +43,19 @@ import org.eclipse.ui.dialogs.PatternFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.base.Function;
+import com.google.common.base.Throwables;
+import com.google.common.collect.Collections2;
+
+import de.hswt.hrm.common.database.exception.DatabaseException;
+import de.hswt.hrm.common.database.exception.SaveException;
+import de.hswt.hrm.component.model.Component;
+import de.hswt.hrm.component.service.ComponentService;
+import de.hswt.hrm.plant.model.Plant;
 import de.hswt.hrm.scheme.model.RenderedComponent;
+import de.hswt.hrm.scheme.model.Scheme;
+import de.hswt.hrm.scheme.model.SchemeComponent;
+import de.hswt.hrm.scheme.service.ComponentConverter;
 import de.hswt.hrm.scheme.service.SchemeService;
 import de.hswt.hrm.scheme.ui.ItemClickListener;
 import de.hswt.hrm.scheme.ui.SchemeGrid;
@@ -50,7 +66,6 @@ import de.hswt.hrm.scheme.ui.dnd.DragDataTransfer;
 import de.hswt.hrm.scheme.ui.dnd.GridDragListener;
 import de.hswt.hrm.scheme.ui.dnd.GridDropTargetListener;
 import de.hswt.hrm.scheme.ui.dnd.TreeDragListener;
-import de.hswt.hrm.scheme.ui.tree.ImageTreeModelFactory;
 import de.hswt.hrm.scheme.ui.tree.SchemeTreeLabelProvider;
 import de.hswt.hrm.scheme.ui.tree.TreeContentProvider;
 
@@ -62,7 +77,7 @@ import de.hswt.hrm.scheme.ui.tree.TreeContentProvider;
  */
 public class SchemePart {
     private final static Logger LOG = LoggerFactory.getLogger(SchemePart.class);
-	private static final String DELETE = "Löschen";
+	private static final String DELETE = "L�schen";
 	
 	@Inject
 	SchemeService schemeService;
@@ -96,12 +111,17 @@ public class SchemePart {
 	@Inject
 	EPartService service;
 	
+	@Inject
+	ComponentService compService;
+	
 	/**
 	 * The PatternFilter defines which TreeItems are visible for a given search pattern
 	 */
 	private PatternFilter filter;
 	
 	private List<RenderedComponent> comps;
+	
+	private Plant plant;
 	
 	/*
 	 * DND items for the grid
@@ -124,8 +144,7 @@ public class SchemePart {
 
 		try {
 			root = (Composite) XWT.load(parent, url);
-		    comps = ImageTreeModelFactory.create(
-		                root.getDisplay()).getImages();
+			comps = createComps();
 		    
 			initTree();
 			initSchemeGrid();
@@ -134,9 +153,12 @@ public class SchemePart {
 			initGridDropTargetListener();
 	        initTreeDND();
 			initGridDND();
+			initSaveBtn();
 			initSlider();
 			initItemClickListener();
 			
+			//TODO remove
+			newScheme(new Plant(1, "bla"));
             ((Button) XWT.findElementByName(root, "abortbtn")).addListener(SWT.Selection, new Listener() {
  				@Override
  				public void handleEvent(Event event) {
@@ -154,6 +176,50 @@ public class SchemePart {
 		} catch (Throwable e) {
 			throw new Error("Unable to load ", e);
 		}
+	}
+	
+	/**
+	 * Shows a empty grid. The user can enter a scheme, and save it for the given plant.
+	 * 
+	 * @param plant
+	 */
+	public void newScheme(Plant plant){
+		this.plant = plant;
+		grid.setItems(new ArrayList<SchemeGridItem>());
+		grid.clearDirty();
+	}
+	
+	/**
+	 * The given scheme is loaded into the editor. The user can save a 
+	 * new scheme for the given plant.
+	 * 
+	 * @param scheme
+	 * @throws IOException If a pdf file could not be read
+	 */
+	public void modifyScheme(Scheme scheme) throws IOException{
+		if(!scheme.getPlant().isPresent()){
+			throw new IllegalArgumentException("The plant must be present here");
+		}
+		this.plant = scheme.getPlant().get();
+		grid.setItems(toSchemeGridItems(scheme.getSchemeComponents()));
+		grid.clearDirty();
+	}
+	
+	/**
+	 * @return Was the grid changed since last modifyScheme() or newScheme() call
+	 */
+	public boolean isDirty(){
+	    return grid.isDirty();
+	}
+	
+	private List<SchemeGridItem> toSchemeGridItems(Collection<SchemeComponent> sc) throws IOException{
+		List<SchemeGridItem> l = new ArrayList<>();
+		for(SchemeComponent c : sc){
+			l.add(new SchemeGridItem(
+					ComponentConverter.convert(root.getDisplay(), c.getComponent()), 
+					c.getDirection(), c.getX(), c.getY()));
+		}
+		return l;
 	}
 	
 	/*
@@ -266,6 +332,31 @@ public class SchemePart {
 		updateZoom();
 	}
 	
+	private void initSaveBtn(){
+		Button btn = (Button) XWT.findElementByName(root, "savebtn");
+		btn.addSelectionListener(new SelectionListener() {
+			
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				Collection<SchemeComponent> schemeComps = Collections2.transform(
+						grid.getItems(), new Function<SchemeGridItem, SchemeComponent>(){
+							public SchemeComponent apply(SchemeGridItem item){
+								return item.asSchemeComponent();
+							}
+						});
+				try {
+					schemeService.insert(plant, schemeComps);
+				} catch (SaveException e1) {
+		            MessageDialog.openError(root.getShell(), "Fehler beim Speichern",
+		                    "Das Schema konnte nicht gespeichert werden");
+				}
+			};
+			
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {}
+		});
+	}
+	
 	/*
 	 * setter
 	 */
@@ -327,4 +418,20 @@ public class SchemePart {
 		}
 	}
 
+	private List<RenderedComponent> createComps() throws DatabaseException{
+		Collection<Component> comp = compService.findAll();
+		List<RenderedComponent> result = new ArrayList<RenderedComponent>();
+		for(Component c : comp){
+		    //Ignore components without category
+		    if(c.getCategory().isPresent()){
+		        try {
+                    result.add(ComponentConverter.convert(root.getDisplay(), c));
+                }
+                catch (IOException e) {
+                    e.printStackTrace();
+                }
+		    }
+		}
+		return result;
+	}
 }

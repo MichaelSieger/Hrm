@@ -58,7 +58,9 @@ public class ComponentConverter {
 	 */
 	public static RenderedComponent convert(Display display, Component component)
 			throws IOException {
-		// FIXME: add null value check if necessary
+		if(!component.getCategory().isPresent()){
+			throw new IllegalArgumentException("The category must be present here");
+		}
 		final int w = component.getCategory().get().getWidth();
 		final int h = component.getCategory().get().getHeight();
 		return new RenderedComponent(component, 
