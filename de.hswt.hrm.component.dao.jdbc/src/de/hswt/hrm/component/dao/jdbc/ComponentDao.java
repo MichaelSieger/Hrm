@@ -231,7 +231,7 @@ public class ComponentDao implements IComponentDao {
         public static final String SYMBOL_RL = "Component_Symbol_RL_FK";
         public static final String SYMBOL_UD = "Component_Symbol_DU_FK";
         public static final String SYMBOL_DU = "Component_Symbol_UD_FK";
-        public static final String QUANTIFIER = "Component_Default_Quantifier";
+        public static final String QUANTIFIER = "Component_Quantifier";
         public static final String BOOL_RATING = "Component_Bool_Rating";
         public static final String CATEGORY = "Component_Category_FK";
     }
