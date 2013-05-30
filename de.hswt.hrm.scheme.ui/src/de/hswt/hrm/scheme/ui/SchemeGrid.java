@@ -45,6 +45,8 @@ public class SchemeGrid extends Canvas {
 	 */
 	private ItemClickListener listener;
 
+	private boolean dirty;
+
 	public SchemeGrid(Composite parent, int style, int width, int height,
 			int pixelPerGrid) {
 		super(parent, style);
@@ -223,6 +225,7 @@ public class SchemeGrid extends Canvas {
 			}
 		}
 		images.add(item);
+		dirty = true;
 		enlarge(r.x + r.width, r.y + r.height);
 		this.redraw();
 	}
@@ -274,8 +277,10 @@ public class SchemeGrid extends Canvas {
 	public SchemeGridItem removeImage(int x, int y) {
 		SchemeGridItem res = getImage(x, y);
 		if (res != null) {
-			images.remove(res);
-			this.redraw();
+			if(images.remove(res)){
+			    this.redraw();
+			    dirty = true;
+			}
 			return res;
 		}
 		return null;
@@ -339,8 +344,19 @@ public class SchemeGrid extends Canvas {
 
 
 	public void removeItem(SchemeGridItem item) {
-		images.remove(item);
-		this.redraw();
+		if(images.remove(item)){
+		    dirty = true;
+		    this.redraw();
+		}
+	}
+	
+	/**
+	 * Was the grid changed since last clear
+	 * 
+	 * @return
+	 */
+	public boolean isDirty(){
+	    return dirty;
 	}
 
 	public Collection<SchemeGridItem> getItems() {
@@ -355,6 +371,7 @@ public class SchemeGrid extends Canvas {
 	}
 
 	public void setItems(Collection<SchemeGridItem> c){
+	    dirty = true;
 		images = new ArrayList<>(c);
 		redraw();
 	}
