@@ -75,8 +75,8 @@ public class PlantWizardPageOne extends WizardPage {
         // TODO scheme
         t = (Text) XWT.findElementByName(c, "manufactor");
         t.setText(p.getManufactor().or(""));
-        t = (Text) XWT.findElementByName(c, "constructionYear");
-        t.setText(p.getConstructionYear().orNull().toString());
+        Combo combo = (Combo) XWT.findElementByName(c, "constructionYear");
+        combo.select(combo.indexOf(p.getConstructionYear().orNull().toString()));       
         t = (Text) XWT.findElementByName(c, "type");
         t.setText(p.getType().or(""));
         t = (Text) XWT.findElementByName(c, "airPerformance");
@@ -106,7 +106,6 @@ public class PlantWizardPageOne extends WizardPage {
     public HashMap<String, Text> getOptionalWidgets() {
         HashMap<String, Text> widgets = new HashMap<String, Text>();
         widgets.put("manufactor", (Text) XWT.findElementByName(container, "manufactor"));
-        widgets.put("constructionYear", (Text) XWT.findElementByName(container, "constructionYear"));
         widgets.put("type", (Text) XWT.findElementByName(container, "type"));
         widgets.put("airPerformance", (Text) XWT.findElementByName(container, "airPerformance"));
         widgets.put("motorPower", (Text) XWT.findElementByName(container, "motorPower"));
@@ -117,6 +116,12 @@ public class PlantWizardPageOne extends WizardPage {
         widgets.put("voltage", (Text) XWT.findElementByName(container, "voltage"));
         widgets.put("note", (Text) XWT.findElementByName(container, "note"));
         return widgets;
+    }
+    
+    public HashMap<String, Combo> getOptionalCombos() {
+        HashMap<String, Combo> combos = new HashMap<String, Combo>();
+        combos.put("constructionYear", (Combo) XWT.findElementByName(container, "constructionYear"));
+        return combos;
     }
 
     @Override
