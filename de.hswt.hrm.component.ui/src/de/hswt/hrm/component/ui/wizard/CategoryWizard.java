@@ -5,6 +5,7 @@ import java.util.HashMap;
 import javax.inject.Inject;
 
 import org.eclipse.jface.wizard.Wizard;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Text;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -82,10 +83,11 @@ public class CategoryWizard extends Wizard {
     private Category setValues(Optional<Category> c) {
         HashMap<String, Text> mandatoryWidgets = first.getMandatoryWidgets();
         String name = mandatoryWidgets.get("name").getText();
-        int defaultQuantifier = Integer.parseInt(mandatoryWidgets.get("defaultQuantifier").getText());
+        HashMap<String, Combo> mandatoryCombos = first.getMandatoryCombos();
+        int defaultQuantifier = Integer.parseInt(mandatoryCombos.get("defaultQuantifier").getText());
         boolean defaultBoolRating = first.getBoolRatingCheckbox().getSelection();
-        int width = Integer.parseInt(mandatoryWidgets.get("width").getText());
-        int height = Integer.parseInt(mandatoryWidgets.get("height").getText());
+        int width = Integer.parseInt(mandatoryCombos.get("width").getText());
+        int height = Integer.parseInt(mandatoryCombos.get("height").getText());
         
         Category category;
         if (c.isPresent()) {
