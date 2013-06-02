@@ -90,9 +90,7 @@ public class PlantWizardPageOne extends WizardPage {
     public HashMap<String, Text> getMandatoryWidgets() {
         HashMap<String, Text> widgets = new HashMap<String, Text>();
         widgets.put("description", (Text) XWT.findElementByName(container, "description"));
-        // TODO nextInspection / inspectionIntervall ?
-        widgets.put("inspectionIntervall",
-                (Text) XWT.findElementByName(container, "inspectionIntervall"));
+        
         // TODO scheme
         return widgets;
     }
