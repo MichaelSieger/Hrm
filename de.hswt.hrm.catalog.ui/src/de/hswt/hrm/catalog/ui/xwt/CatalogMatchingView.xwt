@@ -6,7 +6,7 @@
 	</Composite.layout>
 	<Section text="Kataloge" x:Style="(p2:Section).EXPANDED | (p2:Section).TITLE_BAR" x:Name="">
 		<Section.layoutData>
-			<GridData horizontalAlignment="FILL" verticalAlignment="FILL" heightHint="314" grabExcessVerticalSpace="true" grabExcessHorizontalSpace="true"/>
+			<GridData horizontalAlignment="FILL" verticalAlignment="FILL" heightHint="177" grabExcessVerticalSpace="true" grabExcessHorizontalSpace="true" widthHint="202"/>
 		</Section.layoutData>
 		<Section.client>
 			<Composite>
@@ -16,7 +16,7 @@
 				<ListViewer x:Style="BORDER | V_SCROLL" x:Name="catalogs">
 					<ListViewer.list x:Name="">
 						<ListViewer.list.layoutData>
-							<GridData horizontalAlignment="FILL" verticalAlignment="FILL" grabExcessHorizontalSpace="true" grabExcessVerticalSpace="true"/>
+							<GridData horizontalAlignment="FILL" verticalAlignment="FILL" grabExcessHorizontalSpace="true" grabExcessVerticalSpace="true" widthHint="296"/>
 						</ListViewer.list.layoutData>
 					</ListViewer.list>
 				</ListViewer>
@@ -33,7 +33,7 @@
 					<GridLayout/>
 				</Composite.layout>
 				<ListViewer x:Style="BORDER | V_SCROLL" x:Name="matchedTarget">
-					<ListViewer.list MouseDownEvent="onMouseDown_3" MouseDoubleClickEvent="onMouseDoubleClick_1" x:Name="">
+					<ListViewer.list x:Name="">
 						<ListViewer.list.layoutData>
 							<GridData horizontalAlignment="FILL" verticalAlignment="FILL" grabExcessHorizontalSpace="true" grabExcessVerticalSpace="true"/>
 						</ListViewer.list.layoutData>
@@ -82,7 +82,7 @@
 	</Section>
 	<Section text="Informationen" x:Style="(p1:Section).EXPANDED | (p1:Section).TITLE_BAR" x:Name="information">
 		<Section.layoutData>
-			<GridData verticalAlignment="FILL" horizontalAlignment="FILL" grabExcessHorizontalSpace="true"/>
+			<GridData verticalAlignment="FILL" horizontalAlignment="FILL" grabExcessHorizontalSpace="true" widthHint="306"/>
 		</Section.layoutData>
 		<Section.client>
 			<Composite>
@@ -117,7 +117,7 @@
 				<Label/>
 				<Label/>
 				<Label/>
-				<Button text="Back" SelectionEvent="onSelection" x:Name="back2Main">
+				<Button text="Back" x:Name="back2Main">
 					<Button.layoutData>
 						<GridData horizontalAlignment="FILL"/>
 					</Button.layoutData>
@@ -137,8 +137,8 @@
 				<Composite.layout>
 					<GridLayout/>
 				</Composite.layout>
-				<ListViewer x:Style="BORDER | V_SCROLL">
-					<ListViewer.list x:Name="availableTarget">
+				<ListViewer x:Style="BORDER | V_SCROLL" x:Name="availableTarget">
+					<ListViewer.list x:Name="">
 						<ListViewer.list.layoutData>
 							<GridData horizontalAlignment="FILL" verticalAlignment="FILL" grabExcessHorizontalSpace="true" grabExcessVerticalSpace="true"/>
 						</ListViewer.list.layoutData>

@@ -16,6 +16,8 @@ import org.eclipse.e4.xwt.forms.XWTForms;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.ListViewer;
+import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
@@ -69,6 +71,7 @@ public class CatalogMatchingPart {
                         }
                     });
 
+            // obtain all ListViewer
             targets = (ListViewer) XWT.findElementByName(composite, "availableTarget");
             currents = (ListViewer) XWT.findElementByName(composite, "availableCurrent");
             activities = (ListViewer) XWT.findElementByName(composite, "availableActivity");
@@ -76,6 +79,13 @@ public class CatalogMatchingPart {
             matchedTargets = (ListViewer) XWT.findElementByName(composite, "matchedTarget");
             matchedCurrents = (ListViewer) XWT.findElementByName(composite, "matchedCurrent");
             catalogs = (ListViewer) XWT.findElementByName(composite, "catalogs");
+
+            initalize(activities);
+            initalize(targets);
+            initalize(currents);
+            initalize(matchedTargets);
+            initalize(matchedActivities);
+            initalize(matchedCurrents);
 
             catalogs.setContentProvider(ArrayContentProvider.getInstance());
             catalogs.setLabelProvider(new LabelProvider() {
@@ -85,11 +95,6 @@ public class CatalogMatchingPart {
                     return c.getName();
                 }
             });
-
-            createLabelProvider(activities);
-            createLabelProvider(matchedTargets);
-            createLabelProvider(matchedActivities);
-            createLabelProvider(matchedCurrents);
 
             Collection<Catalog> catalogsFromDB = catalogService.findAllCatalog();
             Collection<ICatalogItem> items = catalogService.findAllCatalogItem();
@@ -103,7 +108,12 @@ public class CatalogMatchingPart {
         }
     }
 
-    private void createLabelProvider(ListViewer lv) {
+    /**
+     * This method creates the labelprovider,contentprovider and comperator
+     * 
+     * @param lv
+     */
+    private void initalize(ListViewer lv) {
 
         lv.setContentProvider(ArrayContentProvider.getInstance());
 
@@ -113,6 +123,19 @@ public class CatalogMatchingPart {
                 ICatalogItem c = (ICatalogItem) element;
                 return c.getName();
             }
+        });
+
+        lv.setComparator(new ViewerComparator() {
+
+            @Override
+            public int compare(Viewer viewer, Object e1, Object e2) {
+
+                ICatalogItem ic1 = (ICatalogItem) e1;
+                ICatalogItem ic2 = (ICatalogItem) e2;
+                return ic1.getName().compareToIgnoreCase(ic2.getName());
+
+            }
+
         });
     }
 
