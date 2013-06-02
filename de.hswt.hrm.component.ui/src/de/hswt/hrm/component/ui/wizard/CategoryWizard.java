@@ -31,7 +31,7 @@ public class CategoryWizard extends Wizard {
         first = new CategoryWizardPageOne("Erste Seite", category);
         
         if (category.isPresent()) {
-            setWindowTitle("Kategorie bearbeiten");
+            setWindowTitle("Kategorie bearbeiten: "+category.get().getName());
         } else {
             setWindowTitle("Neue Kategorie erstellen");
         }
