@@ -1,6 +1,7 @@
 package de.hswt.hrm.plant.ui.wizard;
 
 import java.net.URL;
+import java.util.Calendar;
 import java.util.HashMap;
 
 import org.eclipse.e4.xwt.IConstants;
@@ -9,6 +10,7 @@ import org.eclipse.e4.xwt.forms.XWTForms;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 import org.slf4j.Logger;
@@ -21,6 +23,7 @@ import de.hswt.hrm.plant.model.Plant;
 public class PlantWizardPageOne extends WizardPage {
 
     private static final Logger LOG = LoggerFactory.getLogger(PlantWizardPageOne.class);
+    private static final int FIRST_CONSTRUCTION_YEAR = 1985;
 
     private Composite container;
     private Optional<Plant> plant;
@@ -47,6 +50,7 @@ public class PlantWizardPageOne extends WizardPage {
         catch (Exception e) {
             LOG.error("An error occured: ", e);
         }
+        loadConstructionYears();
         if (this.plant.isPresent()) {
             updateFields(container);
         }
@@ -55,6 +59,13 @@ public class PlantWizardPageOne extends WizardPage {
         setPageComplete(false);
     }
 
+    private void loadConstructionYears() {
+        int actualYear = Calendar.getInstance().get(Calendar.YEAR);
+        Combo constYearCombo = (Combo) XWT.findElementByName(container, "constructionYear");
+        for (int i=FIRST_CONSTRUCTION_YEAR; i<=actualYear; i++) {
+            constYearCombo.add(String.valueOf(i));
+        }
+    }
 
     private void updateFields(Composite c) {
         Plant p = plant.get();
