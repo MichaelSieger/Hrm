@@ -18,6 +18,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import de.hswt.hrm.catalog.dao.core.ICatalogDao;
 import de.hswt.hrm.catalog.model.Catalog;
 import de.hswt.hrm.common.database.DatabaseFactory;
+import de.hswt.hrm.common.database.JdbcUtil;
 import de.hswt.hrm.common.database.NamedParameterStatement;
 import de.hswt.hrm.common.database.SqlQueryBuilder;
 import de.hswt.hrm.common.database.exception.DatabaseException;
@@ -215,7 +216,7 @@ public class CategoryDao implements ICategoryDao {
             boolean defaultBoolRating = rs.getBoolean(Fields.DEFAULT_BOOL_RATING);
             
             // Handle dependency
-            int catalogId = rs.getObject(Fields.CATALOG) != null ? rs.getInt(Fields.CATALOG) : -1;
+            int catalogId = JdbcUtil.getId(rs, Fields.CATALOG);
             Catalog catalog = null;
             if (catalogId >= 0) {
                 catalog = catalogDao.findById(catalogId);
