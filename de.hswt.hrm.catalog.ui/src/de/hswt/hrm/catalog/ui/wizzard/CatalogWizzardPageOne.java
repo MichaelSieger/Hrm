@@ -15,7 +15,6 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.swt.widgets.Widget;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,7 +28,8 @@ public class CatalogWizzardPageOne extends WizardPage {
     private static final Logger LOG = LoggerFactory.getLogger(CatalogWizzardPageOne.class);
 
     private Composite container;
-    private HashMap<String, Widget> widgets;
+    private HashMap<String, Text> textFields;
+    private HashMap<String, Button> buttons;
     private Optional<ICatalogItem> item;
 
     public CatalogWizzardPageOne(String pageName, Optional<ICatalogItem> item) {
@@ -58,55 +58,62 @@ public class CatalogWizzardPageOne extends WizardPage {
     }
 
     public void setKeyListener() {
-        HashMap<String, Widget> widgets = getWidgets();
-        for (Widget w : widgets.values()) {
+        HashMap<String, Text> widgets = getTextWidgets();
+        HashMap<String, Button> buttons = getButtons();
+        for (Text text : widgets.values()) {
 
-            if (w instanceof Text) {
-                Text t = (Text) w;
-                t.addKeyListener(new KeyListener() {
+            text.addKeyListener(new KeyListener() {
 
-                    @Override
-                    public void keyPressed(KeyEvent e) {
-                    }
+                @Override
+                public void keyPressed(KeyEvent e) {
+                }
 
-                    @Override
-                    public void keyReleased(KeyEvent e) {
-                        getWizard().getContainer().updateButtons();
-                    }
-                });
-            }
-
-            else if (w instanceof Button) {
-                Button b = (Button) w;
-                b.addSelectionListener(new SelectionListener() {
-
-                    @Override
-                    public void widgetSelected(SelectionEvent e) {
-                        getWizard().getContainer().updateButtons();
-                    }
-
-                    @Override
-                    public void widgetDefaultSelected(SelectionEvent e) {
-                    }
-                });
-            }
-
+                @Override
+                public void keyReleased(KeyEvent e) {
+                    getWizard().getContainer().updateButtons();
+                }
+            });
         }
+
+        for (Button b : buttons.values()) {
+            b.addSelectionListener(new SelectionListener() {
+
+                @Override
+                public void widgetSelected(SelectionEvent e) {
+                    getWizard().getContainer().updateButtons();
+
+                }
+
+                @Override
+                public void widgetDefaultSelected(SelectionEvent e) {
+                    // TODO Auto-generated method stub
+
+                }
+            });
+        }
+
     }
 
-    private HashMap<String, Widget> getWidgets() {
-        if (widgets == null) {
-            widgets = new HashMap<>();
-            widgets.put(Fields.ACTIVITY, (Button) XWT.findElementByName(container, Fields.ACTIVITY));
-            widgets.put(Fields.CURRENT, (Button) XWT.findElementByName(container, Fields.CURRENT));
-            widgets.put(Fields.TARGET, (Button) XWT.findElementByName(container, Fields.TARGET));
-            widgets.put(Fields.NAME, (Text) XWT.findElementByName(container, Fields.NAME));
-            widgets.put(Fields.DESCRIPTION,
+    private HashMap<String, Text> getTextWidgets() {
+        if (textFields == null) {
+            textFields = new HashMap<>();
+            textFields.put(Fields.NAME, (Text) XWT.findElementByName(container, Fields.NAME));
+            textFields.put(Fields.DESCRIPTION,
                     (Text) XWT.findElementByName(container, Fields.DESCRIPTION));
-
         }
 
-        return widgets;
+        return textFields;
+    }
+
+    private HashMap<String, Button> getButtons() {
+        if (buttons == null) {
+            buttons = new HashMap<>();
+            buttons.put(Fields.ACTIVITY, (Button) XWT.findElementByName(container, Fields.ACTIVITY));
+            buttons.put(Fields.CURRENT, (Button) XWT.findElementByName(container, Fields.CURRENT));
+            buttons.put(Fields.TARGET, (Button) XWT.findElementByName(container, Fields.TARGET));
+        }
+
+        return buttons;
     }
 
     private String createDiscription() {
@@ -124,7 +131,7 @@ public class CatalogWizzardPageOne extends WizardPage {
 
     private ICatalogItem updateItem(Optional<ICatalogItem> item) {
 
-        HashMap<String, Widget> w = getWidgets();
+        HashMap<String, Text> w = getTextWidgets();
 
         Text t = (Text) w.get(Fields.NAME);
         String s = t.getText();
@@ -137,8 +144,29 @@ public class CatalogWizzardPageOne extends WizardPage {
 
     @Override
     public boolean isPageComplete() {
-        // FIXME implement Logic
+
+        boolean oneButtonisSelected = false;
+
+        for (Button b : getButtons().values()) {
+            if (b.getSelection()) {
+                oneButtonisSelected = b.getSelection();
+            }
+        }
+
+        if (!oneButtonisSelected) {
+            return false;
+        }
+
+        else if (oneButtonisSelected) {
+            for (Text textField : getTextWidgets().values()) {
+                if (textField.getText().length() == 0) {
+                    return false;
+                }
+            }
+            return true;
+        }
         return true;
+
     }
 
     private static final class Fields {
