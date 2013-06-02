@@ -145,6 +145,9 @@ INSERT INTO `hrm`.`Catalog_Target` (`Category_Target_State_Target_FK`, `Category
 ------------------------------------------------------------
 -- Insert 2 different pictures in the `Picture` Table
 ------------------------------------------------------------
+-- hier brauche ich erst die blobs von mind 2 Bilder
+INSERT INTO `hrm`.`Picture` (`Picture_Blob`, `Picture_Name`) VALUES (NULL, 'bildA');
+INSERT INTO `hrm`.`Picture` (`Picture_Blob`, `Picture_Name`) VALUES (NULL, 'bildB');
 
 ------------------------------------------------------------
 -- Insert 3 different physical ratings in the `Physical_Rating` Table
