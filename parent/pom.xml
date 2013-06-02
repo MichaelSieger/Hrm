@@ -162,5 +162,6 @@
 		<module>../de.hswt.hrm.inspection.model</module>
 		<module>../de.hswt.hrm.inspection.service</module>
 		<module>../de.hswt.hrm.inspection.ui</module>
+		<module>../de.hswt.hrm.common.ui</module>
 	</modules>
 </project>
