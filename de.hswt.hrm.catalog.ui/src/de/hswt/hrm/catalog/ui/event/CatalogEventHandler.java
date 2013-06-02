@@ -123,8 +123,6 @@ public class CatalogEventHandler {
                 catalogService.refresh((Target) selectedItem);
             }
 
-            // CatalogService.refresh(selectedItem);
-
             Optional<ICatalogItem> updatedItem = CatalogPartUtil.showWizard(context,
                     event.display.getActiveShell(), Optional.of(selectedItem));
 
