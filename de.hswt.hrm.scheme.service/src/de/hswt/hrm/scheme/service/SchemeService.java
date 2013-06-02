@@ -66,7 +66,9 @@ public class SchemeService {
 	    return schemeDao.findById(id);
 	}
 	
-	public Collection<SchemeComponent> dontKnow(final Scheme scheme) throws DatabaseException {
+	public Collection<SchemeComponent> findSchemeComponents(final Scheme scheme)
+	        throws DatabaseException {
+	    
 	    checkNotNull(scheme, "Scheme is mandatory.");
 	    
 	    return schemeComponentDao.findAllComponentByScheme(scheme);
