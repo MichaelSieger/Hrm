@@ -12,6 +12,7 @@ import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.DateTime;
 import org.eclipse.swt.widgets.Text;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -71,7 +72,7 @@ public class PlantWizardPageOne extends WizardPage {
         Plant p = plant.get();
         Text t = (Text) XWT.findElementByName(c, "description");
         t.setText(p.getDescription());
-        // TODO nextInspection / inspectionIntervall ?
+        // TODO nextInspection
         // TODO scheme
         t = (Text) XWT.findElementByName(c, "manufactor");
         t.setText(p.getManufactor().or(""));
@@ -98,7 +99,6 @@ public class PlantWizardPageOne extends WizardPage {
     public HashMap<String, Text> getMandatoryWidgets() {
         HashMap<String, Text> widgets = new HashMap<String, Text>();
         widgets.put("description", (Text) XWT.findElementByName(container, "description"));
-        
         // TODO scheme
         return widgets;
     }
@@ -150,6 +150,16 @@ public class PlantWizardPageOne extends WizardPage {
                 }
             });
         }
+    }
+    
+    public int getNextInspectionYear() {
+        DateTime dt = (DateTime) XWT.findElementByName(container, "nextInspection");
+        return dt.getYear();
+    }
+    
+    public int getNextInspectionMonth() {
+        DateTime dt = (DateTime) XWT.findElementByName(container, "nextInspection");
+        return dt.getMonth();
     }
 
 }
