@@ -152,6 +152,9 @@ INSERT INTO `hrm`.`Picture` (`Picture_Blob`, `Picture_Name`) VALUES (NULL, 'bild
 ------------------------------------------------------------
 -- Insert 3 different physical ratings in the `Physical_Rating` Table
 ------------------------------------------------------------
+INSERT INTO `hrm`.`Physical_Rating` (`Physical_Rating_Grade`, `Physical_Rating_Note`, `Physical_Rating_Report_Picture_FK`, `Physical_Rating_State_Target_FK`, `Physical_Rating_State_Activity_FK`, `Physical_Rating_State_Current_FK`) VALUES ('1', 'super Zustand', '1', '1', '1', '1');
+INSERT INTO `hrm`.`Physical_Rating` (`Physical_Rating_Grade`, `Physical_Rating_Note`, `Physical_Rating_Report_Picture_FK`, `Physical_Rating_State_Target_FK`, `Physical_Rating_State_Activity_FK`, `Physical_Rating_State_Current_FK`) VALUES ('2', 'baerig', '1', '1', '2', '2');
+INSERT INTO `hrm`.`Physical_Rating` (`Physical_Rating_Grade`, `Physical_Rating_Note`, `Physical_Rating_Report_Picture_FK`, `Physical_Rating_State_Target_FK`, `Physical_Rating_State_Activity_FK`, `Physical_Rating_State_Current_FK`) VALUES ('4', 'a so a Dreck', '2', '1', '1', '1');
 
 ------------------------------------------------------------
 -- Insert 2 different report pictures in the `Report_Pictures` Table
