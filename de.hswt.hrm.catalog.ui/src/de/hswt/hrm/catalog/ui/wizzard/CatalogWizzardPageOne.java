@@ -132,14 +132,15 @@ public class CatalogWizzardPageOne extends WizardPage {
     private ICatalogItem updateItem(Optional<ICatalogItem> item) {
 
         HashMap<String, Text> w = getTextWidgets();
+        HashMap<String, Button> b = getButtons();
 
-        Text t = (Text) w.get(Fields.NAME);
-        String s = t.getText();
-        Text t2 = (Text) w.get(Fields.DESCRIPTION);
-        String s2 = t2.getText();
+        Text name = (Text) w.get(Fields.NAME);
+        String s = name.getText();
+        Text desc = (Text) w.get(Fields.DESCRIPTION);
+        String s2 = desc.getText();
 
-        ICatalogItem a = new Activity(s, s2);
-        return a;
+        return null;
+
     }
 
     @Override
