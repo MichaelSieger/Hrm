@@ -105,21 +105,21 @@ INSERT INTO `hrm`.`State_Target` (`State_Target_Name`, `State_Target_Text`) VALU
 ------------------------------------------------------------
 -- Connect 3 different catalog with currents in the `Catalog_Current` Table
 ------------------------------------------------------------
-INSERT INTO `hrm`.`Catalog_Current` (`Category_Current_State_Current_FK`, `Category_Current_Catalog_FK`) VALUES ('1', '2');
-INSERT INTO `hrm`.`Catalog_Current` (`Category_Current_State_Current_FK`, `Category_Current_Catalog_FK`) VALUES ('2', '1');
-INSERT INTO `hrm`.`Catalog_Current` (`Category_Current_State_Current_FK`, `Category_Current_Catalog_FK`) VALUES ('2', '3');
+--INSERT INTO `hrm`.`Catalog_Current` (`Category_Current_State_Current_FK`, `Category_Current_Catalog_FK`) VALUES ('1', '2');
+--INSERT INTO `hrm`.`Catalog_Current` (`Category_Current_State_Current_FK`, `Category_Current_Catalog_FK`) VALUES ('2', '1');
+--INSERT INTO `hrm`.`Catalog_Current` (`Category_Current_State_Current_FK`, `Category_Current_Catalog_FK`) VALUES ('2', '3');
 
 ------------------------------------------------------------
 -- Connect 3 different catalog with activities the `Catalog_Activities` Table
 ------------------------------------------------------------
-INSERT INTO `hrm`.`Catalog_Activity` (`Category_Activity_State_Activity_FK`, `Category_Activity_Catalog_FK`) VALUES ('1', '2');
-INSERT INTO `hrm`.`Catalog_Activity` (`Category_Activity_State_Activity_FK`, `Category_Activity_Catalog_FK`) VALUES ('2', '1');
-INSERT INTO `hrm`.`Catalog_Activity` (`Category_Activity_State_Activity_FK`, `Category_Activity_Catalog_FK`) VALUES ('2', '3');
+--INSERT INTO `hrm`.`Catalog_Activity` (`Category_Activity_State_Activity_FK`, `Category_Activity_Catalog_FK`) VALUES ('1', '2');
+--INSERT INTO `hrm`.`Catalog_Activity` (`Category_Activity_State_Activity_FK`, `Category_Activity_Catalog_FK`) VALUES ('2', '1');
+--INSERT INTO `hrm`.`Catalog_Activity` (`Category_Activity_State_Activity_FK`, `Category_Activity_Catalog_FK`) VALUES ('2', '3');
 
 ------------------------------------------------------------
 -- Connect 3 different catalog with targets in the `Catalog_Target` Table
 ------------------------------------------------------------
-INSERT INTO `hrm`.`Catalog_Target` (`Category_Target_State_Target_FK`, `Category_Target_Catalog_FK`) VALUES ('1', '2');
-INSERT INTO `hrm`.`Catalog_Target` (`Category_Target_State_Target_FK`, `Category_Target_Catalog_FK`) VALUES ('2', '1');
-INSERT INTO `hrm`.`Catalog_Target` (`Category_Target_State_Target_FK`, `Category_Target_Catalog_FK`) VALUES ('2', '3');
+--INSERT INTO `hrm`.`Catalog_Target` (`Category_Target_State_Target_FK`, `Category_Target_Catalog_FK`) VALUES ('1', '2');
+--INSERT INTO `hrm`.`Catalog_Target` (`Category_Target_State_Target_FK`, `Category_Target_Catalog_FK`) VALUES ('2', '1');
+--INSERT INTO `hrm`.`Catalog_Target` (`Category_Target_State_Target_FK`, `Category_Target_Catalog_FK`) VALUES ('2', '3');
 
