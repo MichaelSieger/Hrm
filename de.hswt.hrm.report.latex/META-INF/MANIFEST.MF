@@ -4,3 +4,6 @@ Bundle-Name: Latex
 Bundle-SymbolicName: de.hswt.hrm.report.latex
 Bundle-Version: 0.0.1.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Import-Package: de.hswt.hrm.contact.model,
+ de.hswt.hrm.place.model,
+ de.hswt.hrm.plant.model
