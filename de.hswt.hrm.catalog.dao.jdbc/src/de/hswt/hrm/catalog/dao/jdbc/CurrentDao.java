@@ -113,15 +113,6 @@ public class CurrentDao implements ICurrentDao {
         builder.append(CROSS_TABLE_NAME).append(".").append(Fields.CROSS_TARGET_FK);
         builder.append(" = ?;");
         
-//        String query = "SELECT Catalog_Current.Category_Current_State_Target_FK" 
-//                +", State_Current.State_Current_ID"
-//                + ", State_Current_Name"
-//                + " FROM State_Current"
-//                + " JOIN Catalog_Current"
-//                + " ON Catalog_Current.Category_Current_State_Current_FK"
-//                + "= State_Current.State_Current_ID"
-//                + " WHERE Category_Current_State_Target_FK = ?;";
-
         final String query = builder.toString();
 
         try (Connection con = DatabaseFactory.getConnection()) {
