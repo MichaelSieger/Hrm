@@ -65,7 +65,7 @@ ENGINE = InnoDB;
 -- Table `Layout`
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `Layout` (
-  `Layout_ID` INT NOT NULL ,
+  `Layout_ID` INT NOT NULL AUTO_INCREMENT,
   `Layout_Name` VARCHAR(45) NOT NULL ,
   PRIMARY KEY (`Layout_ID`) )
 ENGINE = InnoDB;
