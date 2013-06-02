@@ -83,6 +83,9 @@ INSERT INTO `hrm`.`Component` (`Component_Name`, `Component_Symbol_LR_FK`, `Comp
 -- Insert 2 different biological ratings in the `Biological_Rating` Table
 ------------------------------------------------------------
 
+INSERT INTO `hrm`.`Biological_Rating` (`Biological_Rating_Component_FK`, `Biological_Rating_Report_FK`, `Biological_Rating_Bacteria_Count`, `Biological_Rating_Rating`, `Biological_Rating_Quantifier`, `Biological_Rating_Comment`) VALUES ('1', '1', '100', '2', NULL, 'schlecht');
+INSERT INTO `hrm`.`Biological_Rating` (`Biological_Rating_Component_FK`, `Biological_Rating_Report_FK`, `Biological_Rating_Bacteria_Count`, `Biological_Rating_Rating`, `Biological_Rating_Quantifier`, `Biological_Rating_Comment`) VALUES ('2', '1', '1', '1', NULL, 'gut');
+
 ------------------------------------------------------------
 -- Insert 3 different schemes in the `Scheme` Table
 ------------------------------------------------------------
