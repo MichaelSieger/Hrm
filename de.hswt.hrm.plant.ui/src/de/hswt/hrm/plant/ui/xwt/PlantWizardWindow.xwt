@@ -1,10 +1,10 @@
 <Composite xmlns="http://www.eclipse.org/xwt/presentation" xmlns:x="http://www.eclipse.org/xwt" x:Class="de.hswt.hrm.plant.ui.xwt.PlantWizardWindow" xmlns:p1="clr-namespace:java.lang">
 	<Composite.layout>
-		<GridLayout numColumns="3"/>
+		<GridLayout numColumns="1"/>
 	</Composite.layout>
 	<Section text="Pflichtfelder" x:Style="(p1:Section).EXPANDED | (p1:Section).TITLE_BAR" x:Name="Mandatory">
 		<Section.layoutData>
-			<GridData grabExcessHorizontalSpace="true" widthHint="277" horizontalAlignment="FILL" horizontalSpan="3"/>
+			<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
 		</Section.layoutData>
 		<Section.client>
 			<Composite>
@@ -36,12 +36,12 @@
 	</Section>
 	<Section text="Zusatzinformationen" x:Style="(p1:Section).EXPANDED | (p1:Section).TITLE_BAR" x:Name="Optional">
 		<Section.layoutData>
-				<GridData grabExcessHorizontalSpace="true" widthHint="277" horizontalAlignment="FILL" horizontalSpan="3"/>
+				<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
 			</Section.layoutData>
 			<Section.client>
 				<Composite>
 					<Composite.layout>
-						<GridLayout numColumns="4"/>
+						<GridLayout numColumns="6"/>
 					</Composite.layout>
 					<Label text="Hersteller: ">
 						<Label.layoutData>
@@ -50,59 +50,65 @@
 					</Label>
 					<Text x:Style="BORDER" x:Name="manufactor">
 						<Text.layoutData>
-							<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
+							<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL" horizontalSpan="2"/>
 						</Text.layoutData>
 					</Text>
 					<Label text="Baujahr: "/>
 					<Combo x:Style="BORDER" x:Name="constructionYear">
 						<Combo.layoutData>
-							<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
+							<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL" horizontalSpan="2"/>
 						</Combo.layoutData>
 					</Combo>
 					<Label text="Typ: "/>
 					<Text x:Style="BORDER" x:Name="type">
 						<Text.layoutData>
-							<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
+							<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL" horizontalSpan="2"/>
 						</Text.layoutData>
 					</Text>
-					<Label/><Label/>
+					<Label/><Label/><Label/>
 					<Label text="Luftleistung: "/>
 					<Text x:Style="BORDER" x:Name="airPerformance">
 						<Text.layoutData>
 							<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
 						</Text.layoutData>
 					</Text>
+					<Label text="m³/h"/>
 					<Label text="Motorleistung: "/>
 					<Text x:Style="BORDER" x:Name="motorPower">
 						<Text.layoutData>
 							<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
 						</Text.layoutData>
 					</Text>
+					<Label text="kW"/>
 					<Label text="Ventilatorleistung: "/>
 					<Text x:Style="BORDER" x:Name="ventilatorPerformance">
 						<Text.layoutData>
 							<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
 						</Text.layoutData>
 					</Text>
+					<Label text="kW"/>
 					<Label text="Motordrehzahl: "/>
 					<Text x:Style="BORDER" x:Name="motorRPM">
 						<Text.layoutData>
 							<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
 						</Text.layoutData>
 					</Text>
+					<Label text="U/min"/>
 					<Label text="Nennstrom: "/>
 					<Text x:Style="BORDER" x:Name="current">
 						<Text.layoutData>
 							<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
 						</Text.layoutData>
 					</Text>
+					<Label text="A"/>
 					<Label text="Spannung: "/>
 					<Text x:Style="BORDER" x:Name="voltage">
 						<Text.layoutData>
 							<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
 						</Text.layoutData>
 					</Text>
-					<Label/><Label/><Label/><Label/>
+					<Label text="V"/>
+					<Label/><Label/><Label/><Label/><Label/><Label/>
 					<Label text="Bemerkungen: ">
 						<Label.layoutData>
 							<GridData verticalAlignment="TOP"/>
@@ -110,7 +116,7 @@
 					</Label>
 					<Text x:Style="BORDER | MULTI" x:Name="note">
 						<Text.layoutData>
-							<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL" verticalSpan="2" grabExcessVerticalSpace="true" verticalAlignment="FILL" horizontalSpan="3" minimumHeight="100"/>
+							<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL" grabExcessVerticalSpace="true" verticalAlignment="FILL" horizontalSpan="5" minimumHeight="100"/>
 						</Text.layoutData>
 					</Text>
 				</Composite>
