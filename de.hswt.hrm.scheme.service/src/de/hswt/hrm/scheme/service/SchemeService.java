@@ -9,6 +9,8 @@ import javax.inject.Inject;
 
 import org.eclipse.e4.core.di.annotations.Creatable;
 
+import de.hswt.hrm.common.database.exception.DatabaseException;
+import de.hswt.hrm.common.database.exception.ElementNotFoundException;
 import de.hswt.hrm.common.database.exception.SaveException;
 import de.hswt.hrm.plant.model.Plant;
 import de.hswt.hrm.scheme.dao.core.ISchemeComponentDao;
@@ -56,6 +58,18 @@ public class SchemeService {
 	    for (SchemeComponent comp : components) {
 	        schemeComponentDao.insertComponent(scheme, comp);
 	    }
+	}
+	
+	public Scheme findById(final int id) throws ElementNotFoundException, DatabaseException {
+	    checkArgument(id >= 0, "Invalid ID.");
+	    
+	    return schemeDao.findById(id);
+	}
+	
+	public Collection<SchemeComponent> dontKnow(final Scheme scheme) throws DatabaseException {
+	    checkNotNull(scheme, "Scheme is mandatory.");
+	    
+	    return schemeComponentDao.findAllComponentByScheme(scheme);
 	}
 
 }
