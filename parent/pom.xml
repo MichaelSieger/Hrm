@@ -156,5 +156,11 @@
 		<module>../de.hswt.hrm.component.dao.jdbc.test</module>
 		<module>../de.hswt.hrm.report.latex</module>
 		<module>../de.hswt.hrm.commons.validator</module>
+		<module>../de.hswt.hrm.inspection.dao.core</module>
+		<module>../de.hswt.hrm.inspection.dao.jdbc</module>
+		<module>../de.hswt.hrm.inspection.feature</module>
+		<module>../de.hswt.hrm.inspection.model</module>
+		<module>../de.hswt.hrm.inspection.service</module>
+		<module>../de.hswt.hrm.inspection.ui</module>
 	</modules>
 </project>

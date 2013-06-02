@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<?artifactRepository version='1.1.0'?>
+<artifacts size='1'>
+  <artifact classifier='osgi.bundle' id='de.hswt.hrm.commons.dbutils' version='0.0.1.201306021222'>
+    <properties size='5'>
+      <property name='artifact.size' value='56583'/>
+      <property name='download.size' value='56583'/>
+      <property name='maven-groupId' value='de.hswt.hrm.commons.dbutils'/>
+      <property name='maven-artifactId' value='de.hswt.hrm.commons.dbutils'/>
+      <property name='maven-version' value='0.0.1-SNAPSHOT'/>
+    </properties>
+  </artifact>
+</artifacts>
