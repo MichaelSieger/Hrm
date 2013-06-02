@@ -12,7 +12,7 @@
 		<Section.client>
 			<Composite>
 				<Composite.layout>
-					<GridLayout numColumns="4" />
+					<GridLayout numColumns="8" />
 				</Composite.layout>
 				<Label x:Name="lblFirstName" text="Firstname :">
 					<Label.layoutData>
@@ -22,42 +22,44 @@
 				<Text x:Style="BORDER" x:Name="firstName">
 					<Text.layoutData>
 						<GridData grabExcessHorizontalSpace="true"
-							horizontalAlignment="FILL" />
+							horizontalAlignment="FILL" horizontalSpan="3"/>
 					</Text.layoutData>
 				</Text>
+				
 				<Label x:Name="lblLastName" text="Lastname :"/>
 				<Text x:Style="BORDER" x:Name="lastName">
 					<Text.layoutData>
 						<GridData grabExcessHorizontalSpace="true"
-							horizontalAlignment="FILL" />
+							horizontalAlignment="FILL"  horizontalSpan="3"/>
 					</Text.layoutData>
 				</Text>
+
 				<Label x:Name="lblStreet" text="Street :"/>
 				<Text x:Style="BORDER" x:Name="street">
 					<Text.layoutData>
 						<GridData grabExcessHorizontalSpace="true"
-							horizontalAlignment="FILL" verticalAlignment="BOTTOM" />
+							horizontalAlignment="FILL" horizontalspan="4" />
 					</Text.layoutData>
 				</Text>
 				<Label x:Name="lblStreetNumber" text="Streetnumber :"/>
 				<Text x:Style="BORDER" x:Name="streetNumber">
 					<Text.layoutData>
 						<GridData grabExcessHorizontalSpace="true"
-							horizontalAlignment="FILL" />
+							horizontalAlignment="FILL" horizontalSpan="2"/>
 					</Text.layoutData>
 				</Text>
 				<Label x:Name="lblZipCode" text="Zipcode :"/>
 				<Text x:Style="BORDER" x:Name="zipCode">
 					<Text.layoutData>
 						<GridData grabExcessHorizontalSpace="true"
-							horizontalAlignment="FILL" />
+							horizontalAlignment="FILL" horizontalSpan="2" />
 					</Text.layoutData>
 				</Text>
 				<Label x:Name="lblCity" text="City :"/>
 				<Text x:Style="BORDER" x:Name="city">
 					<Text.layoutData>
 						<GridData grabExcessHorizontalSpace="true"
-							horizontalAlignment="FILL" />
+							horizontalAlignment="FILL" horizontalSpan="4"/>
 					</Text.layoutData>
 				</Text>
 			</Composite>
