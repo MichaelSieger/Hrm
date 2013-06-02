@@ -224,6 +224,11 @@ public class CatalogWizzardPageOne extends WizardPage {
         widgets.get(Fields.DESCRIPTION).setText(i.getText());
 
         HashMap<String, Button> buttons = getButtons();
+
+        buttons.get(Fields.ACTIVITY).setEnabled(false);
+        buttons.get(Fields.CURRENT).setEnabled(false);
+        buttons.get(Fields.TARGET).setEnabled(false);
+
         if (i instanceof Activity) {
             buttons.get(Fields.ACTIVITY).setSelection(true);
         }
