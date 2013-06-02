@@ -18,8 +18,8 @@ import de.hswt.hrm.test.database.AbstractDatabaseTest;
 
 public class CategoryDaoTest extends AbstractDatabaseTest {
 
-    private static Catalog getCatalog(final int id) {
-        return new Catalog(id, "SomeCatalog");
+    private static Catalog getCatalog() {
+        return new Catalog(-1, "SomeCatalog");
     }
     
     private static void compareCategoryFields(final Category expected, final Category actual) {
@@ -38,7 +38,7 @@ public class CategoryDaoTest extends AbstractDatabaseTest {
         
         Category cat1 = new Category("Some cat", 4, 4, 1, true);
         Category cat2 = new Category("Some other cat", 2, 4, 1, true);
-        Catalog catalog = catalogDao.insert(getCatalog(-1));
+        Catalog catalog = catalogDao.insert(getCatalog());
         cat2.setCatalog(catalog);
         categoryDao.insert(cat1);
         categoryDao.insert(cat2);
@@ -52,7 +52,7 @@ public class CategoryDaoTest extends AbstractDatabaseTest {
         ICatalogDao catalogDao = new CatalogDao();
         ICategoryDao categoryDao = new CategoryDao(catalogDao);
         
-        Catalog catalog = catalogDao.insert(getCatalog(-1));
+        Catalog catalog = catalogDao.insert(getCatalog());
         Category cat = new Category("Some cat", 4, 4, 1, true);
         cat.setCatalog(catalog);
         
@@ -71,7 +71,7 @@ public class CategoryDaoTest extends AbstractDatabaseTest {
         ICategoryDao categoryDao = new CategoryDao(catalogDao);
         
         Category cat = new Category("Some cat", 4, 4, 1, true);
-        Catalog newCatalog = getCatalog(-1);
+        Catalog newCatalog = getCatalog();
         cat.setCatalog(newCatalog);
         
         Category parsed = categoryDao.insert(cat);
@@ -88,10 +88,10 @@ public class CategoryDaoTest extends AbstractDatabaseTest {
         ICategoryDao categoryDao = new CategoryDao(catalogDao);
         
         Category cat = new Category("Some cat", 4, 4, 1, true);
-        Catalog catalog = catalogDao.insert(getCatalog(-1));
+        Catalog catalog = catalogDao.insert(getCatalog());
         Category parsed = categoryDao.insert(cat);
 
-        Catalog changedCatalog = getCatalog(-1);;
+        Catalog changedCatalog = getCatalog();;
         changedCatalog.setName("Changed");
         parsed.setCatalog(changedCatalog);
         parsed.setHeight(2);
