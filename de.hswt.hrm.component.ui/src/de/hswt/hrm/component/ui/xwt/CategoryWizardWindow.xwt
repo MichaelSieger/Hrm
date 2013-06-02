@@ -4,7 +4,7 @@
 	</Composite.layout>
 	<Section text="Allgemein" x:Style="(p1:Section).EXPANDED | (p1:Section).TITLE_BAR" x:Name="General">
 		<Section.layoutData>
-			<GridData grabExcessHorizontalSpace="true" widthHint="277" horizontalAlignment="FILL" horizontalSpan="3"/>
+			<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL" horizontalSpan="3"/>
 		</Section.layoutData>
 		<Section.client>
 			<Composite>
@@ -32,7 +32,7 @@
 	</Section>
 	<Section text="Größe im Grid" x:Style="(p1:Section).EXPANDED | (p1:Section).TITLE_BAR" x:Name="Schemeeditor">
 		<Section.layoutData>
-			<GridData grabExcessHorizontalSpace="true" widthHint="277" horizontalAlignment="FILL" horizontalSpan="3"/>
+			<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL" horizontalSpan="3"/>
 		</Section.layoutData>
 		<Section.client>
 			<Composite>
