@@ -101,8 +101,19 @@ public class CurrentDaoTest extends AbstractDatabaseTest {
     }
     
     @Test
-    public void testFindByTargetState() {
-        fail();
+    public void testFindByTargetState() throws DatabaseException {
+        TargetDao targetDao = new TargetDao();
+        CurrentDao currentDao = new CurrentDao(targetDao);
+        Target target = new Target("FirstTarget", "Some Text");
+        Current current1 = new Current("FirstCurrent", "Some text..");
+        Current current2 = new Current("SecondCurrent", "Some more text..");
+        
+        target = targetDao.insert(target);
+        currentDao.addToTarget(target, current1);
+        currentDao.addToTarget(target, current2);
+        
+        Collection<Current> currentStates = currentDao.findByTarget(target);
+        assertEquals("Wrong number of current states returned.", 2, currentStates.size());        
     }
 
 }

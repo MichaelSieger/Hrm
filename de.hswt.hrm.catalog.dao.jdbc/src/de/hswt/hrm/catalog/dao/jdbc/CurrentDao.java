@@ -103,7 +103,7 @@ public class CurrentDao implements ICurrentDao {
         StringBuilder builder = new StringBuilder();
         builder.append("SELECT");
         builder.append(" ").append(TABLE_NAME).append(".").append(Fields.ID);
-        builder.append(" ").append(TABLE_NAME).append(".").append(Fields.NAME);
+        builder.append(", ").append(TABLE_NAME).append(".").append(Fields.NAME);
         builder.append(", ").append(TABLE_NAME).append(".").append(Fields.TEXT);
         builder.append(" FROM ").append(TABLE_NAME);
         builder.append(" JOIN ").append(CROSS_TABLE_NAME);
