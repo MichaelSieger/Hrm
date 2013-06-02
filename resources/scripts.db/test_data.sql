@@ -160,6 +160,9 @@ INSERT INTO `hrm`.`Physical_Rating` (`Physical_Rating_Grade`, `Physical_Rating_N
 -- Insert 2 different report pictures in the `Report_Pictures` Table
 ------------------------------------------------------------
 
+INSERT INTO `hrm`.`Report_Picture` (`Report_Picture_Picture_FK`, `Report_Picture_Report_FK`) VALUES ('1', '1');
+INSERT INTO `hrm`.`Report_Picture` (`Report_Picture_Picture_FK`, `Report_Picture_Report_FK`) VALUES ('2', '1');
+
 ------------------------------------------------------------
 -- Insert 2 different report physicals in the `Report_Physical` Table
 ------------------------------------------------------------
