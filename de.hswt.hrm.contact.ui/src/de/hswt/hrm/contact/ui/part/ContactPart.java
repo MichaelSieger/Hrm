@@ -17,10 +17,14 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.ToolBar;
+import org.eclipse.swt.widgets.ToolItem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -78,6 +82,10 @@ public class ContactPart {
  					service.showPart("Main", PartState.VISIBLE);
  				}
  			});
+   
+            ContactPartUtil.setListenerForToolbar(service,(ToolBar)XWT.findElementByName(comp, "toolBar"));
+            
+
         }
         catch (Exception e) {
             LOG.error("Could not load XWT file from resource", e);
