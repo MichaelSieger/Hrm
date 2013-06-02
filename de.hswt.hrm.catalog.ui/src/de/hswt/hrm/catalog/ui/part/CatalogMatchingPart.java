@@ -161,6 +161,14 @@ public class CatalogMatchingPart {
         currents.setInput(c);
         activities.setInput(a);
 
+        targets.getList().setEnabled(false);
+        currents.getList().setEnabled(false);
+        activities.getList().setEnabled(false);
+
+        matchedActivities.getList().setEnabled(false);
+        matchedCurrents.getList().setEnabled(false);
+        matchedTargets.getList().setEnabled(false);
+
     }
 
 }

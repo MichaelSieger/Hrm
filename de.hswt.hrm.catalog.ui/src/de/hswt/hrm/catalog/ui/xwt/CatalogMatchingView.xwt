@@ -138,7 +138,7 @@
 					<GridLayout/>
 				</Composite.layout>
 				<ListViewer x:Style="BORDER | V_SCROLL" x:Name="availableTarget">
-					<ListViewer.list x:Name="">
+					<ListViewer.list x:Name="" MouseDoubleClickEvent="onMouseDoubleClick">
 						<ListViewer.list.layoutData>
 							<GridData horizontalAlignment="FILL" verticalAlignment="FILL" grabExcessHorizontalSpace="true" grabExcessVerticalSpace="true"/>
 						</ListViewer.list.layoutData>
