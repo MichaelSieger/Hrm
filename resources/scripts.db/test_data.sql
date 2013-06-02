@@ -167,6 +167,9 @@ INSERT INTO `hrm`.`Report_Picture` (`Report_Picture_Picture_FK`, `Report_Picture
 -- Insert 2 different report physicals in the `Report_Physical` Table
 ------------------------------------------------------------
 
+INSERT INTO `hrm`.`Report_Physical` (`Report_Physical_Report_FK`, `Report_Physical_Temperature`, `Report_Physical_Humidity`) VALUES ('1', '37', '25');
+INSERT INTO `hrm`.`Report_Physical` (`Report_Physical_Report_FK`, `Report_Physical_Temperature`, `Report_Physical_Humidity`) VALUES ('1', '42', '20');
+
 ------------------------------------------------------------
 -- Insert 2 different component physical ratings in the `Component_Physical_Rating` Table
 ------------------------------------------------------------
