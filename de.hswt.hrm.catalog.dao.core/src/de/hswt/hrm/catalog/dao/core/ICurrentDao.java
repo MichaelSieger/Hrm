@@ -6,6 +6,7 @@ import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.ElementNotFoundException;
 import de.hswt.hrm.common.database.exception.SaveException;
 import de.hswt.hrm.catalog.model.Current;
+import de.hswt.hrm.catalog.model.Target;
 
 /**
  * Defines all the public methods to interact with the storage system for currents.
@@ -41,4 +42,21 @@ public interface ICurrentDao {
      * @throws SaveException If the current could not be updated.
      */
     void update(Current current) throws ElementNotFoundException, SaveException;
+
+    /**
+     * Add a current state to a target state.
+     * 
+     * @param target
+     * @param current
+     * @throws SaveException 
+     */
+    void addToTarget(final Target target, final Current current) throws SaveException;
+    
+    /**
+     * 
+     * @param target
+     * @return All possible current states for the given target state.
+     * @throws DatabaseException
+     */
+    Collection<Current> findByTarget(Target target) throws DatabaseException;
 }
