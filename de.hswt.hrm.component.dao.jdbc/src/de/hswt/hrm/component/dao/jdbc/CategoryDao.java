@@ -215,7 +215,7 @@ public class CategoryDao implements ICategoryDao {
             boolean defaultBoolRating = rs.getBoolean(Fields.DEFAULT_BOOL_RATING);
             
             // Handle dependency
-            int catalogId = rs.getInt(Fields.CATALOG);
+            int catalogId = rs.getObject(Fields.CATALOG) != null ? rs.getInt(Fields.CATALOG) : -1;
             Catalog catalog = null;
             if (catalogId >= 0) {
                 catalog = catalogDao.findById(catalogId);
