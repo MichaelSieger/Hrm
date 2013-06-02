@@ -29,6 +29,16 @@ INSERT INTO `hrm`.`Plant` (`Plant_Place_FK`, `Plant_Manufacturer`, `Plant_Year_O
 INSERT INTO `hrm`.`Plant` (`Plant_Place_FK`, `Plant_Manufacturer`, `Plant_Year_Of_Construction`, `Plant_Type`, `Plant_Airperformance`, `Plant_Motorpower`, `Plant_Motor_Rpm`, `Plant_Ventilatorperformance`, `Plant_Current`, `Plant_Voltage`, `Plant_Note`, `Plant_Description`) VALUES ('3', 'Medion', '1999', 'PowerBlast 3.1' , '400', '160', '2200', '2', '16', '230', 'aus Plastik *würg*', 'Tower 3');
 
 ------------------------------------------------------------
+-- Insert 2 different layouts in the `Layout` Table
+------------------------------------------------------------
+INSERT INTO `hrm`.`Layout` (`Layout_Name`) VALUES ('LayoutA');
+INSERT INTO `hrm`.`Layout` (`Layout_Name`) VALUES ('LayoutB');
+
+------------------------------------------------------------
+-- Insert 2 different reports in the `Report` Table
+------------------------------------------------------------
+
+------------------------------------------------------------
 -- Insert 3 different cataloges in the `Catalog` Table
 ------------------------------------------------------------
 INSERT INTO `hrm`.`Catalog` (`Catalog_Name`) VALUES ('Katalog_Filter');
@@ -68,6 +78,10 @@ INSERT INTO `hrm`.`Component` (`Component_Name`, `Component_Symbol_LR_FK`, `Comp
 INSERT INTO `hrm`.`Component` (`Component_Name`, `Component_Symbol_LR_FK`, `Component_Symbol_RL_FK`, `Component_Symbol_UD_FK`, `Component_Symbol_DU_FK`, `Component_Quantifier`, `Component_Category_FK`, `Component_Bool_Rating`) VALUES ('Schacht', '11', NULL, '11', NULL, '2', '4', '3');
 
 ------------------------------------------------------------
+-- Insert 2 different biological ratings in the `Biological_Rating` Table
+------------------------------------------------------------
+
+------------------------------------------------------------
 -- Insert 3 different schemes in the `Scheme` Table
 ------------------------------------------------------------
 INSERT INTO `hrm`.`Scheme` (`Scheme_Plant_FK`) VALUES ('1');
@@ -75,7 +89,7 @@ INSERT INTO `hrm`.`Scheme` (`Scheme_Plant_FK`) VALUES ('2');
 INSERT INTO `hrm`.`Scheme` (`Scheme_Plant_FK`) VALUES ('2');
 
 ------------------------------------------------------------
--- Insert 3 different schemes in the `Scheme` Table
+-- Insert 3 different scheme components in the `Scheme_Components` Table
 ------------------------------------------------------------
 INSERT INTO `hrm`.`Scheme_Component` (`Scheme_Component_Scheme_FK`, `Scheme_Component_Component_FK`, `Scheme_Component_X_Position`, `Scheme_Component_Y_Position`, `Scheme_Component_Direction`) VALUES ('1', '1', '1', '1', '2');
 INSERT INTO `hrm`.`Scheme_Component` (`Scheme_Component_Scheme_FK`, `Scheme_Component_Component_FK`, `Scheme_Component_X_Position`, `Scheme_Component_Y_Position`, `Scheme_Component_Direction`) VALUES ('1', '2', '1', '4', '2');
@@ -123,3 +137,22 @@ INSERT INTO `hrm`.`Catalog_Target` (`Category_Target_State_Target_FK`, `Category
 INSERT INTO `hrm`.`Catalog_Target` (`Category_Target_State_Target_FK`, `Category_Target_Catalog_FK`) VALUES ('2', '1');
 INSERT INTO `hrm`.`Catalog_Target` (`Category_Target_State_Target_FK`, `Category_Target_Catalog_FK`) VALUES ('2', '3');
 
+------------------------------------------------------------
+-- Insert 2 different pictures in the `Picture` Table
+------------------------------------------------------------
+
+------------------------------------------------------------
+-- Insert 3 different physical ratings in the `Physical_Rating` Table
+------------------------------------------------------------
+
+------------------------------------------------------------
+-- Insert 2 different report pictures in the `Report_Pictures` Table
+------------------------------------------------------------
+
+------------------------------------------------------------
+-- Insert 2 different report physicals in the `Report_Physical` Table
+------------------------------------------------------------
+
+------------------------------------------------------------
+-- Insert 2 different component physical ratings in the `Component_Physical_Rating` Table
+------------------------------------------------------------
