@@ -109,6 +109,8 @@ public class CatalogEventHandler {
         if (selectedItem == null) {
             return;
         }
+        
+        System.out.println(selectedItem);
 
         // Refresh the selected place with values from the database
         try {

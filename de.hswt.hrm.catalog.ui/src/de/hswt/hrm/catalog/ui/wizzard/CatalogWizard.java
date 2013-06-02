@@ -101,7 +101,7 @@ public class CatalogWizard extends Wizard {
             else if (i instanceof Current) {
                 item = Optional.of((ICatalogItem) catalogService.insertCurrent(((Current) (i))));
             }
-            else {
+            else if (i instanceof Target){
                 item = Optional.of((ICatalogItem) catalogService.insertTarget(((Target) (i))));
             }
 

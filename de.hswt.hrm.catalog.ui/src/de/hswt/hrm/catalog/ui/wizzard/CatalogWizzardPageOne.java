@@ -21,7 +21,9 @@ import org.slf4j.LoggerFactory;
 import com.google.common.base.Optional;
 
 import de.hswt.hrm.catalog.model.Activity;
+import de.hswt.hrm.catalog.model.Current;
 import de.hswt.hrm.catalog.model.ICatalogItem;
+import de.hswt.hrm.catalog.model.Target;
 
 public class CatalogWizzardPageOne extends WizardPage {
 
@@ -49,6 +51,10 @@ public class CatalogWizzardPageOne extends WizardPage {
         catch (Exception e) {
             LOG.error("Coult not load Wizzard XWT file.", e);
             return;
+        }
+
+        if (item.isPresent()) {
+            updateFields(item.get());
         }
 
         setKeyListener();
@@ -133,11 +139,53 @@ public class CatalogWizzardPageOne extends WizardPage {
 
         HashMap<String, Text> w = getTextWidgets();
         HashMap<String, Button> b = getButtons();
-
         Text name = (Text) w.get(Fields.NAME);
         String s = name.getText();
         Text desc = (Text) w.get(Fields.DESCRIPTION);
         String s2 = desc.getText();
+        ICatalogItem ic = null;
+
+        for (Button bu : b.values()) {
+            if (bu.getSelection() && bu.getText().equalsIgnoreCase("maßnahme")) {
+                if (item.isPresent()) {
+                    ic = item.get();
+                    Activity a = (Activity) ic;
+                    a.setName(s);
+                    a.setText(s2);
+                    return a;
+                }
+                else {
+                    return new Activity(s, s2);
+
+                }
+            }
+            else if (bu.getSelection() && bu.getText().equalsIgnoreCase("soll")) {
+                if (item.isPresent()) {
+                    ic = item.get();
+                    Target t = (Target) ic;
+                    t.setName(s);
+                    t.setText(s2);
+                    return t;
+                }
+                else {
+                    return new Target(s, s2);
+
+                }
+            }
+            else if (bu.getSelection() && bu.getText().equalsIgnoreCase("ist")) {
+                if (item.isPresent()) {
+                    ic = item.get();
+                    Current c = (Current) ic;
+                    c.setName(s);
+                    c.setText(s2);
+                    return c;
+                }
+                else {
+                    return new Current(s, s2);
+
+                }
+            }
+        }
 
         return null;
 
@@ -167,6 +215,24 @@ public class CatalogWizzardPageOne extends WizardPage {
             return true;
         }
         return true;
+
+    }
+
+    private void updateFields(ICatalogItem i) {
+        HashMap<String, Text> widgets = getTextWidgets();
+        widgets.get(Fields.NAME).setText(i.getName());
+        widgets.get(Fields.DESCRIPTION).setText(i.getText());
+
+        HashMap<String, Button> buttons = getButtons();
+        if (i instanceof Activity) {
+            buttons.get(Fields.ACTIVITY).setSelection(true);
+        }
+        else if (i instanceof Current) {
+            buttons.get(Fields.CURRENT).setSelection(true);
+        }
+        else if (i instanceof Target) {
+            buttons.get(Fields.TARGET).setSelection(true);
+        }
 
     }
 
