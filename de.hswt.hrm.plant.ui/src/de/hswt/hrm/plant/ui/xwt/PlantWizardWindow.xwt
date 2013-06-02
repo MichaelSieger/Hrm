@@ -54,11 +54,11 @@
 						</Text.layoutData>
 					</Text>
 					<Label text="Baujahr: "/>
-					<Text x:Style="BORDER" x:Name="constructionYear">
-						<Text.layoutData>
+					<Combo x:Style="BORDER" x:Name="constructionYear">
+						<Combo.layoutData>
 							<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
-						</Text.layoutData>
-					</Text>
+						</Combo.layoutData>
+					</Combo>
 					<Label text="Typ: "/>
 					<Text x:Style="BORDER" x:Name="type">
 						<Text.layoutData>
