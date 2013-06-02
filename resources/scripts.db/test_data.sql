@@ -38,6 +38,8 @@ INSERT INTO `hrm`.`Layout` (`Layout_Name`) VALUES ('LayoutB');
 -- Insert 2 different reports in the `Report` Table
 ------------------------------------------------------------
 
+INSERT INTO `hrm`.`Report` (`Report_Layout_FK`, `Report_Plant_FK`, `Report_Requester_FK`, `Report_Contractor_FK`, `Report_Checker_FK`, `Report_Jobdate`, `Report_Reportdate`, `Report_Nextdate`) VALUES ('1', '1', '1', '3', '5', '2012-12-31', '2013-01-07', '20014-01-07');
+INSERT INTO `hrm`.`Report` (`Report_Layout_FK`, `Report_Plant_FK`, `Report_Requester_FK`, `Report_Contractor_FK`, `Report_Checker_FK`, `Report_Jobdate`, `Report_Reportdate`, `Report_Nextdate`) VALUES ('2', '2', '2', '4', '5', '2012-01-08', '2012-01-11', '2013-01-11');
 ------------------------------------------------------------
 -- Insert 3 different cataloges in the `Catalog` Table
 ------------------------------------------------------------
