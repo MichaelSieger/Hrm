@@ -36,7 +36,7 @@ public class PlantWizardPageOne extends WizardPage {
 
     private String createDescription() {
         if (plant.isPresent()) {
-            return "Anlage bearbeiten";
+            return "Anlage bearbeiten: "+plant.get().getDescription();
         }
         return "Neue Anlage erstellen";
     }
