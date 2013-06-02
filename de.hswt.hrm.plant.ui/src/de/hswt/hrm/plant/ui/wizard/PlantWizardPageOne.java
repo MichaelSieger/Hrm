@@ -1,7 +1,6 @@
 package de.hswt.hrm.plant.ui.wizard;
 
 import java.net.URL;
-import java.util.Collection;
 import java.util.HashMap;
 
 import org.eclipse.e4.xwt.IConstants;
@@ -10,7 +9,6 @@ import org.eclipse.e4.xwt.forms.XWTForms;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
-import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 import org.slf4j.Logger;
@@ -18,7 +16,6 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Optional;
 
-import de.hswt.hrm.place.model.Place;
 import de.hswt.hrm.plant.model.Plant;
 
 public class PlantWizardPageOne extends WizardPage {
