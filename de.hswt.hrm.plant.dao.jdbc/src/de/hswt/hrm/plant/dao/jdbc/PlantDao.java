@@ -107,7 +107,7 @@ public class PlantDao implements IPlantDao {
                 + "Plant_Manufacturer, Plant_Year_Of_Construction, Plant_Type, "
                 + "Plant_Airperformance, Plant_Motorpower, Plant_Motor_Rpm, Plant_Ventilatorperformance, "
                 + "Plant_Current, Plant_Voltage, Plant_Note, Plant_Description) "
-                + "VALUES (:plantPlaceFk, :inspectionInterval, :manufactor, :constructionYear, :type, "
+                + "VALUES (:plantPlaceFk, :manufactor, :constructionYear, :type, "
                 + ":airPerformance, :motorPower, :motorRpm, :ventilatorPerformance, :current, :voltage, "
                 + ":note, :description);";
 

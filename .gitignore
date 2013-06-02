@@ -5,7 +5,7 @@ bin/
 *.war
 *.ear
 *.class
-!de.hswt.hrm.commons.*
+de.hswt.hrm.commons.*
 !de.hswt.hrm.pdfrenderer.*
 !de.hswt.hrm.commons.validator.*
 # Meta files
