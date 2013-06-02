@@ -1,6 +1,7 @@
 package de.hswt.hrm.plant.ui.wizard;
 
 import java.net.URL;
+import java.util.Calendar;
 import java.util.HashMap;
 
 import org.eclipse.e4.xwt.IConstants;
@@ -9,7 +10,9 @@ import org.eclipse.e4.xwt.forms.XWTForms;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.DateTime;
 import org.eclipse.swt.widgets.Text;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +24,7 @@ import de.hswt.hrm.plant.model.Plant;
 public class PlantWizardPageOne extends WizardPage {
 
     private static final Logger LOG = LoggerFactory.getLogger(PlantWizardPageOne.class);
+    private static final int FIRST_CONSTRUCTION_YEAR = 1985;
 
     private Composite container;
     private Optional<Plant> plant;
@@ -33,7 +37,7 @@ public class PlantWizardPageOne extends WizardPage {
 
     private String createDescription() {
         if (plant.isPresent()) {
-            return "Anlage bearbeiten";
+            return "Anlage bearbeiten: "+plant.get().getDescription();
         }
         return "Neue Anlage erstellen";
     }
@@ -47,6 +51,7 @@ public class PlantWizardPageOne extends WizardPage {
         catch (Exception e) {
             LOG.error("An error occured: ", e);
         }
+        loadConstructionYears();
         if (this.plant.isPresent()) {
             updateFields(container);
         }
@@ -55,17 +60,24 @@ public class PlantWizardPageOne extends WizardPage {
         setPageComplete(false);
     }
 
+    private void loadConstructionYears() {
+        int actualYear = Calendar.getInstance().get(Calendar.YEAR);
+        Combo constYearCombo = (Combo) XWT.findElementByName(container, "constructionYear");
+        for (int i=FIRST_CONSTRUCTION_YEAR; i<=actualYear; i++) {
+            constYearCombo.add(String.valueOf(i));
+        }
+    }
 
     private void updateFields(Composite c) {
         Plant p = plant.get();
         Text t = (Text) XWT.findElementByName(c, "description");
         t.setText(p.getDescription());
-        // TODO nextInspection / inspectionIntervall ?
+        // TODO nextInspection
         // TODO scheme
         t = (Text) XWT.findElementByName(c, "manufactor");
         t.setText(p.getManufactor().or(""));
-        t = (Text) XWT.findElementByName(c, "constructionYear");
-        t.setText(p.getConstructionYear().orNull().toString());
+        Combo combo = (Combo) XWT.findElementByName(c, "constructionYear");
+        combo.select(combo.indexOf(p.getConstructionYear().orNull().toString()));       
         t = (Text) XWT.findElementByName(c, "type");
         t.setText(p.getType().or(""));
         t = (Text) XWT.findElementByName(c, "airPerformance");
@@ -87,7 +99,6 @@ public class PlantWizardPageOne extends WizardPage {
     public HashMap<String, Text> getMandatoryWidgets() {
         HashMap<String, Text> widgets = new HashMap<String, Text>();
         widgets.put("description", (Text) XWT.findElementByName(container, "description"));
-        
         // TODO scheme
         return widgets;
     }
@@ -95,7 +106,6 @@ public class PlantWizardPageOne extends WizardPage {
     public HashMap<String, Text> getOptionalWidgets() {
         HashMap<String, Text> widgets = new HashMap<String, Text>();
         widgets.put("manufactor", (Text) XWT.findElementByName(container, "manufactor"));
-        widgets.put("constructionYear", (Text) XWT.findElementByName(container, "constructionYear"));
         widgets.put("type", (Text) XWT.findElementByName(container, "type"));
         widgets.put("airPerformance", (Text) XWT.findElementByName(container, "airPerformance"));
         widgets.put("motorPower", (Text) XWT.findElementByName(container, "motorPower"));
@@ -106,6 +116,12 @@ public class PlantWizardPageOne extends WizardPage {
         widgets.put("voltage", (Text) XWT.findElementByName(container, "voltage"));
         widgets.put("note", (Text) XWT.findElementByName(container, "note"));
         return widgets;
+    }
+    
+    public HashMap<String, Combo> getOptionalCombos() {
+        HashMap<String, Combo> combos = new HashMap<String, Combo>();
+        combos.put("constructionYear", (Combo) XWT.findElementByName(container, "constructionYear"));
+        return combos;
     }
 
     @Override
@@ -134,6 +150,16 @@ public class PlantWizardPageOne extends WizardPage {
                 }
             });
         }
+    }
+    
+    public int getNextInspectionYear() {
+        DateTime dt = (DateTime) XWT.findElementByName(container, "nextInspection");
+        return dt.getYear();
+    }
+    
+    public int getNextInspectionMonth() {
+        DateTime dt = (DateTime) XWT.findElementByName(container, "nextInspection");
+        return dt.getMonth();
     }
 
 }

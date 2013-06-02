@@ -8,6 +8,7 @@ import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.wizard.Wizard;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Text;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -97,7 +98,6 @@ public class PlantWizard extends Wizard {
         
         HashMap<String, Text> optionalWidgets = first.getOptionalWidgets();
         String manufactor = optionalWidgets.get("manufactor").getText();
-        String constructionYear = optionalWidgets.get("constructionYear").getText();
         String type = optionalWidgets.get("type").getText();
         String airPerformance = optionalWidgets.get("airPerformance").getText();
         String motorPower = optionalWidgets.get("motorPower").getText();
@@ -106,6 +106,10 @@ public class PlantWizard extends Wizard {
         String current = optionalWidgets.get("current").getText();
         String voltage = optionalWidgets.get("voltage").getText();
         String note = optionalWidgets.get("note").getText();
+        
+        HashMap<String, Combo> optionalCombos = first.getOptionalCombos();
+        Combo constYear = optionalCombos.get("constructionYear");
+        String constructionYear = constYear.getItem(constYear.getSelectionIndex());
         
         Plant plant;
         if (p.isPresent()) {

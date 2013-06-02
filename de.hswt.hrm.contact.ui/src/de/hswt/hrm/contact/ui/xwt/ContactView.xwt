@@ -4,15 +4,15 @@
 	<Composite.layout>
 		<GridLayout numColumns="6" makeColumnsEqualWidth="true" />
 	</Composite.layout>
-	<ToolBar x:Style="FLAT | RIGHT | VERTICAL" x:Name="toolBar">
+	<ToolBar x:Style="BORDER | FLAT | WRAP | RIGHT | SHADOW_OUT | VERTICAL" x:Name="toolBar">
 		<ToolBar.layoutData>
-			<GridData verticalSpan="7" widthHint="116"/>
+			<GridData verticalSpan="7" widthHint="45" minimumWidth="10"/>
 		</ToolBar.layoutData>
-		<ToolItem image="Mneu.jpg" x:Name="toPlaces"/>
-		<ToolItem text="Anlagen" x:Name="toPlants" width="10"/>
-		<ToolItem text="Katalog" x:Name="toCatalog" width="10"/>
-		<ToolItem text="Kategorie" x:Name="toCategory" width="10"/>
-		<ToolItem text="Hauptmenu" x:Name="toMain" width="10"/>
+		<ToolItem image="places_32.bmp" x:Name="toPlaces"/>
+		<ToolItem x:Name="toPlants" width="10" image="plants_32.bmp"/>
+		<ToolItem x:Name="toCatalog" width="10" image="catalogs_32.bmp"/>
+		<ToolItem x:Name="toCategory" width="10" image="components_32.bmp"/>
+		<ToolItem x:Name="toMain" width="10" image="home_32.bmp"/>
 	</ToolBar>
 	<Text x:name="searchText" x:Style="SEARCH"
 		FocusOutEvent="leaveText" KeyUpEvent="onKeyUp" FocusInEvent="enterText" text="Suche" >

@@ -18,11 +18,11 @@
 					</Text.layoutData>
 				</Text>
 				<Label text="Gewichtung: "/>
-				<Text x:Style="BORDER" x:Name="defaultQuantifier">
-					<Text.layoutData>
+				<Combo x:Style="BORDER" x:Name="defaultQuantifier">
+					<Combo.layoutData>
 						<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
-					</Text.layoutData>
-				</Text>
+					</Combo.layoutData>
+				</Combo>
 				<Label/>
 				<Label/>
 				<Label/>
@@ -30,7 +30,7 @@
 				</Composite>
 		</Section.client>	
 	</Section>
-	<Section text="Schemaeditor" x:Style="(p1:Section).EXPANDED | (p1:Section).TITLE_BAR" x:Name="Schemeeditor">
+	<Section text="Größe im Grid" x:Style="(p1:Section).EXPANDED | (p1:Section).TITLE_BAR" x:Name="Schemeeditor">
 		<Section.layoutData>
 			<GridData grabExcessHorizontalSpace="true" widthHint="277" horizontalAlignment="FILL" horizontalSpan="3"/>
 		</Section.layoutData>
@@ -40,17 +40,17 @@
 					<GridLayout numColumns="4"/>
 				</Composite.layout>
 				<Label text="Breite: "/>
-				<Text x:Style="BORDER" x:Name="width">
-					<Text.layoutData>
+				<Combo x:Style="BORDER" x:Name="width">
+					<Combo.layoutData>
 						<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
-					</Text.layoutData>
-				</Text>
+					</Combo.layoutData>
+				</Combo>
 				<Label text="Höhe: "/>
-				<Text x:Style="BORDER" x:Name="height">
-					<Text.layoutData>
+				<Combo x:Style="BORDER" x:Name="height">
+					<Combo.layoutData>
 						<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
-					</Text.layoutData>
-				</Text>
+					</Combo.layoutData>
+				</Combo>
 			</Composite>
 		</Section.client>	
 	</Section>

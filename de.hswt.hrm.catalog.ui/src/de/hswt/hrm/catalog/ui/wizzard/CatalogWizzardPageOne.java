@@ -124,7 +124,7 @@ public class CatalogWizzardPageOne extends WizardPage {
 
     private String createDiscription() {
         if (item.isPresent()) {
-            return "Soll/Ist/Maßnahme bearbeiten";
+            return "Soll/Ist/Maßnahme bearbeiten: "+item.get().getName();
         }
 
         return "Neue Soll/Ist/Maßnahme anlegen";
