@@ -39,7 +39,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `Plant` (
   `Plant_ID` INT NOT NULL AUTO_INCREMENT ,
-  `Plant_Place_FK` INT NOT NULL ,
+  `Plant_Place_FK` INT NULL ,
   `Plant_Manufacturer` VARCHAR(45) NULL ,
   `Plant_Year_Of_Construction` YEAR NULL ,
   `Plant_Type` VARCHAR(255) NULL ,
@@ -56,6 +56,63 @@ CREATE  TABLE IF NOT EXISTS `Plant` (
   CONSTRAINT `Plant_Place_FK`
     FOREIGN KEY (`Plant_Place_FK` )
     REFERENCES `Place` (`Place_ID` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `Layout`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `Layout` (
+  `Layout_ID` INT NOT NULL ,
+  `Layout_Name` VARCHAR(45) NOT NULL ,
+  PRIMARY KEY (`Layout_ID`) )
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `Report`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `Report` (
+  `Report_ID` INT NOT NULL AUTO_INCREMENT ,
+  `Report_Layout_FK` INT NULL ,
+  `Report_Plant_FK` INT NULL ,
+  `Report_Requester_FK` INT NULL ,
+  `Report_Contractor_FK` INT NULL ,
+  `Report_Checker_FK` INT NULL ,
+  `Report_Jobdate` DATE NULL ,
+  `Report_Reportdate` DATE NULL ,
+  `Report_Nextdate` DATE NULL ,
+  PRIMARY KEY (`Report_ID`) ,
+  INDEX `Report_Layout_IDx` (`Report_Layout_FK` ASC) ,
+  INDEX `Report_Plant_IDx` (`Report_Plant_FK` ASC) ,
+  INDEX `Report_Contact_Req_IDx` (`Report_Requester_FK` ASC) ,
+  INDEX `Report_Contact_Con_IDx` (`Report_Contractor_FK` ASC) ,
+  INDEX `Report_Contact_Che_IDx` (`Report_Checker_FK` ASC) ,
+  CONSTRAINT `Report_Layout_FK`
+    FOREIGN KEY (`Report_Layout_FK` )
+    REFERENCES `Layout` (`Layout_ID` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `Report_Plant_FK`
+    FOREIGN KEY (`Report_Plant_FK` )
+    REFERENCES `Plant` (`Plant_ID` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `Report_Contact_Req_FK`
+    FOREIGN KEY (`Report_Requester_FK` )
+    REFERENCES `Contact` (`Contact_ID` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `Report_Contact_Con_FK`
+    FOREIGN KEY (`Report_Contractor_FK` )
+    REFERENCES `Contact` (`Contact_ID` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `Report_Contact_Che_FK`
+    FOREIGN KEY (`Report_Checker_FK` )
+    REFERENCES `Contact` (`Contact_ID` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -101,6 +158,7 @@ CREATE  TABLE IF NOT EXISTS `Component_Picture` (
   `Component_Picture_Filename` VARCHAR(255) NULL ,
   PRIMARY KEY (`Component_Picture_ID`) )
 ENGINE = InnoDB;
+
 
 -- -----------------------------------------------------
 -- Table `Component`
@@ -149,6 +207,32 @@ CREATE  TABLE IF NOT EXISTS `Component` (
 ENGINE = InnoDB;
 
 
+-- -----------------------------------------------------
+-- Table `Biological_Rating`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `Biological_Rating` (
+  `Biological_Rating_ID` INT NOT NULL AUTO_INCREMENT,
+  `Biological_Rating_Component_FK` INT NOT NULL ,
+  `Biological_Rating_Report_FK` INT NOT NULL ,
+  `Biological_Rating_Bacteria_Count` INT NULL ,
+  `Biological_Rating_Rating` INT NULL ,
+  `Biological_Rating_Quantifier` INT NULL ,
+  `Biological_Rating_Comment` VARCHAR(255) NULL ,
+  PRIMARY KEY (`Biological_Rating_ID`) ,
+  INDEX `Biological_Rating_Component_IDx` (`Biological_Rating_Component_FK` ASC) ,
+  INDEX `Biological_Rating_Report_IDx` (`Biological_Rating_Report_FK` ASC) ,
+  CONSTRAINT `Biological_Rating_Component_FK`
+    FOREIGN KEY (`Biological_Rating_Component_FK` )
+    REFERENCES `Component` (`Component_ID` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `Biological_Rating_Report_FK`
+    FOREIGN KEY (`Biological_Rating_Report_FK` )
+    REFERENCES `Report` (`Report_ID` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
 
 -- -----------------------------------------------------
 -- Table `Session`
@@ -159,7 +243,8 @@ CREATE  TABLE IF NOT EXISTS `Session` (
   `Session_Timestamp` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
   PRIMARY KEY (`Session_Uuid`) ,
   UNIQUE INDEX `Session_Uuid_UNIQUE` (`Session_Uuid` ASC) )
-ENGINE = InnoDB;
+ENGINE = InnoDB
+PACK_KEYS = DEFAULT;
 
 
 -- -----------------------------------------------------
@@ -211,7 +296,7 @@ ENGINE = InnoDB;
 CREATE  TABLE IF NOT EXISTS `State_Current` (
   `State_Current_ID` INT NOT NULL AUTO_INCREMENT ,
   `State_Current_Name` VARCHAR(100) NULL ,
-  `State_Current_Text` TEXT NOT NULL ,
+  `State_Current_Text` TEXT NULL ,
   PRIMARY KEY (`State_Current_ID`) )
 ENGINE = InnoDB;
 
@@ -222,7 +307,7 @@ ENGINE = InnoDB;
 CREATE  TABLE IF NOT EXISTS `State_Target` (
   `State_Target_ID` INT NOT NULL AUTO_INCREMENT ,
   `State_Target_Name` VARCHAR(100) NULL ,
-  `State_Target_Text` TEXT NOT NULL ,
+  `State_Target_Text` TEXT NULL ,
   PRIMARY KEY (`State_Target_ID`) )
 ENGINE = InnoDB;
 
@@ -233,7 +318,7 @@ ENGINE = InnoDB;
 CREATE  TABLE IF NOT EXISTS `State_Activity` (
   `State_Activity_ID` INT NOT NULL AUTO_INCREMENT ,
   `State_Activity_Name` VARCHAR(100) NULL ,
-  `State_Activity_Text` TEXT NOT NULL ,
+  `State_Activity_Text` TEXT NULL ,
   PRIMARY KEY (`State_Activity_ID`) )
 ENGINE = InnoDB;
 
@@ -242,19 +327,19 @@ ENGINE = InnoDB;
 -- Table `Catalog_Current`
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `Catalog_Current` (
+  `Category_Current_State_Target_FK` INT NOT NULL ,
   `Category_Current_State_Current_FK` INT NOT NULL ,
-  `Category_Current_Catalog_FK` INT NOT NULL ,
   INDEX `Category_Current_State_Current_IDx` (`Category_Current_State_Current_FK` ASC) ,
-  INDEX `Category_Current_Catalog_IDx` (`Category_Current_Catalog_FK` ASC) ,
-  PRIMARY KEY (`Category_Current_Catalog_FK`, `Category_Current_State_Current_FK`) ,
+  INDEX `Category_Current_Catalog_IDx` (`Category_Current_State_Target_FK` ASC) ,
+  PRIMARY KEY (`Category_Current_State_Target_FK`, `Category_Current_State_Current_FK`) ,
   CONSTRAINT `Category_Current_State_Current_FK`
     FOREIGN KEY (`Category_Current_State_Current_FK` )
     REFERENCES `State_Current` (`State_Current_ID` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `Category_Current_Catalog_FK`
-    FOREIGN KEY (`Category_Current_Catalog_FK` )
-    REFERENCES `Catalog` (`Catalog_ID` )
+  CONSTRAINT `Category_Current_State_Target_FK`
+    FOREIGN KEY (`Category_Current_State_Target_FK` )
+    REFERENCES `State_Target` (`State_Target_ID` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -286,23 +371,22 @@ ENGINE = InnoDB;
 -- Table `Catalog_Activity`
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `Catalog_Activity` (
+  `Category_Activity_State_Current_FK` INT NOT NULL ,
   `Category_Activity_State_Activity_FK` INT NOT NULL ,
-  `Category_Activity_Catalog_FK` INT NOT NULL ,
   INDEX `Category_Activity_State_Activity_IDx` (`Category_Activity_State_Activity_FK` ASC) ,
-  INDEX `Category_Activity_Catalog_IDx` (`Category_Activity_Catalog_FK` ASC) ,
-  PRIMARY KEY (`Category_Activity_State_Activity_FK`, `Category_Activity_Catalog_FK`) ,
+  INDEX `Category_Activity_Catalog_IDx` (`Category_Activity_State_Current_FK` ASC) ,
+  PRIMARY KEY (`Category_Activity_State_Current_FK`, `Category_Activity_State_Activity_FK`) ,
   CONSTRAINT `Category_Activity_State_Activity_FK`
     FOREIGN KEY (`Category_Activity_State_Activity_FK` )
     REFERENCES `State_Activity` (`State_Activity_ID` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `Category_Activity_Catalog_FK`
-    FOREIGN KEY (`Category_Activity_Catalog_FK` )
-    REFERENCES `Catalog` (`Catalog_ID` )
+  CONSTRAINT `Category_Activity_State_Current_FK`
+    FOREIGN KEY (`Category_Activity_State_Current_FK` )
+    REFERENCES `State_Current` (`State_Current_ID` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
-
 
 
 -- -----------------------------------------------------
@@ -312,7 +396,7 @@ CREATE  TABLE IF NOT EXISTS `Lock` (
   `Lock_Table` VARCHAR(45) NOT NULL ,
   `Lock_Row_ID` INT NOT NULL ,
   `Lock_Uuid_FK` VARCHAR(36) NOT NULL ,
-  `Lock_Timestamp` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP  ,
+  `Lock_Timestamp` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ,
   PRIMARY KEY (`Lock_Table`, `Lock_Row_ID`) ,
   INDEX `Lock_Uuid_IDx` (`Lock_Uuid_FK` ASC) ,
   CONSTRAINT `Lock_Uuid_FK`
@@ -327,9 +411,111 @@ ENGINE = InnoDB;
 -- Table `Picture`
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `Picture` (
-  `Picture_ID` INT NOT NULL ,
+  `Picture_ID` INT NOT NULL AUTO_INCREMENT ,
   `Picture_Blob` LONGBLOB NULL ,
   `Picture_Name` VARCHAR(255) NULL ,
   PRIMARY KEY (`Picture_ID`) )
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `Physical_Rating`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `Physical_Rating` (
+  `Physical_Rating_ID` INT NOT NULL AUTO_INCREMENT ,
+  `Physical_Rating_Grade` INT NULL ,
+  `Physical_Rating_Note` TEXT NULL ,
+  `Physical_Rating_Report_Picture_FK` INT NULL ,
+  `Physical_Rating_State_Target_FK` INT NULL ,
+  `Physical_Rating_State_Activity_FK` INT NULL ,
+  `Physical_Rating_State_Current_FK` INT NULL ,
+  PRIMARY KEY (`Physical_Rating_ID`) )
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `Report_Picture`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `Report_Picture` (
+  `Report_Picture_Picture_FK` INT NOT NULL ,
+  `Report_Picture_Report_FK` INT NOT NULL ,
+  PRIMARY KEY (`Report_Picture_Picture_FK`, `Report_Picture_Report_FK`) ,
+  INDEX `Report_Picture_Picture_FK` (`Report_Picture_Picture_FK` ASC) ,
+  INDEX `Report_Picture_Report_FK` (`Report_Picture_Report_FK` ASC) ,
+  CONSTRAINT `Report_Picture_Picture_FK`
+    FOREIGN KEY (`Report_Picture_Picture_FK` )
+    REFERENCES `Picture` (`Picture_ID` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `Report_Picture_Report_FK`
+    FOREIGN KEY (`Report_Picture_Report_FK` )
+    REFERENCES `Report` (`Report_ID` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `Report_Physical`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `Report_Physical` (
+  `Report_Physical_ID` INT NOT NULL AUTO_INCREMENT,
+  `Report_Physical_Report_FK` INT NULL ,
+  `Report_Physical_Temperature` VARCHAR(45) NULL ,
+  `Report_Physical_Humidity` VARCHAR(45) NULL ,
+  PRIMARY KEY (`Report_Physical_ID`) ,
+  INDEX `Report_Physical_Report_FK` (`Report_Physical_Report_FK` ASC) ,
+  CONSTRAINT `Report_Physical_Report_FK`
+    FOREIGN KEY (`Report_Physical_Report_FK` )
+    REFERENCES `Report` (`Report_ID` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `Component_Physical_Rating`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `Component_Physical_Rating` (
+  `Component_Physical_Rating_ID` INT NOT NULL AUTO_INCREMENT ,
+  `Component_Physical_Rating_Component_FK` INT NULL ,
+  `Component_Physical_Rating_Current_FK` INT NULL ,
+  `Component_Physical_Rating_Target_FK` INT NULL ,
+  `Component_Physical_Rating_Activity_FK` INT NULL ,
+  `Component_Physical_Rating_Priority` INT NULL ,
+  `Component_Physical_Rating_Rating` INT NULL ,
+  `Component_Physical_Rating_Note` TEXT NULL ,
+  `Component_Physical_Rating_Report_Physical_FK` INT NULL ,
+  PRIMARY KEY (`Component_Physical_Rating_ID`) ,
+  INDEX `Component_Physical_Rating_Component_FK` (`Component_Physical_Rating_Component_FK` ASC) ,
+  INDEX `Component_Physical_Rating_Current_FK` (`Component_Physical_Rating_Current_FK` ASC) ,
+  INDEX `Component_Physical_Rating_Target_FK` (`Component_Physical_Rating_Target_FK` ASC) ,
+  INDEX `Component_Physical_Rating_Activtiy_FK` (`Component_Physical_Rating_Activity_FK` ASC) ,
+  INDEX `Component_Physical_Rating_Report_Physical_FK` (`Component_Physical_Rating_Report_Physical_FK` ASC) ,
+  CONSTRAINT `Component_Physical_Rating_Component_FK`
+    FOREIGN KEY (`Component_Physical_Rating_Component_FK` )
+    REFERENCES `Component` (`Component_ID` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `Component_Physical_Rating_Current_FK`
+    FOREIGN KEY (`Component_Physical_Rating_Current_FK` )
+    REFERENCES `State_Current` (`State_Current_ID` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `Component_Physical_Rating_Target_FK`
+    FOREIGN KEY (`Component_Physical_Rating_Target_FK`)
+    REFERENCES `State_Target` (`State_Target_ID` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `Component_Physical_Rating_Activtiy_FK`
+    FOREIGN KEY (`Component_Physical_Rating_Activity_FK` )
+    REFERENCES `State_Activity` (`State_Activity_ID` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `Component_Physical_Rating_Report_Physical_FK`
+    FOREIGN KEY (`Component_Physical_Rating_Report_Physical_FK` )
+    REFERENCES `Report_Physical` (`Report_Physical_ID` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
