@@ -18,11 +18,11 @@
 					</Text.layoutData>
 				</Text>
 				<Label text="Nächste Inspektion: "/>
-				<Text x:Style="BORDER" x:Name="nextInspection">
-					<Text.layoutData>
+				<DateTime x:Style="BORDER | DROP_DOWN | SHORT" x:Name="nextInspection">
+					<DateTime.layoutData>
 						<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
-					</Text.layoutData>
-				</Text>
+					</DateTime.layoutData>
+				</DateTime>
 				<Label text="Anlagenschema: "/>
 				<Combo x:Name="scheme">
 					<Combo.layoutData>
