@@ -9,7 +9,11 @@ import org.eclipse.e4.xwt.forms.XWTForms;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 import org.slf4j.Logger;
@@ -22,6 +26,8 @@ import de.hswt.hrm.component.model.Category;
 public class CategoryWizardPageOne extends WizardPage {
     
     private static final Logger LOG = LoggerFactory.getLogger(CategoryWizardPageOne.class);
+    private static int MAX_SIZE = 6;
+    private static int MAX_QUANIFIER = 10;
     
     private Composite container;
     private Optional<Category> category;
@@ -40,6 +46,7 @@ public class CategoryWizardPageOne extends WizardPage {
     }
 
     public void createControl(Composite parent) {
+        parent.setLayout(new FillLayout());
         URL url = CategoryWizardPageOne.class.getClassLoader().getResource(
                 "de/hswt/hrm/component/ui/xwt/CategoryWizardWindow"+IConstants.XWT_EXTENSION_SUFFIX);
         try {
@@ -47,6 +54,7 @@ public class CategoryWizardPageOne extends WizardPage {
         } catch (Exception e) {
             LOG.error("An error occured: ",e);
         }
+        loadDropdownItems();
         if (this.category.isPresent()) {
             updateFields(container);
         }
@@ -55,27 +63,45 @@ public class CategoryWizardPageOne extends WizardPage {
         setPageComplete(false);
     }
     
+    private void loadDropdownItems() {
+        Combo defQuant = (Combo) XWT.findElementByName(container, "defaultQuantifier");
+        Combo width = (Combo) XWT.findElementByName(container, "width");
+        Combo height = (Combo) XWT.findElementByName(container, "height");
+        for (int i=1; i<=MAX_SIZE; i++) {
+            width.add(String.valueOf(i));
+            height.add(String.valueOf(i));
+        }
+        for (int i=1; i<=MAX_QUANIFIER; i++) {
+            defQuant.add(String.valueOf(i));
+        }
+    }
+    
     private void updateFields(Composite c) {
         Category cat = category.get();
         Text t = (Text) XWT.findElementByName(c, "name");
         t.setText(cat.getName());
-        t = (Text) XWT.findElementByName(c, "defaultQuantifier");
-        t.setText(String.valueOf(cat.getDefaultQuantifier()));
+        Combo combo = (Combo) XWT.findElementByName(c, "defaultQuantifier");
+        combo.select(combo.indexOf(String.valueOf(cat.getDefaultQuantifier())));
         Button cb = (Button) XWT.findElementByName(c, "defaultBoolRating");
         cb.setSelection(cat.getDefaultBoolRating());
-        t = (Text) XWT.findElementByName(c, "width");
-        t.setText(String.valueOf(cat.getWidth()));
-        t = (Text) XWT.findElementByName(c, "height");
-        t.setText(String.valueOf(cat.getHeight()));
+        combo = (Combo) XWT.findElementByName(c, "width");
+        combo.select(combo.indexOf(String.valueOf(cat.getWidth())));
+        combo = (Combo) XWT.findElementByName(c, "height");
+        combo.select(combo.indexOf(String.valueOf(cat.getHeight())));
     }
     
     public HashMap<String, Text> getMandatoryWidgets() {
         HashMap<String, Text> widgets = new HashMap<String, Text>();
         widgets.put("name", (Text) XWT.findElementByName(container, "name"));
-        widgets.put("defaultQuantifier", (Text) XWT.findElementByName(container, "defaultQuantifier"));
-        widgets.put("width", (Text) XWT.findElementByName(container, "width"));
-        widgets.put("height", (Text) XWT.findElementByName(container, "height"));
         return widgets;
+    }
+    
+    public HashMap<String, Combo> getMandatoryCombos() {
+        HashMap<String, Combo> combos = new HashMap<String, Combo>();
+        combos.put("defaultQuantifier", (Combo) XWT.findElementByName(container, "defaultQuantifier"));
+        combos.put("width", (Combo) XWT.findElementByName(container, "width"));
+        combos.put("height", (Combo) XWT.findElementByName(container, "height"));
+        return combos;
     }
     
     public Button getBoolRatingCheckbox() {
@@ -88,13 +114,17 @@ public class CategoryWizardPageOne extends WizardPage {
                 return false;
             }
         }
+        for (Combo combo : getMandatoryCombos().values()) {
+            if (combo.getSelectionIndex() == -1) {
+                return false;
+            }
+        }
         return true;
     }
     
     public void setKeyListener() {
         for (Text text : getMandatoryWidgets().values()) {
             text.addKeyListener(new KeyListener() {
-
                 public void keyPressed(KeyEvent e) {
   
                 }
@@ -102,8 +132,23 @@ public class CategoryWizardPageOne extends WizardPage {
                 public void keyReleased(KeyEvent e) {
                     getWizard().getContainer().updateButtons();
                     
+                }    
+            });
+        }
+        for (Combo combo : getMandatoryCombos().values()) {
+            combo.addSelectionListener(new SelectionListener() {
+                
+                @Override
+                public void widgetSelected(SelectionEvent e) {
+                    getWizard().getContainer().updateButtons();
+                    
                 }
                 
+                @Override
+                public void widgetDefaultSelected(SelectionEvent e) {
+                    // TODO Auto-generated method stub
+                    
+                }
             });
         }
     }
