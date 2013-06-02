@@ -159,17 +159,18 @@ INSERT INTO `hrm`.`Physical_Rating` (`Physical_Rating_Grade`, `Physical_Rating_N
 ------------------------------------------------------------
 -- Insert 2 different report pictures in the `Report_Pictures` Table
 ------------------------------------------------------------
-
 INSERT INTO `hrm`.`Report_Picture` (`Report_Picture_Picture_FK`, `Report_Picture_Report_FK`) VALUES ('1', '1');
 INSERT INTO `hrm`.`Report_Picture` (`Report_Picture_Picture_FK`, `Report_Picture_Report_FK`) VALUES ('2', '1');
 
 ------------------------------------------------------------
 -- Insert 2 different report physicals in the `Report_Physical` Table
 ------------------------------------------------------------
-
 INSERT INTO `hrm`.`Report_Physical` (`Report_Physical_Report_FK`, `Report_Physical_Temperature`, `Report_Physical_Humidity`) VALUES ('1', '37', '25');
 INSERT INTO `hrm`.`Report_Physical` (`Report_Physical_Report_FK`, `Report_Physical_Temperature`, `Report_Physical_Humidity`) VALUES ('1', '42', '20');
 
 ------------------------------------------------------------
 -- Insert 2 different component physical ratings in the `Component_Physical_Rating` Table
 ------------------------------------------------------------
+INSERT INTO `hrm`.`Component_Physical_Rating` (`Component_Physical_Rating_Component_FK`, `Component_Physical_Rating_Current_FK`, `Component_Physical_Rating_Target_FK`, `Component_Physical_Rating_Activity_FK`, `Component_Physical_Rating_Priority`, `Component_Physical_Rating_Rating`, `Component_Physical_Rating_Note`, `Component_Physical_Rating_Report_Physical_FK`) VALUES ('1', '1', '1', '1', '1', '3', 'guad', '1');
+INSERT INTO `hrm`.`Component_Physical_Rating` (`Component_Physical_Rating_Component_FK`, `Component_Physical_Rating_Current_FK`, `Component_Physical_Rating_Target_FK`, `Component_Physical_Rating_Activity_FK`, `Component_Physical_Rating_Priority`, `Component_Physical_Rating_Rating`, `Component_Physical_Rating_Note`, `Component_Physical_Rating_Report_Physical_FK`) VALUES ('2', '2', '2', '2', '2', '2', 'basst scho', '2');
+
