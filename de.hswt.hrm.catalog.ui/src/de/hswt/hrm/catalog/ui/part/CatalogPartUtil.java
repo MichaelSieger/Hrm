@@ -15,13 +15,14 @@ import com.google.common.base.Optional;
 import de.hswt.hrm.catalog.model.Activity;
 import de.hswt.hrm.catalog.model.Current;
 import de.hswt.hrm.catalog.model.ICatalogItem;
+import de.hswt.hrm.catalog.model.Target;
 import de.hswt.hrm.catalog.ui.wizzard.CatalogWizard;
 import de.hswt.hrm.common.ui.swt.table.ColumnDescription;
 
 public final class CatalogPartUtil {
-    
-    public CatalogPartUtil(){
-        
+
+    public CatalogPartUtil() {
+
     }
 
     public static Optional<ICatalogItem> showWizard(IEclipseContext context, Shell shell,
@@ -31,7 +32,6 @@ public final class CatalogPartUtil {
         // Create wizard with injection support
         CatalogWizard wizard = new CatalogWizard(item);
         ContextInjectionFactory.inject(wizard, context);
-        
 
         // Show wizard
         WizardDialog wd = new WizardDialog(shell, wizard);
@@ -59,8 +59,11 @@ public final class CatalogPartUtil {
                 else if (p instanceof Current) {
                     return "Ist";
                 }
-                else
+                else if (p instanceof Target) {
                     return "Soll";
+                }
+
+                return "";
             }
         }, new Comparator<ICatalogItem>() {
 
