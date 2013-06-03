@@ -111,16 +111,17 @@
 				<Composite.layout>
 					<GridLayout numColumns="4" />
 				</Composite.layout>
-				<Label/>
 				<Label />
 				<Label />
-				<Label/>
+				<Label />
+				<Label />
 				<Label text="Name :" />
-				<Label/>
-				<Label/>
+				<Label />
+				<Label />
 				<Text x:Style="BORDER" x:Name="name">
 					<Text.layoutData>
-						<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL" verticalAlignment="FILL" />
+						<GridData grabExcessHorizontalSpace="true"
+							horizontalAlignment="FILL" verticalAlignment="FILL" />
 					</Text.layoutData>
 				</Text>
 				<Label text="Beschreibung :" />
@@ -137,7 +138,7 @@
 	<Section text="Verfügbare &#10;Soll " x:Style="(p2:Section).EXPANDED | (p2:Section).TITLE_BAR"
 		x:Name="">
 		<Section.layoutData>
-			<GridData heightHint="314" horizontalAlignment="FILL"
+			<GridData horizontalAlignment="FILL"
 				verticalAlignment="FILL" grabExcessVerticalSpace="true"
 				grabExcessHorizontalSpace="true" />
 		</Section.layoutData>
@@ -153,20 +154,19 @@
 					<Composite.layoutData>
 						<GridData heightHint="36" />
 					</Composite.layoutData>
-					<Text x:Style="BORDER" bounds="0, 0, 75, 27" >
+					<Text x:Style="BORDER" bounds="0, 0, 75, 27">
 						<Text.layoutData>
-							<GridData horizontalAlignment="FILL"/>
+							<GridData horizontalAlignment="FILL" />
 						</Text.layoutData>
 					</Text>
-					<Button text="New Button" bounds="0, 0, 83, 27" x:Style="ARROW | UP" />
+					<Button bounds="0, 0, 83, 27" x:Style="ARROW | UP" x:Name="targetUp" SelectionEvent="onMouseDoubleClick" />
 					<Button text="New Button" bounds="0, 0, 83, 27" x:Style="ARROW | DOWN" />
 				</Composite>
 				<ListViewer x:Style="BORDER | V_SCROLL" x:Name="availableTarget">
 					<ListViewer.list x:Name="" MouseDoubleClickEvent="onMouseDoubleClick">
 						<ListViewer.list.layoutData>
 							<GridData horizontalAlignment="FILL" verticalAlignment="FILL"
-								grabExcessHorizontalSpace="true" grabExcessVerticalSpace="true"
-								widthHint="162" />
+								grabExcessHorizontalSpace="true" grabExcessVerticalSpace="true" />
 						</ListViewer.list.layoutData>
 					</ListViewer.list>
 				</ListViewer>
@@ -188,9 +188,9 @@
 					<Composite.layout>
 						<GridLayout numColumns="3" />
 					</Composite.layout>
-					<Text x:Style="BORDER" >
+					<Text x:Style="BORDER">
 						<Text.layoutData>
-							<GridData horizontalAlignment="FILL"/>
+							<GridData horizontalAlignment="FILL" />
 						</Text.layoutData>
 					</Text>
 					<Button text="New Button" x:Style="ARROW | UP" />
@@ -199,7 +199,7 @@
 				<ListViewer x:Style="BORDER | V_SCROLL" x:Name="availableCurrent">
 					<ListViewer.list x:Name="">
 						<ListViewer.list.layoutData>
-							<GridData heightHint="69" grabExcessHorizontalSpace="true"
+							<GridData grabExcessHorizontalSpace="true"
 								grabExcessVerticalSpace="true" horizontalAlignment="FILL"
 								verticalAlignment="FILL" />
 						</ListViewer.list.layoutData>
@@ -223,9 +223,9 @@
 					<Composite.layout>
 						<GridLayout numColumns="3" />
 					</Composite.layout>
-					<Text x:Style="BORDER" bounds="0, 0, 75, 27" >
+					<Text x:Style="BORDER" bounds="0, 0, 75, 27">
 						<Text.layoutData>
-							<GridData horizontalAlignment="FILL"/>
+							<GridData horizontalAlignment="FILL" />
 						</Text.layoutData>
 					</Text>
 					<Button text="New Button" bounds="0, 0, 83, 27" x:Style="ARROW | UP" />
