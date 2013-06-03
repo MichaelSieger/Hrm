@@ -17,20 +17,12 @@
 						<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
 					</Text.layoutData>
 				</Text>
-				<Label text="Nächste Inspektion: "/>
-				<DateTime x:Style="BORDER | DROP_DOWN | SHORT" x:Name="nextInspection">
-					<DateTime.layoutData>
-						<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
-					</DateTime.layoutData>
-				</DateTime>
 				<Label text="Anlagenschema: "/>
 				<Combo x:Name="scheme">
 					<Combo.layoutData>
 						<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
 					</Combo.layoutData>
 				</Combo>
-				<Label/>
-				<Label/>
 			</Composite>
 		</Section.client>	
 	</Section>
