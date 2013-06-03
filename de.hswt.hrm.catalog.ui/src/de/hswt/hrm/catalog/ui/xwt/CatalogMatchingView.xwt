@@ -10,7 +10,7 @@
 	<Label />
 	<Label />
 	<Section text="Kataloge" x:Style="(p2:Section).EXPANDED | (p2:Section).TITLE_BAR"
-		x:Name="">
+		x:Name="" titleBarBackground="Darkorange" titleBarBorderColor="Darkorange" titleBarForeground="ForestGreen">
 		<Section.layoutData>
 			<GridData horizontalAlignment="FILL" verticalAlignment="FILL"
 				heightHint="177" grabExcessVerticalSpace="true"
@@ -154,7 +154,7 @@
 					<Composite.layoutData>
 						<GridData heightHint="36" />
 					</Composite.layoutData>
-					<Text x:Style="BORDER" bounds="0, 0, 75, 27">
+					<Text x:Style="BORDER | H_SCROLL | SEARCH | CANCEL" bounds="0, 0, 75, 27">
 						<Text.layoutData>
 							<GridData horizontalAlignment="FILL" />
 						</Text.layoutData>
