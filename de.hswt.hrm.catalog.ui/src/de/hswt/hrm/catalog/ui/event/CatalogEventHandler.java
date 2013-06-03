@@ -50,21 +50,30 @@ public class CatalogEventHandler {
     public void onSelection(Event event) {
 
         Button b = (Button) event.widget;
+
+        if (!b.getSelection()) {
+            System.out.println("kein haken");
+        }
+        else if (b.getSelection()) {
+            System.out.println("haken");
+        }
+
         TableViewer tf = (TableViewer) XWT.findElementByName(b, "catalogTable");
         CatalogFilter f = (CatalogFilter) tf.getFilters()[0];
 
         if (b.getText().equalsIgnoreCase("all")) {
-            f.setSearchString("");
+            f.setAllSelected(true);
             tf.refresh();
             return;
         }
 
-        else if (b.getText().equalsIgnoreCase("maßnahme")) {
-            f.setSearchString(b.getText());
+        else if (b.getText().equalsIgnoreCase("ist")) {
+            f.setCurrentSelected(true);
+            f.setAllSelected(false);
             tf.refresh();
             return;
         }
-        f.setSearchString(b.getText());
+        // f.setSearchString(b.getText());
         tf.refresh();
     }
 
@@ -95,7 +104,7 @@ public class CatalogEventHandler {
         Text searchText = (Text) event.widget;
         TableViewer tf = (TableViewer) XWT.findElementByName(searchText, "catalogTable");
         CatalogFilter f = (CatalogFilter) tf.getFilters()[0];
-        f.setSearchString(searchText.getText());
+        // f.setSearchString(searchText.getText());
         tf.refresh();
     }
 
@@ -109,7 +118,6 @@ public class CatalogEventHandler {
         if (selectedItem == null) {
             return;
         }
-        
 
         // Refresh the selected place with values from the database
         try {
