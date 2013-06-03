@@ -21,7 +21,7 @@ import de.hswt.hrm.catalog.model.Current;
 import de.hswt.hrm.catalog.model.ICatalogItem;
 import de.hswt.hrm.catalog.model.Target;
 import de.hswt.hrm.catalog.service.CatalogService;
-import de.hswt.hrm.catalog.ui.filter.CatalogFilter;
+import de.hswt.hrm.catalog.ui.filter.CatalogSelectionFilter;
 import de.hswt.hrm.catalog.ui.part.CatalogPartUtil;
 import de.hswt.hrm.common.database.exception.DatabaseException;
 
@@ -51,15 +51,8 @@ public class CatalogEventHandler {
 
         Button b = (Button) event.widget;
 
-        if (!b.getSelection()) {
-            System.out.println("kein haken");
-        }
-        else if (b.getSelection()) {
-            System.out.println("haken");
-        }
-
         TableViewer tf = (TableViewer) XWT.findElementByName(b, "catalogTable");
-        CatalogFilter f = (CatalogFilter) tf.getFilters()[0];
+        CatalogSelectionFilter f = (CatalogSelectionFilter) tf.getFilters()[0];
 
         if (b.getText().equalsIgnoreCase("all")) {
             f.setAllSelected(true);
@@ -70,11 +63,29 @@ public class CatalogEventHandler {
         else if (b.getText().equalsIgnoreCase("ist")) {
             f.setCurrentSelected(true);
             f.setAllSelected(false);
+            f.setTargetSelected(false);
+            f.setActivitySelected(false);
             tf.refresh();
             return;
         }
-        // f.setSearchString(b.getText());
-        tf.refresh();
+
+        else if (b.getText().equalsIgnoreCase("soll")) {
+            f.setTargetSelected(true);
+            f.setAllSelected(false);
+            f.setCurrentSelected(false);
+            f.setActivitySelected(false);
+            tf.refresh();
+            return;
+        }
+        else {
+            f.setCurrentSelected(false);
+            f.setAllSelected(false);
+            f.setCurrentSelected(false);
+            f.setActivitySelected(true);
+            tf.refresh();
+            return;
+        }
+
     }
 
     /**
@@ -103,7 +114,7 @@ public class CatalogEventHandler {
     public void onKeyUp(Event event) {
         Text searchText = (Text) event.widget;
         TableViewer tf = (TableViewer) XWT.findElementByName(searchText, "catalogTable");
-        CatalogFilter f = (CatalogFilter) tf.getFilters()[0];
+        CatalogSelectionFilter f = (CatalogSelectionFilter) tf.getFilters()[0];
         // f.setSearchString(searchText.getText());
         tf.refresh();
     }

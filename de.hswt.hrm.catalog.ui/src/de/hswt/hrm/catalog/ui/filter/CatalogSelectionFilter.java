@@ -8,7 +8,7 @@ import de.hswt.hrm.catalog.model.Current;
 import de.hswt.hrm.catalog.model.ICatalogItem;
 import de.hswt.hrm.catalog.model.Target;
 
-public class CatalogFilter extends ViewerFilter {
+public class CatalogSelectionFilter extends ViewerFilter {
 
     // private String searchString;
     //

@@ -26,7 +26,7 @@ import org.slf4j.LoggerFactory;
 import de.hswt.hrm.catalog.model.ICatalogItem;
 import de.hswt.hrm.catalog.service.CatalogService;
 import de.hswt.hrm.catalog.ui.event.CatalogEventHandler;
-import de.hswt.hrm.catalog.ui.filter.CatalogFilter;
+import de.hswt.hrm.catalog.ui.filter.CatalogSelectionFilter;
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.locking.jdbc.ILockService;
 import de.hswt.hrm.common.ui.swt.table.ColumnComparator;
@@ -150,7 +150,7 @@ public class CatalogPart {
         viewer.setContentProvider(ArrayContentProvider.getInstance());
 
         // Enable filtering
-        viewer.addFilter(new CatalogFilter());
+        viewer.addFilter(new CatalogSelectionFilter());
     }
 
 }
