@@ -69,8 +69,33 @@ public final class CatalogPartUtil {
 
             @Override
             public int compare(ICatalogItem o1, ICatalogItem o2) {
-                // TODO better and (working) solution
-                return "s".compareTo("i");
+
+                String s = "so";
+                String i = "is";
+                String m = "ma";
+
+                if (o1 instanceof Activity) {
+                    if (o2 instanceof Current) {
+                        return m.compareTo(i);
+                    }
+                    return m.compareTo(s);
+
+                }
+                else if (o1 instanceof Current) {
+                    if (o2 instanceof Activity) {
+                        return i.compareTo(m);
+                    }
+                    return i.compareTo(s);
+                }
+
+                else if (o1 instanceof Target) {
+                    if (o2 instanceof Activity) {
+                        s.compareTo(m);
+                    }
+                    return s.compareTo(i);
+                }
+                return 0;
+
             }
 
         });
