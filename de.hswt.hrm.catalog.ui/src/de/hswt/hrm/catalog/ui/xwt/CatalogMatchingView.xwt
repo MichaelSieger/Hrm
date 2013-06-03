@@ -1,22 +1,32 @@
 <Composite xmlns="http://www.eclipse.org/xwt/presentation"
 	xmlns:x="http://www.eclipse.org/xwt" xmlns:p1="clr-namespace:de.hswt.hrm.place.ui.xwt"
-	x:Class="de.hswt.hrm.catalog.ui.event.CatalogMatchingEventHandler" xmlns:p2="clr-namespace:org.eclipse.ui.forms.widgets">
+	x:Class="de.hswt.hrm.catalog.ui.event.CatalogMatchingEventHandler"
+	xmlns:p2="clr-namespace:org.eclipse.ui.forms.widgets">
 	<Composite.layout>
 		<GridLayout numColumns="4" />
 	</Composite.layout>
-	<Section text="Kataloge" x:Style="(p2:Section).EXPANDED | (p2:Section).TITLE_BAR" x:Name="">
+	<Button text="Back" x:Name="back2Main" />
+	<Label />
+	<Label />
+	<Label />
+	<Section text="Kataloge" x:Style="(p2:Section).EXPANDED | (p2:Section).TITLE_BAR"
+		x:Name="">
 		<Section.layoutData>
-			<GridData horizontalAlignment="FILL" verticalAlignment="FILL" heightHint="177" grabExcessVerticalSpace="true" grabExcessHorizontalSpace="true" widthHint="202"/>
+			<GridData horizontalAlignment="FILL" verticalAlignment="FILL"
+				heightHint="177" grabExcessVerticalSpace="true"
+				grabExcessHorizontalSpace="true" widthHint="202" />
 		</Section.layoutData>
 		<Section.client>
 			<Composite>
 				<Composite.layout>
-					<GridLayout/>
+					<GridLayout />
 				</Composite.layout>
 				<ListViewer x:Style="BORDER | V_SCROLL" x:Name="catalogs">
 					<ListViewer.list x:Name="" SelectionEvent="onSelection">
 						<ListViewer.list.layoutData>
-							<GridData horizontalAlignment="FILL" verticalAlignment="FILL" grabExcessHorizontalSpace="true" grabExcessVerticalSpace="true" widthHint="296"/>
+							<GridData horizontalAlignment="FILL" verticalAlignment="FILL"
+								grabExcessHorizontalSpace="true" grabExcessVerticalSpace="true"
+								widthHint="281" />
 						</ListViewer.list.layoutData>
 					</ListViewer.list>
 				</ListViewer>
@@ -25,17 +35,20 @@
 	</Section>
 	<Section text="Zugeordnete Soll Zustnde" x:Style="(p2:Section).EXPANDED | (p2:Section).TITLE_BAR">
 		<Section.layoutData>
-			<GridData grabExcessVerticalSpace="true" horizontalAlignment="FILL" verticalAlignment="FILL" widthHint="300" grabExcessHorizontalSpace="true"/>
+			<GridData grabExcessVerticalSpace="true"
+				horizontalAlignment="FILL" verticalAlignment="FILL" widthHint="300"
+				grabExcessHorizontalSpace="true" />
 		</Section.layoutData>
 		<Section.client>
 			<Composite>
 				<Composite.layout>
-					<GridLayout/>
+					<GridLayout />
 				</Composite.layout>
 				<ListViewer x:Style="BORDER | V_SCROLL" x:Name="matchedTarget">
 					<ListViewer.list x:Name="">
 						<ListViewer.list.layoutData>
-							<GridData horizontalAlignment="FILL" verticalAlignment="FILL" grabExcessHorizontalSpace="true" grabExcessVerticalSpace="true"/>
+							<GridData horizontalAlignment="FILL" verticalAlignment="FILL"
+								grabExcessHorizontalSpace="true" grabExcessVerticalSpace="true" />
 						</ListViewer.list.layoutData>
 					</ListViewer.list>
 				</ListViewer>
@@ -44,17 +57,20 @@
 	</Section>
 	<Section text="Zugeordnete Ist" x:Style="(p2:Section).EXPANDED | (p2:Section).TITLE_BAR">
 		<Section.layoutData>
-			<GridData grabExcessVerticalSpace="true" verticalAlignment="FILL" horizontalAlignment="FILL" widthHint="300" grabExcessHorizontalSpace="true"/>
+			<GridData grabExcessVerticalSpace="true" verticalAlignment="FILL"
+				horizontalAlignment="FILL" widthHint="300"
+				grabExcessHorizontalSpace="true" />
 		</Section.layoutData>
 		<Section.client>
 			<Composite>
 				<Composite.layout>
-					<GridLayout/>
+					<GridLayout />
 				</Composite.layout>
 				<ListViewer x:Style="BORDER | V_SCROLL" x:Name="matchedCurrent">
 					<ListViewer.list x:Name="">
 						<ListViewer.list.layoutData>
-							<GridData horizontalAlignment="FILL" verticalAlignment="FILL" grabExcessHorizontalSpace="true" grabExcessVerticalSpace="true"/>
+							<GridData horizontalAlignment="FILL" verticalAlignment="FILL"
+								grabExcessHorizontalSpace="true" grabExcessVerticalSpace="true" />
 						</ListViewer.list.layoutData>
 					</ListViewer.list>
 				</ListViewer>
@@ -63,135 +79,177 @@
 	</Section>
 	<Section text="Zugeordnete Manahmen" x:Style="(p2:Section).EXPANDED | (p2:Section).TITLE_BAR">
 		<Section.layoutData>
-			<GridData grabExcessVerticalSpace="true" horizontalAlignment="FILL" verticalAlignment="FILL" grabExcessHorizontalSpace="true" widthHint="300"/>
+			<GridData grabExcessVerticalSpace="true"
+				horizontalAlignment="FILL" verticalAlignment="FILL"
+				grabExcessHorizontalSpace="true" widthHint="300" />
 		</Section.layoutData>
 		<Section.client>
 			<Composite>
 				<Composite.layout>
-					<GridLayout/>
+					<GridLayout />
 				</Composite.layout>
 				<ListViewer x:Style="BORDER | V_SCROLL" x:Name="matchedActivity">
 					<ListViewer.list x:Name="">
 						<ListViewer.list.layoutData>
-							<GridData grabExcessHorizontalSpace="true" grabExcessVerticalSpace="true" horizontalAlignment="FILL" verticalAlignment="FILL"/>
+							<GridData grabExcessHorizontalSpace="true"
+								grabExcessVerticalSpace="true" horizontalAlignment="FILL"
+								verticalAlignment="FILL" />
 						</ListViewer.list.layoutData>
 					</ListViewer.list>
 				</ListViewer>
 			</Composite>
 		</Section.client>
 	</Section>
-	<Section text="Informationen" x:Style="(p1:Section).EXPANDED | (p1:Section).TITLE_BAR" x:Name="information">
+	<Section text="Informationen" x:Style="(p1:Section).EXPANDED | (p1:Section).TITLE_BAR"
+		x:Name="information">
 		<Section.layoutData>
-			<GridData verticalAlignment="FILL" horizontalAlignment="FILL" grabExcessHorizontalSpace="true" widthHint="306"/>
+			<GridData verticalAlignment="FILL" horizontalAlignment="FILL"
+				grabExcessHorizontalSpace="true" widthHint="306" />
 		</Section.layoutData>
 		<Section.client>
 			<Composite>
 				<Composite.layout>
-					<GridLayout numColumns="4"/>
+					<GridLayout numColumns="4" />
 				</Composite.layout>
-				<Label text="Name :"/>
+				<Label/>
+				<Label />
+				<Label />
+				<Label/>
+				<Label text="Name :" />
+				<Label/>
+				<Label/>
 				<Text x:Style="BORDER" x:Name="name">
 					<Text.layoutData>
-						<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL" horizontalSpan="3"/>
+						<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL" verticalAlignment="FILL" />
 					</Text.layoutData>
 				</Text>
-				<Label text="Beschreibung :"/>
+				<Label text="Beschreibung :" />
 				<Text x:Style="BORDER | WRAP | V_SCROLL | MULTI" x:Name="desc">
 					<Text.layoutData>
-						<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL" verticalAlignment="FILL" heightHint="176" widthHint="300" horizontalSpan="3"/>
+						<GridData grabExcessHorizontalSpace="true"
+							horizontalAlignment="FILL" verticalAlignment="FILL" heightHint="338"
+							widthHint="217" horizontalSpan="3" />
 					</Text.layoutData>
 				</Text>
-				<Label/>
-				<Label/>
-				<Label/>
-				<Label/>
-				<Label/>
-				<Label/>
-				<Label/>
-				<Label/>
-				<Label/>
-				<Label/>
-				<Label/>
-				<Label/>
-				<Label/>
-				<Label/>
-				<Label/>
-				<Label/>
-				<Button text="Back" x:Name="back2Main">
-					<Button.layoutData>
-						<GridData horizontalAlignment="FILL"/>
-					</Button.layoutData>
-				</Button>
-				<Label/>
-				<Label/>
-				<Label/>
 			</Composite>
 		</Section.client>
 	</Section>
-	<Section text="Verfügbare Soll Zustände" x:Style="(p2:Section).EXPANDED | (p2:Section).TITLE_BAR" x:Name="">
+	<Section text="Verfügbare &#10;Soll " x:Style="(p2:Section).EXPANDED | (p2:Section).TITLE_BAR"
+		x:Name="">
 		<Section.layoutData>
-			<GridData heightHint="314" horizontalAlignment="FILL" verticalAlignment="FILL" grabExcessVerticalSpace="true" grabExcessHorizontalSpace="true"/>
+			<GridData heightHint="314" horizontalAlignment="FILL"
+				verticalAlignment="FILL" grabExcessVerticalSpace="true"
+				grabExcessHorizontalSpace="true" />
 		</Section.layoutData>
 		<Section.client>
 			<Composite>
 				<Composite.layout>
-					<GridLayout/>
+					<GridLayout />
 				</Composite.layout>
+				<Composite>
+					<Composite.layout>
+						<GridLayout numColumns="3" />
+					</Composite.layout>
+					<Composite.layoutData>
+						<GridData heightHint="36" />
+					</Composite.layoutData>
+					<Text x:Style="BORDER" bounds="0, 0, 75, 27" >
+						<Text.layoutData>
+							<GridData horizontalAlignment="FILL"/>
+						</Text.layoutData>
+					</Text>
+					<Button text="New Button" bounds="0, 0, 83, 27" x:Style="ARROW | UP" />
+					<Button text="New Button" bounds="0, 0, 83, 27" x:Style="ARROW | DOWN" />
+				</Composite>
 				<ListViewer x:Style="BORDER | V_SCROLL" x:Name="availableTarget">
 					<ListViewer.list x:Name="" MouseDoubleClickEvent="onMouseDoubleClick">
 						<ListViewer.list.layoutData>
-							<GridData horizontalAlignment="FILL" verticalAlignment="FILL" grabExcessHorizontalSpace="true" grabExcessVerticalSpace="true"/>
+							<GridData horizontalAlignment="FILL" verticalAlignment="FILL"
+								grabExcessHorizontalSpace="true" grabExcessVerticalSpace="true"
+								widthHint="162" />
 						</ListViewer.list.layoutData>
 					</ListViewer.list>
 				</ListViewer>
 			</Composite>
 		</Section.client>
 	</Section>
-	<Section text="Verfügbare Ist" x:Style="(p2:Section).EXPANDED | (p2:Section).TITLE_BAR" x:Name="">
+	<Section text="Verfügbare &#10;Ist" x:Style="(p2:Section).EXPANDED | (p2:Section).TITLE_BAR"
+		x:Name="">
 		<Section.layoutData>
-			<GridData verticalAlignment="FILL" horizontalAlignment="FILL" grabExcessVerticalSpace="true" grabExcessHorizontalSpace="true"/>
+			<GridData verticalAlignment="FILL" horizontalAlignment="FILL"
+				grabExcessVerticalSpace="true" grabExcessHorizontalSpace="true" />
 		</Section.layoutData>
 		<Section.client>
 			<Composite>
 				<Composite.layout>
-					<GridLayout/>
+					<GridLayout />
 				</Composite.layout>
+				<Composite>
+					<Composite.layout>
+						<GridLayout numColumns="3" />
+					</Composite.layout>
+					<Text x:Style="BORDER" >
+						<Text.layoutData>
+							<GridData horizontalAlignment="FILL"/>
+						</Text.layoutData>
+					</Text>
+					<Button text="New Button" x:Style="ARROW | UP" />
+					<Button text="New Button" x:Style="ARROW | DOWN" />
+				</Composite>
 				<ListViewer x:Style="BORDER | V_SCROLL" x:Name="availableCurrent">
 					<ListViewer.list x:Name="">
 						<ListViewer.list.layoutData>
-							<GridData heightHint="69" grabExcessHorizontalSpace="true" grabExcessVerticalSpace="true" horizontalAlignment="FILL" verticalAlignment="FILL"/>
+							<GridData heightHint="69" grabExcessHorizontalSpace="true"
+								grabExcessVerticalSpace="true" horizontalAlignment="FILL"
+								verticalAlignment="FILL" />
 						</ListViewer.list.layoutData>
 					</ListViewer.list>
 				</ListViewer>
 			</Composite>
 		</Section.client>
 	</Section>
-	<Section text="Verfügbare Maßnahmen" x:Style="(p2:Section).EXPANDED | (p2:Section).TITLE_BAR" x:Name="">
+	<Section text="Verfügbare Maßnahmen" x:Style="(p2:Section).EXPANDED | (p2:Section).TITLE_BAR"
+		x:Name="">
 		<Section.layoutData>
-			<GridData horizontalAlignment="FILL" verticalAlignment="FILL" grabExcessVerticalSpace="true" grabExcessHorizontalSpace="true"/>
+			<GridData horizontalAlignment="FILL" verticalAlignment="FILL"
+				grabExcessVerticalSpace="true" grabExcessHorizontalSpace="true" />
 		</Section.layoutData>
 		<Section.client>
 			<Composite>
 				<Composite.layout>
-					<GridLayout/>
+					<GridLayout />
 				</Composite.layout>
+				<Composite>
+					<Composite.layout>
+						<GridLayout numColumns="3" />
+					</Composite.layout>
+					<Text x:Style="BORDER" bounds="0, 0, 75, 27" >
+						<Text.layoutData>
+							<GridData horizontalAlignment="FILL"/>
+						</Text.layoutData>
+					</Text>
+					<Button text="New Button" bounds="0, 0, 83, 27" x:Style="ARROW | UP" />
+					<Button text="New Button" bounds="0, 0, 83, 27" x:Style="ARROW | DOWN" />
+				</Composite>
 				<ListViewer x:Style="BORDER | V_SCROLL" x:Name="availableActivity">
 					<ListViewer.list x:Name="">
 						<ListViewer.list.layoutData>
-							<GridData verticalAlignment="FILL" horizontalAlignment="FILL" grabExcessHorizontalSpace="true" grabExcessVerticalSpace="true"/>
+							<GridData verticalAlignment="FILL" horizontalAlignment="FILL"
+								grabExcessHorizontalSpace="true" grabExcessVerticalSpace="true" />
 						</ListViewer.list.layoutData>
 					</ListViewer.list>
 				</ListViewer>
 			</Composite>
 		</Section.client>
 	</Section>
-	<Composite xmlns="http://www.eclipse.org/xwt/presentation" xmlns:x="http://www.eclipse.org/xwt">
-	<Composite.layout>
-		<GridLayout/>
-	</Composite.layout>
-</Composite>
-	<Label/>
-	<Label/>
-	<Label/>
-<!-- Forms API -->
+	<Composite xmlns="http://www.eclipse.org/xwt/presentation"
+		xmlns:x="http://www.eclipse.org/xwt">
+		<Composite.layout>
+			<GridLayout />
+		</Composite.layout>
+	</Composite>
+	<Label />
+	<Label />
+	<Label />
+	<!-- Forms API -->
 </Composite>
