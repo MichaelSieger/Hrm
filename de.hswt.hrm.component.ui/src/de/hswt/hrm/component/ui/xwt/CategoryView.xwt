@@ -4,21 +4,17 @@
 	<Composite.layout>
 		<GridLayout numColumns="5" makeColumnsEqualWidth="true" />
 	</Composite.layout>
+	<Label/>
+	<Label/>
+	<Label/>
+	<Label/>
+	<Label/>
 	<Text x:name="searchText" x:Style="SEARCH"
 		FocusOutEvent="leaveText" KeyUpEvent="onKeyUp" FocusInEvent="enterText" text="Suche" >
 		<Text.layoutData>
-			<GridData horizontalAlignment="FILL" horizontalSpan="4" verticalAlignment="FILL"/>
+			<GridData horizontalAlignment="FILL" horizontalSpan="2" verticalAlignment="FILL"/>
 		</Text.layoutData>
 	</Text>
-	<Label/>
-	<TableViewer x:name="categoryTable" x:Style="BORDER | FULL_SELECTION">
-		<TableViewer.table headerVisible="true"
-			linesVisible="true" MouseDoubleClickEvent="tableEntrySelected" >
-			<TableViewer.table.layoutData>
-				<GridData horizontalAlignment="FILL" horizontalSpan="4" verticalSpan="5" widthHint="860" verticalAlignment="FILL" grabExcessVerticalSpace="true" grabExcessHorizontalSpace="true"/>
-			</TableViewer.table.layoutData>
-		</TableViewer.table>
-	</TableViewer>
 	<Button x:name="addCategory" text="New"
 		SelectionEvent="buttonSelected" >
 		<Button.layoutData>
@@ -30,11 +26,17 @@
 			<GridData horizontalAlignment="FILL"/>
 		</Button.layoutData>
 	</Button>
-	<Label/>
-	<Label/>
 	<Button text="Back" x:Name="back2Main">
 		<Button.layoutData>
 			<GridData verticalAlignment="BOTTOM" horizontalAlignment="FILL"/>
 		</Button.layoutData>
 	</Button>
+	<TableViewer x:name="categoryTable" x:Style="BORDER | FULL_SELECTION">
+		<TableViewer.table headerVisible="true"
+			linesVisible="true" MouseDoubleClickEvent="tableEntrySelected" >
+			<TableViewer.table.layoutData>
+				<GridData horizontalAlignment="FILL" horizontalSpan="5" verticalSpan="5" widthHint="860" verticalAlignment="FILL" grabExcessVerticalSpace="true" grabExcessHorizontalSpace="true"/>
+			</TableViewer.table.layoutData>
+		</TableViewer.table>
+	</TableViewer>
 </Composite>

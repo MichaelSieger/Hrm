@@ -7,36 +7,17 @@
 	<Text x:name="searchText" x:Style="SEARCH" text="Search"
 		FocusInEvent="enterText" FocusOutEvent="leaveText" KeyUpEvent="onKeyUp">
 		<Text.layoutData>
-			<GridData horizontalAlignment="FILL" horizontalSpan="4" />
+			<GridData horizontalAlignment="FILL" widthHint="112" />
 		</Text.layoutData>
 	</Text>
-	<Label />
-	<TableViewer x:name="catalogTable" x:Style="BORDER | FULL_SELECTION">
-		<TableViewer.table headerVisible="true"
-			linesVisible="true" MouseDoubleClickEvent="onMouseDoubleClick">
-			<TableViewer.table.layoutData>
-				<GridData verticalSpan="8" horizontalSpan="4"
-					horizontalAlignment="FILL" widthHint="860" verticalAlignment="FILL"
-					grabExcessVerticalSpace="true" grabExcessHorizontalSpace="true" />
-			</TableViewer.table.layoutData>
-		</TableViewer.table>
-	</TableViewer>
 	<Button x:name="addPlace" text="New" SelectionEvent="onSelection_1">
 		<Button.layoutData>
-			<GridData horizontalAlignment="FILL" />
+			<GridData horizontalAlignment="FILL" widthHint="106" />
 		</Button.layoutData>
 	</Button>
 	<Button text="Edit" SelectionEvent= "onMouseDoubleClick">
 		<Button.layoutData>
 			<GridData horizontalAlignment="FILL" />
-		</Button.layoutData>
-	</Button>
-	<Button x:Style="RADIO" text="All" SelectionEvent="onSelection" />
-	<Button x:Style="RADIO" text="Soll" SelectionEvent="onSelection" />
-	<Button x:Style="RADIO" text="Ist" SelectionEvent="onSelection" />
-	<Button x:Style="RADIO" text="Maßnahmen" SelectionEvent="onSelection">
-		<Button.layoutData>
-			<GridData grabExcessVerticalSpace="true" verticalAlignment="TOP" />
 		</Button.layoutData>
 	</Button>
 	<Button text="Match" x:Name="match">
@@ -49,4 +30,26 @@
 			<GridData horizontalAlignment="FILL"/>
 		</Button.layoutData>
 	</Button>
+	<TableViewer x:name="catalogTable" x:Style="BORDER | FULL_SELECTION">
+		<TableViewer.table headerVisible="true"
+			linesVisible="true" MouseDoubleClickEvent="onMouseDoubleClick">
+			<TableViewer.table.layoutData>
+				<GridData verticalSpan="8" horizontalSpan="4"
+					horizontalAlignment="FILL" widthHint="860" verticalAlignment="FILL"
+					grabExcessVerticalSpace="true" grabExcessHorizontalSpace="true" />
+			</TableViewer.table.layoutData>
+		</TableViewer.table>
+	</TableViewer>
+	<Label/>
+	<Label/>
+	<Button x:Style="RADIO" text="All" SelectionEvent="onSelection" />
+	<Button x:Style="RADIO" text="Soll" SelectionEvent="onSelection" />
+	<Button x:Style="RADIO" text="Ist" SelectionEvent="onSelection" />
+	<Button x:Style="RADIO" text="Maßnahmen" SelectionEvent="onSelection">
+		<Button.layoutData>
+			<GridData grabExcessVerticalSpace="true" verticalAlignment="TOP" />
+		</Button.layoutData>
+	</Button>
+	<Label/>
+	<Label/>
 </Composite>	

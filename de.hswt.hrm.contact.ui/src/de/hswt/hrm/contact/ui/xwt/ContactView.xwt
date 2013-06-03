@@ -17,18 +17,9 @@
 	<Text x:name="searchText" x:Style="SEARCH"
 		FocusOutEvent="leaveText" KeyUpEvent="onKeyUp" FocusInEvent="enterText" text="Suche" >
 		<Text.layoutData>
-			<GridData horizontalAlignment="FILL" horizontalSpan="4" verticalAlignment="FILL"/>
+			<GridData horizontalAlignment="FILL" horizontalSpan="2" verticalAlignment="FILL"/>
 		</Text.layoutData>
 	</Text>
-	<Label/>
-	<TableViewer x:name="contactTable" x:Style="BORDER | FULL_SELECTION">
-		<TableViewer.table headerVisible="true"
-			linesVisible="true" MouseDoubleClickEvent="tableEntrySelected" >
-			<TableViewer.table.layoutData>
-				<GridData horizontalAlignment="FILL" horizontalSpan="4" verticalSpan="6" widthHint="860" verticalAlignment="FILL" grabExcessVerticalSpace="true" grabExcessHorizontalSpace="true"/>
-			</TableViewer.table.layoutData>
-		</TableViewer.table>
-	</TableViewer>
 	<Button x:name="addContact" text="New"
 		SelectionEvent="buttonSelected" >
 		<Button.layoutData>
@@ -40,12 +31,17 @@
 			<GridData horizontalAlignment="FILL"/>
 		</Button.layoutData>
 	</Button>
-	<Label/>
-	<Label/>
-	<Label/>
 	<Button text="Back" x:Name="back2Main">
 		<Button.layoutData>
 			<GridData horizontalAlignment="FILL" verticalAlignment="BOTTOM"/>
 		</Button.layoutData>
 	</Button>
+	<TableViewer x:name="contactTable" x:Style="BORDER | FULL_SELECTION">
+		<TableViewer.table headerVisible="true"
+			linesVisible="true" MouseDoubleClickEvent="tableEntrySelected" >
+			<TableViewer.table.layoutData>
+				<GridData horizontalAlignment="FILL" horizontalSpan="5" verticalSpan="6" widthHint="860" verticalAlignment="FILL" grabExcessVerticalSpace="true" grabExcessHorizontalSpace="true"/>
+			</TableViewer.table.layoutData>
+		</TableViewer.table>
+	</TableViewer>
 </Composite>
