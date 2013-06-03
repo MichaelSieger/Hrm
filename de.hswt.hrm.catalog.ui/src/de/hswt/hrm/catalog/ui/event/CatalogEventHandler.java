@@ -22,6 +22,7 @@ import de.hswt.hrm.catalog.model.ICatalogItem;
 import de.hswt.hrm.catalog.model.Target;
 import de.hswt.hrm.catalog.service.CatalogService;
 import de.hswt.hrm.catalog.ui.filter.CatalogSelectionFilter;
+import de.hswt.hrm.catalog.ui.filter.CatalogTextFilter;
 import de.hswt.hrm.catalog.ui.part.CatalogPartUtil;
 import de.hswt.hrm.common.database.exception.DatabaseException;
 
@@ -113,8 +114,8 @@ public class CatalogEventHandler {
     public void onKeyUp(Event event) {
         Text searchText = (Text) event.widget;
         TableViewer tf = (TableViewer) XWT.findElementByName(searchText, "catalogTable");
-        CatalogSelectionFilter f = (CatalogSelectionFilter) tf.getFilters()[0];
-        // f.setSearchString(searchText.getText());
+        CatalogTextFilter ctf = (CatalogTextFilter) tf.getFilters()[1];
+        ctf.setSearchString(searchText.getText());
         tf.refresh();
     }
 

@@ -10,18 +10,11 @@ import de.hswt.hrm.catalog.model.Target;
 
 public class CatalogSelectionFilter extends ViewerFilter {
 
-    // private String searchString;
-    //
-
     private boolean targetSelected = false;
     private boolean currentSelected = false;
     private boolean activitySelected = false;
     private boolean allSelected = false;
 
-    // public void setSearchString(String substring) {
-    // searchString = (".*" + substring + ".*").toLowerCase();
-    // }
-    //
     @Override
     public boolean select(Viewer viewer, Object parentElement, Object element) {
 
@@ -46,23 +39,6 @@ public class CatalogSelectionFilter extends ViewerFilter {
         else if (targetSelected && item instanceof Target) {
             return true;
         }
-
-        //
-        // if (searchString == null || searchString.length() == 0) {
-        // return true;
-        // }
-        //
-        // ICatalogItem i = (ICatalogItem) element;
-        //
-        // if (i.getName().toLowerCase().matches(searchString)) {
-        // return true;
-        // }
-        //
-        // if (i.getText().toLowerCase().matches(searchString)) {
-        // return true;
-        // }
-        //
-        // return false;
 
         return false;
 
