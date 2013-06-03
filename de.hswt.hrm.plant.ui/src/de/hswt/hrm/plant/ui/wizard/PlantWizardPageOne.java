@@ -72,7 +72,6 @@ public class PlantWizardPageOne extends WizardPage {
         Plant p = plant.get();
         Text t = (Text) XWT.findElementByName(c, "description");
         t.setText(p.getDescription());
-        // TODO nextInspection
         // TODO scheme
         t = (Text) XWT.findElementByName(c, "manufactor");
         t.setText(p.getManufactor().or(""));
@@ -152,14 +151,4 @@ public class PlantWizardPageOne extends WizardPage {
         }
     }
     
-    public int getNextInspectionYear() {
-        DateTime dt = (DateTime) XWT.findElementByName(container, "nextInspection");
-        return dt.getYear();
-    }
-    
-    public int getNextInspectionMonth() {
-        DateTime dt = (DateTime) XWT.findElementByName(container, "nextInspection");
-        return dt.getMonth();
-    }
-
 }
