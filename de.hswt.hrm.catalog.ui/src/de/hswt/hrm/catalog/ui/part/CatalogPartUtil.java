@@ -21,6 +21,10 @@ import de.hswt.hrm.common.ui.swt.table.ColumnDescription;
 
 public final class CatalogPartUtil {
 
+    private final static String TARGET = "Soll";
+    private final static String CURRENT = "Ist";
+    private final static String ACTIVITY = "Maßnahme";
+
     public CatalogPartUtil() {
 
     }
@@ -54,13 +58,13 @@ public final class CatalogPartUtil {
             public String getText(Object element) {
                 ICatalogItem p = (ICatalogItem) element;
                 if (p instanceof Activity) {
-                    return "Maßnahme";
+                    return ACTIVITY;
                 }
                 else if (p instanceof Current) {
-                    return "Ist";
+                    return CURRENT;
                 }
                 else if (p instanceof Target) {
-                    return "Soll";
+                    return TARGET;
                 }
 
                 return "";
@@ -70,29 +74,25 @@ public final class CatalogPartUtil {
             @Override
             public int compare(ICatalogItem o1, ICatalogItem o2) {
 
-                String s = "so";
-                String i = "is";
-                String m = "ma";
-
                 if (o1 instanceof Activity) {
                     if (o2 instanceof Current) {
-                        return m.compareTo(i);
+                        return ACTIVITY.compareToIgnoreCase(CURRENT);
                     }
-                    return m.compareTo(s);
+                    return ACTIVITY.compareToIgnoreCase(TARGET);
 
                 }
                 else if (o1 instanceof Current) {
                     if (o2 instanceof Activity) {
-                        return i.compareTo(m);
+                        return CURRENT.compareTo(ACTIVITY);
                     }
-                    return i.compareTo(s);
+                    return CURRENT.compareTo(TARGET);
                 }
 
                 else if (o1 instanceof Target) {
                     if (o2 instanceof Activity) {
-                        s.compareTo(m);
+                        TARGET.compareTo(ACTIVITY);
                     }
-                    return s.compareTo(i);
+                    return TARGET.compareTo(CURRENT);
                 }
                 return 0;
 
