@@ -31,10 +31,10 @@
 			<GridData horizontalAlignment="FILL" />
 		</Button.layoutData>
 	</Button>
-	<Button x:Style="CHECK" text="All" SelectionEvent="onSelection" />
-	<Button x:Style="CHECK" text="Soll" SelectionEvent="onSelection" />
-	<Button x:Style="CHECK" text="Ist" SelectionEvent="onSelection" />
-	<Button x:Style="CHECK" text="Manahme" SelectionEvent="onSelection">
+	<Button x:Style="RADIO" text="All" SelectionEvent="onSelection" />
+	<Button x:Style="RADIO" text="Soll" SelectionEvent="onSelection" />
+	<Button x:Style="RADIO" text="Ist" SelectionEvent="onSelection" />
+	<Button x:Style="RADIO" text="Maßnahmen" SelectionEvent="onSelection">
 		<Button.layoutData>
 			<GridData grabExcessVerticalSpace="true" verticalAlignment="TOP" />
 		</Button.layoutData>
