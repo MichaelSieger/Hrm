@@ -12,7 +12,7 @@
 		<Section.client>
 			<Composite>
 				<Composite.layout>
-					<GridLayout numColumns="8" />
+					<GridLayout numColumns="7" />
 				</Composite.layout>
 				<Label x:Name="lblFirstName" text="Firstname :">
 					<Label.layoutData>
@@ -22,46 +22,48 @@
 				<Text x:Style="BORDER" x:Name="firstName">
 					<Text.layoutData>
 						<GridData grabExcessHorizontalSpace="true"
-							horizontalAlignment="FILL" horizontalSpan="3"/>
+							horizontalAlignment="FILL" horizontalSpan="2"/>
 					</Text.layoutData>
 				</Text>
-				
+				<Label/>
 				<Label x:Name="lblLastName" text="Lastname :"/>
 				<Text x:Style="BORDER" x:Name="lastName">
 					<Text.layoutData>
 						<GridData grabExcessHorizontalSpace="true"
-							horizontalAlignment="FILL"  horizontalSpan="3"/>
+							horizontalAlignment="FILL"  horizontalSpan="2"/>
 					</Text.layoutData>
 				</Text>
 
-				<Label x:Name="lblStreet" text="Street :"/>
+				<Label x:Name="lblStreet" text="Street / No. :"/>
 				<Text x:Style="BORDER" x:Name="street">
 					<Text.layoutData>
 						<GridData grabExcessHorizontalSpace="true"
 							horizontalAlignment="FILL" horizontalspan="4" />
 					</Text.layoutData>
 				</Text>
-				<Label x:Name="lblStreetNumber" text="Streetnumber :"/>
+				<Label text="/"/>
 				<Text x:Style="BORDER" x:Name="streetNumber">
 					<Text.layoutData>
 						<GridData grabExcessHorizontalSpace="true"
-							horizontalAlignment="FILL" horizontalSpan="2"/>
+							horizontalAlignment="FILL" horizontalSpan="1"/>
 					</Text.layoutData>
 				</Text>
-				<Label x:Name="lblZipCode" text="Zipcode :"/>
+				
+				<Label x:Name="lblZipCode" text="Zipcode / City :"/>
 				<Text x:Style="BORDER" x:Name="zipCode">
 					<Text.layoutData>
 						<GridData grabExcessHorizontalSpace="true"
 							horizontalAlignment="FILL" horizontalSpan="2" />
 					</Text.layoutData>
 				</Text>
-				<Label x:Name="lblCity" text="City :"/>
+				<Label text="/"/>
 				<Text x:Style="BORDER" x:Name="city">
 					<Text.layoutData>
 						<GridData grabExcessHorizontalSpace="true"
-							horizontalAlignment="FILL" horizontalSpan="4"/>
+							horizontalAlignment="FILL" horizontalSpan="3"/>
 					</Text.layoutData>
 				</Text>
+				<Label/>
 			</Composite>
 		</Section.client>
 	</Section>
