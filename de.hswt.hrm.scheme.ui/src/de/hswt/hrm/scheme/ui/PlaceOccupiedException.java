@@ -6,8 +6,7 @@ package de.hswt.hrm.scheme.ui;
  * @author Michael Sieger
  *
  */
-public class PlaceOccupiedException extends Exception{
-
+public class PlaceOccupiedException extends RuntimeException{
     private static final long serialVersionUID = 1783878305645670087L;
 
     public PlaceOccupiedException() {
