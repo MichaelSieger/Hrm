@@ -76,6 +76,45 @@ public class SchemeGridItem {
 		this.y = y;
 	}
 	
+	public int getWidth(){
+		checkCategoryPresent();
+		Category c = renderedComponent.getComponent().getCategory().get();
+		if(isHorizontal()){
+			return c.getHeight();
+		}else{
+			return c.getWidth();
+		}
+	}
+	
+	public int getHeight(){
+		checkCategoryPresent();
+		Category c = renderedComponent.getComponent().getCategory().get();
+		if(isHorizontal()){
+			return c.getWidth();
+		}else{
+			return c.getHeight();
+		}
+	}
+	
+	private void checkCategoryPresent(){
+		if(!renderedComponent.getComponent().getCategory().isPresent()){
+			throw new IllegalArgumentException("Component category must be present for this");
+		}
+	}
+	
+	private boolean isHorizontal(){
+		switch(direction){
+		case leftRight:
+		case rightLeft:
+			return true;
+		case upDown:
+		case downUp:
+			return false;
+		default:
+			throw new RuntimeException("More than 4 directions?");
+		}
+	}
+	
     /**
      * Returns true if the image intersects the other image.
      * 
@@ -95,10 +134,9 @@ public class SchemeGridItem {
     	if(!op.isPresent()){
     		throw new IllegalArgumentException("The Category may not be absent here");
     	}
-    	Category c = op.get();
         return new Rectangle(x, y, 
-        		c.getWidth(),
-        		c.getHeight());
+        		getWidth(),
+        		getHeight());
     }
 
 }
