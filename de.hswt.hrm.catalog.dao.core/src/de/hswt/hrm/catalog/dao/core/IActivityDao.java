@@ -6,6 +6,7 @@ import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.ElementNotFoundException;
 import de.hswt.hrm.common.database.exception.SaveException;
 import de.hswt.hrm.catalog.model.Activity;
+import de.hswt.hrm.catalog.model.Current;
 
 /**
  * Defines all the public methods to interact with the storage system for activitys.
@@ -41,4 +42,22 @@ public interface IActivityDao {
      * @throws SaveException If the activity could not be updated.
      */
     void update(Activity activity) throws ElementNotFoundException, SaveException;
+
+    /**
+     * Add an activity state to a current state.
+     * 
+     * @param current
+     * @param activity
+     * @throws SaveException 
+     */
+    void addToCurrent(final Current current, final Activity activity) throws SaveException;
+    
+    /**
+     * 
+     * @param current
+     * @return All possible activity states for the given current state.
+     * @throws DatabaseException
+     */
+	Collection<Activity> findByCurrent(Current current)
+			throws DatabaseException;
 }
