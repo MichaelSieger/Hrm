@@ -45,7 +45,15 @@ public class SchemeGrid extends Canvas {
 	 */
 	private ItemClickListener listener;
 
+	/**
+	 * Was this SchemeGrid changed since last clearDirty call?
+	 */
 	private boolean dirty;
+	
+	/**
+	 * The pixel per grid value. 
+	 */
+	private int ppg;
 
 	public SchemeGrid(Composite parent, int style, int width, int height,
 			int pixelPerGrid) {
@@ -324,6 +332,11 @@ public class SchemeGrid extends Canvas {
 	 *            how many pixel does a gridbox use
 	 */
 	public void setPixelPerGrid(int ppg) {
+		this.ppg = ppg;
+		updateSize();
+	}
+	
+	private void updateSize(){
 		setSize(width * ppg, height * ppg);
 	}
 
