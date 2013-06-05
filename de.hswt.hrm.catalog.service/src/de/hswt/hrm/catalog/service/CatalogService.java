@@ -124,21 +124,29 @@ public class CatalogService {
 			SaveException {
 		targetDao.update(target);
 	}
+	
+	public void addToTarget(final Target target, final Current current) throws SaveException {
+		currentDao.addToTarget(target, current);
+	}
+	
+	public void addToCurrent(final Current current, final Activity activity) throws SaveException {
+		activityDao.addToCurrent(current, activity);
+	}
 
 	public Collection<Catalog> findAllCatalog() throws DatabaseException {
 		return catalogDao.findAll();
 	}
 
-	public Catalog findCatalogById(final int id) {
-		throw new NotImplementedException();
+	public Catalog findCatalogById(final int id) throws ElementNotFoundException, DatabaseException {
+		return catalogDao.findById(id);
 	}
 
-	public Catalog insertCatalog(final Catalog catalog) {
-		throw new NotImplementedException();
+	public Catalog insertCatalog(final Catalog catalog) throws SaveException {
+		return catalogDao.insert(catalog);
 	}
 
-	public void updateCatlaog(final Catalog catalog) {
-		throw new NotImplementedException();
+	public void updateCatalog(final Catalog catalog) throws ElementNotFoundException, SaveException {
+		catalogDao.update(catalog);
 	}
 
 	/**

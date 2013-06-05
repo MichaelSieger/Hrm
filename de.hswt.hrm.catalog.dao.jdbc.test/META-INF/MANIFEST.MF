@@ -6,4 +6,5 @@ Bundle-Version: 0.0.1.qualifier
 Fragment-Host: de.hswt.hrm.catalog.dao.jdbc;bundle-version="0.0.1"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Require-Bundle: de.hswt.hrm.test;bundle-version="0.0.1",
- org.junit;bundle-version="4.10.0"
+ org.junit;bundle-version="4.10.0",
+ de.hswt.hrm.mockito;bundle-version="0.0.1"
