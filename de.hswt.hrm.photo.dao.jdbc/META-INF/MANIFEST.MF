@@ -4,3 +4,4 @@ Bundle-Name: Jdbc
 Bundle-SymbolicName: de.hswt.hrm.photo.dao.jdbc
 Bundle-Version: 0.0.1.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Import-Package: de.hswt.hrm.photo.dao.core
