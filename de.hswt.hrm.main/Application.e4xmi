@@ -4,7 +4,7 @@
     <children xsi:type="advanced:PerspectiveStack" xmi:id="_ucxpZ5SXEeKKYob9VrLbBA">
       <children xsi:type="advanced:Perspective" xmi:id="_ucxpaJSXEeKKYob9VrLbBA" label="">
         <children xsi:type="basic:PartSashContainer" xmi:id="_ucxpaZSXEeKKYob9VrLbBA" elementId="PartsContainer" containerData="95" horizontal="true">
-          <children xsi:type="basic:Part" xmi:id="_8z3MsM4IEeK9GIF_us7e3g" elementId="Sidebar" containerData="5" contributionURI="bundleclass://de.hswt.hrm.main.ui/de.hswt.hrm.main.ui.sidebarPart.SidebarPart" label="sidebar"/>
+          <children xsi:type="basic:Part" xmi:id="_8z3MsM4IEeK9GIF_us7e3g" elementId="Sidebar" visible="false" containerData="5" contributionURI="bundleclass://de.hswt.hrm.main.ui/de.hswt.hrm.main.ui.sidebarPart.SidebarPart" label="sidebar"/>
           <children xsi:type="basic:Part" xmi:id="_EVCGgKXlEeK_d5AKUI3Qzg" elementId="Clients" visible="false" containerData="95" contributionURI="bundleclass://de.hswt.hrm.contact.ui/de.hswt.hrm.contact.ui.part.ContactPart" label="Kunden"/>
           <children xsi:type="basic:Part" xmi:id="_FPaEEKXlEeK_d5AKUI3Qzg" elementId="Places" visible="false" containerData="95" contributionURI="bundleclass://de.hswt.hrm.place.ui/de.hswt.hrm.place.ui.part.PlacePart" label="Standorte"/>
           <children xsi:type="basic:Part" xmi:id="_-I-C0LNLEeKdGYIwwO47yQ" elementId="Plants" visible="false" containerData="95" contributionURI="bundleclass://de.hswt.hrm.plant.ui/de.hswt.hrm.plant.ui.part.PlantPart" label="Anlagen"/>

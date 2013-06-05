@@ -56,43 +56,43 @@ public class MainPart {
 		toContacts.addListener(SWT.Selection,new Listener() {
 			@Override
 			public void handleEvent(Event event) {
-				setPartsVisibility(true, false, false, false, false, false, false);				
+				setPartsVisibility(true, false, false, false, false, false, false,true);				
 			}
 		});
 		toPlaces.addListener(SWT.Selection,new Listener() {
 			@Override
 			public void handleEvent(Event event) {
-				setPartsVisibility(false, true, false, false, false, false, false);				
+				setPartsVisibility(false, true, false, false, false, false, false,true);				
 			}
 		});
 		toPlants.addListener(SWT.Selection,new Listener() {
 			@Override
 			public void handleEvent(Event event) {
-				setPartsVisibility(false, false, true, false, false, false, false);				
+				setPartsVisibility(false, false, true, false, false, false, false,true);				
 			}
 		});
 		toScheme.addListener(SWT.Selection,new Listener() {
 			@Override
 			public void handleEvent(Event event) {
-				setPartsVisibility(false, false, false, true, false, false, false);				
+				setPartsVisibility(false, false, false, true, false, false, false,true);				
 			}
 		});
 		toCategory.addListener(SWT.Selection,new Listener() {
 			@Override
 			public void handleEvent(Event event) {
-				setPartsVisibility(false, false, false, false, false, true, false);				
+				setPartsVisibility(false, false, false, false, false, true, false,true);				
 			}
 		});
 		toCatalog.addListener(SWT.Selection,new Listener() {
 			@Override
 			public void handleEvent(Event event) {
-				setPartsVisibility(false, false, false, false, true, false, false);				
+				setPartsVisibility(false, false, false, false, true, false, false,true);				
 			}
 		});
 
 		
 	}
-    private void setPartsVisibility(boolean clients, boolean places, boolean plants, boolean scheme, boolean catalog, boolean category, boolean main){
+    private void setPartsVisibility(boolean clients, boolean places, boolean plants, boolean scheme, boolean catalog, boolean category, boolean main,boolean sidebar){
 		service.findPart("Clients").setVisible(clients);
 		service.findPart("Places").setVisible(places);
 		service.findPart("Plants").setVisible(plants);
@@ -104,5 +104,6 @@ public class MainPart {
 			service.showPart("Catalog", PartState.VISIBLE);
 		if(category)
 			service.showPart("Category", PartState.VISIBLE);
+		service.findPart("Sidebar").setVisible(sidebar);  
     }
 }
