@@ -251,6 +251,7 @@ public class SchemeGrid extends Canvas {
 		if(height - y < ENLARGE_TRESH) {
 			height += ENLARGE;
 		}
+		updateSize();
 	}
 
 	/**
