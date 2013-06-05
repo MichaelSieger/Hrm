@@ -376,9 +376,18 @@ public class SchemeGrid extends Canvas {
 		return r;
 	}
 
-	public void setItems(Collection<SchemeGridItem> c){
+	/**
+	 * Sets the SchemeGridItems of this SchemeGrid
+	 * 
+	 * @param c
+	 * @throws PlaceOccupiedException If two or more Items overlap
+	 */
+	public void setItems(Collection<SchemeGridItem> c) throws PlaceOccupiedException{
 	    dirty = true;
-		images = new ArrayList<>(c);
+	    images.clear();
+	    for(SchemeGridItem item : c){
+	    	setImage(item);
+	    }
 		redraw();
 	}
 }
