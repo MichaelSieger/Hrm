@@ -64,8 +64,8 @@ public class ComponentConverter {
 		final int w = component.getCategory().get().getWidth();
 		final int h = component.getCategory().get().getHeight();
 		return new RenderedComponent(component, 
-				createImage(display, component.getLeftRightImage(), w, h), 
-				createImage(display, component.getRightLeftImage(), w, h), 
+				createImage(display, component.getLeftRightImage(), h, w), //Is Swapped because width and height
+				createImage(display, component.getRightLeftImage(), h, w), //refer to the upstanding image
 				createImage(display, component.getUpDownImage(), w, h), 
 				createImage(display, component.getDownUpImage(), w, h));
 	}
