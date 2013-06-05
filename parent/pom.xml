@@ -163,5 +163,11 @@
 		<module>../de.hswt.hrm.inspection.service</module>
 		<module>../de.hswt.hrm.inspection.ui</module>
 		<module>../de.hswt.hrm.common.ui</module>
+		<module>../de.hswt.hrm.photo.dao.core</module>
+		<module>../de.hswt.hrm.photo.dao.jdbc</module>
+		<module>../de.hswt.hrm.photo.feature</module>
+		<module>../de.hswt.hrm.photo.model</module>
+		<module>../de.hswt.hrm.photo.service</module>
+		<module>../de.hswt.hrm.photo.ui</module>
 	</modules>
 </project>
