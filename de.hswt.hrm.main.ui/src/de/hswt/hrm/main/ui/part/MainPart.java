@@ -24,9 +24,10 @@ public class MainPart {
 	Button toContacts;
 	Button toPlaces;
 	Button toPlants;
-	Button toScheme;
 	Button toCatalog;
 	Button toCategory;
+	Button toInspection;
+	Button toOverall;
 	
 	
     @PostConstruct
@@ -41,7 +42,6 @@ public class MainPart {
             toContacts = (Button) XWT.findElementByName(comp, "toContacts");
             toPlaces = (Button) XWT.findElementByName(comp, "toPlaces");
             toPlants = (Button) XWT.findElementByName(comp, "toPlants");
-            toScheme = (Button) XWT.findElementByName(comp, "toScheme");
             toCatalog = (Button) XWT.findElementByName(comp, "toCatalog");
             toCategory = (Button) XWT.findElementByName(comp, "toCategory");
         }
@@ -69,12 +69,6 @@ public class MainPart {
 			@Override
 			public void handleEvent(Event event) {
 				setPartsVisibility(false, false, true, false, false, false, false,true);				
-			}
-		});
-		toScheme.addListener(SWT.Selection,new Listener() {
-			@Override
-			public void handleEvent(Event event) {
-				setPartsVisibility(false, false, false, true, false, false, false,true);				
 			}
 		});
 		toCategory.addListener(SWT.Selection,new Listener() {
