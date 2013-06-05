@@ -76,8 +76,11 @@ import de.hswt.hrm.scheme.ui.tree.TreeContentProvider;
  *
  */
 public class SchemePart {
+	
+	private static final int MOVE_AMOUNT = 3;
+	
     private final static Logger LOG = LoggerFactory.getLogger(SchemePart.class);
-	private static final String DELETE = "L�schen";
+	private static final String DELETE = "Löschen";
 	
 	@Inject
 	SchemeService schemeService;
@@ -155,6 +158,7 @@ public class SchemePart {
 			initGridDND();
 			initSaveBtn();
 			initSlider();
+			initMoveSchemeBtn();
 			initItemClickListener();
 			
 			//TODO remove
@@ -225,6 +229,28 @@ public class SchemePart {
 	/*
 	 * init gui elements
 	 */
+	
+	private void initMoveSchemeBtn(){
+		Button btn = getMoveBtn();
+		btn.addSelectionListener(new SelectionListener() {
+			
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				Collection<SchemeGridItem> items = grid.getItems();
+				items = Collections2.transform(items, new Function<SchemeGridItem, SchemeGridItem>() {
+					public SchemeGridItem apply(SchemeGridItem item){
+						item.setX(item.getX() + MOVE_AMOUNT);
+						item.setY(item.getY() + MOVE_AMOUNT);
+						return item;
+					}
+				});
+				grid.setItems(items);
+			}
+			
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {}
+		});
+	}
 	
 	private void initItemClickListener(){
 		grid.setItemClickListener(new ItemClickListener() {
@@ -333,7 +359,7 @@ public class SchemePart {
 	}
 	
 	private void initSaveBtn(){
-		Button btn = (Button) XWT.findElementByName(root, "savebtn");
+		Button btn = getSaveBtn();
 		btn.addSelectionListener(new SelectionListener() {
 			
 			@Override
@@ -370,6 +396,14 @@ public class SchemePart {
 	/*
 	 * getter
 	 */
+	
+	private Button getSaveBtn(){
+		return (Button) XWT.findElementByName(root, "savebtn");
+	}
+	
+	private Button getMoveBtn(){
+		return (Button) XWT.findElementByName(root, "movebtn");
+	}
 
 	private Slider getZoomSlider(){
 		return (Slider) XWT.findElementByName(root, "zoomSlider");
