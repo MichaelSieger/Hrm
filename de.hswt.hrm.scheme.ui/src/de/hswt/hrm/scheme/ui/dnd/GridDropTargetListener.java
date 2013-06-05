@@ -68,15 +68,11 @@ public class GridDropTargetListener implements DropTargetListener {
 		DragData data = part.getDraggingItem();
 		if(data != null){
 			SchemeGridItem item = data.toSchemeGridItem(comps);
-			Optional<Category> c = item.getRenderedComponent().getComponent().getCategory();
-			if(!c.isPresent()){
-				throw new IllegalArgumentException("The Category must be present here");
-			}
 			final Point org = grid.toDisplay(0, 0);
 			final int x = ev.x - org.x;
 			final int y = ev.y - org.y;
 			grid.clearColors();
-			grid.setColor(getShadowColor(), x, y, c.get().getWidth(), c.get().getHeight());
+			grid.setColor(getShadowColor(), x, y, item.getWidth(), item.getHeight());
 		}
 	}
 	
