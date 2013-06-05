@@ -304,7 +304,7 @@ public class SchemePart {
 			}
 		});
 		FormData formData = new FormData();
-		formData.top = new FormAttachment(0, 10);
+		formData.top = new FormAttachment(0, 40);
 		formData.left = new FormAttachment(0, 10);
 		formData.right = new FormAttachment(0, 200);
 		formData.bottom = new FormAttachment(100, -50);

@@ -2,6 +2,19 @@
 	<Composite.layout>
 		<FormLayout/>
 	</Composite.layout>
+		<Button text="Schema Verschieben" x:Name="movebtn">
+		<Button.layoutData>
+			<FormData>
+
+				<FormData.right>
+					<FormAttachment numerator="0" offset="200"/>
+				</FormData.right>
+				<FormData.top>
+					<FormAttachment numerator="0" offset="10"/>
+				</FormData.top>
+			</FormData>
+		</Button.layoutData>
+	</Button>
 	<ScrolledComposite x:Style="BORDER | H_SCROLL | V_SCROLL" x:Name="schemeComposite">
 		<ScrolledComposite.layoutData>
 			<FormData>
