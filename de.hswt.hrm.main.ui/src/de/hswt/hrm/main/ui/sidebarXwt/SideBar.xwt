@@ -7,13 +7,13 @@
 		<ToolBar.layoutData>
 			<GridData minimumWidth="-1" grabExcessVerticalSpace="true"/>
 		</ToolBar.layoutData>
-		<ToolItem x:Name="toContacts" image="contacts_32.bmp"/>
-		<ToolItem image="places_32.bmp" x:Name="toPlaces"/>
-		<ToolItem x:Name="toPlants" width="10" image="plants_32.bmp"/>
-		<ToolItem x:Name="toCatalog" width="10" image="catalogs_32.bmp"/>
-		<ToolItem x:Name="toCategory" width="10" image="components_32.bmp"/>
-		<ToolItem x:Name="toInspection" image="reports_32.bmp"/>
-		<ToolItem text="bew" x:Name="toOverall"/>
-		<ToolItem x:Name="toMain" width="10" image="home_32.bmp"/>
+		<ToolItem x:Name="toContacts" image="contacts_32.bmp" toolTipText="Kontakte"/>
+		<ToolItem image="places_32.bmp" x:Name="toPlaces" toolTipText="Standorte"/>
+		<ToolItem x:Name="toPlants" width="10" image="plants_32.bmp" toolTipText="Anlagen"/>
+		<ToolItem x:Name="toCatalog" width="10" image="catalogs_32.bmp" toolTipText="Katalog"/>
+		<ToolItem x:Name="toCategory" width="10" image="components_32.bmp" toolTipText="Kategorie"/>
+		<ToolItem x:Name="toInspection" image="reports_32.bmp" toolTipText="Inspektion"/>
+		<ToolItem text="bew" x:Name="toOverall" toolTipText="Gesamtbewertung"/>
+		<ToolItem x:Name="toMain" width="10" image="home_32.bmp" toolTipText="Hauptmenu"/>
 	</ToolBar>
 </Composite>
