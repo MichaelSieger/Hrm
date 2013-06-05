@@ -52,7 +52,9 @@ public class SchemeGridItem {
 		return direction;
 	}
 
-
+	public RenderedComponent getRenderedComponent() {
+		return renderedComponent;
+	}
 
 	public void setDirection(Direction direction) {
 		this.direction = direction;
