@@ -9,6 +9,7 @@ import de.hswt.hrm.component.model.Category;
 import de.hswt.hrm.scheme.model.Direction;
 import de.hswt.hrm.scheme.model.RenderedComponent;
 import de.hswt.hrm.scheme.model.SchemeComponent;
+import de.hswt.hrm.scheme.model.ThumbnailImage;
 
 /**
  * Contains the propertys of a image in the SchemeGrid.
@@ -43,17 +44,9 @@ public class SchemeGridItem {
 		return new SchemeComponent(x, y, direction, renderedComponent.getComponent());
 	}
 
-	public RenderedComponent getRenderedComponent() {
-		return renderedComponent;
+	public ThumbnailImage getImage(){
+		return renderedComponent.getByDirection(direction);
 	}
-
-
-
-	public void setRenderedComponent(RenderedComponent renderedComponent) {
-		this.renderedComponent = renderedComponent;
-	}
-
-
 
 	public Direction getDirection() {
 		return direction;

@@ -116,8 +116,7 @@ public class SchemeGrid extends Canvas {
 		for (SchemeGridItem item : images) {
 			drawImage(
 					gc,
-					item.getRenderedComponent()
-							.getByDirection(item.getDirection()).getImage(),
+					item.getImage().getImage(),
 					item.getBoundingBox());
 		}
 	}
