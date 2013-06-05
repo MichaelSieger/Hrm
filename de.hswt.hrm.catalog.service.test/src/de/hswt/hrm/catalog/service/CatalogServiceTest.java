@@ -13,8 +13,9 @@ import de.hswt.hrm.catalog.model.Target;
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.ElementNotFoundException;
 import de.hswt.hrm.common.database.exception.SaveException;
+import de.hswt.hrm.test.database.AbstractDatabaseTest;
 
-public class CatalogServiceTest {
+public class CatalogServiceTest extends AbstractDatabaseTest {
 
 	private IActivityDao activityDao = mock(IActivityDao.class);
 	private ICurrentDao currentDao = mock(ICurrentDao.class);

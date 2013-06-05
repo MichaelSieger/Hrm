@@ -7,3 +7,4 @@ Fragment-Host: de.hswt.hrm.catalog.service;bundle-version="0.0.1"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Require-Bundle: de.hswt.hrm.mockito;bundle-version="0.0.1",
  org.junit;bundle-version="4.10.0"
+Import-Package: de.hswt.hrm.test.database
