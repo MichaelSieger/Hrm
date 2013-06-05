@@ -1,0 +1,16 @@
+<Composite xmlns="http://www.eclipse.org/xwt/presentation"
+	xmlns:x="http://www.eclipse.org/xwt" xmlns:p1="clr-namespace:de.hswt.hrm.contact.ui.xwt" x:Style="EMBEDDED">
+	<Composite.layout>
+		<GridLayout numColumns="1" horizontalSpacing="0" marginHeight="0" marginRight="5" marginLeft="5" />
+	</Composite.layout>
+	<ToolBar x:Style="BORDER | FLAT | WRAP | RIGHT | SHADOW_OUT | VERTICAL" x:Name="toolBar">
+		<ToolBar.layoutData>
+			<GridData minimumWidth="-1" grabExcessVerticalSpace="true"/>
+		</ToolBar.layoutData>
+		<ToolItem image="places_32.bmp" x:Name="toPlaces"/>
+		<ToolItem x:Name="toPlants" width="10" image="plants_32.bmp"/>
+		<ToolItem x:Name="toCatalog" width="10" image="catalogs_32.bmp"/>
+		<ToolItem x:Name="toCategory" width="10" image="components_32.bmp"/>
+		<ToolItem x:Name="toMain" width="10" image="home_32.bmp"/>
+	</ToolBar>
+</Composite>
