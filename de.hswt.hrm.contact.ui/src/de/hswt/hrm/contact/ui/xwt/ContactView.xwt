@@ -2,18 +2,8 @@
 	xmlns:x="http://www.eclipse.org/xwt" xmlns:p1="clr-namespace:de.hswt.hrm.contact.ui.xwt"
 	x:Class="de.hswt.hrm.contact.ui.event.ContactEventHandler">
 	<Composite.layout>
-		<GridLayout numColumns="6" makeColumnsEqualWidth="true" />
+		<GridLayout numColumns="5" makeColumnsEqualWidth="true" />
 	</Composite.layout>
-	<ToolBar x:Style="BORDER | FLAT | WRAP | RIGHT | SHADOW_OUT | VERTICAL" x:Name="toolBar">
-		<ToolBar.layoutData>
-			<GridData verticalSpan="7" widthHint="45" minimumWidth="10"/>
-		</ToolBar.layoutData>
-		<ToolItem image="places_32.bmp" x:Name="toPlaces"/>
-		<ToolItem x:Name="toPlants" width="10" image="plants_32.bmp"/>
-		<ToolItem x:Name="toCatalog" width="10" image="catalogs_32.bmp"/>
-		<ToolItem x:Name="toCategory" width="10" image="components_32.bmp"/>
-		<ToolItem x:Name="toMain" width="10" image="home_32.bmp"/>
-	</ToolBar>
 	<Text x:name="searchText" x:Style="SEARCH"
 		FocusOutEvent="leaveText" KeyUpEvent="onKeyUp" FocusInEvent="enterText" text="Suche" >
 		<Text.layoutData>
@@ -31,11 +21,7 @@
 			<GridData horizontalAlignment="FILL"/>
 		</Button.layoutData>
 	</Button>
-	<Button text="Back" x:Name="back2Main">
-		<Button.layoutData>
-			<GridData horizontalAlignment="FILL" verticalAlignment="BOTTOM"/>
-		</Button.layoutData>
-	</Button>
+	<Label/>
 	<TableViewer x:name="contactTable" x:Style="BORDER | FULL_SELECTION">
 		<TableViewer.table headerVisible="true"
 			linesVisible="true" MouseDoubleClickEvent="tableEntrySelected" >

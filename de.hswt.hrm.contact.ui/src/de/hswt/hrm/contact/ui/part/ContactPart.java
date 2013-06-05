@@ -67,24 +67,7 @@ public class ContactPart {
             // Obtain TableViwer to fill it with data
             viewer = (TableViewer) XWT.findElementByName(comp, "contactTable");
             initializeTable(parent, viewer);
-            refreshTable(parent);
-            
-            ((Button) XWT.findElementByName(comp, "back2Main")).addListener(SWT.Selection, new Listener() {
- 				@Override
- 				public void handleEvent(Event event) {
- 					service.findPart("Clients").setVisible(false);
- 					service.findPart("Places").setVisible(false);
- 					service.findPart("Plants").setVisible(false);
- 					service.findPart("Scheme").setVisible(false);
- 					service.findPart("Catalog").setVisible(false);
- 					service.findPart("Category").setVisible(false);
- 					service.findPart("Main").setVisible(true);
- 					service.showPart("Main", PartState.VISIBLE);
- 				}
- 			});
-   
-            ContactPartUtil.setListenerForToolbar(service,(ToolBar)XWT.findElementByName(comp, "toolBar"));
-            
+            refreshTable(parent);   
 
         }
         catch (Exception e) {
