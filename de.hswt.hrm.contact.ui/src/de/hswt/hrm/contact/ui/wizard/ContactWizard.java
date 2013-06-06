@@ -5,6 +5,7 @@ import java.util.HashMap;
 import javax.inject.Inject;
 
 import org.eclipse.jface.wizard.Wizard;
+import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.Text;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,7 +34,7 @@ public class ContactWizard extends Wizard {
         this.contact = contact;
         first = new ContactWizardPageOne("First Page", contact);
         second = new ContactWizardPageTwo("Second Page", contact);
-
+        
         if (contact.isPresent()) {
             setWindowTitle(I18N.tr("Edit Contact"));
         }

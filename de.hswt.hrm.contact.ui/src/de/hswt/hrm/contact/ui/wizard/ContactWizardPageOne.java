@@ -9,8 +9,6 @@ import org.eclipse.e4.xwt.forms.XWTForms;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
-import org.eclipse.swt.layout.FillLayout;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
@@ -19,6 +17,7 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Optional;
 
+import de.hswt.hrm.common.ui.swt.layouts.PageContainerFillLayout;
 import de.hswt.hrm.contact.model.Contact;
 import de.hswt.hrm.contact.ui.part.ContactPartUtil;
 import de.hswt.hrm.i18n.I18n;
@@ -47,8 +46,9 @@ public class ContactWizardPageOne extends WizardPage {
 
     @Override
     public void createControl(Composite parent) {
-        URL url = ContactWizardPageOne.class.getClassLoader().getResource(
-                "de/hswt/hrm/contact/ui/xwt/ContactWizardWindow" + IConstants.XWT_EXTENSION_SUFFIX);
+    	parent.setLayout(new PageContainerFillLayout());
+    	URL url = ContactWizardPageOne.class.getClassLoader().getResource(
+                "de/hswt/hrm/contact/ui/xwt/ContactWizardWindowPageOne" + IConstants.XWT_EXTENSION_SUFFIX);
         try {
             container = (Composite) XWTForms.load(parent, url);
         }

@@ -9,7 +9,6 @@ import org.eclipse.e4.xwt.forms.XWTForms;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 import org.slf4j.Logger;
@@ -17,6 +16,7 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Optional;
 
+import de.hswt.hrm.common.ui.swt.layouts.PageContainerFillLayout;
 import de.hswt.hrm.place.model.Place;
 
 public class PlaceWizardPageOne extends WizardPage {
@@ -47,8 +47,8 @@ public class PlaceWizardPageOne extends WizardPage {
 
     @Override
     public void createControl(Composite parent) {
-    	parent.setLayout(new FillLayout());
-    	parent.setLayout(new FillLayout());
+    	parent.setLayout(new PageContainerFillLayout());
+
     	URL url = PlaceWizardPageOne.class.getClassLoader().getResource(
                 "de/hswt/hrm/place/ui/xwt/PlaceWizardWindow" + IConstants.XWT_EXTENSION_SUFFIX);
     	try {
