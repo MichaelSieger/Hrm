@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import javax.inject.Inject;
+
 import org.apache.commons.dbutils.DbUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,6 +31,7 @@ public class ActivityDao implements IActivityDao {
 	private final static Logger LOG = LoggerFactory.getLogger(ActivityDao.class);
 	private final ICurrentDao currentDao; 
 
+	@Inject
 	public ActivityDao(final ICurrentDao currentDao) {
 		checkNotNull(currentDao, "CurrentDao not properly injected to ActivityDao.");
         
