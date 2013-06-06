@@ -13,7 +13,7 @@ import de.hswt.hrm.inspection.model.Biological;
 public interface IBiologicalDao {
 
     /**
-     * @return All inspections from storage.
+     * @return All biologicals from storage.
      */
     Collection<Biological> findAll() throws DatabaseException;
 
