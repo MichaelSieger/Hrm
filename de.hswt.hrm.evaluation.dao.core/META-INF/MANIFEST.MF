@@ -5,3 +5,5 @@ Bundle-SymbolicName: de.hswt.hrm.evaluation.dao.core
 Bundle-Version: 0.0.1.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: de.hswt.hrm.evaluation.dao.core
+Import-Package: de.hswt.hrm.common.database.exception,
+ de.hswt.hrm.evaluation.model
