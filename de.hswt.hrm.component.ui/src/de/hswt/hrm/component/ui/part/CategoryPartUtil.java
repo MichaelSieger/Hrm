@@ -13,6 +13,7 @@ import org.eclipse.swt.widgets.Shell;
 import com.google.common.base.Optional;
 
 import de.hswt.hrm.common.ui.swt.table.ColumnDescription;
+import de.hswt.hrm.common.ui.swt.wizards.WizardCreator;
 import de.hswt.hrm.component.model.Category;
 import de.hswt.hrm.component.ui.wizard.CategoryWizard;
 
@@ -28,7 +29,7 @@ public class CategoryPartUtil {
         CategoryWizard catWiz = new CategoryWizard(category);
         ContextInjectionFactory.inject(catWiz, context);
         
-        WizardDialog wizDiag = new WizardDialog(shell,catWiz);
+        WizardDialog wizDiag = WizardCreator.createWizardDialog(shell, catWiz);
         wizDiag.open();
         return catWiz.getCategory();
     }

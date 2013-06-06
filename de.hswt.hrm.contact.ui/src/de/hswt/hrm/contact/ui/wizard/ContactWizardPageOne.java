@@ -38,10 +38,10 @@ public class ContactWizardPageOne extends WizardPage {
 
     private String createDiscription() {
         if (contact.isPresent()) {
-            return I18N.tr("Edit Contact");
+            return I18N.tr("Edit a contact.");
         }
 
-        return I18N.tr("Add Contact");
+        return I18N.tr("Add a new contact.");
     }
 
     @Override

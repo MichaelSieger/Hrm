@@ -1,0 +1,80 @@
+<Composite xmlns="http://www.eclipse.org/xwt/presentation" xmlns:x="http://www.eclipse.org/xwt" x:Class="de.hswt.hrm.scheme.ui.xwt.CategoryWizardWindow" xmlns:p1="clr-namespace:java.lang">
+	<Composite.layout>
+		<FillLayout/>
+	</Composite.layout>
+	<Section text="Category definition" x:Style="(p1:Section).EXPANDED | (p1:Section).TITLE_BAR" x:Name="General">
+		<Section.client>
+			<Composite>
+				<Composite.layout>
+					<GridLayout numColumns="2"/>
+				</Composite.layout>
+				<Composite>
+					<Composite.layout>
+						<GridLayout numColumns="2" marginWidth="0"/>
+					</Composite.layout>
+					<Composite.layoutData>
+						<GridData grabExcessHorizontalSpace="true" 
+							horizontalAlignment="FILL" horizontalSpan="2"/>
+					</Composite.layoutData>
+					<Label text="Name"/>
+					<Text x:Style="BORDER" textLimit="30">
+						<Text.layoutData>
+							<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
+						</Text.layoutData>
+					</Text>
+					<Label text="Weight"/>
+					<Combo x:Style="BORDER" x:Name="defaultQuantifier">
+						<Combo.layoutData>
+							<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
+						</Combo.layoutData>
+					</Combo>
+				</Composite>
+				<Composite>
+					<Composite.layout>
+						<GridLayout numColumns="1" marginWidth="0"/>
+					</Composite.layout>
+					<Composite.layoutData>
+						<GridData grabExcessHorizontalSpace="true" 
+							horizontalAlignment="FILL"/>
+					</Composite.layoutData>
+					<Label text="Width in grid">
+						<Label.layoutData>
+							<GridData verticalAlignment="TOP"/>
+						</Label.layoutData>
+					</Label>
+					<List x:Style="BORDER" x:Name="width">
+						<List.layoutData>
+							<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL" heightHint="150" widthHint="100"/>
+						</List.layoutData>
+					</List>
+				</Composite>
+				<Composite>
+					<Composite.layout>
+							<GridLayout numColumns="1" marginWidth="0"/>
+					</Composite.layout>
+					<Composite.layoutData>
+						<GridData grabExcessHorizontalSpace="true" 
+							horizontalAlignment="FILL" verticalAlignment="TOP"/>
+					</Composite.layoutData>
+					<Label text="Height in grid">
+						<Label.layoutData>
+							<GridData verticalAlignment="TOP"/>
+						</Label.layoutData>
+					</Label>
+					<List x:Style="BORDER" x:Name="height">
+						<List.layoutData>
+							<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL" heightHint="150" widthHint="100"/>
+						</List.layoutData>
+					</List>
+				</Composite>
+				<Button x:Style="CHECK" x:Name="defaultBoolRating" text="with rating">
+					<Button.layoutData>
+						<GridData grabExcessHorizontalSpace="true" 
+							horizontalAlignment="LEFT" horizontalSpan="4"/>
+					</Button.layoutData>
+				</Button>
+			</Composite>
+		</Section.client>	
+	</Section>
+</Composite>
+<!-- Forms API -->

@@ -28,7 +28,9 @@ Require-Bundle: org.eclipse.swt;bundle-version="3.100.1",
  
 Import-Package: de.hswt.hrm.catalog.service,
  de.hswt.hrm.common.database.exception,
+ de.hswt.hrm.common.ui.swt.layouts,
  de.hswt.hrm.common.ui.swt.table,
+ de.hswt.hrm.common.ui.swt.wizards,
  de.hswt.hrm.common.ui.xwt,
  de.hswt.hrm.component.model,
  de.hswt.hrm.component.service

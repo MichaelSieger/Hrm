@@ -34,10 +34,10 @@ public class PlaceWizardPageOne extends WizardPage {
 
     private String createDiscription() {
         if (place.isPresent()) {
-            return "Standort bearbeiten";
+            return "Change the location information.";
         }
 
-        return "Neuen Standort hinzufügen";
+        return "Add a new location.";
     }
     
     public Place getPlace() {
@@ -50,7 +50,7 @@ public class PlaceWizardPageOne extends WizardPage {
     	parent.setLayout(new PageContainerFillLayout());
 
     	URL url = PlaceWizardPageOne.class.getClassLoader().getResource(
-                "de/hswt/hrm/place/ui/xwt/PlaceWizardWindow" + IConstants.XWT_EXTENSION_SUFFIX);
+                "de/hswt/hrm/place/ui/xwt/PlaceWizardPageOne" + IConstants.XWT_EXTENSION_SUFFIX);
     	try {
     		container = (Composite) XWTForms.load(parent, url);
 		} 
@@ -75,8 +75,6 @@ public class PlaceWizardPageOne extends WizardPage {
         widgets.get(Fields.STREET_NO).setText(place.getStreetNo());
         widgets.get(Fields.ZIP_CODE).setText(place.getPostCode());
         widgets.get(Fields.CITY).setText(place.getCity());
-        widgets.get(Fields.LOCATION).setText(place.getLocation());
-        widgets.get(Fields.AREA).setText(place.getArea());
     }
     
     private Place updatePlace(Optional<Place> place) {
@@ -86,8 +84,6 @@ public class PlaceWizardPageOne extends WizardPage {
         String streetNo = widgets.get(Fields.STREET_NO).getText();
         String zipCode = widgets.get(Fields.ZIP_CODE).getText();
         String city = widgets.get(Fields.CITY).getText();
-        String location = widgets.get(Fields.LOCATION).getText();
-        String area = widgets.get(Fields.AREA).getText();
         
         if (place.isPresent()) {
             Place p = place.get();
@@ -96,12 +92,10 @@ public class PlaceWizardPageOne extends WizardPage {
             p.setStreetNo(streetNo);
             p.setPostCode(zipCode);
             p.setCity(city);
-            p.setLocation(location);
-            p.setArea(area);
             return p;
         }
 
-        Place p = new Place(name, zipCode, city, street, streetNo, location, area);
+        Place p = new Place(name, zipCode, city, street, streetNo, null, null);
         return p;
     }
 
@@ -114,8 +108,6 @@ public class PlaceWizardPageOne extends WizardPage {
             widgets.put(Fields.STREET_NO, (Text) XWT.findElementByName(container, Fields.STREET_NO));
             widgets.put(Fields.ZIP_CODE, (Text) XWT.findElementByName(container, Fields.ZIP_CODE));
             widgets.put(Fields.CITY, (Text) XWT.findElementByName(container, Fields.CITY));
-            widgets.put(Fields.LOCATION, (Text) XWT.findElementByName(container, Fields.LOCATION));
-            widgets.put(Fields.AREA, (Text) XWT.findElementByName(container, Fields.AREA));
         }
         
         return widgets; 
@@ -155,7 +147,5 @@ public class PlaceWizardPageOne extends WizardPage {
         public static final String STREET_NO = "streetNumber";
         public static final String ZIP_CODE = "zipCode";
         public static final String CITY = "city";
-        public static final String LOCATION = "location";
-        public static final String AREA = "area";
     }
 }

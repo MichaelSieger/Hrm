@@ -26,17 +26,9 @@ public class ContactWizardPageTwo extends WizardPage{
     public ContactWizardPageTwo(String pageName, Optional<Contact> contact) {
         super(pageName);
         this.contact = contact;
-        setDescription(createDescription());
+        setDescription("Provide the contacts communication information.");
     }
     
-    private String createDescription() {
-        if (contact.isPresent()) {
-            return "Kontakt bearbeiten";
-        }
-
-        return "Neuen Kontakt anlegen";
-    }
-
     @Override
     public void createControl(Composite parent) {
         URL url = ContactWizardPageTwo.class.getClassLoader().getResource(

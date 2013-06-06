@@ -1,12 +1,9 @@
 package de.hswt.hrm.component.ui.wizard;
 
-import java.util.HashMap;
 
 import javax.inject.Inject;
 
 import org.eclipse.jface.wizard.Wizard;
-import org.eclipse.swt.widgets.Combo;
-import org.eclipse.swt.widgets.Text;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -81,25 +78,20 @@ public class CategoryWizard extends Wizard {
     }
     
     private Category setValues(Optional<Category> c) {
-        HashMap<String, Text> mandatoryWidgets = first.getMandatoryWidgets();
-        String name = mandatoryWidgets.get("name").getText();
-        HashMap<String, Combo> mandatoryCombos = first.getMandatoryCombos();
-        int defaultQuantifier = Integer.parseInt(mandatoryCombos.get("defaultQuantifier").getText());
-        boolean defaultBoolRating = first.getBoolRatingCheckbox().getSelection();
-        int width = Integer.parseInt(mandatoryCombos.get("width").getText());
-        int height = Integer.parseInt(mandatoryCombos.get("height").getText());
-        
         Category category;
         if (c.isPresent()) {
             category = c.get();
-            category.setName(name);
-            category.setDefaultQuantifier(defaultQuantifier);
-            category.setDefaultBoolRating(defaultBoolRating);
-            category.setWidth(width);
-            category.setHeight(height);
+            category.setName(first.getName());
+            category.setDefaultQuantifier(first.getWeight());
+            category.setDefaultBoolRating(first.isRating());
+            category.setWidth(first.getWidth());
+            category.setHeight(first.getHeight());
         } else {
-            category = new Category(name, width, height, defaultQuantifier,
-                    defaultBoolRating);
+            category = new Category(first.getName(), 
+            		first.getWidth(), 
+            		first.getHeight(), 
+            		first.getWeight(),
+                    first.isRating());
         }
         
         return category;

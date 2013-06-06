@@ -13,6 +13,7 @@ import org.eclipse.swt.widgets.Shell;
 import com.google.common.base.Optional;
 
 import de.hswt.hrm.common.ui.swt.table.ColumnDescription;
+import de.hswt.hrm.common.ui.swt.wizards.WizardCreator;
 import de.hswt.hrm.place.model.Place;
 import de.hswt.hrm.place.ui.wizard.PlaceWizard;
 
@@ -34,8 +35,8 @@ public final class PlacePartUtil {
         
         
         // Show wizard
-        WizardDialog wd = new WizardDialog(shell, wizard);
-        wd.open();
+        WizardDialog wd = WizardCreator.createWizardDialog(shell, wizard);
+   		wd.open();
         return wizard.getPlace();
     }
     

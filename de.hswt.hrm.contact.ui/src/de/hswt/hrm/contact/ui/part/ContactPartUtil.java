@@ -6,21 +6,14 @@ import java.util.List;
 
 import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
-import org.eclipse.e4.ui.workbench.modeling.EPartService;
-import org.eclipse.e4.ui.workbench.modeling.EPartService.PartState;
-import org.eclipse.e4.xwt.XWT;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.wizard.WizardDialog;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.ToolBar;
-import org.eclipse.swt.widgets.ToolItem;
 
 import com.google.common.base.Optional;
 
 import de.hswt.hrm.common.ui.swt.table.ColumnDescription;
+import de.hswt.hrm.common.ui.swt.wizards.WizardCreator;
 import de.hswt.hrm.contact.model.Contact;
 import de.hswt.hrm.contact.ui.wizard.ContactWizard;
 import de.hswt.hrm.i18n.I18n;
@@ -39,7 +32,7 @@ public final class ContactPartUtil {
         ContactWizard cw = new ContactWizard(contact);
         ContextInjectionFactory.inject(cw, context);
 
-        WizardDialog wd = new WizardDialog(shell, cw);
+        WizardDialog wd = WizardCreator.createWizardDialog(shell, cw);
         wd.open();
         return cw.getContact();
     }

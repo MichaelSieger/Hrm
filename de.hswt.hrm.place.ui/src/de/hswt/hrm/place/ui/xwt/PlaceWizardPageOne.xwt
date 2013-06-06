@@ -12,33 +12,33 @@
 					<GridLayout numColumns="7" />
 				</Composite.layout>
 				<Label text="Place" />
-				<Text x:Style="BORDER" x:Name="name">
+				<Text x:Style="BORDER" x:Name="name" textLimit="50">
 					<Text.layoutData>
 						<GridData grabExcessHorizontalSpace="true"
 							horizontalAlignment="FILL" horizontalspan="6" />
 					</Text.layoutData>
 				</Text>
 				<Label text="Street / No." />
-				<Text x:Style="BORDER" x:Name="street">
+				<Text x:Style="BORDER" x:Name="street" textLimit="50">
 					<Text.layoutData>
 						<GridData grabExcessHorizontalSpace="true"
 							horizontalAlignment="FILL" horizontalspan="4" />
 					</Text.layoutData>
 				</Text>
 				<Label text="/" />
-				<Text x:Style="BORDER" x:Name="streetNumber">
+				<Text x:Style="BORDER" x:Name="streetNumber" textLimit="5">
 					<Text.layoutData>
-						<GridData horizontalAlignment="RIGHT" />
+						<GridData horizontalAlignment="RIGHT" widthHint="50" />
 					</Text.layoutData>
 				</Text>
 				<Label text="Zip code / City" />
-				<Text x:Style="BORDER" x:Name="zipCode">
+				<Text x:Style="BORDER" x:Name="zipCode" textLimit="5">
 					<Text.layoutData>
-						<GridData horizontalAlignment="LEFT" />
+						<GridData horizontalAlignment="LEFT" widthHint="50" />
 					</Text.layoutData>
 				</Text>
 				<Label text="/" />
-				<Text x:Style="BORDER" x:Name="city">
+				<Text x:Style="BORDER" x:Name="city" textLimit="50">
 					<Text.layoutData>
 						<GridData grabExcessHorizontalSpace="true"
 							horizontalAlignment="FILL" horizontalspan="4"/>
