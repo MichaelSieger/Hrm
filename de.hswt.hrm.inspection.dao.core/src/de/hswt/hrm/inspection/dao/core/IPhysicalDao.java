@@ -5,7 +5,7 @@ import java.util.Collection;
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.ElementNotFoundException;
 import de.hswt.hrm.common.database.exception.SaveException;
-import de.hswt.hrm.inspection.model.Inspection;
+import de.hswt.hrm.inspection.model.Physical;
 
 /**
  * Defines all the public methods to interact with the storage system for activitys.
@@ -13,33 +13,33 @@ import de.hswt.hrm.inspection.model.Inspection;
 public interface IPhysicalDao {
 
     /**
-     * @return All inspections from storage.
+     * @return All pysicals from storage.
      */
-    Collection<Inspection> findAll() throws DatabaseException;
+    Collection<Physical> findAll() throws DatabaseException;
 
     /**
-     * @param id of the target inspection.
-     * @return inspection with the given id.
+     * @param id of the target physical.
+     * @return physical with the given id.
      * @throws ElementNotFoundException If the given id is not present in the database.
      */
-    Inspection findById(int id) throws DatabaseException, ElementNotFoundException;
+    Physical findById(int id) throws DatabaseException, ElementNotFoundException;
 
     /**
-     * Add a new inspection to storage.
+     * Add a new physical to storage.
      * 
-     * @param inspection Inspection that should be stored.
-     * @return Newly generated inspection (also holding the correct id).
-     * @throws SaveException If the inspection could not be inserted.
+     * @param physical Physical that should be stored.
+     * @return Newly generated physical (also holding the correct id).
+     * @throws SaveException If the physical could not be inserted.
      */
-    Inspection insert(Inspection inspection) throws SaveException;
+    Physical insert(Physical physical) throws SaveException;
 
     /**
-     * Update an existing inspection in storage.
+     * Update an existing physical in storage.
      * 
-     * @param inspection Inspection that should be updated.
-     * @throws ElementNotFoundException If the given Inspection is not present in the database.
-     * @throws SaveException If the inspection could not be updated.
+     * @param physical Physical that should be updated.
+     * @throws ElementNotFoundException If the given Physical is not present in the database.
+     * @throws SaveException If the physical could not be updated.
      */
-    void update(Inspection inspection) throws ElementNotFoundException, SaveException;
+    void update(Physical physical) throws ElementNotFoundException, SaveException;
 }
 
