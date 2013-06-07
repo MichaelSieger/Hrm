@@ -203,7 +203,7 @@ public class CatalogWizzardPageOne extends WizardPage {
         }
 
         if (!oneButtonisSelected) {
-            setErrorMessage("Bitte Soll/Ist/Maßnahme auswählen.");
+            setErrorMessage("Soll/Ist/Maßnahme muss ausgewählt sein.");
             return false;
         }
 
