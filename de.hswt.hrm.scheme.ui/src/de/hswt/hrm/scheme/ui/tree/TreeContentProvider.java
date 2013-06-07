@@ -1,6 +1,7 @@
 package de.hswt.hrm.scheme.ui.tree;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.eclipse.jface.viewers.ITreeContentProvider;
@@ -23,7 +24,7 @@ public class TreeContentProvider implements ITreeContentProvider{
 	/**
 	 * A List of all RenderedComponents
 	 */
-    private List<RenderedComponent> comps;
+    private Collection<RenderedComponent> comps;
 
     @Override
     public void dispose() {
@@ -33,7 +34,7 @@ public class TreeContentProvider implements ITreeContentProvider{
     @SuppressWarnings("unchecked")
     @Override
     public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
-        comps = (List<RenderedComponent>) newInput;
+        comps = (Collection<RenderedComponent>) newInput;
     }
 
     @Override
