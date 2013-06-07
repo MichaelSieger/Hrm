@@ -3,9 +3,11 @@ package de.hswt.hrm.contact.ui.wizard;
 import java.net.URL;
 import java.util.HashMap;
 
+import org.apache.commons.validator.routines.RegexValidator;
 import org.eclipse.e4.xwt.IConstants;
 import org.eclipse.e4.xwt.XWT;
 import org.eclipse.e4.xwt.forms.XWTForms;
+import org.eclipse.emf.ecore.resource.impl.BinaryResourceImpl.EObjectOutputStream.Check;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
@@ -29,6 +31,8 @@ public class ContactWizardPageOne extends WizardPage {
 
     private Composite container;
     private Optional<Contact> contact;
+    
+    private RegexValidator plzVal = new RegexValidator("[0-9]{5}");
 
     public ContactWizardPageOne(String pageName, Optional<Contact> contact) {
         super(pageName);
@@ -124,13 +128,25 @@ public class ContactWizardPageOne extends WizardPage {
 
     @Override
     public boolean isPageComplete() {
+        boolean validText;
         for (Text textField : getMandatoryWidgets().values()) {
             if (textField.getText().length() == 0) {
                 setErrorMessage("Feld \""+textField.getToolTipText()+"\" darf nicht leer sein.");
                 return false;
             }
+            validText = checkValidity(textField);
+            if (!validText) {
+                return false;
+            }
         }
         setErrorMessage(null);
+        return true;
+    }
+    
+    private boolean checkValidity(Text textField) {
+        if (textField.getToolTipText().equalsIgnoreCase("plz")) {
+            return plzVal.isValid(textField.getText());
+        }
         return true;
     }
     
