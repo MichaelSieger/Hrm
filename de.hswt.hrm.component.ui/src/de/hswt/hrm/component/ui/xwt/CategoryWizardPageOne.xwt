@@ -17,7 +17,7 @@
 							horizontalAlignment="FILL" horizontalSpan="2"/>
 					</Composite.layoutData>
 					<Label text="Name"/>
-					<Text x:Style="BORDER" textLimit="30">
+					<Text x:Style="BORDER" textLimit="30" x:Name="name">
 						<Text.layoutData>
 							<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
 						</Text.layoutData>
