@@ -44,12 +44,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Function;
-import com.google.common.base.Throwables;
 import com.google.common.collect.Collections2;
 
-import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.SaveException;
-import de.hswt.hrm.component.model.Component;
 import de.hswt.hrm.component.service.ComponentService;
 import de.hswt.hrm.plant.model.Plant;
 import de.hswt.hrm.scheme.model.RenderedComponent;
@@ -450,9 +447,9 @@ public class SchemePart {
 		}
 	}
 
-	public void setRenderedComponents(List<RenderedComponent> comps){
+	public void setRenderedComponents(Collection<RenderedComponent> cComps){
+		comps = new ArrayList<RenderedComponent>(cComps);
 		tree.setInput(comps);
-		this.comps = comps;
 	}
 
 }
