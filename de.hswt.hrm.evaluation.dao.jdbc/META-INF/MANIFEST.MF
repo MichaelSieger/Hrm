@@ -4,4 +4,9 @@ Bundle-Name: Jdbc
 Bundle-SymbolicName: de.hswt.hrm.evaluation.dao.jdbc
 Bundle-Version: 0.0.1.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Import-Package: de.hswt.hrm.evaluation.dao.core
+Import-Package: de.hswt.hrm.common.database,
+ de.hswt.hrm.common.database.exception,
+ de.hswt.hrm.evaluation.dao.core,
+ de.hswt.hrm.evaluation.model,
+ org.apache.commons.dbutils
+Require-Bundle: com.google.guava;bundle-version="10.0.1"
