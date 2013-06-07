@@ -100,11 +100,12 @@ public class SidebarPart {
     	((ToolItem) XWT.findElementByName(bar, "toPlaces")).setImage(getImage("/resources/icons/places_32.bmp"));
     	((ToolItem) XWT.findElementByName(bar, "toPlants")).setImage(getImage("/resources/icons/plants_32.bmp"));
     	((ToolItem) XWT.findElementByName(bar, "toCatalog")).setImage(getImage("/resources/icons/catalogs_32.bmp"));
-    	((ToolItem) XWT.findElementByName(bar, "toCategory")).setImage(getImage("/resources/icons/home_32.bmp"));
+    	((ToolItem) XWT.findElementByName(bar, "toCategory")).setImage(getImage("/resources/icons/components_32.bmp"));
     	((ToolItem) XWT.findElementByName(bar, "toMain")).setImage(getImage("/resources/icons/home_32.bmp"));
     	((ToolItem) XWT.findElementByName(bar, "toContacts")).setImage(getImage("/resources/icons/contacts_32.bmp"));
     	((ToolItem) XWT.findElementByName(bar, "toInspection")).setImage(getImage("/resources/icons/reports_32.bmp"));
-    	((ToolItem) XWT.findElementByName(bar, "toOverall")).setImage(getImage("/resources/icons/home_32.bmp"));
+    	((ToolItem) XWT.findElementByName(bar, "toOverall")).setImage(getImage("/resources/icons/summary_32.bmp"));
+    	
     }
     
     private Image getImage(String image) {
