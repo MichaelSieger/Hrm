@@ -9,4 +9,11 @@ Import-Package: de.hswt.hrm.common.database,
  de.hswt.hrm.evaluation.dao.core,
  de.hswt.hrm.evaluation.model,
  org.apache.commons.dbutils
-Require-Bundle: com.google.guava;bundle-version="10.0.1"
+Require-Bundle: com.google.guava;bundle-version="10.0.1",
+ org.eclipse.e4.core.contexts;bundle-version="1.2.0",
+ org.eclipse.equinox.util;bundle-version="1.0.400",
+ org.eclipse.equinox.ds;bundle-version="1.4.1",
+ org.eclipse.e4.core.di;bundle-version="1.2.0",
+ org.slf4j.api;bundle-version="1.6.4",
+ ch.qos.logback.classic;bundle-version="1.0.0",
+ ch.qos.logback.core;bundle-version="1.0.0"
