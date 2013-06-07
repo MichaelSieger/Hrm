@@ -28,7 +28,7 @@ public class ComponentService {
 	    checkNotNull(componentDao, "ComponentDao not correctly injected.");
 	    
 	    this.componentDao = componentDao;
-	    LOG.info("ComponentDao injected into ComponentService.");
+	    LOG.debug("ComponentDao injected into ComponentService.");
 	}
 	
     /**

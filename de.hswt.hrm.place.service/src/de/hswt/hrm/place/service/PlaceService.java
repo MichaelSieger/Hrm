@@ -41,7 +41,7 @@ public class PlaceService {
 	        LOG.error("Locking is enabled but the LockService was not injected to PlaceService.");
 	    }
 	    else if (lockService != null) {
-	        LOG.info("LockService injected to PlaceService");
+	        LOG.debug("LockService injected to PlaceService");
 	    }
 	}
 	

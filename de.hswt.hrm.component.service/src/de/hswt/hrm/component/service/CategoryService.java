@@ -30,7 +30,7 @@ public class CategoryService {
         checkNotNull(categoryDao, "CategoryDao not correctly injected.");
         
         this.categoryDao = categoryDao;
-        LOG.info("CategoryDao injected into CategoryService.");
+        LOG.debug("CategoryDao injected into CategoryService.");
     };
     
     /**

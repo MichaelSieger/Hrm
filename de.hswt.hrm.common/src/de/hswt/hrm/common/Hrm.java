@@ -48,7 +48,7 @@ public final class Hrm {
                 // Close resources
                 targetFile.close();
                 configFile.close();
-                LOG.info("New configuration written to: '" + configPath.toString() + "'.");
+                LOG.debug("New configuration written to: '" + configPath.toString() + "'.");
             }
             catch (IOException e) {
                 LOG.error("Could not create default configuration file from bundle.", e);
@@ -60,11 +60,11 @@ public final class Hrm {
         Config cfg = Config.getInstance();
         try {
             cfg.load(configPath);
-            LOG.info("Configuration load successfully.");
+            LOG.debug("Configuration load successfully.");
             
             boolean lockingEnabled = cfg.getBoolean(Config.Keys.DB_LOCKING);
             if (lockingEnabled) {
-                LOG.info("DB locking enabled.");
+                LOG.debug("DB locking enabled.");
             }
         }
         catch (IOException e) {

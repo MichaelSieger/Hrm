@@ -25,7 +25,7 @@ public final class SessionService {
     
     public Session startSession(final String label) throws DatabaseException, SQLException {
         Session session = DAO.insert(label);
-        LOG.info("New session created: " + session.getUuid() + " (" + session.getLabel() + "):");
+        LOG.debug("New session created: " + session.getUuid() + " (" + session.getLabel() + "):");
         return session;
     }
     

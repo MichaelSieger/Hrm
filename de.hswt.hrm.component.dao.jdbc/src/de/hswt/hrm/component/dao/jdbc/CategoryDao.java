@@ -36,7 +36,7 @@ public class CategoryDao implements ICategoryDao {
         checkNotNull(catalogDao, "Target DAO must be injected properly.");
         
         this.catalogDao  = catalogDao;
-        LOG.info("CatalogDao injected into CategoryService.");
+        LOG.debug("CatalogDao injected into CategoryService.");
     }
 
     @Override

@@ -47,13 +47,13 @@ public class CatalogService {
 		checkNotNull(catalogDao, "Catalog DAO must be injected properly");
 
 		this.activityDao = activityDao;
-		LOG.info("ActivityDao injected into CatalogService.");
+		LOG.debug("ActivityDao injected into CatalogService.");
 		this.currentDao = currentDao;
-		LOG.info("CurrentDao injected into CatalogService.");
+		LOG.debug("CurrentDao injected into CatalogService.");
 		this.targetDao = targetDao;
-		LOG.info("TargetDao injected into CatalogService.");
+		LOG.debug("TargetDao injected into CatalogService.");
 		this.catalogDao = catalogDao;
-		LOG.info("CatalagDao injected into CatalogService.");
+		LOG.debug("CatalagDao injected into CatalogService.");
 	}
 
 	public Collection<ICatalogItem> findAllCatalogItem()
