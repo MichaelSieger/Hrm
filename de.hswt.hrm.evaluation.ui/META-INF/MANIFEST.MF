@@ -4,3 +4,12 @@ Bundle-Name: Ui
 Bundle-SymbolicName: de.hswt.hrm.evaluation.ui
 Bundle-Version: 0.0.1.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Require-Bundle: org.eclipse.swt;bundle-version="3.100.1",
+ org.eclipse.e4.core.contexts;bundle-version="1.2.0",
+ org.eclipse.e4.xwt;bundle-version="0.9.1",
+ org.eclipse.e4.xwt.forms;bundle-version="0.9.1",
+ ch.qos.logback.classic;bundle-version="1.0.0",
+ ch.qos.logback.core;bundle-version="1.0.0",
+ org.slf4j.api;bundle-version="1.6.4",
+ org.eclipse.jface;bundle-version="3.8.102"
+Import-Package: de.hswt.hrm.common.ui.xwt

@@ -40,7 +40,7 @@ public class MPartSwitcher {
         service.findPart(CONTACTS_ID).setVisible(false);
         // service.findPart(INSPECTION_ID).setVisible(false);
         service.findPart(MAIN_ID).setVisible(false);
-        // service.findPart(OVERALL_ID).setVisible(false);
+        service.findPart(OVERALL_ID).setVisible(false);
         service.findPart(PLACES_ID).setVisible(false);
         service.findPart(PLANTS_ID).setVisible(false);
         // service.findPart(SCHEMES_ID).setVisible(false);

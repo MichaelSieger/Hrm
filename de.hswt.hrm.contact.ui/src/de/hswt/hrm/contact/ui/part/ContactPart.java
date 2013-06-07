@@ -9,7 +9,6 @@ import javax.inject.Inject;
 
 import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
-import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.e4.xwt.IConstants;
 import org.eclipse.e4.xwt.XWT;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -35,19 +34,16 @@ public class ContactPart {
 
     @Inject
     private ContactService contactService;
-    
-	@Inject
-	EPartService service;
 
     private TableViewer viewer;
     private Collection<Contact> contacts;
 
     @PostConstruct
     public void postConstruct(Composite parent, IEclipseContext context) {
-    	FillLayout layout = new FillLayout();
-    	layout.marginHeight = 2;
-    	layout.marginWidth = 2;
-    	parent.setLayout(layout);
+        FillLayout layout = new FillLayout();
+        layout.marginHeight = 2;
+        layout.marginWidth = 2;
+        parent.setLayout(layout);
         URL url = ContactPart.class.getClassLoader().getResource(
                 "de/hswt/hrm/contact/ui/xwt/ContactView" + IConstants.XWT_EXTENSION_SUFFIX);
 
@@ -57,15 +53,15 @@ public class ContactPart {
                     ContactEventHandler.class, context);
             // Obtain root element of the XWT file
             final Composite comp = XwtHelper.loadFormWithEventHandler(parent, url, eventHandler);
-//            final Composite comp = XwtHelper.loadWithEventHandler(parent, url, eventHandler);
-            
+            // final Composite comp = XwtHelper.loadWithEventHandler(parent, url, eventHandler);
+
             LOG.debug("XWT load successfully");
 
             // Obtain TableViwer to fill it with data
             viewer = (TableViewer) XWT.findElementByName(comp, "contactTable");
             initializeTable(parent, viewer);
-            refreshTable(parent);   
-            
+            refreshTable(parent);
+
         }
         catch (Exception e) {
             LOG.error("Could not load XWT file from resource", e);

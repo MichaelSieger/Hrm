@@ -17,27 +17,25 @@ import org.eclipse.swt.widgets.Listener;
 
 import de.hswt.hrm.main.ui.MPartSwitcher;
 
-
 public class MainPart {
-	
-	@Inject
-	EPartService service;
 
-	private Button toContacts;
-	private Button toPlaces;
-	private Button toPlants;
-	private Button toCatalog;
-	private Button toCategory;
-	private Button toInspection;
-	private Button toOverall;
-	
-	
+    @Inject
+    EPartService service;
+
+    private Button toContacts;
+    private Button toPlaces;
+    private Button toPlants;
+    private Button toCatalog;
+    private Button toCategory;
+    private Button toInspection;
+    private Button toOverall;
+
     @PostConstruct
     public void postConstruct(Composite parent) {
         URL url = MainPart.class.getClassLoader().getResource(
                 "de/hswt/hrm/main/xwt/MainView" + IConstants.XWT_EXTENSION_SUFFIX);
         XWT.setLoadingContext(new DefaultLoadingContext(this.getClass().getClassLoader()));
-        
+
         try {
             Composite comp = (Composite) XWT.load(parent, url);
             toContacts = (Button) XWT.findElementByName(comp, "toContacts");
@@ -45,6 +43,7 @@ public class MainPart {
             toPlants = (Button) XWT.findElementByName(comp, "toPlants");
             toCatalog = (Button) XWT.findElementByName(comp, "toCatalog");
             toCategory = (Button) XWT.findElementByName(comp, "toCategory");
+            toOverall = (Button) XWT.findElementByName(comp, "toOverall");
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -52,36 +51,42 @@ public class MainPart {
         setNavigationButton();
     }
 
-	private void setNavigationButton() {
-		toContacts.addListener(SWT.Selection,new Listener() {
-			@Override
-			public void handleEvent(Event event) {
-				MPartSwitcher.setPartVisible(service, MPartSwitcher.CONTACTS_ID);
-			}
-		});
-		toPlaces.addListener(SWT.Selection,new Listener() {
-			@Override
-			public void handleEvent(Event event) {
-				MPartSwitcher.setPartVisible(service, MPartSwitcher.PLACES_ID);
-			}
-		});
-		toPlants.addListener(SWT.Selection,new Listener() {
-			@Override
-			public void handleEvent(Event event) {
-				MPartSwitcher.setPartVisible(service, MPartSwitcher.PLANTS_ID);
-			}
-		});
-		toCategory.addListener(SWT.Selection,new Listener() {
-			@Override
-			public void handleEvent(Event event) {
-				MPartSwitcher.setPartVisible(service, MPartSwitcher.CATEGORY_ID);
-			}
-		});
-		toCatalog.addListener(SWT.Selection,new Listener() {
-			@Override
-			public void handleEvent(Event event) {
-				MPartSwitcher.setPartVisible(service, MPartSwitcher.CATALOG_ID);
-			}
-		});
-	}
+    private void setNavigationButton() {
+        toContacts.addListener(SWT.Selection, new Listener() {
+            @Override
+            public void handleEvent(Event event) {
+                MPartSwitcher.setPartVisible(service, MPartSwitcher.CONTACTS_ID);
+            }
+        });
+        toPlaces.addListener(SWT.Selection, new Listener() {
+            @Override
+            public void handleEvent(Event event) {
+                MPartSwitcher.setPartVisible(service, MPartSwitcher.PLACES_ID);
+            }
+        });
+        toPlants.addListener(SWT.Selection, new Listener() {
+            @Override
+            public void handleEvent(Event event) {
+                MPartSwitcher.setPartVisible(service, MPartSwitcher.PLANTS_ID);
+            }
+        });
+        toCategory.addListener(SWT.Selection, new Listener() {
+            @Override
+            public void handleEvent(Event event) {
+                MPartSwitcher.setPartVisible(service, MPartSwitcher.CATEGORY_ID);
+            }
+        });
+        toCatalog.addListener(SWT.Selection, new Listener() {
+            @Override
+            public void handleEvent(Event event) {
+                MPartSwitcher.setPartVisible(service, MPartSwitcher.CATALOG_ID);
+            }
+        });
+        toOverall.addListener(SWT.Selection, new Listener() {
+            @Override
+            public void handleEvent(Event event) {
+                MPartSwitcher.setPartVisible(service, MPartSwitcher.OVERALL_ID);
+            }
+        });
+    }
 }
