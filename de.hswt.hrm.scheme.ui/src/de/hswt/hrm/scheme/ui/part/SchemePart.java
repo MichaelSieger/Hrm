@@ -447,8 +447,8 @@ public class SchemePart {
 		}
 	}
 
-	public void setRenderedComponents(Collection<RenderedComponent> cComps){
-		comps = new ArrayList<RenderedComponent>(cComps);
+	public void setRenderedComponents(List<RenderedComponent> comps){
+		this.comps = comps;
 		tree.setInput(comps);
 	}
 
