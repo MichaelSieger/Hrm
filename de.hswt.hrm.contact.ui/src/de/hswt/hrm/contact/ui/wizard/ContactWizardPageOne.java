@@ -33,6 +33,8 @@ public class ContactWizardPageOne extends WizardPage {
     private Optional<Contact> contact;
     
     private RegexValidator plzVal = new RegexValidator("[0-9]{5}");
+    private RegexValidator textOnlyVal = new RegexValidator("([A-ZÄÖÜ]{1}[a-zäöü]+[\\s]?[\\-]?)*");
+    private RegexValidator streetNoVal = new RegexValidator("[0-9]+[a-z]?");
 
     public ContactWizardPageOne(String pageName, Optional<Contact> contact) {
         super(pageName);
@@ -144,9 +146,20 @@ public class ContactWizardPageOne extends WizardPage {
     }
     
     private boolean checkValidity(Text textField) {
-        if (textField.getToolTipText().equalsIgnoreCase("plz")) {
-            return plzVal.isValid(textField.getText());
+        String toolTipText = textField.getToolTipText();
+        if (toolTipText.equals("PLZ") && !plzVal.isValid(textField.getText())) {
+            setErrorMessage("PLZ ist ungültig!");
+            return false;
+        } else if (toolTipText.equals("Vorname") || toolTipText.equals("Nachname") || toolTipText.equals("Stadt")) {
+            if (!textOnlyVal.isValid(textField.getText())) {
+                setErrorMessage(toolTipText+" ist ungültig!");
+                return false;
+            }
+        } else if (toolTipText.equals("Hausnummer") && !streetNoVal.isValid(textField.getText())) {
+            setErrorMessage("Hausnummer ist ungültig!");
+            return false;
         }
+        setErrorMessage(null);
         return true;
     }
     
