@@ -1,5 +1,6 @@
 <Composite xmlns="http://www.eclipse.org/xwt/presentation"
-	xmlns:x="http://www.eclipse.org/xwt" x:Class="de.hswt.hrm.contact.ui.wizard.ContactWizardWindow"
+	xmlns:x="http://www.eclipse.org/xwt" 
+	x:Class="de.hswt.hrm.contact.ui.wizard.ContactWizardPageTwo"
 	xmlns:p1="clr-namespace:org.eclipse.ui.forms.widgets">
 	<Composite.layout>
 		<FillLayout/>

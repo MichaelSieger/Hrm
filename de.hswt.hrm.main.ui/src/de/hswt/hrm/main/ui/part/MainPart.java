@@ -5,6 +5,7 @@ import java.net.URL;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
+import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.e4.ui.workbench.modeling.EPartService.PartState;
 import org.eclipse.e4.xwt.DefaultLoadingContext;
@@ -16,23 +17,25 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 
+import de.hswt.hrm.main.ui.MPartSwitcher;
+
 
 public class MainPart {
-
+	
 	@Inject
 	EPartService service;
-	Button toContacts;
-	Button toPlaces;
-	Button toPlants;
-	Button toCatalog;
-	Button toCategory;
-	Button toInspection;
-	Button toOverall;
+
+	private Button toContacts;
+	private Button toPlaces;
+	private Button toPlants;
+	private Button toCatalog;
+	private Button toCategory;
+	private Button toInspection;
+	private Button toOverall;
 	
 	
     @PostConstruct
     public void postConstruct(Composite parent) {
-
         URL url = MainPart.class.getClassLoader().getResource(
                 "de/hswt/hrm/main/xwt/MainView" + IConstants.XWT_EXTENSION_SUFFIX);
         XWT.setLoadingContext(new DefaultLoadingContext(this.getClass().getClassLoader()));
@@ -49,55 +52,38 @@ public class MainPart {
             e.printStackTrace();
         }
         setNavigationButton();
-        
     }
 
 	private void setNavigationButton() {
 		toContacts.addListener(SWT.Selection,new Listener() {
 			@Override
 			public void handleEvent(Event event) {
-				setPartsVisibility(true, false, false, false, false, false, false,true);				
+				MPartSwitcher.setPartVisible(service, MPartSwitcher.CONTACTS_ID);
 			}
 		});
 		toPlaces.addListener(SWT.Selection,new Listener() {
 			@Override
 			public void handleEvent(Event event) {
-				setPartsVisibility(false, true, false, false, false, false, false,true);				
+				MPartSwitcher.setPartVisible(service, MPartSwitcher.PLACES_ID);
 			}
 		});
 		toPlants.addListener(SWT.Selection,new Listener() {
 			@Override
 			public void handleEvent(Event event) {
-				setPartsVisibility(false, false, true, false, false, false, false,true);				
+				MPartSwitcher.setPartVisible(service, MPartSwitcher.PLANTS_ID);
 			}
 		});
 		toCategory.addListener(SWT.Selection,new Listener() {
 			@Override
 			public void handleEvent(Event event) {
-				setPartsVisibility(false, false, false, false, false, true, false,true);				
+				MPartSwitcher.setPartVisible(service, MPartSwitcher.CATEGORY_ID);
 			}
 		});
 		toCatalog.addListener(SWT.Selection,new Listener() {
 			@Override
 			public void handleEvent(Event event) {
-				setPartsVisibility(false, false, false, false, true, false, false,true);				
+				MPartSwitcher.setPartVisible(service, MPartSwitcher.CATALOG_ID);
 			}
 		});
-
-		
 	}
-    private void setPartsVisibility(boolean clients, boolean places, boolean plants, boolean scheme, boolean catalog, boolean category, boolean main,boolean sidebar){
-		service.findPart("Clients").setVisible(clients);
-		service.findPart("Places").setVisible(places);
-		service.findPart("Plants").setVisible(plants);
-		service.findPart("Scheme").setVisible(scheme);
-		service.findPart("Main").setVisible(main);
-		service.findPart("Category").setVisible(category);
-		service.findPart("Catalog").setVisible(catalog);  
-		if(catalog)
-			service.showPart("Catalog", PartState.VISIBLE);
-		if(category)
-			service.showPart("Category", PartState.VISIBLE);
-		service.findPart("Sidebar").setVisible(sidebar);  
-    }
 }

@@ -3,7 +3,7 @@
 	<Composite.layout>
 		<GridLayout numColumns="6"/>
 	</Composite.layout>
-	<Button x:Name="toContacts" image="Contacts.jpg" >
+	<Button x:Name="toContacts" image="/resources/icons/Contacts.jpg" >
 		<Button.layoutData>
 			<GridData verticalAlignment="FILL" horizontalAlignment="FILL"/>
 		</Button.layoutData>
@@ -13,7 +13,7 @@
 			<GridData grabExcessHorizontalSpace="true"/>
 		</Label.layoutData>
 	</Label>
-	<Button x:Name="toPlaces" image="Places.jpg" >
+	<Button x:Name="toPlaces" image="/resources/icons/Places.jpg" >
 		<Button.layoutData>
 			<GridData horizontalAlignment="FILL" verticalAlignment="FILL"/>
 		</Button.layoutData>
@@ -23,7 +23,7 @@
 			<GridData grabExcessHorizontalSpace="true"/>
 		</Label.layoutData>
 	</Label>
-	<Button x:Name="toPlants" image="plants.jpg" >
+	<Button x:Name="toPlants" image="/resources/icons/plants.jpg" >
 		<Button.layoutData>
 			<GridData horizontalAlignment="FILL" verticalAlignment="FILL"/>
 		</Button.layoutData>
@@ -39,19 +39,19 @@
 	<Label/>
 	<Label/>
 	<Label/>
-	<Button x:Name="toCatalog" image="plants.jpg">
+	<Button x:Name="toCatalog" image="/resources/icons/plants.jpg">
 		<Button.layoutData>
 			<GridData horizontalAlignment="RIGHT"/>
 		</Button.layoutData>
 	</Button>
 	<Label text="Katalog:&#13;&#10;-Katalog anlegen&#13;&#10;-Katalog bearbeiten"/>
-	<Button x:Name="toCategory" image="plants.jpg"/>
+	<Button x:Name="toCategory" image="/resources/icons/plants.jpg"/>
 	<Label text="Kategorie:&#13;&#10;-Kategorien anlegen&#13;&#10;-Kategorien bearbeiten&#13;&#10;"/>
-	<Button image="plants.jpg" x:Name="toInspection"/>
+	<Button image="/resources/icons/plants.jpg" x:Name="toInspection"/>
 	<Label text="Inspektion:&#13;&#10;-Inspektionen anlegen&#13;&#10;-Insprektionen bearbeiten"/>
 	<Label/>
 	<Label/>
-	<Button image="plants.jpg" x:Name="toOverall"/>
+	<Button image="/resources/icons/plants.jpg" x:Name="toOverall"/>
 	<Label text="Zur Gesamtbewertung&#13;&#10;"/>
 	<Label/>
 	<Label/>

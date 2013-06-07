@@ -1,4 +1,7 @@
-<Composite xmlns="http://www.eclipse.org/xwt/presentation" xmlns:x="http://www.eclipse.org/xwt" x:Class="de.hswt.hrm.scheme.ui.xwt.CategoryWizardWindow" xmlns:p1="clr-namespace:java.lang">
+<Composite xmlns="http://www.eclipse.org/xwt/presentation" 
+		xmlns:x="http://www.eclipse.org/xwt" 
+		x:Class="de.hswt.hrm.scheme.ui.xwt.CategoryWizardWindow" 
+		xmlns:p1="clr-namespace:java.lang">
 	<Composite.layout>
 		<FillLayout/>
 	</Composite.layout>

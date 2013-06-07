@@ -1,19 +1,21 @@
 <Composite xmlns="http://www.eclipse.org/xwt/presentation"
-	xmlns:x="http://www.eclipse.org/xwt" xmlns:p1="clr-namespace:de.hswt.hrm.contact.ui.xwt" x:Style="EMBEDDED">
+	xmlns:x="http://www.eclipse.org/xwt" background="COLOR_WHITE">
 	<Composite.layout>
-		<GridLayout numColumns="1" horizontalSpacing="0" marginHeight="0" marginRight="5" marginLeft="5" />
+		<GridLayout numColumns="1" horizontalSpacing="0"
+			marginHeight="0" marginRight="5" marginLeft="5" />
 	</Composite.layout>
-	<ToolBar x:Style="BORDER | FLAT | WRAP | RIGHT | SHADOW_OUT | VERTICAL" x:Name="toolBar">
+	<ToolBar x:Style="BORDER | FLAT | WRAP | RIGHT | SHADOW_OUT | VERTICAL"
+		x:Name="toolBar">
 		<ToolBar.layoutData>
-			<GridData minimumWidth="-1" grabExcessVerticalSpace="true"/>
+			<GridData minimumWidth="-1" grabExcessVerticalSpace="true" />
 		</ToolBar.layoutData>
-		<ToolItem x:Name="toContacts" image="contacts_32.bmp" toolTipText="Kontakte"/>
-		<ToolItem image="places_32.bmp" x:Name="toPlaces" toolTipText="Standorte"/>
-		<ToolItem x:Name="toPlants" width="10" image="plants_32.bmp" toolTipText="Anlagen"/>
-		<ToolItem x:Name="toCatalog" width="10" image="catalogs_32.bmp" toolTipText="Katalog"/>
-		<ToolItem x:Name="toCategory" width="10" image="components_32.bmp" toolTipText="Kategorie"/>
-		<ToolItem x:Name="toInspection" image="reports_32.bmp" toolTipText="Inspektion"/>
-		<ToolItem text="bew" x:Name="toOverall" toolTipText="Gesamtbewertung"/>
-		<ToolItem x:Name="toMain" width="10" image="home_32.bmp" toolTipText="Hauptmenu"/>
+		<ToolItem x:Name="toContacts" toolTipText="Contacts" />
+		<ToolItem x:Name="toPlaces" toolTipText="Places" />
+		<ToolItem x:Name="toPlants" toolTipText="Plants" />
+		<ToolItem x:Name="toCatalog" toolTipText="Catalog" />
+		<ToolItem x:Name="toCategory" toolTipText="Category"/>
+		<ToolItem x:Name="toInspection" toolTipText="Inspection" />
+		<ToolItem x:Name="toOverall" toolTipText="Overall" />
+		<ToolItem x:Name="toMain" toolTipText="Home"/>
 	</ToolBar>
 </Composite>

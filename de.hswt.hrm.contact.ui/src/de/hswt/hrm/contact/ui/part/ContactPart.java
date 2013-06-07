@@ -2,7 +2,9 @@ package de.hswt.hrm.contact.ui.part;
 
 import java.net.URL;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -10,21 +12,15 @@ import javax.inject.Inject;
 import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
-import org.eclipse.e4.ui.workbench.modeling.EPartService.PartState;
 import org.eclipse.e4.xwt.IConstants;
+import org.eclipse.e4.xwt.IXWTLoader;
 import org.eclipse.e4.xwt.XWT;
+import org.eclipse.e4.xwt.forms.XWTForms;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.TableViewer;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.ToolBar;
-import org.eclipse.swt.widgets.ToolItem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -52,23 +48,28 @@ public class ContactPart {
 
     @PostConstruct
     public void postConstruct(Composite parent, IEclipseContext context) {
-
+    	FillLayout layout = new FillLayout();
+    	layout.marginHeight = 2;
+    	layout.marginWidth = 2;
+    	parent.setLayout(layout);
         URL url = ContactPart.class.getClassLoader().getResource(
                 "de/hswt/hrm/contact/ui/xwt/ContactView" + IConstants.XWT_EXTENSION_SUFFIX);
 
         try {
 
-            ContactEventHandler eventHandler = ContextInjectionFactory.make(
+            final ContactEventHandler eventHandler = ContextInjectionFactory.make(
                     ContactEventHandler.class, context);
             // Obtain root element of the XWT file
-            final Composite comp = XwtHelper.loadWithEventHandler(parent, url, eventHandler);
+            final Composite comp = XwtHelper.loadFormWithEventHandler(parent, url, eventHandler);
+//            final Composite comp = XwtHelper.loadWithEventHandler(parent, url, eventHandler);
+            
             LOG.debug("XWT load successfully");
 
             // Obtain TableViwer to fill it with data
             viewer = (TableViewer) XWT.findElementByName(comp, "contactTable");
             initializeTable(parent, viewer);
             refreshTable(parent);   
-
+            
         }
         catch (Exception e) {
             LOG.error("Could not load XWT file from resource", e);
