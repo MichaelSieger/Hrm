@@ -54,6 +54,7 @@ import de.hswt.hrm.scheme.model.Scheme;
 import de.hswt.hrm.scheme.model.SchemeComponent;
 import de.hswt.hrm.scheme.service.ComponentConverter;
 import de.hswt.hrm.scheme.service.SchemeService;
+import de.hswt.hrm.scheme.ui.ComponentLoadThread;
 import de.hswt.hrm.scheme.ui.ItemClickListener;
 import de.hswt.hrm.scheme.ui.SchemeGrid;
 import de.hswt.hrm.scheme.ui.SchemeGridItem;
@@ -144,7 +145,6 @@ public class SchemePart {
 
 		try {
 			root = (Composite) XWT.load(parent, url);
-		    
 			initTree();
 			initSchemeGrid();
 			initGridDropTarget();
@@ -172,7 +172,7 @@ public class SchemePart {
  					service.showPart("Main", PartState.VISIBLE);
  				}
  			});
-
+            new ComponentLoadThread(this, root.getDisplay(), compService).start();
 		} catch (Throwable e) {
 			throw new Error("Unable to load ", e);
 		}
