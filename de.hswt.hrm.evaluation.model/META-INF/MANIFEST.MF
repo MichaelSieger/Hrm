@@ -5,3 +5,4 @@ Bundle-SymbolicName: de.hswt.hrm.evaluation.model
 Bundle-Version: 0.0.1.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: de.hswt.hrm.evaluation.model
+Require-Bundle: com.google.guava;bundle-version="10.0.1"
