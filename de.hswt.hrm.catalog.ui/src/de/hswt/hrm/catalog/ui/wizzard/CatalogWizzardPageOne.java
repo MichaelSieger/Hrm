@@ -203,17 +203,21 @@ public class CatalogWizzardPageOne extends WizardPage {
         }
 
         if (!oneButtonisSelected) {
+            setErrorMessage("Bitte Soll/Ist/Maßnahme auswählen.");
             return false;
         }
 
         else if (oneButtonisSelected) {
             for (Text textField : getTextWidgets().values()) {
                 if (textField.getText().length() == 0) {
+                    setErrorMessage("Feld \""+textField.getToolTipText()+"\" darf nicht leer sein."); 
                     return false;
                 }
             }
+            setErrorMessage(null);
             return true;
         }
+        setErrorMessage(null);
         return true;
 
     }
