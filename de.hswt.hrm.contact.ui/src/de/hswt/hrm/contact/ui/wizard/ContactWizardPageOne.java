@@ -126,12 +126,14 @@ public class ContactWizardPageOne extends WizardPage {
     public boolean isPageComplete() {
         for (Text textField : getMandatoryWidgets().values()) {
             if (textField.getText().length() == 0) {
+                setErrorMessage("Feld \""+textField.getToolTipText()+"\" darf nicht leer sein.");
                 return false;
             }
         }
+        setErrorMessage(null);
         return true;
     }
-
+    
     public void setKeyListener() {
         HashMap<String, Text> widgets = getMandatoryWidgets();
         for (Text text : widgets.values()) {
