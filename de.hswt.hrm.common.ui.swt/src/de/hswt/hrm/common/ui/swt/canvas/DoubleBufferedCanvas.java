@@ -32,7 +32,11 @@ public class DoubleBufferedCanvas extends Canvas{
 			}
 		});
 	}
-
+	/**
+	 * The subclass should draw all content here.
+	 * 
+	 * @param gc
+	 */
 	protected void drawBuffered(GC gc){
 		
 	}
