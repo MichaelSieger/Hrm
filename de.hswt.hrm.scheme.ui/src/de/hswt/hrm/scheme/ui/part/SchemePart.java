@@ -147,7 +147,6 @@ public class SchemePart {
 
 		try {
 			root = (Composite) XWT.load(parent, url);
-			comps = createComps();
 		    
 			initTree();
 			initSchemeGrid();
@@ -338,7 +337,6 @@ public class SchemePart {
 		tree = filteredTree.getViewer();
 		tree.setContentProvider(new TreeContentProvider());
 		tree.setLabelProvider(new SchemeTreeLabelProvider());
-		tree.setInput(comps);
 	}
 	
 	private void initSlider(){
@@ -452,20 +450,9 @@ public class SchemePart {
 		}
 	}
 
-	private List<RenderedComponent> createComps() throws DatabaseException{
-		Collection<Component> comp = compService.findAll();
-		List<RenderedComponent> result = new ArrayList<RenderedComponent>();
-		for(Component c : comp){
-		    //Ignore components without category
-		    if(c.getCategory().isPresent()){
-		        try {
-                    result.add(ComponentConverter.convert(root.getDisplay(), c));
-                }
-                catch (IOException e) {
-                    e.printStackTrace();
-                }
-		    }
-		}
-		return result;
+	public void setRenderedComponents(List<RenderedComponent> comps){
+		tree.setInput(comps);
+		this.comps = comps;
 	}
+
 }
