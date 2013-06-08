@@ -40,6 +40,7 @@ public class SqlQueryBuilder {
     private StringBuilder query = new StringBuilder();
     private Type type = Type.UNSET;
     private boolean escapeTableName = false;
+    private String table;
     
     public SqlQueryBuilder() { }
     
@@ -60,6 +61,7 @@ public class SqlQueryBuilder {
         }
         
         type = Type.SELECT;
+        this.table = table;
         
         Joiner joiner = Joiner.on(", ").skipNulls();
         
@@ -96,6 +98,7 @@ public class SqlQueryBuilder {
         }
         
         type = Type.UPDATE;
+        this.table = table;
         
         query.append("UPDATE ").append(escapeTableName(table));
         query.append(" SET ");
@@ -125,6 +128,7 @@ public class SqlQueryBuilder {
         }
         
         type = Type.INSERT;
+        this.table = table;
         
         Joiner joiner = Joiner.on(", ").skipNulls();
         
@@ -211,6 +215,30 @@ public class SqlQueryBuilder {
         query.append(column).append(" = :").append(column);
         
         return this;
+    }
+    
+    /**
+     * Add simple join statement with direct match on two single columns.
+     * <b>MUST BE CALLED DIRECTLY AFTER A CALL TO SELECT TO WORK PROPERLY!</b>
+     * 
+     * @param table Name of the table that should be joined.
+     * @param localCol Column of the local table that should get matched.
+     * @param remoteCol Column of the joined table, that should get matched.
+     * @return
+     */
+    public SqlQueryBuilder join(final String table, final String localCol, final String remoteCol) {
+    	if (type != Type.SELECT) {
+    		throw new IllegalStateException("You have to start with a call to 'select'.");
+    	}
+    	
+    	query.append(" JOIN ");
+    	query.append(table);
+    	query.append(" ON ");
+    	query.append(table).append(".").append(remoteCol);
+    	query.append(" = ");
+    	query.append(this.table).append(".").append(localCol);
+    	
+    	return this;
     }
     
     /**

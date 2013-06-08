@@ -65,4 +65,17 @@ public class SqlQueryBuilderTest {
         
         assertEquals("Wrong insert statement build.", expected, builder.toString());
     }
+    
+    @Test
+    public void testJoinedSelectStatement() {
+    	final String expected = "SELECT col1 FROM firstTable JOIN secondTable"
+    			+ " ON secondTable.colX = firstTable.colY;";
+    	
+    	SqlQueryBuilder builder = new SqlQueryBuilder();
+    	builder.select("firstTable", "col1");
+    	builder.join("secondTable", "colY", "colX");
+    	
+    	assertEquals("Join parsed wrongly.", expected, builder.toString());
+    	
+    }
 }
