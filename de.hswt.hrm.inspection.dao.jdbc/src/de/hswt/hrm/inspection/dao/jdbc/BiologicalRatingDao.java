@@ -50,9 +50,9 @@ public class BiologicalRatingDao implements IBiologicalRatingDao {
 		checkArgument(inspection.getId() >= 0, "Inspection must have a valid ID.");
 		
 		SqlQueryBuilder builder = new SqlQueryBuilder();
-		// FIXME: Check if we should resolve the flag using a join
 		builder.select(TABLE_NAME, Fields.ID, Fields.BACTERIA, Fields.RATING, Fields.QUANTIFIER,
 				Fields.COMMENT, Fields.FK_COMPONENT, Fields.FK_REPORT, Fields.FK_FLAG);
+		builder.join(FLAG_TABLE_NAME, Fields.FK_FLAG, FlagFields.ID);
 		builder.where(Fields.FK_REPORT);
 		
 		String query = builder.toString();
@@ -84,6 +84,8 @@ public class BiologicalRatingDao implements IBiologicalRatingDao {
 	}
 	
 	private Collection<BiologicalRating> fromResultSet(final ResultSet rs) {
+		// All statements should join the flag table to be able to parse it
+		// correctly here...
 		throw new NotImplementedException();
 	}
 	
@@ -97,5 +99,11 @@ public class BiologicalRatingDao implements IBiologicalRatingDao {
 		public static final String FK_COMPONENT = "";
 		public static final String FK_REPORT = "";
 		public static final String FK_FLAG = "";
+	}
+	
+	private static final String FLAG_TABLE_NAME = "Biological_Flag";
+	private static final class FlagFields {
+		public static final String ID = "";
+		public static final String NAME = "";
 	}
 }
