@@ -4,7 +4,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkArgument;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Collection;
@@ -16,12 +15,22 @@ import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.ElementNotFoundException;
 import de.hswt.hrm.common.database.exception.SaveException;
 import de.hswt.hrm.common.exception.NotImplementedException;
+import de.hswt.hrm.component.dao.core.IComponentDao;
 import de.hswt.hrm.inspection.dao.core.IBiologicalRatingDao;
 import de.hswt.hrm.inspection.model.BiologicalRating;
 import de.hswt.hrm.inspection.model.Inspection;
 
 public class BiologicalRatingDao implements IBiologicalRatingDao {
+	private final IComponentDao componentDao;
 
+	// TODO: add log messages
+	public BiologicalRatingDao(final IComponentDao componentDao) {
+		checkNotNull(componentDao, "ComponentDao not properly injected to BiologicalRatingDao");
+		
+		this.componentDao = componentDao;
+	}
+	
+	
 	@Override
 	public Collection<BiologicalRating> findAll() throws DatabaseException {
 		throw new NotImplementedException();
