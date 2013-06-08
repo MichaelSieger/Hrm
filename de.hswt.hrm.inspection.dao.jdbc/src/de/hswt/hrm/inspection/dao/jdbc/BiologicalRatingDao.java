@@ -8,6 +8,7 @@ import de.hswt.hrm.common.database.exception.SaveException;
 import de.hswt.hrm.common.exception.NotImplementedException;
 import de.hswt.hrm.inspection.dao.core.IBiologicalRatingDao;
 import de.hswt.hrm.inspection.model.BiologicalRating;
+import de.hswt.hrm.inspection.model.Inspection;
 
 public class BiologicalRatingDao implements IBiologicalRatingDao {
 
@@ -19,6 +20,11 @@ public class BiologicalRatingDao implements IBiologicalRatingDao {
 	@Override
 	public BiologicalRating findById(int id) throws DatabaseException,
 			ElementNotFoundException {
+		throw new NotImplementedException();
+	}
+	
+	@Override
+	public Collection<BiologicalRating> findByInspection(Inspection inspection) {
 		throw new NotImplementedException();
 	}
 

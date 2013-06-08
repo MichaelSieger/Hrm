@@ -6,6 +6,7 @@ import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.ElementNotFoundException;
 import de.hswt.hrm.common.database.exception.SaveException;
 import de.hswt.hrm.inspection.model.BiologicalRating;
+import de.hswt.hrm.inspection.model.Inspection;
 
 /**
  * Defines all the public methods to interact with the storage system for activitys.
@@ -24,6 +25,13 @@ public interface IBiologicalRatingDao {
      */
     BiologicalRating findById(int id) throws DatabaseException, ElementNotFoundException;
 
+    /**
+     * Get a collection of all biological ratings for the given inspection.
+     * @param inspection
+     * @return
+     */
+    Collection<BiologicalRating> findByInspection(final Inspection inspection);
+    
     /**
      * Add a new biological to storage.
      * @param biological Biological that should be stored.
