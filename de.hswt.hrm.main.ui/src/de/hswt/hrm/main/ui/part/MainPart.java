@@ -1,11 +1,15 @@
 package de.hswt.hrm.main.ui.part;
 
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
-import org.eclipse.e4.ui.workbench.modeling.EPartService;
+import org.eclipse.core.commands.ParameterizedCommand;
+import org.eclipse.e4.core.commands.ECommandService;
+import org.eclipse.e4.core.commands.EHandlerService;
 import org.eclipse.e4.xwt.DefaultLoadingContext;
 import org.eclipse.e4.xwt.IConstants;
 import org.eclipse.e4.xwt.XWT;
@@ -17,18 +21,26 @@ import org.eclipse.swt.widgets.Listener;
 
 import de.hswt.hrm.main.ui.MPartSwitcher;
 
+
 public class MainPart {
+	
+	private static final String COMMAND_ID = "de.hswt.hrm.main.switchpart";
 
-    @Inject
-    EPartService service;
-
-    private Button toContacts;
-    private Button toPlaces;
-    private Button toPlants;
-    private Button toCatalog;
-    private Button toCategory;
-    private Button toInspection;
-    private Button toOverall;
+	private static final String COMMAND_PARAMETER_ID = "de.hswt.hrm.main.switchpart.idinput";
+	
+	@Inject
+	EHandlerService handlerService;
+	
+	@Inject
+	ECommandService commandService;
+	
+	private Button toContacts;
+	private Button toPlaces;
+	private Button toPlants;
+	private Button toCatalog;
+	private Button toCategory;
+	private Button toInspection;
+	private Button toOverall;
 
     @PostConstruct
     public void postConstruct(Composite parent) {
@@ -51,42 +63,50 @@ public class MainPart {
         setNavigationButton();
     }
 
-    private void setNavigationButton() {
-        toContacts.addListener(SWT.Selection, new Listener() {
-            @Override
-            public void handleEvent(Event event) {
-                MPartSwitcher.setPartVisible(service, MPartSwitcher.CONTACTS_ID);
-            }
-        });
-        toPlaces.addListener(SWT.Selection, new Listener() {
-            @Override
-            public void handleEvent(Event event) {
-                MPartSwitcher.setPartVisible(service, MPartSwitcher.PLACES_ID);
-            }
-        });
-        toPlants.addListener(SWT.Selection, new Listener() {
-            @Override
-            public void handleEvent(Event event) {
-                MPartSwitcher.setPartVisible(service, MPartSwitcher.PLANTS_ID);
-            }
-        });
-        toCategory.addListener(SWT.Selection, new Listener() {
-            @Override
-            public void handleEvent(Event event) {
-                MPartSwitcher.setPartVisible(service, MPartSwitcher.CATEGORY_ID);
-            }
-        });
-        toCatalog.addListener(SWT.Selection, new Listener() {
-            @Override
-            public void handleEvent(Event event) {
-                MPartSwitcher.setPartVisible(service, MPartSwitcher.CATALOG_ID);
-            }
-        });
+	private void runCommand(String id) {
+		System.out.println("inside run command");
+		Map<String, String> m = new HashMap<String, String>();
+		m.put("de.hswt.hrm.main.switchpart.idinput", id);
+		ParameterizedCommand cmd = commandService.createCommand(COMMAND_ID, m);
+    	handlerService.executeHandler(cmd);
+	}
+
+	private void setNavigationButton() {
+		toContacts.addListener(SWT.Selection,new Listener() {
+			@Override
+			public void handleEvent(Event event) {
+				runCommand(MPartSwitcher.CONTACTS_ID);
+			}
+		});
+		toPlaces.addListener(SWT.Selection,new Listener() {
+			@Override
+			public void handleEvent(Event event) {
+				runCommand(MPartSwitcher.PLACES_ID);
+			}
+		});
+		toPlants.addListener(SWT.Selection,new Listener() {
+			@Override
+			public void handleEvent(Event event) {
+				runCommand(MPartSwitcher.PLANTS_ID);
+			}
+		});
+		toCategory.addListener(SWT.Selection,new Listener() {
+			@Override
+			public void handleEvent(Event event) {
+				runCommand(MPartSwitcher.CATEGORY_ID);
+			}
+		});
+		toCatalog.addListener(SWT.Selection,new Listener() {
+			@Override
+			public void handleEvent(Event event) {
+				runCommand(MPartSwitcher.CATALOG_ID);
+			}
+		});
         toOverall.addListener(SWT.Selection, new Listener() {
             @Override
             public void handleEvent(Event event) {
-                MPartSwitcher.setPartVisible(service, MPartSwitcher.OVERALL_ID);
+				runCommand(MPartSwitcher.OVERALL_ID);
             }
         });
-    }
+	}
 }
