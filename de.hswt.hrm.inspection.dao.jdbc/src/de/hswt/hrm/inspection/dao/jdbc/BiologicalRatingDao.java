@@ -50,8 +50,16 @@ public class BiologicalRatingDao implements IBiologicalRatingDao {
 		checkArgument(inspection.getId() >= 0, "Inspection must have a valid ID.");
 		
 		SqlQueryBuilder builder = new SqlQueryBuilder();
-		builder.select(TABLE_NAME, Fields.ID, Fields.BACTERIA, Fields.RATING, Fields.QUANTIFIER,
-				Fields.COMMENT, Fields.FK_COMPONENT, Fields.FK_REPORT, Fields.FK_FLAG);
+		builder.select(TABLE_NAME, 
+				TABLE_NAME + "." + Fields.ID,
+				TABLE_NAME + "." + Fields.BACTERIA, 
+				TABLE_NAME + "." + Fields.RATING, 
+				TABLE_NAME + "." + Fields.QUANTIFIER,
+				TABLE_NAME + "." + Fields.COMMENT, 
+				TABLE_NAME + "." + Fields.FK_COMPONENT, 
+				TABLE_NAME + "." + Fields.FK_REPORT, 
+				TABLE_NAME + "." + Fields.FK_FLAG, 
+				FLAG_TABLE_NAME + "." + FlagFields.NAME);
 		builder.join(FLAG_TABLE_NAME, Fields.FK_FLAG, FlagFields.ID);
 		builder.where(Fields.FK_REPORT);
 		
