@@ -33,5 +33,17 @@ public class BiologicalRatingDao implements IBiologicalRatingDao {
 			throws ElementNotFoundException, SaveException {
 		throw new NotImplementedException();
 	}
-
+	
+	
+	
+	private static final class Fields {
+		public static final String ID = "";
+		public static final String BACTERIA = "";
+		public static final String RATING = "";
+		public static final String QUANTIFIER = "";
+		public static final String COMMENT = "";
+		public static final String FK_COMPONENT = "";
+		public static final String FK_REPORT = "";
+		public static final String FK_FLAG = "";
+	}
 }
