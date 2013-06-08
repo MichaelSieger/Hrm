@@ -5,3 +5,4 @@ Bundle-SymbolicName: de.hswt.hrm.inspection.dao.jdbc
 Bundle-Version: 0.0.1.qualifier
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Import-Package: de.hswt.hrm.inspection.dao.core
