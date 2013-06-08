@@ -10,7 +10,7 @@ import de.hswt.hrm.inspection.model.PhysicalRating;
 /**
  * Defines all the public methods to interact with the storage system for activitys.
  */
-public interface IPhysicalDao {
+public interface IPhysicalRatingDao {
 
     /**
      * @return All pysicals from storage.

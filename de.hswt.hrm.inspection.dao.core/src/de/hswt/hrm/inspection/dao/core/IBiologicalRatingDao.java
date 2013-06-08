@@ -10,7 +10,7 @@ import de.hswt.hrm.inspection.model.BiologicalRating;
 /**
  * Defines all the public methods to interact with the storage system for activitys.
  */
-public interface IBiologicalDao {
+public interface IBiologicalRatingDao {
 
     /**
      * @return All biologicals from storage.
