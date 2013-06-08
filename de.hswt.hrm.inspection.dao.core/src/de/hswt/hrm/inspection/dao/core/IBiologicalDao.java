@@ -5,7 +5,7 @@ import java.util.Collection;
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.ElementNotFoundException;
 import de.hswt.hrm.common.database.exception.SaveException;
-import de.hswt.hrm.inspection.model.Biological;
+import de.hswt.hrm.inspection.model.BiologicalRating;
 
 /**
  * Defines all the public methods to interact with the storage system for activitys.
@@ -15,14 +15,14 @@ public interface IBiologicalDao {
     /**
      * @return All biologicals from storage.
      */
-    Collection<Biological> findAll() throws DatabaseException;
+    Collection<BiologicalRating> findAll() throws DatabaseException;
 
     /**
      * @param id of the target biological.
      * @return biological with the given id.
      * @throws ElementNotFoundException If the given id is not present in the database.
      */
-    Biological findById(int id) throws DatabaseException, ElementNotFoundException;
+    BiologicalRating findById(int id) throws DatabaseException, ElementNotFoundException;
 
     /**
      * Add a new biological to storage.
@@ -30,7 +30,7 @@ public interface IBiologicalDao {
      * @return Newly generated biological (also holding the correct id).
      * @throws SaveException If the biological could not be inserted.
      */
-    Biological insert(Biological biological) throws SaveException;
+    BiologicalRating insert(BiologicalRating biological) throws SaveException;
 
     /**
      * Update an existing biological in storage.
@@ -39,6 +39,6 @@ public interface IBiologicalDao {
      * @throws ElementNotFoundException If the given Biological is not present in the database.
      * @throws SaveException If the biological could not be updated.
      */
-    void update(Biological biological) throws ElementNotFoundException, SaveException;
+    void update(BiologicalRating biological) throws ElementNotFoundException, SaveException;
 }
 
