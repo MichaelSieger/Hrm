@@ -11,3 +11,4 @@ Import-Package: de.hswt.hrm.common,
  de.hswt.hrm.common.exception,
  de.hswt.hrm.inspection.dao.core,
  de.hswt.hrm.inspection.model
+Require-Bundle: com.google.guava;bundle-version="10.0.1"

@@ -29,8 +29,10 @@ public interface IBiologicalRatingDao {
      * Get a collection of all biological ratings for the given inspection.
      * @param inspection
      * @return
+     * @throws DatabaseException 
      */
-    Collection<BiologicalRating> findByInspection(final Inspection inspection);
+    Collection<BiologicalRating> findByInspection(final Inspection inspection) 
+    		throws DatabaseException;
     
     /**
      * Add a new biological to storage.
