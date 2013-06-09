@@ -161,9 +161,9 @@ INSERT INTO `hrm`.`Catalog_Activity` (`Category_Activity_State_Current_FK`, `Cat
 ------------------------------------------------------------
 -- Insert 2 different pictures in the `Picture` Table
 ------------------------------------------------------------
--- hier brauche ich erst die blobs von mind 2 Bilder
--- INSERT INTO `hrm`.`Picture` (`Picture_Blob`, `Picture_Name`) VALUES (NULL, 'bildA');
--- INSERT INTO `hrm`.`Picture` (`Picture_Blob`, `Picture_Name`) VALUES (NULL, 'bildB');
+-- hier brauche ich erst die blobs von 2 Bildern
+INSERT INTO `hrm`.`Picture` (`Picture_Blob`, `Picture_Name`, `Picture_Label`) VALUES (NULL, 'bildA', 'Bild zeigt A');
+INSERT INTO `hrm`.`Picture` (`Picture_Blob`, `Picture_Name`, `Picture_Label`) VALUES (NULL, 'bildB', 'Bild zeigt B');
 
 ------------------------------------------------------------
 -- Insert 2 different component physical ratings in the `Component_Physical_Rating` Table
