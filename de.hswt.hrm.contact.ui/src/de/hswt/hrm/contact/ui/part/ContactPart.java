@@ -83,7 +83,7 @@ public class ContactPart {
 
 		createToolkit();
 		createActions();
-		toolkit.setOrientation(SWT.LEFT_TO_RIGHT);
+		toolkit.setOrientation(SWT.RIGHT_TO_LEFT);
 		toolkit.setBorderStyle(SWT.BORDER);
 		toolkit.adapt(parent);
 		toolkit.paintBordersFor(parent);

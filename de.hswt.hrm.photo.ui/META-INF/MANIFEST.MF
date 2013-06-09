@@ -4,3 +4,17 @@ Bundle-Name: Ui
 Bundle-SymbolicName: de.hswt.hrm.photo.ui
 Bundle-Version: 0.0.1.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Require-Bundle: org.eclipse.jface;bundle-version="3.8.102",
+ ch.qos.logback.classic;bundle-version="1.0.0",
+ ch.qos.logback.core;bundle-version="1.0.0",
+ org.slf4j.api;bundle-version="1.6.4",
+ com.google.guava;bundle-version="10.0.1",
+ org.eclipse.e4.core.contexts;bundle-version="1.2.0",
+ javax.inject;bundle-version="1.0.0",
+ org.eclipse.e4.core.di;bundle-version="1.2.0",
+ org.eclipse.e4.ui.workbench;bundle-version="0.11.0",
+ org.eclipse.swt.gtk.linux.x86_64.source;bundle-version="3.100.1"
+Import-Package: de.hswt.hrm.common.database.exception,
+ de.hswt.hrm.common.ui.swt.layouts,
+ de.hswt.hrm.photo.model,
+ org.eclipse.swt.widgets
