@@ -111,16 +111,16 @@ INSERT INTO `hrm`.`Scheme` (`Scheme_Plant_FK`) VALUES ('2');
 ------------------------------------------------------------
 -- Insert 3 different scheme components in the `Scheme_Components` Table
 ------------------------------------------------------------
--- INSERT INTO `hrm`.`Scheme_Component` (`Scheme_Component_Scheme_FK`, `Scheme_Component_Component_FK`, `Scheme_Component_X_Position`, `Scheme_Component_Y_Position`, `Scheme_Component_Direction`) VALUES ('1', '1', '1', '1', '2');
--- INSERT INTO `hrm`.`Scheme_Component` (`Scheme_Component_Scheme_FK`, `Scheme_Component_Component_FK`, `Scheme_Component_X_Position`, `Scheme_Component_Y_Position`, `Scheme_Component_Direction`) VALUES ('1', '2', '1', '4', '2');
--- INSERT INTO `hrm`.`Scheme_Component` (`Scheme_Component_Scheme_FK`, `Scheme_Component_Component_FK`, `Scheme_Component_X_Position`, `Scheme_Component_Y_Position`, `Scheme_Component_Direction`) VALUES ('3', '3', '1', '1', '0');
+INSERT INTO `hrm`.`Scheme_Component` (`Scheme_Component_Scheme_FK`, `Scheme_Component_Component_FK`, `Scheme_Component_X_Position`, `Scheme_Component_Y_Position`, `Scheme_Component_Direction`) VALUES ('1', '1', '1', '1', '2');
+INSERT INTO `hrm`.`Scheme_Component` (`Scheme_Component_Scheme_FK`, `Scheme_Component_Component_FK`, `Scheme_Component_X_Position`, `Scheme_Component_Y_Position`, `Scheme_Component_Direction`) VALUES ('1', '2', '1', '4', '2');
+INSERT INTO `hrm`.`Scheme_Component` (`Scheme_Component_Scheme_FK`, `Scheme_Component_Component_FK`, `Scheme_Component_X_Position`, `Scheme_Component_Y_Position`, `Scheme_Component_Direction`) VALUES ('3', '3', '1', '1', '0');
 
 ------------------------------------------------------------
 -- Insert 3 different current states in the `State_Current` Table
 ------------------------------------------------------------
--- INSERT INTO `hrm`.`State_Current` (`State_Current_Name`, `State_Current_Text`) VALUES ('Ist-Status 1', 'Ich bin der erste Ist-Zustand');
--- INSERT INTO `hrm`.`State_Current` (`State_Current_Name`, `State_Current_Text`) VALUES ('Ist-Status 2', 'Ich bin der zweite Ist-Zustand');
--- INSERT INTO `hrm`.`State_Current` (`State_Current_Name`, `State_Current_Text`) VALUES ('Ist-Status 3', 'Ich bin der dritte Ist-Zustand');
+INSERT INTO `hrm`.`State_Current` (`State_Current_Name`, `State_Current_Text`) VALUES ('Ist-Status 1', 'Ich bin der erste Ist-Zustand');
+INSERT INTO `hrm`.`State_Current` (`State_Current_Name`, `State_Current_Text`) VALUES ('Ist-Status 2', 'Ich bin der zweite Ist-Zustand');
+INSERT INTO `hrm`.`State_Current` (`State_Current_Name`, `State_Current_Text`) VALUES ('Ist-Status 3', 'Ich bin der dritte Ist-Zustand');
 
 ------------------------------------------------------------
 -- Insert 3 different target states in the `State_Target` Table
