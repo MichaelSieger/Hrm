@@ -37,7 +37,6 @@ import de.hswt.hrm.contact.ui.filter.ContactFilter;
 import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.graphics.Color;
-import org.eclipse.wb.swt.SWTResourceManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -128,8 +127,8 @@ public class ContactPart {
 			public void focusLost(FocusEvent e) {
 				if (searchText.getText().isEmpty()) {
 					searchText.setText(DEFAULT_SEARCH_STRING);
-					searchText.setForeground(SWTResourceManager
-							.getColor(SWT.COLOR_GRAY));
+					searchText.setForeground(
+							Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
 					updateTableFilter("");
 				}
 			}
@@ -141,7 +140,8 @@ public class ContactPart {
 		});
 		form.setHeadClient(searchText);
 		toolkit.adapt(searchText, true, true);
-		searchText.setForeground(SWTResourceManager.getColor(SWT.COLOR_GRAY));
+		searchText.setForeground(
+				Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
 
 		form.getToolBarManager().add(addAction);
 		form.getToolBarManager().add(editAction);
@@ -165,8 +165,8 @@ public class ContactPart {
 				255, 168, 0).getRGB());
 		result.createColor(IFormColors.H_BOTTOM_KEYLINE2, new Color(Display.getCurrent(),
 				255, 168, 0).getRGB());
-		result.createColor(IFormColors.TITLE, SWTResourceManager
-				.getColor(SWT.COLOR_BLACK).getRGB());
+		result.createColor(IFormColors.TITLE, Display.getCurrent().getSystemColor(
+				SWT.COLOR_BLACK).getRGB());
 //		result.createColor(IFormColors.TITLE, new Color(Display.getCurrent(),
 //				122, 184, 0).getRGB());
 //				255, 168, 0).getRGB());

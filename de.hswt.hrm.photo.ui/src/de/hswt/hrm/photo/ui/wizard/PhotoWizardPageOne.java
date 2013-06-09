@@ -15,6 +15,7 @@ import de.hswt.hrm.common.ui.swt.layouts.PageContainerFillLayout;
 import de.hswt.hrm.photo.model.Photo;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
@@ -25,7 +26,7 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.wb.swt.SWTResourceManager;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.TableColumn;
 
 // TODO read a given single image file or a directory (not recursive),
@@ -68,7 +69,7 @@ public class PhotoWizardPageOne extends WizardPage {
     	
 		Composite container = new Composite(parent, SWT.NULL);
 		container.setBackgroundMode(SWT.INHERIT_FORCE);
-		container.setBackground(SWTResourceManager.getColor(255, 255, 255));
+		container.setBackground(new Color(Display.getCurrent(), 255, 255, 255));
 
 		setControl(container);
 		container.setLayout(new GridLayout(3, false));
@@ -131,7 +132,7 @@ public class PhotoWizardPageOne extends WizardPage {
 		Canvas canvas = new Canvas(container, SWT.NO_FOCUS);
 		canvas.setVisible(true);
 		canvas.setEnabled(false);
-		canvas.setBackground(SWTResourceManager.getColor(255, 255, 255));
+		canvas.setBackground(new Color(Display.getCurrent(), 255, 255, 255));
 		canvas.setLayoutData(LayoutUtil.createFillData());
 	}
 
