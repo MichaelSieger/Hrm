@@ -44,7 +44,7 @@
 				<Composite.layout>
 					<GridLayout />
 				</Composite.layout>
-				<Text x:Style="BORDER">
+				<Text x:Style="BORDER" text="Search">
 					<Text.layoutData>
 						<GridData grabExcessHorizontalSpace="true"
 							horizontalAlignment="FILL" />
@@ -73,7 +73,7 @@
 				<Composite.layout>
 					<GridLayout />
 				</Composite.layout>
-				<Text x:Style="BORDER">
+				<Text x:Style="BORDER" text="Search">
 					<Text.layoutData>
 						<GridData grabExcessHorizontalSpace="true"
 							horizontalAlignment="FILL" />
@@ -101,7 +101,7 @@
 				<Composite.layout>
 					<GridLayout />
 				</Composite.layout>
-				<Text x:Style="BORDER">
+				<Text x:Style="BORDER" text="Search">
 					<Text.layoutData>
 						<GridData grabExcessHorizontalSpace="true"
 							horizontalAlignment="FILL" />
@@ -198,7 +198,7 @@
 					<Composite.layoutData>
 						<GridData heightHint="36" />
 					</Composite.layoutData>
-					<Text x:Style="BORDER | SEARCH" bounds="0, 0, 75, 27">
+					<Text x:Style="BORDER | SEARCH" bounds="0, 0, 75, 27" FocusInEvent="enterText" text="Search">
 						<Text.layoutData>
 							<GridData horizontalAlignment="FILL" widthHint="138" />
 						</Text.layoutData>
@@ -230,7 +230,7 @@
 					<Composite.layout>
 						<GridLayout />
 					</Composite.layout>
-					<Text x:Style="BORDER">
+					<Text x:Style="BORDER" text="Search">
 						<Text.layoutData>
 							<GridData horizontalAlignment="FILL" widthHint="141" />
 						</Text.layoutData>
@@ -263,7 +263,7 @@
 					<Composite.layout>
 						<GridLayout />
 					</Composite.layout>
-					<Text x:Style="BORDER" bounds="0, 0, 75, 27">
+					<Text x:Style="BORDER" bounds="0, 0, 75, 27" text="Search">
 						<Text.layoutData>
 							<GridData horizontalAlignment="FILL" widthHint="119" />
 						</Text.layoutData>
