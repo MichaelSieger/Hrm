@@ -139,9 +139,9 @@ INSERT INTO `hrm`.`State_Activity` (`State_Activity_Name`, `State_Activity_Text`
 ------------------------------------------------------------
 -- Connect 3 different catalog with currents in the `Catalog_Current` Table
 ------------------------------------------------------------
--- INSERT INTO `hrm`.`Catalog_Current` (`Category_Current_State_Target_FK`, `Category_Current_State_Current_FK`) VALUES ('1', '2');
--- INSERT INTO `hrm`.`Catalog_Current` (`Category_Current_State_Target_FK`, `Category_Current_State_Current_FK`) VALUES ('2', '1');
--- INSERT INTO `hrm`.`Catalog_Current` (`Category_Current_State_Target_FK`, `Category_Current_State_Current_FK`) VALUES ('2', '3');
+INSERT INTO `hrm`.`Catalog_Current` (`Category_Current_State_Target_FK`, `Category_Current_State_Current_FK`) VALUES ('1', '2');
+INSERT INTO `hrm`.`Catalog_Current` (`Category_Current_State_Target_FK`, `Category_Current_State_Current_FK`) VALUES ('2', '1');
+INSERT INTO `hrm`.`Catalog_Current` (`Category_Current_State_Target_FK`, `Category_Current_State_Current_FK`) VALUES ('2', '3');
 
 ------------------------------------------------------------
 -- Connect 3 different catalog with targets in the `Catalog_Target` Table
