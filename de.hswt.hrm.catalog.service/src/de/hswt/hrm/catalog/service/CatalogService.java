@@ -125,12 +125,16 @@ public class CatalogService {
 		targetDao.update(target);
 	}
 	
-	public void addToTarget(final Target target, final Current current) throws SaveException {
+	public void addToTarget(Target target, Current current) throws SaveException {
 		currentDao.addToTarget(target, current);
 	}
 	
-	public void addToCurrent(final Current current, final Activity activity) throws SaveException {
+	public void addToCurrent(Current current, Activity activity) throws SaveException {
 		activityDao.addToCurrent(current, activity);
+	}
+	
+	public void addToCatalog(Catalog catalog, Target target) throws SaveException {
+		targetDao.addToCatalog(catalog, target);
 	}
 
 	public Collection<Catalog> findAllCatalog() throws DatabaseException {
