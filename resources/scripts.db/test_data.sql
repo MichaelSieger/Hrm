@@ -184,6 +184,11 @@ INSERT INTO `hrm`.`Component_Catalog` (`Component_Catalog_Component_FK`, `Compon
 -- Insert 3 different picture catalogs in the `Picture_Catalog` Table
 ------------------------------------------------------------
 
+INSERT INTO `hrm`.`Picture_Catalog` (`Picture_Catalog_Picture_FK`, `Picture_Catalog_Component_Catalog_FK`) VALUES ('1', '1' );
+INSERT INTO `hrm`.`Picture_Catalog` (`Picture_Catalog_Picture_FK`, `Picture_Catalog_Component_Catalog_FK`) VALUES ('2', '1' );
+INSERT INTO `hrm`.`Picture_Catalog` (`Picture_Catalog_Picture_FK`, `Picture_Catalog_Component_Catalog_FK`) VALUES ('1', '2' );
+INSERT INTO `hrm`.`Picture_Catalog` (`Picture_Catalog_Picture_FK`, `Picture_Catalog_Component_Catalog_FK`) VALUES ('2', '2' );
+
 ------------------------------------------------------------
 -- Insert 3 different target currents in the `Target_Current` Table
 ------------------------------------------------------------
