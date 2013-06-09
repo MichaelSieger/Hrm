@@ -100,10 +100,10 @@ public class PhysicalRatingDao implements IPhysicalRatingDao {
 	private static final String TABLE_NAME = "Component_Physical_Rating";
 	
 	private static final class Fields {
-		private static final String ID = "";
-		private static final String RATING = "";
-		private static final String NOTE = "";
-		private static final String COMPONENT_FK = "";
-		private static final String REPORT_FK = "";
+		private static final String ID = "Component_Physical_Rating_ID";
+		private static final String RATING = "Component_Physical_Rating_Rating";
+		private static final String NOTE = "Component_Physical_Rating_Note";
+		private static final String COMPONENT_FK = "Component_Physical_Rating_Component_FK";
+		private static final String REPORT_FK = "Component_Physical_Rating_Report_FK";
 	}
 }
