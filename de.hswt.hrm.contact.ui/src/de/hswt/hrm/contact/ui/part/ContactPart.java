@@ -9,7 +9,6 @@ import javax.inject.Inject;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.ui.di.Focus;
-import org.eclipse.e4.xwt.XWT;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -18,10 +17,11 @@ import org.eclipse.jface.window.IShellProvider;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.SWT;
+import org.eclipse.ui.forms.FormColors;
+import org.eclipse.ui.forms.IFormColors;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Form;
 import org.eclipse.swt.events.ModifyListener;
@@ -62,7 +62,7 @@ public class ContactPart {
 
 	private static final String EMPTY = "";
 
-	private final FormToolkit toolkit = new FormToolkit(Display.getCurrent());
+	private FormToolkit toolkit;
 	private Table table;
 	private Text searchText;
 	private TableViewer tableViewer;
@@ -81,6 +81,7 @@ public class ContactPart {
 	public void createControls(Composite parent, IEclipseContext context) {
 		this.context = context;
 
+		createToolkit();
 		createActions();
 		toolkit.setOrientation(SWT.LEFT_TO_RIGHT);
 		toolkit.setBorderStyle(SWT.BORDER);
@@ -92,7 +93,10 @@ public class ContactPart {
 		form.setSeparatorVisible(true);
 		toolkit.paintBordersFor(form);
 		form.setText("Contacts");
-		form.getBody().setLayout(new FillLayout(SWT.HORIZONTAL));
+		FillLayout fillLayout = new FillLayout(SWT.HORIZONTAL);
+		fillLayout.marginHeight = 8;
+		fillLayout.marginWidth = 8;
+		form.getBody().setLayout(fillLayout);
 		toolkit.decorateFormHeading(form);
 
 		tableViewer = new TableViewer(form.getBody(), SWT.BORDER
@@ -108,10 +112,8 @@ public class ContactPart {
 		toolkit.paintBordersFor(table);
 
 		searchText = new Text(form.getHead(), SWT.BORDER | SWT.H_SCROLL
-				| SWT.SEARCH | SWT.CANCEL);
+				| SWT.ICON_SEARCH | SWT.SEARCH | SWT.ICON_CANCEL | SWT.CANCEL);
 		defaultForeGround = searchText.getForeground();
-		searchText.setForeground(SWTResourceManager
-				.getColor(SWT.COLOR_WIDGET_LIGHT_SHADOW));
 		searchText.setText(DEFAULT_SEARCH_STRING);
 		searchText.addFocusListener(new FocusAdapter() {
 			@Override
@@ -125,26 +127,50 @@ public class ContactPart {
 			@Override
 			public void focusLost(FocusEvent e) {
 				if (searchText.getText().isEmpty()) {
-					searchText.setForeground(SWTResourceManager
-							.getColor(SWT.COLOR_WIDGET_LIGHT_SHADOW));
 					searchText.setText(DEFAULT_SEARCH_STRING);
+					searchText.setForeground(SWTResourceManager
+							.getColor(SWT.COLOR_GRAY));
+					updateTableFilter("");
 				}
 			}
 		});
 		searchText.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
-				ContactFilter filter = (ContactFilter) tableViewer.getFilters()[0];
-				filter.setSearchString(searchText.getText());
-				tableViewer.refresh();
+				updateTableFilter(searchText.getText());
 			}
 		});
 		form.setHeadClient(searchText);
 		toolkit.adapt(searchText, true, true);
+		searchText.setForeground(SWTResourceManager.getColor(SWT.COLOR_GRAY));
+
 		form.getToolBarManager().add(addAction);
 		form.getToolBarManager().add(editAction);
-
+		form.getToolBarManager().update(true);
+		
 		initializeTable();
 		refreshTable(parent);
+		
+	}
+
+	private void createToolkit() {
+		FormColors result = new FormColors(Display.getCurrent());
+		result.createColor(IFormColors.H_GRADIENT_START, new Color(Display.getCurrent(),
+//				255, 244, 163).getRGB());
+		255, 185, 49).getRGB());
+		result.createColor(IFormColors.H_GRADIENT_END, new Color(Display.getCurrent(),
+//				255, 247, 232).getRGB());
+//		255, 236, 198).getRGB());
+		255, 244, 163).getRGB());
+		result.createColor(IFormColors.H_BOTTOM_KEYLINE1, new Color(Display.getCurrent(),
+				255, 168, 0).getRGB());
+		result.createColor(IFormColors.H_BOTTOM_KEYLINE2, new Color(Display.getCurrent(),
+				255, 168, 0).getRGB());
+		result.createColor(IFormColors.TITLE, SWTResourceManager
+				.getColor(SWT.COLOR_BLACK).getRGB());
+//		result.createColor(IFormColors.TITLE, new Color(Display.getCurrent(),
+//				122, 184, 0).getRGB());
+//				255, 168, 0).getRGB());
+		toolkit = new FormToolkit(result);
 	}
 
 	private void createActions() {
@@ -217,6 +243,12 @@ public class ContactPart {
 				"Could not load contacts from Database.");
 	}
 
+	private void updateTableFilter(String filterString) {
+		ContactFilter filter = (ContactFilter) tableViewer.getFilters()[0];
+		filter.setSearchString(filterString);
+		tableViewer.refresh();
+	}
+	
 	/**
 	 * This Event is called whenever the add button is pressed.
 	 * 
