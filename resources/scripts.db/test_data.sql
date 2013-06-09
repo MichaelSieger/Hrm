@@ -75,7 +75,7 @@ INSERT INTO `hrm`.`Component_Picture`(`Component_Picture_Filename`, `Component_P
 -- Insert 2 different attributes in the `Attribute` Table
 ------------------------------------------------------------
 
-INSERT INTO `hrm`.`Attribute` (`Attribute_Name`) VALUES ('Attribute 1');
+INSERT INTO `hrm`.`Attribute` (`Attribute_Name`) VALUES ('Attribute');
 INSERT INTO `hrm`.`Attribute` (`Attribute_Name`) VALUES ('Attribute 2');
 
 ------------------------------------------------------------
@@ -200,6 +200,9 @@ INSERT INTO `hrm`.`Target_Current` (`Target_Current_Report_FK`, `Target_Current_
 ------------------------------------------------------------
 -- Insert 3 different scheme component attributes in the `Scheme_Component_Attribute` Table
 ------------------------------------------------------------
+
+INSERT INTO `hrm`.`Scheme_Component_Attribute` (`Scheme_Component_Attribute_Component_FK`, `Scheme_Component_Attribute_Attribute_FK`, `Scheme_Component_Attribute_Value`) VALUES ('1', '1', '100');
+INSERT INTO `hrm`.`Scheme_Component_Attribute` (`Scheme_Component_Attribute_Component_FK`, `Scheme_Component_Attribute_Attribute_FK`, `Scheme_Component_Attribute_Value`) VALUES ('1', '2', '0.10');
 
 ------------------------------------------------------------
 -- Insert 3 different summarys in the `Summary` Table
