@@ -44,11 +44,17 @@
 				<Composite.layout>
 					<GridLayout />
 				</Composite.layout>
+				<Text x:Style="BORDER">
+					<Text.layoutData>
+						<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
+					</Text.layoutData>
+				</Text>
 				<ListViewer x:Style="BORDER | V_SCROLL" x:Name="matchedTarget">
 					<ListViewer.list x:Name="" MouseDoubleClickEvent="matchedTargetSelected">
 						<ListViewer.list.layoutData>
 							<GridData horizontalAlignment="FILL" verticalAlignment="FILL"
-								grabExcessHorizontalSpace="true" grabExcessVerticalSpace="true" heightHint="170" />
+								grabExcessHorizontalSpace="true" grabExcessVerticalSpace="true"
+								heightHint="170" />
 						</ListViewer.list.layoutData>
 					</ListViewer.list>
 				</ListViewer>
@@ -66,6 +72,11 @@
 				<Composite.layout>
 					<GridLayout />
 				</Composite.layout>
+				<Text x:Style="BORDER">
+					<Text.layoutData>
+						<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
+					</Text.layoutData>
+				</Text>
 				<ListViewer x:Style="BORDER | V_SCROLL" x:Name="matchedCurrent">
 					<ListViewer.list x:Name="" MouseDoubleClickEvent="matchedCurrentSelected">
 						<ListViewer.list.layoutData>
@@ -88,6 +99,11 @@
 				<Composite.layout>
 					<GridLayout />
 				</Composite.layout>
+				<Text x:Style="BORDER">
+					<Text.layoutData>
+						<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
+					</Text.layoutData>
+				</Text>
 				<ListViewer x:Style="BORDER | V_SCROLL" x:Name="matchedActivity">
 					<ListViewer.list x:Name="" MouseDoubleClickEvent="matchedActivitySelected">
 						<ListViewer.list.layoutData>
@@ -100,6 +116,28 @@
 			</Composite>
 		</Section.client>
 	</Section>
+	<Label />
+	<Composite>
+		<Composite.layout>
+			<FillLayout />
+		</Composite.layout>
+		<Button x:Style="ARROW | UP" x:Name="targetUp" SelectionEvent="availableTargetSelected" />
+		<Button x:Style="ARROW | DOWN" x:Name="targetDown" SelectionEvent="matchedTargetSelected/>
+	</Composite>
+	<Composite>
+		<Composite.layout>
+			<FillLayout />
+		</Composite.layout>
+		<Button x:Style="ARROW" x:Name="currentUp" />
+		<Button x:Style="ARROW | DOWN" x:Name="currentDown" />
+	</Composite>
+	<Composite>
+		<Composite.layout>
+			<FillLayout />
+		</Composite.layout>
+		<Button text="New Button" x:Style="ARROW" x:Name="activityUp" />
+		<Button text="New Button" x:Style="ARROW | DOWN" x:Name="activityDown" />
+	</Composite>
 	<Section text="Informations" x:Style="(p1:Section).EXPANDED | (p1:Section).TITLE_BAR"
 		x:Name="information">
 		<Section.layoutData>
@@ -115,7 +153,7 @@
 				<Label />
 				<Label />
 				<Label />
-				<Label text="Name :" />
+				<Label text="Name " />
 				<Label />
 				<Label />
 				<Text x:Style="BORDER" x:Name="name">
@@ -124,7 +162,7 @@
 							horizontalAlignment="FILL" verticalAlignment="FILL" />
 					</Text.layoutData>
 				</Text>
-				<Label text="Beschreibung :" />
+				<Label text="Description" />
 				<Text x:Style="BORDER | WRAP | V_SCROLL | MULTI" x:Name="desc">
 					<Text.layoutData>
 						<GridData grabExcessHorizontalSpace="true"
@@ -138,9 +176,8 @@
 	<Section text="Available Target States" x:Style="(p2:Section).EXPANDED | (p2:Section).TITLE_BAR"
 		x:Name="">
 		<Section.layoutData>
-			<GridData horizontalAlignment="FILL"
-				verticalAlignment="FILL" grabExcessVerticalSpace="true"
-				grabExcessHorizontalSpace="true" />
+			<GridData horizontalAlignment="FILL" verticalAlignment="FILL"
+				grabExcessVerticalSpace="true" grabExcessHorizontalSpace="true" />
 		</Section.layoutData>
 		<Section.client>
 			<Composite>
@@ -149,18 +186,16 @@
 				</Composite.layout>
 				<Composite>
 					<Composite.layout>
-						<GridLayout numColumns="3" />
+						<GridLayout />
 					</Composite.layout>
 					<Composite.layoutData>
 						<GridData heightHint="36" />
 					</Composite.layoutData>
-					<Text x:Style="BORDER | H_SCROLL | SEARCH | CANCEL" bounds="0, 0, 75, 27">
+					<Text x:Style="BORDER | SEARCH" bounds="0, 0, 75, 27">
 						<Text.layoutData>
-							<GridData horizontalAlignment="FILL" />
+							<GridData horizontalAlignment="FILL" widthHint="138" />
 						</Text.layoutData>
 					</Text>
-					<Button bounds="0, 0, 83, 27" x:Style="ARROW | UP" x:Name="targetUp" SelectionEvent="availableTargetSelected" />
-					<Button text="New Button" bounds="0, 0, 83, 27" x:Style="ARROW | DOWN" />
 				</Composite>
 				<ListViewer x:Style="BORDER | V_SCROLL" x:Name="availableTarget">
 					<ListViewer.list x:Name="" MouseDoubleClickEvent="availableTargetSelected">
@@ -186,15 +221,13 @@
 				</Composite.layout>
 				<Composite>
 					<Composite.layout>
-						<GridLayout numColumns="3" />
+						<GridLayout />
 					</Composite.layout>
 					<Text x:Style="BORDER">
 						<Text.layoutData>
-							<GridData horizontalAlignment="FILL" />
+							<GridData horizontalAlignment="FILL" widthHint="141" />
 						</Text.layoutData>
 					</Text>
-					<Button text="New Button" x:Style="ARROW | UP" />
-					<Button text="New Button" x:Style="ARROW | DOWN" />
 				</Composite>
 				<ListViewer x:Style="BORDER | V_SCROLL" x:Name="availableCurrent">
 					<ListViewer.list x:Name="" MouseDoubleClickEvent="availableCurrentSelected">
@@ -221,15 +254,13 @@
 				</Composite.layout>
 				<Composite>
 					<Composite.layout>
-						<GridLayout numColumns="3" />
+						<GridLayout />
 					</Composite.layout>
 					<Text x:Style="BORDER" bounds="0, 0, 75, 27">
 						<Text.layoutData>
-							<GridData horizontalAlignment="FILL" />
+							<GridData horizontalAlignment="FILL" widthHint="119" />
 						</Text.layoutData>
 					</Text>
-					<Button text="New Button" bounds="0, 0, 83, 27" x:Style="ARROW | UP" />
-					<Button text="New Button" bounds="0, 0, 83, 27" x:Style="ARROW | DOWN" />
 				</Composite>
 				<ListViewer x:Style="BORDER | V_SCROLL" x:Name="availableActivity">
 					<ListViewer.list x:Name="" MouseDoubleClickEvent="availableActivitySelected">
@@ -242,14 +273,5 @@
 			</Composite>
 		</Section.client>
 	</Section>
-	<Composite xmlns="http://www.eclipse.org/xwt/presentation"
-		xmlns:x="http://www.eclipse.org/xwt">
-		<Composite.layout>
-			<GridLayout />
-		</Composite.layout>
-	</Composite>
-	<Label />
-	<Label />
-	<Label />
 	<!-- Forms API -->
 </Composite>

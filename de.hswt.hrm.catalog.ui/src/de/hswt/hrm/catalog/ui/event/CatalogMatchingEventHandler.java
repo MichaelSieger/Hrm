@@ -50,9 +50,10 @@ public class CatalogMatchingEventHandler {
      */
     public void availableTargetSelected(Event event) {
 
+        // ListViewer catalogs = (ListViewer) XWT.findElementByName(event.widget, "catalogs");
         // Catalog c = (Catalog) catalogs.getElementAt(catalogs.getList().getSelectionIndex());
         //
-        Target t = (Target) moveEntry(availableTarget, matchedTarget);
+        // Target t = (Target) moveEntry(availableTarget, matchedTarget);
         // try {
         //
         // if (t == null) {
