@@ -208,3 +208,5 @@ INSERT INTO `hrm`.`Scheme_Component_Attribute` (`Scheme_Component_Attribute_Comp
 -- Insert 3 different summarys in the `Summary` Table
 ------------------------------------------------------------
 
+INSERT INTO `hrm`.`Summary` (`Summary_Name`, `Summary_Text`) VALUES ('SummaryA', 'I am the first summary of an awesome piece of software called: HRM');
+INSERT INTO `hrm`.`Summary` (`Summary_Name`, `Summary_Text`) VALUES ('SummaryB', 'I am the second summary of an awesome piece of software called: HRM');
