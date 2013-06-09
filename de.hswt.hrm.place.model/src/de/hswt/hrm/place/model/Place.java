@@ -10,19 +10,17 @@ public final class Place {
     private String city;
     private String street;
     private String streetNo;
-    private String location;
-    private String area;
 
     private static final String IS_MANDATORY = "Field is a mandatory.";
 
     public Place(final String placeName, final String postCode, final String city,
-            final String street, final String streetNo, final String location, final String area) {
+            final String street, final String streetNo) {
 
-        this(-1, placeName, postCode, city, street, streetNo, location, area);
+        this(-1, placeName, postCode, city, street, streetNo);
     }
 
     public Place(int id, final String placeName, final String postCode, final String city,
-            final String street, final String streetNo, final String location, final String area) {
+            final String street, final String streetNo) {
 
         this.id = id;
 
@@ -31,8 +29,7 @@ public final class Place {
         setCity(city);
         setStreet(street);
         setStreetNo(streetNo);
-        setLocation(location);
-        setArea(area);
+
     }
 
     public int getId() {
@@ -84,32 +81,13 @@ public final class Place {
         this.streetNo = streetNo;
     }
 
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        checkArgument(!isNullOrEmpty(location), IS_MANDATORY);
-        this.location = location;
-    }
-
-    public String getArea() {
-        return area;
-    }
-
-    public void setArea(String area) {
-        checkArgument(!isNullOrEmpty(area), IS_MANDATORY);
-        this.area = area;
-    }
-
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((area == null) ? 0 : area.hashCode());
+
         result = prime * result + ((city == null) ? 0 : city.hashCode());
         result = prime * result + id;
-        result = prime * result + ((location == null) ? 0 : location.hashCode());
         result = prime * result + ((placeName == null) ? 0 : placeName.hashCode());
         result = prime * result + ((postCode == null) ? 0 : postCode.hashCode());
         result = prime * result + ((street == null) ? 0 : street.hashCode());
@@ -129,14 +107,7 @@ public final class Place {
             return false;
         }
         Place other = (Place) obj;
-        if (area == null) {
-            if (other.area != null) {
-                return false;
-            }
-        }
-        else if (!area.equals(other.area)) {
-            return false;
-        }
+
         if (city == null) {
             if (other.city != null) {
                 return false;
@@ -148,14 +119,7 @@ public final class Place {
         if (id != other.id) {
             return false;
         }
-        if (location == null) {
-            if (other.location != null) {
-                return false;
-            }
-        }
-        else if (!location.equals(other.location)) {
-            return false;
-        }
+
         if (placeName == null) {
             if (other.placeName != null) {
                 return false;

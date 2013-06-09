@@ -28,11 +28,16 @@ import de.hswt.hrm.common.database.exception.DatabaseException;
 
 public class CatalogEventHandler {
 
-    private static final String DEFAULT_SEARCH_STRING = "Search";
-    private static final String EMPTY = "";
-    private static final Logger LOG = LoggerFactory.getLogger(CatalogEventHandler.class);
     private final IEclipseContext context;
     private final CatalogService catalogService;
+
+    private static final String DEFAULT_SEARCH_STRING = "Search";
+    private static final String TARGET = "Target";
+    private static final String CURRENT = "Current";
+    private static final String ACTIVITY = "Activity";
+    private static final String ALL = "All";
+    private static final String EMPTY = "";
+    private static final Logger LOG = LoggerFactory.getLogger(CatalogEventHandler.class);
 
     @Inject
     public CatalogEventHandler(IEclipseContext context, CatalogService catalogService) {
@@ -64,16 +69,16 @@ public class CatalogEventHandler {
     private void enableFilter(String s, CatalogSelectionFilter f) {
         disableAll(f);
         switch (s) {
-        case "all":
-            f.setActivitySelected(true);
+        case ALL:
+            f.setAllSelected((true));
             break;
-        case "ist":
+        case CURRENT:
             f.setCurrentSelected(true);
             break;
-        case "soll":
+        case TARGET:
             f.setTargetSelected(true);
             break;
-        case "maßnahmen":
+        case ACTIVITY:
             f.setActivitySelected(true);
             break;
 

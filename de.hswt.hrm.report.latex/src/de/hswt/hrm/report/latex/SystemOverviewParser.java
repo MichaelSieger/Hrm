@@ -50,7 +50,7 @@ public class SystemOverviewParser {
                 + conctactController.getCity());
         template.replace(PLANT, plant.getDescription());
         // template.replace(PLACE,plant.getLocation());
-        template.replace(AREAS, place.getArea());
+
         // template.replace(INSPECTION_DATE,);
         // template.replace(REPORT_DATE,);
 

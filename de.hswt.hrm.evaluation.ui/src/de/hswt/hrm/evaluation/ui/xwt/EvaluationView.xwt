@@ -18,7 +18,7 @@
 						<GridData horizontalAlignment="FILL" horizontalSpan="2" />
 					</Text.layoutData>
 				</Text>
-				<TableViewer x:name="contactTable" x:Style="BORDER | FULL_SELECTION">
+				<TableViewer x:name="contactTable" x:Style="BORDER | FULL_SELECTION" x:Name="evaluationTable">
 					<TableViewer.table headerVisible="true"
 						linesVisible="true">
 						<TableViewer.table.layoutData>

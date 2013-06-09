@@ -11,20 +11,23 @@ import org.slf4j.LoggerFactory;
 
 import de.hswt.hrm.catalog.model.Catalog;
 import de.hswt.hrm.catalog.model.ICatalogItem;
+import de.hswt.hrm.catalog.model.Target;
 import de.hswt.hrm.catalog.service.CatalogService;
 
 public class CatalogMatchingEventHandler {
 
     private IEclipseContext context;
     private CatalogService catalogService;
+    private ListViewer availableTarget;
+    private ListViewer matchedTarget;
+
+    private ListViewer availableCurrent;
+    private ListViewer matchedCurrent;
+
+    private ListViewer availableActivity;
+    private ListViewer matchedActivity;
 
     private final static Logger LOG = LoggerFactory.getLogger(CatalogMatchingEventHandler.class);
-    private final static String AT = "availableTarget";
-    private final static String MT = "matchedTarget";
-    private final static String AC = "availableCurrent";
-    private final static String MC = "matchedCurrent";
-    private final static String AA = "availableActivity";
-    private final static String MA = "matchedActivity";
 
     @Inject
     public CatalogMatchingEventHandler(IEclipseContext context, CatalogService catalogService) {
@@ -38,6 +41,7 @@ public class CatalogMatchingEventHandler {
 
         this.context = context;
         this.catalogService = catalogService;
+
     }
 
     /**
@@ -47,42 +51,51 @@ public class CatalogMatchingEventHandler {
      */
     public void availableTargetSelected(Event event) {
 
-        ListViewer source = (ListViewer) XWT.findElementByName(event.widget, AT);
-        ListViewer target = (ListViewer) XWT.findElementByName(event.widget, MT);
+        // Catalog c = (Catalog) catalogs.getElementAt(catalogs.getList().getSelectionIndex());
+        //
+        Target t = (Target) moveEntry(availableTarget, matchedTarget);
+        // try {
+        //
+        // if (t == null) {
+        // System.out.println("t is null");
+        // return;
+        // }
+        // else
+        // System.out.println(t.getName());
+        //
+        // catalogService.addToCatalog(c, t);
+        // }
+        // catch (SaveException e) {
+        // // TODO Auto-generated catch block
+        // e.printStackTrace();
+        // }
 
-        moveEntry(source, target);
-
-        if (target.getList().getItemCount() > 0) {
-            target.getList().setEnabled(true);
-            ((ListViewer) XWT.findElementByName(event.widget, AC)).getList().setEnabled(true);
+        if (matchedTarget.getList().getItemCount() > 0) {
+            matchedTarget.getList().setEnabled(true);
+            availableCurrent.getList().setEnabled(true);
         }
 
     }
 
     public void matchedTargetSelected(Event event) {
 
-        ListViewer source = (ListViewer) XWT.findElementByName(event.widget, MT);
-        ListViewer target = (ListViewer) XWT.findElementByName(event.widget, AT);
-        moveEntry(source, target);
+        moveEntry(matchedTarget, availableTarget);
 
-        if (source.getList().getItemCount() == 0) {
-            ((ListViewer) XWT.findElementByName(event.widget, MT)).getList().setEnabled(false);
-            ((ListViewer) XWT.findElementByName(event.widget, AC)).getList().setEnabled(false);
+        if (matchedTarget.getList().getItemCount() == 0) {
+            matchedTarget.getList().setEnabled(false);
+            availableCurrent.getList().setEnabled(false);
         }
 
     }
 
     public void availableCurrentSelected(Event event) {
 
-        ListViewer source = (ListViewer) XWT.findElementByName(event.widget, AC);
-        ListViewer target = (ListViewer) XWT.findElementByName(event.widget, MC);
+        moveEntry(availableCurrent, matchedCurrent);
 
-        moveEntry(source, target);
+        if (matchedCurrent.getList().getItemCount() > 0) {
 
-        if (target.getList().getItemCount() > 0) {
-
-            target.getList().setEnabled(true);
-            ((ListViewer) XWT.findElementByName(event.widget, AA)).getList().setEnabled(true);
+            matchedCurrent.getList().setEnabled(true);
+            availableActivity.getList().setEnabled(true);
 
         }
 
@@ -90,37 +103,29 @@ public class CatalogMatchingEventHandler {
 
     public void matchedCurrentSelected(Event event) {
 
-        ListViewer source = (ListViewer) XWT.findElementByName(event.widget, MC);
-        ListViewer target = (ListViewer) XWT.findElementByName(event.widget, AC);
-        moveEntry(source, target);
+        moveEntry(matchedCurrent, availableCurrent);
 
-        if (source.getList().getItemCount() == 0) {
-            ((ListViewer) XWT.findElementByName(event.widget, MC)).getList().setEnabled(false);
-            ((ListViewer) XWT.findElementByName(event.widget, AA)).getList().setEnabled(false);
+        if (matchedCurrent.getList().getItemCount() == 0) {
+            matchedCurrent.getList().setEnabled(false);
+            availableActivity.getList().setEnabled(false);
         }
 
     }
 
     public void availableActivitySelected(Event event) {
 
-        ListViewer source = (ListViewer) XWT.findElementByName(event.widget, AA);
-        ListViewer target = (ListViewer) XWT.findElementByName(event.widget, MA);
-        moveEntry(source, target);
-
-        if (source.getList().getItemCount() > 0) {
-            target.getList().setEnabled(true);
+        if (availableActivity.getList().getItemCount() > 0) {
+            matchedActivity.getList().setEnabled(true);
         }
 
     }
 
     public void matchedActivitySelected(Event event) {
 
-        ListViewer source = (ListViewer) XWT.findElementByName(event.widget, MA);
-        ListViewer target = (ListViewer) XWT.findElementByName(event.widget, AA);
-        moveEntry(source, target);
+        moveEntry(matchedActivity, availableActivity);
 
-        if (source.getList().getItemCount() == 0) {
-            source.getList().setEnabled(false);
+        if (matchedActivity.getList().getItemCount() == 0) {
+            matchedActivity.getList().setEnabled(false);
 
         }
 
@@ -136,24 +141,61 @@ public class CatalogMatchingEventHandler {
         ListViewer catalogs = (ListViewer) XWT.findElementByName(event.widget, "catalogs");
         Catalog c = (Catalog) catalogs.getElementAt(catalogs.getList().getSelectionIndex());
         if (c.getTargets().isEmpty()) {
-            System.out.println("empty Targets, using defualts");
+            System.out.println("empty Targets, using defaults");
         }
+        else
+            System.out.println("found matched target");
 
         ListViewer alv = (ListViewer) XWT.findElementByName(event.widget, "availableTarget");
         alv.getList().setEnabled(true);
+
     }
 
-    private void moveEntry(ListViewer source, ListViewer target) {
+    private ICatalogItem moveEntry(ListViewer source, ListViewer target) {
 
         ICatalogItem item = (ICatalogItem) source
                 .getElementAt(source.getList().getSelectionIndex());
         if (item == null) {
-            return;
+            return null;
         }
 
         target.add(item);
         source.remove(item);
 
+        return item;
+
+    }
+
+    public void setContext(IEclipseContext context) {
+        this.context = context;
+    }
+
+    public void setCatalogService(CatalogService catalogService) {
+        this.catalogService = catalogService;
+    }
+
+    public void setAvTarget(ListViewer availableTarget) {
+        this.availableTarget = availableTarget;
+    }
+
+    public void setMaTarget(ListViewer marchedTarget) {
+        this.matchedTarget = marchedTarget;
+    }
+
+    public void setAvCurrent(ListViewer availableCurrent) {
+        this.availableCurrent = availableCurrent;
+    }
+
+    public void setMaCurrent(ListViewer matchedCurrent) {
+        this.matchedCurrent = matchedCurrent;
+    }
+
+    public void setAvActivity(ListViewer availableActivity) {
+        this.availableActivity = availableActivity;
+    }
+
+    public void setMaActivity(ListViewer matchedActivity) {
+        this.matchedActivity = matchedActivity;
     }
 
 }

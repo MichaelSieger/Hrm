@@ -48,4 +48,8 @@ public class EvaluationService {
         evalDao.insert(evaluation);
     }
 
+    public void refresh(Evaluation selectedPlace) throws DatabaseException {
+
+    }
+
 }
