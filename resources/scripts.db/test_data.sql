@@ -88,8 +88,11 @@ INSERT INTO `hrm`.`Component` (`Component_Name`, `Component_Symbol_LR_FK`, `Comp
 INSERT INTO `hrm`.`Component` (`Component_Name`, `Component_Symbol_LR_FK`, `Component_Symbol_RL_FK`, `Component_Symbol_UD_FK`, `Component_Symbol_DU_FK`, `Component_Quantifier`, `Component_Category_FK`, `Component_Bool_Rating`, `Component_Attribute_FK`) VALUES ('Schacht', '11', NULL, '11', NULL, '2', '4', '3', '1');
 
 ------------------------------------------------------------
--- Insert 2 different biological flags in the `Biological_Flag` Table
+-- Insert 3 different biological flags in the `Biological_Flag` Table
 ------------------------------------------------------------
+INSERT INTO `hrm`.`Biological_Flag` (`Flag_Name`) VALUES ('Luftkeimzahl');
+INSERT INTO `hrm`.`Biological_Flag` (`Flag_Name`) VALUES ('Kontaktkeime');
+INSERT INTO `hrm`.`Biological_Flag` (`Flag_Name`) VALUES ('Befeuchterwasser');
 
 ------------------------------------------------------------
 -- Insert 2 different biological ratings in the `Biological_Rating` Table
