@@ -29,9 +29,6 @@ public class MPartSwitcher {
 		hideAll(service);
 		
 		part.setVisible(true);
-//		if (!id.equals(MAIN_ID)) {
-//			service.findPart(SIDEBAR_ID).setVisible(true);
-//		}
 	}
 	
 	private static void hideAll(EPartService service) {
