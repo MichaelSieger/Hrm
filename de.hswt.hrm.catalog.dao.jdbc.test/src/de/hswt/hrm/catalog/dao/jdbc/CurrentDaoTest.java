@@ -107,6 +107,20 @@ public class CurrentDaoTest extends AbstractDatabaseTest {
     }
     
     @Test
+    public void testDisconnectTargetAndCurrentState() throws DatabaseException {
+    	ICatalogDao catalogDao = mock(ICatalogDao.class);
+        TargetDao targetDao = new TargetDao(catalogDao);
+        CurrentDao currentDao = new CurrentDao(targetDao);
+        Current current = new Current("FirstCurrent", "FirstText");
+        current = currentDao.insert(current);
+        Target target = new Target("FirstTarget", "Some Text");
+        target = targetDao.insert(target);
+        currentDao.addToTarget(target, current);
+
+        currentDao.removeFromTarget(target, current);
+    }
+    
+    @Test
     public void testFindByTargetState() throws DatabaseException {
     	ICatalogDao catalogDao = mock(ICatalogDao.class);
         TargetDao targetDao = new TargetDao(catalogDao);

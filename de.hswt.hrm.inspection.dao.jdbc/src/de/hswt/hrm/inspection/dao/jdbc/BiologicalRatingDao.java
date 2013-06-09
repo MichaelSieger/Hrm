@@ -33,13 +33,77 @@ public class BiologicalRatingDao implements IBiologicalRatingDao {
 	
 	@Override
 	public Collection<BiologicalRating> findAll() throws DatabaseException {
-		throw new NotImplementedException();
+		SqlQueryBuilder builder = new SqlQueryBuilder();
+		builder.select(TABLE_NAME, 
+				TABLE_NAME + "." + Fields.ID,
+				TABLE_NAME + "." + Fields.BACTERIA, 
+				TABLE_NAME + "." + Fields.RATING, 
+				TABLE_NAME + "." + Fields.QUANTIFIER,
+				TABLE_NAME + "." + Fields.COMMENT, 
+				TABLE_NAME + "." + Fields.FK_COMPONENT, 
+				TABLE_NAME + "." + Fields.FK_REPORT, 
+				TABLE_NAME + "." + Fields.FK_FLAG, 
+				FLAG_TABLE_NAME + "." + FlagFields.NAME);
+		builder.join(FLAG_TABLE_NAME, Fields.FK_FLAG, FlagFields.ID);
+		
+		String query = builder.toString();
+		
+		try (Connection con = DatabaseFactory.getConnection()) {
+			try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
+				
+				ResultSet rs = stmt.executeQuery();
+				Collection<BiologicalRating> ratings = fromResultSet(rs);
+				rs.close();
+				
+				return ratings;
+			}
+		} catch (SQLException e) {
+			throw new DatabaseException("Unexpected error.", e);
+		}
 	}
 
 	@Override
-	public BiologicalRating findById(int id) throws DatabaseException,
+	public BiologicalRating findById(final int id) throws DatabaseException,
 			ElementNotFoundException {
-		throw new NotImplementedException();
+		
+		checkArgument(id >= 0, "ID must be non negative.");
+		
+		SqlQueryBuilder builder = new SqlQueryBuilder();
+		builder.select(TABLE_NAME, 
+				TABLE_NAME + "." + Fields.ID,
+				TABLE_NAME + "." + Fields.BACTERIA, 
+				TABLE_NAME + "." + Fields.RATING, 
+				TABLE_NAME + "." + Fields.QUANTIFIER,
+				TABLE_NAME + "." + Fields.COMMENT, 
+				TABLE_NAME + "." + Fields.FK_COMPONENT, 
+				TABLE_NAME + "." + Fields.FK_REPORT, 
+				TABLE_NAME + "." + Fields.FK_FLAG, 
+				FLAG_TABLE_NAME + "." + FlagFields.NAME);
+		builder.join(FLAG_TABLE_NAME, Fields.FK_FLAG, FlagFields.ID);
+		builder.where(Fields.ID);
+		
+		String query = builder.toString();
+		
+		try (Connection con = DatabaseFactory.getConnection()) {
+			try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
+				stmt.setParameter(Fields.ID, id);
+				
+				ResultSet rs = stmt.executeQuery();
+				Collection<BiologicalRating> ratings = fromResultSet(rs);
+				rs.close();
+				
+				if (ratings.isEmpty()) {
+					throw new ElementNotFoundException();
+				}
+				else if (ratings.size() > 1) {
+					throw new DatabaseException("ID '" + id + "' is not unique.");
+				}
+				
+				return ratings.iterator().next();
+			}
+		} catch (SQLException e) {
+			throw new DatabaseException("Unexpected error.", e);
+		}
 	}
 	
 	@Override

@@ -8,9 +8,11 @@ import java.util.Collection;
 import org.junit.Test;
 
 import de.hswt.hrm.catalog.dao.core.ICatalogDao;
+import de.hswt.hrm.catalog.model.Catalog;
 import de.hswt.hrm.catalog.model.Target;
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.ElementNotFoundException;
+import de.hswt.hrm.common.database.exception.SaveException;
 import de.hswt.hrm.test.database.AbstractDatabaseTest;
 
 public class TargetDaoTest extends AbstractDatabaseTest {
@@ -73,6 +75,31 @@ public class TargetDaoTest extends AbstractDatabaseTest {
 
         Collection<Target> target = dao.findAll();
         assertEquals("Count of retrieved target does not match.", 2, target.size());
+    }
+    
+    @Test
+    public void testConnectCatalogAndCurrentState() throws SaveException {
+    	ICatalogDao catalogDao = new CatalogDao();
+        TargetDao targetDao = new TargetDao(catalogDao);
+        Catalog catalog = new Catalog("Some Catalog");
+        Target target = new Target("FirstTarget", "Some Text");
+        
+        targetDao.addToCatalog(catalog, target);
+        
+        // FIXME: check if could retrieve the added connection
+    }
+    
+    @Test
+    public void testDisconnectCatalogAndCurrentState() throws DatabaseException {
+    	ICatalogDao catalogDao = new CatalogDao();
+        TargetDao targetDao = new TargetDao(catalogDao);
+        Catalog catalog = new Catalog("Some Catalog");
+        catalog = catalogDao.insert(catalog);
+        Target target = new Target("FirstTarget", "Some Text");
+        target = targetDao.insert(target);
+        targetDao.addToCatalog(catalog, target);
+        
+        targetDao.removeFromCatalog(catalog, target);
     }
 
     @Test
