@@ -25,6 +25,7 @@ import de.hswt.hrm.catalog.model.ICatalogItem;
 import de.hswt.hrm.catalog.model.Target;
 import de.hswt.hrm.catalog.service.CatalogService;
 import de.hswt.hrm.catalog.ui.event.CatalogMatchingEventHandler;
+import de.hswt.hrm.catalog.ui.filter.CatalogTextFilter;
 import de.hswt.hrm.common.ui.xwt.XwtHelper;
 
 public class CatalogMatchingPart {
@@ -158,6 +159,14 @@ public class CatalogMatchingPart {
         availableTargets.setInput(t);
         availablecurrents.setInput(c);
         availableactivities.setInput(a);
+
+        availableactivities.addFilter(new CatalogTextFilter());
+        availablecurrents.addFilter(new CatalogTextFilter());
+        availableTargets.addFilter(new CatalogTextFilter());
+
+        matchedTargets.addFilter(new CatalogTextFilter());
+        matchedActivities.addFilter(new CatalogTextFilter());
+        matchedCurrents.addFilter(new CatalogTextFilter());
 
         availableTargets.getList().setEnabled(false);
         availablecurrents.getList().setEnabled(false);

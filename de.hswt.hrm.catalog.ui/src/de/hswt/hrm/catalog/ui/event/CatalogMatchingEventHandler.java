@@ -5,7 +5,9 @@ import javax.inject.Inject;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.xwt.XWT;
 import org.eclipse.jface.viewers.ListViewer;
+import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Text;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,6 +15,7 @@ import de.hswt.hrm.catalog.model.Catalog;
 import de.hswt.hrm.catalog.model.ICatalogItem;
 import de.hswt.hrm.catalog.model.Target;
 import de.hswt.hrm.catalog.service.CatalogService;
+import de.hswt.hrm.catalog.ui.filter.CatalogTextFilter;
 
 public class CatalogMatchingEventHandler {
 
@@ -27,6 +30,7 @@ public class CatalogMatchingEventHandler {
     private ListViewer matchedActivity;
 
     private static final Logger LOG = LoggerFactory.getLogger(CatalogMatchingEventHandler.class);
+    private static final String DEFAULT_SEARCH_STRING = "Search";
 
     @Inject
     public CatalogMatchingEventHandler(IEclipseContext context, CatalogService catalogService) {
@@ -53,7 +57,7 @@ public class CatalogMatchingEventHandler {
         // ListViewer catalogs = (ListViewer) XWT.findElementByName(event.widget, "catalogs");
         // Catalog c = (Catalog) catalogs.getElementAt(catalogs.getList().getSelectionIndex());
         //
-         Target t = (Target) moveEntry(availableTarget, matchedTarget);
+        Target t = (Target) moveEntry(availableTarget, matchedTarget);
         // try {
         //
         // if (t == null) {
@@ -162,6 +166,35 @@ public class CatalogMatchingEventHandler {
 
         availableTarget.getList().setEnabled(true);
 
+    }
+
+    public void enterText(Event event) {
+        Text text = (Text) event.widget;
+        if (text.getText().equals(DEFAULT_SEARCH_STRING)) {
+            text.setText("");
+        }
+    }
+
+    public void leaveText(Event event) {
+
+        Text text = (Text) event.widget;
+        if (text.getText().isEmpty()) {
+            text.setText(DEFAULT_SEARCH_STRING);
+        }
+        availableActivity.refresh();
+        availableCurrent.refresh();
+        availableTarget.refresh();
+        matchedActivity.refresh();
+        matchedCurrent.refresh();
+        matchedTarget.refresh();
+
+    }
+
+    public void onKeyUp(Event event) {
+        Text searchText = (Text) event.widget;
+        CatalogTextFilter ctf = (CatalogTextFilter) availableActivity.getFilters()[1];
+        ctf.setSearchString(searchText.getText());
+        availableActivity.refresh();
     }
 
     public void setContext(IEclipseContext context) {
