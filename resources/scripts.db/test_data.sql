@@ -125,9 +125,9 @@ INSERT INTO `hrm`.`State_Current` (`State_Current_Name`, `State_Current_Text`) V
 ------------------------------------------------------------
 -- Insert 3 different target states in the `State_Target` Table
 ------------------------------------------------------------
--- INSERT INTO `hrm`.`State_Target` (`State_Target_Name`, `State_Target_Text`) VALUES ('Soll-Status 1', 'Ich bin der erste Soll-Zustand');
--- INSERT INTO `hrm`.`State_Target` (`State_Target_Name`, `State_Target_Text`) VALUES ('Soll-Status 2', 'Ich bin der zweite Soll-Zustand');
--- INSERT INTO `hrm`.`State_Target` (`State_Target_Name`, `State_Target_Text`) VALUES ('Soll-Status 3', 'Ich bin der dritte Soll-Zustand');
+INSERT INTO `hrm`.`State_Target` (`State_Target_Name`, `State_Target_Text`) VALUES ('Soll-Status 1', 'Ich bin der erste Soll-Zustand');
+INSERT INTO `hrm`.`State_Target` (`State_Target_Name`, `State_Target_Text`) VALUES ('Soll-Status 2', 'Ich bin der zweite Soll-Zustand');
+INSERT INTO `hrm`.`State_Target` (`State_Target_Name`, `State_Target_Text`) VALUES ('Soll-Status 3', 'Ich bin der dritte Soll-Zustand');
 
 ------------------------------------------------------------
 -- Insert 3 different activities in the `State_Activity` Table
