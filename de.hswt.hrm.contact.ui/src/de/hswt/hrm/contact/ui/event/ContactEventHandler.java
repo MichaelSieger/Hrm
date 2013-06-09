@@ -26,7 +26,6 @@ public class ContactEventHandler {
     private final static Logger LOG = LoggerFactory.getLogger(ContactEventHandler.class);
     private static final String DEFAULT_SEARCH_STRING = "Suche";
     private static final String EMPTY = "";
-    private Contact contact;
 
     private final IEclipseContext context;
     private final ContactService contactService;
@@ -72,10 +71,10 @@ public class ContactEventHandler {
      */
     @SuppressWarnings("unchecked")
     public void buttonSelected(Event event) {
-        contact = null;
+
         Button b = (Button) event.widget;
         Optional<Contact> newContact = ContactPartUtil.showWizard(context,
-                event.display.getActiveShell(), Optional.fromNullable(contact));
+                event.display.getActiveShell(), Optional.<Contact> absent());
 
         TableViewer tv = (TableViewer) XWT.findElementByName(b, "contactTable");
 
