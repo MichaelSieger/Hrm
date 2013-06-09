@@ -24,7 +24,7 @@ import de.hswt.hrm.contact.ui.part.ContactPartUtil;
 
 public class ContactEventHandler {
     private final static Logger LOG = LoggerFactory.getLogger(ContactEventHandler.class);
-    private static final String DEFAULT_SEARCH_STRING = "Suche";
+    private static final String DEFAULT_SEARCH_STRING = "Search";
     private static final String EMPTY = "";
 
     private final IEclipseContext context;

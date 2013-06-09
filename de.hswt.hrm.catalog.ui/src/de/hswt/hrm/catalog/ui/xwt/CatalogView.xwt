@@ -43,9 +43,9 @@
 	<Label/>
 	<Label/>
 	<Button x:Style="RADIO" text="All" SelectionEvent="onSelection" />
-	<Button x:Style="RADIO" text="Soll" SelectionEvent="onSelection" />
-	<Button x:Style="RADIO" text="Ist" SelectionEvent="onSelection" />
-	<Button x:Style="RADIO" text="Maßnahmen" SelectionEvent="onSelection">
+	<Button x:Style="RADIO" text="Target" SelectionEvent="onSelection" />
+	<Button x:Style="RADIO" text="Current" SelectionEvent="onSelection" />
+	<Button x:Style="RADIO" text="Activity" SelectionEvent="onSelection">
 		<Button.layoutData>
 			<GridData grabExcessVerticalSpace="true" verticalAlignment="TOP" />
 		</Button.layoutData>
