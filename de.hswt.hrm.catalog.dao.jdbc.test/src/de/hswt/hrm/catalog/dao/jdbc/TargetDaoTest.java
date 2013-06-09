@@ -88,6 +88,19 @@ public class TargetDaoTest extends AbstractDatabaseTest {
         
         // FIXME: check if could retrieve the added connection
     }
+    
+    @Test
+    public void testDisconnectCatalogAndCurrentState() throws DatabaseException {
+    	ICatalogDao catalogDao = new CatalogDao();
+        TargetDao targetDao = new TargetDao(catalogDao);
+        Catalog catalog = new Catalog("Some Catalog");
+        catalog = catalogDao.insert(catalog);
+        Target target = new Target("FirstTarget", "Some Text");
+        target = targetDao.insert(target);
+        targetDao.addToCatalog(catalog, target);
+        
+        targetDao.removeFromCatalog(catalog, target);
+    }
 
     @Test
     public void testFindByIdTarget() throws ElementNotFoundException, DatabaseException {

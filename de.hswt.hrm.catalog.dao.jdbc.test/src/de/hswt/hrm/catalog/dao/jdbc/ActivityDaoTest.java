@@ -11,6 +11,7 @@ import org.junit.Test;
 
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.ElementNotFoundException;
+import de.hswt.hrm.common.database.exception.SaveException;
 import de.hswt.hrm.catalog.dao.core.IActivityDao;
 import de.hswt.hrm.catalog.dao.core.ICurrentDao;
 import de.hswt.hrm.catalog.dao.core.ITargetDao;
@@ -96,7 +97,6 @@ public class ActivityDaoTest extends AbstractDatabaseTest {
 
         Activity requested = dao.findById(parsed.getId());
         compareActivityFields(expected, requested);
-
     }
     
     @Test
@@ -116,4 +116,30 @@ public class ActivityDaoTest extends AbstractDatabaseTest {
         assertEquals("Wrong number of current states returned.", 2, activityStates.size());        
     }
 
+    @Test
+    public void testConnectActivityAndCurrentState() throws SaveException {
+    	ITargetDao targetDao = mock(ITargetDao.class);
+    	ICurrentDao currentDao = new CurrentDao(targetDao);
+    	ActivityDao activityDao = new ActivityDao(currentDao);
+        Current current = new Current("FirstCurrent", "FirstText");
+        Activity activity = new Activity("Some Activity", "Some Text...");
+        
+        activityDao.addToCurrent(current, activity);
+        
+        // FIXME: check if could retrieve the added connection
+    }
+    
+    @Test
+    public void testDisconnectActivityAndCurrentState() throws DatabaseException {
+    	ITargetDao targetDao = mock(ITargetDao.class);
+    	ICurrentDao currentDao = new CurrentDao(targetDao);
+    	ActivityDao activityDao = new ActivityDao(currentDao);
+        Current current = new Current("FirstCurrent", "FirstText");
+        current = currentDao.insert(current);
+        Activity activity = new Activity("Some Activity", "Some Text...");
+        activity = activityDao.insert(activity);
+        activityDao.addToCurrent(current, activity);
+
+        activityDao.removeFromCurrent(current, activity);
+    }
 }
