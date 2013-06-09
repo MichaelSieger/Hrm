@@ -176,6 +176,10 @@ INSERT INTO `hrm`.`Component_Physical_Rating` (`Component_Physical_Rating_Compon
 -- Insert 3 different component catalogs in the `Component_Catalog` Table
 ------------------------------------------------------------
 
+INSERT INTO `hrm`.`Component_Catalog` (`Component_Catalog_Component_FK`, `Component_Catalog_Target_FK`, `Component_Catalog_Current_FK`, `Component_Catalog_Activity_FK`, `Component_Catalog_Picture_FK`, `Component_Catalog_Priority`) VALUES ('1', '2', '2', '2', '2', '1');
+INSERT INTO `hrm`.`Component_Catalog` (`Component_Catalog_Component_FK`, `Component_Catalog_Target_FK`, `Component_Catalog_Current_FK`, `Component_Catalog_Activity_FK`, `Component_Catalog_Picture_FK`, `Component_Catalog_Priority`) VALUES ('2', '3', '3', '3', '4', '2');
+INSERT INTO `hrm`.`Component_Catalog` (`Component_Catalog_Component_FK`, `Component_Catalog_Target_FK`, `Component_Catalog_Current_FK`, `Component_Catalog_Activity_FK`, `Component_Catalog_Picture_FK`, `Component_Catalog_Priority`) VALUES ('3', '1', '1', '1', '6', '1');
+
 ------------------------------------------------------------
 -- Insert 3 different picture catalogs in the `Picture_Catalog` Table
 ------------------------------------------------------------
