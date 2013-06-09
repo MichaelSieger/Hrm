@@ -132,9 +132,9 @@ INSERT INTO `hrm`.`State_Target` (`State_Target_Name`, `State_Target_Text`) VALU
 ------------------------------------------------------------
 -- Insert 3 different activities in the `State_Activity` Table
 ------------------------------------------------------------
--- INSERT INTO `hrm`.`State_Activity` (`State_Activity_Name`, `State_Activity_Text`) VALUES ('Maßnahme 1', 'Ich bin die erste Maßnahme');
--- INSERT INTO `hrm`.`State_Activity` (`State_Activity_Name`, `State_Activity_Text`) VALUES ('Maßnahme 2', 'Ich bin die zweite Maßnahme');
--- INSERT INTO `hrm`.`State_Activity` (`State_Activity_Name`, `State_Activity_Text`) VALUES ('Maßnahme 3', 'Ich bin die dritte Maßnahme');
+INSERT INTO `hrm`.`State_Activity` (`State_Activity_Name`, `State_Activity_Text`) VALUES ('Maßnahme 1', 'Ich bin die erste Maßnahme');
+INSERT INTO `hrm`.`State_Activity` (`State_Activity_Name`, `State_Activity_Text`) VALUES ('Maßnahme 2', 'Ich bin die zweite Maßnahme');
+INSERT INTO `hrm`.`State_Activity` (`State_Activity_Name`, `State_Activity_Text`) VALUES ('Maßnahme 3', 'Ich bin die dritte Maßnahme');
 
 ------------------------------------------------------------
 -- Connect 3 different catalog with currents in the `Catalog_Current` Table
