@@ -111,6 +111,9 @@ public class CatalogMatchingEventHandler {
 
         ListViewer catalogs = (ListViewer) XWT.findElementByName(event.widget, "catalogs");
         Catalog c = (Catalog) catalogs.getElementAt(catalogs.getList().getSelectionIndex());
+        if (c.getTargets().isEmpty()) {
+            System.out.println("empty Targets, using defualts");
+        }
 
         ListViewer alv = (ListViewer) XWT.findElementByName(event.widget, "availableTarget");
         alv.getList().setEnabled(true);

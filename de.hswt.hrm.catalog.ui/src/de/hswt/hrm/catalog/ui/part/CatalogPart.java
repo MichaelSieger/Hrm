@@ -78,14 +78,10 @@ public class CatalogPart {
                     new Listener() {
                         @Override
                         public void handleEvent(Event event) {
-                            // service.findPart("Clients").setVisible(false);
-                            // service.findPart("Places").setVisible(false);
-                            // service.findPart("Plants").setVisible(false);
-                            // service.findPart("Scheme").setVisible(false);
-                            // service.findPart("de.hswt.hrm.catalog.ui.catalog").setVisible(false);
-                            // service.findPart("Category").setVisible(false);
-                            service.findPart("de.hswt.hrm.catalog.ui.matched").setVisible(true);
-                            service.showPart("de.hswt.hrm.catalog.ui.matched", PartState.VISIBLE);
+
+                            service.findPart("de.hswt.hrm.catalog.ui.matching").setVisible(true);
+                            service.showPart("de.hswt.hrm.catalog.ui.matching", PartState.VISIBLE);
+                            service.findPart("de.hswt.hrm.catalog.ui.catalog").setVisible(false);
                         }
                     });
 

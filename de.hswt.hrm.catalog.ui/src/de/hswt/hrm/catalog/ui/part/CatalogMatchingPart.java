@@ -65,18 +65,12 @@ public class CatalogMatchingPart {
             initalize(matchedTargets);
             initalize(matchedActivities);
             initalize(matchedCurrents);
-
-            catalogs.setContentProvider(ArrayContentProvider.getInstance());
-            catalogs.setLabelProvider(new LabelProvider() {
-                @Override
-                public String getText(Object element) {
-                    Catalog c = (Catalog) element;
-                    return c.getName();
-                }
-            });
+            initializeCatalogs(catalogs);
 
             Collection<Catalog> catalogsFromDB = catalogService.findAllCatalog();
+            
             Collection<ICatalogItem> items = catalogService.findAllCatalogItem();
+            
             fillAvailableViewer(items);
 
             catalogs.setInput(catalogsFromDB);
@@ -85,6 +79,17 @@ public class CatalogMatchingPart {
         catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void initializeCatalogs(ListViewer catalogs2) {
+        catalogs.setContentProvider(ArrayContentProvider.getInstance());
+        catalogs.setLabelProvider(new LabelProvider() {
+            @Override
+            public String getText(Object element) {
+                Catalog c = (Catalog) element;
+                return c.getName();
+            }
+        });
     }
 
     /**
