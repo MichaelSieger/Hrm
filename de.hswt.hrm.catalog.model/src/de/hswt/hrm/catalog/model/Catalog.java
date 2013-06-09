@@ -3,6 +3,7 @@ package de.hswt.hrm.catalog.model;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Strings.isNullOrEmpty;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -24,6 +25,8 @@ public final class Catalog {
 
         this.id = id;
         setName(name);
+        Collection<Target> targets = new ArrayList<>();
+        setTargets(targets);
     }
 
     public String getName() {

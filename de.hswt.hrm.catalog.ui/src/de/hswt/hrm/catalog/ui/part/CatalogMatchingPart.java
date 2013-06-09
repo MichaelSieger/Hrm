@@ -68,12 +68,20 @@ public class CatalogMatchingPart {
             initializeCatalogs(catalogs);
 
             Collection<Catalog> catalogsFromDB = catalogService.findAllCatalog();
-            
+
             Collection<ICatalogItem> items = catalogService.findAllCatalogItem();
-            
+
             fillAvailableViewer(items);
 
-            catalogs.setInput(catalogsFromDB);
+            // catalogs.setInput(catalogsFromDB);
+            /*
+             * Dummy Data until DB is incomplete
+             */
+
+            ArrayList<Catalog> dummy = new ArrayList<>();
+            dummy.add(new Catalog("Catalog 1"));
+            dummy.add(new Catalog("Catalog 2"));
+            catalogs.setInput(dummy);
 
         }
         catch (Exception e) {
