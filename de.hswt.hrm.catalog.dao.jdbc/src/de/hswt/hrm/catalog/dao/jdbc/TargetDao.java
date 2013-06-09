@@ -187,7 +187,6 @@ public class TargetDao implements ITargetDao {
     			stmt.setInt(1, catalog.getId());
     			stmt.setInt(2, target.getId());
     			
-    			
     			int affected = stmt.executeUpdate();
     			if (affected < 0) {
     				con.rollback();
