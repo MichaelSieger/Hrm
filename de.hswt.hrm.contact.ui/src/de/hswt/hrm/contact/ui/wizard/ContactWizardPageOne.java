@@ -128,14 +128,20 @@ public class ContactWizardPageOne extends WizardPage {
 
     @Override
     public boolean isPageComplete() {
-        boolean validText;
-        for (Text textField : getMandatoryWidgets().values()) {
-            if (textField.getText().length() == 0) {
-                setErrorMessage("Feld \""+textField.getToolTipText()+"\" darf nicht leer sein.");
+        // Mandatory fields
+        HashMap<String, Text> mandatory = getMandatoryWidgets();
+        // Sorted array
+        Text[] manArray = {mandatory.get("firstName"),mandatory.get("lastName"),mandatory.get("street"),
+                mandatory.get("streetNumber"),mandatory.get("zipCode"),mandatory.get("city")};
+        boolean isValid;
+        for (int i=0; i<manArray.length; i++){
+            isValid = checkValidity(manArray[i]);
+            if (manArray[i].getText().length() == 0) {
+                setErrorMessage("Field \""+manArray[i].getToolTipText()+"\" is mandatory.");
                 return false;
             }
-            validText = checkValidity(textField);
-            if (!validText) {
+            if (!isValid) {
+                setErrorMessage("Input for \""+manArray[i].getToolTipText()+"\" is invalid.");
                 return false;
             }
         }
@@ -144,23 +150,19 @@ public class ContactWizardPageOne extends WizardPage {
     }
     
     private boolean checkValidity(Text textField) {
-        String toolTipText = textField.getToolTipText();
-        if (toolTipText.equals("PLZ") && !plzVal.isValid(textField.getText())) {
-            setErrorMessage("PLZ ist ungültig!");
-            return false;
-        } else if (toolTipText.equals("Vorname") || toolTipText.equals("Nachname") || toolTipText.equals("Stadt")) {
-            if (!textOnlyVal.isValid(textField.getText())) {
-                setErrorMessage(toolTipText+" ist ungültig!");
-                return false;
-            }
-        } else if (toolTipText.equals("Hausnummer") && !streetNoVal.isValid(textField.getText())) {
-            setErrorMessage("Hausnummer ist ungültig!");
+        String toolTip = textField.getToolTipText();
+        
+        boolean isInvalidText = (toolTip.equals("Vorname") || toolTip.equals("Nachname") || toolTip.equals("Stadt"))
+                &&(!textOnlyVal.isValid(textField.getText()));
+        boolean isInvalidStreetNumber = (toolTip.equals("Hausnummer")) && (!streetNoVal.isValid(textField.getText()));
+        boolean isInvalidZipCode = (toolTip.equals("PLZ")) && (!plzVal.isValid(textField.getText()));
+        
+        if (isInvalidText || isInvalidStreetNumber || isInvalidZipCode) {
             return false;
         }
-        setErrorMessage(null);
         return true;
     }
-    
+            
     public void setKeyListener() {
         HashMap<String, Text> widgets = getMandatoryWidgets();
         for (Text text : widgets.values()) {

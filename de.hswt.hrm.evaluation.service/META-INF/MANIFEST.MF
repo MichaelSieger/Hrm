@@ -13,3 +13,4 @@ Require-Bundle: org.eclipse.e4.core.di;bundle-version="1.2.0",
 Import-Package: de.hswt.hrm.common.database.exception,
  de.hswt.hrm.evaluation.dao.core,
  de.hswt.hrm.evaluation.model
+Export-Package: de.hswt.hrm.evaluation.service

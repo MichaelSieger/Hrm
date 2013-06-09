@@ -24,6 +24,7 @@ Require-Bundle: javax.annotation,
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Import-Package: de.hswt.hrm.catalog.model,
  de.hswt.hrm.catalog.service,
+ de.hswt.hrm.catalog.ui.part,
  de.hswt.hrm.common.database.exception,
  de.hswt.hrm.common.locking.jdbc,
  de.hswt.hrm.common.ui.swt.table,
@@ -35,4 +36,5 @@ Import-Package: de.hswt.hrm.catalog.model,
  org.eclipse.e4.xwt.forms,
  org.eclipse.swt.widgets,
  org.eclipse.ui.forms.widgets
-Export-Package: de.hswt.hrm.catalog.ui.event
+Export-Package: de.hswt.hrm.catalog.ui.event,
+ de.hswt.hrm.catalog.ui.part

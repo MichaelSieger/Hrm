@@ -21,9 +21,9 @@ import de.hswt.hrm.common.ui.swt.table.ColumnDescription;
 
 public final class CatalogPartUtil {
 
-    private final static String TARGET = "Soll";
-    private final static String CURRENT = "Ist";
-    private final static String ACTIVITY = "Maßnahme";
+    private final static String TARGET = "Target";
+    private final static String CURRENT = "Current";
+    private final static String ACTIVITY = "Activity";
 
     public CatalogPartUtil() {
 
