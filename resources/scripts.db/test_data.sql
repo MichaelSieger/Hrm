@@ -154,9 +154,9 @@ INSERT INTO `hrm`.`Catalog_Target` (`Category_Target_State_Target_FK`, `Category
 ------------------------------------------------------------
 -- Connect 3 different catalog with activities the `Catalog_Activity` Table
 ------------------------------------------------------------
--- INSERT INTO `hrm`.`Catalog_Activity` (`Category_Activity_State_Current_FK`, `Category_Activity_State_Activity_FK`) VALUES ('1', '2');
--- INSERT INTO `hrm`.`Catalog_Activity` (`Category_Activity_State_Current_FK`, `Category_Activity_State_Activity_FK`) VALUES ('2', '1');
--- INSERT INTO `hrm`.`Catalog_Activity` (`Category_Activity_State_Current_FK`, `Category_Activity_State_Activity_FK`) VALUES ('2', '3');
+INSERT INTO `hrm`.`Catalog_Activity` (`Category_Activity_State_Current_FK`, `Category_Activity_State_Activity_FK`) VALUES ('1', '2');
+INSERT INTO `hrm`.`Catalog_Activity` (`Category_Activity_State_Current_FK`, `Category_Activity_State_Activity_FK`) VALUES ('2', '1');
+INSERT INTO `hrm`.`Catalog_Activity` (`Category_Activity_State_Current_FK`, `Category_Activity_State_Activity_FK`) VALUES ('2', '3');
 
 ------------------------------------------------------------
 -- Insert 2 different pictures in the `Picture` Table
