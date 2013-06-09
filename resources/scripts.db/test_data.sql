@@ -51,10 +51,10 @@ INSERT INTO `hrm`.`Catalog` (`Catalog_Name`) VALUES ('Katalog_Heizung');
 ------------------------------------------------------------
 -- Insert 4 different categories in the `Category` Table
 ------------------------------------------------------------
--- INSERT INTO `hrm`.`Category` (`Category_Name`, `Category_Height`, `Category_Width`, `Category_Default_Quantifier`, `Category_Default_Bool_Rating`, `Category_Catalog_FK`) VALUES ('Filter', '2', '2', '1', '1', '1');
--- INSERT INTO `hrm`.`Category` (`Category_Name`, `Category_Height`, `Category_Width`, `Category_Default_Quantifier`, `Category_Default_Bool_Rating`, `Category_Catalog_FK`) VALUES ('Ventilation', '2', '2', '1', '1', '2');
--- INSERT INTO `hrm`.`Category` (`Category_Name`, `Category_Height`, `Category_Width`, `Category_Default_Quantifier`, `Category_Default_Bool_Rating`, `Category_Catalog_FK`) VALUES ('Zugangspunkt', '1', '1', '3', '0', '3');
--- INSERT INTO `hrm`.`Category` (`Category_Name`, `Category_Height`, `Category_Width`, `Category_Default_Quantifier`, `Category_Default_Bool_Rating`, `Category_Catalog_FK`) VALUES ('Schacht', '4', '1', '3', '0', '1');
+INSERT INTO `hrm`.`Category` (`Category_Name`, `Category_Height`, `Category_Width`, `Category_Default_Quantifier`, `Category_Default_Bool_Rating`, `Category_Catalog_FK`) VALUES ('Filter', '2', '2', '1', '1', '1');
+INSERT INTO `hrm`.`Category` (`Category_Name`, `Category_Height`, `Category_Width`, `Category_Default_Quantifier`, `Category_Default_Bool_Rating`, `Category_Catalog_FK`) VALUES ('Ventilation', '2', '2', '1', '1', '2');
+INSERT INTO `hrm`.`Category` (`Category_Name`, `Category_Height`, `Category_Width`, `Category_Default_Quantifier`, `Category_Default_Bool_Rating`, `Category_Catalog_FK`) VALUES ('Zugangspunkt', '1', '1', '3', '0', '3');
+INSERT INTO `hrm`.`Category` (`Category_Name`, `Category_Height`, `Category_Width`, `Category_Default_Quantifier`, `Category_Default_Bool_Rating`, `Category_Catalog_FK`) VALUES ('Schacht', '4', '1', '3', '0', '1');
 
 ------------------------------------------------------------
 -- Insert 11 different component pictures in the `Component_Picture` Table
