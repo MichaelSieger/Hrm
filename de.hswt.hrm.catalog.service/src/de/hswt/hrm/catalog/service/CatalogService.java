@@ -129,12 +129,24 @@ public class CatalogService {
 		currentDao.addToTarget(target, current);
 	}
 	
+	public void removeFromTarget(Target target, Current current) throws DatabaseException {
+		currentDao.removeFromTarget(target, current);
+	}
+	
 	public void addToCurrent(Current current, Activity activity) throws SaveException {
 		activityDao.addToCurrent(current, activity);
 	}
 	
+	public void removeFromCurrent(Current current, Activity activity) throws DatabaseException {
+		activityDao.removeFromCurrent(current, activity);
+	}
+	
 	public void addToCatalog(Catalog catalog, Target target) throws SaveException {
 		targetDao.addToCatalog(catalog, target);
+	}
+	
+	public void removeFromCatalog(Catalog catalog, Target target) throws DatabaseException {
+		targetDao.removeFromCatalog(catalog, target);
 	}
 
 	public Collection<Catalog> findAllCatalog() throws DatabaseException {

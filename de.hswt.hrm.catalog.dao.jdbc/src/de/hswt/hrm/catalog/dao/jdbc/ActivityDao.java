@@ -206,8 +206,48 @@ public class ActivityDao implements IActivityDao {
         catch (SQLException | DatabaseException e) {
             throw new SaveException(e);
         }
-		
 	}
+    
+    @Override
+    public void removeFromCurrent(final Current current, final Activity activity) 
+    		throws DatabaseException {
+    	
+    	checkNotNull(current, "Current is mandatory.");
+    	checkNotNull(activity, "Activity is mandatory.");
+    	checkArgument(current.getId() >= 0, "Current must have a valid ID.");
+    	checkArgument(activity.getId() >= 0, "Activity must have a valid ID.");
+    	
+    	StringBuilder builder = new StringBuilder();
+    	builder.append("DELETE FROM ").append(CROSS_TABLE_NAME);
+    	builder.append(" WHERE ");
+    	builder.append(Fields.CROSS_CURRENT_FK).append(" = ?");
+    	builder.append(" AND ");
+    	builder.append(Fields.CROSS_ACTIVITY_FK).append(" = ?;");
+    	
+    	String query = builder.toString();
+    	
+    	try (Connection con = DatabaseFactory.getConnection()) {
+    		con.setAutoCommit(false);
+    		
+    		try (PreparedStatement stmt = con.prepareStatement(query)) {
+    			stmt.setInt(1, current.getId());
+    			stmt.setInt(2, activity.getId());
+    			
+    			
+    			int affected = stmt.executeUpdate();
+    			if (affected < 0) {
+    				con.rollback();
+    				throw new ElementNotFoundException();
+    			}
+    			else if (affected > 1) {
+    				con.rollback();
+    				throw new DatabaseException("Delete would accidently affect multiple rows.");
+    			}
+    		}
+    	} catch (SQLException e) {
+			throw new DatabaseException("Unkown error.", e);
+		}
+    }
 
     @Override
     public void update(Activity activity) throws ElementNotFoundException, SaveException {
