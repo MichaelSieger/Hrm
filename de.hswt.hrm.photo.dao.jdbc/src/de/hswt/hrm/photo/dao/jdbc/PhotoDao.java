@@ -1,5 +1,6 @@
 package de.hswt.hrm.photo.dao.jdbc;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.sql.Connection;
@@ -54,7 +55,35 @@ public class PhotoDao implements IPhotoDao {
 
     @Override
     public Photo findById(int id) throws DatabaseException, ElementNotFoundException {
-        return null;
+        checkArgument(id >= 0, "Id must not be negative.");
+
+        SqlQueryBuilder builder = new SqlQueryBuilder();
+        builder.select(TABLE_NAME, Fields.ID, Fields.BLOB, Fields.NAME, Fields.LABEL);
+        builder.where(Fields.ID);
+
+        final String query = builder.toString();
+
+        try (Connection con = DatabaseFactory.getConnection()) {
+            try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
+                stmt.setParameter(Fields.ID, id);
+                ResultSet result = stmt.executeQuery();
+
+                Collection<Photo> photos = fromResultSet(result);
+                DbUtils.closeQuietly(result);
+
+                if (photos.size() < 1) {
+                    throw new ElementNotFoundException();
+                }
+                else if (photos.size() > 1) {
+                    throw new DatabaseException("ID '" + id + "' is not unique.");
+                }
+
+                return photos.iterator().next();
+            }
+        }
+        catch (SQLException e) {
+            throw new DatabaseException(e);
+        }
     }
 
     @Override
