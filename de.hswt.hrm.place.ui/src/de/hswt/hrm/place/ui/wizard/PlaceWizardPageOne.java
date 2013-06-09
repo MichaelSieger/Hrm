@@ -22,14 +22,15 @@ import de.hswt.hrm.place.model.Place;
 
 public class PlaceWizardPageOne extends WizardPage {
     private static final Logger LOG = LoggerFactory.getLogger(PlaceWizardPageOne.class);
-
-    private Composite container;
-    private HashMap<String, Text> widgets;
-    private Optional<Place> place;
-
-    private RegexValidator plzVal = new RegexValidator("[0-9]{5}");
-    private RegexValidator textOnlyVal = new RegexValidator("([A-ZÄÖÜ]{1}[a-zäöü]+[\\s]?[\\-]?)*");
+    
+	private Composite container;
+	private HashMap<String, Text> widgets;
+	private Optional<Place> place;
+	
+	private RegexValidator plzVal = new RegexValidator("[0-9]{5}");
+    private RegexValidator cityVal = new RegexValidator("([A-ZÄÖÜ]{1}[a-zäöü]+[\\s]?[\\-]?)*");
     private RegexValidator streetNoVal = new RegexValidator("[0-9]+[a-z]?");
+
 
     protected PlaceWizardPageOne(String pageName, Optional<Place> place) {
         super(pageName);
@@ -44,7 +45,7 @@ public class PlaceWizardPageOne extends WizardPage {
 
         return "Add a new location.";
     }
-
+    
     public Place getPlace() {
         // We have to return a valid place here!
         return updatePlace(place);
@@ -52,27 +53,27 @@ public class PlaceWizardPageOne extends WizardPage {
 
     @Override
     public void createControl(Composite parent) {
-        parent.setLayout(new PageContainerFillLayout());
+    	parent.setLayout(new PageContainerFillLayout());
 
-        URL url = PlaceWizardPageOne.class.getClassLoader().getResource(
+    	URL url = PlaceWizardPageOne.class.getClassLoader().getResource(
                 "de/hswt/hrm/place/ui/xwt/PlaceWizardPageOne" + IConstants.XWT_EXTENSION_SUFFIX);
-        try {
-            container = (Composite) XWTForms.load(parent, url);
-        }
-        catch (Exception e) {
-            LOG.error("Could not load PlaceWizardPageOne XWT file.", e);
-            return;
-        }
-
+    	try {
+    		container = (Composite) XWTForms.load(parent, url);
+		} 
+    	catch (Exception e) {
+    	    LOG.error("Could not load PlaceWizardPageOne XWT file.", e);
+    	    return;
+		}
+    	
         if (place.isPresent()) {
             updateFields(place.get());
         }
-
-        setKeyListener();
+    	
+    	setKeyListener();
         setControl(container);
         setPageComplete(false);
     }
-
+    
     private void updateFields(Place place) {
         HashMap<String, Text> widgets = getWidgets();
         widgets.get(Fields.NAME).setText(place.getPlaceName());
@@ -81,7 +82,7 @@ public class PlaceWizardPageOne extends WizardPage {
         widgets.get(Fields.ZIP_CODE).setText(place.getPostCode());
         widgets.get(Fields.CITY).setText(place.getCity());
     }
-
+    
     private Place updatePlace(Optional<Place> place) {
         HashMap<String, Text> widgets = getWidgets();
         String name = widgets.get(Fields.NAME).getText();
@@ -89,7 +90,7 @@ public class PlaceWizardPageOne extends WizardPage {
         String streetNo = widgets.get(Fields.STREET_NO).getText();
         String zipCode = widgets.get(Fields.ZIP_CODE).getText();
         String city = widgets.get(Fields.CITY).getText();
-
+        
         if (place.isPresent()) {
             Place p = place.get();
             p.setPlaceName(name);
@@ -104,7 +105,7 @@ public class PlaceWizardPageOne extends WizardPage {
         return p;
     }
 
-    public HashMap<String, Text> getWidgets() {
+    public HashMap<String,Text> getWidgets() {
         // We cache the widgets for later calls
         if (widgets == null) {
             widgets = new HashMap<String, Text>();
@@ -114,47 +115,47 @@ public class PlaceWizardPageOne extends WizardPage {
             widgets.put(Fields.ZIP_CODE, (Text) XWT.findElementByName(container, Fields.ZIP_CODE));
             widgets.put(Fields.CITY, (Text) XWT.findElementByName(container, Fields.CITY));
         }
-
-        return widgets;
+        
+        return widgets; 
     }
-
+    
     @Override
-    public boolean isPageComplete() {
-        boolean validText;
-        for (Text textField : getWidgets().values()) {
-            if (textField.getText().length() == 0) {
-                setErrorMessage("Feld \"" + textField.getToolTipText() + "\" darf nicht leer sein.");
+    public boolean isPageComplete(){
+        HashMap<String, Text> widgets = getWidgets();
+        // Sorted arry
+        Text[] widArray = { widgets.get(Fields.NAME), widgets.get(Fields.STREET),
+                widgets.get(Fields.STREET_NO), widgets.get(Fields.ZIP_CODE),
+                widgets.get(Fields.CITY) };
+        boolean isValid;
+        for (int i = 0; i < widArray.length; i++) {
+            isValid = checkValidity(widArray[i]);
+            if (widArray[i].getText().length() == 0) {
+                setErrorMessage("Field \"" + widArray[i].getToolTipText() + "\" is mandatory.");
                 return false;
             }
-            validText = checkValidity(textField);
-            if (!validText) {
+            if (!isValid) {
+                setErrorMessage("Input for \"" + widArray[i].getToolTipText() + "\" is invalid.");
                 return false;
             }
         }
         setErrorMessage(null);
         return true;
     }
-
+    
     private boolean checkValidity(Text textField) {
-        String toolTipText = textField.getToolTipText();
-        if (toolTipText.equals("PLZ") && !plzVal.isValid(textField.getText())) {
-            setErrorMessage("PLZ ist ungültig!");
+        String toolTip = textField.getToolTipText();
+        boolean isInvalidStreetNo = toolTip.equals("Hausnummer") && !streetNoVal.isValid(textField.getText());
+        boolean isInvalidZipCode = toolTip.equals("PLZ") && !plzVal.isValid(textField.getText());
+        boolean isInvalidCity = toolTip.equals("Stadt") && !cityVal.isValid(textField.getText());
+        
+        if (isInvalidStreetNo || isInvalidZipCode || isInvalidCity) {
             return false;
         }
-        else if (toolTipText.equals("Stadt") && !textOnlyVal.isValid(textField.getText())) {
-            setErrorMessage("Stadt ist ungültig!");
-            return false;
-        }
-        else if (toolTipText.equals("Hausnummer") && !streetNoVal.isValid(textField.getText())) {
-            setErrorMessage("Hausnummer ist ungültig!");
-            return false;
-        }
-        setErrorMessage(null);
         return true;
     }
 
     public void setKeyListener() {
-        HashMap<String, Text> widgets = getWidgets();
+        HashMap<String,Text> widgets = getWidgets();
         for (Text text : widgets.values()) {
 
             text.addKeyListener(new KeyListener() {
@@ -170,7 +171,7 @@ public class PlaceWizardPageOne extends WizardPage {
             });
         }
     }
-
+    
     private static final class Fields {
         public static final String NAME = "name";
         public static final String STREET = "street";

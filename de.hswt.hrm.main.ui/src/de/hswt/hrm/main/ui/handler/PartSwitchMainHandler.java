@@ -27,8 +27,6 @@ public class PartSwitchMainHandler {
 	@Execute
 	public void execute(@Named("de.hswt.hrm.main.switchpart.idinput") String id) {
 		
-		System.out.println("inside execute command");
-		
 		MWindow window = null;
 		window = modelService.getTopLevelWindowFor(service.findPart(id));
 

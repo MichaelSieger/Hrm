@@ -64,9 +64,8 @@ public class MainPart {
     }
 
 	private void runCommand(String id) {
-		System.out.println("inside run command");
 		Map<String, String> m = new HashMap<String, String>();
-		m.put("de.hswt.hrm.main.switchpart.idinput", id);
+		m.put(COMMAND_PARAMETER_ID, id);
 		ParameterizedCommand cmd = commandService.createCommand(COMMAND_ID, m);
     	handlerService.executeHandler(cmd);
 	}

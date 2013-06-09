@@ -4,6 +4,7 @@ import java.net.URL;
 import java.util.Calendar;
 import java.util.HashMap;
 
+import org.apache.commons.validator.routines.RegexValidator;
 import org.eclipse.e4.xwt.IConstants;
 import org.eclipse.e4.xwt.XWT;
 import org.eclipse.e4.xwt.forms.XWTForms;
@@ -27,7 +28,9 @@ public class PlantWizardPageOne extends WizardPage {
 
     private Composite container;
     private Optional<Plant> plant;
-
+    
+    private RegexValidator numberVal = new RegexValidator("[0-9]+([.,]{1}[0-9]+)?");
+   
     public PlantWizardPageOne(String title, Optional<Plant> plant) {
         super(title);
         this.plant = plant;
@@ -124,29 +127,59 @@ public class PlantWizardPageOne extends WizardPage {
 
     @Override
     public boolean isPageComplete() {
-        for (Text textField : getMandatoryWidgets().values()) {
-            if (textField.getText().length() == 0) {
+        // Mandatory: just one textfield
+        Text description = getMandatoryWidgets().get("description");
+        if (description.getText().length() == 0) {
+            setErrorMessage("Field \"" + description.getToolTipText() + "\" is mandatory.");
+            return false;
+        }
+        // Optional
+        HashMap<String, Text> optWidgets = getOptionalWidgets();
+        // Sorted array
+        Text[] optArray = {optWidgets.get("airPerformance"),optWidgets.get("motorPower"),
+                optWidgets.get("ventilatorPerformance"),optWidgets.get("motorRPM"),optWidgets.get("current"),
+                optWidgets.get("voltage")};
+        for (int i=0; i<optArray.length; i++) {
+            if (!checkValidity(optArray[i])) {
+                setErrorMessage("Input for \"" + optArray[i].getToolTipText() + "\" is invalid.");
                 return false;
             }
         }
+        setErrorMessage(null);
         return true;
+    }
+    
+    private boolean checkValidity(Text textField) {
+        if (textField.getText().length() == 0) {
+            return true;
+        }
+        String toolTip = textField.getToolTipText();
+        boolean isInvalidNumber = (toolTip.equals("Luftleistung")||toolTip.equals("Motorleistung")||
+                toolTip.equals("Ventilatorleistung")||toolTip.equals("Motordrehzahl")||
+                toolTip.equals("Nennstrom")||toolTip.equals("Spannung")) &&
+                !numberVal.isValid(textField.getText());
+        return !isInvalidNumber;
     }
 
     public void setKeyListener() {
-        HashMap<String, Text> widgets = getMandatoryWidgets();
+        KeyListener listener = new KeyListener() {
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                getWizard().getContainer().updateButtons();
+            }
+        };
+        addListenerToWidgets(getMandatoryWidgets(), listener);
+        addListenerToWidgets(getOptionalWidgets(), listener);
+    }
+    
+    private void addListenerToWidgets(HashMap<String, Text> widgets, KeyListener listener) {
         for (Text text : widgets.values()) {
-
-            text.addKeyListener(new KeyListener() {
-
-                @Override
-                public void keyPressed(KeyEvent e) {
-                }
-
-                @Override
-                public void keyReleased(KeyEvent e) {
-                    getWizard().getContainer().updateButtons();
-                }
-            });
+            text.addKeyListener(listener);
         }
     }
     

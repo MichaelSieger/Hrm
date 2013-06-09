@@ -27,25 +27,21 @@ public class MPartSwitcher {
             service.createPart(id);
         }
 
-        hideAll(service);
-
-        part.setVisible(true);
-        // if (!id.equals(MAIN_ID)) {
-        // service.findPart(SIDEBAR_ID).setVisible(true);
-        // }
-    }
-
-    private static void hideAll(EPartService service) {
-        service.findPart(CATALOG_ID).setVisible(false);
-        service.findPart(CATEGORY_ID).setVisible(false);
-        service.findPart(CONTACTS_ID).setVisible(false);
-        // service.findPart(INSPECTION_ID).setVisible(false);
-        service.findPart(MAIN_ID).setVisible(false);
-        service.findPart(OVERALL_ID).setVisible(false);
-        service.findPart(PLACES_ID).setVisible(false);
-        service.findPart(PLANTS_ID).setVisible(false);
-        service.findPart(MATCHING_ID).setVisible(false);
-        // service.findPart(SCHEMES_ID).setVisible(false);
-        // service.findPart(SIDEBAR_ID).setVisible(false);
-    }
+		hideAll(service);
+		
+		part.setVisible(true);
+	}
+	
+	private static void hideAll(EPartService service) {
+		service.findPart(CATALOG_ID).setVisible(false);
+		service.findPart(CATEGORY_ID).setVisible(false);
+		service.findPart(CONTACTS_ID).setVisible(false);
+//		service.findPart(INSPECTION_ID).setVisible(false);
+		service.findPart(MAIN_ID).setVisible(false);
+		service.findPart(OVERALL_ID).setVisible(false);
+		service.findPart(PLACES_ID).setVisible(false);
+		service.findPart(PLANTS_ID).setVisible(false);
+//		service.findPart(SCHEMES_ID).setVisible(false);
+//		service.findPart(SIDEBAR_ID).setVisible(false);
+	}
 }
