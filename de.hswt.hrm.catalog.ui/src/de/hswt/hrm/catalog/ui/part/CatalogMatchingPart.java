@@ -55,22 +55,6 @@ public class CatalogMatchingPart {
         try {
             final Composite composite = (Composite) XWTForms.load(parent, url);
 
-            ((Button) XWT.findElementByName(composite, "back2Main")).addListener(SWT.Selection,
-                    new Listener() {
-                        @Override
-                        public void handleEvent(Event event) {
-                            service.findPart("Clients").setVisible(false);
-                            service.findPart("Places").setVisible(false);
-                            service.findPart("Plants").setVisible(false);
-                            service.findPart("Scheme").setVisible(false);
-                            service.findPart("Catalog").setVisible(false);
-                            service.findPart("Category").setVisible(false);
-                            service.findPart("Matched").setVisible(false);
-                            service.findPart("Main").setVisible(true);
-                            service.showPart("Main", PartState.VISIBLE);
-                        }
-                    });
-
             // obtain all ListViewer
             targets = (ListViewer) XWT.findElementByName(composite, "availableTarget");
             currents = (ListViewer) XWT.findElementByName(composite, "availableCurrent");

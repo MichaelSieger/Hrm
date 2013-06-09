@@ -14,7 +14,7 @@
 		<Section.layoutData>
 			<GridData horizontalAlignment="FILL" verticalAlignment="FILL"
 				heightHint="177" grabExcessVerticalSpace="true"
-				grabExcessHorizontalSpace="true" widthHint="202" />
+				grabExcessHorizontalSpace="true" widthHint="246" />
 		</Section.layoutData>
 		<Section.client>
 			<Composite>
@@ -26,7 +26,7 @@
 						<ListViewer.list.layoutData>
 							<GridData horizontalAlignment="FILL" verticalAlignment="FILL"
 								grabExcessHorizontalSpace="true" grabExcessVerticalSpace="true"
-								widthHint="281" />
+								widthHint="230" />
 						</ListViewer.list.layoutData>
 					</ListViewer.list>
 				</ListViewer>
@@ -48,7 +48,7 @@
 					<ListViewer.list x:Name="">
 						<ListViewer.list.layoutData>
 							<GridData horizontalAlignment="FILL" verticalAlignment="FILL"
-								grabExcessHorizontalSpace="true" grabExcessVerticalSpace="true" />
+								grabExcessHorizontalSpace="true" grabExcessVerticalSpace="true" heightHint="170" />
 						</ListViewer.list.layoutData>
 					</ListViewer.list>
 				</ListViewer>
@@ -129,7 +129,7 @@
 					<Text.layoutData>
 						<GridData grabExcessHorizontalSpace="true"
 							horizontalAlignment="FILL" verticalAlignment="FILL" heightHint="338"
-							widthHint="217" horizontalSpan="3" />
+							widthHint="124" horizontalSpan="3" />
 					</Text.layoutData>
 				</Text>
 			</Composite>
