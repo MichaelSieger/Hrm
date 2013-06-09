@@ -9,4 +9,5 @@ Import-Package: de.hswt.hrm.common.database,
  de.hswt.hrm.common.exception,
  de.hswt.hrm.photo.dao.core,
  de.hswt.hrm.photo.model
-Require-Bundle: com.google.guava;bundle-version="10.0.1"
+Require-Bundle: com.google.guava;bundle-version="10.0.1",
+ de.hswt.hrm.commons.dbutils;bundle-version="0.0.1"
