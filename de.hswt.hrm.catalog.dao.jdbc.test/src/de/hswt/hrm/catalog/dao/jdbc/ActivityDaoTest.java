@@ -24,7 +24,6 @@ public class ActivityDaoTest extends AbstractDatabaseTest {
     private void compareActivityFields(final Activity expected, final Activity actual) {
         assertEquals("Name not set correctly.", expected.getName(), actual.getName());
         assertEquals("Text not set correctly.", expected.getText(), actual.getText());
-
     }
 
     @Test

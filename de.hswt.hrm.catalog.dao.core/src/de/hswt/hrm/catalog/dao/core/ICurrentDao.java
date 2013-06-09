@@ -51,6 +51,9 @@ public interface ICurrentDao {
      * @throws SaveException 
      */
     void addToTarget(final Target target, final Current current) throws SaveException;
+
+    void removeFromTarget(Target target, Current current)
+			throws DatabaseException;
     
     /**
      * 

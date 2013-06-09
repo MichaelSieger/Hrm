@@ -51,6 +51,9 @@ public interface IActivityDao {
      * @throws SaveException 
      */
     void addToCurrent(final Current current, final Activity activity) throws SaveException;
+
+    void removeFromCurrent(Current current, Activity activity)
+			throws DatabaseException;
     
     /**
      * 

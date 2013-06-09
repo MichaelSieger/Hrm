@@ -206,6 +206,7 @@ public class CurrentDao implements ICurrentDao {
         }
     }
     
+    @Override
     public void removeFromTarget(final Target target, final Current current) 
     		throws DatabaseException {
     	

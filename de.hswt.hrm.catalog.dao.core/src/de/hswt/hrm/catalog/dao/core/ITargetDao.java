@@ -35,6 +35,9 @@ public interface ITargetDao {
     Target insert(Target target) throws SaveException;
     
     void addToCatalog(Catalog catalog, Target target) throws SaveException;
+
+    void removeFromCatalog(Catalog catalog, Target target)
+			throws DatabaseException;
     
     /**
      * Update an existing target in storage.

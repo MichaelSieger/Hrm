@@ -165,6 +165,7 @@ public class TargetDao implements ITargetDao {
         }
     }
     
+    @Override
     public void removeFromCatalog(Catalog catalog, Target target) throws DatabaseException {
     	checkNotNull(catalog, "Catalog is mandatory.");
     	checkNotNull(target, "Target is mandatory.");
