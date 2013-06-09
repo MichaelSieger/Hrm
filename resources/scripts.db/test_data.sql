@@ -98,8 +98,8 @@ INSERT INTO `hrm`.`Biological_Flag` (`Flag_Name`) VALUES ('Befeuchterwasser');
 -- Insert 2 different biological ratings in the `Biological_Rating` Table
 ------------------------------------------------------------
 
--- INSERT INTO `hrm`.`Biological_Rating` (`Biological_Rating_Component_FK`, `Biological_Rating_Report_FK`, `Biological_Rating_Bacteria_Count`, `Biological_Rating_Rating`, `Biological_Rating_Quantifier`, `Biological_Rating_Comment`) VALUES ('1', '1', '100', '2', NULL, 'schlecht');
--- INSERT INTO `hrm`.`Biological_Rating` (`Biological_Rating_Component_FK`, `Biological_Rating_Report_FK`, `Biological_Rating_Bacteria_Count`, `Biological_Rating_Rating`, `Biological_Rating_Quantifier`, `Biological_Rating_Comment`) VALUES ('2', '1', '1', '1', NULL, 'gut');
+INSERT INTO `hrm`.`Biological_Rating` (`Biological_Rating_Component_FK`, `Biological_Rating_Report_FK`, `Biological_Rating_Bacteria_Count`, `Biological_Rating_Rating`, `Biological_Rating_Quantifier`, `Biological_Rating_Comment`, `Biological_Rating_Flag_FK`) VALUES ('1', '1', '100', '2', 3, 'schlecht','1');
+INSERT INTO `hrm`.`Biological_Rating` (`Biological_Rating_Component_FK`, `Biological_Rating_Report_FK`, `Biological_Rating_Bacteria_Count`, `Biological_Rating_Rating`, `Biological_Rating_Quantifier`, `Biological_Rating_Comment`, `Biological_Rating_Flag_FK`) VALUES ('2', '1', '1', '1', NULL, 'gut','2');
 
 ------------------------------------------------------------
 -- Insert 3 different schemes in the `Scheme` Table
