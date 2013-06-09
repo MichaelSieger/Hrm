@@ -3,6 +3,7 @@ package de.hswt.hrm.place.ui.wizard;
 import java.net.URL;
 import java.util.HashMap;
 
+import org.apache.commons.validator.routines.RegexValidator;
 import org.eclipse.e4.xwt.IConstants;
 import org.eclipse.e4.xwt.XWT;
 import org.eclipse.e4.xwt.forms.XWTForms;
@@ -21,9 +22,14 @@ import de.hswt.hrm.place.model.Place;
 
 public class PlaceWizardPageOne extends WizardPage {
     private static final Logger LOG = LoggerFactory.getLogger(PlaceWizardPageOne.class);
+    
 	private Composite container;
 	private HashMap<String, Text> widgets;
 	private Optional<Place> place;
+	
+	private RegexValidator plzVal = new RegexValidator("[0-9]{5}");
+    private RegexValidator textOnlyVal = new RegexValidator("([A-ZÄÖÜ]{1}[a-zäöü]+[\\s]?[\\-]?)*");
+    private RegexValidator streetNoVal = new RegexValidator("[0-9]+[a-z]?");
 
 
     protected PlaceWizardPageOne(String pageName, Optional<Place> place) {
@@ -115,12 +121,35 @@ public class PlaceWizardPageOne extends WizardPage {
     
     @Override
     public boolean isPageComplete(){
+        boolean validText;
     	for(Text textField : getWidgets().values()){
     		if(textField.getText().length() == 0){
+    		    setErrorMessage("Feld \""+textField.getToolTipText()+"\" darf nicht leer sein.");
     			return false;    			
-    		}    		
+    		}
+    		validText = checkValidity(textField);
+    		if (!validText) {
+    		    return false;
+    		}
     	}
+    	setErrorMessage(null);
     	return true;
+    }
+    
+    private boolean checkValidity(Text textField) {
+        String toolTipText = textField.getToolTipText();
+        if (toolTipText.equals("PLZ") && !plzVal.isValid(textField.getText())) {
+            setErrorMessage("PLZ ist ungültig!");
+            return false;
+        } else if (toolTipText.equals("Stadt") && !textOnlyVal.isValid(textField.getText())) {
+            setErrorMessage("Stadt ist ungültig!");
+            return false;
+        } else if (toolTipText.equals("Hausnummer") && !streetNoVal.isValid(textField.getText())) {
+            setErrorMessage("Hausnummer ist ungültig!");
+            return false;
+        }
+        setErrorMessage(null);
+        return true;
     }
 
     public void setKeyListener() {

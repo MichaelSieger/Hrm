@@ -10,11 +10,11 @@
 	<Label />
 	<Label />
 	<Section text="Kataloge" x:Style="(p2:Section).EXPANDED | (p2:Section).TITLE_BAR"
-		x:Name="" titleBarBackground="Darkorange" titleBarBorderColor="Darkorange" titleBarForeground="ForestGreen">
+		x:Name="">
 		<Section.layoutData>
 			<GridData horizontalAlignment="FILL" verticalAlignment="FILL"
 				heightHint="177" grabExcessVerticalSpace="true"
-				grabExcessHorizontalSpace="true" widthHint="202" />
+				grabExcessHorizontalSpace="true" widthHint="246" />
 		</Section.layoutData>
 		<Section.client>
 			<Composite>
@@ -26,7 +26,7 @@
 						<ListViewer.list.layoutData>
 							<GridData horizontalAlignment="FILL" verticalAlignment="FILL"
 								grabExcessHorizontalSpace="true" grabExcessVerticalSpace="true"
-								widthHint="281" />
+								widthHint="230" />
 						</ListViewer.list.layoutData>
 					</ListViewer.list>
 				</ListViewer>
@@ -45,10 +45,10 @@
 					<GridLayout />
 				</Composite.layout>
 				<ListViewer x:Style="BORDER | V_SCROLL" x:Name="matchedTarget">
-					<ListViewer.list x:Name="">
+					<ListViewer.list x:Name="" MouseDoubleClickEvent="matchedTargetSelected">
 						<ListViewer.list.layoutData>
 							<GridData horizontalAlignment="FILL" verticalAlignment="FILL"
-								grabExcessHorizontalSpace="true" grabExcessVerticalSpace="true" />
+								grabExcessHorizontalSpace="true" grabExcessVerticalSpace="true" heightHint="170" />
 						</ListViewer.list.layoutData>
 					</ListViewer.list>
 				</ListViewer>
@@ -67,7 +67,7 @@
 					<GridLayout />
 				</Composite.layout>
 				<ListViewer x:Style="BORDER | V_SCROLL" x:Name="matchedCurrent">
-					<ListViewer.list x:Name="">
+					<ListViewer.list x:Name="" MouseDoubleClickEvent="matchedCurrentSelected">
 						<ListViewer.list.layoutData>
 							<GridData horizontalAlignment="FILL" verticalAlignment="FILL"
 								grabExcessHorizontalSpace="true" grabExcessVerticalSpace="true" />
@@ -89,7 +89,7 @@
 					<GridLayout />
 				</Composite.layout>
 				<ListViewer x:Style="BORDER | V_SCROLL" x:Name="matchedActivity">
-					<ListViewer.list x:Name="">
+					<ListViewer.list x:Name="" MouseDoubleClickEvent="matchedActivitySelected">
 						<ListViewer.list.layoutData>
 							<GridData grabExcessHorizontalSpace="true"
 								grabExcessVerticalSpace="true" horizontalAlignment="FILL"
@@ -129,7 +129,7 @@
 					<Text.layoutData>
 						<GridData grabExcessHorizontalSpace="true"
 							horizontalAlignment="FILL" verticalAlignment="FILL" heightHint="338"
-							widthHint="217" horizontalSpan="3" />
+							widthHint="124" horizontalSpan="3" />
 					</Text.layoutData>
 				</Text>
 			</Composite>
@@ -159,11 +159,11 @@
 							<GridData horizontalAlignment="FILL" />
 						</Text.layoutData>
 					</Text>
-					<Button bounds="0, 0, 83, 27" x:Style="ARROW | UP" x:Name="targetUp" SelectionEvent="onMouseDoubleClick" />
+					<Button bounds="0, 0, 83, 27" x:Style="ARROW | UP" x:Name="targetUp" SelectionEvent="availableTargetSelected" />
 					<Button text="New Button" bounds="0, 0, 83, 27" x:Style="ARROW | DOWN" />
 				</Composite>
 				<ListViewer x:Style="BORDER | V_SCROLL" x:Name="availableTarget">
-					<ListViewer.list x:Name="" MouseDoubleClickEvent="onMouseDoubleClick">
+					<ListViewer.list x:Name="" MouseDoubleClickEvent="availableTargetSelected">
 						<ListViewer.list.layoutData>
 							<GridData horizontalAlignment="FILL" verticalAlignment="FILL"
 								grabExcessHorizontalSpace="true" grabExcessVerticalSpace="true" />
@@ -197,7 +197,7 @@
 					<Button text="New Button" x:Style="ARROW | DOWN" />
 				</Composite>
 				<ListViewer x:Style="BORDER | V_SCROLL" x:Name="availableCurrent">
-					<ListViewer.list x:Name="">
+					<ListViewer.list x:Name="" MouseDoubleClickEvent="availableCurrentSelected">
 						<ListViewer.list.layoutData>
 							<GridData grabExcessHorizontalSpace="true"
 								grabExcessVerticalSpace="true" horizontalAlignment="FILL"
@@ -232,7 +232,7 @@
 					<Button text="New Button" bounds="0, 0, 83, 27" x:Style="ARROW | DOWN" />
 				</Composite>
 				<ListViewer x:Style="BORDER | V_SCROLL" x:Name="availableActivity">
-					<ListViewer.list x:Name="">
+					<ListViewer.list x:Name="" MouseDoubleClickEvent="availableActivitySelected">
 						<ListViewer.list.layoutData>
 							<GridData verticalAlignment="FILL" horizontalAlignment="FILL"
 								grabExcessHorizontalSpace="true" grabExcessVerticalSpace="true" />

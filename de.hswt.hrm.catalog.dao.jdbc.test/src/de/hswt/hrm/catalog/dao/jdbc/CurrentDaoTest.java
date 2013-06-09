@@ -1,11 +1,14 @@
 package de.hswt.hrm.catalog.dao.jdbc;
 
+import static org.mockito.Mockito.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Collection;
 
 import org.junit.Test;
+
+import de.hswt.hrm.catalog.dao.core.ICatalogDao;
 import de.hswt.hrm.catalog.model.Current;
 import de.hswt.hrm.catalog.model.Target;
 import de.hswt.hrm.common.database.exception.DatabaseException;
@@ -18,7 +21,6 @@ public class CurrentDaoTest extends AbstractDatabaseTest {
     private void compareCurrentFields(final Current expected, final Current actual) {
         assertEquals("Name not set correctly.", expected.getName(), actual.getName());
         assertEquals("Text not set correctly.", expected.getText(), actual.getText());
-
     }
 
     @Test
@@ -29,7 +31,8 @@ public class CurrentDaoTest extends AbstractDatabaseTest {
         Current expected = new Current(name, text);
 
         // Check return value from insert
-        TargetDao targetDao = new TargetDao();
+        ICatalogDao catalogDao = mock(ICatalogDao.class);
+        TargetDao targetDao = new TargetDao(catalogDao);
         CurrentDao currentDao = new CurrentDao(targetDao);
         Current parsed = currentDao.insert(expected);
         compareCurrentFields(expected, parsed);
@@ -45,7 +48,8 @@ public class CurrentDaoTest extends AbstractDatabaseTest {
     public void testUpdateCurrent() throws ElementNotFoundException, DatabaseException {
         Current cur1 = new Current("FirstCurrent", "FirstText");
 
-        TargetDao targetDao = new TargetDao();
+        ICatalogDao catalogDao = mock(ICatalogDao.class);
+        TargetDao targetDao = new TargetDao(catalogDao);
         CurrentDao currentDao = new CurrentDao(targetDao);
         Current parsed = currentDao.insert(cur1);
 
@@ -67,7 +71,8 @@ public class CurrentDaoTest extends AbstractDatabaseTest {
         Current cur1 = new Current("FirstCurrent", "FirstText");
         Current cur2 = new Current("SecondCurrent", "SecondText");
 
-        TargetDao targetDao = new TargetDao();
+        ICatalogDao catalogDao = mock(ICatalogDao.class);
+        TargetDao targetDao = new TargetDao(catalogDao);
         CurrentDao currentDao = new CurrentDao(targetDao);
         currentDao.insert(cur1);
         currentDao.insert(cur2);
@@ -79,7 +84,8 @@ public class CurrentDaoTest extends AbstractDatabaseTest {
     @Test
     public void testFindByIdCurrent() throws ElementNotFoundException, DatabaseException {
         Current expected = new Current("FirstCurrent", "FirstText");
-        TargetDao targetDao = new TargetDao();
+        ICatalogDao catalogDao = mock(ICatalogDao.class);
+        TargetDao targetDao = new TargetDao(catalogDao);
         CurrentDao currentDao = new CurrentDao(targetDao);
         Current parsed = currentDao.insert(expected);
 
@@ -89,7 +95,8 @@ public class CurrentDaoTest extends AbstractDatabaseTest {
     
     @Test
     public void testConnectTargetAndCurrentState() throws SaveException {
-        TargetDao targetDao = new TargetDao();
+    	ICatalogDao catalogDao = mock(ICatalogDao.class);
+        TargetDao targetDao = new TargetDao(catalogDao);
         CurrentDao currentDao = new CurrentDao(targetDao);
         Current current = new Current("FirstCurrent", "FirstText");
         Target target = new Target("FirstTarget", "Some Text");
@@ -100,8 +107,23 @@ public class CurrentDaoTest extends AbstractDatabaseTest {
     }
     
     @Test
+    public void testDisconnectTargetAndCurrentState() throws DatabaseException {
+    	ICatalogDao catalogDao = mock(ICatalogDao.class);
+        TargetDao targetDao = new TargetDao(catalogDao);
+        CurrentDao currentDao = new CurrentDao(targetDao);
+        Current current = new Current("FirstCurrent", "FirstText");
+        current = currentDao.insert(current);
+        Target target = new Target("FirstTarget", "Some Text");
+        target = targetDao.insert(target);
+        currentDao.addToTarget(target, current);
+
+        currentDao.removeFromTarget(target, current);
+    }
+    
+    @Test
     public void testFindByTargetState() throws DatabaseException {
-        TargetDao targetDao = new TargetDao();
+    	ICatalogDao catalogDao = mock(ICatalogDao.class);
+        TargetDao targetDao = new TargetDao(catalogDao);
         CurrentDao currentDao = new CurrentDao(targetDao);
         Target target = new Target("FirstTarget", "Some Text");
         Current current1 = new Current("FirstCurrent", "Some text..");

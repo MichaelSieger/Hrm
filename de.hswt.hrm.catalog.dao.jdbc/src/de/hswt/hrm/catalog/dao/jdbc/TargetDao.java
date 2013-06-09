@@ -1,26 +1,40 @@
 package de.hswt.hrm.catalog.dao.jdbc;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import javax.inject.Inject;
+
 import org.apache.commons.dbutils.DbUtils;
 
 import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
-
 import de.hswt.hrm.common.database.DatabaseFactory;
 import de.hswt.hrm.common.database.NamedParameterStatement;
 import de.hswt.hrm.common.database.SqlQueryBuilder;
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.ElementNotFoundException;
 import de.hswt.hrm.common.database.exception.SaveException;
+import de.hswt.hrm.catalog.model.Catalog;
 import de.hswt.hrm.catalog.model.Target;
+import de.hswt.hrm.catalog.dao.core.ICatalogDao;
 import de.hswt.hrm.catalog.dao.core.ITargetDao;
 
 public class TargetDao implements ITargetDao {
+	private final ICatalogDao catalogDao;
+	
+	// TODO: Add LOG output
+	@Inject
+	public TargetDao(final ICatalogDao catalogDao) {
+		checkNotNull(catalogDao, "CatalogDao not properly injected to TargetDao.");
+		
+		this.catalogDao = catalogDao;
+	}
 
     @Override
     public Collection<Target> findAll() throws DatabaseException {
@@ -117,6 +131,77 @@ public class TargetDao implements ITargetDao {
             throw new SaveException(e);
         }
     }
+    
+    @Override
+    public void addToCatalog(Catalog catalog, Target target) throws SaveException {
+        SqlQueryBuilder builder = new SqlQueryBuilder();
+        builder.insert(CROSS_TABLE_NAME, Fields.CROSS_TARGET_FK, Fields.CROSS_CATALOG_FK);
+
+        // Insert target and current if not already in the database
+        if (catalog.getId() < 0) {
+            catalog = catalogDao.insert(catalog);
+        }
+        
+        if (target.getId() < 0) {
+            target = insert(target);
+        }
+        
+        final String query = builder.toString();
+
+        try (Connection con = DatabaseFactory.getConnection()) {
+            try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
+                stmt.setParameter(Fields.CROSS_TARGET_FK, target.getId());
+                stmt.setParameter(Fields.CROSS_CATALOG_FK, catalog.getId());
+
+                int affectedRows = stmt.executeUpdate();
+                if (affectedRows != 1) {
+                    throw new SaveException();
+                }
+            }
+
+        }
+        catch (SQLException | DatabaseException e) {
+            throw new SaveException(e);
+        }
+    }
+    
+    @Override
+    public void removeFromCatalog(Catalog catalog, Target target) throws DatabaseException {
+    	checkNotNull(catalog, "Catalog is mandatory.");
+    	checkNotNull(target, "Target is mandatory.");
+    	checkArgument(catalog.getId() >= 0, "Catalog must have a valid ID.");
+    	checkArgument(target.getId() >= 0, "Target must have a valid ID.");
+    	
+    	StringBuilder builder = new StringBuilder();
+    	builder.append("DELETE FROM ").append(CROSS_TABLE_NAME);
+    	builder.append(" WHERE ");
+    	builder.append(Fields.CROSS_CATALOG_FK).append(" = ?");
+    	builder.append(" AND ");
+    	builder.append(Fields.CROSS_TARGET_FK).append(" = ?;");
+    	
+    	String query = builder.toString();
+    	
+    	try (Connection con = DatabaseFactory.getConnection()) {
+    		con.setAutoCommit(false);
+    		
+    		try (PreparedStatement stmt = con.prepareStatement(query)) {
+    			stmt.setInt(1, catalog.getId());
+    			stmt.setInt(2, target.getId());
+    			
+    			int affected = stmt.executeUpdate();
+    			if (affected < 0) {
+    				con.rollback();
+    				throw new ElementNotFoundException();
+    			}
+    			else if (affected > 1) {
+    				con.rollback();
+    				throw new DatabaseException("Delete would accidently affect multiple rows.");
+    			}
+    		}
+    	} catch (SQLException e) {
+			throw new DatabaseException("Unkown error.", e);
+		}
+    }
 
     @Override
     public void update(Target target) throws ElementNotFoundException, SaveException {
@@ -167,11 +252,13 @@ public class TargetDao implements ITargetDao {
     }
 
     private static final String TABLE_NAME = "State_Target";
+    private static final String CROSS_TABLE_NAME = "Catalog_Target";
 
     private static class Fields {
         public static final String ID = "State_Target_ID";
         public static final String NAME = "State_Target_Name";
         public static final String TEXT = "State_Target_Text";
-
+        public static final String CROSS_CATALOG_FK = "Category_Target_Catalog_FK";
+        public static final String CROSS_TARGET_FK = "Category_Target_State_Target_FK";
     }
 }

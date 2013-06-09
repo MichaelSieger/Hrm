@@ -205,6 +205,46 @@ public class CurrentDao implements ICurrentDao {
             throw new SaveException(e);
         }
     }
+    
+    @Override
+    public void removeFromTarget(final Target target, final Current current) 
+    		throws DatabaseException {
+    	
+    	checkNotNull(target, "Target is mandatory.");
+    	checkNotNull(current, "Current is mandatory.");
+    	checkArgument(target.getId() >= 0, "Target must have a valid ID.");
+    	checkArgument(current.getId() >= 0, "Current must have a valid ID.");
+    	
+    	StringBuilder builder = new StringBuilder();
+    	builder.append("DELETE FROM ").append(CROSS_TABLE_NAME);
+    	builder.append(" WHERE ");
+    	builder.append(Fields.CROSS_TARGET_FK).append(" = ?");
+    	builder.append(" AND ");
+    	builder.append(Fields.CROSS_CURRENT_FK).append(" = ?;");
+    	
+    	String query = builder.toString();
+    	
+    	try (Connection con = DatabaseFactory.getConnection()) {
+    		con.setAutoCommit(false);
+    		
+    		try (PreparedStatement stmt = con.prepareStatement(query)) {
+    			stmt.setInt(1, target.getId());
+    			stmt.setInt(2, current.getId());
+    			
+    			int affected = stmt.executeUpdate();
+    			if (affected < 0) {
+    				con.rollback();
+    				throw new ElementNotFoundException();
+    			}
+    			else if (affected > 1) {
+    				con.rollback();
+    				throw new DatabaseException("Delete would accidently affect multiple rows.");
+    			}
+    		}
+    	} catch (SQLException e) {
+			throw new DatabaseException("Unkown error.", e);
+		}
+    }
 
     @Override
     public void update(Current current) throws ElementNotFoundException, SaveException {

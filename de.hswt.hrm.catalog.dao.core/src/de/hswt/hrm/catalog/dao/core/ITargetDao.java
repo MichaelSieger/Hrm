@@ -5,6 +5,7 @@ import java.util.Collection;
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.ElementNotFoundException;
 import de.hswt.hrm.common.database.exception.SaveException;
+import de.hswt.hrm.catalog.model.Catalog;
 import de.hswt.hrm.catalog.model.Target;
 
 /**
@@ -32,6 +33,11 @@ public interface ITargetDao {
      * @throws SaveException If the target could not be inserted.
      */
     Target insert(Target target) throws SaveException;
+    
+    void addToCatalog(Catalog catalog, Target target) throws SaveException;
+
+    void removeFromCatalog(Catalog catalog, Target target)
+			throws DatabaseException;
     
     /**
      * Update an existing target in storage.

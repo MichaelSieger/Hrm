@@ -55,37 +55,38 @@ public class CatalogEventHandler {
         TableViewer tf = (TableViewer) XWT.findElementByName(b, "catalogTable");
         CatalogSelectionFilter f = (CatalogSelectionFilter) tf.getFilters()[0];
 
-        setFilter(b.getText(), f);
+        enableFilter(b.getText(), f);
         tf.refresh();
         return;
 
     }
 
-    private void setFilter(String s, CatalogSelectionFilter f) {
-
-        if (s.equalsIgnoreCase("all")) {
-            f.setAllSelected(true);
-        }
-        else if (s.equalsIgnoreCase("ist")) {
-            f.setCurrentSelected(true);
-            f.setAllSelected(false);
-            f.setTargetSelected(false);
-            f.setActivitySelected(false);
-        }
-
-        else if (s.equalsIgnoreCase("soll")) {
-            f.setTargetSelected(true);
-            f.setAllSelected(false);
-            f.setCurrentSelected(false);
-            f.setActivitySelected(false);
-
-        }
-        else if (s.equalsIgnoreCase("maßnahmen")) {
-            f.setCurrentSelected(false);
-            f.setAllSelected(false);
-            f.setTargetSelected(false);
+    private void enableFilter(String s, CatalogSelectionFilter f) {
+        disableAll(f);
+        switch (s) {
+        case "all":
             f.setActivitySelected(true);
+            break;
+        case "ist":
+            f.setCurrentSelected(true);
+            break;
+        case "soll":
+            f.setTargetSelected(true);
+            break;
+        case "maßnahmen":
+            f.setActivitySelected(true);
+            break;
+
         }
+
+    }
+
+    private void disableAll(CatalogSelectionFilter f) {
+        f.setCurrentSelected(false);
+        f.setAllSelected(false);
+        f.setTargetSelected(false);
+        f.setActivitySelected(false);
+
     }
 
     /**

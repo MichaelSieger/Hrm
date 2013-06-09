@@ -15,18 +15,18 @@ INSERT INTO `hrm`.`Contact` (`Contact_Name`, `Contact_First_Name`, `Contact_Zip_
 ------------------------------------------------------------
 -- Insert 5 different places in the `Place` Table
 ------------------------------------------------------------
-INSERT INTO `hrm`.`Place` (`Place_Name`, `Place_Zip_Code`, `Place_City`, `Place_Street`, `Place_Street_Number`, `Place_Location`, `Place_Area`) VALUES ('Mezze', '85231', 'Freising', 'Osmanische Strasse', '2', 'EG R01', 'Ogerhöhle');
-INSERT INTO `hrm`.`Place` (`Place_Name`, `Place_Zip_Code`, `Place_City`, `Place_Street`, `Place_Street_Number`, `Place_Location`, `Place_Area`) VALUES ('HSWT', '85232', 'Freising', 'Wissensweg', '2', 'Keller', 'Abstellraum');
-INSERT INTO `hrm`.`Place` (`Place_Name`, `Place_Zip_Code`, `Place_City`, `Place_Street`, `Place_Street_Number`, `Place_Location`, `Place_Area`) VALUES ('Schmukki', '85234', 'Freising', 'Bierweg', '1', 'EG Raum 2', 'Schänke');
-INSERT INTO `hrm`.`Place` (`Place_Name`, `Place_Zip_Code`, `Place_City`, `Place_Street`, `Place_Street_Number`, `Place_Location`, `Place_Area`) VALUES ('Wayne-Towers', '10001', 'Gotham City', 'Wayne-Tower', '1', '5.112', 'Aufzugskammer');
-INSERT INTO `hrm`.`Place` (`Place_Name`, `Place_Zip_Code`, `Place_City`, `Place_Street`, `Place_Street_Number`, `Place_Location`, `Place_Area`) VALUES ('Roche', '82340', 'Penzberg', 'Nonnenwald', '2', 'Geb. 112 R0512', 'Automatenraum');
+INSERT INTO `hrm`.`Place` (`Place_Name`, `Place_Zip_Code`, `Place_City`, `Place_Street`, `Place_Street_Number`) VALUES ('Mezze', '85231', 'Freising', 'Osmanische Strasse', '2');
+INSERT INTO `hrm`.`Place` (`Place_Name`, `Place_Zip_Code`, `Place_City`, `Place_Street`, `Place_Street_Number`) VALUES ('HSWT', '85232', 'Freising', 'Wissensweg', '2');
+INSERT INTO `hrm`.`Place` (`Place_Name`, `Place_Zip_Code`, `Place_City`, `Place_Street`, `Place_Street_Number`) VALUES ('Schmukki', '85234', 'Freising', 'Bierweg', '1');
+INSERT INTO `hrm`.`Place` (`Place_Name`, `Place_Zip_Code`, `Place_City`, `Place_Street`, `Place_Street_Number`) VALUES ('Wayne-Towers', '10001', 'Gotham City', 'Wayne-Tower', '1');
+INSERT INTO `hrm`.`Place` (`Place_Name`, `Place_Zip_Code`, `Place_City`, `Place_Street`, `Place_Street_Number`) VALUES ('Roche', '82340', 'Penzberg', 'Nonnenwald', '2');
 
 ------------------------------------------------------------
 -- Insert 3 different plants in the `Plant` Table
 ------------------------------------------------------------
-INSERT INTO `hrm`.`Plant` (`Plant_Place_FK`, `Plant_Manufacturer`, `Plant_Year_Of_Construction`, `Plant_Type`, `Plant_Airperformance`, `Plant_Motorpower`, `Plant_Motor_Rpm`, `Plant_Ventilatorperformance`, `Plant_Current`, `Plant_Voltage`, `Plant_Note`, `Plant_Description`) VALUES ('2', 'Bauer', '2001', 'Phaser 3000' , '1000', '260', '4200', '1.4', '16', '230', 'gutes Teil', 'Anlage 11');
-INSERT INTO `hrm`.`Plant` (`Plant_Place_FK`, `Plant_Manufacturer`, `Plant_Year_Of_Construction`, `Plant_Type`, `Plant_Airperformance`, `Plant_Motorpower`, `Plant_Motor_Rpm`, `Plant_Ventilatorperformance`, `Plant_Current`, `Plant_Voltage`, `Plant_Note`, `Plant_Description`) VALUES ('5', 'Jimbo GmbH', '2007', 'AirLine' , '3000', '460', '5200', '9', '16', '230', 'schlechte Verarbeitung', 'Lüftung 1');
-INSERT INTO `hrm`.`Plant` (`Plant_Place_FK`, `Plant_Manufacturer`, `Plant_Year_Of_Construction`, `Plant_Type`, `Plant_Airperformance`, `Plant_Motorpower`, `Plant_Motor_Rpm`, `Plant_Ventilatorperformance`, `Plant_Current`, `Plant_Voltage`, `Plant_Note`, `Plant_Description`) VALUES ('3', 'Medion', '1999', 'PowerBlast 3.1' , '400', '160', '2200', '2', '16', '230', 'aus Plastik *würg*', 'Tower 3');
+INSERT INTO `hrm`.`Plant` (`Plant_Place_FK`, `Plant_Manufacturer`, `Plant_Year_Of_Construction`, `Plant_Type`, `Plant_Airperformance`, `Plant_Motorpower`, `Plant_Motor_Rpm`, `Plant_Ventilatorperformance`, `Plant_Current`, `Plant_Voltage`, `Plant_Note`, `Plant_Description`, `Plant_Area`, `Plant_Location`) VALUES ('2', 'Bauer', '2001', 'Phaser 3000' , '1000', '260', '4200', '1.4', '16', '230', 'gutes Teil', 'Anlage 11', 'Ebene 2','Lüftungsraum');
+INSERT INTO `hrm`.`Plant` (`Plant_Place_FK`, `Plant_Manufacturer`, `Plant_Year_Of_Construction`, `Plant_Type`, `Plant_Airperformance`, `Plant_Motorpower`, `Plant_Motor_Rpm`, `Plant_Ventilatorperformance`, `Plant_Current`, `Plant_Voltage`, `Plant_Note`, `Plant_Description`, `Plant_Area`, `Plant_Location`) VALUES ('5', 'Jimbo GmbH', '2007', 'AirLine' , '3000', '460', '5200', '9', '16', '230', 'schlechte Verarbeitung', 'Lüftung 1', 'E200', 'R200.101');
+INSERT INTO `hrm`.`Plant` (`Plant_Place_FK`, `Plant_Manufacturer`, `Plant_Year_Of_Construction`, `Plant_Type`, `Plant_Airperformance`, `Plant_Motorpower`, `Plant_Motor_Rpm`, `Plant_Ventilatorperformance`, `Plant_Current`, `Plant_Voltage`, `Plant_Note`, `Plant_Description`, `Plant_Area`, `Plant_Location`) VALUES ('3', 'Medion', '1999', 'PowerBlast 3.1' , '400', '160', '2200', '2', '16', '230', 'aus Plastik *würg*', 'Tower 3', 'Dachgeschoss', 'Flur');
 
 ------------------------------------------------------------
 -- Insert 2 different layouts in the `Layout` Table
@@ -38,8 +38,9 @@ INSERT INTO `hrm`.`Layout` (`Layout_Name`) VALUES ('LayoutB');
 -- Insert 2 different reports in the `Report` Table
 ------------------------------------------------------------
 
-INSERT INTO `hrm`.`Report` (`Report_Layout_FK`, `Report_Plant_FK`, `Report_Requester_FK`, `Report_Contractor_FK`, `Report_Checker_FK`, `Report_Jobdate`, `Report_Reportdate`, `Report_Nextdate`) VALUES ('1', '1', '1', '3', '5', '2012-12-31', '2013-01-07', '20014-01-07');
-INSERT INTO `hrm`.`Report` (`Report_Layout_FK`, `Report_Plant_FK`, `Report_Requester_FK`, `Report_Contractor_FK`, `Report_Checker_FK`, `Report_Jobdate`, `Report_Reportdate`, `Report_Nextdate`) VALUES ('2', '2', '2', '4', '5', '2012-01-08', '2012-01-11', '2013-01-11');
+INSERT INTO `hrm`.`Report` (`Report_Layout_FK`, `Report_Plant_FK`, `Report_Requester_FK`, `Report_Contractor_FK`, `Report_Checker_FK`, `Report_Jobdate`, `Report_Reportdate`, `Report_Nextdate`, `Report_Airtemperature`, `Report_Humidity`, `Report_Summary`) VALUES ('1', '1', '1', '3', '5', '2012-12-31', '2013-01-07', '20014-01-07', '20', '37', 'Mei is des a guade Anlage, da muassd nix mocha');
+INSERT INTO `hrm`.`Report` (`Report_Layout_FK`, `Report_Plant_FK`, `Report_Requester_FK`, `Report_Contractor_FK`, `Report_Checker_FK`, `Report_Jobdate`, `Report_Reportdate`, `Report_Nextdate`, `Report_Airtemperature`, `Report_Humidity`, `Report_Summary`) VALUES ('2', '2', '2', '4', '5', '2012-01-08', '2012-01-11', '2013-01-11', '22', '40','A so a glumb, schmeiss besser weg und moch was neiss');
+
 ------------------------------------------------------------
 -- Insert 3 different cataloges in the `Catalog` Table
 ------------------------------------------------------------
@@ -71,20 +72,34 @@ INSERT INTO `hrm`.`Component_Picture`(`Component_Picture_Filename`, `Component_P
 INSERT INTO `hrm`.`Component_Picture`(`Component_Picture_Filename`, `Component_Picture_Blob`) VALUES ('36_0.pdf', x'255044462d312e350a25b5edaefb0a332030206f626a0a3c3c202f4c656e6774682034203020520a2020202f46696c746572202f466c6174654465636f64650a3e3e0a73747265616d0a789c9d90c14a44310c45f7fd8afb032f264d93b65f2008b3185d8a0b5150646631ccc2df37ed9b07a2208c94d2def76ece4d734a8cb1ee6f71f3cc783b27a6da2b8be0337eddc5fe488f4f6062bc2661ec7082cc92651c224adad84df1728cdac219e6e4ade188553269371c902bf5b0fd9022997a0bbd9a579942bfa707ecd39f616c36c25a2e1196db163ef401a39ac97b551f6f2997ce97c871576edf6fbfe159a28d704ba4a80dfcf88062546da35f835372cb587af4382633b5a07878e47a5c5192c0a9516b1eb8a9055dc8abfd0357626606753299b83267d833296fb87dfa02b1126e060a656e6473747265616d0a656e646f626a0a342030206f626a0a2020203233310a656e646f626a0a322030206f626a0a3c3c0a2020202f457874475374617465203c3c0a2020202020202f6130203c3c202f43412031202f63612031203e3e0a2020203e3e0a3e3e0a656e646f626a0a352030206f626a0a3c3c202f54797065202f506167650a2020202f506172656e742031203020520a2020202f4d65646961426f78205b203020302032382e34203131332e333830363533205d0a2020202f436f6e74656e74732033203020520a2020202f47726f7570203c3c0a2020202020202f54797065202f47726f75700a2020202020202f53202f5472616e73706172656e63790a2020202020202f4920747275650a2020202020202f4353202f4465766963655247420a2020203e3e0a2020202f5265736f75726365732032203020520a3e3e0a656e646f626a0a312030206f626a0a3c3c202f54797065202f50616765730a2020202f4b696473205b203520302052205d0a2020202f436f756e7420310a3e3e0a656e646f626a0a362030206f626a0a3c3c202f43726561746f722028636169726f20312e31322e31342028687474703a2f2f636169726f67726170686963732e6f726729290a2020202f50726f64756365722028636169726f20312e31322e31342028687474703a2f2f636169726f67726170686963732e6f726729290a3e3e0a656e646f626a0a372030206f626a0a3c3c202f54797065202f436174616c6f670a2020202f50616765732031203020520a3e3e0a656e646f626a0a787265660a3020380a303030303030303030302036353533352066200a30303030303030363339203030303030206e200a30303030303030333435203030303030206e200a30303030303030303135203030303030206e200a30303030303030333233203030303030206e200a30303030303030343137203030303030206e200a30303030303030373034203030303030206e200a30303030303030383333203030303030206e200a747261696c65720a3c3c202f53697a6520380a2020202f526f6f742037203020520a2020202f496e666f2036203020520a3e3e0a7374617274787265660a3838350a2525454f460a');
 
 ------------------------------------------------------------
+-- Insert 2 different attributes in the `Attribute` Table
+------------------------------------------------------------
+
+INSERT INTO `hrm`.`Attribute` (`Attribute_Name`) VALUES ('Attribute');
+INSERT INTO `hrm`.`Attribute` (`Attribute_Name`) VALUES ('Attribute 2');
+
+------------------------------------------------------------
 -- Insert 5 different components in the `Component` Table
 ------------------------------------------------------------																																																																										
-INSERT INTO `hrm`.`Component` (`Component_Name`, `Component_Symbol_LR_FK`, `Component_Symbol_RL_FK`, `Component_Symbol_UD_FK`, `Component_Symbol_DU_FK`, `Component_Quantifier`, `Component_Category_FK`, `Component_Bool_Rating`) VALUES ('Außenluft', '1', '2', NULL, NULL, '2', '2', '2');
-INSERT INTO `hrm`.`Component` (`Component_Name`, `Component_Symbol_LR_FK`, `Component_Symbol_RL_FK`, `Component_Symbol_UD_FK`, `Component_Symbol_DU_FK`, `Component_Quantifier`, `Component_Category_FK`, `Component_Bool_Rating`) VALUES ('F5', '4', '3', NULL, NULL, '2', '1', '1');
-INSERT INTO `hrm`.`Component` (`Component_Name`, `Component_Symbol_LR_FK`, `Component_Symbol_RL_FK`, `Component_Symbol_UD_FK`, `Component_Symbol_DU_FK`, `Component_Quantifier`, `Component_Category_FK`, `Component_Bool_Rating`) VALUES ('F6', '6', '5', NULL, NULL, '2', '1', '1');
-INSERT INTO `hrm`.`Component` (`Component_Name`, `Component_Symbol_LR_FK`, `Component_Symbol_RL_FK`, `Component_Symbol_UD_FK`, `Component_Symbol_DU_FK`, `Component_Quantifier`, `Component_Category_FK`, `Component_Bool_Rating`) VALUES ('Zugang', '8', '9', '7', '10', '2', '3', '3');
-INSERT INTO `hrm`.`Component` (`Component_Name`, `Component_Symbol_LR_FK`, `Component_Symbol_RL_FK`, `Component_Symbol_UD_FK`, `Component_Symbol_DU_FK`, `Component_Quantifier`, `Component_Category_FK`, `Component_Bool_Rating`) VALUES ('Schacht', '11', NULL, '11', NULL, '2', '4', '3');
+INSERT INTO `hrm`.`Component` (`Component_Name`, `Component_Symbol_LR_FK`, `Component_Symbol_RL_FK`, `Component_Symbol_UD_FK`, `Component_Symbol_DU_FK`, `Component_Quantifier`, `Component_Category_FK`, `Component_Bool_Rating`, `Component_Attribute_FK`) VALUES ('Außenluft', '1', '2', NULL, NULL, '2', '2', '2','1');
+INSERT INTO `hrm`.`Component` (`Component_Name`, `Component_Symbol_LR_FK`, `Component_Symbol_RL_FK`, `Component_Symbol_UD_FK`, `Component_Symbol_DU_FK`, `Component_Quantifier`, `Component_Category_FK`, `Component_Bool_Rating`, `Component_Attribute_FK`) VALUES ('F5', '4', '3', NULL, NULL, '2', '1', '1', '1');
+INSERT INTO `hrm`.`Component` (`Component_Name`, `Component_Symbol_LR_FK`, `Component_Symbol_RL_FK`, `Component_Symbol_UD_FK`, `Component_Symbol_DU_FK`, `Component_Quantifier`, `Component_Category_FK`, `Component_Bool_Rating`, `Component_Attribute_FK`) VALUES ('F6', '6', '5', NULL, NULL, '2', '1', '1', '2');
+INSERT INTO `hrm`.`Component` (`Component_Name`, `Component_Symbol_LR_FK`, `Component_Symbol_RL_FK`, `Component_Symbol_UD_FK`, `Component_Symbol_DU_FK`, `Component_Quantifier`, `Component_Category_FK`, `Component_Bool_Rating`, `Component_Attribute_FK`) VALUES ('Zugang', '8', '9', '7', '10', '2', '3', '3','2');
+INSERT INTO `hrm`.`Component` (`Component_Name`, `Component_Symbol_LR_FK`, `Component_Symbol_RL_FK`, `Component_Symbol_UD_FK`, `Component_Symbol_DU_FK`, `Component_Quantifier`, `Component_Category_FK`, `Component_Bool_Rating`, `Component_Attribute_FK`) VALUES ('Schacht', '11', NULL, '11', NULL, '2', '4', '3', '1');
+
+------------------------------------------------------------
+-- Insert 3 different biological flags in the `Biological_Flag` Table
+------------------------------------------------------------
+INSERT INTO `hrm`.`Biological_Flag` (`Flag_Name`) VALUES ('Luftkeimzahl');
+INSERT INTO `hrm`.`Biological_Flag` (`Flag_Name`) VALUES ('Kontaktkeime');
+INSERT INTO `hrm`.`Biological_Flag` (`Flag_Name`) VALUES ('Befeuchterwasser');
 
 ------------------------------------------------------------
 -- Insert 2 different biological ratings in the `Biological_Rating` Table
 ------------------------------------------------------------
 
-INSERT INTO `hrm`.`Biological_Rating` (`Biological_Rating_Component_FK`, `Biological_Rating_Report_FK`, `Biological_Rating_Bacteria_Count`, `Biological_Rating_Rating`, `Biological_Rating_Quantifier`, `Biological_Rating_Comment`) VALUES ('1', '1', '100', '2', NULL, 'schlecht');
-INSERT INTO `hrm`.`Biological_Rating` (`Biological_Rating_Component_FK`, `Biological_Rating_Report_FK`, `Biological_Rating_Bacteria_Count`, `Biological_Rating_Rating`, `Biological_Rating_Quantifier`, `Biological_Rating_Comment`) VALUES ('2', '1', '1', '1', NULL, 'gut');
+INSERT INTO `hrm`.`Biological_Rating` (`Biological_Rating_Component_FK`, `Biological_Rating_Report_FK`, `Biological_Rating_Bacteria_Count`, `Biological_Rating_Rating`, `Biological_Rating_Quantifier`, `Biological_Rating_Comment`, `Biological_Rating_Flag_FK`) VALUES ('1', '1', '100', '2', 3, 'schlecht','1');
+INSERT INTO `hrm`.`Biological_Rating` (`Biological_Rating_Component_FK`, `Biological_Rating_Report_FK`, `Biological_Rating_Bacteria_Count`, `Biological_Rating_Rating`, `Biological_Rating_Quantifier`, `Biological_Rating_Comment`, `Biological_Rating_Flag_FK`) VALUES ('2', '1', '1', '1', NULL, 'gut','2');
 
 ------------------------------------------------------------
 -- Insert 3 different schemes in the `Scheme` Table
@@ -108,18 +123,18 @@ INSERT INTO `hrm`.`State_Current` (`State_Current_Name`, `State_Current_Text`) V
 INSERT INTO `hrm`.`State_Current` (`State_Current_Name`, `State_Current_Text`) VALUES ('Ist-Status 3', 'Ich bin der dritte Ist-Zustand');
 
 ------------------------------------------------------------
--- Insert 3 different activities in the `State_Activity` Table
-------------------------------------------------------------
-INSERT INTO `hrm`.`State_Activity` (`State_Activity_Name`, `State_Activity_Text`) VALUES ('Maßnahme 1', 'Ich bin die erste Maßnahme');
-INSERT INTO `hrm`.`State_Activity` (`State_Activity_Name`, `State_Activity_Text`) VALUES ('Maßnahme 2', 'Ich bin die zweite Maßnahme');
-INSERT INTO `hrm`.`State_Activity` (`State_Activity_Name`, `State_Activity_Text`) VALUES ('Maßnahme 3', 'Ich bin die dritte Maßnahme');
-
-------------------------------------------------------------
 -- Insert 3 different target states in the `State_Target` Table
 ------------------------------------------------------------
 INSERT INTO `hrm`.`State_Target` (`State_Target_Name`, `State_Target_Text`) VALUES ('Soll-Status 1', 'Ich bin der erste Soll-Zustand');
 INSERT INTO `hrm`.`State_Target` (`State_Target_Name`, `State_Target_Text`) VALUES ('Soll-Status 2', 'Ich bin der zweite Soll-Zustand');
 INSERT INTO `hrm`.`State_Target` (`State_Target_Name`, `State_Target_Text`) VALUES ('Soll-Status 3', 'Ich bin der dritte Soll-Zustand');
+
+------------------------------------------------------------
+-- Insert 3 different activities in the `State_Activity` Table
+------------------------------------------------------------
+INSERT INTO `hrm`.`State_Activity` (`State_Activity_Name`, `State_Activity_Text`) VALUES ('Maßnahme 1', 'Ich bin die erste Maßnahme');
+INSERT INTO `hrm`.`State_Activity` (`State_Activity_Name`, `State_Activity_Text`) VALUES ('Maßnahme 2', 'Ich bin die zweite Maßnahme');
+INSERT INTO `hrm`.`State_Activity` (`State_Activity_Name`, `State_Activity_Text`) VALUES ('Maßnahme 3', 'Ich bin die dritte Maßnahme');
 
 ------------------------------------------------------------
 -- Connect 3 different catalog with currents in the `Catalog_Current` Table
@@ -129,6 +144,14 @@ INSERT INTO `hrm`.`Catalog_Current` (`Category_Current_State_Target_FK`, `Catego
 INSERT INTO `hrm`.`Catalog_Current` (`Category_Current_State_Target_FK`, `Category_Current_State_Current_FK`) VALUES ('2', '3');
 
 ------------------------------------------------------------
+-- Connect 3 different catalog with targets in the `Catalog_Target` Table
+------------------------------------------------------------
+INSERT INTO `hrm`.`Catalog_Target` (`Category_Target_State_Target_FK`, `Category_Target_Catalog_FK`) VALUES ('1', '2');
+INSERT INTO `hrm`.`Catalog_Target` (`Category_Target_State_Target_FK`, `Category_Target_Catalog_FK`) VALUES ('2', '1');
+INSERT INTO `hrm`.`Catalog_Target` (`Category_Target_State_Target_FK`, `Category_Target_Catalog_FK`) VALUES ('2', '3');
+
+
+------------------------------------------------------------
 -- Connect 3 different catalog with activities the `Catalog_Activity` Table
 ------------------------------------------------------------
 INSERT INTO `hrm`.`Catalog_Activity` (`Category_Activity_State_Current_FK`, `Category_Activity_State_Activity_FK`) VALUES ('1', '2');
@@ -136,41 +159,54 @@ INSERT INTO `hrm`.`Catalog_Activity` (`Category_Activity_State_Current_FK`, `Cat
 INSERT INTO `hrm`.`Catalog_Activity` (`Category_Activity_State_Current_FK`, `Category_Activity_State_Activity_FK`) VALUES ('2', '3');
 
 ------------------------------------------------------------
--- Connect 3 different catalog with targets in the `Catalog_Target` Table
-------------------------------------------------------------
-INSERT INTO `hrm`.`Catalog_Target` (`Category_Target_State_Target_FK`, `Category_Target_Catalog_FK`) VALUES ('1', '2');
-INSERT INTO `hrm`.`Catalog_Target` (`Category_Target_State_Target_FK`, `Category_Target_Catalog_FK`) VALUES ('2', '1');
-INSERT INTO `hrm`.`Catalog_Target` (`Category_Target_State_Target_FK`, `Category_Target_Catalog_FK`) VALUES ('2', '3');
-
-------------------------------------------------------------
 -- Insert 2 different pictures in the `Picture` Table
 ------------------------------------------------------------
--- hier brauche ich erst die blobs von mind 2 Bilder
-INSERT INTO `hrm`.`Picture` (`Picture_Blob`, `Picture_Name`) VALUES (NULL, 'bildA');
-INSERT INTO `hrm`.`Picture` (`Picture_Blob`, `Picture_Name`) VALUES (NULL, 'bildB');
-
-------------------------------------------------------------
--- Insert 3 different physical ratings in the `Physical_Rating` Table
-------------------------------------------------------------
-INSERT INTO `hrm`.`Physical_Rating` (`Physical_Rating_Grade`, `Physical_Rating_Note`, `Physical_Rating_Report_Picture_FK`, `Physical_Rating_State_Target_FK`, `Physical_Rating_State_Activity_FK`, `Physical_Rating_State_Current_FK`) VALUES ('1', 'super Zustand', '1', '1', '1', '1');
-INSERT INTO `hrm`.`Physical_Rating` (`Physical_Rating_Grade`, `Physical_Rating_Note`, `Physical_Rating_Report_Picture_FK`, `Physical_Rating_State_Target_FK`, `Physical_Rating_State_Activity_FK`, `Physical_Rating_State_Current_FK`) VALUES ('2', 'baerig', '1', '1', '2', '2');
-INSERT INTO `hrm`.`Physical_Rating` (`Physical_Rating_Grade`, `Physical_Rating_Note`, `Physical_Rating_Report_Picture_FK`, `Physical_Rating_State_Target_FK`, `Physical_Rating_State_Activity_FK`, `Physical_Rating_State_Current_FK`) VALUES ('4', 'a so a Dreck', '2', '1', '1', '1');
-
-------------------------------------------------------------
--- Insert 2 different report pictures in the `Report_Pictures` Table
-------------------------------------------------------------
-INSERT INTO `hrm`.`Report_Picture` (`Report_Picture_Picture_FK`, `Report_Picture_Report_FK`) VALUES ('1', '1');
-INSERT INTO `hrm`.`Report_Picture` (`Report_Picture_Picture_FK`, `Report_Picture_Report_FK`) VALUES ('2', '1');
-
-------------------------------------------------------------
--- Insert 2 different report physicals in the `Report_Physical` Table
-------------------------------------------------------------
-INSERT INTO `hrm`.`Report_Physical` (`Report_Physical_Report_FK`, `Report_Physical_Temperature`, `Report_Physical_Humidity`) VALUES ('1', '37', '25');
-INSERT INTO `hrm`.`Report_Physical` (`Report_Physical_Report_FK`, `Report_Physical_Temperature`, `Report_Physical_Humidity`) VALUES ('1', '42', '20');
+-- hier brauche ich erst die blobs von 2 Bildern
+INSERT INTO `hrm`.`Picture` (`Picture_Blob`, `Picture_Name`, `Picture_Label`) VALUES (NULL, 'bildA', 'Bild zeigt A');
+INSERT INTO `hrm`.`Picture` (`Picture_Blob`, `Picture_Name`, `Picture_Label`) VALUES (NULL, 'bildB', 'Bild zeigt B');
 
 ------------------------------------------------------------
 -- Insert 2 different component physical ratings in the `Component_Physical_Rating` Table
 ------------------------------------------------------------
-INSERT INTO `hrm`.`Component_Physical_Rating` (`Component_Physical_Rating_Component_FK`, `Component_Physical_Rating_Current_FK`, `Component_Physical_Rating_Target_FK`, `Component_Physical_Rating_Activity_FK`, `Component_Physical_Rating_Priority`, `Component_Physical_Rating_Rating`, `Component_Physical_Rating_Note`, `Component_Physical_Rating_Report_Physical_FK`) VALUES ('1', '1', '1', '1', '1', '3', 'guad', '1');
-INSERT INTO `hrm`.`Component_Physical_Rating` (`Component_Physical_Rating_Component_FK`, `Component_Physical_Rating_Current_FK`, `Component_Physical_Rating_Target_FK`, `Component_Physical_Rating_Activity_FK`, `Component_Physical_Rating_Priority`, `Component_Physical_Rating_Rating`, `Component_Physical_Rating_Note`, `Component_Physical_Rating_Report_Physical_FK`) VALUES ('2', '2', '2', '2', '2', '2', 'basst scho', '2');
 
+INSERT INTO `hrm`.`Component_Physical_Rating` (`Component_Physical_Rating_Component_FK`, `Component_Physical_Rating_Rating`, `Component_Physical_Rating_Note`, `Component_Physical_Rating_Report_FK`) VALUES ('1', '3.5', 'passt scho', '1');
+INSERT INTO `hrm`.`Component_Physical_Rating` (`Component_Physical_Rating_Component_FK`, `Component_Physical_Rating_Rating`, `Component_Physical_Rating_Note`, `Component_Physical_Rating_Report_FK`) VALUES ('2', '2.1', 'guad', '2');
+
+------------------------------------------------------------
+-- Insert 3 different component catalogs in the `Component_Catalog` Table
+------------------------------------------------------------
+
+INSERT INTO `hrm`.`Component_Catalog` (`Component_Catalog_Component_FK`, `Component_Catalog_Target_FK`, `Component_Catalog_Current_FK`, `Component_Catalog_Activity_FK`, `Component_Catalog_Picture_FK`, `Component_Catalog_Priority`) VALUES ('1', '2', '2', '2', '2', '1');
+INSERT INTO `hrm`.`Component_Catalog` (`Component_Catalog_Component_FK`, `Component_Catalog_Target_FK`, `Component_Catalog_Current_FK`, `Component_Catalog_Activity_FK`, `Component_Catalog_Picture_FK`, `Component_Catalog_Priority`) VALUES ('2', '3', '3', '3', '4', '2');
+INSERT INTO `hrm`.`Component_Catalog` (`Component_Catalog_Component_FK`, `Component_Catalog_Target_FK`, `Component_Catalog_Current_FK`, `Component_Catalog_Activity_FK`, `Component_Catalog_Picture_FK`, `Component_Catalog_Priority`) VALUES ('3', '1', '1', '1', '6', '1');
+
+------------------------------------------------------------
+-- Insert 4 different picture catalogs in the `Picture_Catalog` Table
+------------------------------------------------------------
+
+INSERT INTO `hrm`.`Picture_Catalog` (`Picture_Catalog_Picture_FK`, `Picture_Catalog_Component_Catalog_FK`) VALUES ('1', '1' );
+INSERT INTO `hrm`.`Picture_Catalog` (`Picture_Catalog_Picture_FK`, `Picture_Catalog_Component_Catalog_FK`) VALUES ('2', '1' );
+INSERT INTO `hrm`.`Picture_Catalog` (`Picture_Catalog_Picture_FK`, `Picture_Catalog_Component_Catalog_FK`) VALUES ('1', '2' );
+INSERT INTO `hrm`.`Picture_Catalog` (`Picture_Catalog_Picture_FK`, `Picture_Catalog_Component_Catalog_FK`) VALUES ('2', '2' );
+
+------------------------------------------------------------
+-- Insert 3 different target currents in the `Target_Current` Table
+------------------------------------------------------------
+
+INSERT INTO `hrm`.`Target_Current` (`Target_Current_Report_FK`, `Target_Current_Component_Catalog_FK`) VALUES ('1', '1');
+INSERT INTO `hrm`.`Target_Current` (`Target_Current_Report_FK`, `Target_Current_Component_Catalog_FK`) VALUES ('1', '2');
+INSERT INTO `hrm`.`Target_Current` (`Target_Current_Report_FK`, `Target_Current_Component_Catalog_FK`) VALUES ('1', '3');
+
+------------------------------------------------------------
+-- Insert 3 different scheme component attributes in the `Scheme_Component_Attribute` Table
+------------------------------------------------------------
+
+INSERT INTO `hrm`.`Scheme_Component_Attribute` (`Scheme_Component_Attribute_Component_FK`, `Scheme_Component_Attribute_Attribute_FK`, `Scheme_Component_Attribute_Value`) VALUES ('1', '1', '100');
+INSERT INTO `hrm`.`Scheme_Component_Attribute` (`Scheme_Component_Attribute_Component_FK`, `Scheme_Component_Attribute_Attribute_FK`, `Scheme_Component_Attribute_Value`) VALUES ('1', '2', '0.10');
+
+------------------------------------------------------------
+-- Insert 3 different summarys in the `Summary` Table
+------------------------------------------------------------
+
+INSERT INTO `hrm`.`Summary` (`Summary_Name`, `Summary_Text`) VALUES ('SummaryA', 'I am the first summary of an awesome piece of software called: HRM');
+INSERT INTO `hrm`.`Summary` (`Summary_Name`, `Summary_Text`) VALUES ('SummaryB', 'I am the second summary of an awesome piece of software called: HRM');

@@ -25,18 +25,18 @@ public class PlaceDao implements IPlaceDao {
     @Override
     public Collection<Place> findAll() throws DatabaseException {
         SqlQueryBuilder builder = new SqlQueryBuilder();
-        builder.select(TABLE_NAME, Fields.ID, Fields.NAME, Fields.POSTCODE, Fields.CITY, 
-                Fields.STREET, Fields.STREET_NO, Fields.LOCATION, Fields.AREA);
-        
+        builder.select(TABLE_NAME, Fields.ID, Fields.NAME, Fields.POSTCODE, Fields.CITY,
+                Fields.STREET, Fields.STREET_NO);
+
         final String query = builder.toString();
-        
+
         try (Connection con = DatabaseFactory.getConnection()) {
             try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
                 ResultSet result = stmt.executeQuery();
 
                 Collection<Place> places = fromResultSet(result);
                 DbUtils.closeQuietly(result);
-                
+
                 return places;
             }
         }
@@ -50,10 +50,10 @@ public class PlaceDao implements IPlaceDao {
         checkArgument(id >= 0, "Id must not be negative.");
 
         SqlQueryBuilder builder = new SqlQueryBuilder();
-        builder.select(TABLE_NAME, Fields.ID, Fields.NAME, Fields.POSTCODE, Fields.CITY, 
+        builder.select(TABLE_NAME, Fields.ID, Fields.NAME, Fields.POSTCODE, Fields.CITY,
                 Fields.STREET, Fields.STREET_NO, Fields.LOCATION, Fields.AREA);
         builder.where(Fields.ID);
-        
+
         final String query = builder.toString();
 
         try (Connection con = DatabaseFactory.getConnection()) {
@@ -63,7 +63,7 @@ public class PlaceDao implements IPlaceDao {
 
                 Collection<Place> places = fromResultSet(result);
                 DbUtils.closeQuietly(result);
-                
+
                 if (places.size() < 1) {
                     throw new ElementNotFoundException();
                 }
@@ -87,7 +87,7 @@ public class PlaceDao implements IPlaceDao {
         SqlQueryBuilder builder = new SqlQueryBuilder();
         builder.insert(TABLE_NAME, Fields.NAME, Fields.POSTCODE, Fields.CITY, Fields.STREET,
                 Fields.STREET_NO, Fields.LOCATION, Fields.AREA);
-        
+
         final String query = builder.toString();
 
         try (Connection con = DatabaseFactory.getConnection()) {
@@ -140,7 +140,7 @@ public class PlaceDao implements IPlaceDao {
         builder.update(TABLE_NAME, Fields.NAME, Fields.POSTCODE, Fields.CITY, Fields.STREET,
                 Fields.STREET_NO, Fields.LOCATION, Fields.AREA);
         builder.where(Fields.ID);
-        
+
         final String query = builder.toString();
 
         try (Connection con = DatabaseFactory.getConnection()) {
@@ -186,8 +186,9 @@ public class PlaceDao implements IPlaceDao {
 
         return placeList;
     }
-    
+
     private static final String TABLE_NAME = "Place";
+
     private static class Fields {
         public static final String ID = "Place_ID";
         public static final String NAME = "Place_Name";
