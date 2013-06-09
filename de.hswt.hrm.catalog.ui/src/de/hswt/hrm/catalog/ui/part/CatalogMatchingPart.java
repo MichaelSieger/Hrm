@@ -81,15 +81,7 @@ public class CatalogMatchingPart {
 
             fillAvailableViewer(items);
 
-            // catalogs.setInput(catalogsFromDB);
-            /*
-             * Dummy Data until DB is incomplete
-             */
-
-            ArrayList<Catalog> dummy = new ArrayList<>();
-            dummy.add(new Catalog("Catalog 1"));
-            dummy.add(new Catalog("Catalog 2"));
-            catalogs.setInput(dummy);
+            catalogs.setInput(catalogsFromDB);
 
         }
         catch (Exception e) {

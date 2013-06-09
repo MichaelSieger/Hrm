@@ -9,9 +9,12 @@ import org.eclipse.swt.widgets.Event;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.hswt.hrm.catalog.model.Activity;
 import de.hswt.hrm.catalog.model.Catalog;
 import de.hswt.hrm.catalog.model.ICatalogItem;
+import de.hswt.hrm.catalog.model.Target;
 import de.hswt.hrm.catalog.service.CatalogService;
+import de.hswt.hrm.common.database.exception.SaveException;
 
 public class CatalogMatchingEventHandler {
 
@@ -49,8 +52,25 @@ public class CatalogMatchingEventHandler {
 
         ListViewer source = (ListViewer) XWT.findElementByName(event.widget, AT);
         ListViewer target = (ListViewer) XWT.findElementByName(event.widget, MT);
+        ListViewer catalogs = (ListViewer) XWT.findElementByName(event.widget, "catalogs");
+        Catalog c = (Catalog) catalogs.getElementAt(catalogs.getList().getSelectionIndex());
 
-        moveEntry(source, target);
+        Target t = (Target) moveEntry(source, target);
+        try {
+
+            if (t == null) {
+                System.out.println("t is null");
+                return;
+            }
+            else
+                System.out.println(t.getName());
+
+            catalogService.addToCatalog(c, t);
+        }
+        catch (SaveException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
         if (target.getList().getItemCount() > 0) {
             target.getList().setEnabled(true);
@@ -136,23 +156,27 @@ public class CatalogMatchingEventHandler {
         ListViewer catalogs = (ListViewer) XWT.findElementByName(event.widget, "catalogs");
         Catalog c = (Catalog) catalogs.getElementAt(catalogs.getList().getSelectionIndex());
         if (c.getTargets().isEmpty()) {
-            System.out.println("empty Targets, using defualts");
+            System.out.println("empty Targets, using defaults");
         }
+        else
+            System.out.println("found matched target");
 
         ListViewer alv = (ListViewer) XWT.findElementByName(event.widget, "availableTarget");
         alv.getList().setEnabled(true);
     }
 
-    private void moveEntry(ListViewer source, ListViewer target) {
+    private ICatalogItem moveEntry(ListViewer source, ListViewer target) {
 
         ICatalogItem item = (ICatalogItem) source
                 .getElementAt(source.getList().getSelectionIndex());
         if (item == null) {
-            return;
+            return null;
         }
 
         target.add(item);
         source.remove(item);
+
+        return item;
 
     }
 
