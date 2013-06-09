@@ -54,6 +54,9 @@ public class ReportdataParser {
             Contact conctactController, Plant plant, Place place, Inspection inspection)
             throws FileNotFoundException, IOException {
 
+        /*
+         * NIO2. Ersetz das mal duch Paths.get(pathDir,"template","reportdate.properties");
+         */
         prop.load(new FileInputStream(pathDir + File.separator + "templates" + File.separator
                 + "reportdata.properties"));
 

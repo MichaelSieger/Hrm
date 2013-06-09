@@ -107,7 +107,7 @@ public class CatalogMatchingEventHandler {
 
         if (matchedCurrent.getList().getItemCount() == 0) {
             matchedCurrent.getList().setEnabled(false);
-            availableCurrent.getList().setEnabled(false);
+            availableActivity.getList().setEnabled(false);
         }
 
     }
