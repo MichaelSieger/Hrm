@@ -3,6 +3,7 @@ package de.hswt.hrm.catalog.dao.jdbc;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -162,6 +163,44 @@ public class TargetDao implements ITargetDao {
         catch (SQLException | DatabaseException e) {
             throw new SaveException(e);
         }
+    }
+    
+    public void removeFromCatalog(Catalog catalog, Target target) throws DatabaseException {
+    	checkNotNull(catalog, "Catalog is mandatory.");
+    	checkNotNull(target, "Target is mandatory.");
+    	checkArgument(catalog.getId() >= 0, "Catalog must have a valid ID.");
+    	checkArgument(target.getId() >= 0, "Target must have a valid ID.");
+    	
+    	StringBuilder builder = new StringBuilder();
+    	builder.append("DELETE FROM ").append(CROSS_TABLE_NAME);
+    	builder.append(" WHERE ");
+    	builder.append(Fields.CROSS_CATALOG_FK).append(" = ?");
+    	builder.append(" AND ");
+    	builder.append(Fields.CROSS_TARGET_FK).append(" = ?;");
+    	
+    	String query = builder.toString();
+    	
+    	try (Connection con = DatabaseFactory.getConnection()) {
+    		con.setAutoCommit(false);
+    		
+    		try (PreparedStatement stmt = con.prepareStatement(query)) {
+    			stmt.setInt(1, catalog.getId());
+    			stmt.setInt(2, target.getId());
+    			
+    			
+    			int affected = stmt.executeUpdate();
+    			if (affected < 0) {
+    				con.rollback();
+    				throw new ElementNotFoundException();
+    			}
+    			else if (affected > 1) {
+    				con.rollback();
+    				throw new DatabaseException("Delete would accidently affect multiple rows.");
+    			}
+    		}
+    	} catch (SQLException e) {
+			throw new DatabaseException("Unkown error.", e);
+		}
     }
 
     @Override
