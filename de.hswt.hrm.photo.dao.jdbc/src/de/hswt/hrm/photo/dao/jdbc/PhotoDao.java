@@ -128,7 +128,33 @@ public class PhotoDao implements IPhotoDao {
 
     @Override
     public void update(Photo photo) throws ElementNotFoundException, SaveException {
-        // TODO Auto-generated method stub
+        checkNotNull(photo, "Photo must not be null.");
+
+        if (photo.getId() < 0) {
+            throw new ElementNotFoundException("Element has no valid ID.");
+        }
+
+        SqlQueryBuilder builder = new SqlQueryBuilder();
+        builder.update(TABLE_NAME, Fields.BLOB, Fields.NAME, Fields.LABEL);
+        builder.where(Fields.ID);
+
+        final String query = builder.toString();
+
+        try (Connection con = DatabaseFactory.getConnection()) {
+            try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
+                stmt.setParameter(Fields.ID, photo.getId());
+                stmt.setParameter(Fields.BLOB, photo.getBlob());
+                stmt.setParameter(Fields.NAME, photo.getName());
+                stmt.setParameter(Fields.LABEL, photo.getLabel());
+                int affectedRows = stmt.executeUpdate();
+                if (affectedRows != 1) {
+                    throw new SaveException();
+                }
+            }
+        }
+        catch (SQLException | DatabaseException e) {
+            throw new SaveException(e);
+        }
 
     }
 
