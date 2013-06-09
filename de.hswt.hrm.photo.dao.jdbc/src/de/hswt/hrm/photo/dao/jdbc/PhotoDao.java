@@ -88,8 +88,42 @@ public class PhotoDao implements IPhotoDao {
 
     @Override
     public Photo insert(Photo photo) throws SaveException {
-        // TODO Auto-generated method stub
-        return null;
+        SqlQueryBuilder builder = new SqlQueryBuilder();
+        builder.insert(TABLE_NAME, Fields.BLOB, Fields.NAME, Fields.LABEL);
+
+        final String query = builder.toString();
+
+        try (Connection con = DatabaseFactory.getConnection()) {
+            try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
+                stmt.setParameter(Fields.BLOB, photo.getBlob());
+                stmt.setParameter(Fields.NAME, photo.getName());
+                stmt.setParameter(Fields.LABEL, photo.getLabel());
+
+                int affectedRows = stmt.executeUpdate();
+                if (affectedRows != 1) {
+                    throw new SaveException();
+                }
+
+                try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        int id = generatedKeys.getInt(1);
+
+                        // Create new Photo with id
+                        Photo inserted = new Photo(id, photo.getBlob(), photo.getName(),
+                                photo.getLabel());
+
+                        return inserted;
+                    }
+                    else {
+                        throw new SaveException("Could not retrieve generated ID.");
+                    }
+                }
+            }
+
+        }
+        catch (SQLException | DatabaseException e) {
+            throw new SaveException(e);
+        }
     }
 
     @Override
@@ -104,7 +138,7 @@ public class PhotoDao implements IPhotoDao {
 
         while (rs.next()) {
             int id = rs.getInt(Fields.ID);
-            String blob = rs.getString(Fields.BLOB);
+            byte[] blob = rs.getBytes(Fields.BLOB);
             String name = rs.getString(Fields.NAME);
             String label = rs.getString(Fields.LABEL);
 
