@@ -13,4 +13,5 @@ Import-Package: de.hswt.hrm.common,
  de.hswt.hrm.inspection.dao.core,
  de.hswt.hrm.inspection.model,
  de.hswt.hrm.scheme.model
-Require-Bundle: com.google.guava;bundle-version="10.0.1"
+Require-Bundle: com.google.guava;bundle-version="10.0.1",
+ javax.inject;bundle-version="1.0.0"
