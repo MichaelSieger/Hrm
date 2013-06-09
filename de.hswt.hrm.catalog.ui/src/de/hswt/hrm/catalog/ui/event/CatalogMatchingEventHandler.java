@@ -18,16 +18,15 @@ public class CatalogMatchingEventHandler {
 
     private IEclipseContext context;
     private CatalogService catalogService;
+
     private ListViewer availableTarget;
     private ListViewer matchedTarget;
-
     private ListViewer availableCurrent;
     private ListViewer matchedCurrent;
-
     private ListViewer availableActivity;
     private ListViewer matchedActivity;
 
-    private final static Logger LOG = LoggerFactory.getLogger(CatalogMatchingEventHandler.class);
+    private static final Logger LOG = LoggerFactory.getLogger(CatalogMatchingEventHandler.class);
 
     @Inject
     public CatalogMatchingEventHandler(IEclipseContext context, CatalogService catalogService) {
@@ -70,50 +69,34 @@ public class CatalogMatchingEventHandler {
         // e.printStackTrace();
         // }
 
-        if (matchedTarget.getList().getItemCount() > 0) {
-            matchedTarget.getList().setEnabled(true);
-            availableCurrent.getList().setEnabled(true);
-        }
+        enableList(matchedTarget, availableCurrent);
 
     }
 
     public void matchedTargetSelected(Event event) {
 
         moveEntry(matchedTarget, availableTarget);
-
-        if (matchedTarget.getList().getItemCount() == 0) {
-            matchedTarget.getList().setEnabled(false);
-            availableCurrent.getList().setEnabled(false);
-        }
+        disableLists(matchedTarget, matchedCurrent);
 
     }
 
     public void availableCurrentSelected(Event event) {
 
         moveEntry(availableCurrent, matchedCurrent);
-
-        if (matchedCurrent.getList().getItemCount() > 0) {
-
-            matchedCurrent.getList().setEnabled(true);
-            availableActivity.getList().setEnabled(true);
-
-        }
+        enableList(matchedCurrent, availableActivity);
 
     }
 
     public void matchedCurrentSelected(Event event) {
 
         moveEntry(matchedCurrent, availableCurrent);
-
-        if (matchedCurrent.getList().getItemCount() == 0) {
-            matchedCurrent.getList().setEnabled(false);
-            availableActivity.getList().setEnabled(false);
-        }
+        disableLists(matchedCurrent, availableActivity);
 
     }
 
     public void availableActivitySelected(Event event) {
 
+        moveEntry(availableActivity, matchedActivity);
         if (availableActivity.getList().getItemCount() > 0) {
             matchedActivity.getList().setEnabled(true);
         }
@@ -123,12 +106,42 @@ public class CatalogMatchingEventHandler {
     public void matchedActivitySelected(Event event) {
 
         moveEntry(matchedActivity, availableActivity);
-
         if (matchedActivity.getList().getItemCount() == 0) {
             matchedActivity.getList().setEnabled(false);
 
         }
 
+    }
+
+    private ICatalogItem moveEntry(ListViewer source, ListViewer target) {
+
+        ICatalogItem item = (ICatalogItem) source
+                .getElementAt(source.getList().getSelectionIndex());
+        if (item == null) {
+            return null;
+        }
+
+        target.add(item);
+        source.remove(item);
+
+        return item;
+
+    }
+
+    private void enableList(ListViewer previous, ListViewer next) {
+
+        if (previous.getList().getItemCount() > 0) {
+            previous.getList().setEnabled(true);
+            next.getList().setEnabled(true);
+        }
+    }
+
+    private void disableLists(ListViewer first, ListViewer second) {
+
+        if (first.getList().getItemCount() == 0) {
+            first.getList().setEnabled(false);
+            second.getList().setEnabled(false);
+        }
     }
 
     /**
@@ -146,23 +159,7 @@ public class CatalogMatchingEventHandler {
         else
             System.out.println("found matched target");
 
-        ListViewer alv = (ListViewer) XWT.findElementByName(event.widget, "availableTarget");
-        alv.getList().setEnabled(true);
-
-    }
-
-    private ICatalogItem moveEntry(ListViewer source, ListViewer target) {
-
-        ICatalogItem item = (ICatalogItem) source
-                .getElementAt(source.getList().getSelectionIndex());
-        if (item == null) {
-            return null;
-        }
-
-        target.add(item);
-        source.remove(item);
-
-        return item;
+        availableTarget.getList().setEnabled(true);
 
     }
 
