@@ -6,7 +6,7 @@ import org.eclipse.jface.viewers.ViewerFilter;
 import de.hswt.hrm.place.model.Place;
 
 public class PlaceFilter extends ViewerFilter {
-	private String searchString;
+    private String searchString;
 
     public void setSearchString(String substring) {
         searchString = (".*" + substring + ".*").toLowerCase();
@@ -25,15 +25,7 @@ public class PlaceFilter extends ViewerFilter {
         if (p.getPlaceName().toLowerCase().matches(searchString)) {
             return true;
         }
-        // match location
-        if (p.getLocation().toLowerCase().matches(searchString)) {
-            return true;
-        }
-        // match area
-        if (p.getArea().toLowerCase().matches(searchString)) {
-            return true;
-        }
-        
+
         // match city
         if (p.getCity().toLowerCase().matches(searchString)) {
             return true;
