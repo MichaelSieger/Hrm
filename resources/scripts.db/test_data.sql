@@ -168,8 +168,9 @@ INSERT INTO `hrm`.`Picture` (`Picture_Blob`, `Picture_Name`, `Picture_Label`) VA
 ------------------------------------------------------------
 -- Insert 2 different component physical ratings in the `Component_Physical_Rating` Table
 ------------------------------------------------------------
--- INSERT INTO `hrm`.`Component_Physical_Rating` (`Component_Physical_Rating_Component_FK`, `Component_Physical_Rating_Current_FK`, `Component_Physical_Rating_Target_FK`, `Component_Physical_Rating_Activity_FK`, `Component_Physical_Rating_Priority`, `Component_Physical_Rating_Rating`, `Component_Physical_Rating_Note`, `Component_Physical_Rating_Report_Physical_FK`) VALUES ('1', '1', '1', '1', '1', '3', 'guad', '1');
--- INSERT INTO `hrm`.`Component_Physical_Rating` (`Component_Physical_Rating_Component_FK`, `Component_Physical_Rating_Current_FK`, `Component_Physical_Rating_Target_FK`, `Component_Physical_Rating_Activity_FK`, `Component_Physical_Rating_Priority`, `Component_Physical_Rating_Rating`, `Component_Physical_Rating_Note`, `Component_Physical_Rating_Report_Physical_FK`) VALUES ('2', '2', '2', '2', '2', '2', 'basst scho', '2');
+
+INSERT INTO `hrm`.`Component_Physical_Rating` (`Component_Physical_Rating_Component_FK`, `Component_Physical_Rating_Rating`, `Component_Physical_Rating_Note`, `Component_Physical_Rating_Report_FK`) VALUES ('1', '3.5', 'passt scho', '1');
+INSERT INTO `hrm`.`Component_Physical_Rating` (`Component_Physical_Rating_Component_FK`, `Component_Physical_Rating_Rating`, `Component_Physical_Rating_Note`, `Component_Physical_Rating_Report_FK`) VALUES ('2', '2.1', 'guad', '2');
 
 ------------------------------------------------------------
 -- Insert 3 different component catalogs in the `Component_Catalog` Table
