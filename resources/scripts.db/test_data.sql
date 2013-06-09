@@ -15,11 +15,11 @@ INSERT INTO `hrm`.`Contact` (`Contact_Name`, `Contact_First_Name`, `Contact_Zip_
 ------------------------------------------------------------
 -- Insert 5 different places in the `Place` Table
 ------------------------------------------------------------
--- INSERT INTO `hrm`.`Place` (`Place_Name`, `Place_Zip_Code`, `Place_City`, `Place_Street`, `Place_Street_Number`, `Place_Location`, `Place_Area`) VALUES ('Mezze', '85231', 'Freising', 'Osmanische Strasse', '2', 'EG R01', 'Ogerhöhle');
--- INSERT INTO `hrm`.`Place` (`Place_Name`, `Place_Zip_Code`, `Place_City`, `Place_Street`, `Place_Street_Number`, `Place_Location`, `Place_Area`) VALUES ('HSWT', '85232', 'Freising', 'Wissensweg', '2', 'Keller', 'Abstellraum');
--- INSERT INTO `hrm`.`Place` (`Place_Name`, `Place_Zip_Code`, `Place_City`, `Place_Street`, `Place_Street_Number`, `Place_Location`, `Place_Area`) VALUES ('Schmukki', '85234', 'Freising', 'Bierweg', '1', 'EG Raum 2', 'Schänke');
--- INSERT INTO `hrm`.`Place` (`Place_Name`, `Place_Zip_Code`, `Place_City`, `Place_Street`, `Place_Street_Number`, `Place_Location`, `Place_Area`) VALUES ('Wayne-Towers', '10001', 'Gotham City', 'Wayne-Tower', '1', '5.112', 'Aufzugskammer');
--- INSERT INTO `hrm`.`Place` (`Place_Name`, `Place_Zip_Code`, `Place_City`, `Place_Street`, `Place_Street_Number`, `Place_Location`, `Place_Area`) VALUES ('Roche', '82340', 'Penzberg', 'Nonnenwald', '2', 'Geb. 112 R0512', 'Automatenraum');
+INSERT INTO `hrm`.`Place` (`Place_Name`, `Place_Zip_Code`, `Place_City`, `Place_Street`, `Place_Street_Number`) VALUES ('Mezze', '85231', 'Freising', 'Osmanische Strasse', '2');
+INSERT INTO `hrm`.`Place` (`Place_Name`, `Place_Zip_Code`, `Place_City`, `Place_Street`, `Place_Street_Number`) VALUES ('HSWT', '85232', 'Freising', 'Wissensweg', '2');
+INSERT INTO `hrm`.`Place` (`Place_Name`, `Place_Zip_Code`, `Place_City`, `Place_Street`, `Place_Street_Number`) VALUES ('Schmukki', '85234', 'Freising', 'Bierweg', '1');
+INSERT INTO `hrm`.`Place` (`Place_Name`, `Place_Zip_Code`, `Place_City`, `Place_Street`, `Place_Street_Number`) VALUES ('Wayne-Towers', '10001', 'Gotham City', 'Wayne-Tower', '1');
+INSERT INTO `hrm`.`Place` (`Place_Name`, `Place_Zip_Code`, `Place_City`, `Place_Street`, `Place_Street_Number`) VALUES ('Roche', '82340', 'Penzberg', 'Nonnenwald', '2');
 
 ------------------------------------------------------------
 -- Insert 3 different plants in the `Plant` Table
