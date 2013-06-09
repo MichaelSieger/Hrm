@@ -104,9 +104,9 @@ INSERT INTO `hrm`.`Biological_Rating` (`Biological_Rating_Component_FK`, `Biolog
 ------------------------------------------------------------
 -- Insert 3 different schemes in the `Scheme` Table
 ------------------------------------------------------------
--- INSERT INTO `hrm`.`Scheme` (`Scheme_Plant_FK`) VALUES ('1');
--- INSERT INTO `hrm`.`Scheme` (`Scheme_Plant_FK`) VALUES ('2');
--- INSERT INTO `hrm`.`Scheme` (`Scheme_Plant_FK`) VALUES ('2');
+INSERT INTO `hrm`.`Scheme` (`Scheme_Plant_FK`) VALUES ('1');
+INSERT INTO `hrm`.`Scheme` (`Scheme_Plant_FK`) VALUES ('2');
+INSERT INTO `hrm`.`Scheme` (`Scheme_Plant_FK`) VALUES ('2');
 
 ------------------------------------------------------------
 -- Insert 3 different scheme components in the `Scheme_Components` Table
