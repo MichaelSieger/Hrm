@@ -46,7 +46,8 @@
 				</Composite.layout>
 				<Text x:Style="BORDER">
 					<Text.layoutData>
-						<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
+						<GridData grabExcessHorizontalSpace="true"
+							horizontalAlignment="FILL" />
 					</Text.layoutData>
 				</Text>
 				<ListViewer x:Style="BORDER | V_SCROLL" x:Name="matchedTarget">
@@ -74,7 +75,8 @@
 				</Composite.layout>
 				<Text x:Style="BORDER">
 					<Text.layoutData>
-						<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
+						<GridData grabExcessHorizontalSpace="true"
+							horizontalAlignment="FILL" />
 					</Text.layoutData>
 				</Text>
 				<ListViewer x:Style="BORDER | V_SCROLL" x:Name="matchedCurrent">
@@ -101,7 +103,8 @@
 				</Composite.layout>
 				<Text x:Style="BORDER">
 					<Text.layoutData>
-						<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
+						<GridData grabExcessHorizontalSpace="true"
+							horizontalAlignment="FILL" />
 					</Text.layoutData>
 				</Text>
 				<ListViewer x:Style="BORDER | V_SCROLL" x:Name="matchedActivity">
@@ -122,21 +125,25 @@
 			<FillLayout />
 		</Composite.layout>
 		<Button x:Style="ARROW | UP" x:Name="targetUp" SelectionEvent="availableTargetSelected" />
-		<Button x:Style="ARROW | DOWN" x:Name="targetDown" SelectionEvent="matchedTargetSelected/>
+		<Button x:Style="ARROW | DOWN" x:Name="targetDown"
+			SelectionEvent="matchedTargetSelected" />
 	</Composite>
 	<Composite>
 		<Composite.layout>
 			<FillLayout />
 		</Composite.layout>
-		<Button x:Style="ARROW" x:Name="currentUp" />
-		<Button x:Style="ARROW | DOWN" x:Name="currentDown" />
+		<Button x:Style="ARROW" x:Name="currentUp" SelectionEvent="availableCurrentSelected" />
+		<Button x:Style="ARROW | DOWN " x:Name="currentDown"
+			SelectionEvent="matchedCurrentSelected" />
 	</Composite>
 	<Composite>
 		<Composite.layout>
 			<FillLayout />
 		</Composite.layout>
-		<Button text="New Button" x:Style="ARROW" x:Name="activityUp" />
-		<Button text="New Button" x:Style="ARROW | DOWN" x:Name="activityDown" />
+		<Button text="New Button" x:Style="ARROW" x:Name="activityUp"
+			SelectionEvent="availableActivitySelected" />
+		<Button text="New Button" x:Style="ARROW | DOWN" x:Name="activityDown"
+			SelectionEvent="matchedActivitySelected" />
 	</Composite>
 	<Section text="Informations" x:Style="(p1:Section).EXPANDED | (p1:Section).TITLE_BAR"
 		x:Name="information">
