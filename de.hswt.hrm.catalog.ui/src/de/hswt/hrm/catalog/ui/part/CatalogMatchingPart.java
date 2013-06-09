@@ -9,10 +9,8 @@ import javax.inject.Inject;
 
 import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
-import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.e4.xwt.IConstants;
 import org.eclipse.e4.xwt.XWT;
-import org.eclipse.e4.xwt.forms.XWTForms;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.ListViewer;
@@ -33,13 +31,11 @@ public class CatalogMatchingPart {
 
     @Inject
     CatalogService catalogService;
-    @Inject
-    EPartService service;
 
-    ListViewer targets;
-    ListViewer currents;
-    ListViewer activities;
     ListViewer catalogs;
+    ListViewer availableTargets;
+    ListViewer availablecurrents;
+    ListViewer availableactivities;
     ListViewer matchedTargets;
     ListViewer matchedCurrents;
     ListViewer matchedActivities;
@@ -59,17 +55,27 @@ public class CatalogMatchingPart {
                     cmeh);
 
             // obtain all ListViewer
-            targets = (ListViewer) XWT.findElementByName(composite, "availableTarget");
-            currents = (ListViewer) XWT.findElementByName(composite, "availableCurrent");
-            activities = (ListViewer) XWT.findElementByName(composite, "availableActivity");
+            availableTargets = (ListViewer) XWT.findElementByName(composite, "availableTarget");
+            availablecurrents = (ListViewer) XWT.findElementByName(composite, "availableCurrent");
+            availableactivities = (ListViewer) XWT
+                    .findElementByName(composite, "availableActivity");
             matchedActivities = (ListViewer) XWT.findElementByName(composite, "matchedActivity");
             matchedTargets = (ListViewer) XWT.findElementByName(composite, "matchedTarget");
             matchedCurrents = (ListViewer) XWT.findElementByName(composite, "matchedCurrent");
             catalogs = (ListViewer) XWT.findElementByName(composite, "catalogs");
 
-            initalize(activities);
-            initalize(targets);
-            initalize(currents);
+            // Pass them to the event Handler
+            cmeh.setAvActivity(availableactivities);
+            cmeh.setAvCurrent(availablecurrents);
+            cmeh.setAvTarget(availableTargets);
+            cmeh.setMaActivity(matchedActivities);
+            cmeh.setMaCurrent(matchedCurrents);
+            cmeh.setMaTarget(matchedTargets);
+
+            // Fill them with data
+            initalize(availableactivities);
+            initalize(availableTargets);
+            initalize(availablecurrents);
             initalize(matchedTargets);
             initalize(matchedActivities);
             initalize(matchedCurrents);
@@ -149,18 +155,46 @@ public class CatalogMatchingPart {
             }
         }
 
-        targets.setInput(t);
-        currents.setInput(c);
-        activities.setInput(a);
+        availableTargets.setInput(t);
+        availablecurrents.setInput(c);
+        availableactivities.setInput(a);
 
-        targets.getList().setEnabled(false);
-        currents.getList().setEnabled(false);
-        activities.getList().setEnabled(false);
+        availableTargets.getList().setEnabled(false);
+        availablecurrents.getList().setEnabled(false);
+        availableactivities.getList().setEnabled(false);
 
         matchedActivities.getList().setEnabled(false);
         matchedCurrents.getList().setEnabled(false);
         matchedTargets.getList().setEnabled(false);
 
+    }
+
+    public ListViewer getTargets() {
+        return availableTargets;
+    }
+
+    public ListViewer getCurrents() {
+        return availablecurrents;
+    }
+
+    public ListViewer getActivities() {
+        return availableactivities;
+    }
+
+    public ListViewer getCatalogs() {
+        return catalogs;
+    }
+
+    public ListViewer getMatchedTargets() {
+        return matchedTargets;
+    }
+
+    public ListViewer getMatchedCurrents() {
+        return matchedCurrents;
+    }
+
+    public ListViewer getMatchedActivities() {
+        return matchedActivities;
     }
 
 }
