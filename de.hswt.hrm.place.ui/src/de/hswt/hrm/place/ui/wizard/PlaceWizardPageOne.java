@@ -28,7 +28,7 @@ public class PlaceWizardPageOne extends WizardPage {
 	private Optional<Place> place;
 	
 	private RegexValidator plzVal = new RegexValidator("[0-9]{5}");
-    private RegexValidator textOnlyVal = new RegexValidator("([A-ZÄÖÜ]{1}[a-zäöü]+[\\s]?[\\-]?)*");
+    private RegexValidator cityVal = new RegexValidator("([A-ZÄÖÜ]{1}[a-zäöü]+[\\s]?[\\-]?)*");
     private RegexValidator streetNoVal = new RegexValidator("[0-9]+[a-z]?");
 
 
@@ -121,34 +121,36 @@ public class PlaceWizardPageOne extends WizardPage {
     
     @Override
     public boolean isPageComplete(){
-        boolean validText;
-    	for(Text textField : getWidgets().values()){
-    		if(textField.getText().length() == 0){
-    		    setErrorMessage("Feld \""+textField.getToolTipText()+"\" darf nicht leer sein.");
-    			return false;    			
-    		}
-    		validText = checkValidity(textField);
-    		if (!validText) {
-    		    return false;
-    		}
-    	}
-    	setErrorMessage(null);
-    	return true;
+        HashMap<String, Text> widgets = getWidgets();
+        // Sorted arry
+        Text[] widArray = { widgets.get(Fields.NAME), widgets.get(Fields.STREET),
+                widgets.get(Fields.STREET_NO), widgets.get(Fields.ZIP_CODE),
+                widgets.get(Fields.CITY) };
+        boolean isValid;
+        for (int i = 0; i < widArray.length; i++) {
+            isValid = checkValidity(widArray[i]);
+            if (widArray[i].getText().length() == 0) {
+                setErrorMessage("Field \"" + widArray[i].getToolTipText() + "\" is mandatory.");
+                return false;
+            }
+            if (!isValid) {
+                setErrorMessage("Input for \"" + widArray[i].getToolTipText() + "\" is invalid.");
+                return false;
+            }
+        }
+        setErrorMessage(null);
+        return true;
     }
     
     private boolean checkValidity(Text textField) {
-        String toolTipText = textField.getToolTipText();
-        if (toolTipText.equals("PLZ") && !plzVal.isValid(textField.getText())) {
-            setErrorMessage("PLZ ist ungültig!");
-            return false;
-        } else if (toolTipText.equals("Stadt") && !textOnlyVal.isValid(textField.getText())) {
-            setErrorMessage("Stadt ist ungültig!");
-            return false;
-        } else if (toolTipText.equals("Hausnummer") && !streetNoVal.isValid(textField.getText())) {
-            setErrorMessage("Hausnummer ist ungültig!");
+        String toolTip = textField.getToolTipText();
+        boolean isInvalidStreetNo = toolTip.equals("Hausnummer") && !streetNoVal.isValid(textField.getText());
+        boolean isInvalidZipCode = toolTip.equals("PLZ") && !plzVal.isValid(textField.getText());
+        boolean isInvalidCity = toolTip.equals("Stadt") && !cityVal.isValid(textField.getText());
+        
+        if (isInvalidStreetNo || isInvalidZipCode || isInvalidCity) {
             return false;
         }
-        setErrorMessage(null);
         return true;
     }
 
