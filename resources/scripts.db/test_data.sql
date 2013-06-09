@@ -44,9 +44,9 @@ INSERT INTO `hrm`.`Report` (`Report_Layout_FK`, `Report_Plant_FK`, `Report_Reque
 ------------------------------------------------------------
 -- Insert 3 different cataloges in the `Catalog` Table
 ------------------------------------------------------------
--- INSERT INTO `hrm`.`Catalog` (`Catalog_Name`) VALUES ('Katalog_Filter');
--- INSERT INTO `hrm`.`Catalog` (`Catalog_Name`) VALUES ('Katalog_Motor');
--- INSERT INTO `hrm`.`Catalog` (`Catalog_Name`) VALUES ('Katalog_Heizung');
+INSERT INTO `hrm`.`Catalog` (`Catalog_Name`) VALUES ('Katalog_Filter');
+INSERT INTO `hrm`.`Catalog` (`Catalog_Name`) VALUES ('Katalog_Motor');
+INSERT INTO `hrm`.`Catalog` (`Catalog_Name`) VALUES ('Katalog_Heizung');
 
 ------------------------------------------------------------
 -- Insert 4 different categories in the `Category` Table
