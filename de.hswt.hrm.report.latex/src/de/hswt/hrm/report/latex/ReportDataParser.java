@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.Properties;
 
 import de.hswt.hrm.contact.model.Contact;
@@ -11,7 +12,7 @@ import de.hswt.hrm.place.model.Place;
 import de.hswt.hrm.plant.model.Plant;
 import de.hswt.hrm.inspection.model.Inspection;
 
-public class ReportdataParser {
+public class ReportDataParser {
 
     private Properties prop = new Properties();
     private StringBuffer buffer;
@@ -54,8 +55,9 @@ public class ReportdataParser {
             Contact conctactController, Plant plant, Place place, Inspection inspection)
             throws FileNotFoundException, IOException {
 
-        prop.load(new FileInputStream(pathDir + File.separator + "templates" + File.separator
-                + "reportdata.properties"));
+
+        prop.load(new FileInputStream(Paths.get(pathDir,"template","reportdate.properties").toString()));
+
 
         buffer.append(prop.getProperty("reportdata.customer.name").replace(CUSTOMER_NAME,
                 contactCustomer.getFirstName() + " " + contactCustomer.getLastName()));

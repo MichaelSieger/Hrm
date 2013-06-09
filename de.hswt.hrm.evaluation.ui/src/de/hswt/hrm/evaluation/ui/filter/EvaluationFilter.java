@@ -1,37 +1,35 @@
-package de.hswt.hrm.place.ui.filter;
+package de.hswt.hrm.evaluation.ui.filter;
 
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 
-import de.hswt.hrm.place.model.Place;
+import de.hswt.hrm.evaluation.model.Evaluation;
 
-public class PlaceFilter extends ViewerFilter {
+public class EvaluationFilter extends ViewerFilter {
+
     private String searchString;
 
     public void setSearchString(String substring) {
         searchString = (".*" + substring + ".*").toLowerCase();
-
     }
 
     @Override
     public boolean select(Viewer viewer, Object parentElement, Object element) {
-
         if (searchString == null || searchString.length() == 0) {
             return true;
         }
 
-        Place p = (Place) element;
-        // match placeName
-        if (p.getPlaceName().toLowerCase().matches(searchString)) {
+        Evaluation e = (Evaluation) element;
+
+        if (e.getName().toLowerCase().matches(searchString)) {
             return true;
         }
 
-        // match city
-        if (p.getCity().toLowerCase().matches(searchString)) {
+        if (e.getText().toLowerCase().matches(searchString)) {
             return true;
         }
 
         return false;
-
     }
+
 }

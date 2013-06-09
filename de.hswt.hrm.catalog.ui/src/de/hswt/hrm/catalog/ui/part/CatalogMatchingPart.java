@@ -7,11 +7,10 @@ import java.util.Collection;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
+import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
-import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.e4.xwt.IConstants;
 import org.eclipse.e4.xwt.XWT;
-import org.eclipse.e4.xwt.forms.XWTForms;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.ListViewer;
@@ -25,18 +24,18 @@ import de.hswt.hrm.catalog.model.Current;
 import de.hswt.hrm.catalog.model.ICatalogItem;
 import de.hswt.hrm.catalog.model.Target;
 import de.hswt.hrm.catalog.service.CatalogService;
+import de.hswt.hrm.catalog.ui.event.CatalogMatchingEventHandler;
+import de.hswt.hrm.common.ui.xwt.XwtHelper;
 
 public class CatalogMatchingPart {
 
     @Inject
     CatalogService catalogService;
-    @Inject
-    EPartService service;
 
-    ListViewer targets;
-    ListViewer currents;
-    ListViewer activities;
     ListViewer catalogs;
+    ListViewer availableTargets;
+    ListViewer availablecurrents;
+    ListViewer availableactivities;
     ListViewer matchedTargets;
     ListViewer matchedCurrents;
     ListViewer matchedActivities;
@@ -48,20 +47,35 @@ public class CatalogMatchingPart {
                 "de/hswt/hrm/catalog/ui/xwt/CatalogMatchingView" + IConstants.XWT_EXTENSION_SUFFIX);
 
         try {
-            final Composite composite = (Composite) XWTForms.load(parent, url);
+
+            CatalogMatchingEventHandler cmeh = ContextInjectionFactory.make(
+                    CatalogMatchingEventHandler.class, context);
+
+            final Composite composite = (Composite) XwtHelper.loadFormWithEventHandler(parent, url,
+                    cmeh);
 
             // obtain all ListViewer
-            targets = (ListViewer) XWT.findElementByName(composite, "availableTarget");
-            currents = (ListViewer) XWT.findElementByName(composite, "availableCurrent");
-            activities = (ListViewer) XWT.findElementByName(composite, "availableActivity");
+            availableTargets = (ListViewer) XWT.findElementByName(composite, "availableTarget");
+            availablecurrents = (ListViewer) XWT.findElementByName(composite, "availableCurrent");
+            availableactivities = (ListViewer) XWT
+                    .findElementByName(composite, "availableActivity");
             matchedActivities = (ListViewer) XWT.findElementByName(composite, "matchedActivity");
             matchedTargets = (ListViewer) XWT.findElementByName(composite, "matchedTarget");
             matchedCurrents = (ListViewer) XWT.findElementByName(composite, "matchedCurrent");
             catalogs = (ListViewer) XWT.findElementByName(composite, "catalogs");
 
-            initalize(activities);
-            initalize(targets);
-            initalize(currents);
+            // Pass them to the event Handler
+            cmeh.setAvActivity(availableactivities);
+            cmeh.setAvCurrent(availablecurrents);
+            cmeh.setAvTarget(availableTargets);
+            cmeh.setMaActivity(matchedActivities);
+            cmeh.setMaCurrent(matchedCurrents);
+            cmeh.setMaTarget(matchedTargets);
+
+            // Fill them with data
+            initalize(availableactivities);
+            initalize(availableTargets);
+            initalize(availablecurrents);
             initalize(matchedTargets);
             initalize(matchedActivities);
             initalize(matchedCurrents);
@@ -73,15 +87,7 @@ public class CatalogMatchingPart {
 
             fillAvailableViewer(items);
 
-            // catalogs.setInput(catalogsFromDB);
-            /*
-             * Dummy Data until DB is incomplete
-             */
-
-            ArrayList<Catalog> dummy = new ArrayList<>();
-            dummy.add(new Catalog("Catalog 1"));
-            dummy.add(new Catalog("Catalog 2"));
-            catalogs.setInput(dummy);
+            catalogs.setInput(catalogsFromDB);
 
         }
         catch (Exception e) {
@@ -149,18 +155,46 @@ public class CatalogMatchingPart {
             }
         }
 
-        targets.setInput(t);
-        currents.setInput(c);
-        activities.setInput(a);
+        availableTargets.setInput(t);
+        availablecurrents.setInput(c);
+        availableactivities.setInput(a);
 
-        targets.getList().setEnabled(false);
-        currents.getList().setEnabled(false);
-        activities.getList().setEnabled(false);
+        availableTargets.getList().setEnabled(false);
+        availablecurrents.getList().setEnabled(false);
+        availableactivities.getList().setEnabled(false);
 
         matchedActivities.getList().setEnabled(false);
         matchedCurrents.getList().setEnabled(false);
         matchedTargets.getList().setEnabled(false);
 
+    }
+
+    public ListViewer getTargets() {
+        return availableTargets;
+    }
+
+    public ListViewer getCurrents() {
+        return availablecurrents;
+    }
+
+    public ListViewer getActivities() {
+        return availableactivities;
+    }
+
+    public ListViewer getCatalogs() {
+        return catalogs;
+    }
+
+    public ListViewer getMatchedTargets() {
+        return matchedTargets;
+    }
+
+    public ListViewer getMatchedCurrents() {
+        return matchedCurrents;
+    }
+
+    public ListViewer getMatchedActivities() {
+        return matchedActivities;
     }
 
 }

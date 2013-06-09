@@ -101,7 +101,7 @@ public class PlaceWizardPageOne extends WizardPage {
             return p;
         }
 
-        Place p = new Place(name, zipCode, city, street, streetNo, null, null);
+        Place p = new Place(name, zipCode, city, street, streetNo);
         return p;
     }
 

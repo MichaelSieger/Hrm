@@ -51,7 +51,7 @@ public class PlaceDao implements IPlaceDao {
 
         SqlQueryBuilder builder = new SqlQueryBuilder();
         builder.select(TABLE_NAME, Fields.ID, Fields.NAME, Fields.POSTCODE, Fields.CITY,
-                Fields.STREET, Fields.STREET_NO, Fields.LOCATION, Fields.AREA);
+                Fields.STREET, Fields.STREET_NO);
         builder.where(Fields.ID);
 
         final String query = builder.toString();
@@ -86,7 +86,7 @@ public class PlaceDao implements IPlaceDao {
     public Place insert(Place place) throws SaveException {
         SqlQueryBuilder builder = new SqlQueryBuilder();
         builder.insert(TABLE_NAME, Fields.NAME, Fields.POSTCODE, Fields.CITY, Fields.STREET,
-                Fields.STREET_NO, Fields.LOCATION, Fields.AREA);
+                Fields.STREET_NO);
 
         final String query = builder.toString();
 
@@ -97,8 +97,6 @@ public class PlaceDao implements IPlaceDao {
                 stmt.setParameter(Fields.CITY, place.getCity());
                 stmt.setParameter(Fields.STREET, place.getStreet());
                 stmt.setParameter(Fields.STREET_NO, place.getStreetNo());
-                stmt.setParameter(Fields.LOCATION, place.getLocation());
-                stmt.setParameter(Fields.AREA, place.getArea());
 
                 int affectedRows = stmt.executeUpdate();
                 if (affectedRows != 1) {
@@ -111,8 +109,7 @@ public class PlaceDao implements IPlaceDao {
 
                         // Create new Place with id
                         Place inserted = new Place(id, place.getPlaceName(), place.getPostCode(),
-                                place.getCity(), place.getStreet(), place.getStreetNo(),
-                                place.getLocation(), place.getArea());
+                                place.getCity(), place.getStreet(), place.getStreetNo());
 
                         return inserted;
                     }
@@ -138,7 +135,7 @@ public class PlaceDao implements IPlaceDao {
 
         SqlQueryBuilder builder = new SqlQueryBuilder();
         builder.update(TABLE_NAME, Fields.NAME, Fields.POSTCODE, Fields.CITY, Fields.STREET,
-                Fields.STREET_NO, Fields.LOCATION, Fields.AREA);
+                Fields.STREET_NO);
         builder.where(Fields.ID);
 
         final String query = builder.toString();
@@ -151,8 +148,6 @@ public class PlaceDao implements IPlaceDao {
                 stmt.setParameter(Fields.CITY, place.getCity());
                 stmt.setParameter(Fields.STREET, place.getStreet());
                 stmt.setParameter(Fields.STREET_NO, place.getStreetNo());
-                stmt.setParameter(Fields.LOCATION, place.getLocation());
-                stmt.setParameter(Fields.AREA, place.getArea());
 
                 int affectedRows = stmt.executeUpdate();
                 if (affectedRows != 1) {
@@ -176,10 +171,8 @@ public class PlaceDao implements IPlaceDao {
             String city = rs.getString(Fields.CITY);
             String street = rs.getString(Fields.STREET);
             String streetNo = rs.getString(Fields.STREET_NO);
-            String location = rs.getString(Fields.LOCATION);
-            String area = rs.getString(Fields.AREA);
 
-            Place place = new Place(id, placeName, postCode, city, street, streetNo, location, area);
+            Place place = new Place(id, placeName, postCode, city, street, streetNo);
 
             placeList.add(place);
         }
@@ -196,7 +189,6 @@ public class PlaceDao implements IPlaceDao {
         public static final String CITY = "Place_City";
         public static final String STREET = "Place_Street";
         public static final String STREET_NO = "Place_Street_Number";
-        public static final String LOCATION = "Place_Location";
-        public static final String AREA = "Place_Area";
+
     }
 }
