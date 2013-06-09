@@ -9,7 +9,6 @@ import javax.inject.Inject;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
-import org.eclipse.e4.ui.workbench.modeling.EPartService.PartState;
 import org.eclipse.e4.xwt.IConstants;
 import org.eclipse.e4.xwt.XWT;
 import org.eclipse.e4.xwt.forms.XWTForms;
@@ -18,11 +17,7 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.ListViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerComparator;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
 
 import de.hswt.hrm.catalog.model.Activity;
 import de.hswt.hrm.catalog.model.Catalog;
@@ -55,22 +50,6 @@ public class CatalogMatchingPart {
         try {
             final Composite composite = (Composite) XWTForms.load(parent, url);
 
-            ((Button) XWT.findElementByName(composite, "back2Main")).addListener(SWT.Selection,
-                    new Listener() {
-                        @Override
-                        public void handleEvent(Event event) {
-                            service.findPart("Clients").setVisible(false);
-                            service.findPart("Places").setVisible(false);
-                            service.findPart("Plants").setVisible(false);
-                            service.findPart("Scheme").setVisible(false);
-                            service.findPart("Catalog").setVisible(false);
-                            service.findPart("Category").setVisible(false);
-                            service.findPart("Matched").setVisible(false);
-                            service.findPart("Main").setVisible(true);
-                            service.showPart("Main", PartState.VISIBLE);
-                        }
-                    });
-
             // obtain all ListViewer
             targets = (ListViewer) XWT.findElementByName(composite, "availableTarget");
             currents = (ListViewer) XWT.findElementByName(composite, "availableCurrent");
@@ -86,26 +65,39 @@ public class CatalogMatchingPart {
             initalize(matchedTargets);
             initalize(matchedActivities);
             initalize(matchedCurrents);
-
-            catalogs.setContentProvider(ArrayContentProvider.getInstance());
-            catalogs.setLabelProvider(new LabelProvider() {
-                @Override
-                public String getText(Object element) {
-                    Catalog c = (Catalog) element;
-                    return c.getName();
-                }
-            });
+            initializeCatalogs(catalogs);
 
             Collection<Catalog> catalogsFromDB = catalogService.findAllCatalog();
+
             Collection<ICatalogItem> items = catalogService.findAllCatalogItem();
+
             fillAvailableViewer(items);
 
-            catalogs.setInput(catalogsFromDB);
+            // catalogs.setInput(catalogsFromDB);
+            /*
+             * Dummy Data until DB is incomplete
+             */
+
+            ArrayList<Catalog> dummy = new ArrayList<>();
+            dummy.add(new Catalog("Catalog 1"));
+            dummy.add(new Catalog("Catalog 2"));
+            catalogs.setInput(dummy);
 
         }
         catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void initializeCatalogs(ListViewer catalogs2) {
+        catalogs.setContentProvider(ArrayContentProvider.getInstance());
+        catalogs.setLabelProvider(new LabelProvider() {
+            @Override
+            public String getText(Object element) {
+                Catalog c = (Catalog) element;
+                return c.getName();
+            }
+        });
     }
 
     /**

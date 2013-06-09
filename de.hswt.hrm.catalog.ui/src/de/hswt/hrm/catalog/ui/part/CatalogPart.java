@@ -49,7 +49,7 @@ public class CatalogPart {
     @Inject
     @Optional
     private ILockService lockService;
-    
+
     @Inject
     EPartService service;
 
@@ -73,34 +73,17 @@ public class CatalogPart {
             LOG.debug("XWT load successfully.");
 
             viewer = (TableViewer) XWT.findElementByName(composite, "catalogTable");
-            
-            ((Button) XWT.findElementByName(composite, "back2Main")).addListener(SWT.Selection, new Listener() {
- 				@Override
- 				public void handleEvent(Event event) {
- 					service.findPart("Clients").setVisible(false);
- 					service.findPart("Places").setVisible(false);
- 					service.findPart("Plants").setVisible(false);
- 					service.findPart("Scheme").setVisible(false);
- 					service.findPart("Catalog").setVisible(false);
- 					service.findPart("Category").setVisible(false);
- 					service.findPart("Main").setVisible(true);
- 					service.showPart("Main", PartState.VISIBLE);
- 				}
- 			});
-            
-            ((Button) XWT.findElementByName(composite, "match")).addListener(SWT.Selection, new Listener() {
-                @Override
-                public void handleEvent(Event event) {
-                    service.findPart("Clients").setVisible(false);
-                    service.findPart("Places").setVisible(false);
-                    service.findPart("Plants").setVisible(false);
-                    service.findPart("Scheme").setVisible(false);
-                    service.findPart("Catalog").setVisible(false);
-                    service.findPart("Category").setVisible(false);
-                    service.findPart("Matched").setVisible(true);
-                    service.showPart("Matched", PartState.VISIBLE);
-                }
-            });
+
+            ((Button) XWT.findElementByName(composite, "match")).addListener(SWT.Selection,
+                    new Listener() {
+                        @Override
+                        public void handleEvent(Event event) {
+
+                            service.findPart("de.hswt.hrm.catalog.ui.matching").setVisible(true);
+                            service.showPart("de.hswt.hrm.catalog.ui.matching", PartState.VISIBLE);
+                            service.findPart("de.hswt.hrm.catalog.ui.catalog").setVisible(false);
+                        }
+                    });
 
             initializeTable(parent, viewer);
             refreshTable(parent);

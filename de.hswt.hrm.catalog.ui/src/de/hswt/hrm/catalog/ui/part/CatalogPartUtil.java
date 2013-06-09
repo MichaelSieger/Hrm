@@ -74,31 +74,34 @@ public final class CatalogPartUtil {
             @Override
             public int compare(ICatalogItem o1, ICatalogItem o2) {
 
-                if (o1 instanceof Activity) {
-                    if (o2 instanceof Current) {
-                        return ACTIVITY.compareToIgnoreCase(CURRENT);
-                    }
-                    return ACTIVITY.compareToIgnoreCase(TARGET);
-
-                }
-                else if (o1 instanceof Current) {
-                    if (o2 instanceof Activity) {
-                        return CURRENT.compareTo(ACTIVITY);
-                    }
-                    return CURRENT.compareTo(TARGET);
-                }
-
-                else if (o1 instanceof Target) {
-                    if (o2 instanceof Activity) {
-                        TARGET.compareTo(ACTIVITY);
-                    }
-                    return TARGET.compareTo(CURRENT);
-                }
-                return 0;
-
+                return compareItems(o1, o2);
             }
-
         });
+    }
+
+    private static int compareItems(ICatalogItem o1, ICatalogItem o2) {
+        if (o1 instanceof Activity) {
+            if (o2 instanceof Current) {
+                return ACTIVITY.compareToIgnoreCase(CURRENT);
+            }
+            return ACTIVITY.compareToIgnoreCase(TARGET);
+
+        }
+        else if (o1 instanceof Current) {
+            if (o2 instanceof Activity) {
+                return CURRENT.compareTo(ACTIVITY);
+            }
+            return CURRENT.compareTo(TARGET);
+        }
+
+        else if (o1 instanceof Target) {
+            if (o2 instanceof Activity) {
+                TARGET.compareTo(ACTIVITY);
+            }
+            return TARGET.compareTo(CURRENT);
+        }
+        return 0;
+
     }
 
     private static ColumnDescription<ICatalogItem> getNameColumn() {
