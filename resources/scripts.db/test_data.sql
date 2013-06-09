@@ -31,8 +31,8 @@ INSERT INTO `hrm`.`Plant` (`Plant_Place_FK`, `Plant_Manufacturer`, `Plant_Year_O
 ------------------------------------------------------------
 -- Insert 2 different layouts in the `Layout` Table
 ------------------------------------------------------------
--- INSERT INTO `hrm`.`Layout` (`Layout_Name`) VALUES ('LayoutA');
--- INSERT INTO `hrm`.`Layout` (`Layout_Name`) VALUES ('LayoutB');
+INSERT INTO `hrm`.`Layout` (`Layout_Name`) VALUES ('LayoutA');
+INSERT INTO `hrm`.`Layout` (`Layout_Name`) VALUES ('LayoutB');
 
 ------------------------------------------------------------
 -- Insert 2 different reports in the `Report` Table
