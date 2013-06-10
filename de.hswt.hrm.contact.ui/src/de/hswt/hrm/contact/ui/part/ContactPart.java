@@ -28,6 +28,7 @@ import org.eclipse.swt.events.ModifyEvent;
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.ui.swt.constants.SearchFieldConstants;
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
+import de.hswt.hrm.common.ui.swt.layouts.LayoutUtil;
 import de.hswt.hrm.common.ui.swt.table.ColumnComparator;
 import de.hswt.hrm.common.ui.swt.table.ColumnDescription;
 import de.hswt.hrm.common.ui.swt.table.TableViewerController;
@@ -43,11 +44,13 @@ import org.slf4j.LoggerFactory;
 import com.google.common.base.Optional;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.DoubleClickEvent;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.ui.forms.widgets.Section;
 
 public class ContactPart {
 
 	private final static Logger LOG = LoggerFactory
-			.getLogger(ContactPartPld.class);
+			.getLogger(ContactPart.class);
 
 	@Inject
 	private ContactService contactService;
@@ -65,6 +68,8 @@ public class ContactPart {
 	private Color defaultForeGround;
 	private Action editAction;
 	private Action addAction;
+	private Section headerSection;
+	private Composite composite;
 
 	public ContactPart() {
 		// toolkit can be created in PostConstruct, but then then
@@ -72,7 +77,7 @@ public class ContactPart {
 		toolkit.dispose();
 		toolkit = FormUtil.createToolkit();
 	}
-	
+
 	/**
 	 * Create contents of the view part.
 	 */
@@ -91,32 +96,33 @@ public class ContactPart {
 		form.setSeparatorVisible(true);
 		toolkit.paintBordersFor(form);
 		form.setText("Contacts");
-		FillLayout fillLayout = new FillLayout(SWT.HORIZONTAL);
-		fillLayout.marginHeight = 8;
-		fillLayout.marginWidth = 8;
-		form.getBody().setLayout(fillLayout);
 		toolkit.decorateFormHeading(form);
+		form.getToolBarManager().add(editAction);
 
-		tableViewer = new TableViewer(form.getBody(), SWT.BORDER
-				| SWT.FULL_SELECTION);
-		tableViewer.addDoubleClickListener(new IDoubleClickListener() {
-			public void doubleClick(DoubleClickEvent event) {
-				editContact();
-			}
-		});
-		table = tableViewer.getTable();
-		table.setLinesVisible(true);
-		table.setHeaderVisible(true);
-		toolkit.paintBordersFor(table);
+		form.getToolBarManager().add(addAction);
+		FillLayout fillLayout = new FillLayout(SWT.HORIZONTAL);
+		fillLayout.marginHeight = 1;
+		form.getBody().setLayout(fillLayout);
 
-		searchText = new Text(form.getHead(), SWT.BORDER | SWT.H_SCROLL
-				| SWT.ICON_SEARCH | SWT.SEARCH | SWT.ICON_CANCEL | SWT.CANCEL);
+		headerSection = toolkit.createSection(form.getBody(), Section.TITLE_BAR);
+		toolkit.paintBordersFor(headerSection);
+		headerSection.setExpanded(true);
+		FormUtil.initSectionColors(headerSection);
+
+		composite = toolkit.createComposite(headerSection, SWT.NONE);
+		toolkit.paintBordersFor(composite);
+		headerSection.setClient(composite);
+		composite.setLayout(new GridLayout(1, false));
+
+		searchText = new Text(composite, SWT.BORDER | SWT.SEARCH
+				| SWT.ICON_SEARCH | SWT.CANCEL | SWT.ICON_CANCEL);
 		defaultForeGround = searchText.getForeground();
 		searchText.setText(SearchFieldConstants.DEFAULT_SEARCH_STRING);
 		searchText.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent e) {
-				if (SearchFieldConstants.DEFAULT_SEARCH_STRING.equals(searchText.getText())) {
+				if (SearchFieldConstants.DEFAULT_SEARCH_STRING
+						.equals(searchText.getText())) {
 					searchText.setText(SearchFieldConstants.EMPTY);
 					searchText.setForeground(defaultForeGround);
 				}
@@ -125,8 +131,10 @@ public class ContactPart {
 			@Override
 			public void focusLost(FocusEvent e) {
 				if (searchText.getText().isEmpty()) {
-					searchText.setText(SearchFieldConstants.DEFAULT_SEARCH_STRING);
-					searchText.setForeground(SearchFieldConstants.DEFAULT_SEARCH_COLOR);
+					searchText
+							.setText(SearchFieldConstants.DEFAULT_SEARCH_STRING);
+					searchText
+							.setForeground(SearchFieldConstants.DEFAULT_SEARCH_COLOR);
 					updateTableFilter("");
 				}
 			}
@@ -136,17 +144,28 @@ public class ContactPart {
 				updateTableFilter(searchText.getText());
 			}
 		});
-		form.setHeadClient(searchText);
+		searchText.setLayoutData(LayoutUtil.createHorzFillData());
 		toolkit.adapt(searchText, true, true);
 		searchText.setForeground(SearchFieldConstants.DEFAULT_SEARCH_COLOR);
-		form.getToolBarManager().add(editAction);
-		
-				form.getToolBarManager().add(addAction);
+
+		tableViewer = new TableViewer(composite, SWT.BORDER
+				| SWT.FULL_SELECTION);
+		tableViewer.addDoubleClickListener(new IDoubleClickListener() {
+			public void doubleClick(DoubleClickEvent event) {
+				editContact();
+			}
+		});
+		table = tableViewer.getTable();
+		table.setSize(214, 221);
+		table.setLinesVisible(true);
+		table.setHeaderVisible(true);
+		table.setLayoutData(LayoutUtil.createFillData());
+		toolkit.paintBordersFor(table);
 		form.getToolBarManager().update(true);
-		
+
 		initializeTable();
 		refreshTable(parent);
-		
+
 	}
 
 	private void createActions() {
@@ -224,7 +243,7 @@ public class ContactPart {
 		filter.setSearchString(filterString);
 		tableViewer.refresh();
 	}
-	
+
 	/**
 	 * This Event is called whenever the add button is pressed.
 	 * 
