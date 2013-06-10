@@ -61,7 +61,7 @@ public class ReportDataParser {
             Contact conctactController, Plant plant, Place place, Inspection inspection)
             throws FileNotFoundException, IOException {
 
-        prop.load(Files.newInputStream(Paths.get(pathDir, "template", "reportdate.properties")));
+        prop.load(Files.newInputStream(Paths.get(pathDir, "templates", "reportdata.properties")));
 
         buffer.append(prop.getProperty("reportdata.customer.name").replace(CUSTOMER_NAME,
                 contactCustomer.getFirstName() + " " + contactCustomer.getLastName()));
