@@ -134,12 +134,12 @@ public class ReportDataParser {
                 "Photo.getPlantImage"));
         buffer.append("\n");
 
-        if (!(plant.getManufactor().or("") == "")) {
+        if (plant.getManufactor().isPresent()) {
             buffer.append(prop.getProperty("reportdata.plant.manufacturer").replace(
                     PLANT_MANUFACTURER, plant.getManufactor().or("")));
             buffer.append("\n");
         }
-        if (!(plant.getType().or("") == "")) {
+        if (plant.getType().isPresent()) {
             buffer.append(prop.getProperty("reportdata.plant.type").replace(PLANT_TYPE,
                     plant.getType().or("")));
             buffer.append("\n");
@@ -148,27 +148,27 @@ public class ReportDataParser {
                 plant.getConstructionYear().toString()));
         buffer.append("\n");
 
-        if (!(plant.getAirPerformance().or("") == "")) {
+        if (plant.getAirPerformance().isPresent()) {
             buffer.append(prop.getProperty("reportdata.plant.power").replace(PLANT_AIR_POWER,
                     plant.getAirPerformance().or("")));
             buffer.append("\n");
         }
-        if (!(plant.getMotorPower().or("") == "")) {
+        if (plant.getMotorPower().isPresent()) {
             buffer.append(prop.getProperty("reportdata.plant.engine.power").replace(
                     PLANT_ENGINE_POWER, plant.getMotorPower().or("")));
             buffer.append("\n");
         }
-        if (!(plant.getMotorRpm().or("") == "")) {
+        if (plant.getMotorRpm().isPresent()) {
             buffer.append(prop.getProperty("reportdata.plant.engine.rpm").replace(PLANT_RPM,
                     plant.getMotorRpm().or("")));
             buffer.append("\n");
         }
-        if (!(plant.getCurrent().or("") == "")) {
+        if (plant.getCurrent().isPresent()) {
             buffer.append(prop.getProperty("reportdata.plant.current").replace(PLANT_CURRENT,
                     plant.getCurrent().or("")));
             buffer.append("\n");
         }
-        if (!(plant.getVoltage().or("") == ""))
+        if (plant.getVoltage().isPresent())
             buffer.append(prop.getProperty("reportdata.plant.voltage").replace(PLANT_VOLTAGE,
                     plant.getVoltage().or("")));
         buffer.append("\n");
