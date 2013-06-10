@@ -113,10 +113,10 @@ public class ReportDataParser {
         buffer.append(prop.getProperty("reportdata.data.report").replace(REPORT_DATE,
                 "report.getReportDate()"));
         buffer.append("\n");
-        // TODO Marco fragen ob name gemeint is, Feld nicht vorhanden
-        buffer.append(prop.getProperty("reportdata.plant").replace(PLANT, "plant.getPlantName"));
+        // TODO 
+        buffer.append(prop.getProperty("reportdata.plant").replace(PLANT, "plant.getPlantName()"));
         buffer.append("\n");
-        // TODO Marco fragen was gemeint is
+        // TODO Location
         buffer.append(prop.getProperty("reportdata.plant.place").replace(PLANT_PLACE,
                 "plant.getPlace()"));
         buffer.append("\n");

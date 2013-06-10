@@ -38,7 +38,7 @@
         <children xsi:type="menu:HandledToolItem" xmi:id="_jbedMNAuEeK9kIHbeXbCVQ" elementId="de.hswt.hrm.main.toolitem.categories" label="Categories" iconURI="platform:/plugin/de.hswt.hrm.main/icons/components_32.png" tooltip="Categories" command="_QNkJwNAhEeK9kIHbeXbCVQ">
           <parameters xmi:id="_jbedMdAuEeK9kIHbeXbCVQ" elementId="de.hswt.hrm.main.switchpart.idinput.home" name="de.hswt.hrm.main.switchpart.idinput" value="de.hswt.hrm.component.ui.category"/>
         </children>
-        <children xsi:type="menu:HandledToolItem" xmi:id="_lufBoNAuEeK9kIHbeXbCVQ" elementId="de.hswt.hrm.main.toolitem.inspection" label="Inspection" iconURI="platform:/plugin/de.hswt.hrm.main/icons/home_32.png" tooltip="Inspection" command="_QNkJwNAhEeK9kIHbeXbCVQ">
+        <children xsi:type="menu:HandledToolItem" xmi:id="_lufBoNAuEeK9kIHbeXbCVQ" elementId="de.hswt.hrm.main.toolitem.inspection" label="Inspection" iconURI="platform:/plugin/de.hswt.hrm.main/icons/reports_32.png" tooltip="Inspection" command="_QNkJwNAhEeK9kIHbeXbCVQ">
           <parameters xmi:id="_lufBodAuEeK9kIHbeXbCVQ" elementId="de.hswt.hrm.main.switchpart.idinput.inspection" name="de.hswt.hrm.main.switchpart.idinput" value="de.hswt.hrm.inspection.ui.inspection"/>
         </children>
         <children xsi:type="menu:HandledToolItem" xmi:id="_mCmQcNAuEeK9kIHbeXbCVQ" elementId="de.hswt.hrm.main.toolitem.overall" label="Overall" iconURI="platform:/plugin/de.hswt.hrm.main/icons/summary_32.png" tooltip="Overall" command="_QNkJwNAhEeK9kIHbeXbCVQ">
