@@ -1,7 +1,5 @@
 package de.hswt.hrm.report.latex;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -17,6 +15,10 @@ public class ReportDataParser {
 
     private Properties prop = new Properties();
     private StringBuffer buffer = new StringBuffer();
+
+    /*
+     * Keywords used in file reportdata.properties
+     */
 
     private final String CUSTOMER_NAME = ":customerName:";
     private final String CUSTOMER_STREET = ":customerStreet:";
@@ -52,6 +54,9 @@ public class ReportDataParser {
     private final String PLANT_CURRENT = ":plantCurrent:";
     private final String PLANT_VOLTAGE = ":plantVoltage:";
 
+    /*
+     * @return String , ready to be written to file reportdata.tex
+     */
     public String parse(String pathDir, Contact contactCustomer, Contact contactContractor,
             Contact conctactController, Plant plant, Place place, Inspection inspection)
             throws FileNotFoundException, IOException {
@@ -90,7 +95,7 @@ public class ReportDataParser {
 
         // TODO
         buffer.append(prop.getProperty("reportdata.object.title").replace(OBJECT_TITLE,
-                "???.getTitle()"));
+                "report.getTitle()"));
         buffer.append("\n");
         buffer.append(prop.getProperty("reportdata.object.name").replace(OBJECT_NAME,
                 place.getPlaceName()));
@@ -113,12 +118,12 @@ public class ReportDataParser {
         buffer.append(prop.getProperty("reportdata.data.report").replace(REPORT_DATE,
                 "report.getReportDate()"));
         buffer.append("\n");
-        // TODO 
+        // TODO
         buffer.append(prop.getProperty("reportdata.plant").replace(PLANT, "plant.getPlantName()"));
         buffer.append("\n");
         // TODO Location
         buffer.append(prop.getProperty("reportdata.plant.place").replace(PLANT_PLACE,
-                "plant.getPlace()"));
+                "plant.getLocation"));
         buffer.append("\n");
         // TODO
         buffer.append(prop.getProperty("reportdata.plant.servicearea").replace(PLANT_SERVICE_AREA,
@@ -128,29 +133,44 @@ public class ReportDataParser {
         buffer.append(prop.getProperty("reportdata.plant.image").replace(PLANT_IMAGE,
                 "Photo.getPlantImage"));
         buffer.append("\n");
-        buffer.append(prop.getProperty("reportdata.plant.manufacturer").replace(PLANT_MANUFACTURER,
-                plant.getManufactor().or("")));
-        buffer.append("\n");
-        buffer.append(prop.getProperty("reportdata.plant.type").replace(PLANT_TYPE,
-                plant.getType().or("")));
-        buffer.append("\n");
+
+        if (!(plant.getManufactor().or("") == "")) {
+            buffer.append(prop.getProperty("reportdata.plant.manufacturer").replace(
+                    PLANT_MANUFACTURER, plant.getManufactor().or("")));
+            buffer.append("\n");
+        }
+        if (!(plant.getType().or("") == "")) {
+            buffer.append(prop.getProperty("reportdata.plant.type").replace(PLANT_TYPE,
+                    plant.getType().or("")));
+            buffer.append("\n");
+        }
         buffer.append(prop.getProperty("reportdata.plant.year").replace(PLANT_YEAR,
                 plant.getConstructionYear().toString()));
         buffer.append("\n");
-        buffer.append(prop.getProperty("reportdata.plant.power").replace(PLANT_AIR_POWER,
-                plant.getAirPerformance().or("")));
-        buffer.append("\n");
-        buffer.append(prop.getProperty("reportdata.plant.engine.power").replace(PLANT_ENGINE_POWER,
-                plant.getMotorPower().or("")));
-        buffer.append("\n");
-        buffer.append(prop.getProperty("reportdata.plant.engine.rpm").replace(PLANT_RPM,
-                plant.getMotorRpm().or("")));
-        buffer.append("\n");
-        buffer.append(prop.getProperty("reportdata.plant.current").replace(PLANT_CURRENT,
-                plant.getCurrent().or("")));
-        buffer.append("\n");
-        buffer.append(prop.getProperty("reportdata.plant.voltage").replace(PLANT_VOLTAGE,
-                plant.getVoltage().or("")));
+
+        if (!(plant.getAirPerformance().or("") == "")) {
+            buffer.append(prop.getProperty("reportdata.plant.power").replace(PLANT_AIR_POWER,
+                    plant.getAirPerformance().or("")));
+            buffer.append("\n");
+        }
+        if (!(plant.getMotorPower().or("") == "")) {
+            buffer.append(prop.getProperty("reportdata.plant.engine.power").replace(
+                    PLANT_ENGINE_POWER, plant.getMotorPower().or("")));
+            buffer.append("\n");
+        }
+        if (!(plant.getMotorRpm().or("") == "")) {
+            buffer.append(prop.getProperty("reportdata.plant.engine.rpm").replace(PLANT_RPM,
+                    plant.getMotorRpm().or("")));
+            buffer.append("\n");
+        }
+        if (!(plant.getCurrent().or("") == "")) {
+            buffer.append(prop.getProperty("reportdata.plant.current").replace(PLANT_CURRENT,
+                    plant.getCurrent().or("")));
+            buffer.append("\n");
+        }
+        if (!(plant.getVoltage().or("") == ""))
+            buffer.append(prop.getProperty("reportdata.plant.voltage").replace(PLANT_VOLTAGE,
+                    plant.getVoltage().or("")));
         buffer.append("\n");
 
         return buffer.toString();
