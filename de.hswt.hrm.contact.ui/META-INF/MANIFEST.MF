@@ -26,6 +26,8 @@ Export-Package: de.hswt.hrm.contact.ui.event,
  de.hswt.hrm.contact.ui.part
 Import-Package: de.hswt.hrm.common,
  de.hswt.hrm.common.database.exception,
+ de.hswt.hrm.common.ui.swt.constants,
+ de.hswt.hrm.common.ui.swt.forms,
  de.hswt.hrm.common.ui.swt.layouts,
  de.hswt.hrm.common.ui.swt.table,
  de.hswt.hrm.common.ui.swt.wizards,

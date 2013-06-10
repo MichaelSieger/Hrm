@@ -128,7 +128,7 @@ public class LayoutUtil {
 	}
 
 	public static GridData createRightGridData(int colSpan) {
-		return new GridData(SWT.RIGHT, SWT.TOP, false, false, colSpan, 1);
+		return new GridData(SWT.FILL, SWT.TOP, false, false, colSpan, 1);
 	}
 
 	public static GridData createFillData() {

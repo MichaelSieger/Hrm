@@ -19,7 +19,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 
-import de.hswt.hrm.main.ui.MPartSwitcher;
+import de.hswt.hrm.main.ui.ViewSwitcher;
 
 
 public class MainPart {
@@ -74,37 +74,37 @@ public class MainPart {
 		toContacts.addListener(SWT.Selection,new Listener() {
 			@Override
 			public void handleEvent(Event event) {
-				runCommand(MPartSwitcher.CONTACTS_ID);
+				runCommand(ViewSwitcher.CONTACTS_ID);
 			}
 		});
 		toPlaces.addListener(SWT.Selection,new Listener() {
 			@Override
 			public void handleEvent(Event event) {
-				runCommand(MPartSwitcher.PLACES_ID);
+				runCommand(ViewSwitcher.PLACES_ID);
 			}
 		});
 		toPlants.addListener(SWT.Selection,new Listener() {
 			@Override
 			public void handleEvent(Event event) {
-				runCommand(MPartSwitcher.PLANTS_ID);
+				runCommand(ViewSwitcher.PLANTS_ID);
 			}
 		});
 		toCategory.addListener(SWT.Selection,new Listener() {
 			@Override
 			public void handleEvent(Event event) {
-				runCommand(MPartSwitcher.CATEGORY_ID);
+				runCommand(ViewSwitcher.CATEGORY_ID);
 			}
 		});
 		toCatalog.addListener(SWT.Selection,new Listener() {
 			@Override
 			public void handleEvent(Event event) {
-				runCommand(MPartSwitcher.CATALOG_ID);
+				runCommand(ViewSwitcher.CATALOG_ID);
 			}
 		});
         toOverall.addListener(SWT.Selection, new Listener() {
             @Override
             public void handleEvent(Event event) {
-				runCommand(MPartSwitcher.OVERALL_ID);
+				runCommand(ViewSwitcher.OVERALL_ID);
             }
         });
 	}

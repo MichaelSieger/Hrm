@@ -20,14 +20,14 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.SWT;
-import org.eclipse.ui.forms.FormColors;
-import org.eclipse.ui.forms.IFormColors;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Form;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.ModifyEvent;
 
 import de.hswt.hrm.common.database.exception.DatabaseException;
+import de.hswt.hrm.common.ui.swt.constants.SearchFieldConstants;
+import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.common.ui.swt.table.ColumnComparator;
 import de.hswt.hrm.common.ui.swt.table.ColumnDescription;
 import de.hswt.hrm.common.ui.swt.table.TableViewerController;
@@ -57,11 +57,7 @@ public class ContactPart {
 
 	private IEclipseContext context;
 
-	private static final String DEFAULT_SEARCH_STRING = "Search";
-
-	private static final String EMPTY = "";
-
-	private FormToolkit toolkit;
+	private FormToolkit toolkit = new FormToolkit(Display.getDefault());
 	private Table table;
 	private Text searchText;
 	private TableViewer tableViewer;
@@ -71,8 +67,12 @@ public class ContactPart {
 	private Action addAction;
 
 	public ContactPart() {
+		// toolkit can be created in PostConstruct, but then then
+		// WindowBuilder is unable to parse the code
+		toolkit.dispose();
+		toolkit = FormUtil.createToolkit();
 	}
-
+	
 	/**
 	 * Create contents of the view part.
 	 */
@@ -80,15 +80,14 @@ public class ContactPart {
 	public void createControls(Composite parent, IEclipseContext context) {
 		this.context = context;
 
-		createToolkit();
 		createActions();
-		toolkit.setOrientation(SWT.RIGHT_TO_LEFT);
 		toolkit.setBorderStyle(SWT.BORDER);
 		toolkit.adapt(parent);
 		toolkit.paintBordersFor(parent);
 		parent.setLayout(new FillLayout(SWT.HORIZONTAL));
 
 		Form form = toolkit.createForm(parent);
+		form.getHead().setOrientation(SWT.RIGHT_TO_LEFT);
 		form.setSeparatorVisible(true);
 		toolkit.paintBordersFor(form);
 		form.setText("Contacts");
@@ -113,12 +112,12 @@ public class ContactPart {
 		searchText = new Text(form.getHead(), SWT.BORDER | SWT.H_SCROLL
 				| SWT.ICON_SEARCH | SWT.SEARCH | SWT.ICON_CANCEL | SWT.CANCEL);
 		defaultForeGround = searchText.getForeground();
-		searchText.setText(DEFAULT_SEARCH_STRING);
+		searchText.setText(SearchFieldConstants.DEFAULT_SEARCH_STRING);
 		searchText.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent e) {
-				if (DEFAULT_SEARCH_STRING.equals(searchText.getText())) {
-					searchText.setText(EMPTY);
+				if (SearchFieldConstants.DEFAULT_SEARCH_STRING.equals(searchText.getText())) {
+					searchText.setText(SearchFieldConstants.EMPTY);
 					searchText.setForeground(defaultForeGround);
 				}
 			}
@@ -126,9 +125,8 @@ public class ContactPart {
 			@Override
 			public void focusLost(FocusEvent e) {
 				if (searchText.getText().isEmpty()) {
-					searchText.setText(DEFAULT_SEARCH_STRING);
-					searchText.setForeground(
-							Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
+					searchText.setText(SearchFieldConstants.DEFAULT_SEARCH_STRING);
+					searchText.setForeground(SearchFieldConstants.DEFAULT_SEARCH_COLOR);
 					updateTableFilter("");
 				}
 			}
@@ -140,37 +138,15 @@ public class ContactPart {
 		});
 		form.setHeadClient(searchText);
 		toolkit.adapt(searchText, true, true);
-		searchText.setForeground(
-				Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
-
-		form.getToolBarManager().add(addAction);
+		searchText.setForeground(SearchFieldConstants.DEFAULT_SEARCH_COLOR);
 		form.getToolBarManager().add(editAction);
+		
+				form.getToolBarManager().add(addAction);
 		form.getToolBarManager().update(true);
 		
 		initializeTable();
 		refreshTable(parent);
 		
-	}
-
-	private void createToolkit() {
-		FormColors result = new FormColors(Display.getCurrent());
-		result.createColor(IFormColors.H_GRADIENT_START, new Color(Display.getCurrent(),
-//				255, 244, 163).getRGB());
-		255, 185, 49).getRGB());
-		result.createColor(IFormColors.H_GRADIENT_END, new Color(Display.getCurrent(),
-//				255, 247, 232).getRGB());
-//		255, 236, 198).getRGB());
-		255, 244, 163).getRGB());
-		result.createColor(IFormColors.H_BOTTOM_KEYLINE1, new Color(Display.getCurrent(),
-				255, 168, 0).getRGB());
-		result.createColor(IFormColors.H_BOTTOM_KEYLINE2, new Color(Display.getCurrent(),
-				255, 168, 0).getRGB());
-		result.createColor(IFormColors.TITLE, Display.getCurrent().getSystemColor(
-				SWT.COLOR_BLACK).getRGB());
-//		result.createColor(IFormColors.TITLE, new Color(Display.getCurrent(),
-//				122, 184, 0).getRGB());
-//				255, 168, 0).getRGB());
-		toolkit = new FormToolkit(result);
 	}
 
 	private void createActions() {
