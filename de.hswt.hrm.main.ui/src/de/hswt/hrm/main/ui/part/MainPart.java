@@ -56,6 +56,7 @@ public class MainPart {
             toCatalog = (Button) XWT.findElementByName(comp, "toCatalog");
             toCategory = (Button) XWT.findElementByName(comp, "toCategory");
             toOverall = (Button) XWT.findElementByName(comp, "toOverall");
+            toInspection = (Button) XWT.findElementByName(comp, "toInspection");
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -105,6 +106,12 @@ public class MainPart {
             @Override
             public void handleEvent(Event event) {
 				runCommand(ViewSwitcher.OVERALL_ID);
+            }
+        });
+        toInspection.addListener(SWT.Selection, new Listener() {
+            @Override
+            public void handleEvent(Event event) {
+				runCommand(ViewSwitcher.INSPECTION_ID);
             }
         });
 	}
