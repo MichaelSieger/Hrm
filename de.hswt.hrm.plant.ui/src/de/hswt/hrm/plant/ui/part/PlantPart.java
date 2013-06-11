@@ -11,7 +11,6 @@ import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.ActionContributionItem;
-import org.eclipse.jface.action.ContributionItem;
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -72,6 +71,7 @@ public class PlantPart {
 
 	private IContributionItem addContribution;
 	private IContributionItem editContribution;
+	private IContributionItem editSchemeContribution;
 	
 	private Section plantsHeaderSection;
 	private Composite composite;
@@ -170,11 +170,25 @@ public class PlantPart {
 		schemeTab = new TabItem(tabFolder, SWT.NONE);
 		schemeTab.setText("Scheme");
 
+		// TODO add scheme part here
+		
 		initializeTable();
 		refreshTable(parent);
 	}
 
 	private void createActions() {
+		// TODO translate
+		Action schemeAction = new Action("Edit Scheme") {
+			@Override
+			public void run() {
+				super.run();
+				editScheme();
+			}
+		};
+		schemeAction.setDescription("Edit the scheme of the selected plant.");
+		editSchemeContribution = new ActionContributionItem(schemeAction);
+		form.getToolBarManager().add(editSchemeContribution);
+		
 		Action editAction = new Action("Edit") {
 			@Override
 			public void run() {
@@ -182,7 +196,7 @@ public class PlantPart {
 				editPlant();
 			}
 		};
-		editAction.setDescription("Edit an exisitng contact.");
+		editAction.setDescription("Edit an exisitng plant.");
 		editContribution = new ActionContributionItem(editAction);
 		form.getToolBarManager().add(editContribution);
 		
@@ -193,7 +207,7 @@ public class PlantPart {
 					addPlant();
 				}
 			};
-		addAction.setDescription("Add's a new contact.");
+		addAction.setDescription("Add's a new plant.");
 		addContribution = new ActionContributionItem(addAction);
 		form.getToolBarManager().add(addContribution);
 
@@ -203,6 +217,7 @@ public class PlantPart {
 	private void showPlantActions(boolean show) {
 		addContribution.setVisible(show);
 		editContribution.setVisible(show);
+		editSchemeContribution.setVisible(show);
 		form.getToolBarManager().update(true);
 	}
 
@@ -260,7 +275,7 @@ public class PlantPart {
 		tableViewer.addFilter(new PlantFilter());
 	}
 
-	public void addPlant() {
+	private void addPlant() {
 		Optional<Plant> newPlant = PlantPartUtil.showWizard(context,
 				shellProvider.getShell(), Optional.<Plant> absent());
 
@@ -278,7 +293,7 @@ public class PlantPart {
 	 * Plant is passed to the PlantWizard. When the Wizard has finished, the
 	 * Plant will be updated in the Database
 	 */
-	public void editPlant() {
+	private void editPlant() {
 
 		// obtain the place in the column where the doubleClick happend
 		Plant selectedPlant = (Plant) tableViewer.getElementAt(tableViewer
@@ -300,6 +315,16 @@ public class PlantPart {
 			LOG.error("Could not retrieve the plant from database.", e);
 			showDBConnectionError();
 		}
+	}
+	
+	private void editScheme() {
+		if (table.getSelectionIndex() < 0) {
+			return;
+		}
+		
+		// TODO init scheme with selected plant
+		
+		tabFolder.setSelection(schemeTab);
 	}
 
 }
