@@ -1,136 +1,261 @@
 package de.hswt.hrm.place.ui.part;
 
-import java.net.URL;
 import java.util.Collection;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 
-import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
-import org.eclipse.e4.core.di.annotations.Optional;
-import org.eclipse.e4.ui.workbench.modeling.EPartService;
-import org.eclipse.e4.ui.workbench.modeling.EPartService.PartState;
-import org.eclipse.e4.xwt.IConstants;
+import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.xwt.XWT;
+import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.DoubleClickEvent;
+import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.window.IShellProvider;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.forms.widgets.Form;
+import org.eclipse.ui.forms.widgets.FormToolkit;
+import org.eclipse.ui.forms.widgets.Section;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.base.Optional;
+
 import de.hswt.hrm.common.database.exception.DatabaseException;
-import de.hswt.hrm.common.locking.jdbc.ILockService;
+import de.hswt.hrm.common.ui.swt.constants.SearchFieldConstants;
+import de.hswt.hrm.common.ui.swt.forms.FormUtil;
+import de.hswt.hrm.common.ui.swt.layouts.LayoutUtil;
 import de.hswt.hrm.common.ui.swt.table.ColumnComparator;
 import de.hswt.hrm.common.ui.swt.table.ColumnDescription;
 import de.hswt.hrm.common.ui.swt.table.TableViewerController;
-import de.hswt.hrm.common.ui.xwt.XwtHelper;
 import de.hswt.hrm.place.model.Place;
 import de.hswt.hrm.place.service.PlaceService;
-import de.hswt.hrm.place.ui.event.PlaceEventHandler;
 import de.hswt.hrm.place.ui.filter.PlaceFilter;
 
 public class PlacePart {
-    private final static Logger LOG = LoggerFactory.getLogger(PlacePart.class);
 
-    @Inject
-    private PlaceService placeService;
-    
-    @Inject
-    EPartService service;
+	private final static Logger LOG = LoggerFactory.getLogger(PlacePart.class);
 
-    @Inject
-    @Optional
-    private ILockService lockService;
-    
-    private TableViewer viewer;
-    private Collection<Place> places = null;
+	@Inject
+	private PlaceService placeService;
 
-    @PostConstruct
-    public void postConstruct(Composite parent, IEclipseContext context) {
-        URL url = PlacePart.class.getClassLoader().getResource(
-                "de/hswt/hrm/place/ui/xwt/PlaceView" + IConstants.XWT_EXTENSION_SUFFIX);
+	@Inject
+	private IShellProvider shellProvider;
 
-        try {
-            // Create an instance of the event handler that is able to use DI
-            PlaceEventHandler eventHandler = ContextInjectionFactory.make(PlaceEventHandler.class,
-                    context);
+	@Inject
+	private IEclipseContext context;
 
-            // Load XWT with injection ready event handler
-            final Composite composite = XwtHelper.loadWithEventHandler(parent, url, eventHandler);
-            LOG.debug("XWT load successfully.");
+	private FormToolkit toolkit = new FormToolkit(Display.getDefault());
+	private Table table;
+	private Text searchText;
+	private TableViewer tableViewer;
 
-            viewer = (TableViewer) XWT.findElementByName(composite, "placeTable");
-            initializeTable(parent, viewer);
-            refreshTable(parent);
-            
-            ((Button) XWT.findElementByName(composite, "back2Main")).addListener(SWT.Selection, new Listener() {
- 				@Override
- 				public void handleEvent(Event event) {
- 					service.findPart("Clients").setVisible(false);
- 					service.findPart("Places").setVisible(false);
- 					service.findPart("Plants").setVisible(false);
- 					service.findPart("Scheme").setVisible(false);
- 					service.findPart("Catalog").setVisible(false);
- 					service.findPart("Category").setVisible(false);
- 					service.findPart("Main").setVisible(true);
- 					service.showPart("Main", PartState.VISIBLE);
- 				}
- 			});
+	private Action editAction;
+	private Action addAction;
+	private Section headerSection;
+	private Composite composite;
 
-        }
-        catch (Exception e) {
-            LOG.error("Could not load XWT file from resource", e);
-        }
+	public PlacePart() {
+		// toolkit can be created in PostConstruct, but then then
+		// WindowBuilder is unable to parse the code
+		toolkit.dispose();
+		toolkit = FormUtil.createToolkit();
+	}
 
-        if (placeService == null) {
-            LOG.error("PlaceService not injected to PlacePart.");
-        }
+	/**
+	 * Create contents of the view part.
+	 */
+	@PostConstruct
+	public void createControls(Composite parent) {
 
-        if (lockService != null) {
-            LOG.debug("LockService injected to PlacePart.");
-        }
-    }
+		createActions();
+		toolkit.setBorderStyle(SWT.BORDER);
+		toolkit.adapt(parent);
+		toolkit.paintBordersFor(parent);
+		parent.setLayout(new FillLayout(SWT.HORIZONTAL));
 
-    private void refreshTable(Composite parent) {
-        try {
-            places = placeService.findAll();
-            viewer.setInput(places);
-        }
-        catch (DatabaseException e) {
-            LOG.error("Unable to retrieve list of places.", e);
+		Form form = toolkit.createForm(parent);
+		form.getHead().setOrientation(SWT.RIGHT_TO_LEFT);
+		form.setSeparatorVisible(true);
+		toolkit.paintBordersFor(form);
+		form.setText("Places");
+		toolkit.decorateFormHeading(form);
+		form.getToolBarManager().add(editAction);
 
-            // TODO: übersetzen
-            MessageDialog.openError(parent.getShell(), "Connection Error",
-                    "Could not load places from Database.");
-        }
-    }
+		form.getToolBarManager().add(addAction);
+		FillLayout fillLayout = new FillLayout(SWT.HORIZONTAL);
+		fillLayout.marginHeight = 1;
+		form.getBody().setLayout(fillLayout);
 
-    private void initializeTable(Composite parent, TableViewer viewer) {
-        List<ColumnDescription<Place>> columns = PlacePartUtil.getColumns();
+		headerSection = toolkit
+				.createSection(form.getBody(), Section.TITLE_BAR);
+		toolkit.paintBordersFor(headerSection);
+		headerSection.setExpanded(true);
+		FormUtil.initSectionColors(headerSection);
 
-        // Create columns in tableviewer
-        TableViewerController<Place> filler = new TableViewerController<>(viewer);
-        filler.createColumns(columns);
+		composite = toolkit.createComposite(headerSection, SWT.NONE);
+		toolkit.paintBordersFor(composite);
+		headerSection.setClient(composite);
+		composite.setLayout(new GridLayout(1, false));
 
-        // Enable column selection
-        filler.createColumnSelectionMenu();
+		searchText = new Text(composite, SWT.BORDER | SWT.SEARCH
+				| SWT.ICON_SEARCH | SWT.CANCEL | SWT.ICON_CANCEL);
+		searchText.setMessage(SearchFieldConstants.DEFAULT_SEARCH_STRING);
+		searchText.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				updateTableFilter(searchText.getText());
+			}
+		});
+		searchText.setLayoutData(LayoutUtil.createHorzFillData());
+		toolkit.adapt(searchText, true, true);
 
-        // Enable sorting
-        ColumnComparator<Place> comparator = new ColumnComparator<>(columns);
-        filler.enableSorting(comparator);
+		tableViewer = new TableViewer(composite, SWT.BORDER
+				| SWT.FULL_SELECTION);
+		tableViewer.addDoubleClickListener(new IDoubleClickListener() {
+			public void doubleClick(DoubleClickEvent event) {
+				editPlace();
+			}
+		});
+		table = tableViewer.getTable();
+		table.setLinesVisible(true);
+		table.setHeaderVisible(true);
+		table.setLayoutData(LayoutUtil.createFillData());
+		toolkit.paintBordersFor(table);
+		form.getToolBarManager().update(true);
 
-        // Add dataprovider that handles our collection
-        viewer.setContentProvider(ArrayContentProvider.getInstance());
+		initializeTable();
+		refreshTable(parent);
 
-        // Enable filtering
-        viewer.addFilter(new PlaceFilter());
-    }
+		if (placeService == null) {
+			LOG.error("PlaceService not injected to PlacePart.");
+		}
+	}
 
+	private void createActions() {
+		{
+			editAction = new Action("Edit") {
+				@Override
+				public void run() {
+					super.run();
+					editPlace();
+				}
+			};
+			editAction.setDescription("Edit an exisitng place.");
+		}
+		{
+			addAction = new Action("Add") {
+				@Override
+				public void run() {
+					super.run();
+					addPlace();
+				}
+			};
+			addAction.setDescription("Add's a new place.");
+		}
+	}
+
+	@PreDestroy
+	public void dispose() {
+		if (toolkit != null) {
+			toolkit.dispose();
+		}
+	}
+
+	@Focus
+	public void setFocus() {
+	}
+
+	private void refreshTable(Composite parent) {
+		try {
+			tableViewer.setInput(placeService.findAll());
+		} catch (DatabaseException e) {
+			LOG.error("Unable to retrieve list of contacts.", e);
+			showDBConnectionError();
+		}
+	}
+
+	private void showDBConnectionError() {
+		// TODO translate
+		MessageDialog.openError(shellProvider.getShell(), "Connection Error",
+				"Could not load contacts from Database.");
+	}
+
+	private void updateTableFilter(String filterString) {
+		PlaceFilter filter = (PlaceFilter) tableViewer.getFilters()[0];
+		filter.setSearchString(filterString);
+		tableViewer.refresh();
+	}
+
+	private void initializeTable() {
+		List<ColumnDescription<Place>> columns = PlacePartUtil.getColumns();
+
+		// Create columns in tableviewer
+		TableViewerController<Place> filler = new TableViewerController<>(
+				tableViewer);
+		filler.createColumns(columns);
+
+		// Enable column selection
+		filler.createColumnSelectionMenu();
+
+		// Enable sorting
+		ColumnComparator<Place> comparator = new ColumnComparator<>(columns);
+		filler.enableSorting(comparator);
+
+		// Add dataprovider that handles our collection
+		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
+
+		// Enable filtering
+		tableViewer.addFilter(new PlaceFilter());
+	}
+
+	@SuppressWarnings("unchecked")
+	public void addPlace() {
+		Optional<Place> newPlace = PlacePartUtil.showWizard(context,
+				shellProvider.getShell(), Optional.<Place> absent());
+
+		if (newPlace.isPresent()) {
+			Collection<Place> places = (Collection<Place>) tableViewer
+					.getInput();
+			places.add(newPlace.get());
+			tableViewer.refresh();
+		}
+	}
+
+	public void editPlace() {
+		// obtain the place in the column where the doubleClick happend
+		Place selectedPlace = (Place) tableViewer.getElementAt(tableViewer
+				.getTable().getSelectionIndex());
+		if (selectedPlace == null) {
+			return;
+		}
+
+		// Refresh the selected place with values from the database
+		try {
+			placeService.refresh(selectedPlace);
+			Optional<Place> updatedPlace = PlacePartUtil.showWizard(context,
+					shellProvider.getShell(), Optional.of(selectedPlace));
+
+			if (updatedPlace.isPresent()) {
+				tableViewer.refresh();
+			}
+		} catch (DatabaseException e) {
+			LOG.error("Could not retrieve the place from database.", e);
+			showDBConnectionError();
+		}
+	}
 }

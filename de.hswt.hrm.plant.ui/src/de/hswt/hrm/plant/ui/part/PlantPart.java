@@ -174,6 +174,10 @@ public class PlantPart {
 		
 		initializeTable();
 		refreshTable(parent);
+		
+		if (plantService == null) {
+			LOG.error("PlantService not injected to PlantPart.");
+		}
 	}
 
 	private void createActions() {

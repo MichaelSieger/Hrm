@@ -139,6 +139,9 @@ public class ContactPart {
 		initializeTable();
 		refreshTable(parent);
 
+        if (contactService == null) {
+            LOG.error("ContactService not injected to ContactPart.");
+        }
 	}
 
 	private void createActions() {
