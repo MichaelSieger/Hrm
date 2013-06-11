@@ -149,6 +149,18 @@ public class CatalogService {
 		targetDao.removeFromCatalog(catalog, target);
 	}
 
+	public Collection<Target> findTargetByCatalog(Catalog catalog) throws DatabaseException {
+		return targetDao.findByCatalog(catalog);
+	}
+	
+	public Collection<Current> findCurrentByTarget(Target target) throws DatabaseException {
+		return currentDao.findByTarget(target);
+	}
+	
+	public Collection<Activity> findActivityByCurrent(Current current) throws DatabaseException {
+		return activityDao.findByCurrent(current);
+	}
+	
 	public Collection<Catalog> findAllCatalog() throws DatabaseException {
 		return catalogDao.findAll();
 	}
