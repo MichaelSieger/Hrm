@@ -197,6 +197,7 @@ public class NamedParameterStatement implements AutoCloseable {
         StringBuilder parsed = new StringBuilder();
         StringBuilder currentKey = new StringBuilder();
         boolean keyStartFound = false;
+        String allowedChars = "_-.";
         
         for (int i = 0, len = query.length(); i < len; i++) {
             char c = query.charAt(i);
@@ -207,7 +208,8 @@ public class NamedParameterStatement implements AutoCloseable {
             }
             
             if (keyStartFound) {
-                if (Character.isLetterOrDigit(c) || c == '_' || c == '-') {
+            	
+                if (Character.isLetterOrDigit(c) ||allowedChars.indexOf(c) >= 0) {
                     currentKey.append(c);
                 }
                 else {

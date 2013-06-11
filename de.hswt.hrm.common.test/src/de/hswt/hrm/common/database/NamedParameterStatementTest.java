@@ -39,17 +39,30 @@ public class NamedParameterStatementTest {
     
     @Test
     public void testKeysWithUnderscores() throws SQLException {
-        final String query = "INSERT INTO (Col_1, Col_2) VALUES (:col_1, :col_2);";
+        final String query = "INSERT INTO table (Col_1, Col_2) VALUES (:col_1, :col_2);";
         
         try (NamedParameterStatement stmt = new NamedParameterStatement(null, query)) {
             stmt.setParameter("col_1", 5);
             stmt.setParameter("col_2", "val_2");
             
             assertEquals("Keys with underscore not replaced correctly.",
-                    "INSERT INTO (Col_1, Col_2) VALUES (5, 'val_2');",
+                    "INSERT INTO table (Col_1, Col_2) VALUES (5, 'val_2');",
                     stmt.getParsedQuery());
             
         }
+    }
+    
+    @Test
+    public void testKeysWithDot() throws SQLException {
+    	final String query = "INSERT INTO table (Col_1) VALUES (:table.col_1);";
+    	
+    	try (NamedParameterStatement stmt = new NamedParameterStatement(null, query)) {
+    		stmt.setParameter("table.col_1", 5);
+    		
+    		assertEquals("Keys with dot not replaced correctly.",
+    				"INSERT INTO table (Col_1) VALUES (5);",
+    				stmt.getParsedQuery());
+    	}
     }
     
 }

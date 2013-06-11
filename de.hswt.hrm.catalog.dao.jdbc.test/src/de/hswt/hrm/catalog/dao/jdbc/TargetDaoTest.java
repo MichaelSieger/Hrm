@@ -90,6 +90,21 @@ public class TargetDaoTest extends AbstractDatabaseTest {
     }
     
     @Test
+    public void testFindCurrentByCatalog() throws DatabaseException {
+    	ICatalogDao catalogDao = new CatalogDao();
+        TargetDao targetDao = new TargetDao(catalogDao);
+        Catalog catalog = new Catalog("Some Catalog");
+        catalog = catalogDao.insert(catalog);
+        Target target1 = new Target("FirstTarget", "Some Text");
+        Target target2 = new Target("SecondTarget", "Some other text.");
+        targetDao.addToCatalog(catalog, target1);
+        targetDao.addToCatalog(catalog, target2);
+        
+        Collection<Target> targets = targetDao.findByCatalog(catalog);
+        assertEquals("Wrong count of targets retrieved.", 2, targets.size());
+    }
+    
+    @Test
     public void testDisconnectCatalogAndCurrentState() throws DatabaseException {
     	ICatalogDao catalogDao = new CatalogDao();
         TargetDao targetDao = new TargetDao(catalogDao);
