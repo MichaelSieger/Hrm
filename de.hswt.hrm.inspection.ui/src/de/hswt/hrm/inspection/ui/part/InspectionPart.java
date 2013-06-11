@@ -2,7 +2,10 @@ package de.hswt.hrm.inspection.ui.part;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import javax.inject.Inject;
 
+import org.eclipse.e4.core.contexts.ContextInjectionFactory;
+import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.SWT;
@@ -14,6 +17,9 @@ import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Table;
+import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.ActionContributionItem;
+import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.layout.GridData;
@@ -37,14 +43,25 @@ import ch.qos.logback.core.Layout;
 
 public class InspectionPart {
 
+	@Inject
+	private IEclipseContext context;
+	
 	private FormToolkit formToolkit = new FormToolkit(Display.getDefault());
 	
-	private Table table;
+	private ReportsOverviewComposite reportsOverviewComposite;
 	
-	private Text searchText;
+	private Form form;
 
-	private Color defaultForeground;
-	
+	private TabFolder tabFolder;
+
+	private TabItem reportTab;
+	private TabItem overviewTab;
+
+	private IContributionItem addContribution;
+	private IContributionItem copyContribution;
+	private IContributionItem editContribution;
+	private IContributionItem evaluateContribution;
+
 	public InspectionPart() {
 		// toolkit can be created in PostConstruct, but then then
 		// WindowBuilder is unable to parse the code
@@ -60,11 +77,10 @@ public class InspectionPart {
 		parent.setBackgroundMode(SWT.INHERIT_DEFAULT);
 		
 		Composite composite = new Composite(parent, SWT.NONE);
-		composite.setBounds(0, 0, 833, 525);
 		composite.setBackgroundMode(SWT.INHERIT_DEFAULT);
-		composite.setLayout(new FillLayout(SWT.HORIZONTAL));
+		composite.setLayout(new FillLayout());
 		
-		Form form = formToolkit.createForm(composite);
+		form = formToolkit.createForm(composite);
 		form.getHead().setOrientation(SWT.RIGHT_TO_LEFT);
 		form.getBody().setBackgroundMode(SWT.INHERIT_FORCE);
 		form.setBackgroundMode(SWT.INHERIT_DEFAULT);
@@ -76,105 +92,30 @@ public class InspectionPart {
 		form.getBody().setLayout(fillLayout);
 		formToolkit.decorateFormHeading(form);
 		
-		final TabFolder tabFolder = new TabFolder(form.getBody(), SWT.NONE);
+		tabFolder = new TabFolder(form.getBody(), SWT.NONE);
 		tabFolder.setBackgroundMode(SWT.INHERIT_FORCE);
 		formToolkit.adapt(tabFolder);
 		formToolkit.paintBordersFor(tabFolder);
-		
-		TabItem overviewTab = new TabItem(tabFolder, SWT.NONE);
-		overviewTab.setText("Overview");
-		
-		Composite overviewTabComposite = new Composite(tabFolder, SWT.NONE);
-		overviewTab.setControl(overviewTabComposite);
-		formToolkit.adapt(overviewTabComposite);
-		formToolkit.paintBordersFor(overviewTabComposite);
-		FillLayout fl_overviewTabComposite = new FillLayout(SWT.HORIZONTAL);
-		fl_overviewTabComposite.marginWidth = 5;
-		fl_overviewTabComposite.marginHeight = 5;
-		overviewTabComposite.setLayout(fl_overviewTabComposite);
-		
-		Section overviewSection = formToolkit.createSection(overviewTabComposite, Section.TITLE_BAR);
-		formToolkit.paintBordersFor(overviewSection);
-		overviewSection.setText("Reports overview");
-		FormUtil.initSectionColors(overviewSection);
-		
-		Composite overviewComposite = new Composite(overviewSection, SWT.NONE);
-		formToolkit.adapt(overviewComposite);
-		formToolkit.paintBordersFor(overviewComposite);
-		overviewSection.setClient(overviewComposite);
-		GridLayout gl_overviewComposite = new GridLayout(2, false);
-		overviewComposite.setLayout(gl_overviewComposite);
-		
-		searchText = new Text(overviewComposite, SWT.BORDER | 
-				SWT.SEARCH | SWT.ICON_SEARCH | SWT.CANCEL | SWT.ICON_CANCEL);
-		defaultForeground = searchText.getForeground();
-		searchText.setText(SearchFieldConstants.DEFAULT_SEARCH_STRING);
-		searchText.setLayoutData(LayoutUtil.createHorzFillData());
-		searchText.addFocusListener(new FocusAdapter() {
+		tabFolder.addSelectionListener(new SelectionAdapter() {
 			@Override
-			public void focusGained(FocusEvent e) {
-				if (SearchFieldConstants.DEFAULT_SEARCH_STRING.equals(searchText.getText())) {
-					searchText.setText(SearchFieldConstants.EMPTY);
-					searchText.setForeground(defaultForeground);
-				}
-			}
-
-			@Override
-			public void focusLost(FocusEvent e) {
-				if (searchText.getText().isEmpty()) {
-					searchText.setText(SearchFieldConstants.DEFAULT_SEARCH_STRING);
-					searchText.setForeground(SearchFieldConstants.DEFAULT_SEARCH_COLOR);
-					updateTableFilter("");
+			public void widgetSelected(SelectionEvent e) {
+				if (tabFolder.getItem(tabFolder.getSelectionIndex()).equals(overviewTab)) {
+					showOverviewActions(true);
+				} else {
+					showOverviewActions(false);
 				}
 			}
 		});
-		formToolkit.adapt(searchText, true, true);
-		searchText.setForeground(SearchFieldConstants.DEFAULT_SEARCH_COLOR);
 		
-				new Label(overviewComposite, SWT.None);
-				
-				TableViewer tableViewer = new TableViewer(overviewComposite, SWT.BORDER | SWT.FULL_SELECTION);
-				table = tableViewer.getTable();
-				formToolkit.paintBordersFor(table);
-				table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 3));
-				
-				Button addButton = new Button(overviewComposite, SWT.NONE);
-				addButton.addSelectionListener(new SelectionAdapter() {
-					@Override
-					public void widgetSelected(SelectionEvent e) {
-						// TODO open add report Wizard, after that, choose report tab
-						tabFolder.setSelection(1);
-					}
-				});
-				formToolkit.adapt(addButton, true, true);
-				addButton.setText("Add");
-				addButton.setLayoutData(LayoutUtil.createRightGridData());
-				
-				Button copyButton = new Button(overviewComposite, SWT.NONE);
-				copyButton.addSelectionListener(new SelectionAdapter() {
-					@Override
-					public void widgetSelected(SelectionEvent e) {
-						// TODO open copy report Wizard, after that, choose report tab
-						tabFolder.setSelection(1);
-					}
-				});
-				formToolkit.adapt(copyButton, true, true);
-				copyButton.setText("Copy");
-				copyButton.setLayoutData(LayoutUtil.createRightGridData());
-				
-				Button editButton = new Button(overviewComposite, SWT.NONE);
-				editButton.addSelectionListener(new SelectionAdapter() {
-					@Override
-					public void widgetSelected(SelectionEvent e) {
-						// TODO open edit report Wizard, after that, choose report tab
-						tabFolder.setSelection(1);
-					}
-				});
-				formToolkit.adapt(editButton, true, true);
-				editButton.setText("Edit");
-				editButton.setLayoutData(LayoutUtil.createRightGridData());
+		overviewTab = new TabItem(tabFolder, SWT.NONE);
+		overviewTab.setText("Overview");
 		
-		TabItem reportTab = new TabItem(tabFolder, SWT.NONE);
+		// reports overview composite
+		reportsOverviewComposite = new ReportsOverviewComposite(tabFolder);
+		ContextInjectionFactory.inject(reportsOverviewComposite, context);
+		overviewTab.setControl(reportsOverviewComposite);
+		
+		reportTab = new TabItem(tabFolder, SWT.NONE);
 		reportTab.setText("Report");
 		
 		Composite reportComposite = new Composite(tabFolder, SWT.NONE);
@@ -269,8 +210,71 @@ public class InspectionPart {
 		schemeComposite.setLayout(fl_schemeComposite);
 		verticalSash.setWeights(new int[] {4, 2});
 		horizontalSash.setWeights(new int[] {183, 898});
+		
+		createActions();
 	}
 
+	protected void showOverviewActions(boolean visible) {
+		addContribution.setVisible(visible);
+		copyContribution.setVisible(visible);
+		editContribution.setVisible(visible);
+		evaluateContribution.setVisible(visible);
+		form.getToolBarManager().update(true);
+	}
+
+	private void createActions() {
+		// TODO translate
+		
+		Action evaluateAction = new Action("Report") {
+			@Override
+			public void run() {
+				super.run();
+				// TODO read selected inspection/report and init the
+				// evaluation tab with it
+				tabFolder.setSelection(reportTab);
+			}
+		};
+		evaluateAction.setDescription("Edit an exisitng report.");
+		evaluateContribution = new ActionContributionItem(evaluateAction);
+		form.getToolBarManager().add(evaluateContribution);
+		
+		Action editAction = new Action("Edit") {
+			@Override
+			public void run() {
+				super.run();
+				reportsOverviewComposite.editInspection();
+			}
+		};
+		editAction.setDescription("Edit an exisitng report.");
+		editContribution = new ActionContributionItem(editAction);
+		form.getToolBarManager().add(editContribution);
+
+		Action copyAction = new Action("Copy") {
+			@Override
+			public void run() {
+				super.run();
+				// TODO copy a report
+			}
+		};
+		copyAction.setDescription("Add's a new report.");
+		copyAction.setEnabled(false);
+		copyContribution = new ActionContributionItem(copyAction);
+		form.getToolBarManager().add(copyContribution);
+
+		Action addAction = new Action("Add") {
+				@Override
+				public void run() {
+					super.run();
+					reportsOverviewComposite.addInspection();
+				}
+			};
+		addAction.setDescription("Add's a new report.");
+		addContribution = new ActionContributionItem(addAction);
+		form.getToolBarManager().add(addContribution);
+
+		form.getToolBarManager().update(true);
+	}
+	
 	@PreDestroy
 	public void dispose() {
 		formToolkit.dispose();
