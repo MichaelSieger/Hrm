@@ -44,7 +44,7 @@ public class CatalogMatchingPart {
     @PostConstruct
     public void postConstruct(Composite parent, IEclipseContext context) {
 
-        URL url = CatalogPart.class.getClassLoader().getResource(
+        URL url = CatalogPartOld.class.getClassLoader().getResource(
                 "de/hswt/hrm/catalog/ui/xwt/CatalogMatchingView" + IConstants.XWT_EXTENSION_SUFFIX);
 
         try {

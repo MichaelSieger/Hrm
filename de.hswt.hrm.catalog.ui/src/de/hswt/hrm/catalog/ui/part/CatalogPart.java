@@ -1,141 +1,152 @@
 package de.hswt.hrm.catalog.ui.part;
 
-import java.net.URL;
-import java.util.List;
-
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 
 import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
-import org.eclipse.e4.core.di.annotations.Optional;
-import org.eclipse.e4.ui.workbench.modeling.EPartService;
-import org.eclipse.e4.ui.workbench.modeling.EPartService.PartState;
-import org.eclipse.e4.xwt.IConstants;
-import org.eclipse.e4.xwt.XWT;
-import org.eclipse.jface.viewers.ArrayContentProvider;
-import org.eclipse.jface.viewers.TableViewer;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Button;
+import org.eclipse.e4.ui.di.Focus;
+import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.ActionContributionItem;
+import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.SWT;
+import org.eclipse.ui.forms.widgets.FormToolkit;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.forms.widgets.Form;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.hswt.hrm.catalog.model.ICatalogItem;
-import de.hswt.hrm.catalog.service.CatalogService;
-import de.hswt.hrm.catalog.ui.event.CatalogEventHandler;
-import de.hswt.hrm.catalog.ui.filter.CatalogSelectionFilter;
-import de.hswt.hrm.catalog.ui.filter.CatalogTextFilter;
-import de.hswt.hrm.common.database.exception.DatabaseException;
-import de.hswt.hrm.common.locking.jdbc.ILockService;
-import de.hswt.hrm.common.ui.swt.table.ColumnComparator;
-import de.hswt.hrm.common.ui.swt.table.ColumnDescription;
-import de.hswt.hrm.common.ui.swt.table.TableViewerController;
-import de.hswt.hrm.common.ui.xwt.XwtHelper;
+import de.hswt.hrm.common.ui.swt.forms.FormUtil;
+import org.eclipse.swt.widgets.TabFolder;
+import org.eclipse.swt.widgets.TabItem;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 
-/**
- * This class will contain a simple TV to Display all available "Soll/Ist/Maßnahmen"
- * 
- */
 public class CatalogPart {
 
-    private static final Logger LOG = LoggerFactory.getLogger(CatalogPart.class);
+	private final static Logger LOG = LoggerFactory.getLogger(CatalogPart.class);
 
-    @Inject
-    private CatalogService catalogService;
+	@Inject
+	private IEclipseContext context;
 
-    @Inject
-    @Optional
-    private ILockService lockService;
+	private FormToolkit toolkit = new FormToolkit(Display.getDefault());
 
-    @Inject
-    EPartService service;
+	private IContributionItem addContribution;
+	private IContributionItem editContribution;
+	
+	private TabFolder tabFolder;
+	private TabItem itemsTab;
+	private TabItem catalogsTab;
 
-    private TableViewer viewer;
-    private Iterable<ICatalogItem> items;
+	private CatalogItemsPart catalogItemsPart;
+	
+	private Form form;
 
-    @PostConstruct
-    public void postConstruct(Composite parent, IEclipseContext context) {
+	public CatalogPart() {
+		// toolkit can be created in PostConstruct, but then then
+		// WindowBuilder is unable to parse the code
+		toolkit.dispose();
+		toolkit = FormUtil.createToolkit();
+	}
 
-        URL url = CatalogPart.class.getClassLoader().getResource(
-                "de/hswt/hrm/catalog/ui/xwt/CatalogView" + IConstants.XWT_EXTENSION_SUFFIX);
+	/**
+	 * Create contents of the view part.
+	 */
+	@PostConstruct
+	public void createControls(Composite parent) {
+		toolkit.setBorderStyle(SWT.BORDER);
+		toolkit.adapt(parent);
+		toolkit.paintBordersFor(parent);
+		parent.setLayout(new FillLayout(SWT.HORIZONTAL));
 
-        try {
-            // Create an instance of the event handler that is able to use DI
-            CatalogEventHandler eventHandler = ContextInjectionFactory.make(
-                    CatalogEventHandler.class, context);
+		form = toolkit.createForm(parent);
+		form.getHead().setOrientation(SWT.RIGHT_TO_LEFT);
+		form.setSeparatorVisible(true);
+		form.getBody().setBackgroundMode(SWT.INHERIT_FORCE);
+		toolkit.paintBordersFor(form);
+		form.setText("Catalogs");
+		toolkit.decorateFormHeading(form);
+		createActions();
+		
+		FillLayout fillLayout = new FillLayout(SWT.HORIZONTAL);
+		fillLayout.marginHeight = 5;
+		fillLayout.marginWidth = 5;
+		form.getBody().setLayout(fillLayout);
 
-            // TODO: partly move to extra plugin
-            // Load XWT with injection ready event handler
-            final Composite composite = XwtHelper.loadWithEventHandler(parent, url, eventHandler);
-            LOG.debug("XWT load successfully.");
+		tabFolder = new TabFolder(form.getBody(), SWT.NONE);
+		tabFolder.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				if (tabFolder.getItem(tabFolder.getSelectionIndex()).equals(itemsTab)) {
+					showCatalogItemsActions(true);
+				} else {
+					showCatalogItemsActions(false);
+				}
+			}
+		});
+		tabFolder.setBackgroundMode(SWT.INHERIT_FORCE);
+		toolkit.adapt(tabFolder);
+		toolkit.paintBordersFor(tabFolder);
+		
+		itemsTab = new TabItem(tabFolder, SWT.NONE);
+		itemsTab.setText("Catalog Items");
+		
+		catalogItemsPart = new CatalogItemsPart(tabFolder);
+		// important: inject the services
+		ContextInjectionFactory.inject(catalogItemsPart, context);
+		
+		itemsTab.setControl(catalogItemsPart);
+		
+		catalogsTab = new TabItem(tabFolder, SWT.NONE);
+		catalogsTab.setText("Catalogs");
 
-            viewer = (TableViewer) XWT.findElementByName(composite, "catalogTable");
+		// TODO add catalogs part here
+	}
 
-            ((Button) XWT.findElementByName(composite, "match")).addListener(SWT.Selection,
-                    new Listener() {
-                        @Override
-                        public void handleEvent(Event event) {
+	private void createActions() {
+		// TODO translate
+		Action editAction = new Action("Edit") {
+			@Override
+			public void run() {
+				super.run();
+				catalogItemsPart.editPlant();
+			}
+		};
+		editAction.setDescription("Edit an exisitng catalog item.");
+		editContribution = new ActionContributionItem(editAction);
+		form.getToolBarManager().add(editContribution);
+		
+		Action addAction = new Action("Add") {
+				@Override
+				public void run() {
+					super.run();
+					catalogItemsPart.addCatalogItem();
+				}
+			};
+		addAction.setDescription("Add's a new catalog item.");
+		addContribution = new ActionContributionItem(addAction);
+		form.getToolBarManager().add(addContribution);
 
-                            service.findPart("de.hswt.hrm.catalog.ui.matching").setVisible(true);
-                            service.showPart("de.hswt.hrm.catalog.ui.matching", PartState.VISIBLE);
-                            service.findPart("de.hswt.hrm.catalog.ui.catalog").setVisible(false);
-                        }
-                    });
+		form.getToolBarManager().update(true);
+	}
 
-            initializeTable(parent, viewer);
-            refreshTable(parent);
+	private void showCatalogItemsActions(boolean show) {
+		addContribution.setVisible(show);
+		editContribution.setVisible(show);
+		form.getToolBarManager().update(true);
+	}
 
-        }
-        catch (Exception e) {
-            LOG.error("Could not load XWT file from resource", e);
-        }
+	@PreDestroy
+	public void dispose() {
+		if (toolkit != null) {
+			toolkit.dispose();
+		}
+	}
 
-        if (catalogService == null) {
-            LOG.error("catalogService not injected to CatalogPart.");
-        }
-
-        if (lockService != null) {
-            LOG.debug("LockService injected to CatalogPart.");
-        }
-
-    }
-
-    private void refreshTable(Composite parent) {
-
-        try {
-            items = catalogService.findAllCatalogItem();
-
-            viewer.setInput(items);
-        }
-        catch (DatabaseException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-    }
-
-    private void initializeTable(Composite parent, TableViewer viewer2) {
-        List<ColumnDescription<ICatalogItem>> columns = CatalogPartUtil.getColumns();
-
-        // Create columns in tableviewer
-        TableViewerController<ICatalogItem> filler = new TableViewerController<>(viewer);
-        filler.createColumns(columns);
-
-        // Enable column selection
-        filler.createColumnSelectionMenu();
-
-        // Enable sorting
-        ColumnComparator<ICatalogItem> comparator = new ColumnComparator<>(columns);
-        filler.enableSorting(comparator);
-
-        // Add dataprovider that handles our collection
-        viewer.setContentProvider(ArrayContentProvider.getInstance());
-
-        // Enable filtering
-        viewer.addFilter(new CatalogSelectionFilter());
-        viewer.addFilter(new CatalogTextFilter());
-    }
-
+	@Focus
+	public void setFocus() {
+	}
 }
