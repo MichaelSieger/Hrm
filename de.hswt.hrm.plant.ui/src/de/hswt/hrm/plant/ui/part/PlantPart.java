@@ -173,7 +173,7 @@ public class PlantPart {
 		// TODO add scheme part here
 		
 		initializeTable();
-		refreshTable(parent);
+		refreshTable();
 		
 		if (plantService == null) {
 			LOG.error("PlantService not injected to PlantPart.");
@@ -236,11 +236,11 @@ public class PlantPart {
 	public void setFocus() {
 	}
 
-	private void refreshTable(Composite parent) {
+	private void refreshTable() {
 		try {
 			tableViewer.setInput(plantService.findAll());
 		} catch (DatabaseException e) {
-			LOG.error("Unable to retrieve list of contacts.", e);
+			LOG.error("Unable to retrieve list of plants.", e);
 			showDBConnectionError();
 		}
 	}
@@ -248,7 +248,7 @@ public class PlantPart {
 	private void showDBConnectionError() {
 		// TODO translate
 		MessageDialog.openError(shellProvider.getShell(), "Connection Error",
-				"Could not load contacts from Database.");
+				"Could not load plants from Database.");
 	}
 
 	private void updateTableFilter(String filterString) {

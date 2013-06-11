@@ -13,6 +13,7 @@ import org.eclipse.swt.widgets.Shell;
 import com.google.common.base.Optional;
 
 import de.hswt.hrm.common.ui.swt.table.ColumnDescription;
+import de.hswt.hrm.common.ui.swt.wizards.WizardCreator;
 import de.hswt.hrm.plant.model.Plant;
 import de.hswt.hrm.plant.ui.wizard.PlantWizard;
 
@@ -24,7 +25,7 @@ public class PlantPartUtil {
         PlantWizard pw = new PlantWizard(context, plant);
         ContextInjectionFactory.inject(pw, context);
         
-        WizardDialog wd = new WizardDialog(activeShell, pw);
+        WizardDialog wd = WizardCreator.createWizardDialog(activeShell, pw);
         wd.open();
         return pw.getPlant();
     }

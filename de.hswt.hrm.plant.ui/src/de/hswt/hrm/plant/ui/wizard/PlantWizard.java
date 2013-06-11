@@ -135,10 +135,7 @@ public class PlantWizard extends Wizard {
         plant.setVoltage(voltage);
         plant.setNote(note);
         
-        TableViewer viewer = second.getTableViewer();
-        IStructuredSelection sel =  (IStructuredSelection) viewer.getSelection();
-        Place selectedPlace = (Place) sel.getFirstElement();
-        plant.setPlace(selectedPlace);
+        plant.setPlace(second.getPlace());
         
         return plant;
     }

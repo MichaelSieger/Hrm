@@ -137,7 +137,7 @@ public class ContactPart {
 		form.getToolBarManager().update(true);
 
 		initializeTable();
-		refreshTable(parent);
+		refreshTable();
 
         if (contactService == null) {
             LOG.error("ContactService not injected to ContactPart.");
@@ -178,7 +178,7 @@ public class ContactPart {
 	public void setFocus() {
 	}
 
-	private void refreshTable(Composite parent) {
+	private void refreshTable() {
 		try {
 			tableViewer.setInput(contactService.findAll());
 		} catch (DatabaseException e) {
