@@ -1,123 +1,305 @@
 package de.hswt.hrm.plant.ui.part;
 
-import java.net.URL;
 import java.util.Collection;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 
-import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
-import org.eclipse.e4.ui.workbench.modeling.EPartService;
-import org.eclipse.e4.ui.workbench.modeling.EPartService.PartState;
-import org.eclipse.e4.xwt.IConstants;
-import org.eclipse.e4.xwt.XWT;
+import org.eclipse.e4.ui.di.Focus;
+import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.ActionContributionItem;
+import org.eclipse.jface.action.ContributionItem;
+import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.DoubleClickEvent;
+import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.TableViewer;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Button;
+import org.eclipse.jface.window.IShellProvider;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.SWT;
+import org.eclipse.ui.forms.widgets.FormToolkit;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.forms.widgets.Form;
+import org.eclipse.ui.forms.widgets.Section;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.base.Optional;
+
 import de.hswt.hrm.common.database.exception.DatabaseException;
+import de.hswt.hrm.common.ui.swt.constants.SearchFieldConstants;
+import de.hswt.hrm.common.ui.swt.forms.FormUtil;
+import de.hswt.hrm.common.ui.swt.layouts.LayoutUtil;
 import de.hswt.hrm.common.ui.swt.table.ColumnComparator;
 import de.hswt.hrm.common.ui.swt.table.ColumnDescription;
 import de.hswt.hrm.common.ui.swt.table.TableViewerController;
-import de.hswt.hrm.common.ui.xwt.XwtHelper;
 import de.hswt.hrm.plant.model.Plant;
 import de.hswt.hrm.plant.service.PlantService;
-import de.hswt.hrm.plant.ui.event.PlantEventHandler;
 import de.hswt.hrm.plant.ui.filter.PlantFilter;
+import org.eclipse.swt.widgets.TabFolder;
+import org.eclipse.swt.widgets.TabItem;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 
 public class PlantPart {
-    @Inject
-    private PlantService plantService;
-    
-    private TableViewer viewer;
-    private Collection<Plant> plants;
 
-    @Inject
-    EPartService service;
-    
-    private final static Logger LOG = LoggerFactory.getLogger(PlantPart.class);
+	private final static Logger LOG = LoggerFactory.getLogger(PlantPart.class);
 
-    @PostConstruct
-    public void postConstruct(Composite parent, IEclipseContext context) {
+	@Inject
+	private PlantService plantService;
 
-        URL url = PlantPart.class.getClassLoader().getResource(
-                "de/hswt/hrm/plant/ui/xwt/PlantView" + IConstants.XWT_EXTENSION_SUFFIX);
+	@Inject
+	private IShellProvider shellProvider;
 
-        try {
-            PlantEventHandler eventHandler = ContextInjectionFactory.make(
-                    PlantEventHandler.class, context);
+	@Inject
+	private IEclipseContext context;
 
-            final Composite comp = XwtHelper.loadWithEventHandler(parent, url, eventHandler);
-            
-            // Obtain TableViwer to fill it with data
-            viewer = (TableViewer) XWT.findElementByName(comp, "plantTable");
-            initializeTable(parent, viewer);
-            refreshTable(parent);
-            
-            ((Button) XWT.findElementByName(comp, "back2Main")).addListener(SWT.Selection, new Listener() {
- 				@Override
- 				public void handleEvent(Event event) {
- 					service.findPart("Clients").setVisible(false);
- 					service.findPart("Places").setVisible(false);
- 					service.findPart("Plants").setVisible(false);
- 					service.findPart("Scheme").setVisible(false);
- 					service.findPart("Catalog").setVisible(false);
- 					service.findPart("Category").setVisible(false);
- 					service.findPart("Main").setVisible(true);
- 					service.showPart("Main", PartState.VISIBLE);
- 				}
- 			});
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+	private FormToolkit toolkit = new FormToolkit(Display.getDefault());
 
-    private void refreshTable(Composite parent) {
+	private Table table;
+	private Text searchText;
+	private TableViewer tableViewer;
 
-        try {
-            plants = plantService.findAll();
-            viewer.setInput(plants);
+	private IContributionItem addContribution;
+	private IContributionItem editContribution;
+	
+	private Section plantsHeaderSection;
+	private Composite composite;
+	private TabFolder tabFolder;
+	private TabItem plantsTab;
+	private TabItem schemeTab;
 
-        }
+	private Form form;
 
-        catch (DatabaseException e) {
-            MessageDialog.openError(parent.getShell(), "Connection Error",
-                    "Could not load Plants from Database.");
-            LOG.error("Unable to retrieve list of plants.", e);
+	public PlantPart() {
+		// toolkit can be created in PostConstruct, but then then
+		// WindowBuilder is unable to parse the code
+		toolkit.dispose();
+		toolkit = FormUtil.createToolkit();
+	}
 
-        }
+	/**
+	 * Create contents of the view part.
+	 */
+	@PostConstruct
+	public void createControls(Composite parent) {
+		toolkit.setBorderStyle(SWT.BORDER);
+		toolkit.adapt(parent);
+		toolkit.paintBordersFor(parent);
+		parent.setLayout(new FillLayout(SWT.HORIZONTAL));
 
-    }
+		form = toolkit.createForm(parent);
+		form.getHead().setOrientation(SWT.RIGHT_TO_LEFT);
+		form.setSeparatorVisible(true);
+		form.getBody().setBackgroundMode(SWT.INHERIT_FORCE);
+		toolkit.paintBordersFor(form);
+		form.setText("Plants");
+		toolkit.decorateFormHeading(form);
+		createActions();
+		
+		FillLayout fillLayout = new FillLayout(SWT.HORIZONTAL);
+		fillLayout.marginHeight = 5;
+		fillLayout.marginWidth = 5;
+		form.getBody().setLayout(fillLayout);
 
-    private void initializeTable(Composite parent, TableViewer viewer2) {
-        List<ColumnDescription<Plant>> columns = PlantPartUtil.getColumns();
+		tabFolder = new TabFolder(form.getBody(), SWT.NONE);
+		tabFolder.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				if (tabFolder.getItem(tabFolder.getSelectionIndex()).equals(plantsTab)) {
+					showPlantActions(true);
+				} else {
+					showPlantActions(false);
+				}
+			}
+		});
+		tabFolder.setBackgroundMode(SWT.INHERIT_FORCE);
+		toolkit.adapt(tabFolder);
+		toolkit.paintBordersFor(tabFolder);
+		
+		plantsTab = new TabItem(tabFolder, SWT.NONE);
+		plantsTab.setText("Plants");
+		
+		plantsHeaderSection = toolkit
+				.createSection(tabFolder, Section.TITLE_BAR);
+		plantsTab.setControl(plantsHeaderSection);
+		toolkit.paintBordersFor(plantsHeaderSection);
+		plantsHeaderSection.setExpanded(true);
+		FormUtil.initSectionColors(plantsHeaderSection);
 
-        // Create columns in tableviewer
-        TableViewerController<Plant> filler = new TableViewerController<>(viewer);
-        filler.createColumns(columns);
+		composite = toolkit.createComposite(plantsHeaderSection, SWT.NONE);
+		toolkit.paintBordersFor(composite);
+		plantsHeaderSection.setClient(composite);
+		composite.setLayout(new GridLayout(1, false));
 
-        // Enable column selection
-        filler.createColumnSelectionMenu();
+		searchText = new Text(composite, SWT.BORDER | SWT.SEARCH
+				| SWT.ICON_SEARCH | SWT.CANCEL | SWT.ICON_CANCEL);
+		searchText.setMessage(SearchFieldConstants.DEFAULT_SEARCH_STRING);
+		searchText.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				updateTableFilter(searchText.getText());
+			}
+		});
+		searchText.setLayoutData(LayoutUtil.createHorzFillData());
+		toolkit.adapt(searchText, true, true);
 
-        // Enable sorting
-        ColumnComparator<Plant> comparator = new ColumnComparator<>(columns);
-        filler.enableSorting(comparator);
+		tableViewer = new TableViewer(composite, SWT.BORDER
+				| SWT.FULL_SELECTION);
+		tableViewer.addDoubleClickListener(new IDoubleClickListener() {
+			public void doubleClick(DoubleClickEvent event) {
+				editPlant();
+			}
+		});
+		table = tableViewer.getTable();
+		table.setSize(214, 221);
+		table.setLinesVisible(true);
+		table.setHeaderVisible(true);
+		table.setLayoutData(LayoutUtil.createFillData());
+		toolkit.paintBordersFor(table);
 
-        // Add dataprovider that handles our collection
-        viewer.setContentProvider(ArrayContentProvider.getInstance());
+		schemeTab = new TabItem(tabFolder, SWT.NONE);
+		schemeTab.setText("Scheme");
 
-        // Enable filtering
-        viewer.addFilter(new PlantFilter());
-    }
+		initializeTable();
+		refreshTable(parent);
+	}
+
+	private void createActions() {
+		Action editAction = new Action("Edit") {
+			@Override
+			public void run() {
+				super.run();
+				editPlant();
+			}
+		};
+		editAction.setDescription("Edit an exisitng contact.");
+		editContribution = new ActionContributionItem(editAction);
+		form.getToolBarManager().add(editContribution);
+		
+		Action addAction = new Action("Add") {
+				@Override
+				public void run() {
+					super.run();
+					addPlant();
+				}
+			};
+		addAction.setDescription("Add's a new contact.");
+		addContribution = new ActionContributionItem(addAction);
+		form.getToolBarManager().add(addContribution);
+
+		form.getToolBarManager().update(true);
+	}
+
+	private void showPlantActions(boolean show) {
+		addContribution.setVisible(show);
+		editContribution.setVisible(show);
+		form.getToolBarManager().update(true);
+	}
+
+	@PreDestroy
+	public void dispose() {
+		if (toolkit != null) {
+			toolkit.dispose();
+		}
+	}
+
+	@Focus
+	public void setFocus() {
+	}
+
+	private void refreshTable(Composite parent) {
+		try {
+			tableViewer.setInput(plantService.findAll());
+		} catch (DatabaseException e) {
+			LOG.error("Unable to retrieve list of contacts.", e);
+			showDBConnectionError();
+		}
+	}
+
+	private void showDBConnectionError() {
+		// TODO translate
+		MessageDialog.openError(shellProvider.getShell(), "Connection Error",
+				"Could not load contacts from Database.");
+	}
+
+	private void updateTableFilter(String filterString) {
+		PlantFilter filter = (PlantFilter) tableViewer.getFilters()[0];
+		filter.setSearchString(filterString);
+		tableViewer.refresh();
+	}
+
+	private void initializeTable() {
+		List<ColumnDescription<Plant>> columns = PlantPartUtil.getColumns();
+
+		// Create columns in tableviewer
+		TableViewerController<Plant> filler = new TableViewerController<>(
+				tableViewer);
+		filler.createColumns(columns);
+
+		// Enable column selection
+		filler.createColumnSelectionMenu();
+
+		// Enable sorting
+		ColumnComparator<Plant> comparator = new ColumnComparator<>(columns);
+		filler.enableSorting(comparator);
+
+		// Add dataprovider that handles our collection
+		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
+
+		// Enable filtering
+		tableViewer.addFilter(new PlantFilter());
+	}
+
+	public void addPlant() {
+		Optional<Plant> newPlant = PlantPartUtil.showWizard(context,
+				shellProvider.getShell(), Optional.<Plant> absent());
+
+		@SuppressWarnings("unchecked")
+		Collection<Plant> contacs = (Collection<Plant>) tableViewer.getInput();
+		if (newPlant.isPresent()) {
+			contacs.add(newPlant.get());
+			tableViewer.refresh();
+		}
+	}
+
+	/**
+	 * This method is called whenever a doubleClick onto the TableViewer occurs.
+	 * It obtains the Plant from the selected column of the TableViewer. The
+	 * Plant is passed to the PlantWizard. When the Wizard has finished, the
+	 * Plant will be updated in the Database
+	 */
+	public void editPlant() {
+
+		// obtain the place in the column where the doubleClick happend
+		Plant selectedPlant = (Plant) tableViewer.getElementAt(tableViewer
+				.getTable().getSelectionIndex());
+		if (selectedPlant == null) {
+			return;
+		}
+
+		// Refresh the selected place with values from the database
+		try {
+			plantService.refresh(selectedPlant);
+			Optional<Plant> updatedPlant = PlantPartUtil.showWizard(context,
+					shellProvider.getShell(), Optional.of(selectedPlant));
+
+			if (updatedPlant.isPresent()) {
+				tableViewer.refresh();
+			}
+		} catch (DatabaseException e) {
+			LOG.error("Could not retrieve the plant from database.", e);
+			showDBConnectionError();
+		}
+	}
 
 }
