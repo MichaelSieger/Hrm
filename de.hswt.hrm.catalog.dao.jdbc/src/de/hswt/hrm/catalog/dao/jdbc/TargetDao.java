@@ -90,6 +90,35 @@ public class TargetDao implements ITargetDao {
             throw new DatabaseException(e);
         }
     }
+    
+    @Override
+    public Collection<Target> findByCatalog(final Catalog catalog) throws DatabaseException {
+    	checkNotNull(catalog, "Catalog is mandatory.");
+    	checkArgument(catalog.getId() >= 0, "Catalog must have a valid ID.");
+
+        SqlQueryBuilder builder = new SqlQueryBuilder();
+        builder.select(TABLE_NAME, Fields.ID, Fields.NAME, Fields.TEXT);
+        builder.join(CROSS_TABLE_NAME, Fields.ID, Fields.CROSS_TARGET_FK);
+        String whereField = CROSS_TABLE_NAME + "." + Fields.CROSS_CATALOG_FK;
+        builder.where(whereField);
+
+        final String query = builder.toString();
+
+        try (Connection con = DatabaseFactory.getConnection()) {
+            try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
+                stmt.setParameter(whereField, catalog.getId());
+                ResultSet result = stmt.executeQuery();
+
+                Collection<Target> targets = fromResultSet(result);
+                DbUtils.closeQuietly(result);
+
+                return targets;
+            }
+        }
+        catch (SQLException e) {
+            throw new DatabaseException(e);
+        }
+    }
 
     /**
      * @see {@link IPlaceDao#insert(Place)}
