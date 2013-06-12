@@ -22,14 +22,11 @@ public class ContactFilter extends ViewerFilter {
         }
 
         Contact c = (Contact) element;
-        // match LastName
-        if (c.getLastName().toLowerCase().matches(searchString)) {
+
+        if (c.getName().toLowerCase().matches(searchString)) {
             return true;
         }
-        // match firstName
-        if (c.getFirstName().toLowerCase().matches(searchString)) {
-            return true;
-        }
+
         // match city
         if (c.getCity().toLowerCase().matches(searchString)) {
             return true;

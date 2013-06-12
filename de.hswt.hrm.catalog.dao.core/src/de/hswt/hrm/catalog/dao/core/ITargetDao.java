@@ -25,6 +25,8 @@ public interface ITargetDao {
      */
     Target findById(int id) throws DatabaseException, ElementNotFoundException;
     
+    Collection<Target> findByCatalog(Catalog catalog) throws DatabaseException;
+    
     /**
      * Add a new target to storage.
      * 

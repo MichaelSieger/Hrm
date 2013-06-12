@@ -91,8 +91,7 @@ public class ContactService {
         contact.setCity(fromDb.getCity());
         contact.setEmail(fromDb.getEmail().orNull());
         contact.setFax(fromDb.getFax().orNull());
-        contact.setFirstName(fromDb.getFirstName());
-        contact.setLastName(fromDb.getLastName());
+        contact.setName(fromDb.getName());
         contact.setMobile(fromDb.getMobile().orNull());
         contact.setPhone(fromDb.getPhone().orNull());
         contact.setPostCode(fromDb.getPostCode());

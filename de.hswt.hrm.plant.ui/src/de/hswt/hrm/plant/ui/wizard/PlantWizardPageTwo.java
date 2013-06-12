@@ -1,147 +1,117 @@
 package de.hswt.hrm.plant.ui.wizard;
 
-import java.net.URL;
-import java.util.Collection;
-import java.util.List;
-
 import javax.inject.Inject;
 
 import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
-import org.eclipse.e4.xwt.IConstants;
-import org.eclipse.e4.xwt.XWT;
-import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
-import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.wizard.WizardPage;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.eclipse.ui.forms.widgets.FormToolkit;
+import org.eclipse.ui.forms.widgets.Section;
 
 import com.google.common.base.Optional;
 
-import de.hswt.hrm.common.database.exception.DatabaseException;
-import de.hswt.hrm.common.ui.swt.table.ColumnComparator;
-import de.hswt.hrm.common.ui.swt.table.ColumnDescription;
-import de.hswt.hrm.common.ui.swt.table.TableViewerController;
-import de.hswt.hrm.common.ui.xwt.XwtHelper;
+import de.hswt.hrm.common.ui.swt.forms.FormUtil;
+import de.hswt.hrm.common.ui.swt.layouts.LayoutUtil;
 import de.hswt.hrm.place.model.Place;
-import de.hswt.hrm.place.service.PlaceService;
-import de.hswt.hrm.place.ui.filter.PlaceFilter;
-import de.hswt.hrm.place.ui.part.PlacePartUtil;
+import de.hswt.hrm.place.ui.part.PlaceComposite;
 import de.hswt.hrm.plant.model.Plant;
-import de.hswt.hrm.plant.ui.event.PlaceEventHandlerForPlant;
 
 public class PlantWizardPageTwo extends WizardPage {
-    private Composite container;
-    private Optional<Plant> plant;
-    private Collection<Place> places = null;
-    private TableViewer viewer;
-    private Button editPlace;
-    private Button back;
-    private static final Logger LOG = LoggerFactory.getLogger(PlantWizardPageTwo.class);
-    @Inject
-    private PlaceService placeService;
-    @Inject
-    private IEclipseContext context;
 
+	private Place selectedPlace;
+
+	private PlaceComposite placeComposite;
+
+	@Inject
+	private IEclipseContext context;
+
+	private FormToolkit toolkit;
+	
     public PlantWizardPageTwo(String title, Optional<Plant> plant) {
         super(title);
-        this.plant = plant;
         if (plant.isPresent()) {
             setDescription("Standort Auswählen für Anlage mit der Bezeichnung: " + plant.get().getDescription());
+            if (plant.get().getPlace().isPresent()) {
+            	selectedPlace = plant.get().getPlace().get();
+            }
         }
     }
-
+    
     @Override
     public void createControl(Composite parent) {
+    	parent.setBackgroundMode(SWT.INHERIT_FORCE);
 
-        PlaceEventHandlerForPlant eventHandler = ContextInjectionFactory.make(
-                PlaceEventHandlerForPlant.class, context);
-        URL url = PlantWizardPageTwo.class.getClassLoader().getResource(
-                "de/hswt/hrm/place/ui/xwt/PlaceView" + IConstants.XWT_EXTENSION_SUFFIX);
-        try {
-            container = (Composite) XwtHelper.loadWithEventHandler(parent, url, eventHandler);
-            viewer = (TableViewer) XWT.findElementByName(container, "placeTable");
-            editPlace = (Button) XWT.findElementByName(container, "editPlace");
-            back = (Button) XWT.findElementByName(container, "back2Main");
+    	toolkit = FormUtil.createToolkit();
+    	
+//		Composite temp = new Composite(parent, SWT.NONE);
+//    	temp.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_WHITE));
+//		temp.setLayout(new FillLayout());
+//    	temp.setBackgroundMode(SWT.INHERIT_FORCE);
+//		temp.setBackgroundMode(SWT.INHERIT_FORCE);
+    	
+    	Section headerSection = toolkit.createSection(parent, Section.TITLE_BAR);
+		toolkit.paintBordersFor(headerSection);
+    	headerSection.setBackgroundMode(SWT.INHERIT_FORCE);
+    	headerSection.setExpanded(true);
+    	FormUtil.initSectionColors(headerSection);
 
-        }
-        catch (Exception e) {
-            LOG.error("An error occured: ", e);
-        }
 
-        setControl(container);
-        initializeTable(parent, viewer);
-        refreshTable(parent);
-        setButtonInvisible();
+		
 
+    	Composite composite = toolkit.createComposite(headerSection);
+//		composite.setBackgroundMode(SWT.INHERIT_FORCE);
+    	composite.setLayout(LayoutUtil.createGridLayout(2, false, true, true));
+		toolkit.paintBordersFor(composite);
+    	
+    	placeComposite = new PlaceComposite(composite, SWT.NONE);
+        ContextInjectionFactory.inject(placeComposite, context);
+    	placeComposite.setAllowEditing(false);
+    	placeComposite.setLayoutData(LayoutUtil.createFillData());
+    	placeComposite.addSelectionChangedListener(new ISelectionChangedListener() {
+			@Override
+			public void selectionChanged(SelectionChangedEvent event) {
+				selectedPlace = (Place)((IStructuredSelection)event.getSelection()).getFirstElement();
+			}
+		});
+
+    	Button addButton = toolkit.createButton(composite, "Add", SWT.NONE);
+    	addButton.setLayoutData(LayoutUtil.createRightGridData());
+    	addButton.addSelectionListener(new SelectionAdapter() {
+    		@Override
+    		public void widgetSelected(SelectionEvent e) {
+        		placeComposite.addPlace();
+    		}
+    	});
+
+    	headerSection.setClient(composite);
+    	setControl(headerSection);
+
+    	if (selectedPlace != null) {
+    		placeComposite.setSelection(selectedPlace);
+    	}
     }
 
-    private void setButtonInvisible() {
-        editPlace.setVisible(false);
-        back.setVisible(false);
-
+    public Place getPlace() {
+    	return selectedPlace;
     }
-
-    private void refreshTable(Composite parent) {
-        try {
-            places = placeService.findAll();
-            viewer.setInput(places);
-        }
-        catch (DatabaseException e) {
-            LOG.error("Unable to retrieve list of places.", e);
-
-            // TODO: übersetzen
-            MessageDialog.openError(parent.getShell(), "Connection Error",
-                    "Could not load places from Database.");
-        }
-    }
-
-    private void initializeTable(Composite parent, TableViewer viewer) {
-        List<ColumnDescription<Place>> columns = PlacePartUtil.getColumns();
-
-        // Create columns in tableviewer
-        TableViewerController<Place> filler = new TableViewerController<>(viewer);
-        filler.createColumns(columns);
-
-        // Enable column selection
-        filler.createColumnSelectionMenu();
-
-        // Enable sorting
-        ColumnComparator<Place> comparator = new ColumnComparator<>(columns);
-        filler.enableSorting(comparator);
-
-        // Add dataprovider that handles our collection
-        viewer.setContentProvider(ArrayContentProvider.getInstance());
-
-        // Enable filtering
-        viewer.addFilter(new PlaceFilter());
-
-        viewer.addSelectionChangedListener(new ISelectionChangedListener() {
-            @Override
-            public void selectionChanged(SelectionChangedEvent event) {
-                getWizard().getContainer().updateButtons();
-            }
-        });
-    }
-
-    public TableViewer getTableViewer() {
-        return viewer;
-    }
-
+    
     @Override
     public boolean isPageComplete() {
-        IStructuredSelection sel = (IStructuredSelection) viewer.getSelection();
-        if (sel.getFirstElement() == null) {
-            return false;
-        }
-        else {
-            return true;
-        }
+    	selectedPlace = placeComposite.getSelectedPlace();
+    	return selectedPlace != null;
+    }
+    
+    @Override
+    public void dispose() {
+    	toolkit.dispose();
+    	super.dispose();
     }
 }

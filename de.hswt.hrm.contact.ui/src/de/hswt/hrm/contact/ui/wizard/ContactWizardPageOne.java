@@ -29,7 +29,7 @@ public class ContactWizardPageOne extends WizardPage {
 
     private Composite container;
     private Optional<Contact> contact;
-    
+
     private RegexValidator plzVal = new RegexValidator("[0-9]{5}");
     private RegexValidator textOnlyVal = new RegexValidator("([A-ZÄÖÜ]{1}[a-zäöü]+[\\s]?[\\-]?)*");
     private RegexValidator streetNoVal = new RegexValidator("[0-9]+[a-z]?");
@@ -50,9 +50,10 @@ public class ContactWizardPageOne extends WizardPage {
 
     @Override
     public void createControl(Composite parent) {
-    	parent.setLayout(new PageContainerFillLayout());
-    	URL url = ContactWizardPageOne.class.getClassLoader().getResource(
-                "de/hswt/hrm/contact/ui/xwt/ContactWizardWindowPageOne" + IConstants.XWT_EXTENSION_SUFFIX);
+        parent.setLayout(new PageContainerFillLayout());
+        URL url = ContactWizardPageOne.class.getClassLoader().getResource(
+                "de/hswt/hrm/contact/ui/xwt/ContactWizardWindowPageOne"
+                        + IConstants.XWT_EXTENSION_SUFFIX);
         try {
             container = (Composite) XWTForms.load(parent, url);
         }
@@ -61,7 +62,7 @@ public class ContactWizardPageOne extends WizardPage {
         }
 
         translate(container);
-        
+
         if (this.contact.isPresent()) {
             updateFields(container);
         }
@@ -70,40 +71,36 @@ public class ContactWizardPageOne extends WizardPage {
         setControl(container);
         setPageComplete(false);
     }
-    
-    private void setLabelText(final Composite container, final String labelName, 
-    		final String text) {
-    	
-    	Label l = (Label) XWT.findElementByName(container, labelName);
-    	if (l == null) {
-    		LOG.error("Label '" + labelName + "' not found.");
-    		return;
-    	}
-    	
-    	l.setText(text);
+
+    private void setLabelText(final Composite container, final String labelName, final String text) {
+
+        Label l = (Label) XWT.findElementByName(container, labelName);
+        if (l == null) {
+            LOG.error("Label '" + labelName + "' not found.");
+            return;
+        }
+
+        l.setText(text);
     }
-    
+
     private void translate(final Composite container) {
-    	setLabelText(container, "lblFirstName", I18N.tr("Firstname"));
-    	setLabelText(container, "lblLastName", I18N.tr("Lastname"));
-    	setLabelText(container, "lblStreet", I18N.tr("Street"));
-    	setLabelText(container, "lblStreetNumber", I18N.tr("Streetnumber"));
-    	setLabelText(container, "lblCity", I18N.tr("City"));
-    	setLabelText(container, "lblZipCode", I18N.tr("Zipcode"));
-//    	setLabelText(container, "lblPhone", "Phone");
-//    	setLabelText(container, "lblFax", "Fax");
-//    	setLabelText(container, "lblMobilePhone", "Mobile");
-//    	setLabelText(container, "lblEmail", "Email");
-//    	setLabelText(container, "lblShortcut", "Shortcut");
+        setLabelText(container, "lblName", I18N.tr("Name"));
+        setLabelText(container, "lblStreet", I18N.tr("Street"));
+        setLabelText(container, "lblStreetNumber", I18N.tr("Streetnumber"));
+        setLabelText(container, "lblCity", I18N.tr("City"));
+        setLabelText(container, "lblZipCode", I18N.tr("Zipcode"));
+        // setLabelText(container, "lblPhone", "Phone");
+        // setLabelText(container, "lblFax", "Fax");
+        // setLabelText(container, "lblMobilePhone", "Mobile");
+        // setLabelText(container, "lblEmail", "Email");
+        // setLabelText(container, "lblShortcut", "Shortcut");
     }
 
     private void updateFields(final Composite container) {
         Contact c = contact.get();
-        
-        Text t = (Text) XWT.findElementByName(container, "firstName");
-        t.setText(c.getFirstName());
-        t = (Text) XWT.findElementByName(container, "lastName");
-        t.setText(c.getLastName());
+
+        Text t = (Text) XWT.findElementByName(container, "name");
+        t.setText(c.getName());
         t = (Text) XWT.findElementByName(container, "street");
         t.setText(c.getStreet());
         t = (Text) XWT.findElementByName(container, "streetNumber");
@@ -116,8 +113,7 @@ public class ContactWizardPageOne extends WizardPage {
 
     public HashMap<String, Text> getMandatoryWidgets() {
         HashMap<String, Text> widgets = new HashMap<String, Text>();
-        widgets.put("firstName", (Text) XWT.findElementByName(container, "firstName"));
-        widgets.put("lastName", (Text) XWT.findElementByName(container, "lastName"));
+        widgets.put("name", (Text) XWT.findElementByName(container, "name"));
         widgets.put("street", (Text) XWT.findElementByName(container, "street"));
         widgets.put("streetNumber", (Text) XWT.findElementByName(container, "streetNumber"));
         widgets.put("city", (Text) XWT.findElementByName(container, "city"));
@@ -131,38 +127,40 @@ public class ContactWizardPageOne extends WizardPage {
         // Mandatory fields
         HashMap<String, Text> mandatory = getMandatoryWidgets();
         // Sorted array
-        Text[] manArray = {mandatory.get("firstName"),mandatory.get("lastName"),mandatory.get("street"),
-                mandatory.get("streetNumber"),mandatory.get("zipCode"),mandatory.get("city")};
+        Text[] manArray = { mandatory.get("name"), mandatory.get("street"),
+                mandatory.get("streetNumber"), mandatory.get("zipCode"), mandatory.get("city") };
         boolean isValid;
-        for (int i=0; i<manArray.length; i++){
+        for (int i = 0; i < manArray.length; i++) {
             isValid = checkValidity(manArray[i]);
             if (manArray[i].getText().length() == 0) {
-                setErrorMessage("Field \""+manArray[i].getToolTipText()+"\" is mandatory.");
+                setErrorMessage("Field \"" + manArray[i].getToolTipText() + "\" is mandatory.");
                 return false;
             }
             if (!isValid) {
-                setErrorMessage("Input for \""+manArray[i].getToolTipText()+"\" is invalid.");
+                setErrorMessage("Input for \"" + manArray[i].getToolTipText() + "\" is invalid.");
                 return false;
             }
         }
         setErrorMessage(null);
         return true;
     }
-    
+
     private boolean checkValidity(Text textField) {
         String toolTip = textField.getToolTipText();
-        
-        boolean isInvalidText = (toolTip.equals("Vorname") || toolTip.equals("Nachname") || toolTip.equals("Stadt"))
-                &&(!textOnlyVal.isValid(textField.getText()));
-        boolean isInvalidStreetNumber = (toolTip.equals("Hausnummer")) && (!streetNoVal.isValid(textField.getText()));
-        boolean isInvalidZipCode = (toolTip.equals("PLZ")) && (!plzVal.isValid(textField.getText()));
-        
+
+        boolean isInvalidText = (toolTip.equals("Name") || toolTip.equals("Stadt"))
+                && (!textOnlyVal.isValid(textField.getText()));
+        boolean isInvalidStreetNumber = (toolTip.equals("Hausnummer"))
+                && (!streetNoVal.isValid(textField.getText()));
+        boolean isInvalidZipCode = (toolTip.equals("PLZ"))
+                && (!plzVal.isValid(textField.getText()));
+
         if (isInvalidText || isInvalidStreetNumber || isInvalidZipCode) {
             return false;
         }
         return true;
     }
-            
+
     public void setKeyListener() {
         HashMap<String, Text> widgets = getMandatoryWidgets();
         for (Text text : widgets.values()) {

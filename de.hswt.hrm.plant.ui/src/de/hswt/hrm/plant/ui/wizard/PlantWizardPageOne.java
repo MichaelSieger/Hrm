@@ -19,6 +19,7 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Optional;
 
+import de.hswt.hrm.common.ui.swt.layouts.PageContainerFillLayout;
 import de.hswt.hrm.plant.model.Plant;
 
 public class PlantWizardPageOne extends WizardPage {
@@ -45,6 +46,8 @@ public class PlantWizardPageOne extends WizardPage {
     }
 
     public void createControl(Composite parent) {
+    	parent.setLayout(new PageContainerFillLayout());
+
         URL url = PlantWizardPageOne.class.getClassLoader().getResource(
                 "de/hswt/hrm/plant/ui/xwt/PlantWizardWindow" + IConstants.XWT_EXTENSION_SUFFIX);
         try {

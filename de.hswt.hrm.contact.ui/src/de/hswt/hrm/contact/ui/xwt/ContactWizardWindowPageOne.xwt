@@ -11,22 +11,15 @@
 				<Composite.layout>
 					<GridLayout numColumns="7" />
 				</Composite.layout>
-				<Label x:Name="lblFirstName" text="First name">
+				<Label x:Name="lblFirstName" text="Name">
 					<Label.layoutData>
 						<GridData horizontalAlignment="LEFT"/>
 					</Label.layoutData>
 				</Label>
-				<Text x:Style="BORDER" x:Name="firstName" textLimit="50" x:TooltipText="Vorname">
+				<Text x:Style="BORDER" x:Name="name" textLimit="50" x:TooltipText="Vorname" toolTipText="Name">
 					<Text.layoutData>
 						<GridData grabExcessHorizontalSpace="true"
 							horizontalAlignment="FILL" horizontalSpan="6"/>
-					</Text.layoutData>
-				</Text>
-				<Label x:Name="lblLastName" text="Last name"/>
-				<Text x:Style="BORDER" x:Name="lastName" textLimit="50" x:TooltipText="Nachname">
-					<Text.layoutData>
-						<GridData grabExcessHorizontalSpace="true"
-							horizontalAlignment="FILL"  horizontalSpan="6"/>
 					</Text.layoutData>
 				</Text>
 
@@ -57,7 +50,6 @@
 							horizontalAlignment="FILL" horizontalSpan="4"/>
 					</Text.layoutData>
 				</Text>
-				<Label/>
 			</Composite>
 		</Section.client>
 	</Section>

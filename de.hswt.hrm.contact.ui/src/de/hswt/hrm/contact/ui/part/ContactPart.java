@@ -35,9 +35,6 @@ import de.hswt.hrm.common.ui.swt.table.TableViewerController;
 import de.hswt.hrm.contact.model.Contact;
 import de.hswt.hrm.contact.service.ContactService;
 import de.hswt.hrm.contact.ui.filter.ContactFilter;
-import org.eclipse.swt.events.FocusAdapter;
-import org.eclipse.swt.events.FocusEvent;
-import org.eclipse.swt.graphics.Color;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -58,14 +55,14 @@ public class ContactPart {
 	@Inject
 	private IShellProvider shellProvider;
 
+	@Inject
 	private IEclipseContext context;
-
+	
 	private FormToolkit toolkit = new FormToolkit(Display.getDefault());
 	private Table table;
 	private Text searchText;
 	private TableViewer tableViewer;
 
-	private Color defaultForeGround;
 	private Action editAction;
 	private Action addAction;
 	private Section headerSection;
@@ -82,8 +79,7 @@ public class ContactPart {
 	 * Create contents of the view part.
 	 */
 	@PostConstruct
-	public void createControls(Composite parent, IEclipseContext context) {
-		this.context = context;
+	public void createControls(Composite parent) {
 
 		createActions();
 		toolkit.setBorderStyle(SWT.BORDER);
@@ -116,29 +112,7 @@ public class ContactPart {
 
 		searchText = new Text(composite, SWT.BORDER | SWT.SEARCH
 				| SWT.ICON_SEARCH | SWT.CANCEL | SWT.ICON_CANCEL);
-		defaultForeGround = searchText.getForeground();
-		searchText.setText(SearchFieldConstants.DEFAULT_SEARCH_STRING);
-		searchText.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(FocusEvent e) {
-				if (SearchFieldConstants.DEFAULT_SEARCH_STRING
-						.equals(searchText.getText())) {
-					searchText.setText(SearchFieldConstants.EMPTY);
-					searchText.setForeground(defaultForeGround);
-				}
-			}
-
-			@Override
-			public void focusLost(FocusEvent e) {
-				if (searchText.getText().isEmpty()) {
-					searchText
-							.setText(SearchFieldConstants.DEFAULT_SEARCH_STRING);
-					searchText
-							.setForeground(SearchFieldConstants.DEFAULT_SEARCH_COLOR);
-					updateTableFilter("");
-				}
-			}
-		});
+		searchText.setMessage(SearchFieldConstants.DEFAULT_SEARCH_STRING);
 		searchText.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
 				updateTableFilter(searchText.getText());
@@ -146,7 +120,6 @@ public class ContactPart {
 		});
 		searchText.setLayoutData(LayoutUtil.createHorzFillData());
 		toolkit.adapt(searchText, true, true);
-		searchText.setForeground(SearchFieldConstants.DEFAULT_SEARCH_COLOR);
 
 		tableViewer = new TableViewer(composite, SWT.BORDER
 				| SWT.FULL_SELECTION);
@@ -164,8 +137,11 @@ public class ContactPart {
 		form.getToolBarManager().update(true);
 
 		initializeTable();
-		refreshTable(parent);
+		refreshTable();
 
+        if (contactService == null) {
+            LOG.error("ContactService not injected to ContactPart.");
+        }
 	}
 
 	private void createActions() {
@@ -202,7 +178,7 @@ public class ContactPart {
 	public void setFocus() {
 	}
 
-	private void refreshTable(Composite parent) {
+	private void refreshTable() {
 		try {
 			tableViewer.setInput(contactService.findAll());
 		} catch (DatabaseException e) {
@@ -234,6 +210,7 @@ public class ContactPart {
 	}
 
 	private void showDBConnectionError() {
+		// TODO translate
 		MessageDialog.openError(shellProvider.getShell(), "Connection Error",
 				"Could not load contacts from Database.");
 	}

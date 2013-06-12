@@ -25,7 +25,7 @@ public class ContactWizard extends Wizard {
     private ContactWizardPageOne first;
     private ContactWizardPageTwo second;
     private Optional<Contact> contact;
-    
+
     @Inject
     private ContactService contactService;
 
@@ -33,7 +33,7 @@ public class ContactWizard extends Wizard {
         this.contact = contact;
         first = new ContactWizardPageOne("First Page", contact);
         second = new ContactWizardPageTwo("Second Page", contact);
-        
+
         if (contact.isPresent()) {
             setWindowTitle(I18N.tr("Edit Contact"));
         }
@@ -65,21 +65,21 @@ public class ContactWizard extends Wizard {
     }
 
     private boolean editExistingCustomer() {
-         // At this point we already know that the contact exists
-         Contact c = this.contact.get();
-         try {
-         // Update contact from the Database
-         c = contactService.findById(c.getId());
-         // set the values to the fields from the WizardPage
-         c = setValues(contact);
-         // Update contact in the Database
-         contactService.update(c);
-         contact = Optional.of(c);
-        
-         }
-         catch (DatabaseException e1) {
-         LOG.error("An error occured", e1);
-         }
+        // At this point we already know that the contact exists
+        Contact c = this.contact.get();
+        try {
+            // Update contact from the Database
+            c = contactService.findById(c.getId());
+            // set the values to the fields from the WizardPage
+            c = setValues(contact);
+            // Update contact in the Database
+            contactService.update(c);
+            contact = Optional.of(c);
+
+        }
+        catch (DatabaseException e1) {
+            LOG.error("An error occured", e1);
+        }
 
         return true;
 
@@ -88,12 +88,12 @@ public class ContactWizard extends Wizard {
     private boolean insertNewContact() {
         Contact c = setValues(Optional.<Contact> absent());
 
-         try {
-         contact = Optional.of(contactService.insert(c));
-         }
-         catch (SaveException e) {
-         LOG.error("Could not save Element: " + contact + "into Database", e);
-         }
+        try {
+            contact = Optional.of(contactService.insert(c));
+        }
+        catch (SaveException e) {
+            LOG.error("Could not save Element: " + contact + "into Database", e);
+        }
 
         return true;
     }
@@ -101,8 +101,7 @@ public class ContactWizard extends Wizard {
     private Contact setValues(Optional<Contact> c) {
 
         HashMap<String, Text> mandatoryWidgets = first.getMandatoryWidgets();
-        String firstName = mandatoryWidgets.get("firstName").getText();
-        String lastName = mandatoryWidgets.get("lastName").getText();
+        String name = mandatoryWidgets.get("name").getText();
         String street = mandatoryWidgets.get("street").getText();
         String streetNumber = mandatoryWidgets.get("streetNumber").getText();
         String city = mandatoryWidgets.get("city").getText();
@@ -120,8 +119,7 @@ public class ContactWizard extends Wizard {
 
             contact = c.get();
 
-            contact.setFirstName(firstName);
-            contact.setLastName(lastName);
+            contact.setName(name);
             contact.setStreet(street);
             contact.setStreetNo(streetNumber);
             contact.setCity(city);
@@ -129,7 +127,7 @@ public class ContactWizard extends Wizard {
         }
 
         else {
-            contact = new Contact(lastName, firstName, street, streetNumber, zipCode, city);
+            contact = new Contact(name, street, streetNumber, zipCode, city);
         }
 
         contact.setShortcut(shortcut);

@@ -23,8 +23,7 @@ public class ContactDao implements IContactDao {
     @Override
     public Collection<Contact> findAll() throws DatabaseException {
 
-        final String query = "SELECT Contact_ID, Contact_Name, Contact_First_Name, "
-                + "Contact_Zip_Code, "
+        final String query = "SELECT Contact_ID, Contact_Name, Contact_Zip_Code, "
                 + "Contact_City, Contact_Street, Contact_Street_Number, Contact_Shortcut, "
                 + "Contact_Phone, Contact_Fax, Contact_Mobile, Contact_Email FROM Contact ;";
 
@@ -46,8 +45,7 @@ public class ContactDao implements IContactDao {
     public Contact findById(int id) throws DatabaseException, ElementNotFoundException {
         checkArgument(id >= 0, "Id must not be negative.");
 
-        final String query = "SELECT Contact_ID, Contact_Name, Contact_First_Name, "
-                + "Contact_Zip_Code, "
+        final String query = "SELECT Contact_ID, Contact_Name, Contact_Zip_Code, "
                 + "Contact_City, Contact_Street, Contact_Street_Number, Contact_Shortcut, "
                 + "Contact_Phone, Contact_Fax, Contact_Mobile, Contact_Email FROM Contact "
                 + "WHERE Contact_ID = :id;";
@@ -59,7 +57,7 @@ public class ContactDao implements IContactDao {
 
                 Collection<Contact> contacts = fromResultSet(result);
                 DbUtils.closeQuietly(result);
-                
+
                 if (contacts.size() < 1) {
                     throw new ElementNotFoundException();
                 }
@@ -80,16 +78,15 @@ public class ContactDao implements IContactDao {
      */
     @Override
     public Contact insert(Contact contact) throws SaveException {
-        final String query = "INSERT INTO Contact (Contact_Name, Contact_First_Name, "
+        final String query = "INSERT INTO Contact (Contact_Name, "
                 + "Contact_Zip_Code, Contact_City, Contact_Street, Contact_Street_Number, "
                 + "Contact_Shortcut, Contact_Phone, Contact_Fax, Contact_Mobile, Contact_Email) "
-                + "VALUES (:name, :firstName, :zipCode, :city, :street, :streetNumber, "
+                + "VALUES (:name, :zipCode, :city, :street, :streetNumber, "
                 + ":shortcut, :phone, :fax, :mobile, :email);";
 
         try (Connection con = DatabaseFactory.getConnection()) {
             try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
-                stmt.setParameter("name", contact.getLastName());
-                stmt.setParameter("firstName", contact.getFirstName());
+                stmt.setParameter("name", contact.getName());
                 stmt.setParameter("zipCode", contact.getPostCode());
                 stmt.setParameter("city", contact.getCity());
                 stmt.setParameter("street", contact.getStreet());
@@ -110,9 +107,8 @@ public class ContactDao implements IContactDao {
                         int id = generatedKeys.getInt(1);
 
                         // Create new contact with id
-                        Contact inserted = new Contact(id, contact.getLastName(),
-                                contact.getFirstName(), contact.getStreet(), contact.getStreetNo(),
-                                contact.getPostCode(), contact.getCity());
+                        Contact inserted = new Contact(id, contact.getName(), contact.getStreet(),
+                                contact.getStreetNo(), contact.getPostCode(), contact.getCity());
 
                         inserted.setShortcut(contact.getShortcut().orNull());
                         inserted.setPhone(contact.getPhone().orNull());
@@ -142,19 +138,17 @@ public class ContactDao implements IContactDao {
             throw new ElementNotFoundException("Element has no valid ID.");
         }
 
-        final String query = "UPDATE Contact SET " + "Contact_Name = :lastName, "
-                + "Contact_First_Name = :firstName, " + "Contact_Zip_Code = :zipCode, "
-                + "Contact_City = :city, " + "Contact_Street = :street, "
-                + "Contact_Street_Number = :streetNumber, " + "Contact_Shortcut = :shortcut, "
-                + "Contact_Phone = :phone, " + "Contact_Fax = :fax, "
-                + "Contact_Mobile = :mobile, " + "Contact_Email = :email "
+        final String query = "UPDATE Contact SET " + "Contact_Name = :name, "
+                + "Contact_Zip_Code = :zipCode, " + "Contact_City = :city, "
+                + "Contact_Street = :street, " + "Contact_Street_Number = :streetNumber, "
+                + "Contact_Shortcut = :shortcut, " + "Contact_Phone = :phone, "
+                + "Contact_Fax = :fax, " + "Contact_Mobile = :mobile, " + "Contact_Email = :email "
                 + "WHERE Contact_ID = :id;";
 
         try (Connection con = DatabaseFactory.getConnection()) {
             try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
                 stmt.setParameter("id", contact.getId());
-                stmt.setParameter("lastName", contact.getLastName());
-                stmt.setParameter("firstName", contact.getFirstName());
+                stmt.setParameter("name", contact.getName());
                 stmt.setParameter("zipCode", contact.getPostCode());
                 stmt.setParameter("city", contact.getCity());
                 stmt.setParameter("street", contact.getStreet());
@@ -185,14 +179,13 @@ public class ContactDao implements IContactDao {
             // + "Contact_City, Contact_Street, Contact_Street_Number, Contact_Shortcut, "
             // + "Contact_Phone, Contact_Fax, Contact_Mobile, Contact_Email
             int id = rs.getInt("Contact_ID");
-            String lastName = rs.getString("Contact_Name");
-            String firstName = rs.getString("Contact_First_Name");
+            String name = rs.getString("Contact_Name");
             String zipCode = rs.getString("Contact_Zip_Code");
             String city = rs.getString("Contact_City");
             String street = rs.getString("Contact_Street");
             String streetNo = rs.getString("Contact_Street_Number");
 
-            Contact contact = new Contact(id, lastName, firstName, street, streetNo, zipCode, city);
+            Contact contact = new Contact(id, name, street, streetNo, zipCode, city);
             contact.setShortcut(rs.getString("Contact_Shortcut"));
             contact.setPhone(rs.getString("Contact_Phone"));
             contact.setFax(rs.getString("Contact_Fax"));

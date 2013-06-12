@@ -1,136 +1,115 @@
 package de.hswt.hrm.place.ui.part;
 
-import java.net.URL;
-import java.util.Collection;
-import java.util.List;
-
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 
 import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
-import org.eclipse.e4.core.di.annotations.Optional;
-import org.eclipse.e4.ui.workbench.modeling.EPartService;
-import org.eclipse.e4.ui.workbench.modeling.EPartService.PartState;
-import org.eclipse.e4.xwt.IConstants;
-import org.eclipse.e4.xwt.XWT;
-import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.viewers.ArrayContentProvider;
-import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.e4.ui.di.Focus;
+import org.eclipse.jface.action.Action;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.forms.widgets.Form;
+import org.eclipse.ui.forms.widgets.FormToolkit;
+import org.eclipse.ui.forms.widgets.Section;
 
-import de.hswt.hrm.common.database.exception.DatabaseException;
-import de.hswt.hrm.common.locking.jdbc.ILockService;
-import de.hswt.hrm.common.ui.swt.table.ColumnComparator;
-import de.hswt.hrm.common.ui.swt.table.ColumnDescription;
-import de.hswt.hrm.common.ui.swt.table.TableViewerController;
-import de.hswt.hrm.common.ui.xwt.XwtHelper;
-import de.hswt.hrm.place.model.Place;
-import de.hswt.hrm.place.service.PlaceService;
-import de.hswt.hrm.place.ui.event.PlaceEventHandler;
-import de.hswt.hrm.place.ui.filter.PlaceFilter;
+
+import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 
 public class PlacePart {
-    private final static Logger LOG = LoggerFactory.getLogger(PlacePart.class);
 
     @Inject
-    private PlaceService placeService;
-    
-    @Inject
-    EPartService service;
+    private IEclipseContext context;
 
-    @Inject
-    @Optional
-    private ILockService lockService;
-    
-    private TableViewer viewer;
-    private Collection<Place> places = null;
+	private FormToolkit toolkit = new FormToolkit(Display.getDefault());
 
-    @PostConstruct
-    public void postConstruct(Composite parent, IEclipseContext context) {
-        URL url = PlacePart.class.getClassLoader().getResource(
-                "de/hswt/hrm/place/ui/xwt/PlaceView" + IConstants.XWT_EXTENSION_SUFFIX);
+	private Action editAction;
+	private Action addAction;
 
-        try {
-            // Create an instance of the event handler that is able to use DI
-            PlaceEventHandler eventHandler = ContextInjectionFactory.make(PlaceEventHandler.class,
-                    context);
+	private PlaceComposite placeComposite;
+	
+	public PlacePart() {
+		// toolkit can be created in PostConstruct, but then then
+		// WindowBuilder is unable to parse the code
+		toolkit.dispose();
+		toolkit = FormUtil.createToolkit();
+	}
 
-            // Load XWT with injection ready event handler
-            final Composite composite = XwtHelper.loadWithEventHandler(parent, url, eventHandler);
-            LOG.debug("XWT load successfully.");
+	/**
+	 * Create contents of the view part.
+	 */
+	@PostConstruct
+	public void createControls(Composite parent) {
 
-            viewer = (TableViewer) XWT.findElementByName(composite, "placeTable");
-            initializeTable(parent, viewer);
-            refreshTable(parent);
-            
-            ((Button) XWT.findElementByName(composite, "back2Main")).addListener(SWT.Selection, new Listener() {
- 				@Override
- 				public void handleEvent(Event event) {
- 					service.findPart("Clients").setVisible(false);
- 					service.findPart("Places").setVisible(false);
- 					service.findPart("Plants").setVisible(false);
- 					service.findPart("Scheme").setVisible(false);
- 					service.findPart("Catalog").setVisible(false);
- 					service.findPart("Category").setVisible(false);
- 					service.findPart("Main").setVisible(true);
- 					service.showPart("Main", PartState.VISIBLE);
- 				}
- 			});
+		createActions();
+		toolkit.setBorderStyle(SWT.BORDER);
+		toolkit.adapt(parent);
+		toolkit.paintBordersFor(parent);
+		parent.setLayout(new FillLayout(SWT.HORIZONTAL));
 
-        }
-        catch (Exception e) {
-            LOG.error("Could not load XWT file from resource", e);
-        }
+		Form form = toolkit.createForm(parent);
+		form.getHead().setOrientation(SWT.RIGHT_TO_LEFT);
+		form.setSeparatorVisible(true);
+		toolkit.paintBordersFor(form);
+		form.setText("Places");
+		toolkit.decorateFormHeading(form);
 
-        if (placeService == null) {
-            LOG.error("PlaceService not injected to PlacePart.");
-        }
+		form.getToolBarManager().add(editAction);
+		form.getToolBarManager().add(addAction);
+		
+		FillLayout fillLayout = new FillLayout(SWT.HORIZONTAL);
+		fillLayout.marginHeight = 1;
+		form.getBody().setLayout(fillLayout);
 
-        if (lockService != null) {
-            LOG.debug("LockService injected to PlacePart.");
-        }
-    }
+		Section headerSection = toolkit.createSection(form.getBody(), Section.TITLE_BAR);
+		toolkit.paintBordersFor(headerSection);
+		headerSection.setExpanded(true);
+		FormUtil.initSectionColors(headerSection);
+		Composite temp = toolkit.createComposite(headerSection);
+		temp.setLayout(new FillLayout());
+        headerSection.setClient(temp);
+		
+		placeComposite = new PlaceComposite(temp, SWT.NONE);
+        ContextInjectionFactory.inject(placeComposite, context);
+        
+		form.getToolBarManager().update(true);
 
-    private void refreshTable(Composite parent) {
-        try {
-            places = placeService.findAll();
-            viewer.setInput(places);
-        }
-        catch (DatabaseException e) {
-            LOG.error("Unable to retrieve list of places.", e);
+	}
 
-            // TODO: übersetzen
-            MessageDialog.openError(parent.getShell(), "Connection Error",
-                    "Could not load places from Database.");
-        }
-    }
+	private void createActions() {
+		{
+			editAction = new Action("Edit") {
+				@Override
+				public void run() {
+					super.run();
+					placeComposite.editPlace();
+				}
+			};
+			editAction.setDescription("Edit an exisitng place.");
+		}
+		{
+			addAction = new Action("Add") {
+				@Override
+				public void run() {
+					super.run();
+					placeComposite.addPlace();
+				}
+			};
+			addAction.setDescription("Add's a new place.");
+		}
+	}
 
-    private void initializeTable(Composite parent, TableViewer viewer) {
-        List<ColumnDescription<Place>> columns = PlacePartUtil.getColumns();
+	@PreDestroy
+	public void dispose() {
+		if (toolkit != null) {
+			toolkit.dispose();
+		}
+	}
 
-        // Create columns in tableviewer
-        TableViewerController<Place> filler = new TableViewerController<>(viewer);
-        filler.createColumns(columns);
-
-        // Enable column selection
-        filler.createColumnSelectionMenu();
-
-        // Enable sorting
-        ColumnComparator<Place> comparator = new ColumnComparator<>(columns);
-        filler.enableSorting(comparator);
-
-        // Add dataprovider that handles our collection
-        viewer.setContentProvider(ArrayContentProvider.getInstance());
-
-        // Enable filtering
-        viewer.addFilter(new PlaceFilter());
-    }
-
+	@Focus
+	public void setFocus() {
+	}
 }

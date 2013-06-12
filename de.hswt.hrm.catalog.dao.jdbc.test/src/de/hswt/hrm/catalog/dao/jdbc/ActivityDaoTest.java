@@ -100,7 +100,7 @@ public class ActivityDaoTest extends AbstractDatabaseTest {
     }
     
     @Test
-    public void testFindByActivityState() throws DatabaseException {
+    public void testFindByCurrentState() throws DatabaseException {
     	ITargetDao targetDao = mock(ITargetDao.class);
         ICurrentDao currentDao = new CurrentDao(targetDao);
         IActivityDao activityDao = new ActivityDao(currentDao);

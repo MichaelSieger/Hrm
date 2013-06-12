@@ -2,7 +2,7 @@
 	<Composite.layout>
 		<GridLayout numColumns="3"/>
 	</Composite.layout>
-	<Section x:Style="(p1:Section).EXPANDED | (p1:Section).TITLE_BAR" x:Name="Mandatory">
+	<Section x:Style="(p1:Section).EXPANDED | (p1:Section).TITLE_BAR" x:Name="Mandatory" text="Evaluation">
 		<Section.layoutData>
 			<GridData grabExcessHorizontalSpace="true" widthHint="277" horizontalAlignment="FILL" horizontalSpan="2" heightHint="190"/>
 		</Section.layoutData>
@@ -11,17 +11,13 @@
 				<Composite.layout>
 					<GridLayout numColumns="4"/>
 				</Composite.layout>
-				<Label/>
-				<Button x:Style="RADIO" text="Soll" x:Name="target"/>
-				<Button x:Style="RADIO" text="Ist" x:Name="current"/>
-				<Button x:Style="RADIO" text="Maßnahme" x:Name="activity"/>
-				<Label text="Name :"/>
+				<Label text="Name"/>
 				<Text x:Style="BORDER" x:Name="name" x:TooltipText="Name">
 					<Text.layoutData>
 						<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL" horizontalSpan="3"/>
 					</Text.layoutData>
 				</Text>
-				<Label text="Beschreibung :">
+				<Label text="Text" x:Name="text">
 					<Label.layoutData>
 						<GridData verticalAlignment="TOP"/>
 					</Label.layoutData>
@@ -31,8 +27,6 @@
 						<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL" verticalAlignment="FILL" heightHint="80" widthHint="300" horizontalSpan="3"/>
 					</Text.layoutData>
 				</Text>
-				<Label/>
-				<Label/>
 			</Composite>
 		</Section.client>
 	</Section>
