@@ -227,6 +227,7 @@ This Agreement is governed by the laws of the State of New York and the intellec
       <feature id="de.hswt.hrm.component.feature" version="0.0.1.qualifier"/>
       <feature id="de.hswt.hrm.evaluation.feature" version="0.0.1.qualifier"/>
       <feature id="de.hswt.hrm.photo.feature" version="0.0.1.qualifier"/>
+      <feature id="de.hswt.hrm.inspection.feature" version="0.0.1.qualifier"/>
    </features>
 
    <configurations>
