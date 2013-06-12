@@ -78,7 +78,7 @@ public class ContactDao implements IContactDao {
      */
     @Override
     public Contact insert(Contact contact) throws SaveException {
-        final String query = "INSERT INTO Contact (Contact_Name "
+        final String query = "INSERT INTO Contact (Contact_Name, "
                 + "Contact_Zip_Code, Contact_City, Contact_Street, Contact_Street_Number, "
                 + "Contact_Shortcut, Contact_Phone, Contact_Fax, Contact_Mobile, Contact_Email) "
                 + "VALUES (:name, :zipCode, :city, :street, :streetNumber, "
