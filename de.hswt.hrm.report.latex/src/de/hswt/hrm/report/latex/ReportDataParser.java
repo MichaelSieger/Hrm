@@ -64,116 +64,165 @@ public class ReportDataParser {
         prop.load(Files.newInputStream(Paths.get(pathDir, "templates", "reportdata.properties")));
 
         buffer.append(prop.getProperty("reportdata.customer.name").replace(CUSTOMER_NAME,
-                contactCustomer.getFirstName() + " " + contactCustomer.getLastName()));
-        buffer.append("\n");
+                contactCustomer.getName() + " " + contactCustomer.getName()));
+
+        appendNewLine();
+
         buffer.append(prop.getProperty("reportdata.customer.street").replace(CUSTOMER_STREET,
                 contactCustomer.getStreet() + " " + contactCustomer.getStreetNo()));
-        buffer.append("\n");
+
+        appendNewLine();
+
         buffer.append(prop.getProperty("reportdata.customer.city").replace(CUSTOMER_CITY,
                 contactCustomer.getPostCode() + " " + contactCustomer.getCity()));
-        buffer.append("\n");
+
+        appendNewLine();
 
         buffer.append(prop.getProperty("reportdata.contractor.name").replace(CONTRACTOR_NAME,
-                contactContractor.getFirstName() + " " + contactContractor.getLastName()));
-        buffer.append("\n");
+                contactContractor.getName() + " " + contactContractor.getName()));
+
+        appendNewLine();
+
         buffer.append(prop.getProperty("reportdata.contractor.street").replace(CONTRACTOR_STREET,
                 contactContractor.getStreet() + " " + contactContractor.getStreetNo()));
-        buffer.append("\n");
+
+        appendNewLine();
+
         buffer.append(prop.getProperty("reportdata.contractor.city").replace(CONTRACTOR_CITY,
                 contactContractor.getPostCode() + " " + contactContractor.getCity()));
-        buffer.append("\n");
+
+        appendNewLine();
 
         buffer.append(prop.getProperty("reportdata.controller.name").replace(CONTROLLER_NAME,
-                conctactController.getFirstName() + " " + conctactController.getLastName()));
-        buffer.append("\n");
+                conctactController.getName() + " " + conctactController.getName()));
+
+        appendNewLine();
+
         buffer.append(prop.getProperty("reportdata.controller.street").replace(CONTROLLER_STREET,
-                conctactController.getStreet() + " " + conctactController.getLastName()));
-        buffer.append("\n");
+                conctactController.getStreet() + " " + conctactController.getName()));
+
+        appendNewLine();
+
         buffer.append(prop.getProperty("reportdata.controller.city").replace(CONTROLLER_CITY,
                 conctactController.getPostCode() + " " + conctactController.getCity()));
-        buffer.append("\n");
+
+        appendNewLine();
 
         // TODO
         buffer.append(prop.getProperty("reportdata.object.title").replace(OBJECT_TITLE,
                 "report.getTitle()"));
-        buffer.append("\n");
+
+        appendNewLine();
+
         buffer.append(prop.getProperty("reportdata.object.name").replace(OBJECT_NAME,
                 place.getPlaceName()));
-        buffer.append("\n");
+
+        appendNewLine();
+
         buffer.append(prop.getProperty("reportdata.object.street").replace(OBJECT_STREET,
                 place.getStreet() + " " + place.getStreetNo()));
-        buffer.append("\n");
+
+        appendNewLine();
+
         buffer.append(prop.getProperty("reportdata.object.city").replace(OBJECT_CITY,
                 place.getPostCode() + " " + place.getCity()));
-        buffer.append("\n");
+
+        appendNewLine();
         // TODO
         buffer.append(prop.getProperty("reportdata.object.image").replace(OBJECT_IMAGE,
                 "place.getImage"));
-        buffer.append("\n");
+
+        appendNewLine();
 
         // TODO
         buffer.append(prop.getProperty("reportdata.date.inspection").replace(INSPECTION_DATE,
                 "report.getInspectionDate()"));
-        buffer.append("\n");
+
+        appendNewLine();
+
         buffer.append(prop.getProperty("reportdata.data.report").replace(REPORT_DATE,
                 "report.getReportDate()"));
-        buffer.append("\n");
+
+        appendNewLine();
+
         // TODO
         buffer.append(prop.getProperty("reportdata.plant").replace(PLANT, "plant.getPlantName()"));
-        buffer.append("\n");
+
+        appendNewLine();
+
         // TODO Location
         buffer.append(prop.getProperty("reportdata.plant.place").replace(PLANT_PLACE,
                 "plant.getLocation"));
-        buffer.append("\n");
+
+        appendNewLine();
+
         // TODO
         buffer.append(prop.getProperty("reportdata.plant.servicearea").replace(PLANT_SERVICE_AREA,
                 "plant.getArea"));
-        buffer.append("\n");
+
+        appendNewLine();
+
         // TODO
         buffer.append(prop.getProperty("reportdata.plant.image").replace(PLANT_IMAGE,
                 "Photo.getPlantImage"));
-        buffer.append("\n");
+
+        appendNewLine();
 
         if (plant.getManufactor().isPresent()) {
             buffer.append(prop.getProperty("reportdata.plant.manufacturer").replace(
-                    PLANT_MANUFACTURER, plant.getManufactor().or("")));
-            buffer.append("\n");
+                    PLANT_MANUFACTURER, plant.getManufactor().get()));
+
+            appendNewLine();
         }
+
         if (plant.getType().isPresent()) {
             buffer.append(prop.getProperty("reportdata.plant.type").replace(PLANT_TYPE,
-                    plant.getType().or("")));
-            buffer.append("\n");
+                    plant.getType().get()));
+
+            appendNewLine();
         }
+
         buffer.append(prop.getProperty("reportdata.plant.year").replace(PLANT_YEAR,
                 plant.getConstructionYear().toString()));
-        buffer.append("\n");
+
+        appendNewLine();
 
         if (plant.getAirPerformance().isPresent()) {
             buffer.append(prop.getProperty("reportdata.plant.power").replace(PLANT_AIR_POWER,
-                    plant.getAirPerformance().or("")));
-            buffer.append("\n");
+                    plant.getAirPerformance().get()));
+
+            appendNewLine();
         }
         if (plant.getMotorPower().isPresent()) {
+
             buffer.append(prop.getProperty("reportdata.plant.engine.power").replace(
-                    PLANT_ENGINE_POWER, plant.getMotorPower().or("")));
-            buffer.append("\n");
+                    PLANT_ENGINE_POWER, plant.getMotorPower().get()));
+
+            appendNewLine();
         }
         if (plant.getMotorRpm().isPresent()) {
             buffer.append(prop.getProperty("reportdata.plant.engine.rpm").replace(PLANT_RPM,
-                    plant.getMotorRpm().or("")));
-            buffer.append("\n");
+                    plant.getMotorRpm().get()));
+
+            appendNewLine();
         }
         if (plant.getCurrent().isPresent()) {
             buffer.append(prop.getProperty("reportdata.plant.current").replace(PLANT_CURRENT,
-                    plant.getCurrent().or("")));
-            buffer.append("\n");
+                    plant.getCurrent().get()));
+
+            appendNewLine();
         }
         if (plant.getVoltage().isPresent())
             buffer.append(prop.getProperty("reportdata.plant.voltage").replace(PLANT_VOLTAGE,
-                    plant.getVoltage().or("")));
-        buffer.append("\n");
+                    plant.getVoltage().get()));
+
+        appendNewLine();
 
         return buffer.toString();
+    }
+
+    private void appendNewLine() {
+        this.appendNewLine();
     }
 
 }
