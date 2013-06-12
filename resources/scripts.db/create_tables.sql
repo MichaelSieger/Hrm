@@ -7,8 +7,7 @@
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `Contact` (
   `Contact_ID` INT NOT NULL AUTO_INCREMENT ,
-  `Contact_Name` VARCHAR(255) NOT NULL ,
-  `Contact_First_Name` VARCHAR(255) NULL ,
+  `Contact_Name` TEXT NOT NULL ,
   `Contact_Zip_Code` VARCHAR(45) NOT NULL ,
   `Contact_City` VARCHAR(45) NOT NULL ,
   `Contact_Street` VARCHAR(255) NOT NULL ,
@@ -91,6 +90,7 @@ CREATE  TABLE IF NOT EXISTS `Report` (
   `Report_Airtemperature` VARCHAR(45) NULL ,
   `Report_Humidity` VARCHAR(45) NULL ,
   `Report_Summary` TEXT NULL ,
+  `Report_Titel` VARCHAR(255) NULL ,
   PRIMARY KEY (`Report_ID`) ,
   INDEX `Report_Layout_IDx` (`Report_Layout_FK` ASC) ,
   INDEX `Report_Plant_IDx` (`Report_Plant_FK` ASC) ,
@@ -600,4 +600,3 @@ CREATE  TABLE IF NOT EXISTS `Summary` (
   `Summary_Text` TEXT NULL ,
   PRIMARY KEY (`Summary_ID`) )
 ENGINE = InnoDB;
-
