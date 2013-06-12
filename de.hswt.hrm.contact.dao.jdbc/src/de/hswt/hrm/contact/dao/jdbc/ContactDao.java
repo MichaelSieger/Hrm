@@ -86,7 +86,7 @@ public class ContactDao implements IContactDao {
 
         try (Connection con = DatabaseFactory.getConnection()) {
             try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
-                stmt.setParameter("name", contact.getLastName());
+                stmt.setParameter("name", contact.getName());
                 stmt.setParameter("zipCode", contact.getPostCode());
                 stmt.setParameter("city", contact.getCity());
                 stmt.setParameter("street", contact.getStreet());
@@ -107,9 +107,8 @@ public class ContactDao implements IContactDao {
                         int id = generatedKeys.getInt(1);
 
                         // Create new contact with id
-                        Contact inserted = new Contact(id, contact.getLastName(),
-                                contact.getFirstName(), contact.getStreet(), contact.getStreetNo(),
-                                contact.getPostCode(), contact.getCity());
+                        Contact inserted = new Contact(id, contact.getName(), contact.getStreet(),
+                                contact.getStreetNo(), contact.getPostCode(), contact.getCity());
 
                         inserted.setShortcut(contact.getShortcut().orNull());
                         inserted.setPhone(contact.getPhone().orNull());
@@ -139,7 +138,7 @@ public class ContactDao implements IContactDao {
             throw new ElementNotFoundException("Element has no valid ID.");
         }
 
-        final String query = "UPDATE Contact SET " + "Contact_Name = :lastName, "
+        final String query = "UPDATE Contact SET " + "Contact_Name = :name, "
                 + "Contact_Zip_Code = :zipCode, " + "Contact_City = :city, "
                 + "Contact_Street = :street, " + "Contact_Street_Number = :streetNumber, "
                 + "Contact_Shortcut = :shortcut, " + "Contact_Phone = :phone, "
@@ -149,7 +148,7 @@ public class ContactDao implements IContactDao {
         try (Connection con = DatabaseFactory.getConnection()) {
             try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
                 stmt.setParameter("id", contact.getId());
-                stmt.setParameter("lastName", contact.getLastName());
+                stmt.setParameter("name", contact.getName());
                 stmt.setParameter("zipCode", contact.getPostCode());
                 stmt.setParameter("city", contact.getCity());
                 stmt.setParameter("street", contact.getStreet());
@@ -180,13 +179,13 @@ public class ContactDao implements IContactDao {
             // + "Contact_City, Contact_Street, Contact_Street_Number, Contact_Shortcut, "
             // + "Contact_Phone, Contact_Fax, Contact_Mobile, Contact_Email
             int id = rs.getInt("Contact_ID");
-            String lastName = rs.getString("Contact_Name");
+            String name = rs.getString("Contact_Name");
             String zipCode = rs.getString("Contact_Zip_Code");
             String city = rs.getString("Contact_City");
             String street = rs.getString("Contact_Street");
             String streetNo = rs.getString("Contact_Street_Number");
 
-            Contact contact = new Contact(id, lastName, street, streetNo, zipCode, city);
+            Contact contact = new Contact(id, name, street, streetNo, zipCode, city);
             contact.setShortcut(rs.getString("Contact_Shortcut"));
             contact.setPhone(rs.getString("Contact_Phone"));
             contact.setFax(rs.getString("Contact_Fax"));
