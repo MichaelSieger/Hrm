@@ -1,58 +1,64 @@
 <Composite xmlns="http://www.eclipse.org/xwt/presentation"
 	xmlns:x="http://www.eclipse.org/xwt" x:Class="de.hswt.hrm.main.handlers.MainPartEventHandler">
 	<Composite.layout>
-		<GridLayout numColumns="6"/>
+		<GridLayout numColumns="6" />
 	</Composite.layout>
-	<Button x:Name="toContacts" image="/resources/icons/Contacts.jpg" >
+	<Button x:Name="toContacts" image="/resources/icons/Contacts.jpg">
 		<Button.layoutData>
-			<GridData verticalAlignment="FILL" horizontalAlignment="FILL"/>
+			<GridData verticalAlignment="FILL" horizontalAlignment="FILL" />
 		</Button.layoutData>
 	</Button>
-	<Label text="Kontakte:&#13;&#10;-Konakte anlegen&#13;&#10;-Kontakte bearbeiten&#13;&#10;&#13;&#10;">
+	<Label
+		text="Kontakte:&#13;&#10;-Konakte anlegen&#13;&#10;-Kontakte bearbeiten&#13;&#10;&#13;&#10;">
 		<Label.layoutData>
-			<GridData grabExcessHorizontalSpace="true"/>
+			<GridData grabExcessHorizontalSpace="true" />
 		</Label.layoutData>
 	</Label>
-	<Button x:Name="toPlaces" image="/resources/icons/Places.jpg" >
+	<Button x:Name="toPlaces" image="/resources/icons/Places.jpg">
 		<Button.layoutData>
-			<GridData horizontalAlignment="FILL" verticalAlignment="FILL"/>
+			<GridData horizontalAlignment="FILL" verticalAlignment="FILL" />
 		</Button.layoutData>
 	</Button>
-	<Label text="Standorte:&#13;&#10;-Standorte anlegen&#13;&#10;-Standorte bearbeiten">
+	<Label
+		text="Standorte:&#13;&#10;-Standorte anlegen&#13;&#10;-Standorte bearbeiten">
 		<Label.layoutData>
-			<GridData grabExcessHorizontalSpace="true"/>
+			<GridData grabExcessHorizontalSpace="true" />
 		</Label.layoutData>
 	</Label>
-	<Button x:Name="toPlants" image="/resources/icons/plants.jpg" >
+	<Button x:Name="toPlants" image="/resources/icons/Plants.jpg">
 		<Button.layoutData>
-			<GridData horizontalAlignment="FILL" verticalAlignment="FILL"/>
+			<GridData horizontalAlignment="FILL" verticalAlignment="FILL" />
 		</Button.layoutData>
 	</Button>
-	<Label text="Anlagen:&#13;&#10;-Anlagen anlegen&#13;&#10;-Anlagen bearbeiten">
+	<Label
+		text="Anlagen:&#13;&#10;-Anlagen anlegen&#13;&#10;-Anlagen bearbeiten">
 		<Label.layoutData>
-			<GridData grabExcessHorizontalSpace="true"/>
+			<GridData grabExcessHorizontalSpace="true" />
 		</Label.layoutData>
 	</Label>
-	<Label/>
-	<Label/>
-	<Label/>
-	<Label/>
-	<Label/>
-	<Label/>
-	<Button x:Name="toCatalog" image="/resources/icons/plants.jpg">
+	<Label />
+	<Label />
+	<Label />
+	<Label />
+	<Label />
+	<Label />
+	<Button x:Name="toCatalog" image="/resources/icons/Catalog.jpg">
 		<Button.layoutData>
-			<GridData horizontalAlignment="RIGHT"/>
+			<GridData horizontalAlignment="RIGHT" />
 		</Button.layoutData>
 	</Button>
-	<Label text="Katalog:&#13;&#10;-Katalog anlegen&#13;&#10;-Katalog bearbeiten"/>
-	<Button x:Name="toCategory" image="/resources/icons/plants.jpg"/>
-	<Label text="Kategorie:&#13;&#10;-Kategorien anlegen&#13;&#10;-Kategorien bearbeiten&#13;&#10;"/>
-	<Button image="/resources/icons/plants.jpg" x:Name="toInspection"/>
-	<Label text="Inspektion:&#13;&#10;-Inspektionen anlegen&#13;&#10;-Insprektionen bearbeiten"/>
-	<Label/>
-	<Label/>
-	<Button image="/resources/icons/plants.jpg" x:Name="toOverall"/>
-	<Label text="Zur Gesamtbewertung&#13;&#10;"/>
-	<Label/>
-	<Label/>
+	<Label
+		text="Katalog:&#13;&#10;-Katalog anlegen&#13;&#10;-Katalog bearbeiten" />
+	<Button x:Name="toCategory" image="/resources/icons/Components.jpg" />
+	<Label
+		text="Kategorie:&#13;&#10;-Kategorien anlegen&#13;&#10;-Kategorien bearbeiten&#13;&#10;" />
+	<Button image="/resources/icons/Report.jpg" x:Name="toInspection" />
+	<Label
+		text="Inspektion:&#13;&#10;-Inspektionen anlegen&#13;&#10;-Insprektionen bearbeiten" />
+	<Label />
+	<Label />
+	<Button image="/resources/icons/Evaluation.jpg" x:Name="toOverall" />
+	<Label text="Zur Gesamtbewertung&#13;&#10;" />
+	<Label />
+	<Label />
 </Composite>
