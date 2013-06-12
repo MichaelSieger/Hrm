@@ -16,7 +16,7 @@
 						<GridData horizontalAlignment="LEFT"/>
 					</Label.layoutData>
 				</Label>
-				<Text x:Style="BORDER" x:Name="firstName" textLimit="50" x:TooltipText="Vorname">
+				<Text x:Style="BORDER" x:Name="name" textLimit="50" x:TooltipText="Vorname" toolTipText="Name">
 					<Text.layoutData>
 						<GridData grabExcessHorizontalSpace="true"
 							horizontalAlignment="FILL" horizontalSpan="6"/>

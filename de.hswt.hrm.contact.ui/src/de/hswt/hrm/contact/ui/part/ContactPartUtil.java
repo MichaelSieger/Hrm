@@ -20,8 +20,8 @@ import de.hswt.hrm.i18n.I18n;
 import de.hswt.hrm.i18n.I18nFactory;
 
 public final class ContactPartUtil {
-	private static final I18n I18N = I18nFactory.getI18n(ContactPartUtil.class);
-	
+    private static final I18n I18N = I18nFactory.getI18n(ContactPartUtil.class);
+
     private ContactPartUtil() {
 
     }
@@ -39,8 +39,7 @@ public final class ContactPartUtil {
 
     public static List<ColumnDescription<Contact>> getColumns() {
         List<ColumnDescription<Contact>> columns = new ArrayList<>();
-        columns.add(getLastNameColumn());
-        columns.add(getFirstNameColumn());
+        columns.add(getNameColumn());
         columns.add(getStreetColumn());
         columns.add(getStreetNoColumn());
         columns.add(getPostCodeColumn());
@@ -55,32 +54,17 @@ public final class ContactPartUtil {
 
     }
 
-    private static ColumnDescription<Contact> getLastNameColumn() {
-        return new ColumnDescription<>("Last Name", new ColumnLabelProvider() {
+    private static ColumnDescription<Contact> getNameColumn() {
+        return new ColumnDescription<>("Name", new ColumnLabelProvider() {
             @Override
             public String getText(Object element) {
                 Contact c = (Contact) element;
-                return c.getLastName();
+                return c.getName();
             }
         }, new Comparator<Contact>() {
             @Override
             public int compare(Contact c1, Contact c2) {
-                return c1.getLastName().compareToIgnoreCase(c2.getLastName());
-            }
-        });
-    }
-
-    private static ColumnDescription<Contact> getFirstNameColumn() {
-        return new ColumnDescription<>("First Name", new ColumnLabelProvider() {
-            @Override
-            public String getText(Object element) {
-                Contact c = (Contact) element;
-                return c.getFirstName();
-            }
-        }, new Comparator<Contact>() {
-            @Override
-            public int compare(Contact c1, Contact c2) {
-                return c1.getFirstName().compareToIgnoreCase(c2.getFirstName());
+                return c1.getName().compareToIgnoreCase(c2.getName());
             }
         });
     }
