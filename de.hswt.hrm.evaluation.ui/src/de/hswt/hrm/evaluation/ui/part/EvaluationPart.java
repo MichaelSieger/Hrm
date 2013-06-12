@@ -133,12 +133,12 @@ public class EvaluationPart {
         table.setLayoutData(LayoutUtil.createFillData());
         toolkit.paintBordersFor(table);
         form.getToolBarManager().update(true);
-//
-//        initializeTable();
-//        refreshTable();
+
+        initializeTable();
+        refreshTable();
 
         if (evalService == null) {
-            LOG.error("ContactService not injected to ContactPart.");
+            LOG.error("EvaluationService not injected to EvaluationPart.");
         }
     }
 
@@ -151,7 +151,7 @@ public class EvaluationPart {
                     editContact();
                 }
             };
-            editAction.setDescription("Edit an exisitng contact.");
+            editAction.setDescription("Edit an exisitng Evaluation.");
         }
         {
             addAction = new Action("Add") {
@@ -161,7 +161,7 @@ public class EvaluationPart {
                     addContact();
                 }
             };
-            addAction.setDescription("Add's a new contact.");
+            addAction.setDescription("Add's a new Evaluation.");
         }
     }
 
@@ -181,7 +181,7 @@ public class EvaluationPart {
             tableViewer.setInput(evalService.findAll());
         }
         catch (DatabaseException e) {
-            LOG.error("Unable to retrieve list of contacts.", e);
+            LOG.error("Unable to retrieve list of Evaluations.", e);
             showDBConnectionError();
         }
     }
@@ -210,7 +210,7 @@ public class EvaluationPart {
     private void showDBConnectionError() {
         // TODO translate
         MessageDialog.openError(shellProvider.getShell(), "Connection Error",
-                "Could not load contacts from Database.");
+                "Could not load evaluations from Database.");
     }
 
     private void updateTableFilter(String filterString) {
@@ -228,12 +228,12 @@ public class EvaluationPart {
     private void addContact() {
         Evaluation eval = null;
 
-        Optional<Evaluation> newContact = EvaluationPartUtil.showWizard(context,
+        Optional<Evaluation> newEval = EvaluationPartUtil.showWizard(context,
                 shellProvider.getShell(), Optional.fromNullable(eval));
 
         Collection<Evaluation> contacs = (Collection<Evaluation>) tableViewer.getInput();
-        if (newContact.isPresent()) {
-            contacs.add(newContact.get());
+        if (newEval.isPresent()) {
+            contacs.add(newEval.get());
             tableViewer.refresh();
         }
     }
@@ -248,15 +248,15 @@ public class EvaluationPart {
      */
     private void editContact() {
         // obtain the contact in the column where the doubleClick happend
-        Evaluation selectedContact = (Evaluation) tableViewer.getElementAt(tableViewer.getTable()
+        Evaluation selectedEval = (Evaluation) tableViewer.getElementAt(tableViewer.getTable()
                 .getSelectionIndex());
-        if (selectedContact == null) {
+        if (selectedEval == null) {
             return;
         }
         try {
-            evalService.refresh(selectedContact);
+            evalService.refresh(selectedEval);
             Optional<Evaluation> updatedPlace = EvaluationPartUtil.showWizard(context,
-                    shellProvider.getShell(), Optional.of(selectedContact));
+                    shellProvider.getShell(), Optional.of(selectedEval));
 
             if (updatedPlace.isPresent()) {
                 tableViewer.refresh();
