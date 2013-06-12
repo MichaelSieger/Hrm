@@ -9,8 +9,7 @@ import static com.google.common.base.Strings.isNullOrEmpty;
  */
 public final class Contact {
     private int id;
-    private String lastName;
-    private String firstName;
+    private String name;
     private String street;
     private String streetNo;
     private String postCode;
@@ -25,41 +24,31 @@ public final class Contact {
 
     private static final String IS_MANDATORY = "Field is a mandatory.";
 
-    public Contact(final String lastName, final String firstName, final String street,
+    public Contact(final String Name, final String street,
             final String streetNo, final String postCode, final String city) {
 
-        this(-1, lastName, firstName, street, streetNo, postCode, city);
+        this(-1, Name,  street, streetNo, postCode, city);
     }
 
-    public Contact(int id, final String lastName, final String firstName, final String street,
+    public Contact(int id, final String Name, final String street,
             final String streetNo, final String postCode, final String city) {
 
         this.id = id;
 
-        setLastName(lastName);
-        setFirstName(firstName);
+        setName(Name);
         setStreet(street);
         setStreetNo(streetNo);
         setPostCode(postCode);
         setCity(city);
     }
 
-    public String getLastName() {
-        return lastName;
+    public String getName() {
+        return name;
     }
 
-    public void setLastName(String lastName) {
-        checkArgument(!isNullOrEmpty(lastName), IS_MANDATORY);
-        this.lastName = lastName;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        checkArgument(!isNullOrEmpty(firstName), IS_MANDATORY);
-        this.firstName = firstName;
+    public void setName(String name) {
+        checkArgument(!isNullOrEmpty(name), IS_MANDATORY);
+        this.name = name;
     }
 
     public String getStreet() {
@@ -149,9 +138,8 @@ public final class Contact {
         result = prime * result + ((city == null) ? 0 : city.hashCode());
         result = prime * result + ((email == null) ? 0 : email.hashCode());
         result = prime * result + ((fax == null) ? 0 : fax.hashCode());
-        result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
         result = prime * result + (int) (id ^ (id >>> 32));
-        result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
+        result = prime * result + ((name == null) ? 0 : name.hashCode());
         result = prime * result + ((mobile == null) ? 0 : mobile.hashCode());
         result = prime * result + ((phone == null) ? 0 : phone.hashCode());
         result = prime * result + ((postCode == null) ? 0 : postCode.hashCode());
@@ -196,23 +184,16 @@ public final class Contact {
         else if (!fax.equals(other.fax)) {
             return false;
         }
-        if (firstName == null) {
-            if (other.firstName != null) {
-                return false;
-            }
-        }
-        else if (!firstName.equals(other.firstName)) {
-            return false;
-        }
+        
         if (id != other.id) {
             return false;
         }
-        if (lastName == null) {
-            if (other.lastName != null) {
+        if (name == null) {
+            if (other.name != null) {
                 return false;
             }
         }
-        else if (!lastName.equals(other.lastName)) {
+        else if (!name.equals(other.name)) {
             return false;
         }
         if (mobile == null) {
