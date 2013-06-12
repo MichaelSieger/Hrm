@@ -16,18 +16,18 @@ public class DaoTest extends AbstractDatabaseTest {
     public void testInsertContactOnlyMandatoryFields() 
             throws ElementNotFoundException, DatabaseException {
         
-        final String lastName = "lastname";
+        final String name = "name";
         final String street = "street";
         final String streetNo = "116a";
         final String postCode = "81272";
         final String city = "city";
         
-        Contact c = new Contact(lastName, street, streetNo, postCode, city);
+        Contact c = new Contact(name, street, streetNo, postCode, city);
 
         ContactDao dao = new ContactDao();
         Contact inserted = dao.insert(c);
         assertTrue("ID is invalid.", inserted.getId() >= 0);
-        assertEquals("Last name set wrong.", lastName, inserted.getLastName());
+        assertEquals("Name set wrong.", name, inserted.getName());
         assertEquals("Street set wrong.", street, inserted.getStreet());
         assertEquals("Street number set wrong.", streetNo, inserted.getStreetNo());
         assertEquals("PostCode set wrong.", postCode, inserted.getPostCode());
@@ -37,7 +37,7 @@ public class DaoTest extends AbstractDatabaseTest {
         Contact requested = dao.findById(inserted.getId());
         
         // Check fields
-        assertEquals("Last name not saved correctly.", lastName, requested.getLastName());
+        assertEquals("Name not saved correctly.", name, requested.getName());
         assertEquals("Street not saved correctly.", street, requested.getStreet());
         assertEquals("Street number not saved correctly.", streetNo, requested.getStreetNo());
         assertEquals("PostCode not saved correctly.", postCode, requested.getPostCode());
@@ -49,7 +49,7 @@ public class DaoTest extends AbstractDatabaseTest {
     
     @Test
     public void testInsertContact() throws ElementNotFoundException, DatabaseException {
-        final String lastName = "lastname";
+        final String name = "name";
         final String street = "street";
         final String streetNo = "116a";
         final String postCode = "81272";
@@ -61,7 +61,7 @@ public class DaoTest extends AbstractDatabaseTest {
         final String mobile = "+49 171 9999999";
         final String email = "name@example.com";
         
-        Contact c = new Contact(lastName, street, streetNo, postCode, city);
+        Contact c = new Contact(name, street, streetNo, postCode, city);
         c.setShortcut(shortcut);
         c.setPhone(phone);
         c.setFax(fax);
@@ -71,7 +71,7 @@ public class DaoTest extends AbstractDatabaseTest {
         ContactDao dao = new ContactDao();
         Contact inserted = dao.insert(c);
         assertTrue("ID is invalid.", inserted.getId() >= 0);
-        assertEquals("Last name set wrong.", lastName, inserted.getLastName());
+        assertEquals("Name set wrong.", name, inserted.getName());
         assertEquals("Street set wrong.", street, inserted.getStreet());
         assertEquals("Street number set wrong.", streetNo, inserted.getStreetNo());
         assertEquals("PostCode set wrong.", postCode, inserted.getPostCode());
@@ -86,7 +86,7 @@ public class DaoTest extends AbstractDatabaseTest {
         Contact requested = dao.findById(inserted.getId());
         
         // Check fields
-        assertEquals("Last name not saved correctly.", lastName, requested.getLastName());
+        assertEquals("Name not saved correctly.", name, requested.getName());
         assertEquals("Street not saved correctly.", street, requested.getStreet());
         assertEquals("Street number not saved correctly.", streetNo, requested.getStreetNo());
         assertEquals("PostCode not saved correctly.", postCode, requested.getPostCode());
