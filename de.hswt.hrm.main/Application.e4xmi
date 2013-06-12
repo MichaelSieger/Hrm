@@ -23,6 +23,9 @@
     <handlers xmi:id="_GX9rsNAjEeK9kIHbeXbCVQ" elementId="de.hswt.hrm.main.handler.partSwitchHandler" contributionURI="bundleclass://de.hswt.hrm.main.ui/de.hswt.hrm.main.ui.handler.PartSwitchHandler" command="_QNkJwNAhEeK9kIHbeXbCVQ"/>
     <trimBars xmi:id="_pBkLsNAdEeK9kIHbeXbCVQ" elementId="de.hswt.hrm.main.trimbar.0" side="Left">
       <children xsi:type="menu:ToolBar" xmi:id="_pz3LUNAdEeK9kIHbeXbCVQ" elementId="de.hswt.hrm.main.partSwitchToolBar" visible="false">
+        <children xsi:type="menu:HandledToolItem" xmi:id="_nUGUkNAuEeK9kIHbeXbCVQ" elementId="de.hswt.hrm.main.toolitem.home" label="Home" iconURI="platform:/plugin/de.hswt.hrm.main/icons/home_32.png" tooltip="Home" command="_QNkJwNAhEeK9kIHbeXbCVQ">
+          <parameters xmi:id="_nUGUkdAuEeK9kIHbeXbCVQ" elementId="de.hswt.hrm.main.switchpart.idinput.home" name="de.hswt.hrm.main.switchpart.idinput" value="de.hswt.hrm.main.ui.main"/>
+        </children>
         <children xsi:type="menu:HandledToolItem" xmi:id="_zMEUANAhEeK9kIHbeXbCVQ" elementId="de.hswt.hrm.main.toolitem.contacts" label="Contacts" iconURI="platform:/plugin/de.hswt.hrm.main/icons/contacts_32.png" tooltip="Contacts" command="_QNkJwNAhEeK9kIHbeXbCVQ">
           <parameters xmi:id="_4I_hANAhEeK9kIHbeXbCVQ" elementId="de.hswt.hrm.main.switchpart.idinput.contacts" name="de.hswt.hrm.main.switchpart.idinput" value="de.hswt.hrm.contact.ui.contacts"/>
         </children>
@@ -35,17 +38,14 @@
         <children xsi:type="menu:HandledToolItem" xmi:id="_jBzY8NAuEeK9kIHbeXbCVQ" elementId="de.hswt.hrm.main.toolitem.catalog" label="Catalog" iconURI="platform:/plugin/de.hswt.hrm.main/icons/catalogs_32.png" tooltip="Catalog" command="_QNkJwNAhEeK9kIHbeXbCVQ">
           <parameters xmi:id="_jBzY8dAuEeK9kIHbeXbCVQ" elementId="de.hswt.hrm.main.switchpart.idinput.home" name="de.hswt.hrm.main.switchpart.idinput" value="de.hswt.hrm.catalog.ui.catalog"/>
         </children>
+        <children xsi:type="menu:HandledToolItem" xmi:id="_mCmQcNAuEeK9kIHbeXbCVQ" elementId="de.hswt.hrm.main.toolitem.overall" label="Overall" iconURI="platform:/plugin/de.hswt.hrm.main/icons/summary_32.png" tooltip="Overall" command="_QNkJwNAhEeK9kIHbeXbCVQ">
+          <parameters xmi:id="_mCmQcdAuEeK9kIHbeXbCVQ" elementId="de.hswt.hrm.main.switchpart.idinput.home" name="de.hswt.hrm.main.switchpart.idinput" value="de.hswt.hrm.evaluation.ui.overall"/>
+        </children>
         <children xsi:type="menu:HandledToolItem" xmi:id="_jbedMNAuEeK9kIHbeXbCVQ" elementId="de.hswt.hrm.main.toolitem.categories" label="Categories" iconURI="platform:/plugin/de.hswt.hrm.main/icons/components_32.png" tooltip="Categories" command="_QNkJwNAhEeK9kIHbeXbCVQ">
           <parameters xmi:id="_jbedMdAuEeK9kIHbeXbCVQ" elementId="de.hswt.hrm.main.switchpart.idinput.home" name="de.hswt.hrm.main.switchpart.idinput" value="de.hswt.hrm.component.ui.category"/>
         </children>
         <children xsi:type="menu:HandledToolItem" xmi:id="_lufBoNAuEeK9kIHbeXbCVQ" elementId="de.hswt.hrm.main.toolitem.inspection" label="Inspection" iconURI="platform:/plugin/de.hswt.hrm.main/icons/reports_32.png" tooltip="Inspection" command="_QNkJwNAhEeK9kIHbeXbCVQ">
           <parameters xmi:id="_lufBodAuEeK9kIHbeXbCVQ" elementId="de.hswt.hrm.main.switchpart.idinput.inspection" name="de.hswt.hrm.main.switchpart.idinput" value="de.hswt.hrm.inspection.ui.inspection"/>
-        </children>
-        <children xsi:type="menu:HandledToolItem" xmi:id="_mCmQcNAuEeK9kIHbeXbCVQ" elementId="de.hswt.hrm.main.toolitem.overall" label="Overall" iconURI="platform:/plugin/de.hswt.hrm.main/icons/summary_32.png" tooltip="Overall" command="_QNkJwNAhEeK9kIHbeXbCVQ">
-          <parameters xmi:id="_mCmQcdAuEeK9kIHbeXbCVQ" elementId="de.hswt.hrm.main.switchpart.idinput.home" name="de.hswt.hrm.main.switchpart.idinput" value="de.hswt.hrm.evaluation.ui.overall"/>
-        </children>
-        <children xsi:type="menu:HandledToolItem" xmi:id="_nUGUkNAuEeK9kIHbeXbCVQ" elementId="de.hswt.hrm.main.toolitem.home" label="Home" iconURI="platform:/plugin/de.hswt.hrm.main/icons/home_32.png" tooltip="Home" command="_QNkJwNAhEeK9kIHbeXbCVQ">
-          <parameters xmi:id="_nUGUkdAuEeK9kIHbeXbCVQ" elementId="de.hswt.hrm.main.switchpart.idinput.home" name="de.hswt.hrm.main.switchpart.idinput" value="de.hswt.hrm.main.ui.main"/>
         </children>
       </children>
     </trimBars>
