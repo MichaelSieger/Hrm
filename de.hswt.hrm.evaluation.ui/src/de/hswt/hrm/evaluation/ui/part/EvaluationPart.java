@@ -191,7 +191,7 @@ public class EvaluationPart {
 
         // Create columns in tableviewer
         TableViewerController<Evaluation> filler = new TableViewerController<>(tableViewer);
-        // filler.createColumns(columns);
+         filler.createColumns(columns);
 
         // Enable column selection
         filler.createColumnSelectionMenu();
