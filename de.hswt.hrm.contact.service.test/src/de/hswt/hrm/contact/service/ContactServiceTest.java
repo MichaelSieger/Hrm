@@ -20,8 +20,7 @@ import de.hswt.hrm.test.database.AbstractDatabaseTest;
 public class ContactServiceTest extends AbstractDatabaseTest {
 
     private void compareContactFields(final Contact expected, final Contact actual) {
-        assertEquals("LastName not set correctly.", expected.getLastName(), actual.getLastName());
-        assertEquals("FirstName not set correctly.", expected.getFirstName(), actual.getFirstName());
+        assertEquals("Name not set correctly.", expected.getName(), actual.getName());
         assertEquals("Street not set correctly.", expected.getStreet(), actual.getStreet());
         assertEquals("StreetNo not set correctly.", expected.getStreetNo(), actual.getStreetNo());
         assertEquals("PostCode not set correctly.", expected.getPostCode(), actual.getPostCode());
@@ -47,8 +46,8 @@ public class ContactServiceTest extends AbstractDatabaseTest {
 
     @Test
     public void testFindAll() throws DatabaseException, SQLException {
-        Contact con1 = new Contact("Sarpei", "Hans", "Some Street", "15", "81934", "Nowhere");
-        Contact con2 = new Contact("Wiesel", "Rolf", "Something Avenue", "192", "TX-9921", "Texas");
+        Contact con1 = new Contact("Sarpei Hans", "Some Street", "15", "81934", "Nowhere");
+        Contact con2 = new Contact("Wiesel Rolf", "Something Avenue", "192", "TX-9921", "Texas");
 
         ContactService service = createInjectedContactService();
         service.insert(con1);
@@ -60,7 +59,7 @@ public class ContactServiceTest extends AbstractDatabaseTest {
 
     @Test
     public void testFindById() throws DatabaseException, SQLException {
-        Contact expected = new Contact("Sarpei", "Hans", "Some Street", "15", "81934", "Nowhere");
+        Contact expected = new Contact("Sarpei Hans", "Some Street", "15", "81934", "Nowhere");
         ContactService service = createInjectedContactService();
         Contact parsed = service.insert(expected);
 
@@ -70,7 +69,7 @@ public class ContactServiceTest extends AbstractDatabaseTest {
 
     @Test
     public void testInsertComplete() throws DatabaseException, SQLException {
-        Contact expected = new Contact("Sarpei", "Hans", "Some Street", "15", "81934", "Nowhere");
+        Contact expected = new Contact("Sarpei Hans", "Some Street", "15", "81934", "Nowhere");
         expected.setPhone("+1 555 1234896");
         expected.setFax("+1 555 5646315");
         expected.setMobile("+1 555 6879464");
@@ -91,13 +90,13 @@ public class ContactServiceTest extends AbstractDatabaseTest {
 
     @Test
     public void testUpdate() throws DatabaseException, SQLException {
-        Contact expected = new Contact("Sarpei", "Hans", "Some Street", "15", "81934", "Nowhere");
+        Contact expected = new Contact("Sarpei Hans", "Some Street", "15", "81934", "Nowhere");
         ContactService service = createInjectedContactService();
 
         Contact parsed = service.insert(expected);
 
         // We add another contact to ensure that the update affects just one row.
-        Contact con2 = new Contact("Other", "Some", "Some Street", "15", "81934", "Nowhere");
+        Contact con2 = new Contact("Other Some", "Some Street", "15", "81934", "Nowhere");
         service.insert(con2);
 
         parsed.setCity("Some City");
