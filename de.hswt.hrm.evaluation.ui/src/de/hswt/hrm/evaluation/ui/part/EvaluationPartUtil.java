@@ -1,6 +1,7 @@
 package de.hswt.hrm.evaluation.ui.part;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 
@@ -16,7 +17,7 @@ import de.hswt.hrm.evaluation.model.Evaluation;
 public class EvaluationPartUtil {
 
     public static Optional<Evaluation> showWizard(IEclipseContext context, Shell activeShell,
-            Optional<Evaluation> absent) {
+            Optional<Evaluation> absent, Collection<Evaluation> evaluations) {
 
         return null;
     }

@@ -8,7 +8,6 @@ import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
-import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -67,6 +66,8 @@ public class EvaluationPart {
     private Section headerSection;
     private Composite composite;
 
+    private Collection<Evaluation> evaluations;
+
     public EvaluationPart() {
         // toolkit can be created in PostConstruct, but then then
         // WindowBuilder is unable to parse the code
@@ -123,7 +124,7 @@ public class EvaluationPart {
         tableViewer = new TableViewer(composite, SWT.BORDER | SWT.FULL_SELECTION);
         tableViewer.addDoubleClickListener(new IDoubleClickListener() {
             public void doubleClick(DoubleClickEvent event) {
-                editContact();
+                editEvaluation();
             }
         });
         table = tableViewer.getTable();
@@ -148,7 +149,7 @@ public class EvaluationPart {
                 @Override
                 public void run() {
                     super.run();
-                    editContact();
+                    editEvaluation();
                 }
             };
             editAction.setDescription("Edit an exisitng Evaluation.");
@@ -158,7 +159,7 @@ public class EvaluationPart {
                 @Override
                 public void run() {
                     super.run();
-                    addContact();
+                    addEvaluation();
                 }
             };
             addAction.setDescription("Add's a new Evaluation.");
@@ -172,13 +173,10 @@ public class EvaluationPart {
         }
     }
 
-    @Focus
-    public void setFocus() {
-    }
-
     private void refreshTable() {
         try {
-            tableViewer.setInput(evalService.findAll());
+            this.evaluations = evalService.findAll();
+            tableViewer.setInput(this.evaluations);
         }
         catch (DatabaseException e) {
             LOG.error("Unable to retrieve list of Evaluations.", e);
@@ -191,7 +189,7 @@ public class EvaluationPart {
 
         // Create columns in tableviewer
         TableViewerController<Evaluation> filler = new TableViewerController<>(tableViewer);
-         filler.createColumns(columns);
+        filler.createColumns(columns);
 
         // Enable column selection
         filler.createColumnSelectionMenu();
@@ -224,16 +222,15 @@ public class EvaluationPart {
      * 
      * @param event
      */
-    @SuppressWarnings("unchecked")
-    private void addContact() {
+
+    private void addEvaluation() {
         Evaluation eval = null;
 
         Optional<Evaluation> newEval = EvaluationPartUtil.showWizard(context,
-                shellProvider.getShell(), Optional.fromNullable(eval));
+                shellProvider.getShell(), Optional.fromNullable(eval), evaluations);
 
-        Collection<Evaluation> contacs = (Collection<Evaluation>) tableViewer.getInput();
         if (newEval.isPresent()) {
-            contacs.add(newEval.get());
+            evaluations.add(newEval.get());
             tableViewer.refresh();
         }
     }
@@ -246,7 +243,7 @@ public class EvaluationPart {
      * @param event
      *            Event which occured within SWT
      */
-    private void editContact() {
+    private void editEvaluation() {
         // obtain the contact in the column where the doubleClick happend
         Evaluation selectedEval = (Evaluation) tableViewer.getElementAt(tableViewer.getTable()
                 .getSelectionIndex());
@@ -256,7 +253,7 @@ public class EvaluationPart {
         try {
             evalService.refresh(selectedEval);
             Optional<Evaluation> updatedPlace = EvaluationPartUtil.showWizard(context,
-                    shellProvider.getShell(), Optional.of(selectedEval));
+                    shellProvider.getShell(), Optional.of(selectedEval), evaluations);
 
             if (updatedPlace.isPresent()) {
                 tableViewer.refresh();

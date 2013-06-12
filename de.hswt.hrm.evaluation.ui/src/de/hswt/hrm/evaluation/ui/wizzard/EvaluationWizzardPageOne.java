@@ -1,8 +1,7 @@
 package de.hswt.hrm.evaluation.ui.wizzard;
 
 import java.net.URL;
-
-import javax.inject.Inject;
+import java.util.Collection;
 
 import org.eclipse.e4.xwt.IConstants;
 import org.eclipse.e4.xwt.XWT;
@@ -21,18 +20,20 @@ import de.hswt.hrm.common.ui.swt.layouts.PageContainerFillLayout;
 import de.hswt.hrm.evaluation.model.Evaluation;
 
 public class EvaluationWizzardPageOne extends WizardPage {
-    
+
     private Optional<Evaluation> eval;
     private Composite container;
     private Text nameText;
     private Text descText;
-    private String name;
+    private Collection<Evaluation> evaluations;
 
     private static final Logger LOG = LoggerFactory.getLogger(EvaluationWizzardPageOne.class);
 
-    public EvaluationWizzardPageOne(String title, Optional<Evaluation> eval) {
+    public EvaluationWizzardPageOne(String title, Optional<Evaluation> eval,
+            Collection<Evaluation> evaluations) {
         super(title);
         this.eval = eval;
+        this.evaluations = evaluations;
         setDescription(createDescription());
 
     }
@@ -61,7 +62,7 @@ public class EvaluationWizzardPageOne extends WizardPage {
         descText = (Text) XWT.findElementByName(container, "desc");
 
         if (this.eval.isPresent()) {
-            updateFields(container);
+            updateFields();
         }
 
         nameText.addKeyListener(new KeyListener() {
@@ -78,15 +79,34 @@ public class EvaluationWizzardPageOne extends WizardPage {
 
     }
 
-    private void updateFields(Composite container2) {
-        // TODO Auto-generated method stub
-
+    private void updateFields() {
+        Evaluation e = eval.get();
+        nameText.setText(e.getText());
+        descText.setText(e.getText());
     }
 
     private void checkPageComplete() {
 
         setErrorMessage(null);
-        name = nameText.getText();
+        if (isAlreadyPresent(nameText.getText())) {
+            setErrorMessage("An Evaluation with name " + nameText.getText() + "is already present");
+        }
+
+    }
+
+    private boolean isAlreadyPresent(String text) {
+
+        boolean present = false;
+
+        if (text == null | text.isEmpty()) {
+            present = true;
+        }
+        for (Evaluation e : evaluations) {
+            if (e.getName().equals(text)) {
+                present = true;
+            }
+        }
+        return present;
 
     }
 
