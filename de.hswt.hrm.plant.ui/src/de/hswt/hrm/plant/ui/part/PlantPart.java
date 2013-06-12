@@ -180,10 +180,13 @@ public class PlantPart {
         schemeTab = new TabItem(tabFolder, SWT.NONE);
         schemeTab.setText("Scheme");
 
-        // TODO add scheme part here
-
         MPart scheme = service.findPart("de.hswt.hrm.scheme.ui.scheme");
-        System.out.println(scheme);
+        if (scheme == null) {
+            System.out.println("scheme is null");
+        }
+        System.out.println(scheme.getContext());
+
+        // TODO add scheme part here
 
         URL url = SchemePart.class.getClassLoader().getResource(
                 "de/hswt/hrm/scheme/ui/part/SchemePart" + IConstants.XWT_EXTENSION_SUFFIX);
