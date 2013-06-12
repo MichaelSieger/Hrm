@@ -27,8 +27,7 @@ public class SystemOverviewParser {
     public String parse(String templ, Contact contactCustomer, Contact contactContractor,
             Contact conctactController, Plant plant, Place place) {
         String template = templ;
-        template.replace(CUSTOMER,
-                contactCustomer.getFirstName() + " " + contactCustomer.getLastName());
+        template.replace(CUSTOMER, contactCustomer.getName() + " " + contactCustomer.getName());
         template.replace(CUSTOMER_STREET,
                 contactCustomer.getStreet() + " " + contactCustomer.getStreetNo());
         template.replace(CUSTOMER_CITY,
@@ -36,16 +35,16 @@ public class SystemOverviewParser {
         template.replace(CUSTOMER_OBJECT, place.getPlaceName());
         template.replace(OBJECT_STREET, place.getStreet() + " " + place.getStreetNo());
         template.replace(OBJECT_NUMBER, place.getPostCode() + " " + place.getCity());
-        template.replace(CONTRACTOR_NAME, contactContractor.getFirstName() + " "
-                + contactContractor.getLastName());
+        template.replace(CONTRACTOR_NAME,
+                contactContractor.getName() + " " + contactContractor.getName());
         template.replace(CONTRACTOR_STREET,
                 contactContractor.getStreet() + " " + contactContractor.getStreetNo());
         template.replace(CONTRACTOR_CITY,
                 contactContractor.getPostCode() + " " + contactContractor.getCity());
-        template.replace(CONTROLLER_NAME, conctactController.getFirstName() + " "
-                + conctactController.getLastName());
+        template.replace(CONTROLLER_NAME,
+                conctactController.getName() + " " + conctactController.getName());
         template.replace(CONTROLLER_STREET, conctactController.getStreet() + " "
-                + conctactController.getLastName());
+                + conctactController.getName());
         template.replace(CONTROLLER_CITY, conctactController.getPostCode() + " "
                 + conctactController.getCity());
         template.replace(PLANT, plant.getDescription());
