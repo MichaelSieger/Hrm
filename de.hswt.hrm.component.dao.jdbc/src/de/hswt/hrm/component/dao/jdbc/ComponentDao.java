@@ -2,6 +2,7 @@ package de.hswt.hrm.component.dao.jdbc;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkState;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -208,6 +209,10 @@ public class ComponentDao implements IComponentDao {
      */
     @Override
     public Component insert(Component component) throws SaveException {
+    	checkNotNull(component, "Component must not be null.");
+    	checkState(component.getCategory().isPresent(), "Component must have a valid category set.");
+    	checkState(component.getCategory().get().getId() >= 0, "Component must have a valid category set.");
+    	
         SqlQueryBuilder builder = new SqlQueryBuilder();
         builder.insert(TABLE_NAME,Fields.NAME, Fields.SYMBOL_LR, Fields.SYMBOL_RL,
                 Fields.SYMBOL_UD, Fields.SYMBOL_DU, Fields.QUANTIFIER, Fields.BOOL_RATING,
