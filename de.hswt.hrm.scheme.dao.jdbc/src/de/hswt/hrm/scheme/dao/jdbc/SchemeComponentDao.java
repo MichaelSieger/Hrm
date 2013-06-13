@@ -80,10 +80,12 @@ public class SchemeComponentDao implements ISchemeComponentDao {
     }
 
     @Override
-    public void insertComponent(Scheme scheme, SchemeComponent component) {
+    public void addComponentToScheme(Scheme scheme, SchemeComponent component) {
         component.setScheme(scheme);
         insertSchemeIfNecessary(component);
         insertComponentIfNecessary(component);
+        
+        // FIXME add cross table entry
     }
 
     @Override

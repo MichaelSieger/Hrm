@@ -56,7 +56,7 @@ public class SchemeService {
 	    
 	    // Add all components
 	    for (SchemeComponent comp : components) {
-	        schemeComponentDao.insertComponent(scheme, comp);
+	        schemeComponentDao.addComponentToScheme(scheme, comp);
 	    }
 	}
 	

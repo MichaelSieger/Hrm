@@ -15,7 +15,7 @@ public interface ISchemeComponentDao {
     Collection<SchemeComponent> findAllComponentByScheme(final Scheme scheme)
             throws DatabaseException;
     
-    void insertComponent(final Scheme scheme, final SchemeComponent component);
+    void addComponentToScheme(final Scheme scheme, final SchemeComponent component);
     
     /**
      * @return All SchemeComponents from storage.
