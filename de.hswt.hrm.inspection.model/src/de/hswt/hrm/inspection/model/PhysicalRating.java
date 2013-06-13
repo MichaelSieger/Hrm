@@ -14,7 +14,7 @@ public class PhysicalRating {
     private String rating;
     private String note;
     private Component component;
-    private Inspection report;
+    private Inspection inspection;
 
     private static final String NO_IMAGE_ERROR = "All Images are null";
     private static final String IS_MANDATORY = "Field is a mandatory.";
@@ -56,12 +56,12 @@ public class PhysicalRating {
     }
 
     public Optional<Inspection> getReport() {
-        return Optional.fromNullable(report);
+        return Optional.fromNullable(inspection);
     }
 
     public void setReport(Inspection report) {
         checkNotNull(report);
-        this.report = report;
+        this.inspection = report;
     }
 
     public int getId() {
@@ -76,7 +76,7 @@ public class PhysicalRating {
         result = prime * result + id;
         result = prime * result + ((note == null) ? 0 : note.hashCode());
         result = prime * result + ((rating == null) ? 0 : rating.hashCode());
-        result = prime * result + ((report == null) ? 0 : report.hashCode());
+        result = prime * result + ((inspection == null) ? 0 : inspection.hashCode());
         return result;
     }
 
@@ -119,12 +119,12 @@ public class PhysicalRating {
         else if (!rating.equals(other.rating)) {
             return false;
         }
-        if (report == null) {
-            if (other.report != null) {
+        if (inspection == null) {
+            if (other.inspection != null) {
                 return false;
             }
         }
-        else if (!report.equals(other.report)) {
+        else if (!inspection.equals(other.inspection)) {
             return false;
         }
         return true;
