@@ -8,6 +8,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -22,6 +25,7 @@ import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.ElementNotFoundException;
 import de.hswt.hrm.common.database.exception.SaveException;
 import de.hswt.hrm.component.dao.core.IComponentDao;
+import de.hswt.hrm.component.model.Attribute;
 import de.hswt.hrm.component.model.Component;
 import de.hswt.hrm.scheme.dao.core.ISchemeComponentDao;
 import de.hswt.hrm.scheme.dao.core.ISchemeDao;
@@ -245,6 +249,53 @@ public class SchemeComponentDao implements ISchemeComponentDao {
         }
     }
     
+    @Override
+    public Map<Attribute, String> findAttributesOfSchemeComponent(SchemeComponent schemeComponent)
+    		throws DatabaseException {
+    	
+    	checkNotNull(schemeComponent, "SchemeComponent must not be null.");
+    	checkArgument(schemeComponent.getId() >= 0, "SchemeComponent must have a valid ID.");
+    	
+    	SqlQueryBuilder builder = new SqlQueryBuilder();
+    	builder.select(ATTR_CROSS_TABLE_NAME, 
+    			AttrCrossFields.FK_COMPONENT, 
+    			AttrCrossFields.FK_ATTRIBUTE,
+    			AttrCrossFields.VALUE);
+    	builder.where(AttrCrossFields.FK_COMPONENT);
+    	
+    	String query = builder.toString();
+    	
+    	try (Connection con = DatabaseFactory.getConnection()) {
+    		try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
+    			stmt.setParameter(AttrCrossFields.FK_COMPONENT, schemeComponent.getId());
+    			
+    			ResultSet rs = stmt.executeQuery();
+
+    			Map<Attribute, String> attrValues = new HashMap<>();
+    			while (rs.next()) {
+    				int attributeId = rs.getInt(AttrCrossFields.FK_ATTRIBUTE);
+    				String value = rs.getString(AttrCrossFields.VALUE);
+    				
+    				Attribute attr = null;
+    				try {
+    					attr = componentDao.findAttributeById(attributeId);
+    				}
+    				catch (ElementNotFoundException | IllegalArgumentException e) {
+    					throw new DatabaseException("Invalid attribute ID resolved.");
+    				}
+    				
+    				attrValues.put(attr, value);
+    			}
+    			
+    			DbUtils.closeQuietly(rs);
+    			return Collections.unmodifiableMap(attrValues);
+    		}
+    	}
+    	catch (SQLException e) {
+    		throw new DatabaseException("Unknown error.", e);
+    	}
+    }
+    
     private void insertSchemeIfNecessary(final SchemeComponent schemeComponent) {
         throw new RuntimeException();
     }
@@ -284,6 +335,7 @@ public class SchemeComponentDao implements ISchemeComponentDao {
     }
 
     private static final String TABLE_NAME = "Scheme_Component";
+    private static final String ATTR_CROSS_TABLE_NAME = "Scheme_Component_Attribute";
 
     private static class Fields {
         public static final String ID = "Scheme_Component_ID";
@@ -293,6 +345,12 @@ public class SchemeComponentDao implements ISchemeComponentDao {
         public static final String Y_POS = "Scheme_Component_Y_Position";
         public static final String DIRECTION = "Scheme_Component_Direction";
 
+    }
+    
+    private static class AttrCrossFields {
+    	public static final String FK_COMPONENT = "Scheme_Component_Attribute_Component_FK";
+    	public static final String FK_ATTRIBUTE = "Scheme_Component_Attribute_Attribute_FK";
+    	public static final String VALUE = "Scheme_Component_Attribute_Value";
     }
 
 }

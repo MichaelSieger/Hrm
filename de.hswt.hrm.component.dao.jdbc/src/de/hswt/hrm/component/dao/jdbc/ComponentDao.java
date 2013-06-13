@@ -123,6 +123,9 @@ public class ComponentDao implements IComponentDao {
     			return attributes.iterator().next();
     		}
     	}
+    	catch (SQLException e) {
+    		throw new DatabaseException("Unknown error.", e);
+    	}
     }
     
     @Override

@@ -1,10 +1,12 @@
 package de.hswt.hrm.scheme.dao.core;
 
 import java.util.Collection;
+import java.util.Map;
 
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.ElementNotFoundException;
 import de.hswt.hrm.common.database.exception.SaveException;
+import de.hswt.hrm.component.model.Attribute;
 import de.hswt.hrm.scheme.model.Scheme;
 import de.hswt.hrm.scheme.model.SchemeComponent;
 
@@ -26,6 +28,16 @@ public interface ISchemeComponentDao {
      * @throws ElementNotFoundException If the given id is not present in storage.
      */
     SchemeComponent findById(int id) throws DatabaseException, ElementNotFoundException;
+    
+    /**
+     * Returns a map of all attributes and their values for the given scheme component.
+     * 
+     * @param schemeComponent
+     * @return
+     * @throws DatabaseException 
+     */
+    Map<Attribute, String> findAttributesOfSchemeComponent(SchemeComponent schemeComponent) 
+    		throws DatabaseException;
     
     /**
      * Add a new SchemeComponent to storage.
