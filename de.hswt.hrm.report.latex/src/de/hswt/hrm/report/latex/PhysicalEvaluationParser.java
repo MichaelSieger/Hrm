@@ -16,7 +16,7 @@ public class PhysicalEvaluationParser {
         StringBuffer buffer = new StringBuffer();
         buffer.append(inspection.parse(path, ratings));
         buffer.append(param.parse(path));
-        buffer.append(overAll.parse());
+        buffer.append(overAll.parse(path.toString(), inspection, param));
         return buffer.toString();
     }
 

@@ -6,8 +6,6 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import de.hswt.hrm.inspection.model.PhysicalRating;
-
 public class PhysicalParameterParser {
 
     /*
@@ -33,9 +31,9 @@ public class PhysicalParameterParser {
     private Path path;
     private String endTarget;
     private String rows;
-    private int sumQuantifier;
-    private int sumRatings;
-    private int totalGrade;
+    private float sumQuantifier;
+    private float sumRatings;
+    private float totalGrade;
 
     // private final String = "::";
 
@@ -83,8 +81,8 @@ public class PhysicalParameterParser {
 
         // TODO when model ready
         // uncomment the following two lines
-        // this.sumRatings += report.getTempRating().toInt();
-        // this.sumRatings += report.getHumidityRating().toInt();
+        // this.sumRatings += report.getTempRating().tofloat();
+        // this.sumRatings += report.getHumidityRating().tofloat();
         // this.sumQuantifier += report.getTempQuantifier();
         // this.sumQuantifier += report.getHumidityQuantifier();
 
@@ -94,8 +92,9 @@ public class PhysicalParameterParser {
         preTarget.replace(VALUE, "report.getAirTemperature()");
         preTarget.replace(PARAM_GRADE, "report.getTempRating()");
         preTarget.replace(PARAM_WHEIGHTING, "report.getTempQuantifier()");
-        preTarget.replace(PARAM_RATING,
-                "String.valueOf(report.getTempRating().toInt()*report.getQuantifier().toInt())");
+        preTarget
+                .replace(PARAM_RATING,
+                        "String.valueOf(report.getTempRating().tofloat()*report.getQuantifier().tofloat())");
         preTarget.replace(PARAM_COMMENT, "report.getTempComment");
         target.append(preTarget);
 
@@ -116,7 +115,7 @@ public class PhysicalParameterParser {
     /*
      * returns the totalGrade, calculated from the components.
      */
-    public int getTotalGrade(Path path) throws IOException {
+    public float getTotalGrade(Path path) throws IOException {
         this.path = path;
         this.parseRow();
         this.parseTable();

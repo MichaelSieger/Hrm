@@ -11,7 +11,7 @@ import de.hswt.hrm.inspection.model.PhysicalRating;
 
 public class PhysicalInspectionParser {
 
-    private final String INSPECTOIN_SAMPLE_POINT = ":physicalInspectionSamplingPoint:";
+    private final String INSPECTOIN_SAMPLE_POfloat = ":physicalInspectionSamplingPofloat:";
     private final String GRADE = ":physicalInspectionGrade:";
     private final String WHEIGHTING = ":physicalInspectionWheighting:";
     private final String RATING = ":physicalInspectionRating";
@@ -22,9 +22,9 @@ public class PhysicalInspectionParser {
     private final String RATING_AV = ":physicalInspectionRatingAverage:";
 
     private String endTarget;
-    private int sumRatings;
-    private int sumQuantifier;
-    private int totalGrade;
+    private float sumRatings;
+    private float sumQuantifier;
+    private float totalGrade;
 
     private Path path;
     private Collection<PhysicalRating> ratings;
@@ -76,16 +76,16 @@ public class PhysicalInspectionParser {
         for (PhysicalRating rating : this.ratings) {
             // TODO when model ready
             // uncomment the following two lines
-            // this.sumRatings += rating.getRating().toInt();
+            // this.sumRatings += rating.getRating().tofloat();
             // this.sumQuantifier += rating.getComponent().getQuantifier();
             // - un-String the calls below..
             preTarget = buffer.toString();
-            preTarget.replace(INSPECTOIN_SAMPLE_POINT, "rating.getComponent().getName()");
+            preTarget.replace(INSPECTOIN_SAMPLE_POfloat, "rating.getComponent().getName()");
             preTarget.replace(GRADE, "rating.getRating()");
             preTarget.replace(WHEIGHTING, "rating.getComponent().getQuantifier()");
             preTarget
                     .replace(RATING,
-                            "String.valueOf(rating.getRating().toInt()*rating.getComponent().getQuantifier().toInt())");
+                            "String.valueOf(rating.getRating().tofloat()*rating.getComponent().getQuantifier().tofloat())");
             preTarget.replace(COMMENT, "rating.getComment()");
             target.append(preTarget);
         }
@@ -96,7 +96,7 @@ public class PhysicalInspectionParser {
     /*
      * returns the totalGrade, calculated from the components.
      */
-    public int getTotalGrade(Path path) throws IOException {
+    public float getTotalGrade(Path path) throws IOException {
         this.path = path;
         this.parseRow();
         this.parseTable();
