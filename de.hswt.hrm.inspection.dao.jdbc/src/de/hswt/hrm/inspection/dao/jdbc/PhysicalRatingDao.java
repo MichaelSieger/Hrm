@@ -9,29 +9,33 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import javax.inject.Inject;
+
+import com.google.common.base.Optional;
+
 import de.hswt.hrm.common.database.DatabaseFactory;
 import de.hswt.hrm.common.database.NamedParameterStatement;
 import de.hswt.hrm.common.database.SqlQueryBuilder;
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.ElementNotFoundException;
 import de.hswt.hrm.common.database.exception.SaveException;
-import de.hswt.hrm.common.exception.NotImplementedException;
 import de.hswt.hrm.component.dao.core.IComponentDao;
-import de.hswt.hrm.component.model.Component;
+import de.hswt.hrm.inspection.dao.core.IInspectionDao;
 import de.hswt.hrm.inspection.dao.core.IPhysicalRatingDao;
-import de.hswt.hrm.inspection.model.BiologicalRating;
 import de.hswt.hrm.inspection.model.Inspection;
 import de.hswt.hrm.inspection.model.PhysicalRating;
-import de.hswt.hrm.scheme.model.Scheme;
 
 public class PhysicalRatingDao implements IPhysicalRatingDao {
-
+	private final IInspectionDao inspectionDao;
     private final IComponentDao componentDao;
 
     // TODO: add LOG messages
-    public PhysicalRatingDao(final IComponentDao componentDao) {
-        checkNotNull(componentDao, "ComponentDao not properly injected to PhysicalRatingDao.");
+    @Inject
+    public PhysicalRatingDao(final IInspectionDao inspectionDao, final IComponentDao componentDao) {
+    	checkNotNull(inspectionDao, "Inspectiondao not properly injected to PhysicalRatingDao");
+    	checkNotNull(componentDao, "ComponentDao not properly injected to PhysicalRatingDao.");
 
+        this.inspectionDao = inspectionDao;
         this.componentDao = componentDao;
     }
 
@@ -47,7 +51,7 @@ public class PhysicalRatingDao implements IPhysicalRatingDao {
             try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
 
                 ResultSet rs = stmt.executeQuery();
-                Collection<PhysicalRating> ratings = fromResultSet(rs);
+                Collection<PhysicalRating> ratings = fromResultSet(rs, Optional.<Inspection>absent());
                 rs.close();
 
                 return ratings;
@@ -75,7 +79,7 @@ public class PhysicalRatingDao implements IPhysicalRatingDao {
                 stmt.setParameter(Fields.ID, id);
 
                 ResultSet rs = stmt.executeQuery();
-                Collection<PhysicalRating> ratings = fromResultSet(rs);
+                Collection<PhysicalRating> ratings = fromResultSet(rs, Optional.<Inspection>absent());
                 rs.close();
 
                 if (ratings.isEmpty()) {
@@ -191,7 +195,7 @@ public class PhysicalRatingDao implements IPhysicalRatingDao {
                 stmt.setParameter(Fields.REPORT_FK, inspection.getId());
 
                 ResultSet rs = stmt.executeQuery();
-                Collection<PhysicalRating> ratings = fromResultSet(rs);
+                Collection<PhysicalRating> ratings = fromResultSet(rs, Optional.of(inspection));
                 rs.close();
                 return ratings;
             }
@@ -201,9 +205,20 @@ public class PhysicalRatingDao implements IPhysicalRatingDao {
         }
     }
 
-    private Collection<PhysicalRating> fromResultSet(final ResultSet rs) {
-        // FIXME Add component here
-
+    /**
+     * 
+     * @param rs
+     * @param inspection Optional field which can be used to avoid loading an
+     * 				     already present inspection.
+     * @return
+     * @throws SQLException
+     * @throws ElementNotFoundException
+     * @throws DatabaseException
+     */
+    private Collection<PhysicalRating> fromResultSet(final ResultSet rs, 
+    		Optional<Inspection> inspection) 
+    				throws SQLException, ElementNotFoundException, DatabaseException {
+    	
         checkNotNull(rs, "Result must not be null.");
         Collection<PhysicalRating> physicalRatingList = new ArrayList<>();
 
@@ -212,13 +227,19 @@ public class PhysicalRatingDao implements IPhysicalRatingDao {
             int rating = rs.getInt(Fields.RATING);
             String note = rs.getString(Fields.NOTE);
             PhysicalRating physicalRating = new PhysicalRating(id, rating, note);
-            physicalRating.setReport(InspectionDao.findById(rs.getInt(Fields.REPORT_FK)));
-            physicalRating.setComponent(ComponentDao.findById(rs.getInt(Fields.COMPONENT_FK)));
+            physicalRating.setComponent(componentDao.findById(rs.getInt(Fields.COMPONENT_FK)));
             physicalRatingList.add(physicalRating);
+            
+            int inspectionId = rs.getInt(Fields.REPORT_FK);
+            
+            // If we don't have the inspection or it doesn't match -> retrieve it
+            if (!inspection.isPresent() || inspection.get().getId() != inspectionId) {
+            	inspection = Optional.of(inspectionDao.findById(inspectionId));
+            }
+            physicalRating.setReport(inspection.get());            
         }
 
         return physicalRatingList;
-
     }
 
     private static final String TABLE_NAME = "Component_Physical_Rating";
