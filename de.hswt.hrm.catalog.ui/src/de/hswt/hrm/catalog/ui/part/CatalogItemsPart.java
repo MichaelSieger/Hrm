@@ -72,16 +72,25 @@ public class CatalogItemsPart extends Composite {
 	private CatalogTextFilter searchFilter = new CatalogTextFilter();
 
 	private CatalogSelectionFilter selectionFilter = new CatalogSelectionFilter();
-	
+
 	/**
 	 * Create the composite.
 	 * 
 	 * @param parent
 	 * @param style
 	 */
+	public CatalogItemsPart(Composite parent, int style) {
+		super(parent, style);
+		createControls();
+	}
+
+	/**
+	 * Create the composite.
+	 * 
+	 * @param parent
+	 */
 	public CatalogItemsPart(Composite parent) {
 		super(parent, SWT.NONE);
-
 	}
 
 	@PostConstruct

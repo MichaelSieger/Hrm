@@ -100,6 +100,15 @@ public class ReportsOverviewComposite extends Composite {
 		table = tableViewer.getTable();
 		toolkit.paintBordersFor(table);
 		table.setLayoutData(LayoutUtil.createFillData());
+		
+		// data for table
+		// report title
+		// inspection date
+		// next inspection date
+		// only names of customer, requester, controller
+		// name of plant
+		
+		// to add a new report only request only the name of the report
 	}
 	
 	private void refreshTable() {
