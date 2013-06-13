@@ -28,9 +28,9 @@ public interface IPhysicalRatingDao {
 
     /**
      * @param scheme
-     * @return All physical ratings for the given report.
+     * @return All physical ratings for the given Inspection.
      */
-    Collection<PhysicalRating> findByReport(final Inspection report);
+    Collection<PhysicalRating> findByInspection(final Inspection inspection);
     
     /**
      * Add a new physical rating to storage.
