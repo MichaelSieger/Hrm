@@ -209,7 +209,7 @@ public class PhysicalRatingDao implements IPhysicalRatingDao {
 
         while (rs.next()) {
             int id = rs.getInt(Fields.ID);
-            String rating = rs.getString(Fields.RATING);
+            int rating = rs.getInt(Fields.RATING);
             String note = rs.getString(Fields.NOTE);
             PhysicalRating physicalRating = new PhysicalRating(id, rating, note);
             physicalRating.setReport(InspectionDao.findById(rs.getInt(Fields.REPORT_FK)));
