@@ -5,4 +5,16 @@ Bundle-SymbolicName: de.hswt.hrm.scheme.service.test
 Bundle-Version: 0.0.1.qualifier
 Fragment-Host: de.hswt.hrm.scheme.service;bundle-version="0.0.1"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Require-Bundle: org.junit;bundle-version="4.10.0"
+Require-Bundle: org.junit;bundle-version="4.10.0",
+ de.hswt.hrm.mockito;bundle-version="0.0.1",
+ de.hswt.hrm.test;bundle-version="0.0.1"
+Import-Package: de.hswt.hrm.catalog.dao.core,
+ de.hswt.hrm.component.dao.core,
+ de.hswt.hrm.component.dao.jdbc,
+ de.hswt.hrm.component.model,
+ de.hswt.hrm.place.dao.core,
+ de.hswt.hrm.place.dao.jdbc,
+ de.hswt.hrm.place.model,
+ de.hswt.hrm.plant.dao.core,
+ de.hswt.hrm.plant.dao.jdbc,
+ de.hswt.hrm.plant.model

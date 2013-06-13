@@ -18,10 +18,6 @@ public class Scheme {
         this(-1, plant, null);
 	}
     
-    public Scheme(final int id) {
-        this.id = id;
-    }
-    
     @SuppressWarnings("unchecked")
     public Scheme(final int id, final Plant plant, final Timestamp timestamp){
         this(id, plant, timestamp, Collections.EMPTY_LIST);
