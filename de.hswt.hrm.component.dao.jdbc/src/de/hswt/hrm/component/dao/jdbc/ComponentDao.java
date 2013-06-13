@@ -13,6 +13,8 @@ import java.util.Collection;
 import javax.inject.Inject;
 
 import org.apache.commons.dbutils.DbUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import de.hswt.hrm.common.database.DatabaseFactory;
 import de.hswt.hrm.common.database.NamedParameterStatement;
@@ -26,12 +28,15 @@ import de.hswt.hrm.component.model.Attribute;
 import de.hswt.hrm.component.model.Component;
 
 public class ComponentDao implements IComponentDao {
-    
+	private final static Logger LOG = LoggerFactory.getLogger(ComponentDao.class);    
     private final ICategoryDao categoryDao;
     
     @Inject
     public ComponentDao(ICategoryDao categoryDao){
+    	checkNotNull(categoryDao, "CategoryDao not properly injected to ComponentDao.");
+    	
         this.categoryDao = categoryDao;
+        LOG.debug("CategoryDao injected into ComponentDao.");
     }
 
     @Override
@@ -110,17 +115,28 @@ public class ComponentDao implements IComponentDao {
     			stmt.setParameter(AttributeFields.ID, id);
     			
     			ResultSet rs = stmt.executeQuery();
-    			Collection<Attribute> attributes = fromAttributeResultSet(rs);
+    			rs.next();
+	            String name = rs.getString(AttributeFields.NAME);
+	            int componentId = rs.getInt(AttributeFields.FK_COMPONENT);
+	            
+	            Component component = null;
+	            try {
+	            	component = findById(componentId);
+	            }
+	            catch (ElementNotFoundException e) {
+	            	String msg = String.format("Attribute '%d' has an invalid component ID (%d) as FK.",
+        					id, componentId);
+	            	LOG.error(msg, e);
+	            	throw new DatabaseException("Invalid component retrieved in attribute row!");
+	            }
+	            
+	            if (rs.next()) {
+	            	throw new DatabaseException("ID not unique.");
+	            }
+    			
     			DbUtils.closeQuietly(rs);
     			
-    			if (attributes.isEmpty()) {
-    				throw new ElementNotFoundException();
-    			}
-    			else if(attributes.size() > 1) {
-    				throw new DatabaseException("ID is not unique.");
-    			}
-    			
-    			return attributes.iterator().next();
+    			return new Attribute(id, name, component);
     		}
     	}
     	catch (SQLException e) {
@@ -146,7 +162,7 @@ public class ComponentDao implements IComponentDao {
                 stmt.setParameter(AttributeFields.FK_COMPONENT, component.getId());
                 ResultSet result = stmt.executeQuery();
 
-                Collection<Attribute> attributes = fromAttributeResultSet(result);
+                Collection<Attribute> attributes = fromAttributeResultSet(result, component);
                 DbUtils.closeQuietly(result);
 
                 return attributes;
@@ -305,7 +321,7 @@ public class ComponentDao implements IComponentDao {
                         int id = generatedKeys.getInt(1);
 
                         // Create new Component with id
-                        Attribute attribute = new Attribute(id, attributeName);
+                        Attribute attribute = new Attribute(id, attributeName, component);
                         return attribute;
                     }
                     else {
@@ -378,8 +394,8 @@ public class ComponentDao implements IComponentDao {
         return componentList;
     }
     
-    private Collection<Attribute> fromAttributeResultSet(final ResultSet rs) 
-    		throws SQLException, DatabaseException {
+    private Collection<Attribute> fromAttributeResultSet(final ResultSet rs,
+    		final Component component) throws SQLException, DatabaseException {
     	
         checkNotNull(rs, "ResultSet must not be null.");
         Collection<Attribute> attributeList = new ArrayList<>();
@@ -388,7 +404,7 @@ public class ComponentDao implements IComponentDao {
             int id = rs.getInt(AttributeFields.ID);
             String name = rs.getString(AttributeFields.NAME);
             
-            Attribute attribute = new Attribute(id, name);
+            Attribute attribute = new Attribute(id, name, component);
             attributeList.add(attribute);
         }
 

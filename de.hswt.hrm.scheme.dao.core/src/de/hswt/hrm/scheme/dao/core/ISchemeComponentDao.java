@@ -15,8 +15,6 @@ public interface ISchemeComponentDao {
     Collection<SchemeComponent> findAllComponentByScheme(final Scheme scheme)
             throws DatabaseException;
     
-    void addComponentToScheme(final Scheme scheme, final SchemeComponent component);
-    
     /**
      * @return All SchemeComponents from storage.
      */
@@ -40,20 +38,36 @@ public interface ISchemeComponentDao {
     		throws DatabaseException;
     
     /**
-     * Add a new SchemeComponent to storage.
+     * Set a value for an attribute of the given scheme component.
+     * 
+     * @param component
+     * @param attribute
+     * @param value
+     * @throws DatabaseException
+     * @throws IllegalStateException If the attribute does not belong to the component.
+     */
+    void setAttributeValue(SchemeComponent component, Attribute attribute, String value)
+    		throws DatabaseException;
+    
+    /**
+     * Add a new SchemeComponent to storage. The scheme and component this 
+     * SchemeComponent belongs to has to be in the database already.
      * 
      * @param schemeComponent SchemeComponent that should be stored.
      * @return Newly generated schemeComponent (also holding the correct id).
      * @throws SaveException If the schemeComponent could not be inserted.
+     * @throws IllegalStateException If scheme or component have an invalid ID.
      */
     SchemeComponent insert(SchemeComponent schemeComponent) throws SaveException;
     
     /**
-     * Update an existing schemeComponent in storage.
+     * Update an existing schemeComponent in storage. The scheme and component this 
+     * SchemeComponent belongs to has to be in the database already.
      * 
      * @param schemeComponent SchemeComponent that should be updated.
      * @throws ElementNotFoundException If the given schemeComponent is not present in the database.
      * @throws SaveException If the schemeComponent could not be updated.
+     * @throws IllegalStateException If scheme or component have an invalid ID.
      */
     void update(SchemeComponent schemeComponent) throws ElementNotFoundException, SaveException;
 }

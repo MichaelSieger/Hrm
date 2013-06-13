@@ -2,6 +2,7 @@ package de.hswt.hrm.scheme.dao.jdbc;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkState;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -80,15 +81,6 @@ public class SchemeComponentDao implements ISchemeComponentDao {
     }
 
     @Override
-    public void addComponentToScheme(Scheme scheme, SchemeComponent component) {
-        component.setScheme(scheme);
-        insertSchemeIfNecessary(component);
-        insertComponentIfNecessary(component);
-        
-        // FIXME add cross table entry
-    }
-
-    @Override
     public Collection<SchemeComponent> findAll() throws DatabaseException {
         SqlQueryBuilder builder = new SqlQueryBuilder();
         builder.select(TABLE_NAME, Fields.ID, Fields.SCHEME, Fields.COMPONENT, Fields.X_POS,
@@ -147,12 +139,14 @@ public class SchemeComponentDao implements ISchemeComponentDao {
 
     @Override
     public SchemeComponent insert(SchemeComponent schemeComponent) throws SaveException {
-        if (schemeComponent.getId() >= 0) {
+        checkNotNull(schemeComponent, "SchemeComponent must not be null.");
+    	if (schemeComponent.getId() >= 0) {
             throw new IllegalStateException("SchemeComponent has already a valid ID.");
         }
         
-        insertSchemeIfNecessary(schemeComponent);
-        insertComponentIfNecessary(schemeComponent);
+    	checkState(schemeComponent.getScheme().isPresent(), "SchemeComponent must belong to a scheme.");
+    	checkState(schemeComponent.getScheme().get().getId() >= 0, "Scheme must have a valid ID.");
+    	checkState(schemeComponent.getComponent().getId() >= 0, "Component must have a valid ID.");
         
         SqlQueryBuilder builder = new SqlQueryBuilder();
         builder.insert(TABLE_NAME, Fields.COMPONENT, Fields.SCHEME, Fields.X_POS, Fields.Y_POS,
@@ -215,8 +209,9 @@ public class SchemeComponentDao implements ISchemeComponentDao {
             throw new ElementNotFoundException("Element has no valid ID.");
         }
         
-        insertSchemeIfNecessary(schemeComponent);
-        insertComponentIfNecessary(schemeComponent);
+        checkState(schemeComponent.getScheme().isPresent(), "SchemeComponent must belong to a scheme.");
+    	checkState(schemeComponent.getScheme().get().getId() >= 0, "Scheme must have a valid ID.");
+    	checkState(schemeComponent.getComponent().getId() >= 0, "Component must have a valid ID.");
 
         SqlQueryBuilder builder = new SqlQueryBuilder();
         builder.update(TABLE_NAME, Fields.SCHEME, Fields.COMPONENT, Fields.X_POS,
@@ -298,14 +293,42 @@ public class SchemeComponentDao implements ISchemeComponentDao {
     	}
     }
     
-    private void insertSchemeIfNecessary(final SchemeComponent schemeComponent) {
-        throw new RuntimeException();
+    @Override
+    public void setAttributeValue(SchemeComponent comp, Attribute attribute, String value)
+    		throws DatabaseException {
+    	
+    	checkArgument(comp.getId() >= 0, "SchemeComponent must have a valid ID.");
+    	checkArgument(attribute.getId() >= 0, "Attribute must have a valid ID.");
+    	
+    	// Check if attribute belongs to the component
+    	if (attribute.getComponent().getId() != comp.getComponent().getId()) {
+    		throw new IllegalStateException("The given attribute does not belong to the component.");
+    	}
+    	
+    	SqlQueryBuilder builder = new SqlQueryBuilder();
+    	builder.insert(ATTR_CROSS_TABLE_NAME, 
+    			AttrCrossFields.FK_COMPONENT, 
+    			AttrCrossFields.FK_ATTRIBUTE, 
+    			AttrCrossFields.VALUE);
+    	
+    	String query = builder.toString();
+    	
+    	try (Connection con = DatabaseFactory.getConnection()) {
+    		try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
+    			stmt.setParameter(AttrCrossFields.FK_COMPONENT, comp.getId());
+    			stmt.setParameter(AttrCrossFields.FK_ATTRIBUTE, attribute.getId());
+    			
+    			int affected = stmt.executeUpdate();
+    			if (affected != 1) {
+    				throw new SaveException();
+    			}
+    		}
+    	}
+    	catch (SQLException e) {
+    		throw new DatabaseException("Unknown error.", e);
+    	}
     }
     
-    private void insertComponentIfNecessary(final SchemeComponent schemeComponent) {
-        throw new RuntimeException();
-    }
-
     private Collection<SchemeComponent> fromResultSet(ResultSet rs) throws SQLException, ElementNotFoundException, DatabaseException {
         checkNotNull(rs, "Result must not be null.");
         Collection<SchemeComponent> schemeComponentList = new ArrayList<>();
