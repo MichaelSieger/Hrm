@@ -8,6 +8,7 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 
+import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
@@ -51,7 +52,7 @@ import de.hswt.hrm.common.ui.swt.table.TableViewerController;
 import de.hswt.hrm.plant.model.Plant;
 import de.hswt.hrm.plant.service.PlantService;
 import de.hswt.hrm.plant.ui.filter.PlantFilter;
-import de.hswt.hrm.scheme.ui.part.SchemePart;
+import de.hswt.hrm.scheme.ui.part.SchemeComposite;
 
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
@@ -92,6 +93,8 @@ public class PlantPart {
 
     private Form form;
 
+	private SchemeComposite schemeComposite;
+
     public PlantPart() {
         // toolkit can be created in PostConstruct, but then then
         // WindowBuilder is unable to parse the code
@@ -128,10 +131,12 @@ public class PlantPart {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 if (tabFolder.getItem(tabFolder.getSelectionIndex()).equals(plantsTab)) {
-                    showPlantActions(true);
-                }
-                else {
-                    showPlantActions(false);
+                    showPlantActions();
+                } else if (tabFolder.getItem(tabFolder.getSelectionIndex()).equals(schemeTab)) {
+                	showSchemeActions();
+                } else {
+                	hideAllActions();
+                	form.getToolBarManager().update(true);
                 }
             }
         });
@@ -180,27 +185,34 @@ public class PlantPart {
         schemeTab = new TabItem(tabFolder, SWT.NONE);
         schemeTab.setText("Scheme");
 
-        MPart scheme = service.findPart("de.hswt.hrm.scheme.ui.scheme");
-        if (scheme == null) {
-            System.out.println("scheme is null");
-        }
-        System.out.println(scheme.getContext());
+//        MPart scheme = service.findPart("de.hswt.hrm.scheme.ui.scheme");
+//        if (scheme == null) {
+//            System.out.println("scheme is null");
+//        }
+//        System.out.println(scheme.getContext());
+//
+//        // TODO add scheme part here
+//
+//        URL url = SchemePart.class.getClassLoader().getResource(
+//                "de/hswt/hrm/scheme/ui/part/SchemePart" + IConstants.XWT_EXTENSION_SUFFIX);
+//
+//        Composite c;
+//
+//        try {
+//            c = (Composite) XWT.load(tabFolder, url);
+//            schemeTab.setControl(c);
+//
+//        }
+//        catch (Exception e1) {
+//            // TODO Auto-generated catch block
+//            e1.printStackTrace();
+//        }
 
-        // TODO add scheme part here
-
-        URL url = SchemePart.class.getClassLoader().getResource(
-                "de/hswt/hrm/scheme/ui/part/SchemePart" + IConstants.XWT_EXTENSION_SUFFIX);
-
-        Composite c;
-
-        try {
-            c = (Composite) XWT.load(tabFolder, url);
-            schemeTab.setControl(c);
-
-        }
-        catch (Exception e1) {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
+        schemeComposite = new SchemeComposite(tabFolder);
+        ContextInjectionFactory.inject(schemeComposite, context);
+        schemeTab.setControl(schemeComposite);
+    	for (IContributionItem item : schemeComposite.getContributionItems()) {
+    		form.getToolBarManager().add(item);
         }
 
         initializeTable();
@@ -249,13 +261,31 @@ public class PlantPart {
         form.getToolBarManager().update(true);
     }
 
-    private void showPlantActions(boolean show) {
-        addContribution.setVisible(show);
-        editContribution.setVisible(show);
-        editSchemeContribution.setVisible(show);
+    private void showSchemeActions() {
+    	hideAllActions();
+    	for (IContributionItem item : schemeComposite.getContributionItems()) {
+        	item.setVisible(true);
+        }
+        form.getToolBarManager().update(true);
+    }
+    
+    private void showPlantActions() {
+    	hideAllActions();
+        addContribution.setVisible(true);
+        editContribution.setVisible(true);
+        editSchemeContribution.setVisible(true);
         form.getToolBarManager().update(true);
     }
 
+    private void hideAllActions() {
+        addContribution.setVisible(false);
+        editContribution.setVisible(false);
+        editSchemeContribution.setVisible(false);
+        for (IContributionItem item : schemeComposite.getContributionItems()) {
+        	item.setVisible(false);
+        }
+    }
+    
     @PreDestroy
     public void dispose() {
         if (toolkit != null) {

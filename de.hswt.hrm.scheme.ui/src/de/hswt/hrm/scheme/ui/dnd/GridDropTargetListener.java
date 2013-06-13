@@ -12,7 +12,7 @@ import de.hswt.hrm.scheme.model.RenderedComponent;
 import de.hswt.hrm.scheme.ui.PlaceOccupiedException;
 import de.hswt.hrm.scheme.ui.SchemeGrid;
 import de.hswt.hrm.scheme.ui.SchemeGridItem;
-import de.hswt.hrm.scheme.ui.part.SchemePart;
+import de.hswt.hrm.scheme.ui.part.SchemeComposite;
 
 /**
  * Handles the drop in the SchemeGrid
@@ -24,13 +24,13 @@ public class GridDropTargetListener implements DropTargetListener {
 
 	private final SchemeGrid grid;
 	private final List<RenderedComponent> comps;
-	private final SchemePart part;
+	private final SchemeComposite composite;
 
-	public GridDropTargetListener(SchemeGrid grid, List<RenderedComponent> comps, SchemePart part) {
+	public GridDropTargetListener(SchemeGrid grid, List<RenderedComponent> comps, SchemeComposite schemeCompositeNew) {
 		super();
 		this.grid = grid;
 		this.comps = comps;
-		this.part = part;
+		this.composite = schemeCompositeNew;
 	}
 
 	@Override
@@ -62,7 +62,7 @@ public class GridDropTargetListener implements DropTargetListener {
 
 	@Override
 	public void dragOver(DropTargetEvent ev) {
-		DragData data = part.getDraggingItem();
+		DragData data = composite.getDraggingItem();
 		if(data != null){
 			SchemeGridItem item = data.toSchemeGridItem(comps);
 			final Point org = grid.toDisplay(0, 0);
