@@ -168,16 +168,6 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `Attribute`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `Attribute` (
-  `Attribute_ID` INT NOT NULL AUTO_INCREMENT ,
-  `Attribute_Name` VARCHAR(255) NULL ,
-  PRIMARY KEY (`Attribute_ID`) )
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
 -- Table `Component`
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `Component` (
@@ -190,14 +180,12 @@ CREATE  TABLE IF NOT EXISTS `Component` (
   `Component_Quantifier` INT NULL ,
   `Component_Category_FK` INT NULL ,
   `Component_Bool_Rating` TINYINT(1) NULL ,
-  `Component_Attribute_FK` INT NULL ,
   PRIMARY KEY (`Component_ID`) ,
   INDEX `Component_Category_FK` (`Component_Category_FK` ASC) ,
   INDEX `Component_Symbol_LR_FK` (`Component_Symbol_LR_FK` ASC) ,
   INDEX `Component_Symbol_RL_FK` (`Component_Symbol_RL_FK` ASC) ,
   INDEX `Component_Symbol_UD_FK` (`Component_Symbol_UD_FK` ASC) ,
   INDEX `Component_Symbol_DU_FK` (`Component_Symbol_DU_FK` ASC) ,
-  INDEX `Component_Attribute_FK` (`Component_Attribute_FK` ASC) ,
   CONSTRAINT `Component_Category_FK`
     FOREIGN KEY (`Component_Category_FK` )
     REFERENCES `Category` (`Category_ID` )
@@ -221,11 +209,6 @@ CREATE  TABLE IF NOT EXISTS `Component` (
   CONSTRAINT `Component_Symbol_DU_FK`
     FOREIGN KEY (`Component_Symbol_DU_FK` )
     REFERENCES `Component_Picture` (`Component_Picture_ID` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `Component_Attribute_FK`
-    FOREIGN KEY (`Component_Attribute_FK` )
-    REFERENCES `Attribute` (`Attribute_ID` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -569,6 +552,23 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
+-- Table `Attribute`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `Attribute` (
+  `Attribute_ID` INT NOT NULL AUTO_INCREMENT ,
+  `Attribute_Name` VARCHAR(255) NULL ,
+  `Attribute_Component_FK` INT NULL ,
+  PRIMARY KEY (`Attribute_ID`) ,
+  INDEX `Attribute_Component_FK` (`Attribute_Component_FK` ASC) ,
+  CONSTRAINT `Attribute_Component_FK`
+    FOREIGN KEY (`Attribute_Component_FK` )
+    REFERENCES `Component` (`Component_ID` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
 -- Table `Scheme_Component_Attribute`
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `Scheme_Component_Attribute` (
@@ -600,3 +600,4 @@ CREATE  TABLE IF NOT EXISTS `Summary` (
   `Summary_Text` TEXT NULL ,
   PRIMARY KEY (`Summary_ID`) )
 ENGINE = InnoDB;
+
