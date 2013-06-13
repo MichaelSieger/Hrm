@@ -110,7 +110,7 @@ public class PhysicalRatingDao implements IPhysicalRatingDao {
                 stmt.setParameter(Fields.RATING, physicalRating.getRating());
                 stmt.setParameter(Fields.NOTE, physicalRating.getNote());
                 stmt.setParameter(Fields.COMPONENT_FK, physicalRating.getComponent().get().getId());
-                stmt.setParameter(Fields.REPORT_FK, physicalRating.getReport().get().getId());
+                stmt.setParameter(Fields.REPORT_FK, physicalRating.getInspection().get().getId());
 
                 int affectedRows = stmt.executeUpdate();
                 if (affectedRows != 1) {
@@ -121,12 +121,12 @@ public class PhysicalRatingDao implements IPhysicalRatingDao {
                     if (generatedKeys.next()) {
                         int id = generatedKeys.getInt(1);
 
-                        // Create new Place with id
+                        // Create new Physical Rating with id
                         PhysicalRating inserted = new PhysicalRating(id,
                                 physicalRating.getRating(), physicalRating.getNote());
 
                         inserted.setComponent(physicalRating.getComponent().orNull());
-                        inserted.setReport(physicalRating.getReport().orNull());
+                        inserted.setInspection(physicalRating.getInspection().orNull());
 
                         return inserted;
                     }
@@ -163,7 +163,7 @@ public class PhysicalRatingDao implements IPhysicalRatingDao {
                 stmt.setParameter(Fields.RATING, physicalRating.getRating());
                 stmt.setParameter(Fields.NOTE, physicalRating.getNote());
                 stmt.setParameter(Fields.COMPONENT_FK, physicalRating.getComponent().get().getId());
-                stmt.setParameter(Fields.REPORT_FK, physicalRating.getReport().get().getId());
+                stmt.setParameter(Fields.REPORT_FK, physicalRating.getInspection().get().getId());
 
                 int affectedRows = stmt.executeUpdate();
                 if (affectedRows != 1) {
@@ -236,7 +236,7 @@ public class PhysicalRatingDao implements IPhysicalRatingDao {
             if (!inspection.isPresent() || inspection.get().getId() != inspectionId) {
             	inspection = Optional.of(inspectionDao.findById(inspectionId));
             }
-            physicalRating.setReport(inspection.get());            
+            physicalRating.setInspection(inspection.get());            
         }
 
         return physicalRatingList;
