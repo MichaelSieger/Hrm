@@ -45,6 +45,7 @@ import org.slf4j.LoggerFactory;
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
 
+import de.hswt.hrm.common.database.exception.ElementNotFoundException;
 import de.hswt.hrm.common.database.exception.SaveException;
 import de.hswt.hrm.common.ui.swt.constants.SearchFieldConstants;
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
@@ -458,7 +459,7 @@ public class SchemeComposite extends Composite {
 								});
 				try {
 					schemeService.insert(plant, schemeComps);
-				} catch (SaveException e1) {
+				} catch (SaveException|ElementNotFoundException e1) {
 					// TODO translate
 					MessageDialog.openError(shellProvider.getShell(),
 							"Fehler beim Speichern",
