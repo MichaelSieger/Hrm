@@ -5,59 +5,70 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 
+import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
+import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.Shell;
 
 import com.google.common.base.Optional;
 
 import de.hswt.hrm.common.ui.swt.table.ColumnDescription;
+import de.hswt.hrm.common.ui.swt.wizards.WizardCreator;
 import de.hswt.hrm.evaluation.model.Evaluation;
+import de.hswt.hrm.evaluation.ui.wizzard.EvaluationWizzard;
 
 public class EvaluationPartUtil {
 
-    public static Optional<Evaluation> showWizard(IEclipseContext context, Shell activeShell,
-            Optional<Evaluation> absent, Collection<Evaluation> evaluations) {
+	public static Optional<Evaluation> showWizard(IEclipseContext context,
+			Shell activeShell, Optional<Evaluation> absent,
+			Collection<Evaluation> evaluations) {
 
-        return null;
-    }
+		EvaluationWizzard ew = new EvaluationWizzard(absent, evaluations);
+		ContextInjectionFactory.inject(ew, context);
 
-    public static List<ColumnDescription<Evaluation>> getColumns() {
-        List<ColumnDescription<Evaluation>> columns = new ArrayList<>();
+		WizardDialog wd = WizardCreator.createWizardDialog(activeShell, ew);
+		wd.open();
+		return null;
 
-        columns.add(getNameColumn());
-        columns.add(getTextColumn());
+	}
 
-        return columns;
-    }
+	public static List<ColumnDescription<Evaluation>> getColumns() {
+		List<ColumnDescription<Evaluation>> columns = new ArrayList<>();
 
-    private static ColumnDescription<Evaluation> getNameColumn() {
-        return new ColumnDescription<>("Name", new ColumnLabelProvider() {
-            @Override
-            public String getText(Object element) {
-                Evaluation e = (Evaluation) element;
-                return e.getName();
-            }
-        }, new Comparator<Evaluation>() {
-            @Override
-            public int compare(Evaluation e1, Evaluation e2) {
-                return e1.getName().compareToIgnoreCase(e2.getName());
-            }
-        });
-    }
+		columns.add(getNameColumn());
+		columns.add(getTextColumn());
 
-    private static ColumnDescription<Evaluation> getTextColumn() {
-        return new ColumnDescription<>("Text", new ColumnLabelProvider() {
-            @Override
-            public String getText(Object element) {
-                Evaluation e = (Evaluation) element;
-                return e.getText();
-            }
-        }, new Comparator<Evaluation>() {
-            @Override
-            public int compare(Evaluation e1, Evaluation e2) {
-                return e1.getText().compareToIgnoreCase(e2.getText());
-            }
-        });
-    }
+		return columns;
+	}
+
+	private static ColumnDescription<Evaluation> getNameColumn() {
+		return new ColumnDescription<>("Name", new ColumnLabelProvider() {
+			@Override
+			public String getText(Object element) {
+				Evaluation e = (Evaluation) element;
+				return e.getName();
+			}
+		}, new Comparator<Evaluation>() {
+			@Override
+			public int compare(Evaluation e1, Evaluation e2) {
+				return e1.getName().compareToIgnoreCase(e2.getName());
+			}
+		});
+	}
+
+	private static ColumnDescription<Evaluation> getTextColumn() {
+		return new ColumnDescription<>("Text", new ColumnLabelProvider() {
+			@Override
+			public String getText(Object element) {
+				Evaluation e = (Evaluation) element;
+				return e.getText();
+			}
+		}, new Comparator<Evaluation>() {
+			@Override
+			public int compare(Evaluation e1, Evaluation e2) {
+				return e1.getText().compareToIgnoreCase(e2.getText());
+			}
+		});
+	}
 }

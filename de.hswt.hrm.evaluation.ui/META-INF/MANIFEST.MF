@@ -4,23 +4,23 @@ Bundle-Name: Ui
 Bundle-SymbolicName: de.hswt.hrm.evaluation.ui
 Bundle-Version: 0.0.1.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Require-Bundle: org.eclipse.swt;bundle-version="3.100.1",
- org.eclipse.e4.core.contexts;bundle-version="1.2.0",
+Require-Bundle: javax.inject,
  org.eclipse.e4.xwt;bundle-version="0.9.1",
- org.eclipse.e4.xwt.forms;bundle-version="0.9.1",
- ch.qos.logback.classic;bundle-version="1.0.0",
- ch.qos.logback.core;bundle-version="1.0.0",
- org.slf4j.api;bundle-version="1.6.4",
  org.eclipse.jface;bundle-version="3.8.102",
- com.google.guava;bundle-version="10.0.1",
- javax.inject;bundle-version="1.0.0",
+ org.slf4j.api;bundle-version="1.6.4",
+ org.eclipse.e4.xwt.forms;bundle-version="0.9.1",
  org.eclipse.ui.forms;bundle-version="3.5.200",
- org.eclipse.e4.ui.di;bundle-version="0.10.1"
+ com.google.guava;bundle-version="10.0.1",
+ org.eclipse.e4.core.contexts;bundle-version="1.2.0",
+ de.hswt.hrm.commons.validator;bundle-version="0.0.1",
+ org.eclipse.e4.ui.di;bundle-version="0.10.1",
+ org.eclipse.e4.core.di;bundle-version="1.2.0"
 Import-Package: de.hswt.hrm.common.database.exception,
  de.hswt.hrm.common.ui.swt.constants,
  de.hswt.hrm.common.ui.swt.forms,
  de.hswt.hrm.common.ui.swt.layouts,
  de.hswt.hrm.common.ui.swt.table,
+ de.hswt.hrm.common.ui.swt.wizards,
  de.hswt.hrm.common.ui.xwt,
  de.hswt.hrm.evaluation.model,
  de.hswt.hrm.evaluation.service
