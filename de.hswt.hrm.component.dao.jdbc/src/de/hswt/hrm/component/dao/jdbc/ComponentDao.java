@@ -4,6 +4,7 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -21,6 +22,7 @@ import de.hswt.hrm.common.database.exception.ElementNotFoundException;
 import de.hswt.hrm.common.database.exception.SaveException;
 import de.hswt.hrm.component.dao.core.ICategoryDao;
 import de.hswt.hrm.component.dao.core.IComponentDao;
+import de.hswt.hrm.component.model.Attribute;
 import de.hswt.hrm.component.model.Component;
 
 public class ComponentDao implements IComponentDao {
@@ -90,7 +92,67 @@ public class ComponentDao implements IComponentDao {
             throw new DatabaseException(e);
         }
     }
+    
+    @Override
+    public Collection<Attribute> findAttributesByComponent(Component component) 
+    		throws DatabaseException {
+    	
+    	checkNotNull(component, "Component must not be null.");
+        checkArgument(component.getId() >= 0, "Component must have a valid ID.");
 
+        SqlQueryBuilder builder = new SqlQueryBuilder();
+        builder.select(ATTRIBUTE_TABLE_NAME, AttributeFields.ID, AttributeFields.NAME);
+        builder.where(AttributeFields.FK_COMPONENT);
+
+        final String query = builder.toString();
+
+        try (Connection con = DatabaseFactory.getConnection()) {
+            try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
+                stmt.setParameter(AttributeFields.FK_COMPONENT, component.getId());
+                ResultSet result = stmt.executeQuery();
+
+                Collection<Attribute> attributes = fromAttributeResultSet(result);
+                DbUtils.closeQuietly(result);
+
+                return attributes;
+            }
+        }
+        catch (SQLException e) {
+            throw new DatabaseException(e);
+        }
+    }
+
+    @Override
+    public Collection<String> findAttributeNames() throws DatabaseException {
+
+    	StringBuilder builder = new StringBuilder();
+    	builder.append("SELECT DISTINCT ");
+    	builder.append(AttributeFields.NAME);
+    	builder.append(" FROM ").append(ATTRIBUTE_TABLE_NAME).append(";");
+    	
+        final String query = builder.toString();
+
+        try (Connection con = DatabaseFactory.getConnection()) {
+            try (PreparedStatement stmt = con.prepareStatement(query)) {
+            	
+                ResultSet rs = stmt.executeQuery();
+
+                Collection<String> names = new ArrayList<>();
+                while (rs.next()) {
+                    String name = rs.getString(AttributeFields.NAME);
+                    names.add(name);
+                }
+
+                DbUtils.closeQuietly(rs);
+
+                return names;
+            }
+        }
+        catch (SQLException e) {
+            throw new DatabaseException(e);
+        }
+    }
+    
     /**
      * @see {@link IComponentDao#insert(Component)}
      */
@@ -204,6 +266,23 @@ public class ComponentDao implements IComponentDao {
         return componentList;
     }
     
+    private Collection<Attribute> fromAttributeResultSet(final ResultSet rs) 
+    		throws SQLException, DatabaseException {
+    	
+        checkNotNull(rs, "ResultSet must not be null.");
+        Collection<Attribute> attributeList = new ArrayList<>();
+
+        while (rs.next()) {
+            int id = rs.getInt(AttributeFields.ID);
+            String name = rs.getString(AttributeFields.NAME);
+            
+            Attribute attribute = new Attribute(id, name);
+            attributeList.add(attribute);
+        }
+
+        return attributeList;
+    }
+    
     public byte[] findBlob(int id) throws DatabaseException{
         if(id <= 0){
             return null;
@@ -232,6 +311,7 @@ public class ComponentDao implements IComponentDao {
 
     private static final String TABLE_NAME = "Component";
     private static final String BLOB_TABLE_NAME = "Component_Picture";
+    private static final String ATTRIBUTE_TABLE_NAME = "Attribute";
 
     private static class Fields {
         public static final String ID = "Component_ID";
@@ -249,5 +329,11 @@ public class ComponentDao implements IComponentDao {
         public static final String ID = "Component_Picture_ID";
         public static final String FILENAME = "Component_Picture_Filename";
         public static final String BLOB = "Component_Picture_Blob";
+    }
+    
+    private static class AttributeFields {
+    	public static final String ID = "Attribute_ID";
+    	public static final String NAME = "Attribute_Name";
+    	public static final String FK_COMPONENT = "Attribute_Component_FK";
     }
 }

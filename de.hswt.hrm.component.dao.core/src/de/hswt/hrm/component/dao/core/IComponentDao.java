@@ -5,6 +5,7 @@ import java.util.Collection;
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.ElementNotFoundException;
 import de.hswt.hrm.common.database.exception.SaveException;
+import de.hswt.hrm.component.model.Attribute;
 import de.hswt.hrm.component.model.Component;
 
 /**
@@ -23,6 +24,26 @@ public interface IComponentDao {
      * @throws ElementNotFoundException If the given id is not present in the database.
      */
     Component findById(int id) throws DatabaseException, ElementNotFoundException;
+
+    /**
+     * Returns the list of attributes for a given component.
+     * 
+     * @param component
+     * @return List of attributes for the given component.
+     * @throws DatabaseException
+     */
+	Collection<Attribute> findAttributesByComponent(Component component)
+			throws DatabaseException;
+
+	/**
+	 * Returns a list of all attribute names that were currently added to
+	 * the database (attributes that were added to multiple components are
+	 * just returned once, so there are no duplicates in the result).
+	 * 
+	 * @return Collection of attribute names already used.
+	 * @throws DatabaseException
+	 */
+	Collection<String> findAttributeNames() throws DatabaseException;
     
     /**
      * Add a new component to storage.
