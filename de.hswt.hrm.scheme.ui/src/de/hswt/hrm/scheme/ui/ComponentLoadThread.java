@@ -16,7 +16,7 @@ import de.hswt.hrm.component.model.Component;
 import de.hswt.hrm.component.service.ComponentService;
 import de.hswt.hrm.scheme.model.RenderedComponent;
 import de.hswt.hrm.scheme.service.ComponentConverter;
-import de.hswt.hrm.scheme.ui.part.SchemePart;
+import de.hswt.hrm.scheme.ui.part.SchemeComposite;
 
 /**
  * Loads the Components and renders them. 
@@ -29,14 +29,14 @@ public class ComponentLoadThread extends Thread{
 	
 	private final static Logger LOG = LoggerFactory.getLogger(ComponentLoadThread.class);
 
-	private final SchemePart part;
-	private final ComponentService compService;
+	private final SchemeComposite composite;
+	private final ComponentService componentsService;
 	private final Display display;
 	
-	public ComponentLoadThread(SchemePart part, Display display, ComponentService compService) {
+	public ComponentLoadThread(SchemeComposite schemeCompositeNew, Display display, ComponentService compService) {
 		super();
-		this.part = part;
-		this.compService = compService;
+		this.composite = schemeCompositeNew;
+		this.componentsService = compService;
 		this.display = display;
 	}
 
@@ -44,7 +44,7 @@ public class ComponentLoadThread extends Thread{
 	public void run() {
 		Collection<Component> comp;
 		try {
-			comp = compService.findAll();
+			comp = componentsService.findAll();
 		} catch (DatabaseException e) {
 			throw Throwables.propagate(e);
 		}
@@ -58,19 +58,19 @@ public class ComponentLoadThread extends Thread{
                 catch (IOException e) {
                 	LOG.error("Error on drawing image", e);
                 }
-		        //Always copy the list before passing to the ui thread.
-		        final List<RenderedComponent> rCopy = new ArrayList<>(result);
-		        display.asyncExec(new Runnable() {
-					
-					@Override
-					public void run() {
-						part.setRenderedComponents(rCopy);
-					}
-				});
 		    }else{
 		    	LOG.warn(String.format("The Component %s has no category, and cannot be drawn", c.getName()));
 		    }
 		}
+        //Always copy the list before passing to the ui thread.
+        final List<RenderedComponent> rCopy = new ArrayList<>(result);
+        display.asyncExec(new Runnable() {
+			
+			@Override
+			public void run() {
+				composite.setRenderedComponents(rCopy);
+			}
+		});
 	}
 	
 }

@@ -21,15 +21,15 @@ import de.hswt.hrm.scheme.ui.tree.SchemeTreeItem;
 public class TreeDragListener implements DragSourceListener{
 
     private final TreeViewer tree;
-    private final List<RenderedComponent> comps;
+    private final List<RenderedComponent> components;
     private final SchemeGrid grid;
     
     private DragData dragging;
 
-    public TreeDragListener(TreeViewer tree, List<RenderedComponent> comps, SchemeGrid grid) {
+    public TreeDragListener(TreeViewer tree, List<RenderedComponent> components, SchemeGrid grid) {
         super();
         this.tree = tree;
-        this.comps = comps;
+        this.components = components;
         this.grid = grid;
     }
 
@@ -50,8 +50,11 @@ public class TreeDragListener implements DragSourceListener{
     }
     
     private int getItemIndex(DirectedRenderedComponent dc){
-    	for(int i = 0; i < comps.size(); i++){
-    		if(comps.get(i).getComponent().equals(dc.getComponent())){
+    	if (components == null) {
+    		return -1;
+    	}
+    	for(int i = 0; i < components.size(); i++){
+    		if(components.get(i).getComponent().equals(dc.getComponent())){
     			return i;
     		}
     	}
