@@ -50,13 +50,13 @@ public class PhysicalRating {
         this.component = component;
     }
 
-    public Optional<Inspection> getReport() {
+    public Optional<Inspection> getInspection() {
         return Optional.fromNullable(inspection);
     }
 
-    public void setReport(Inspection report) {
-        checkNotNull(report);
-        this.inspection = report;
+    public void setInspection(Inspection inspection) {
+        checkNotNull(inspection);
+        this.inspection = inspection;
     }
 
     public int getId() {
