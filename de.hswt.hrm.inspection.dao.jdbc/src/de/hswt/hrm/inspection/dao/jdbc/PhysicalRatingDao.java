@@ -33,9 +33,26 @@ public class PhysicalRatingDao implements IPhysicalRatingDao {
 	
 	@Override
 	public Collection<PhysicalRating> findAll() throws DatabaseException {
-		// TODO Auto-generated method stub
-		return null;
-	}
+        SqlQueryBuilder builder = new SqlQueryBuilder();
+        builder.select(TABLE_NAME, Fields.ID, Fields.RATING, Fields.NOTE, Fields.COMPONENT_FK,
+                Fields.REPORT_FK);
+
+        String query = builder.toString();
+
+        try (Connection con = DatabaseFactory.getConnection()) {
+            try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
+
+                ResultSet rs = stmt.executeQuery();
+                Collection<PhysicalRating> ratings = fromResultSet(rs);
+                rs.close();
+
+                return ratings;
+            }
+        }
+        catch (SQLException e) {
+            throw new DatabaseException("Unexpected error.", e);
+        }
+    }
 
 	@Override
 	public PhysicalRating findById(int id) throws DatabaseException,
