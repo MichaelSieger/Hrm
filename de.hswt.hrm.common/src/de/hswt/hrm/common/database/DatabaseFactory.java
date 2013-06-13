@@ -91,50 +91,72 @@ public final class DatabaseFactory {
      * @throws SQLException
      * @throws IllegalStateException If there is already a transaction running.
      */
-    public static void startTransaction() throws DatabaseException, SQLException {
+    public static void startTransaction() throws DatabaseException {
         if (currentConnection != null) {
             throw new IllegalStateException("There is already a transaction running.");
         }
         
         currentConnection = getConnection();
-        currentConnection.setAutoCommit(false);
+        try {
+        	currentConnection.setAutoCommit(false);
+        	LOG.debug("Transaction started (" + currentConnection + ").");
+        }
+    	catch (SQLException e) {
+    		throw new DatabaseException("Unable to set autocommit to false.", e);
+    	}
     }
     
     /**
      * Commit the currently running transaction.
      * <p><b>You should then close the connection you have retrieved before!</b></p>
      * 
-     * @throws SQLException
+     * @throws DatabaseException
      * @throws IllegalStateException If there is no transaction running, or the connection of the
      *                               current transaction is already closed.
      */
-    public static void commitTransaction() throws SQLException {
-        if (currentConnection == null || currentConnection.isClosed()) {
-            throw new IllegalArgumentException("There was no transaction started, or the"
-                    + " connection is already closed.");
-        }
-        
-        currentConnection.commit();
-        currentConnection.setAutoCommit(true);
-        currentConnection = null;
+    public static void commitTransaction() throws DatabaseException {
+    	try {
+	        if (currentConnection == null || currentConnection.isClosed()) {
+	            throw new IllegalArgumentException("There was no transaction started, or the"
+	                    + " connection is already closed.");
+	        }
+	        
+	        currentConnection.commit();
+	        currentConnection.setAutoCommit(true);
+	        currentConnection = null;
+	        LOG.debug("Transaction commited (" + currentConnection + ").");
+    	}
+    	catch (SQLException e) {
+    		LOG.error("Unable to commit transaction (" + currentConnection + ").");
+    		throw new DatabaseException("Unable to commit the transaction.", e);
+    	}
+    	finally {
+    		currentConnection = null;
+    	}
     }
     
     /**
      * Rollback the currently running transaction.
      * <p><b>You should then close the connection you have retrieved before!</b></p>
      * 
-     * @throws SQLException
      * @throws IllegalStateException If there is no transaction running, or the connection of the
      *                               current transaction is already closed.
      */
-    public static void rollbackTransaction() throws SQLException {
-        if (currentConnection == null || currentConnection.isClosed()) {
-            throw new IllegalArgumentException("There was no transaction started, or the"
-                    + " connection is already closed.");
-        }
-        
-        currentConnection.rollback();
-        currentConnection.setAutoCommit(true);
+    public static void rollbackTransaction() {
+    	try {
+	        if (currentConnection == null || currentConnection.isClosed()) {
+	            throw new IllegalArgumentException("There was no transaction started, or the"
+	                    + " connection is already closed.");
+	        }
+	        
+	        currentConnection.rollback();
+	        currentConnection.setAutoCommit(true);
+    	}
+    	catch (SQLException e) {
+    		// We cannot do anything here, but we also don't want to throw an exception
+    		LOG.error("Unable to rollback transaction (" + currentConnection + ").");
+    	}
+    	
         currentConnection = null;
     }
 }
