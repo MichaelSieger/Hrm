@@ -26,6 +26,15 @@ public interface IComponentDao {
     Component findById(int id) throws DatabaseException, ElementNotFoundException;
 
     /**
+     * @param id
+     * @return The attribute with the given ID.
+     * @throws ElementNotFoundException
+     * @throws DatabaseException
+     */
+	Attribute findAttributeById(int id) throws ElementNotFoundException,
+			DatabaseException;
+    
+    /**
      * Returns the list of attributes for a given component.
      * 
      * @param component

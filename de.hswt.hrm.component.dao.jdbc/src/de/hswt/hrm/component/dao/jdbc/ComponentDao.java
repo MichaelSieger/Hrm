@@ -94,6 +94,38 @@ public class ComponentDao implements IComponentDao {
     }
     
     @Override
+    public Attribute findAttributeById(final int id) 
+    		throws ElementNotFoundException, DatabaseException {
+    	
+    	checkArgument(id >= 0, "ID must be valid.");
+    	
+    	SqlQueryBuilder builder = new SqlQueryBuilder();
+    	builder.select(ATTRIBUTE_TABLE_NAME, AttributeFields.ID, AttributeFields.NAME);
+    	builder.where(AttributeFields.ID);
+    	
+    	String query = builder.toString();
+    	
+    	try (Connection con = DatabaseFactory.getConnection()) {
+    		try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
+    			stmt.setParameter(AttributeFields.ID, id);
+    			
+    			ResultSet rs = stmt.executeQuery();
+    			Collection<Attribute> attributes = fromAttributeResultSet(rs);
+    			DbUtils.closeQuietly(rs);
+    			
+    			if (attributes.isEmpty()) {
+    				throw new ElementNotFoundException();
+    			}
+    			else if(attributes.size() > 1) {
+    				throw new DatabaseException("ID is not unique.");
+    			}
+    			
+    			return attributes.iterator().next();
+    		}
+    	}
+    }
+    
+    @Override
     public Collection<Attribute> findAttributesByComponent(Component component) 
     		throws DatabaseException {
     	
