@@ -102,7 +102,7 @@ public class PhysicalRatingDao implements IPhysicalRatingDao {
                 stmt.setParameter(Fields.RATING, physicalRating.getRating());
                 stmt.setParameter(Fields.NOTE, physicalRating.getNote());
                 stmt.setParameter(Fields.COMPONENT_FK, physicalRating.getComponent().get().getId());
-                stmt.setParameter(Fields.REPORT_FK, physicalRating.getReport.get().getId());
+                stmt.setParameter(Fields.REPORT_FK, physicalRating.getReport().get().getId());
 
                 int affectedRows = stmt.executeUpdate();
                 if (affectedRows != 1) {
