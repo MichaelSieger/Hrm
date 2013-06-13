@@ -219,21 +219,41 @@ public class ComponentDao implements IComponentDao {
                 Fields.CATEGORY);
 
         final String query = builder.toString();
-
+        
         try (Connection con = DatabaseFactory.getConnection()) {
+        	con.setAutoCommit(false);
+        	
+            int downUpImageId;
+            int leftRightImageId;
+            int rightLeftImageId;
+            int upDownImageId;
+            try {
+    	        // Insert the blobs
+    	    	downUpImageId = insertComponentImage(con, component.getDownUpImage());
+    	    	leftRightImageId = insertComponentImage(con, component.getLeftRightImage());
+    	    	rightLeftImageId = insertComponentImage(con, component.getRightLeftImage());
+    	    	upDownImageId = insertComponentImage(con, component.getUpDownImage());
+            }
+        	catch (Exception e) {
+        		LOG.error("Unable to insert one or more component images.", e);
+        		con.rollback();
+        		throw new SaveException("Unable to insert one or more component images.", e);
+        	}
+        	
             try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
                 stmt.setParameter(Fields.NAME, component.getName());
-                stmt.setParameter(Fields.SYMBOL_LR, component.getLeftRightImage());
-                stmt.setParameter(Fields.SYMBOL_RL, component.getRightLeftImage());
-                stmt.setParameter(Fields.SYMBOL_UD, component.getUpDownImage());
-                stmt.setParameter(Fields.SYMBOL_DU, component.getDownUpImage());
+                stmt.setParameter(Fields.SYMBOL_LR, leftRightImageId);
+                stmt.setParameter(Fields.SYMBOL_RL, rightLeftImageId);
+                stmt.setParameter(Fields.SYMBOL_UD, upDownImageId);
+                stmt.setParameter(Fields.SYMBOL_DU, downUpImageId);
                 stmt.setParameter(Fields.QUANTIFIER, component.getQuantifier());
                 stmt.setParameter(Fields.BOOL_RATING, component.getBoolRating());
                 stmt.setParameter(Fields.CATEGORY, component.getCategory().get().getId());
 
                 int affectedRows = stmt.executeUpdate();
                 if (affectedRows != 1) {
-                    throw new SaveException();
+                	con.rollback();
+                	throw new SaveException();
                 }
 
                 try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
@@ -247,17 +267,18 @@ public class ComponentDao implements IComponentDao {
                                 component.getQuantifier(), component.getBoolRating());
 
                         inserted.setCategory(component.getCategory().orNull());
+                        con.commit();
                         return inserted;
                     }
                     else {
-                        throw new SaveException("Could not retrieve generated ID.");
+                    	con.rollback();
+                    	throw new SaveException("Could not retrieve generated ID.");
                     }
                 }
             }
-
         }
-        catch (SQLException | DatabaseException e) {
-            throw new SaveException(e);
+        catch (SQLException|DatabaseException e) {
+        	throw new SaveException(e);
         }
     }
 
@@ -440,6 +461,52 @@ public class ComponentDao implements IComponentDao {
         catch (SQLException e) {
             throw new DatabaseException(e);
         }
+    }
+    
+    /**
+     * Inserts the blob as component image and returns its ID.
+     * @param blob
+     * @return
+     * @throws DatabaseException
+     */
+    private int insertComponentImage(final Connection con, final byte[] blob)
+    		throws DatabaseException {
+    	
+    	try {
+    		checkState(!con.getAutoCommit(), "AutoCommit must be disabled as we should run in a transaction.");
+    	}
+    	catch (SQLException e) {
+    		throw new SaveException("Unknown error.", e);
+    	}
+    	
+    	StringBuilder builder = new StringBuilder();
+    	builder.append("INSERT INTO ").append(BLOB_TABLE_NAME);
+    	builder.append(" (").append(BlobFields.BLOB).append(")");
+    	builder.append(" VALUES (?);");
+    	
+		try (PreparedStatement stmt = con.prepareStatement(builder.toString())) {
+			stmt.setBytes(1, blob);
+			
+			int affected = stmt.executeUpdate();
+			if (affected != 1) {
+				throw new SaveException();
+			}
+			
+			try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    int id = generatedKeys.getInt(1);
+
+                    // Create new Component with id
+                    return id;
+                }
+                else {
+                    throw new SaveException("Could not retrieve generated ID.");
+                }
+            }
+		}
+    	catch (SQLException e) {
+    		throw new DatabaseException("Unknown error.", e);
+    	}
     }
 
     private static final String TABLE_NAME = "Component";
