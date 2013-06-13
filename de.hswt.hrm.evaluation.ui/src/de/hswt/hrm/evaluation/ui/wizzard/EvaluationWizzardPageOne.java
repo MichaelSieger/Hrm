@@ -21,104 +21,103 @@ import de.hswt.hrm.evaluation.model.Evaluation;
 
 public class EvaluationWizzardPageOne extends WizardPage {
 
-    private Optional<Evaluation> eval;
-    private Composite container;
-    private Text nameText;
-    private Text descText;
-    private Collection<Evaluation> evaluations;
+	private Optional<Evaluation> eval;
+	private Composite container;
+	private Text nameText;
+	private Text descText;
+	private Collection<Evaluation> evaluations;
 
-    private static final Logger LOG = LoggerFactory.getLogger(EvaluationWizzardPageOne.class);
+	private static final Logger LOG = LoggerFactory
+			.getLogger(EvaluationWizzardPageOne.class);
 
-    public EvaluationWizzardPageOne(String title, Optional<Evaluation> eval,
-            Collection<Evaluation> evaluations) {
-        super(title);
-        this.eval = eval;
-        this.evaluations = evaluations;
-        setDescription(createDescription());
+	public EvaluationWizzardPageOne(String title, Optional<Evaluation> eval) {
+		super(title);
+		this.eval = eval;
+		this.evaluations = evaluations;
+		setDescription(createDescription());
 
-    }
+	}
 
-    private String createDescription() {
-        if (eval.isPresent()) {
-            return "Change an Evaluation";
-        }
-        return "Add a new Evaluation";
-    }
+	private String createDescription() {
+		if (eval.isPresent()) {
+			return "Change an Evaluation";
+		}
+		return "Add a new Evaluation";
+	}
 
-    @Override
-    public void createControl(Composite parent) {
-        parent.setLayout(new PageContainerFillLayout());
-        URL url = EvaluationWizzardPageOne.class.getClassLoader().getResource(
-                "de/hswt/hrm/evaluation/ui/xwt/EvaluationWizardPageOne"
-                        + IConstants.XWT_EXTENSION_SUFFIX);
-        try {
-            container = (Composite) XWTForms.load(parent, url);
-        }
-        catch (Exception e) {
-            LOG.error("An error occured: ", e);
-        }
+	@Override
+	public void createControl(Composite parent) {
+		parent.setLayout(new PageContainerFillLayout());
+		URL url = EvaluationWizzardPageOne.class.getClassLoader().getResource(
+				"de/hswt/hrm/evaluation/ui/xwt/EvaluationWizardWindow"
+						+ IConstants.XWT_EXTENSION_SUFFIX);
+		try {
+			container = (Composite) XWTForms.load(parent, url);
+		} catch (Exception e) {
+			LOG.error("An error occured: ", e);
+		}
 
-        nameText = (Text) XWT.findElementByName(container, "name");
-        descText = (Text) XWT.findElementByName(container, "desc");
+		nameText = (Text) XWT.findElementByName(container, "name");
+		descText = (Text) XWT.findElementByName(container, "desc");
 
-        if (this.eval.isPresent()) {
-            updateFields();
-        }
+		if (this.eval.isPresent()) {
+			updateFields();
+		}
 
-        nameText.addKeyListener(new KeyListener() {
+		nameText.addKeyListener(new KeyListener() {
 
-            @Override
-            public void keyReleased(KeyEvent e) {
-                checkPageComplete();
-            }
+			@Override
+			public void keyReleased(KeyEvent e) {
+				checkPageComplete();
+			}
 
-            @Override
-            public void keyPressed(KeyEvent e) {
-            }
-        });
+			@Override
+			public void keyPressed(KeyEvent e) {
+			}
+		});
 
-    }
+	}
 
-    private void updateFields() {
-        Evaluation e = eval.get();
-        nameText.setText(e.getText());
-        descText.setText(e.getText());
-    }
+	private void updateFields() {
+		Evaluation e = eval.get();
+		nameText.setText(e.getText());
+		descText.setText(e.getText());
+	}
 
-    private void checkPageComplete() {
+	private void checkPageComplete() {
 
-        setErrorMessage(null);
-        if (isAlreadyPresent(nameText.getText())) {
-            setErrorMessage("An Evaluation with name " + nameText.getText() + "is already present");
-        }
+		setErrorMessage(null);
+		if (isAlreadyPresent(nameText.getText())) {
+			setErrorMessage("An Evaluation with name " + nameText.getText()
+					+ "is already present");
+		}
 
-    }
+	}
 
-    private boolean isAlreadyPresent(String text) {
+	private boolean isAlreadyPresent(String text) {
 
-        boolean present = false;
+		boolean present = false;
 
-        if (text == null | text.isEmpty()) {
-            present = true;
-        }
-        for (Evaluation e : evaluations) {
-            if (e.getName().equals(text)) {
-                present = true;
-            }
-        }
-        return present;
+		if (text == null | text.isEmpty()) {
+			present = true;
+		}
+		for (Evaluation e : evaluations) {
+			if (e.getName().equals(text)) {
+				present = true;
+			}
+		}
+		return present;
 
-    }
+	}
 
-    @Override
-    public void setErrorMessage(String newMessage) {
-        if (newMessage == null || newMessage.isEmpty()) {
-            setPageComplete(true);
-        }
-        else {
-            setPageComplete(false);
-        }
-        super.setErrorMessage(newMessage);
-    }
+	@Override
+	public void setErrorMessage(String newMessage) {
+		if (newMessage == null || newMessage.isEmpty()) {
+			setPageComplete(true);
+		} else {
+			setPageComplete(false);
+		}
+		super.setErrorMessage(newMessage);
+	}
 
 }

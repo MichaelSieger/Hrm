@@ -25,9 +25,9 @@ public class EvaluationWizzard extends Wizard {
     private EvaluationWizzardPageOne first;
     private Optional<Evaluation> eval;
 
-    public EvaluationWizzard(Optional<Evaluation> eval, Collection<Evaluation> evaluations) {
+    public EvaluationWizzard(Optional<Evaluation> eval) {
         this.eval = eval;
-        this.first = new EvaluationWizzardPageOne("First Page", eval, evaluations);
+        this.first = new EvaluationWizzardPageOne("First Page", eval);
 
         if (eval.isPresent()) {
             setWindowTitle("Edit Evaluation: " + eval.get().getName());

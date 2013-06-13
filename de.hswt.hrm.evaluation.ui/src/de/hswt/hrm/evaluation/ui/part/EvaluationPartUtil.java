@@ -21,15 +21,14 @@ import de.hswt.hrm.evaluation.ui.wizzard.EvaluationWizzard;
 public class EvaluationPartUtil {
 
 	public static Optional<Evaluation> showWizard(IEclipseContext context,
-			Shell activeShell, Optional<Evaluation> absent,
-			Collection<Evaluation> evaluations) {
+			Shell shell, Optional<Evaluation> absent) {
 
-		EvaluationWizzard ew = new EvaluationWizzard(absent, evaluations);
+		EvaluationWizzard ew = new EvaluationWizzard(absent);
 		ContextInjectionFactory.inject(ew, context);
 
-		WizardDialog wd = WizardCreator.createWizardDialog(activeShell, ew);
+		WizardDialog wd = WizardCreator.createWizardDialog(shell, ew);
 		wd.open();
-		return null;
+		return Optional.absent();
 
 	}
 
