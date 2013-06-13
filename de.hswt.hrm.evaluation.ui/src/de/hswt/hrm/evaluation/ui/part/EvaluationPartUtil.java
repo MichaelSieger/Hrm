@@ -1,7 +1,6 @@
 package de.hswt.hrm.evaluation.ui.part;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 
@@ -21,14 +20,14 @@ import de.hswt.hrm.evaluation.ui.wizzard.EvaluationWizzard;
 public class EvaluationPartUtil {
 
 	public static Optional<Evaluation> showWizard(IEclipseContext context,
-			Shell shell, Optional<Evaluation> absent) {
+			Shell shell, Optional<Evaluation> eval) {
 
-		EvaluationWizzard ew = new EvaluationWizzard(absent);
+		EvaluationWizzard ew = new EvaluationWizzard(context,eval);
 		ContextInjectionFactory.inject(ew, context);
 
 		WizardDialog wd = WizardCreator.createWizardDialog(shell, ew);
 		wd.open();
-		return Optional.absent();
+		return ew.getEval();
 
 	}
 

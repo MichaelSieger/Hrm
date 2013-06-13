@@ -1,7 +1,8 @@
 package de.hswt.hrm.evaluation.ui.wizzard;
 
 import java.net.URL;
-import java.util.Collection;
+
+import javax.inject.Inject;
 
 import org.eclipse.e4.xwt.IConstants;
 import org.eclipse.e4.xwt.XWT;
@@ -16,8 +17,10 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Optional;
 
+import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.ui.swt.layouts.PageContainerFillLayout;
 import de.hswt.hrm.evaluation.model.Evaluation;
+import de.hswt.hrm.evaluation.service.EvaluationService;
 
 public class EvaluationWizzardPageOne extends WizardPage {
 
@@ -25,7 +28,12 @@ public class EvaluationWizzardPageOne extends WizardPage {
 	private Composite container;
 	private Text nameText;
 	private Text descText;
-	private Collection<Evaluation> evaluations;
+
+	private String name;
+	private String text;
+
+	@Inject
+	private EvaluationService evalService;
 
 	private static final Logger LOG = LoggerFactory
 			.getLogger(EvaluationWizzardPageOne.class);
@@ -33,7 +41,6 @@ public class EvaluationWizzardPageOne extends WizardPage {
 	public EvaluationWizzardPageOne(String title, Optional<Evaluation> eval) {
 		super(title);
 		this.eval = eval;
-		this.evaluations = evaluations;
 		setDescription(createDescription());
 
 	}
@@ -76,6 +83,9 @@ public class EvaluationWizzardPageOne extends WizardPage {
 			}
 		});
 
+		setControl(container);
+		setPageComplete(false);
+
 	}
 
 	private void updateFields() {
@@ -89,7 +99,7 @@ public class EvaluationWizzardPageOne extends WizardPage {
 		setErrorMessage(null);
 		if (isAlreadyPresent(nameText.getText())) {
 			setErrorMessage("An Evaluation with name " + nameText.getText()
-					+ "is already present");
+					+ " is already present");
 		}
 
 	}
@@ -101,10 +111,15 @@ public class EvaluationWizzardPageOne extends WizardPage {
 		if (text == null | text.isEmpty()) {
 			present = true;
 		}
-		for (Evaluation e : evaluations) {
-			if (e.getName().equals(text)) {
-				present = true;
+		try {
+			for (Evaluation e : evalService.findAll()) {
+				if (e.getName().equals(text)) {
+					present = true;
+				}
 			}
+		} catch (DatabaseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		return present;
 
@@ -118,6 +133,14 @@ public class EvaluationWizzardPageOne extends WizardPage {
 			setPageComplete(false);
 		}
 		super.setErrorMessage(newMessage);
+	}
+
+	public String getName() {
+		return nameText.getText();
+	}
+
+	public String getDesc() {
+		return descText.getText();
 	}
 
 }

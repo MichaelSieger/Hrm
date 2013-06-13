@@ -27,12 +27,12 @@ public class Evaluation {
 
     }
 
-    private void setName(String name) {
+    public void setName(String name) {
         checkArgument(!isNullOrEmpty(name), IS_MANDATORY);
         this.name = name;
     }
 
-    private void setText(String text) {
+    public void setText(String text) {
         checkArgument(!isNullOrEmpty(name), IS_MANDATORY);
         this.text = text;
 
