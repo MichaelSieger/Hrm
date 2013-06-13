@@ -95,13 +95,14 @@ public class ComponentDaoTest extends AbstractDatabaseTest {
 		componentDao.addAttribute(parsed, attribute1);
 		componentDao.addAttribute(parsed, attribute2);
 		
-		Collection<Attribute> attributes = componentDao.findAttributesByComponent(component);
+		Collection<Attribute> attributes = componentDao.findAttributesByComponent(parsed);
 		assertEquals("Wrong count of attributes retrieved.", 2, attributes.size());
 		
 		// Check if retrieved attributes equal to inserted ones
+		
 		Attribute[] attrs = attributes.toArray(new Attribute[0]);
-		if (!attrs[0].equals(attribute1) && !attrs[0].equals(attribute2)
-				|| !attrs[1].equals(attribute1) && !attrs[1].equals(attribute2)) {
+		if (!attrs[0].getName().equals(attribute1) && !attrs[0].getName().equals(attribute2)
+				|| !attrs[1].getName().equals(attribute1) && !attrs[1].getName().equals(attribute2)) {
 			fail("Wrong attribute retrieved");
 		}
 		
