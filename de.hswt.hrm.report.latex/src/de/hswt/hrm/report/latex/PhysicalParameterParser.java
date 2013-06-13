@@ -46,7 +46,7 @@ public class PhysicalParameterParser {
         return this.endTarget;
     }
 
-    public void parseTable() throws IOException {
+    private void parseTable() throws IOException {
         Path pathTable = this.path;
         // TODO append file to path
         StringBuffer buffer = new StringBuffer();
@@ -67,7 +67,7 @@ public class PhysicalParameterParser {
         this.endTarget = target;
     }
 
-    public void parseRow() throws IOException {
+    private void parseRow() throws IOException {
         Path pathRow = this.path;
         // TODO append file to path
         StringBuffer buffer = new StringBuffer();
