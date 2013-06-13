@@ -135,9 +135,36 @@ public class PhysicalRatingDao implements IPhysicalRatingDao {
     }
 
     @Override
-    public void update(PhysicalRating physical) throws ElementNotFoundException, SaveException {
-        // TODO Auto-generated method stub
+    public void update(PhysicalRating physicalRating) throws ElementNotFoundException, SaveException {
+        checkNotNull(physicalRating, "Physical Rating must not be null.");
 
+        if (physicalRating.getId() < 0) {
+            throw new ElementNotFoundException("Element has no valid ID.");
+        }
+
+        SqlQueryBuilder builder = new SqlQueryBuilder();
+        builder.update(TABLE_NAME, Fields.RATING, Fields.NOTE, Fields.COMPONENT_FK,
+                Fields.REPORT_FK);
+        builder.where(Fields.ID);
+
+        final String query = builder.toString();
+
+        try (Connection con = DatabaseFactory.getConnection()) {
+            try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
+                stmt.setParameter(Fields.RATING, physicalRating.getRating());
+                stmt.setParameter(Fields.NOTE, physicalRating.getNote());
+                stmt.setParameter(Fields.COMPONENT_FK, physicalRating.getComponent().get().getId());
+                stmt.setParameter(Fields.REPORT_FK, physicalRating.getReport().get().getId());
+
+                int affectedRows = stmt.executeUpdate();
+                if (affectedRows != 1) {
+                    throw new SaveException();
+                }
+            }
+        }
+        catch (SQLException | DatabaseException e) {
+            throw new SaveException(e);
+        }
     }
 
     @Override
