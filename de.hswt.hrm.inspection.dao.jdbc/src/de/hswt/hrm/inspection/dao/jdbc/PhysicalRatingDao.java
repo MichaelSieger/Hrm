@@ -139,7 +139,8 @@ public class PhysicalRatingDao implements IPhysicalRatingDao {
     }
 
     @Override
-    public void update(PhysicalRating physicalRating) throws ElementNotFoundException, SaveException {
+    public void update(PhysicalRating physicalRating) throws ElementNotFoundException,
+            SaveException {
         checkNotNull(physicalRating, "Physical Rating must not be null.");
 
         if (physicalRating.getId() < 0) {
@@ -172,11 +173,11 @@ public class PhysicalRatingDao implements IPhysicalRatingDao {
     }
 
     @Override
-    public Collection<PhysicalRating> findByInspection(Inspection inspection) {
+    public Collection<PhysicalRating> findByInspection(Inspection inspection)
+            throws DatabaseException {
 
         checkNotNull(inspection, "Inspection is mandatory.");
         checkArgument(inspection.getId() >= 0, "Inspection must have a valid ID.");
-
 
         SqlQueryBuilder builder = new SqlQueryBuilder();
         builder.select(TABLE_NAME, Fields.ID, Fields.RATING, Fields.NOTE, Fields.COMPONENT_FK,
@@ -202,22 +203,22 @@ public class PhysicalRatingDao implements IPhysicalRatingDao {
 
     private Collection<PhysicalRating> fromResultSet(final ResultSet rs) {
         // FIXME Add component here
-        
-            checkNotNull(rs, "Result must not be null.");
-            Collection<PhysicalRating> physicalRatingList = new ArrayList<>();
 
-            while (rs.next()) {
-                int id = rs.getInt(Fields.ID);
-                String rating = rs.getString(Fields.RATING);
-                String note = rs.getString(Fields.NOTE);
-                PhysicalRating physicalRating = new PhysicalRating(id, rating, note);
-                physicalRating.setReport(InspectionDao.findById(rs.getInt(Fields.REPORT_FK)));
-                physicalRating.setComponent(ComponentDao.findById(rs.getInt(Fields.COMPONENT_FK)));
-                physicalRatingList.add(physicalRating);
-            }
+        checkNotNull(rs, "Result must not be null.");
+        Collection<PhysicalRating> physicalRatingList = new ArrayList<>();
 
-            return physicalRatingList;
-        
+        while (rs.next()) {
+            int id = rs.getInt(Fields.ID);
+            String rating = rs.getString(Fields.RATING);
+            String note = rs.getString(Fields.NOTE);
+            PhysicalRating physicalRating = new PhysicalRating(id, rating, note);
+            physicalRating.setReport(InspectionDao.findById(rs.getInt(Fields.REPORT_FK)));
+            physicalRating.setComponent(ComponentDao.findById(rs.getInt(Fields.COMPONENT_FK)));
+            physicalRatingList.add(physicalRating);
+        }
+
+        return physicalRatingList;
+
     }
 
     private static final String TABLE_NAME = "Component_Physical_Rating";
