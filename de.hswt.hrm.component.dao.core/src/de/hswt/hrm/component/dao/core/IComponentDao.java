@@ -62,4 +62,22 @@ public interface IComponentDao {
      * @throws SaveException If the component could not be updated.
      */
     void update(Component component) throws ElementNotFoundException, SaveException;
+
+    /**
+     * Add an attribute to a component.
+     * 
+     * @param component 
+     * @param attributeName
+     * @return The added attribute with its valid ID.
+     * @throws SaveException 
+     */
+    Attribute addAttribute(Component component, String attributeName) throws SaveException;
+    
+    /**
+     * Delete an attribute.
+     * 
+     * @param attribute
+     * @throws DatabaseException
+     */
+	void deleteAttribute(Attribute attribute) throws DatabaseException;
 }

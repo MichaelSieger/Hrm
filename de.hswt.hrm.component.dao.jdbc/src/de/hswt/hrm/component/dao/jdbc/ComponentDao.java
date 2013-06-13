@@ -124,7 +124,6 @@ public class ComponentDao implements IComponentDao {
 
     @Override
     public Collection<String> findAttributeNames() throws DatabaseException {
-
     	StringBuilder builder = new StringBuilder();
     	builder.append("SELECT DISTINCT ");
     	builder.append(AttributeFields.NAME);
@@ -241,6 +240,84 @@ public class ComponentDao implements IComponentDao {
         }
         catch (SQLException | DatabaseException e) {
             throw new SaveException(e);
+        }
+    }
+    
+    @Override
+    public Attribute addAttribute(final Component component, final String attributeName)
+    		throws SaveException {
+    		
+    	checkNotNull(component, "Component must not be null.");
+        checkArgument(component.getId() >= 0, "Component must have a valid ID.");
+    	
+    	SqlQueryBuilder builder = new SqlQueryBuilder();
+        builder.insert(ATTRIBUTE_TABLE_NAME, AttributeFields.NAME, AttributeFields.FK_COMPONENT);
+
+        final String query = builder.toString();
+
+        try (Connection con = DatabaseFactory.getConnection()) {
+            try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
+                stmt.setParameter(AttributeFields.NAME, attributeName);
+                stmt.setParameter(AttributeFields.FK_COMPONENT, component.getId());
+
+                int affectedRows = stmt.executeUpdate();
+                if (affectedRows != 1) {
+                    throw new SaveException();
+                }
+
+                try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        int id = generatedKeys.getInt(1);
+
+                        // Create new Component with id
+                        Attribute attribute = new Attribute(id, attributeName);
+                        return attribute;
+                    }
+                    else {
+                        throw new SaveException("Could not retrieve generated ID.");
+                    }
+                }
+            }
+
+        }
+        catch (SQLException | DatabaseException e) {
+            throw new SaveException(e);
+        }
+    }
+    
+    @Override
+    public void deleteAttribute(final Attribute attribute) throws DatabaseException {
+    	checkNotNull(attribute, "Attribute must not be null.");
+    	checkArgument(attribute.getId() >= 0, "Attribute must have a valid ID.");
+    	
+    	StringBuilder builder = new StringBuilder();
+    	builder.append("DELETE FROM ").append(ATTRIBUTE_TABLE_NAME);
+    	builder.append(" WHERE ").append(AttributeFields.ID);
+    	builder.append(" = ?;");
+    	
+    	String query = builder.toString();
+    	
+    	try (Connection con = DatabaseFactory.getConnection()) {
+    		try (PreparedStatement stmt = con.prepareStatement(query)) {
+    			stmt.setInt(1, attribute.getId());
+    			
+    			con.setAutoCommit(false);
+    			int affected = stmt.executeUpdate();
+    			
+    			if (affected > 1) {
+    				con.rollback();
+    				throw new DatabaseException("Accidently more than one row affected.");
+    			}
+    			else if (affected < 1) {
+    				con.rollback();
+    				throw new ElementNotFoundException();
+    			}
+    			
+    			con.commit();
+    		}
+    	}
+    	catch (SQLException | DatabaseException e) {
+            throw new DatabaseException("Unknown error.", e);
         }
     }
 
