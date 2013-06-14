@@ -31,6 +31,7 @@ public class ContactWizardPageOne extends WizardPage {
 
     private Composite container;
     private Optional<Contact> contact;
+    private HashMap<String,Text> mandatoryWidgets;
 
     private RegexValidator plzVal = new RegexValidator("[0-9]{5}");
     private RegexValidator textOnlyVal = new RegexValidator("([A-ZÄÖÜ]{1}[a-zäöü]+[\\s]?[\\-]?)*");
@@ -127,26 +128,26 @@ public class ContactWizardPageOne extends WizardPage {
     }
 
     public HashMap<String, Text> getMandatoryWidgets() {
-        HashMap<String, Text> widgets = new HashMap<String, Text>();
-        widgets.put("name", (Text) XWT.findElementByName(container, "name"));
-        widgets.put("street", (Text) XWT.findElementByName(container, "street"));
-        widgets.put("streetNumber", (Text) XWT.findElementByName(container, "streetNumber"));
-        widgets.put("city", (Text) XWT.findElementByName(container, "city"));
-        widgets.put("zipCode", (Text) XWT.findElementByName(container, "zipCode"));
-
-        return widgets;
+        if (mandatoryWidgets == null) {
+            HashMap<String, Text> mandatoryWidgets = new HashMap<String, Text>();
+            mandatoryWidgets.put("name", (Text) XWT.findElementByName(container, "name"));
+            mandatoryWidgets.put("street", (Text) XWT.findElementByName(container, "street"));
+            mandatoryWidgets.put("streetNumber", (Text) XWT.findElementByName(container, "streetNumber"));
+            mandatoryWidgets.put("city", (Text) XWT.findElementByName(container, "city"));
+            mandatoryWidgets.put("zipCode", (Text) XWT.findElementByName(container, "zipCode"));
+        }
+        return mandatoryWidgets;
     }
     
     @Override
     public boolean isPageComplete() {
         // Mandatory fields
         HashMap<String, Text> mandatory = getMandatoryWidgets();
-        // Sorted array
+        // Array, sorted in order of validation
         Text[] manArray = { mandatory.get("name"), mandatory.get("street"),
                 mandatory.get("streetNumber"), mandatory.get("zipCode"), mandatory.get("city") };
-        boolean isValid;
         for (int i = 0; i < manArray.length; i++) {
-            isValid = checkValidity(manArray[i]);
+            boolean isValid = checkValidity(manArray[i]);
             if (manArray[i].getText().length() == 0) {
                 setErrorMessage("Field \"" + manArray[i].getToolTipText() + "\" is mandatory.");
                 return false;

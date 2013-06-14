@@ -32,6 +32,7 @@ public class ContactWizardPageTwo extends WizardPage{
     
     private Composite container;
     private Optional<Contact> contact;
+    private HashMap<String, Text> optionalWidgets;
     
     private EmailValidator emailVal = EmailValidator.getInstance();
 
@@ -76,14 +77,15 @@ public class ContactWizardPageTwo extends WizardPage{
     }
     
     public HashMap<String, Text> getOptionalWidgets() {
-        HashMap<String, Text> widgets = new HashMap<String, Text>();
-        widgets.put("shortcut", (Text) XWT.findElementByName(container, "shortcut"));
-        widgets.put("phone", (Text) XWT.findElementByName(container, "phone"));
-        widgets.put("fax", (Text) XWT.findElementByName(container, "fax"));
-        widgets.put("mobilePhone", (Text) XWT.findElementByName(container, "mobilePhone"));
-        widgets.put("email", (Text) XWT.findElementByName(container, "email"));
-
-        return widgets;
+        if (optionalWidgets == null) {
+            optionalWidgets = new HashMap<String, Text>();
+            optionalWidgets.put("shortcut", (Text) XWT.findElementByName(container, "shortcut"));
+            optionalWidgets.put("phone", (Text) XWT.findElementByName(container, "phone"));
+            optionalWidgets.put("fax", (Text) XWT.findElementByName(container, "fax"));
+            optionalWidgets.put("mobilePhone", (Text) XWT.findElementByName(container, "mobilePhone"));
+            optionalWidgets.put("email", (Text) XWT.findElementByName(container, "email")); 
+        }
+        return optionalWidgets;
     }
     
     @Override
