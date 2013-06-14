@@ -32,6 +32,7 @@ public class ContactWizardPageTwo extends WizardPage{
         super(pageName);
         this.contact = contact;
         setDescription("Provide the contacts communication information.");
+        setTitle("Contact Wizard");
     }
     
     @Override
