@@ -176,5 +176,7 @@
 		<module>../de.hswt.hrm.evaluation.service</module>
 		<module>../de.hswt.hrm.evaluation.ui</module>
 		<module>../de.hswt.hrm.evaluation.service.test</module>
+		<module>../de.hswt.hrm.misc.feature</module>
+		<module>../de.hswt.hrm.misc.ui</module>
 	</modules>
 </project>

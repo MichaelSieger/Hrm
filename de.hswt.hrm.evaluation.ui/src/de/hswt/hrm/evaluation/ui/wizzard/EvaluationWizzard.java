@@ -11,7 +11,6 @@ import org.slf4j.LoggerFactory;
 import com.google.common.base.Optional;
 
 import de.hswt.hrm.common.database.exception.DatabaseException;
-import de.hswt.hrm.common.database.exception.ElementNotFoundException;
 import de.hswt.hrm.evaluation.model.Evaluation;
 import de.hswt.hrm.evaluation.service.EvaluationService;
 
