@@ -109,11 +109,6 @@ public class ContactWizardPageOne extends WizardPage {
         setToolTipText(container, "streetNumber", I18N.tr("Streetnumber"));
         setToolTipText(container, "zipCode", I18N.tr("Zipcode"));
         setToolTipText(container, "city", I18N.tr("City"));
-        // setLabelText(container, "lblPhone", "Phone");
-        // setLabelText(container, "lblFax", "Fax");
-        // setLabelText(container, "lblMobilePhone", "Mobile");
-        // setLabelText(container, "lblEmail", "Email");
-        // setLabelText(container, "lblShortcut", "Shortcut");
     }
 
     private void updateFields(final Composite container) {
