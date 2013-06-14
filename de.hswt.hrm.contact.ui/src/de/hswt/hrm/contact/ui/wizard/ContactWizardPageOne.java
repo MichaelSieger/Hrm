@@ -74,6 +74,14 @@ public class ContactWizardPageOne extends WizardPage {
         setKeyListener();
         setControl(container);
         setPageComplete(false);
+        setToolTips();
+    }
+    
+    private void setToolTips() {
+        HashMap<String, Text> widgets = getMandatoryWidgets();
+        for (Text text : widgets.values()) {
+            text.setToolTipText(XWT.getElementName((Object) text));
+        }
     }
 
     private void setLabelText(final Composite container, final String labelName, final String text) {
