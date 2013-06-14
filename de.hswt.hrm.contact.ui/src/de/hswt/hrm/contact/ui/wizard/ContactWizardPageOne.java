@@ -38,6 +38,7 @@ public class ContactWizardPageOne extends WizardPage {
         super(pageName);
         this.contact = contact;
         setDescription(createDiscription());
+        setTitle("Contact Wizard");
     }
 
     private String createDiscription() {
