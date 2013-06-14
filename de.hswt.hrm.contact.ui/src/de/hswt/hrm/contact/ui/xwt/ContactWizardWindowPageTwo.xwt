@@ -5,7 +5,7 @@
 	<Composite.layout>
 		<FillLayout/>
 	</Composite.layout>
-	<Section text="Kommunikation" x:Style="(p1:Section).EXPANDED">
+	<Section text="Kommunikation" x:Style="(p1:Section).EXPANDED" x:Name="Optional">
 		<Section.client>
 			<Composite>
 				<Composite.layout>
