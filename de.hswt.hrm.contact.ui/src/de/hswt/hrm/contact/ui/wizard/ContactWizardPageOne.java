@@ -125,7 +125,7 @@ public class ContactWizardPageOne extends WizardPage {
 
         return widgets;
     }
-
+    
     @Override
     public boolean isPageComplete() {
         // Mandatory fields
@@ -137,11 +137,11 @@ public class ContactWizardPageOne extends WizardPage {
         for (int i = 0; i < manArray.length; i++) {
             isValid = checkValidity(manArray[i]);
             if (manArray[i].getText().length() == 0) {
-                setErrorMessage("Field \"" + manArray[i].getToolTipText() + "\" is mandatory.");
+                setErrorMessage("Field \"" + XWT.getElementName((Object) manArray[i]) + "\" is mandatory.");
                 return false;
             }
             if (!isValid) {
-                setErrorMessage("Input for \"" + manArray[i].getToolTipText() + "\" is invalid.");
+                setErrorMessage("Input for \"" + XWT.getElementName((Object) manArray[i]) + "\" is invalid.");
                 return false;
             }
         }
@@ -150,13 +150,13 @@ public class ContactWizardPageOne extends WizardPage {
     }
 
     private boolean checkValidity(Text textField) {
-        String toolTip = textField.getToolTipText();
+        String textFieldName = XWT.getElementName((Object) textField);
 
-        boolean isInvalidText = (toolTip.equals("Name") || toolTip.equals("Stadt"))
+        boolean isInvalidText = (textFieldName.equals("name") || textFieldName.equals("city"))
                 && (!textOnlyVal.isValid(textField.getText()));
-        boolean isInvalidStreetNumber = (toolTip.equals("Hausnummer"))
+        boolean isInvalidStreetNumber = (textFieldName.equals("streetNumber"))
                 && (!streetNoVal.isValid(textField.getText()));
-        boolean isInvalidZipCode = (toolTip.equals("PLZ"))
+        boolean isInvalidZipCode = (textFieldName.equals("zipCode"))
                 && (!plzVal.isValid(textField.getText()));
 
         if (isInvalidText || isInvalidStreetNumber || isInvalidZipCode) {
