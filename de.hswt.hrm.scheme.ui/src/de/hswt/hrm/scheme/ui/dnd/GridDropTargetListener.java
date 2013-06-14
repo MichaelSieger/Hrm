@@ -8,6 +8,8 @@ import org.eclipse.swt.dnd.DropTargetListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Point;
 
+import com.google.common.base.Preconditions;
+
 import de.hswt.hrm.scheme.model.RenderedComponent;
 import de.hswt.hrm.scheme.ui.PlaceOccupiedException;
 import de.hswt.hrm.scheme.ui.SchemeGrid;
@@ -28,6 +30,9 @@ public class GridDropTargetListener implements DropTargetListener {
 
 	public GridDropTargetListener(SchemeGrid grid, List<RenderedComponent> comps, SchemeComposite schemeCompositeNew) {
 		super();
+		Preconditions.checkNotNull(grid);
+		Preconditions.checkNotNull(comps);
+		Preconditions.checkNotNull(schemeCompositeNew);
 		this.grid = grid;
 		this.comps = comps;
 		this.composite = schemeCompositeNew;
