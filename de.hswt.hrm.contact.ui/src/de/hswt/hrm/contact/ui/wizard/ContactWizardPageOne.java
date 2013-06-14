@@ -129,7 +129,7 @@ public class ContactWizardPageOne extends WizardPage {
 
     public HashMap<String, Text> getMandatoryWidgets() {
         if (mandatoryWidgets == null) {
-            HashMap<String, Text> mandatoryWidgets = new HashMap<String, Text>();
+            mandatoryWidgets = new HashMap<String, Text>();
             mandatoryWidgets.put("name", (Text) XWT.findElementByName(container, "name"));
             mandatoryWidgets.put("street", (Text) XWT.findElementByName(container, "street"));
             mandatoryWidgets.put("streetNumber", (Text) XWT.findElementByName(container, "streetNumber"));
@@ -180,7 +180,7 @@ public class ContactWizardPageOne extends WizardPage {
     public void setKeyListener() {
         HashMap<String, Text> widgets = getMandatoryWidgets();
         for (Text text : widgets.values()) {
-
+           
             text.addKeyListener(new KeyListener() {
 
                 @Override
