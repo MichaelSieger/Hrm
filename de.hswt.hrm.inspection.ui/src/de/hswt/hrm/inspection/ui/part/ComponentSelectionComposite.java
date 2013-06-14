@@ -55,6 +55,8 @@ public class ComponentSelectionComposite extends Composite {
 			Class<? extends AbstractComponentRatingComposite> ratingCompositeClass) {
 		super(parent, SWT.NONE);
 		this.ratingCompositeClass = ratingCompositeClass;
+		toolkit.dispose();
+		toolkit = FormUtil.createToolkit();
 	}
 
 	@PostConstruct
@@ -135,6 +137,12 @@ public class ComponentSelectionComposite extends Composite {
 		return composite;
 	}
 
+	@Override
+	public void dispose() {
+		toolkit.dispose();
+		super.dispose();
+	}
+	
 	@Override
 	protected void checkSubclass() {
 		// Disable the check that prevents subclassing of SWT components

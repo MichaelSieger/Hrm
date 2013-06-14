@@ -19,5 +19,8 @@ Import-Package: de.hswt.hrm.common.ui.swt.constants,
  de.hswt.hrm.common.ui.swt.forms,
  de.hswt.hrm.common.ui.swt.layouts,
  de.hswt.hrm.common.ui.swt.table,
+ de.hswt.hrm.common.ui.swt.utils,
+ de.hswt.hrm.common.ui.swt.wizards,
  de.hswt.hrm.component.model,
- de.hswt.hrm.inspection.model
+ de.hswt.hrm.inspection.model,
+ org.eclipse.ui.dialogs

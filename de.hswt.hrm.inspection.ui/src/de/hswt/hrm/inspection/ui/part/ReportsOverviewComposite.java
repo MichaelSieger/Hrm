@@ -92,11 +92,6 @@ public class ReportsOverviewComposite extends Composite {
 		toolkit.adapt(searchText, true, true);
 		
 		tableViewer = new TableViewer(overviewComposite, SWT.BORDER | SWT.FULL_SELECTION);
-		tableViewer.addDoubleClickListener(new IDoubleClickListener() {
-			public void doubleClick(DoubleClickEvent event) {
-				editInspection();
-			}
-		});
 		table = tableViewer.getTable();
 		toolkit.paintBordersFor(table);
 		table.setLayoutData(LayoutUtil.createFillData());
@@ -173,42 +168,6 @@ public class ReportsOverviewComposite extends Composite {
 //			tableViewer.refresh();
 //		}
 
-	}
-
-	public void editInspection() {
-		// TODO adapt to the inspectionService and Inspection POJO
-		// e.g. see ContactsPart
-//		// obtain the place in the column where the doubleClick happend
-//		ICatalogItem selectedItem = (ICatalogItem) tableViewer
-//				.getElementAt(tableViewer.getTable().getSelectionIndex());
-//		if (selectedItem == null) {
-//			return;
-//		}
-//
-//        // Refresh the selected place with values from the database
-//        try {
-//
-//            if (selectedItem instanceof Activity) {
-//                catalogService.refresh((Activity) selectedItem);
-//            }
-//            else if (selectedItem instanceof Current) {
-//                catalogService.refresh((Current) selectedItem);
-//            }
-//            else {
-//                catalogService.refresh((Target) selectedItem);
-//            }
-//
-//            Optional<ICatalogItem> updatedItem = CatalogPartUtil.showWizard(context,
-//                    shellProvider.getShell(), Optional.of(selectedItem));
-//
-//            if (updatedItem.isPresent()) {
-//                tableViewer.refresh();
-//            }
-//        }
-//        catch (DatabaseException e) {
-//            LOG.error("Could not retrieve the CatalogItem from database.", e);
-//            showDBConnectionError();
-//        }
 	}
 
 	@Override

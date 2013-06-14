@@ -35,7 +35,7 @@ public class ReportPerformanceComposite extends AbstractComponentRatingComposite
 	
 	@Inject
 	private IShellProvider shellProvider;
-	private final FormToolkit formToolkit = new FormToolkit(Display.getDefault());
+	private FormToolkit formToolkit = new FormToolkit(Display.getDefault());
 
 	/**
 	 * Do not use this constructor when instantiate this composite!
@@ -55,6 +55,8 @@ public class ReportPerformanceComposite extends AbstractComponentRatingComposite
 	 */
 	public ReportPerformanceComposite(Composite parent) {
 		super(parent, SWT.NONE);
+		formToolkit.dispose();
+		formToolkit = FormUtil.createToolkit();
 	}
 
 	@PostConstruct
@@ -149,6 +151,12 @@ public class ReportPerformanceComposite extends AbstractComponentRatingComposite
 		// Disable the check that prevents subclassing of SWT components
 	}
 
+	@Override
+	public void dispose() {
+		formToolkit.dispose();
+		super.dispose();
+	}
+	
 	@Override
 	public void setSelectedComponent(Component component) {
 		// TODO Auto-generated method stub

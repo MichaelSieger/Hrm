@@ -6,6 +6,7 @@ import javax.inject.Inject;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.jface.window.IShellProvider;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.FillLayout;
@@ -17,8 +18,15 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
 
+import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.common.ui.swt.layouts.LayoutUtil;
+import de.hswt.hrm.common.ui.swt.utils.ContentProposalUtil;
 import de.hswt.hrm.component.model.Component;
+import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.widgets.DateTime;
+import org.eclipse.swt.widgets.Combo;
+import org.eclipse.swt.widgets.List;
 
 public class ReportGeneralComposite extends AbstractComponentRatingComposite {
 
@@ -33,7 +41,45 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
 	@Inject
 	private IShellProvider shellProvider;
 	
-	private FormToolkit toolkit = new FormToolkit(Display.getDefault());
+	private FormToolkit formToolkit = new FormToolkit(Display.getDefault());
+	
+	private Section generalSection;
+	private Section personsSection;
+	private Section visualSection;
+	private Section biologicalSection;
+	private Section physicalSection;
+
+	private Text titleText;
+	private Text plantText;
+	private DateTime reportDateTime;
+	private DateTime inspectionDateTime;
+	private DateTime nextInsectionDateTime;
+
+	private Text titlePhotoText;
+	private Text plantPhotoText;
+	private Combo overallCombo;
+
+	private List photosList;
+	private Text legionellaText;
+	private Text sumGermsText;
+	private Combo legionellaWeightCombo;
+	private Combo legionellaGradeCombo;
+	private Combo legionellaCommentCombo;
+	private Combo sumGermsGradeCombo;
+	private Combo sumGermsWeightCombo;
+	private Combo sumGermsCommentCombo;
+
+	private Text temperatureText;
+	private Combo temperatureGradeCombo;
+	private Combo temperatureWeightCombo;
+	private Combo temperatureCommentCombo;
+	private Text humidityText;
+	private Combo humidityGradeCombo;
+	private Combo humidityWeightCombo;
+	private Combo humitiyCommentCombo;
+
+
+
 
 	/**
 	 * Do not use this constructor when instantiate this composite!
@@ -53,71 +99,680 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
 	 */
 	public ReportGeneralComposite(Composite parent) {
 		super(parent, SWT.NONE);
+		formToolkit.dispose();
+		formToolkit = FormUtil.createToolkit();
 	}
 
 	@PostConstruct
 	public void createControls() {
-		setLayout(new FillLayout());
-		
-		Composite generalComposite = new Composite(this, SWT.NONE);
-		generalComposite.setBackgroundMode(SWT.INHERIT_FORCE);
-		toolkit.paintBordersFor(generalComposite);
-		generalComposite.setLayout(new GridLayout(1, false));
-		
-		Section personsSection = toolkit.createSection(generalComposite, Section.TITLE_BAR);
-		personsSection.setLayoutData(LayoutUtil.createFillData());
-		toolkit.paintBordersFor(personsSection);
-		personsSection.setText("Persons");
-		
-		Composite personsComposite = new Composite(personsSection, SWT.NONE);
-		toolkit.adapt(personsComposite);
-		toolkit.paintBordersFor(personsComposite);
-		personsSection.setClient(personsComposite);
-		personsComposite.setLayout(new GridLayout(2, false));
-		
-		Button selectCustomer = new Button(personsComposite, SWT.NONE);
-		selectCustomer.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-			}
-		});
-		toolkit.adapt(selectCustomer, true, true);
-		selectCustomer.setText("Select Customer ");
-		
-		Label lblName = new Label(personsComposite, SWT.NONE);
-		toolkit.adapt(lblName, true, true);
-		lblName.setText("Name");
-		
-		// report title, given at creation time (ReportsOverviewComposite)
-		
-		// Button select customer => opens wizard with contacts to select contact
-		// Button select requester => opens wizard with contacts to select contact
-		// Button select controller => opens wizard with contacts to select contact
-		
-		// Button select plant => opens wizard with contacts to select contact
-		
-		// Button or dropdown to select overall comment
+		GridLayout gl = new GridLayout(1, false);
+		setLayout(gl);
+		setBackground(getDisplay().getSystemColor(SWT.COLOR_WHITE));
 
-		// field with date picker => default current
+		Composite c = new Composite(this, SWT.NONE);
+		c.setLayoutData(LayoutUtil.createFillData());
+		c.setLayout(new FillLayout());
+
+		ScrolledComposite sc = new ScrolledComposite(c, SWT.H_SCROLL
+				| SWT.V_SCROLL);
+		sc.setExpandVertical(true);
+		sc.setExpandHorizontal(true);
+
+		Composite composite = new Composite(sc, SWT.None);
+		composite.setBackgroundMode(SWT.INHERIT_FORCE);
+		gl = new GridLayout(2, true);
+		gl.marginWidth = 0;
+		gl.marginHeight = 0;
+		composite.setLayout(gl);
+		sc.setContent(composite);
+
+		generalSection = formToolkit.createSection(composite,
+				Section.TITLE_BAR);
+		formToolkit.paintBordersFor(generalSection);
+		generalSection.setText("General");
+		generalSection.setLayoutData(LayoutUtil.createHorzFillData());
+		FormUtil.initSectionColors(generalSection);
+
+		personsSection = formToolkit.createSection(composite,
+				Section.TITLE_BAR);
+		formToolkit.paintBordersFor(personsSection);
+		personsSection.setText("Persons");
+		personsSection.setLayoutData(LayoutUtil.createHorzFillData(1, 2));
+		FormUtil.initSectionColors(personsSection);
+
+		visualSection = formToolkit.createSection(composite,
+				Section.TITLE_BAR);
+		formToolkit.paintBordersFor(visualSection);
+		visualSection.setText("Visual");
+		visualSection.setLayoutData(LayoutUtil.createHorzFillData());
+		FormUtil.initSectionColors(visualSection);
+
+		biologicalSection = formToolkit.createSection(composite,
+				Section.TITLE_BAR);
+		formToolkit.paintBordersFor(biologicalSection);
+		biologicalSection.setText("Saturator water");
+		biologicalSection.setLayoutData(LayoutUtil.createHorzFillData());
+		FormUtil.initSectionColors(biologicalSection);
+
+		physicalSection = formToolkit.createSection(composite,
+				Section.TITLE_BAR);
+		formToolkit.paintBordersFor(physicalSection);
+		physicalSection.setText("Physical parameter");
+		physicalSection.setLayoutData(LayoutUtil.createHorzFillData());
+		FormUtil.initSectionColors(physicalSection);
 		
+		createGeneralComponents();
+		createPersonsComponents();
+		createVisualComponents();
+		createBiologicalComponents();
+		createPhysicalComponents();
+		
+
+//		Composite generalComposite = new Composite(this, SWT.NONE);
+//		generalComposite.setBackgroundMode(SWT.INHERIT_FORCE);
+//		formToolkit.paintBordersFor(generalComposite);
+//		generalComposite.setLayout(new GridLayout(1, false));
+//		
+//		Section personsSection = formToolkit.createSection(generalComposite, Section.TITLE_BAR);
+//		personsSection.setLayoutData(LayoutUtil.createFillData());
+//		formToolkit.paintBordersFor(personsSection);
+//		personsSection.setText("Persons");
+//		
+//		Composite personsComposite = new Composite(personsSection, SWT.NONE);
+//		formToolkit.adapt(personsComposite);
+//		formToolkit.paintBordersFor(personsComposite);
+//		personsSection.setClient(personsComposite);
+//		personsComposite.setLayout(new GridLayout(2, false));
+//		
+//		Button selectCustomer = new Button(personsComposite, SWT.NONE);
+//		selectCustomer.addSelectionListener(new SelectionAdapter() {
+//			@Override
+//			public void widgetSelected(SelectionEvent e) {
+//			}
+//		});
+//		formToolkit.adapt(selectCustomer, true, true);
+//		selectCustomer.setText("Select Customer ");
+//		
+//		Label lblName = new Label(personsComposite, SWT.NONE);
+//		formToolkit.adapt(lblName, true, true);
+//		lblName.setText("Name");
+		
+		
+		// GENERAL			PERSONS
+		// VISUAL			PERSONS
+		// BIO				PHYSICS
+
+		
+		// GENERAL
+		// report title, given at creation time (ReportsOverviewComposite)
+		// Button select plant => opens wizard with contacts to select contact
+		// Button or dropdown to select overall comment
+		// field with date picker => default current
 		// field for next inspection with date picker 
 		// => radio buttons for 2 or 3 years 
 		// => see pictures in Redmine
 		
+		// PERSONS
+		// Button select customer => opens wizard with contacts to select contact
+		// Button select requester => opens wizard with contacts to select contact
+		// Button select controller => opens wizard with contacts to select contact
+		
+		// VISUAL
 		// combo to select report style
+		// selection of plant image
 		
 		// rating of physical parameter (Temperatur, relative Luftfeuchtigkeit)
 		// rating of wasserkeimzahl???
-		
-		// selection of plant image
+
+		sc.setMinSize(composite.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 	}
 	
+	private void createGeneralComponents() {
+		Composite generalComposite = new Composite(generalSection, SWT.NONE);
+		generalComposite.setBackgroundMode(SWT.INHERIT_DEFAULT);
+		formToolkit.adapt(generalComposite);
+		formToolkit.paintBordersFor(generalComposite);
+		GridLayout gl = new GridLayout(5, false);
+		gl.marginWidth = 0;
+		generalComposite.setLayout(gl);
+		generalSection.setClient(generalComposite);
+		
+		Label titleLabel = new Label(generalComposite, SWT.NONE);
+		titleLabel.setLayoutData(LayoutUtil.createLeftGridData());
+		formToolkit.adapt(titleLabel, true, true);
+		titleLabel.setText("Title");
+		
+		titleText = new Text(generalComposite, SWT.NONE);
+		titleText.setTextLimit(50);
+		titleText.setLayoutData(LayoutUtil.createHorzCenteredFillData(4, 1));
+		formToolkit.adapt(titleText, true, true);
+		
+		Label plantLabel = new Label(generalComposite, SWT.NONE);
+		plantLabel.setLayoutData(LayoutUtil.createLeftGridData());
+		formToolkit.adapt(plantLabel, true, true);
+		plantLabel.setText("Plant");
+		
+		plantText = new Text(generalComposite, SWT.NONE);
+		plantText.setEditable(false);
+		plantText.setLayoutData(LayoutUtil.createHorzCenteredFillData(2, 1));
+		formToolkit.adapt(plantText, true, true);
+		
+		Button plantSelectionButton = formToolkit.createButton(generalComposite, "Select plant", SWT.PUSH);
+		plantSelectionButton.setLayoutData(LayoutUtil.createRightGridData(2));
+
+		Label reportDateLabel = new Label(generalComposite, SWT.NONE);
+		reportDateLabel.setLayoutData(LayoutUtil.createLeftGridData());
+		formToolkit.adapt(reportDateLabel, true, true);
+		reportDateLabel.setText("Inspection data");
+		
+		reportDateTime = new DateTime(generalComposite, SWT.BORDER | SWT.DATE | SWT.DROP_DOWN);
+		formToolkit.adapt(reportDateTime);
+		formToolkit.paintBordersFor(reportDateTime);
+		reportDateTime.setLayoutData(LayoutUtil.createHorzFillData(4));
+
+		Label inspectionDateLabel = new Label(generalComposite, SWT.NONE);
+		inspectionDateLabel.setLayoutData(LayoutUtil.createLeftGridData());
+		formToolkit.adapt(inspectionDateLabel, true, true);
+		inspectionDateLabel.setText("Inspection data");
+
+		inspectionDateTime = new DateTime(generalComposite, SWT.BORDER | SWT.DATE | SWT.DROP_DOWN);
+		formToolkit.adapt(inspectionDateTime);
+		formToolkit.paintBordersFor(inspectionDateTime);
+		inspectionDateTime.setLayoutData(LayoutUtil.createHorzFillData(4));
+		
+		Label nextInspectionLabel = new Label(generalComposite, SWT.NONE);
+		nextInspectionLabel.setLayoutData(LayoutUtil.createLeftGridData());
+		formToolkit.adapt(nextInspectionLabel, true, true);
+		nextInspectionLabel.setText("Next inspection");
+		
+		nextInsectionDateTime = new DateTime(generalComposite,  SWT.BORDER | SWT.DATE | SWT.DROP_DOWN);
+		formToolkit.adapt(nextInsectionDateTime);
+		formToolkit.paintBordersFor(nextInsectionDateTime);
+		nextInsectionDateTime.setLayoutData(LayoutUtil.createHorzFillData());
+		nextInsectionDateTime.setYear(inspectionDateTime.getYear() + 2);
+		
+		Button twoYearsButton = formToolkit.createButton(generalComposite, "2 years", SWT.PUSH);
+		twoYearsButton.setLayoutData(LayoutUtil.createRightGridData(2));
+		twoYearsButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				nextInsectionDateTime.setYear(inspectionDateTime.getYear() + 2);
+			}
+		});
+		
+		Button threeYearsButton = formToolkit.createButton(generalComposite, "3 years", SWT.PUSH);
+		threeYearsButton.setLayoutData(LayoutUtil.createRightGridData());
+		threeYearsButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				nextInsectionDateTime.setYear(inspectionDateTime.getYear() + 3);
+			}
+		});
+
+		Label overallLabel = new Label(generalComposite, SWT.NONE);
+		overallLabel.setLayoutData(LayoutUtil.createLeftGridData());
+		formToolkit.adapt(overallLabel, true, true);
+		overallLabel.setText("Overall comment");
+		
+		overallCombo = new Combo(generalComposite, SWT.NONE);
+		overallCombo.setLayoutData(LayoutUtil.createHorzFillData(4));
+		formToolkit.adapt(overallCombo);
+		formToolkit.paintBordersFor(overallCombo);	
+	}
+
+	private void createPersonsComponents() {
+		Composite personsComposite = new Composite(personsSection, SWT.NONE);
+		personsComposite.setBackgroundMode(SWT.INHERIT_DEFAULT);
+		formToolkit.adapt(personsComposite);
+		formToolkit.paintBordersFor(personsComposite);
+		GridLayout gl = new GridLayout(2, false);
+		gl.marginWidth = 0;
+		personsComposite.setLayout(gl);
+		personsSection.setClient(personsComposite);
+		
+		Label customerLabel = new Label(personsComposite, SWT.NONE);
+		formToolkit.adapt(customerLabel, true, true);
+		customerLabel.setText("Customer");
+
+		Button customerSelectionButton = formToolkit.createButton(personsComposite, "Select customer", SWT.PUSH);
+		customerSelectionButton.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
+		customerSelectionButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				// TODO request for person and fill out the corresponding fields with selction
+			}
+		});
+		
+		Label customerNameLabel = new Label(personsComposite, SWT.NONE);
+		customerNameLabel.setLayoutData(LayoutUtil.createLeftGridData());
+		formToolkit.adapt(customerNameLabel, true, true);
+		customerNameLabel.setText("Name");
+		
+		final Text customerNameText = new Text(personsComposite, SWT.NONE);
+		customerNameText.setLayoutData(LayoutUtil.createHorzCenteredFillData());
+		customerNameText.setEditable(false);
+		formToolkit.adapt(customerNameText, true, true);
+		
+		Label customerStreetLabel = new Label(personsComposite, SWT.NONE);
+		customerStreetLabel.setLayoutData(LayoutUtil.createLeftGridData());
+		formToolkit.adapt(customerStreetLabel, true, true);
+		customerStreetLabel.setText("Street");
+		
+		final Text customerStreetText = new Text(personsComposite, SWT.NONE);
+		customerStreetText.setLayoutData(LayoutUtil.createHorzCenteredFillData());
+		customerStreetText.setEditable(false);
+		formToolkit.adapt(customerStreetText, true, true);
+		
+		Label customerCityLabel = new Label(personsComposite, SWT.NONE);
+		customerCityLabel.setLayoutData(LayoutUtil.createLeftGridData());
+		formToolkit.adapt(customerCityLabel, true, true);
+		customerCityLabel.setText("City");
+		
+		final Text customerCityText = new Text(personsComposite, SWT.NONE);
+		customerCityText.setLayoutData(LayoutUtil.createHorzCenteredFillData());
+		customerCityText.setEditable(false);
+		formToolkit.adapt(customerCityText, true, true);
+
+		Label dummy = new Label(personsComposite, SWT.NONE);
+		dummy.setLayoutData(LayoutUtil.createFillData(2));
+
+		Label requestorLabel = new Label(personsComposite, SWT.NONE);
+		formToolkit.adapt(requestorLabel, true, true);
+		requestorLabel.setText("Requestor");
+
+		Button requestorSelectionButton = formToolkit.createButton(personsComposite, "Select requestor", SWT.PUSH);
+		requestorSelectionButton.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
+		requestorSelectionButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				// TODO request for person and fill out the corresponding fields with selction
+			}
+		});
+		
+		Label requestorNameLabel = new Label(personsComposite, SWT.NONE);
+		requestorNameLabel.setLayoutData(LayoutUtil.createLeftGridData());
+		formToolkit.adapt(requestorNameLabel, true, true);
+		requestorNameLabel.setText("Name");
+		
+		final Text requestorNameText = new Text(personsComposite, SWT.NONE);
+		requestorNameText.setLayoutData(LayoutUtil.createHorzCenteredFillData());
+		requestorNameText.setEditable(false);
+		formToolkit.adapt(requestorNameText, true, true);
+		
+		Label requestorStreetLabel = new Label(personsComposite, SWT.NONE);
+		requestorStreetLabel.setLayoutData(LayoutUtil.createLeftGridData());
+		formToolkit.adapt(requestorStreetLabel, true, true);
+		requestorStreetLabel.setText("Street");
+		
+		final Text requestorStreetText = new Text(personsComposite, SWT.NONE);
+		requestorStreetText.setLayoutData(LayoutUtil.createHorzCenteredFillData());
+		customerCityText.setEditable(false);
+		formToolkit.adapt(requestorStreetText, true, true);
+		
+		Label requestorCityLabel = new Label(personsComposite, SWT.NONE);
+		requestorCityLabel.setLayoutData(LayoutUtil.createLeftGridData());
+		formToolkit.adapt(requestorCityLabel, true, true);
+		requestorCityLabel.setText("City");
+		
+		final Text requestorCityText = new Text(personsComposite, SWT.NONE);
+		requestorCityText.setLayoutData(LayoutUtil.createHorzCenteredFillData());
+		requestorCityText.setEditable(false);
+		formToolkit.adapt(requestorCityText, true, true);
+
+		dummy = new Label(personsComposite, SWT.NONE);
+		dummy.setLayoutData(LayoutUtil.createFillData(2));
+		
+		Label controllerLabel = new Label(personsComposite, SWT.NONE);
+		formToolkit.adapt(controllerLabel, true, true);
+		controllerLabel.setText("Controller");
+
+		Button controllerSelectionButton = formToolkit.createButton(personsComposite, "Select customer", SWT.PUSH);
+		controllerSelectionButton.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
+		controllerSelectionButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				// TODO request for person and fill out the corresponding fields with selction
+			}
+		});
+		
+		Label controllerNameLabel = new Label(personsComposite, SWT.NONE);
+		controllerNameLabel.setLayoutData(LayoutUtil.createLeftGridData());
+		formToolkit.adapt(controllerNameLabel, true, true);
+		controllerNameLabel.setText("Name");
+		
+		final Text controllerNameText = new Text(personsComposite, SWT.NONE);
+		controllerNameText.setLayoutData(LayoutUtil.createHorzCenteredFillData());
+		controllerNameText.setEditable(false);
+		formToolkit.adapt(controllerNameText, true, true);
+		
+		Label controllerStreetLabel = new Label(personsComposite, SWT.NONE);
+		controllerStreetLabel.setLayoutData(LayoutUtil.createLeftGridData());
+		formToolkit.adapt(controllerStreetLabel, true, true);
+		controllerStreetLabel.setText("Street");
+		
+		final Text controllerStreetText = new Text(personsComposite, SWT.NONE);
+		controllerStreetText.setLayoutData(LayoutUtil.createHorzCenteredFillData());
+		controllerStreetText.setEditable(false);
+		formToolkit.adapt(controllerStreetText, true, true);
+		
+		Label controllerCityLabel = new Label(personsComposite, SWT.NONE);
+		controllerCityLabel.setLayoutData(LayoutUtil.createLeftGridData());
+		formToolkit.adapt(controllerCityLabel, true, true);
+		controllerCityLabel.setText("City");
+		
+		final Text controllerCityText = new Text(personsComposite, SWT.NONE);
+		controllerCityText.setLayoutData(LayoutUtil.createHorzCenteredFillData());
+		controllerCityText.setEditable(false);
+		formToolkit.adapt(controllerCityText, true, true);
+
+	}
+
+	private void createVisualComponents() {
+		Composite visualComposite = new Composite(visualSection, SWT.NONE);
+		visualComposite.setBackgroundMode(SWT.INHERIT_DEFAULT);
+		formToolkit.adapt(visualComposite);
+		formToolkit.paintBordersFor(visualComposite);
+		GridLayout gl = new GridLayout(3, false);
+		gl.marginWidth = 0;
+		visualComposite.setLayout(gl);
+		visualSection.setClient(visualComposite);
+		
+		Label photosLabel = new Label(visualComposite, SWT.NONE);
+		photosLabel.setLayoutData(LayoutUtil.createLeftGridData());
+		formToolkit.adapt(photosLabel, true, true);
+		photosLabel.setText("Photos");
+		
+		photosList = new List(visualComposite, SWT.BORDER);
+		formToolkit.adapt(photosList, true, true);
+		photosList.setLayoutData(LayoutUtil.createHorzFillData());
+		
+		Button photoEditButton = new Button(visualComposite, SWT.NONE);
+		formToolkit.adapt(photoEditButton, true, true);
+		photoEditButton.setText("Edit / Import");
+		photoEditButton.setLayoutData(LayoutUtil.createRightGridData());
+		photoEditButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				importPhotos();
+			}
+		});
+		
+		Label titlePhotoLabel = new Label(visualComposite, SWT.NONE);
+		titlePhotoLabel.setLayoutData(LayoutUtil.createLeftGridData());
+		formToolkit.adapt(titlePhotoLabel, true, true);
+		titlePhotoLabel.setText("Title photo");
+		
+		titlePhotoText = new Text(visualComposite, SWT.NONE);
+		titlePhotoText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		formToolkit.adapt(titlePhotoText, true, true);
+		titlePhotoText.setEditable(false);
+		
+		Button titlePhotoChooseButton = new Button(visualComposite, SWT.NONE);
+		formToolkit.adapt(titlePhotoChooseButton, true, true);
+		titlePhotoChooseButton.setText("Choose");
+		titlePhotoChooseButton.setLayoutData(LayoutUtil.createRightGridData());
+		titlePhotoChooseButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				// TODO select a photo, write the name to titlePhotoText
+			}
+		});
+		
+		Label plantPhotoLabel = new Label(visualComposite, SWT.NONE);
+		plantPhotoLabel.setLayoutData(LayoutUtil.createLeftGridData());
+		formToolkit.adapt(plantPhotoLabel, true, true);
+		plantPhotoLabel.setText("Plant photo");
+		
+		plantPhotoText = new Text(visualComposite, SWT.NONE);
+		plantPhotoText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		formToolkit.adapt(plantPhotoText, true, true);
+		plantPhotoText.setEditable(false);
+		
+		Button plantPhotoChooseButton = new Button(visualComposite, SWT.NONE);
+		formToolkit.adapt(plantPhotoChooseButton, true, true);
+		plantPhotoChooseButton.setText("Choose");
+		plantPhotoChooseButton.setLayoutData(LayoutUtil.createRightGridData());
+		plantPhotoChooseButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				// TODO select a photo, write the name to plantPhotoText
+			}
+		});
+
+		Label reportStyleLabel = new Label(visualComposite, SWT.NONE);
+		reportStyleLabel.setLayoutData(LayoutUtil.createLeftGridData());
+		formToolkit.adapt(reportStyleLabel, true, true);
+		reportStyleLabel.setText("Report style");
+		
+		// TODO init with styles, select the first
+		Combo reportStyleCombo = new Combo(visualComposite, SWT.NONE);
+		reportStyleCombo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
+		formToolkit.adapt(reportStyleCombo);
+		formToolkit.paintBordersFor(reportStyleCombo);
+	}
+
+	private void createBiologicalComponents() {
+		Composite biologicalComposite = new Composite(biologicalSection, SWT.NONE);
+		biologicalComposite.setBackgroundMode(SWT.INHERIT_DEFAULT);
+		formToolkit.adapt(biologicalComposite);
+		formToolkit.paintBordersFor(biologicalComposite);
+		GridLayout gl = new GridLayout(5, false);
+		gl.marginWidth = 0;
+		biologicalComposite.setLayout(gl);
+		biologicalSection.setClient(biologicalComposite);
+
+		new Label(biologicalComposite, SWT.NONE);
+		
+		Label germsLabel = new Label(biologicalComposite, SWT.NONE);
+		formToolkit.adapt(germsLabel, true, true);
+		germsLabel.setText("Germs / ml");
+		germsLabel.setLayoutData(LayoutUtil.createHorzFillData());
+		
+		Label gradeLabel = new Label(biologicalComposite, SWT.NONE);
+		formToolkit.adapt(gradeLabel, true, true);
+		gradeLabel.setText("Grade");
+		gradeLabel.setLayoutData(LayoutUtil.createHorzFillData());
+		
+		Label weightLabel = new Label(biologicalComposite, SWT.NONE);
+		formToolkit.adapt(weightLabel, true, true);
+		weightLabel.setText("Weight");
+		weightLabel.setLayoutData(LayoutUtil.createHorzFillData());
+
+		Label commentLabel = new Label(biologicalComposite, SWT.NONE);
+		formToolkit.adapt(commentLabel, true, true);
+		commentLabel.setText("Comment");
+		commentLabel.setLayoutData(LayoutUtil.createHorzFillData());
+
+		Label legionellaLabel = new Label(biologicalComposite, SWT.NONE);
+		legionellaLabel.setLayoutData(LayoutUtil.createLeftGridData());
+		formToolkit.adapt(legionellaLabel, true, true);
+		legionellaLabel.setText("Legionella");
+
+		legionellaText = new Text(biologicalComposite, SWT.NONE);
+		legionellaText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+		formToolkit.adapt(legionellaText, true, true);
+		// TODO only numbers (double), fill with value if exists
+
+		legionellaGradeCombo = new Combo(biologicalComposite, SWT.DROP_DOWN | SWT.READ_ONLY);
+		legionellaGradeCombo.setLayoutData(LayoutUtil.createHorzFillData());
+		formToolkit.adapt(legionellaGradeCombo);
+		formToolkit.paintBordersFor(legionellaGradeCombo);
+		fillGrades(legionellaGradeCombo);
+		// TODO select grade if exists
+		
+		legionellaWeightCombo = new Combo(biologicalComposite, SWT.DROP_DOWN | SWT.READ_ONLY);
+		legionellaWeightCombo.setLayoutData(LayoutUtil.createHorzFillData());
+		formToolkit.adapt(legionellaWeightCombo);
+		formToolkit.paintBordersFor(legionellaWeightCombo);
+		fillWeights(legionellaWeightCombo);
+		// TODO select weight if exists
+
+		legionellaCommentCombo = new Combo(biologicalComposite, SWT.NONE);
+		legionellaCommentCombo.setLayoutData(LayoutUtil.createHorzFillData());
+		formToolkit.adapt(legionellaCommentCombo);
+		formToolkit.paintBordersFor(legionellaCommentCombo);
+		ContentProposalUtil.enableContentProposal(legionellaCommentCombo);
+		// TODO set comment if exists
+		
+		Label sumGermsLabel = new Label(biologicalComposite, SWT.NONE);
+		sumGermsLabel.setLayoutData(LayoutUtil.createLeftGridData());
+		formToolkit.adapt(sumGermsLabel, true, true);
+		sumGermsLabel.setText("Sum germs");
+		
+		sumGermsText = new Text(biologicalComposite, SWT.NONE);
+		sumGermsText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+		formToolkit.adapt(sumGermsText, true, true);
+		// TODO only numbers (double), fill with value if exists
+
+		sumGermsGradeCombo = new Combo(biologicalComposite, SWT.DROP_DOWN | SWT.READ_ONLY);
+		sumGermsGradeCombo.setLayoutData(LayoutUtil.createHorzFillData());
+		formToolkit.adapt(sumGermsGradeCombo);
+		formToolkit.paintBordersFor(sumGermsGradeCombo);
+		fillGrades(sumGermsGradeCombo);
+		// TODO select grade if exists
+		
+		sumGermsWeightCombo = new Combo(biologicalComposite, SWT.DROP_DOWN | SWT.READ_ONLY);
+		sumGermsWeightCombo.setLayoutData(LayoutUtil.createHorzFillData());
+		formToolkit.adapt(sumGermsWeightCombo);
+		formToolkit.paintBordersFor(sumGermsWeightCombo);
+		fillWeights(sumGermsWeightCombo);
+		// TODO select weight if exists
+		
+		sumGermsCommentCombo = new Combo(biologicalComposite, SWT.NONE);
+		sumGermsCommentCombo.setLayoutData(LayoutUtil.createHorzFillData());
+		formToolkit.adapt(sumGermsCommentCombo);
+		formToolkit.paintBordersFor(sumGermsCommentCombo);
+		ContentProposalUtil.enableContentProposal(sumGermsCommentCombo);
+		// TODO set comment if exist
+	}
+
+	private void createPhysicalComponents() {
+		Composite physicalComposite = new Composite(physicalSection, SWT.NONE);
+		physicalComposite.setBackgroundMode(SWT.INHERIT_DEFAULT);
+		formToolkit.adapt(physicalComposite);
+		formToolkit.paintBordersFor(physicalComposite);
+		GridLayout gl = new GridLayout(5, false);
+		gl.marginWidth = 0;
+		physicalComposite.setLayout(gl);
+		physicalSection.setClient(physicalComposite);
+
+		new Label(physicalComposite, SWT.NONE);
+		
+		Label meassurementLabel = new Label(physicalComposite, SWT.NONE);
+		formToolkit.adapt(meassurementLabel, true, true);
+		meassurementLabel.setText("Meassurement");
+		meassurementLabel.setLayoutData(LayoutUtil.createHorzFillData());
+		
+		Label gradeLabel = new Label(physicalComposite, SWT.NONE);
+		formToolkit.adapt(gradeLabel, true, true);
+		gradeLabel.setText("Grade");
+		gradeLabel.setLayoutData(LayoutUtil.createHorzFillData());
+		
+		Label weightLabel = new Label(physicalComposite, SWT.NONE);
+		formToolkit.adapt(weightLabel, true, true);
+		weightLabel.setText("Weight");
+		weightLabel.setLayoutData(LayoutUtil.createHorzFillData());
+
+		Label commentLabel = new Label(physicalComposite, SWT.NONE);
+		formToolkit.adapt(commentLabel, true, true);
+		commentLabel.setText("Comment");
+		commentLabel.setLayoutData(LayoutUtil.createHorzFillData());
+
+		Label temperatureLabel = new Label(physicalComposite, SWT.NONE);
+		temperatureLabel.setLayoutData(LayoutUtil.createLeftGridData());
+		formToolkit.adapt(temperatureLabel, true, true);
+		temperatureLabel.setText("Temperature");
+
+		temperatureText = new Text(physicalComposite, SWT.NONE);
+		temperatureText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+		formToolkit.adapt(temperatureText, true, true);
+		// TODO only numbers (double), fill with value if exists
+		
+		temperatureGradeCombo = new Combo(physicalComposite, SWT.DROP_DOWN | SWT.READ_ONLY);
+		temperatureGradeCombo.setLayoutData(LayoutUtil.createHorzFillData());
+		formToolkit.adapt(temperatureGradeCombo);
+		formToolkit.paintBordersFor(temperatureGradeCombo);
+		fillGrades(temperatureGradeCombo);
+		// TODO select grade if exists
+		
+		temperatureWeightCombo = new Combo(physicalComposite, SWT.DROP_DOWN | SWT.READ_ONLY);
+		temperatureWeightCombo.setLayoutData(LayoutUtil.createHorzFillData());
+		formToolkit.adapt(temperatureWeightCombo);
+		formToolkit.paintBordersFor(temperatureWeightCombo);
+		fillWeights(temperatureWeightCombo);
+		// TODO select weight if exists
+
+		temperatureCommentCombo = new Combo(physicalComposite, SWT.NONE);
+		temperatureCommentCombo.setLayoutData(LayoutUtil.createHorzFillData());
+		formToolkit.adapt(temperatureCommentCombo);
+		formToolkit.paintBordersFor(temperatureCommentCombo);
+		ContentProposalUtil.enableContentProposal(temperatureCommentCombo);
+		// TODO set comment if exists
+		
+		Label humidityLabel = new Label(physicalComposite, SWT.NONE);
+		humidityLabel.setLayoutData(LayoutUtil.createLeftGridData());
+		formToolkit.adapt(humidityLabel, true, true);
+		humidityLabel.setText("Relative humidity");
+		
+		humidityText = new Text(physicalComposite, SWT.NONE);
+		humidityText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+		formToolkit.adapt(humidityText, true, true);
+		// TODO only numbers (double), fill with value if exists
+
+		humidityGradeCombo = new Combo(physicalComposite, SWT.DROP_DOWN | SWT.READ_ONLY);
+		humidityGradeCombo.setLayoutData(LayoutUtil.createHorzFillData());
+		formToolkit.adapt(humidityGradeCombo);
+		formToolkit.paintBordersFor(humidityGradeCombo);
+		fillGrades(humidityGradeCombo);
+		// TODO select grade if exists
+		
+		humidityWeightCombo = new Combo(physicalComposite, SWT.DROP_DOWN | SWT.READ_ONLY);
+		humidityWeightCombo.setLayoutData(LayoutUtil.createHorzFillData());
+		formToolkit.adapt(humidityWeightCombo);
+		formToolkit.paintBordersFor(humidityWeightCombo);
+		fillWeights(humidityWeightCombo);
+		// TODO select weight if exists
+		
+		humitiyCommentCombo = new Combo(physicalComposite, SWT.NONE);
+		humitiyCommentCombo.setLayoutData(LayoutUtil.createHorzFillData());
+		formToolkit.adapt(humitiyCommentCombo);
+		formToolkit.paintBordersFor(humitiyCommentCombo);
+		ContentProposalUtil.enableContentProposal(humitiyCommentCombo);
+		// TODO set comment if exist
+
+	}
+
+	private void importPhotos() {
+		// TODO import photos with the photo wizard
+		
+	}
+
 	@Override
 	public void setSelectedComponent(Component component) {
 		// TODO Auto-generated method stub
 		
 	}
 
+	private void fillGrades(Combo combo) {
+		for (int i = 0; i < 6; i++) {
+			combo.add(Integer.toString(i));
+		}
+		combo.select(0);
+	}
+
+	private void fillWeights(Combo combo) {
+		for (int i = 1; i <= 6; i++) {
+			combo.add(Integer.toString(i));
+		}
+		combo.select(0);
+	}
+
+	@Override
+	public void dispose() {
+		formToolkit.dispose();
+		super.dispose();
+	}
+	
 	@Override
 	protected void checkSubclass() {
 		// Disable the check that prevents subclassing of SWT components

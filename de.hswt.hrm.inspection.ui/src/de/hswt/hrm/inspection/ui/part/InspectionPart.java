@@ -17,7 +17,7 @@ import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.ActionContributionItem;
-import org.eclipse.jface.action.IContributionItem;
+import org.eclipse.jface.action.Separator;
 
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 
@@ -43,10 +43,11 @@ public class InspectionPart {
 	private TabItem physicalRatingTab;
 	private TabItem performanceTab;
 
-	private IContributionItem addContribution;
-	private IContributionItem copyContribution;
-	private IContributionItem editContribution;
-	private IContributionItem evaluateContribution;
+	private ActionContributionItem saveContribution;
+	private ActionContributionItem addContribution;
+	private ActionContributionItem copyContribution;
+	private ActionContributionItem editContribution;
+	private ActionContributionItem evaluateContribution;
 
 	private ReportGeneralComposite reportGeneralComposite;
 
@@ -148,25 +149,38 @@ public class InspectionPart {
 
 	private void createActions() {
 		// TODO translate
-		
 		Action evaluateAction = new Action("Report") {
 			@Override
 			public void run() {
 				super.run();
-				// TODO read selected inspection/report and init the
-				// evaluation tab with it
-				tabFolder.setSelection(generalTab);
+				// TODO create latex report
 			}
 		};
 		evaluateAction.setDescription("Edit an exisitng report.");
 		evaluateContribution = new ActionContributionItem(evaluateAction);
 		form.getToolBarManager().add(evaluateContribution);
+
+		form.getToolBarManager().add(new Separator());
+		
+		Action saveAction = new Action("Save") {
+			@Override
+			public void run() {
+				super.run();
+				reportsOverviewComposite.addInspection();
+			}
+		};
+		saveAction.setDescription("Save the current edited report.");
+		saveAction.setEnabled(false);
+		saveContribution = new ActionContributionItem(saveAction);
+		form.getToolBarManager().add(saveContribution);
+
+		form.getToolBarManager().add(new Separator());
 		
 		Action editAction = new Action("Edit") {
 			@Override
 			public void run() {
 				super.run();
-				reportsOverviewComposite.editInspection();
+				tabFolder.setSelection(generalTab);
 			}
 		};
 		editAction.setDescription("Edit an exisitng report.");
