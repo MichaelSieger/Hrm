@@ -74,14 +74,15 @@ public class ContactWizardPageOne extends WizardPage {
         setKeyListener();
         setControl(container);
         setPageComplete(false);
-        setToolTips();
     }
     
-    private void setToolTips() {
-        HashMap<String, Text> widgets = getMandatoryWidgets();
-        for (Text text : widgets.values()) {
-            text.setToolTipText(XWT.getElementName((Object) text));
+    private void setToolTipText(Composite container, String textName, String toolTip) {
+        Text t = (Text) XWT.findElementByName(container, textName);
+        if (t == null) {
+            LOG.error("Text '" + textName + "' not found.");
+            return;
         }
+        t.setToolTipText(toolTip);
     }
 
     private void setLabelText(final Composite container, final String labelName, final String text) {
@@ -96,11 +97,18 @@ public class ContactWizardPageOne extends WizardPage {
     }
 
     private void translate(final Composite container) {
+        // Labels
         setLabelText(container, "lblName", I18N.tr("Name"));
         setLabelText(container, "lblStreet", I18N.tr("Street"));
         setLabelText(container, "lblStreetNumber", I18N.tr("Streetnumber"));
         setLabelText(container, "lblCity", I18N.tr("City"));
         setLabelText(container, "lblZipCode", I18N.tr("Zipcode"));
+        // ToolTips
+        setToolTipText(container, "name", I18N.tr("Name"));
+        setToolTipText(container, "street", I18N.tr("Street"));
+        setToolTipText(container, "streetNumber", I18N.tr("Streetnumber"));
+        setToolTipText(container, "zipCode", I18N.tr("Zipcode"));
+        setToolTipText(container, "city", I18N.tr("City"));
         // setLabelText(container, "lblPhone", "Phone");
         // setLabelText(container, "lblFax", "Fax");
         // setLabelText(container, "lblMobilePhone", "Mobile");
@@ -145,11 +153,11 @@ public class ContactWizardPageOne extends WizardPage {
         for (int i = 0; i < manArray.length; i++) {
             isValid = checkValidity(manArray[i]);
             if (manArray[i].getText().length() == 0) {
-                setErrorMessage("Field \"" + XWT.getElementName((Object) manArray[i]) + "\" is mandatory.");
+                setErrorMessage("Field \"" + manArray[i].getToolTipText() + "\" is mandatory.");
                 return false;
             }
             if (!isValid) {
-                setErrorMessage("Input for \"" + XWT.getElementName((Object) manArray[i]) + "\" is invalid.");
+                setErrorMessage("Input for \"" + manArray[i].getToolTipText() + "\" is invalid.");
                 return false;
             }
         }
