@@ -54,6 +54,7 @@ public class ContactWizardPageTwo extends WizardPage{
         FormUtil.initSectionColors((Section) XWT.findElementByName(container, "Optional"));
         setControl(container);
         setKeyListener();
+        setToolTips();
     }
     
     private void updateFields(Composite Container) {
@@ -85,7 +86,7 @@ public class ContactWizardPageTwo extends WizardPage{
     public boolean isPageComplete() {
         Text eMail = (Text) XWT.findElementByName(container, "email");
         if (eMail.getText().length() != 0 && !emailVal.isValid(eMail.getText())) {
-            setErrorMessage("E-Mail Adresse ist ungültig!");
+            setErrorMessage("Invalid email!");
             return false;
         }
         setErrorMessage(null);
@@ -105,5 +106,12 @@ public class ContactWizardPageTwo extends WizardPage{
                     getWizard().getContainer().updateButtons();
                 }
             });
+    }
+    
+    private void setToolTips() {
+        HashMap<String, Text> widgets = getOptionalWidgets();
+        for (Text text : widgets.values()) {
+            text.setToolTipText(XWT.getElementName((Object) text));
+        }
     }
 }
