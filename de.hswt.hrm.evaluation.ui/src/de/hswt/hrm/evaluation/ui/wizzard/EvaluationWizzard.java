@@ -11,83 +11,95 @@ import org.slf4j.LoggerFactory;
 import com.google.common.base.Optional;
 
 import de.hswt.hrm.common.database.exception.DatabaseException;
+import de.hswt.hrm.common.database.exception.SaveException;
 import de.hswt.hrm.evaluation.model.Evaluation;
 import de.hswt.hrm.evaluation.service.EvaluationService;
 
 public class EvaluationWizzard extends Wizard {
 
-	private static final Logger LOG = LoggerFactory
-			.getLogger(EvaluationWizzard.class);
+    private static final Logger LOG = LoggerFactory.getLogger(EvaluationWizzard.class);
 
-	@Inject
-	private EvaluationService evalService;
+    @Inject
+    private EvaluationService evalService;
 
-	private EvaluationWizzardPageOne first;
-	private Optional<Evaluation> eval;
+    private EvaluationWizzardPageOne first;
+    private Optional<Evaluation> eval;
 
-	public EvaluationWizzard(IEclipseContext context, Optional<Evaluation> eval) {
-		this.eval = eval;
-		this.first = new EvaluationWizzardPageOne("First Page", eval);
-		ContextInjectionFactory.inject(first, context);
+    public EvaluationWizzard(IEclipseContext context, Optional<Evaluation> eval) {
+        this.eval = eval;
+        this.first = new EvaluationWizzardPageOne("First Page", eval);
+        ContextInjectionFactory.inject(first, context);
 
-		if (eval.isPresent()) {
-			setWindowTitle("Edit Evaluation: " + eval.get().getName());
-		} else {
-			setWindowTitle("Create new Evaluation");
-		}
-	}
+        if (eval.isPresent()) {
+            setWindowTitle("Edit Evaluation: " + eval.get().getName());
+        }
+        else {
+            setWindowTitle("Create new Evaluation");
+        }
+    }
 
-	public void addPages() {
-		addPage(first);
-	}
+    public void addPages() {
+        addPage(first);
+    }
 
-	public boolean canFinish() {
-		return first.isPageComplete();
-	}
+    public boolean canFinish() {
+        return first.isPageComplete();
+    }
 
-	@Override
-	public boolean performFinish() {
-		if (eval.isPresent()) {
-			return editExistingEvaluation();
-		}
-		return insertNewEvaluation();
-	}
+    @Override
+    public boolean performFinish() {
+        if (eval.isPresent()) {
+            return editExistingEvaluation();
+        }
+        return insertNewEvaluation();
+    }
 
-	private boolean insertNewEvaluation() {
-		// TODO Auto-generated method stub
-		return false;
-	}
+    private boolean insertNewEvaluation() {
 
-	private boolean editExistingEvaluation() {
-		Evaluation e = this.eval.get();
+        Evaluation e = new Evaluation(first.getName(), first.getDesc());
+        try {
+            this.eval = Optional.of(evalService.insert(e));
+        }
+        catch (SaveException e2) {
+            LOG.error("An erroor occured", e2);
+            return false;
+        }
 
-		try {
-			e = evalService.findById(e.getId());
-			e = setValues(eval);
-			evalService.update(e);
-			eval = Optional.of(e);
-		} catch (DatabaseException de) {
-			LOG.error("An error occured: ", de);
-		}
+        return true;
 
-		return true;
-	}
+    }
 
-	private Evaluation setValues(Optional<Evaluation> e) {
+    private boolean editExistingEvaluation() {
+        Evaluation e = this.eval.get();
 
-		Evaluation eval = null;
+        try {
+            e = setValues(eval);
+            evalService.update(e);
+            eval = Optional.of(e);
+        }
+        catch (DatabaseException de) {
+            LOG.error("An error occured: ", de);
+            return false;
+        }
 
-		if (e.isPresent()) {
-			eval = e.get();
-			eval.setName(first.getName());
-			eval.setText(first.getDesc());
-		}
+        return true;
+    }
 
-		return eval;
-	}
+    private Evaluation setValues(Optional<Evaluation> e) {
 
-	public Optional<Evaluation> getEval() {
-		return eval;
-	}
+        Evaluation eval = null;
+
+        if (e.isPresent()) {
+            eval = e.get();
+            eval.setName(first.getName());
+            eval.setText(first.getDesc());
+        }
+
+        return eval;
+    }
+
+    public Optional<Evaluation> getEval() {
+        return eval;
+    }
 
 }

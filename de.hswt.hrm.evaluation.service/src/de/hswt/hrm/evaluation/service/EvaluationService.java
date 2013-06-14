@@ -45,10 +45,15 @@ public class EvaluationService {
     }
 
     public void update(final Evaluation evaluation) throws ElementNotFoundException, SaveException {
-        evalDao.insert(evaluation);
+        evalDao.update(evaluation);
     }
 
-    public void refresh(Evaluation selectedPlace) throws DatabaseException {
+    public void refresh(Evaluation eval) throws DatabaseException {
+
+        Evaluation fromDb = evalDao.findById(eval.getId());
+
+        eval.setName(fromDb.getName());
+        eval.setText(fromDb.getText());
 
     }
 

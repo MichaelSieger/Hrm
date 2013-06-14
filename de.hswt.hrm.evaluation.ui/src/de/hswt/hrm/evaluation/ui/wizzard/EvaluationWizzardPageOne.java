@@ -1,6 +1,7 @@
 package de.hswt.hrm.evaluation.ui.wizzard;
 
 import java.net.URL;
+import java.util.Collection;
 
 import javax.inject.Inject;
 
@@ -24,123 +25,145 @@ import de.hswt.hrm.evaluation.service.EvaluationService;
 
 public class EvaluationWizzardPageOne extends WizardPage {
 
-	private Optional<Evaluation> eval;
-	private Composite container;
-	private Text nameText;
-	private Text descText;
+    private Optional<Evaluation> eval;
+    private Composite container;
+    private Text nameText;
+    private Text descText;
 
-	private String name;
-	private String text;
+    private Collection<Evaluation> evaluations;
+    private boolean first = true;
 
-	@Inject
-	private EvaluationService evalService;
+    @Inject
+    private EvaluationService evalService;
 
-	private static final Logger LOG = LoggerFactory
-			.getLogger(EvaluationWizzardPageOne.class);
+    private static final Logger LOG = LoggerFactory.getLogger(EvaluationWizzardPageOne.class);
 
-	public EvaluationWizzardPageOne(String title, Optional<Evaluation> eval) {
-		super(title);
-		this.eval = eval;
-		setDescription(createDescription());
+    public EvaluationWizzardPageOne(String title, Optional<Evaluation> eval) {
+        super(title);
+        this.eval = eval;
+        setDescription(createDescription());
 
-	}
+    }
 
-	private String createDescription() {
-		if (eval.isPresent()) {
-			return "Change an Evaluation";
-		}
-		return "Add a new Evaluation";
-	}
+    private String createDescription() {
+        if (eval.isPresent()) {
+            return "Change an Evaluation";
+        }
+        return "Add a new Evaluation";
+    }
 
-	@Override
-	public void createControl(Composite parent) {
-		parent.setLayout(new PageContainerFillLayout());
-		URL url = EvaluationWizzardPageOne.class.getClassLoader().getResource(
-				"de/hswt/hrm/evaluation/ui/xwt/EvaluationWizardWindow"
-						+ IConstants.XWT_EXTENSION_SUFFIX);
-		try {
-			container = (Composite) XWTForms.load(parent, url);
-		} catch (Exception e) {
-			LOG.error("An error occured: ", e);
-		}
+    @Override
+    public void createControl(Composite parent) {
+        parent.setLayout(new PageContainerFillLayout());
+        URL url = EvaluationWizzardPageOne.class.getClassLoader().getResource(
+                "de/hswt/hrm/evaluation/ui/xwt/EvaluationWizardWindow"
+                        + IConstants.XWT_EXTENSION_SUFFIX);
+        try {
+            container = (Composite) XWTForms.load(parent, url);
+        }
+        catch (Exception e) {
+            LOG.error("An error occured: ", e);
+        }
 
-		nameText = (Text) XWT.findElementByName(container, "name");
-		descText = (Text) XWT.findElementByName(container, "desc");
+        nameText = (Text) XWT.findElementByName(container, "name");
+        descText = (Text) XWT.findElementByName(container, "desc");
 
-		if (this.eval.isPresent()) {
-			updateFields();
-		}
+        if (this.eval.isPresent()) {
+            updateFields();
+        }
+        try {
+            this.evaluations = evalService.findAll();
+        }
+        catch (DatabaseException e) {
+            LOG.error("An error occured", e);
+        }
 
-		nameText.addKeyListener(new KeyListener() {
+        addKeyListener(nameText);
+        addKeyListener(descText);
+        setControl(container);
+        setPageComplete(false);
 
-			@Override
-			public void keyReleased(KeyEvent e) {
-				checkPageComplete();
-			}
+    }
 
-			@Override
-			public void keyPressed(KeyEvent e) {
-			}
-		});
+    private void addKeyListener(Text text) {
+        text.addKeyListener(new KeyListener() {
 
-		setControl(container);
-		setPageComplete(false);
+            @Override
+            public void keyReleased(KeyEvent e) {
+                checkPageComplete();
+            }
 
-	}
+            @Override
+            public void keyPressed(KeyEvent e) {
+            }
+        });
+    }
 
-	private void updateFields() {
-		Evaluation e = eval.get();
-		nameText.setText(e.getText());
-		descText.setText(e.getText());
-	}
+    private void updateFields() {
+        Evaluation e = eval.get();
+        nameText.setText(e.getName());
+        descText.setText(e.getText());
+    }
 
-	private void checkPageComplete() {
+    private void checkPageComplete() {
 
-		setErrorMessage(null);
-		if (isAlreadyPresent(nameText.getText())) {
-			setErrorMessage("An Evaluation with name " + nameText.getText()
-					+ " is already present");
-		}
+        if (first) {
+            first = false;
+            setPageComplete(false);
+            return;
+        }
 
-	}
+        setErrorMessage(null);
 
-	private boolean isAlreadyPresent(String text) {
+        if (descText.getText().isEmpty()) {
+            setErrorMessage("Description must not be empty");
+        }
 
-		boolean present = false;
+        else if (nameText.getText().isEmpty()) {
+            setErrorMessage("Name must not be empty...");
+        }
 
-		if (text == null | text.isEmpty()) {
-			present = true;
-		}
-		try {
-			for (Evaluation e : evalService.findAll()) {
-				if (e.getName().equals(text)) {
-					present = true;
-				}
-			}
-		} catch (DatabaseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return present;
+        else if (isAlreadyPresent(nameText.getText())) {
+            setErrorMessage("An Evaluation with name " + nameText.getText() + " is already present");
+        }
 
-	}
+    }
 
-	@Override
-	public void setErrorMessage(String newMessage) {
-		if (newMessage == null || newMessage.isEmpty()) {
-			setPageComplete(true);
-		} else {
-			setPageComplete(false);
-		}
-		super.setErrorMessage(newMessage);
-	}
+    private boolean isAlreadyPresent(String text) {
 
-	public String getName() {
-		return nameText.getText();
-	}
+        boolean present = false;
 
-	public String getDesc() {
-		return descText.getText();
-	}
+        if (text == null | text.isEmpty()) {
+            present = true;
+        }
+
+        for (Evaluation e : this.evaluations) {
+            if (e.getName().equals(text)) {
+                present = true;
+            }
+        }
+
+        return present;
+
+    }
+
+    @Override
+    public void setErrorMessage(String newMessage) {
+        if (newMessage == null || newMessage.isEmpty()) {
+            setPageComplete(true);
+        }
+        else {
+            setPageComplete(false);
+        }
+        super.setErrorMessage(newMessage);
+    }
+
+    public String getName() {
+        return nameText.getText();
+    }
+
+    public String getDesc() {
+        return descText.getText();
+    }
 
 }

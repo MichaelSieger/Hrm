@@ -2,7 +2,6 @@ package de.hswt.hrm.evaluation.service;
 
 import org.junit.Test;
 
-import de.hswt.hrm.evaluation.model.Evaluation;
 import de.hswt.hrm.test.database.AbstractDatabaseTest;
 
 public class EvaluationServiceTest extends AbstractDatabaseTest {

@@ -100,7 +100,7 @@ public class EvaluationDao implements IEvaluationDao {
                     if (generatedKeys.next()) {
                         int id = generatedKeys.getInt(1);
 
-                        // Create new Place with id
+                        // Create new Evaluation with id
                         Evaluation inserted = new Evaluation(id, evaluation.getName(),
                                 evaluation.getText());
                         return inserted;

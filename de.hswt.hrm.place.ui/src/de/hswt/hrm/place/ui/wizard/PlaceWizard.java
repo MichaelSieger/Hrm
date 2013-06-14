@@ -17,13 +17,13 @@ public class PlaceWizard extends Wizard {
     private static final Logger LOG = LoggerFactory.getLogger(PlaceWizard.class);
     private PlaceWizardPageOne first;
     private Optional<Place> place;
-    
+
     @Inject
     private PlaceService placeService;
 
     public PlaceWizard(Optional<Place> place) {
         this.place = place;
-        
+
         if (place.isPresent()) {
             setWindowTitle("Standort bearbeiten");
         }
@@ -31,7 +31,7 @@ public class PlaceWizard extends Wizard {
             setWindowTitle("Neuen Standort hinzufügen");
         }
     }
-    
+
     public Optional<Place> getPlace() {
         return place;
     }
@@ -49,18 +49,18 @@ public class PlaceWizard extends Wizard {
 
     @Override
     public boolean performFinish() {
-    	if (place.isPresent()) {
-    	    return editExistingPlace();
-    	}
+        if (place.isPresent()) {
+            return editExistingPlace();
+        }
 
-    	return insertNewPlace(); 
+        return insertNewPlace();
     }
-    
+
     private boolean editExistingPlace() {
         if (placeService == null) {
             LOG.error("PlaceService not injected to PlaceWizard.");
         }
-        
+
         try {
             Place p = first.getPlace();
             placeService.update(p);
@@ -75,10 +75,7 @@ public class PlaceWizard extends Wizard {
     }
 
     private boolean insertNewPlace() {
-        if (placeService == null) {
-            LOG.error("PlaceService not injected to PlaceWizard.");
-        }
-        
+
         try {
             Place p = first.getPlace();
             place = Optional.of(placeService.insert(p));
