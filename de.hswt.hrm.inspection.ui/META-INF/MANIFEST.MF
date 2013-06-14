@@ -22,5 +22,4 @@ Import-Package: de.hswt.hrm.common.ui.swt.constants,
  de.hswt.hrm.common.ui.swt.utils,
  de.hswt.hrm.common.ui.swt.wizards,
  de.hswt.hrm.component.model,
- de.hswt.hrm.inspection.model,
- org.eclipse.ui.dialogs
+ de.hswt.hrm.inspection.model
