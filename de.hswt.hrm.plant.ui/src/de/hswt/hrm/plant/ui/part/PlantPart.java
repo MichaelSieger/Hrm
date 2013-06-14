@@ -127,6 +127,13 @@ public class PlantPart {
         form.getBody().setLayout(fillLayout);
 
         tabFolder = new TabFolder(form.getBody(), SWT.NONE);
+        tabFolder.setBackgroundMode(SWT.INHERIT_FORCE);
+        toolkit.adapt(tabFolder);
+        toolkit.paintBordersFor(tabFolder);
+
+        plantsTab = new TabItem(tabFolder, SWT.NONE);
+        plantsTab.setText("Plants");
+
         tabFolder.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
@@ -140,13 +147,7 @@ public class PlantPart {
                 }
             }
         });
-        tabFolder.setBackgroundMode(SWT.INHERIT_FORCE);
-        toolkit.adapt(tabFolder);
-        toolkit.paintBordersFor(tabFolder);
-
-        plantsTab = new TabItem(tabFolder, SWT.NONE);
-        plantsTab.setText("Plants");
-
+        
         plantsHeaderSection = toolkit.createSection(tabFolder, Section.TITLE_BAR);
         plantsTab.setControl(plantsHeaderSection);
         toolkit.paintBordersFor(plantsHeaderSection);

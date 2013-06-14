@@ -31,13 +31,11 @@ public class ComponentLoadThread extends Thread{
 
 	private final SchemeComposite composite;
 	private final ComponentService componentsService;
-	private final Display display;
 	
-	public ComponentLoadThread(SchemeComposite schemeCompositeNew, Display display, ComponentService compService) {
+	public ComponentLoadThread(SchemeComposite schemeCompositeNew, ComponentService compService) {
 		super();
 		this.composite = schemeCompositeNew;
 		this.componentsService = compService;
-		this.display = display;
 	}
 
 	@Override
@@ -53,7 +51,16 @@ public class ComponentLoadThread extends Thread{
 		    //Ignore components without category
 		    if(c.getCategory().isPresent()){
 		        try {
-                    result.add(ComponentConverter.convert(display, c));
+                    result.add(ComponentConverter.convert(composite.getDisplay(), c));
+                    //Always copy the list before passing to the ui thread.
+                    final List<RenderedComponent> rCopy = new ArrayList<>(result);
+                    composite.getDisplay().asyncExec(new Runnable() {
+            			
+            			@Override
+            			public void run() {
+            				composite.setRenderedComponents(rCopy);
+            			}
+            		});
                 }
                 catch (IOException e) {
                 	LOG.error("Error on drawing image", e);
@@ -62,15 +69,6 @@ public class ComponentLoadThread extends Thread{
 		    	LOG.warn(String.format("The Component %s has no category, and cannot be drawn", c.getName()));
 		    }
 		}
-        //Always copy the list before passing to the ui thread.
-        final List<RenderedComponent> rCopy = new ArrayList<>(result);
-        display.asyncExec(new Runnable() {
-			
-			@Override
-			public void run() {
-				composite.setRenderedComponents(rCopy);
-			}
-		});
 	}
 	
 }

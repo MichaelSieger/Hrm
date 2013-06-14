@@ -8,7 +8,6 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
-import javax.swing.text.html.FormSubmitEvent;
 
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.jface.action.Action;
@@ -32,19 +31,24 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Slider;
 import org.eclipse.ui.dialogs.FilteredTree;
 import org.eclipse.ui.dialogs.PatternFilter;
+import org.eclipse.ui.forms.widgets.FormToolkit;
+import org.eclipse.ui.forms.widgets.Section;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
 
+import de.hswt.hrm.common.database.exception.ElementNotFoundException;
 import de.hswt.hrm.common.database.exception.SaveException;
 import de.hswt.hrm.common.ui.swt.constants.SearchFieldConstants;
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
@@ -68,16 +72,34 @@ import de.hswt.hrm.scheme.ui.dnd.GridDropTargetListener;
 import de.hswt.hrm.scheme.ui.dnd.TreeDragListener;
 import de.hswt.hrm.scheme.ui.tree.SchemeTreeLabelProvider;
 import de.hswt.hrm.scheme.ui.tree.TreeContentProvider;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.ui.forms.widgets.FormToolkit;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.forms.widgets.Section;
-import org.eclipse.swt.graphics.Point;
 
 public class SchemeComposite extends Composite {
 
+	/**
+	 * How much is the grid to be move on button press?
+	 */
 	private static final int MOVE_AMOUNT = 3;
+	
+	/**
+	 * Which Drag operations are allowed
+	 */
+	private static final int DRAG_OPS = DND.DROP_COPY;
+	
+	/**
+	 * Which Drop operations are allowed
+	 */
+	private static final int DROP_OPS = DND.DROP_COPY;
+
+	/**
+	 * The pixel per grid range. Defines how far you can zoom in and out
+	 */
+	private static final int MIN_PPG = 20, MAX_PPG = 70;
+	
+	/**
+	 * The DND transfer type
+	 */
+	private static final Transfer[] TRANSFER = new Transfer[] { DragDataTransfer
+			.getInstance() };
 
 	private final static Logger LOG = LoggerFactory
 			.getLogger(SchemeComposite.class);
@@ -102,28 +124,9 @@ public class SchemeComposite extends Composite {
 	private List<IContributionItem> contributionItems = new ArrayList<IContributionItem>();
 
 	/**
-	 * The DND transfer type
-	 */
-	private static final Transfer[] TRANSFER = new Transfer[] { DragDataTransfer
-			.getInstance() };
-
-	/**
 	 * The background color of the scheme editor.
 	 */
 	private static final RGB EDITOR_BACKGROUND = new RGB(255, 255, 255);
-
-	private static final int DRAG_OPS = DND.DROP_COPY,
-			DROP_OPS = DND.DROP_COPY;
-
-	/**
-	 * The pixel per grid range. Defines how far you can zoom in and out
-	 */
-	private static final int MIN_PPG = 20, MAX_PPG = 70;
-
-	/**
-	 * The topmost gui parent
-	 */
-	// private Composite root;
 
 	private SchemeGrid grid;
 
@@ -134,8 +137,6 @@ public class SchemeComposite extends Composite {
 	 * pattern
 	 */
 	private PatternFilter filter;
-
-	private List<RenderedComponent> components;
 
 	private Plant plant;
 
@@ -239,7 +240,7 @@ public class SchemeComposite extends Composite {
 
 		// TODO remove
 		newScheme(new Plant(1, "bla"));
-		new ComponentLoadThread(this, this.getDisplay(), componentsService).start();
+		new ComponentLoadThread(this, componentsService).start();
 	}
 
 	/**
@@ -365,7 +366,7 @@ public class SchemeComposite extends Composite {
 	}
 
 	private void initGridDropTargetListener() {
-		gridListener = new GridDropTargetListener(grid, components, this);
+		gridListener = new GridDropTargetListener(grid, this);
 		gridDropTarget.addDropListener(gridListener);
 	}
 
@@ -380,12 +381,12 @@ public class SchemeComposite extends Composite {
 	}
 
 	private void initTreeDND() {
-		treeDragListener = new TreeDragListener(tree, components, grid);
+		treeDragListener = new TreeDragListener(tree, grid);
 		tree.addDragSupport(DRAG_OPS, TRANSFER, treeDragListener);
 	}
 
 	private void initGridDND() {
-		gridDragListener = new GridDragListener(grid, components);
+		gridDragListener = new GridDragListener(grid);
 		gridDragSource.addDragListener(gridDragListener);
 	}
 
@@ -458,7 +459,7 @@ public class SchemeComposite extends Composite {
 								});
 				try {
 					schemeService.insert(plant, schemeComps);
-				} catch (SaveException e1) {
+				} catch (SaveException|ElementNotFoundException e1) {
 					// TODO translate
 					MessageDialog.openError(shellProvider.getShell(),
 							"Fehler beim Speichern",
@@ -524,7 +525,9 @@ public class SchemeComposite extends Composite {
 
 	public void setRenderedComponents(List<RenderedComponent> components) {
 		System.out.println("size components: " + components.size());
-		this.components = components;
+		gridDragListener.setComponents(components);
+		gridListener.setComponents(components);
+		treeDragListener.setComponents(components);
 		tree.setInput(components);
 	}
 

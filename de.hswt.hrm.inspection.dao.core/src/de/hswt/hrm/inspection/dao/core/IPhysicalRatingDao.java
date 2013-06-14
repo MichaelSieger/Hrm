@@ -5,6 +5,7 @@ import java.util.Collection;
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.ElementNotFoundException;
 import de.hswt.hrm.common.database.exception.SaveException;
+import de.hswt.hrm.inspection.model.Inspection;
 import de.hswt.hrm.inspection.model.PhysicalRating;
 import de.hswt.hrm.scheme.model.Scheme;
 
@@ -27,9 +28,10 @@ public interface IPhysicalRatingDao {
 
     /**
      * @param scheme
-     * @return All physical ratings for the given scheme.
+     * @return All physical ratings for the given Inspection.
+     * @throws DatabaseException 
      */
-    Collection<PhysicalRating> findByScheme(final Scheme scheme);
+    Collection<PhysicalRating> findByInspection(final Inspection inspection) throws DatabaseException;
     
     /**
      * Add a new physical rating to storage.

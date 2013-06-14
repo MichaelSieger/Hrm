@@ -198,15 +198,25 @@ INSERT INTO `hrm`.`Target_Current` (`Target_Current_Report_FK`, `Target_Current_
 INSERT INTO `hrm`.`Target_Current` (`Target_Current_Report_FK`, `Target_Current_Component_Catalog_FK`) VALUES ('1', '3');
 
 ------------------------------------------------------------
--- Insert 3 different scheme component attributes in the `Scheme_Component_Attribute` Table
+-- Insert 2 different scheme component attributes in the `Scheme_Component_Attribute` Table
 ------------------------------------------------------------
 
 INSERT INTO `hrm`.`Scheme_Component_Attribute` (`Scheme_Component_Attribute_Component_FK`, `Scheme_Component_Attribute_Attribute_FK`, `Scheme_Component_Attribute_Value`) VALUES ('1', '1', '100');
 INSERT INTO `hrm`.`Scheme_Component_Attribute` (`Scheme_Component_Attribute_Component_FK`, `Scheme_Component_Attribute_Attribute_FK`, `Scheme_Component_Attribute_Value`) VALUES ('1', '2', '0.10');
 
 ------------------------------------------------------------
--- Insert 3 different summarys in the `Summary` Table
+-- Insert 2 different summarys in the `Summary` Table
 ------------------------------------------------------------
 
 INSERT INTO `hrm`.`Summary` (`Summary_Name`, `Summary_Text`) VALUES ('SummaryA', 'I am the first summary of an awesome piece of software called: HRM');
 INSERT INTO `hrm`.`Summary` (`Summary_Name`, `Summary_Text`) VALUES ('SummaryB', 'I am the second summary of an awesome piece of software called: HRM');
+
+------------------------------------------------------------
+-- Insert 4 different notes in the `Note` Table
+------------------------------------------------------------
+
+INSERT INTO `hrm`.`Note` (`Note_Name`, `Note_Text`) VALUES ('NoteA', 'Des schaut guad aus');
+INSERT INTO `hrm`.`Note` (`Note_Name`, `Note_Text`) VALUES ('NoteB', 'So a glumb !');
+INSERT INTO `hrm`.`Note` (`Note_Name`, `Note_Text`) VALUES ('NoteC', 'da brauchst nix richtn');
+INSERT INTO `hrm`.`Note` (`Note_Name`, `Note_Text`) VALUES ('NoteD', 'des schmeisst liaba weg, bua !');
+

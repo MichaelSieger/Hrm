@@ -2,12 +2,16 @@ package de.hswt.hrm.scheme.dao.jdbc;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkState;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -22,6 +26,7 @@ import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.ElementNotFoundException;
 import de.hswt.hrm.common.database.exception.SaveException;
 import de.hswt.hrm.component.dao.core.IComponentDao;
+import de.hswt.hrm.component.model.Attribute;
 import de.hswt.hrm.component.model.Component;
 import de.hswt.hrm.scheme.dao.core.ISchemeComponentDao;
 import de.hswt.hrm.scheme.dao.core.ISchemeDao;
@@ -73,13 +78,6 @@ public class SchemeComponentDao implements ISchemeComponentDao {
         catch (SQLException e) {
             throw new DatabaseException(e);
         }
-    }
-
-    @Override
-    public void insertComponent(Scheme scheme, SchemeComponent component) {
-        component.setScheme(scheme);
-        insertSchemeIfNecessary(component);
-        insertComponentIfNecessary(component);
     }
 
     @Override
@@ -141,12 +139,14 @@ public class SchemeComponentDao implements ISchemeComponentDao {
 
     @Override
     public SchemeComponent insert(SchemeComponent schemeComponent) throws SaveException {
-        if (schemeComponent.getId() >= 0) {
+        checkNotNull(schemeComponent, "SchemeComponent must not be null.");
+    	if (schemeComponent.getId() >= 0) {
             throw new IllegalStateException("SchemeComponent has already a valid ID.");
         }
         
-        insertSchemeIfNecessary(schemeComponent);
-        insertComponentIfNecessary(schemeComponent);
+    	checkState(schemeComponent.getScheme().isPresent(), "SchemeComponent must belong to a scheme.");
+    	checkState(schemeComponent.getScheme().get().getId() >= 0, "Scheme must have a valid ID.");
+    	checkState(schemeComponent.getComponent().getId() >= 0, "Component must have a valid ID.");
         
         SqlQueryBuilder builder = new SqlQueryBuilder();
         builder.insert(TABLE_NAME, Fields.COMPONENT, Fields.SCHEME, Fields.X_POS, Fields.Y_POS,
@@ -209,8 +209,9 @@ public class SchemeComponentDao implements ISchemeComponentDao {
             throw new ElementNotFoundException("Element has no valid ID.");
         }
         
-        insertSchemeIfNecessary(schemeComponent);
-        insertComponentIfNecessary(schemeComponent);
+        checkState(schemeComponent.getScheme().isPresent(), "SchemeComponent must belong to a scheme.");
+    	checkState(schemeComponent.getScheme().get().getId() >= 0, "Scheme must have a valid ID.");
+    	checkState(schemeComponent.getComponent().getId() >= 0, "Component must have a valid ID.");
 
         SqlQueryBuilder builder = new SqlQueryBuilder();
         builder.update(TABLE_NAME, Fields.SCHEME, Fields.COMPONENT, Fields.X_POS,
@@ -245,14 +246,89 @@ public class SchemeComponentDao implements ISchemeComponentDao {
         }
     }
     
-    private void insertSchemeIfNecessary(final SchemeComponent schemeComponent) {
-        throw new RuntimeException();
+    @Override
+    public Map<Attribute, String> findAttributesOfSchemeComponent(SchemeComponent schemeComponent)
+    		throws DatabaseException {
+    	
+    	checkNotNull(schemeComponent, "SchemeComponent must not be null.");
+    	checkArgument(schemeComponent.getId() >= 0, "SchemeComponent must have a valid ID.");
+    	
+    	SqlQueryBuilder builder = new SqlQueryBuilder();
+    	builder.select(ATTR_CROSS_TABLE_NAME, 
+    			AttrCrossFields.FK_COMPONENT, 
+    			AttrCrossFields.FK_ATTRIBUTE,
+    			AttrCrossFields.VALUE);
+    	builder.where(AttrCrossFields.FK_COMPONENT);
+    	
+    	String query = builder.toString();
+    	
+    	try (Connection con = DatabaseFactory.getConnection()) {
+    		try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
+    			stmt.setParameter(AttrCrossFields.FK_COMPONENT, schemeComponent.getId());
+    			
+    			ResultSet rs = stmt.executeQuery();
+
+    			Map<Attribute, String> attrValues = new HashMap<>();
+    			while (rs.next()) {
+    				int attributeId = rs.getInt(AttrCrossFields.FK_ATTRIBUTE);
+    				String value = rs.getString(AttrCrossFields.VALUE);
+    				
+    				Attribute attr = null;
+    				try {
+    					attr = componentDao.findAttributeById(attributeId);
+    				}
+    				catch (ElementNotFoundException | IllegalArgumentException e) {
+    					throw new DatabaseException("Invalid attribute ID resolved.");
+    				}
+    				
+    				attrValues.put(attr, value);
+    			}
+    			
+    			DbUtils.closeQuietly(rs);
+    			return Collections.unmodifiableMap(attrValues);
+    		}
+    	}
+    	catch (SQLException e) {
+    		throw new DatabaseException("Unknown error.", e);
+    	}
     }
     
-    private void insertComponentIfNecessary(final SchemeComponent schemeComponent) {
-        throw new RuntimeException();
+    @Override
+    public void setAttributeValue(SchemeComponent comp, Attribute attribute, String value)
+    		throws DatabaseException {
+    	
+    	checkArgument(comp.getId() >= 0, "SchemeComponent must have a valid ID.");
+    	checkArgument(attribute.getId() >= 0, "Attribute must have a valid ID.");
+    	
+    	// Check if attribute belongs to the component
+    	if (attribute.getComponent().getId() != comp.getComponent().getId()) {
+    		throw new IllegalStateException("The given attribute does not belong to the component.");
+    	}
+    	
+    	SqlQueryBuilder builder = new SqlQueryBuilder();
+    	builder.insert(ATTR_CROSS_TABLE_NAME, 
+    			AttrCrossFields.FK_COMPONENT, 
+    			AttrCrossFields.FK_ATTRIBUTE, 
+    			AttrCrossFields.VALUE);
+    	
+    	String query = builder.toString();
+    	
+    	try (Connection con = DatabaseFactory.getConnection()) {
+    		try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
+    			stmt.setParameter(AttrCrossFields.FK_COMPONENT, comp.getId());
+    			stmt.setParameter(AttrCrossFields.FK_ATTRIBUTE, attribute.getId());
+    			
+    			int affected = stmt.executeUpdate();
+    			if (affected != 1) {
+    				throw new SaveException();
+    			}
+    		}
+    	}
+    	catch (SQLException e) {
+    		throw new DatabaseException("Unknown error.", e);
+    	}
     }
-
+    
     private Collection<SchemeComponent> fromResultSet(ResultSet rs) throws SQLException, ElementNotFoundException, DatabaseException {
         checkNotNull(rs, "Result must not be null.");
         Collection<SchemeComponent> schemeComponentList = new ArrayList<>();
@@ -284,6 +360,7 @@ public class SchemeComponentDao implements ISchemeComponentDao {
     }
 
     private static final String TABLE_NAME = "Scheme_Component";
+    private static final String ATTR_CROSS_TABLE_NAME = "Scheme_Component_Attribute";
 
     private static class Fields {
         public static final String ID = "Scheme_Component_ID";
@@ -293,6 +370,12 @@ public class SchemeComponentDao implements ISchemeComponentDao {
         public static final String Y_POS = "Scheme_Component_Y_Position";
         public static final String DIRECTION = "Scheme_Component_Direction";
 
+    }
+    
+    private static class AttrCrossFields {
+    	public static final String FK_COMPONENT = "Scheme_Component_Attribute_Component_FK";
+    	public static final String FK_ATTRIBUTE = "Scheme_Component_Attribute_Attribute_FK";
+    	public static final String VALUE = "Scheme_Component_Attribute_Value";
     }
 
 }
