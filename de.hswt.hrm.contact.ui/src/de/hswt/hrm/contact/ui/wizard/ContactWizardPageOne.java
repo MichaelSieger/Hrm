@@ -13,11 +13,13 @@ import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.forms.widgets.Section;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Optional;
 
+import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.common.ui.swt.layouts.PageContainerFillLayout;
 import de.hswt.hrm.contact.model.Contact;
 import de.hswt.hrm.i18n.I18n;
@@ -67,7 +69,8 @@ public class ContactWizardPageOne extends WizardPage {
         if (this.contact.isPresent()) {
             updateFields(container);
         }
-
+        
+        FormUtil.initSectionColors((Section) XWT.findElementByName(container, "Mandatory"));
         setKeyListener();
         setControl(container);
         setPageComplete(false);
