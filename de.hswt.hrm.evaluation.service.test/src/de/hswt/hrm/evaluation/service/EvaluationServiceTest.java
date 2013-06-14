@@ -8,9 +8,12 @@ import de.hswt.hrm.test.database.AbstractDatabaseTest;
 public class EvaluationServiceTest extends AbstractDatabaseTest {
 
     @Test
-    private boolean compareEvaluationFields(final Evaluation expected, final Evaluation actual) {
-        return true;
-
+    // private void compareEvaluationFields(final Evaluation expected, final Evaluation actual) {
+    // assert (true);
+    //
+    // }
+    public void dummy() {
+        assert (true);
     }
 
     // private EvaluationService createInjectedContactService() throws DatabaseException,
