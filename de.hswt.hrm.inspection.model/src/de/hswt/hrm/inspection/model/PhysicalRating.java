@@ -1,6 +1,5 @@
 package de.hswt.hrm.inspection.model;
 
-import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.google.common.base.Optional;
@@ -11,30 +10,26 @@ public class PhysicalRating {
 
     private final int id;
 
-    private String rating;
+    private int rating;
     private String note;
     private Component component;
-    private Inspection report;
+    private Inspection inspection;
 
-    private static final String NO_IMAGE_ERROR = "All Images are null";
-    private static final String IS_MANDATORY = "Field is a mandatory.";
-    private static final String INVALID_NUMBER = "%d is an invalid number.%n Must be greater 0";
-
-    public PhysicalRating(int id, String rating, String note) {
+    public PhysicalRating(int id, int rating, String note) {
         this.id = id;
         setRating(rating);
         setNote(note);
     }
 
-    public PhysicalRating(String rating, String note) {
+    public PhysicalRating(int rating, String note) {
         this(-1, rating, note);
     }
 
-    public String getRating() {
+    public int getRating() {
         return rating;
     }
 
-    public void setRating(String rating) {
+    public void setRating(int rating) {
         this.rating = rating;
     }
 
@@ -55,13 +50,13 @@ public class PhysicalRating {
         this.component = component;
     }
 
-    public Optional<Inspection> getReport() {
-        return Optional.fromNullable(report);
+    public Optional<Inspection> getInspection() {
+        return Optional.fromNullable(inspection);
     }
 
-    public void setReport(Inspection report) {
-        checkNotNull(report);
-        this.report = report;
+    public void setInspection(Inspection inspection) {
+        checkNotNull(inspection);
+        this.inspection = inspection;
     }
 
     public int getId() {
@@ -74,9 +69,9 @@ public class PhysicalRating {
         int result = 1;
         result = prime * result + ((component == null) ? 0 : component.hashCode());
         result = prime * result + id;
+        result = prime * result + ((inspection == null) ? 0 : inspection.hashCode());
         result = prime * result + ((note == null) ? 0 : note.hashCode());
-        result = prime * result + ((rating == null) ? 0 : rating.hashCode());
-        result = prime * result + ((report == null) ? 0 : report.hashCode());
+        result = prime * result + rating;
         return result;
     }
 
@@ -103,6 +98,14 @@ public class PhysicalRating {
         if (id != other.id) {
             return false;
         }
+        if (inspection == null) {
+            if (other.inspection != null) {
+                return false;
+            }
+        }
+        else if (!inspection.equals(other.inspection)) {
+            return false;
+        }
         if (note == null) {
             if (other.note != null) {
                 return false;
@@ -111,20 +114,7 @@ public class PhysicalRating {
         else if (!note.equals(other.note)) {
             return false;
         }
-        if (rating == null) {
-            if (other.rating != null) {
-                return false;
-            }
-        }
-        else if (!rating.equals(other.rating)) {
-            return false;
-        }
-        if (report == null) {
-            if (other.report != null) {
-                return false;
-            }
-        }
-        else if (!report.equals(other.report)) {
+        if (rating != other.rating) {
             return false;
         }
         return true;

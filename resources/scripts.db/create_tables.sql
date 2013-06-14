@@ -601,3 +601,13 @@ CREATE  TABLE IF NOT EXISTS `Summary` (
   PRIMARY KEY (`Summary_ID`) )
 ENGINE = InnoDB;
 
+-- -----------------------------------------------------
+-- Table `Note`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `Note` (
+  `Note_ID` INT NOT NULL AUTO_INCREMENT ,
+  `Note_Name` VARCHAR(45) NULL ,
+  `Note_Text` TEXT NULL ,
+  PRIMARY KEY (`Note_ID`) )
+ENGINE = InnoDB;
+

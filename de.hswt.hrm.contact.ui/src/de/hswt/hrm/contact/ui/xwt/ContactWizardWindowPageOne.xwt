@@ -16,7 +16,7 @@
 						<GridData horizontalAlignment="LEFT"/>
 					</Label.layoutData>
 				</Label>
-				<Text x:Style="BORDER" x:Name="name" textLimit="50" x:TooltipText="Vorname" toolTipText="Name">
+				<Text x:Style="BORDER" x:Name="name" textLimit="50">
 					<Text.layoutData>
 						<GridData grabExcessHorizontalSpace="true"
 							horizontalAlignment="FILL" horizontalSpan="6"/>
@@ -24,27 +24,27 @@
 				</Text>
 
 				<Label x:Name="lblStreet" text="Street / No."/>
-				<Text x:Style="BORDER" x:Name="street" textLimit="50" x:TooltipText="Straße">
+				<Text x:Style="BORDER" x:Name="street" textLimit="50">
 					<Text.layoutData>
 						<GridData grabExcessHorizontalSpace="true"
 							horizontalAlignment="FILL" horizontalspan="4" />
 					</Text.layoutData>
 				</Text>
 				<Label text="/"/>
-				<Text x:Style="BORDER" x:Name="streetNumber" textLimit="5" x:TooltipText="Hausnummer">
+				<Text x:Style="BORDER" x:Name="streetNumber" textLimit="5">
 					<Text.layoutData>
 						<GridData horizontalAlignment="RIGHT" horizontalSpan="1" widthHint="50"/>
 					</Text.layoutData>
 				</Text>
 				
 				<Label x:Name="lblZipCode" text="Zip code / City"/>
-				<Text x:Style="BORDER" x:Name="zipCode" textLimit="5" x:TooltipText="PLZ">
+				<Text x:Style="BORDER" x:Name="zipCode" textLimit="5">
 					<Text.layoutData>
 						<GridData horizontalAlignment="LEFT" horizontalSpan="1" widthHint="50" />
 					</Text.layoutData>
 				</Text>
 				<Label text="/"/>
-				<Text x:Style="BORDER" x:Name="city" textLimit="50" x:TooltipText="Stadt">
+				<Text x:Style="BORDER" x:Name="city" textLimit="50">
 					<Text.layoutData>
 						<GridData grabExcessHorizontalSpace="true"
 							horizontalAlignment="FILL" horizontalSpan="4"/>

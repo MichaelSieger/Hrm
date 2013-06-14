@@ -1,5 +1,6 @@
 package de.hswt.hrm.scheme.ui.dnd;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.swt.dnd.DND;
@@ -7,6 +8,8 @@ import org.eclipse.swt.dnd.DropTargetEvent;
 import org.eclipse.swt.dnd.DropTargetListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Point;
+
+import com.google.common.base.Preconditions;
 
 import de.hswt.hrm.scheme.model.RenderedComponent;
 import de.hswt.hrm.scheme.ui.PlaceOccupiedException;
@@ -23,13 +26,15 @@ import de.hswt.hrm.scheme.ui.part.SchemeComposite;
 public class GridDropTargetListener implements DropTargetListener { 
 
 	private final SchemeGrid grid;
-	private final List<RenderedComponent> comps;
+	private List<RenderedComponent> comps = Collections.emptyList();
 	private final SchemeComposite composite;
 
-	public GridDropTargetListener(SchemeGrid grid, List<RenderedComponent> comps, SchemeComposite schemeCompositeNew) {
+	public GridDropTargetListener(SchemeGrid grid, SchemeComposite schemeCompositeNew) {
 		super();
+		Preconditions.checkNotNull(grid);
+		Preconditions.checkNotNull(comps);
+		Preconditions.checkNotNull(schemeCompositeNew);
 		this.grid = grid;
-		this.comps = comps;
 		this.composite = schemeCompositeNew;
 	}
 
@@ -91,4 +96,7 @@ public class GridDropTargetListener implements DropTargetListener {
 		ev.detail = DND.DROP_COPY;
 	}
 
+	public void setComponents(List<RenderedComponent> comps) {
+		this.comps = comps;
+	}
 }

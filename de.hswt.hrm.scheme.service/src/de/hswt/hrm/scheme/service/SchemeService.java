@@ -42,8 +42,11 @@ public class SchemeService {
 	 * @param plant The Plant which the Scheme belongs to
 	 * @param components The Scheme defined by its components
 	 * @throws SaveException 
+	 * @throws ElementNotFoundException 
 	 */
-	public void insert(Plant plant, Collection<SchemeComponent> components) throws SaveException{
+	public void insert(Plant plant, Collection<SchemeComponent> components)
+			throws SaveException, ElementNotFoundException {
+		
 	    checkNotNull(plant, "Plant is mandatory.");
 	    checkArgument(plant.getId() >= 0, "Plant must have a valid ID.");
 	    
@@ -56,7 +59,13 @@ public class SchemeService {
 	    
 	    // Add all components
 	    for (SchemeComponent comp : components) {
-	        schemeComponentDao.insertComponent(scheme, comp);
+	    	comp.setScheme(scheme);
+	    	if (comp.getId() < 0) {
+	    		schemeComponentDao.insert(comp);
+	    	}
+	    	else {
+	    		schemeComponentDao.update(comp);
+	    	}
 	    }
 	}
 	

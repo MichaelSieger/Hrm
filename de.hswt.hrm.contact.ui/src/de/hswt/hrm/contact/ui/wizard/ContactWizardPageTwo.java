@@ -11,20 +11,28 @@ import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.forms.widgets.Section;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Optional;
 
+import de.hswt.hrm.common.ui.swt.forms.FormUtil;
+import de.hswt.hrm.common.ui.swt.layouts.PageContainerFillLayout;
 import de.hswt.hrm.contact.model.Contact;
+import de.hswt.hrm.i18n.I18n;
+import de.hswt.hrm.i18n.I18nFactory;
 
 public class ContactWizardPageTwo extends WizardPage{
     
     private static final Logger LOG = LoggerFactory.getLogger(ContactWizardPageTwo.class);
+    private static final I18n I18N = I18nFactory.getI18n(ContactWizardPageTwo.class);
     
     private Composite container;
     private Optional<Contact> contact;
+    private HashMap<String, Text> optionalWidgets;
     
     private EmailValidator emailVal = EmailValidator.getInstance();
 
@@ -32,10 +40,12 @@ public class ContactWizardPageTwo extends WizardPage{
         super(pageName);
         this.contact = contact;
         setDescription("Provide the contacts communication information.");
+        setTitle(I18N.tr("Contact Wizard"));
     }
     
     @Override
     public void createControl(Composite parent) {
+        parent.setLayout(new PageContainerFillLayout());
         URL url = ContactWizardPageTwo.class.getClassLoader().getResource(
                 "de/hswt/hrm/contact/ui/xwt/ContactWizardWindowPageTwo"+IConstants.XWT_EXTENSION_SUFFIX);
         try {
@@ -43,9 +53,11 @@ public class ContactWizardPageTwo extends WizardPage{
         } catch (Exception e) {
             LOG.error("An error occured", e);
         }
+        translate (container);
         if (this.contact.isPresent()) {
             updateFields(container);
         }
+        FormUtil.initSectionColors((Section) XWT.findElementByName(container, "Optional"));
         setControl(container);
         setKeyListener();
     }
@@ -65,21 +77,22 @@ public class ContactWizardPageTwo extends WizardPage{
     }
     
     public HashMap<String, Text> getOptionalWidgets() {
-        HashMap<String, Text> widgets = new HashMap<String, Text>();
-        widgets.put("shortcut", (Text) XWT.findElementByName(container, "shortcut"));
-        widgets.put("phone", (Text) XWT.findElementByName(container, "phone"));
-        widgets.put("fax", (Text) XWT.findElementByName(container, "fax"));
-        widgets.put("mobilePhone", (Text) XWT.findElementByName(container, "mobilePhone"));
-        widgets.put("email", (Text) XWT.findElementByName(container, "email"));
-
-        return widgets;
+        if (optionalWidgets == null) {
+            optionalWidgets = new HashMap<String, Text>();
+            optionalWidgets.put("shortcut", (Text) XWT.findElementByName(container, "shortcut"));
+            optionalWidgets.put("phone", (Text) XWT.findElementByName(container, "phone"));
+            optionalWidgets.put("fax", (Text) XWT.findElementByName(container, "fax"));
+            optionalWidgets.put("mobilePhone", (Text) XWT.findElementByName(container, "mobilePhone"));
+            optionalWidgets.put("email", (Text) XWT.findElementByName(container, "email")); 
+        }
+        return optionalWidgets;
     }
     
     @Override
     public boolean isPageComplete() {
         Text eMail = (Text) XWT.findElementByName(container, "email");
         if (eMail.getText().length() != 0 && !emailVal.isValid(eMail.getText())) {
-            setErrorMessage("E-Mail Adresse ist ungültig!");
+            setErrorMessage("Invalid email!");
             return false;
         }
         setErrorMessage(null);
@@ -99,5 +112,38 @@ public class ContactWizardPageTwo extends WizardPage{
                     getWizard().getContainer().updateButtons();
                 }
             });
+    }
+    
+    private void translate(Composite container) {
+        // Labels
+        setLabelText(container, "lblPhone", I18N.tr("Phone"));
+        setLabelText(container, "lblMobilePhone", I18N.tr("Mobile"));
+        setLabelText(container, "lblFax", I18N.tr("Fax"));
+        setLabelText(container, "lblEmail", I18N.tr("Email"));
+        setLabelText(container, "lblShortcut", I18N.tr("Shortcut"));
+        // ToolTips
+        setToolTipText(container, "phone", I18N.tr("Phone"));
+        setToolTipText(container, "mobilePhone", I18N.tr("Mobile"));
+        setToolTipText(container, "fax", I18N.tr("Fax"));
+        setToolTipText(container, "email", I18N.tr("Email"));
+        setToolTipText(container, "shortcut", I18N.tr("Shortcut"));        
+    }
+    
+    private void setToolTipText(Composite container, String textName, String toolTip) {
+        Text t = (Text) XWT.findElementByName(container, textName);
+        if (t == null) {
+            LOG.error("Text '" + textName + "' not found.");
+            return;
+        }
+        t.setToolTipText(toolTip);
+    }
+    
+    private void setLabelText(Composite container, String labelName, String text) {
+        Label l = (Label) XWT.findElementByName(container, labelName);
+        if (l == null) {
+            LOG.error("Label '" + labelName + "' not found.");
+            return;
+        }
+        l.setText(text);
     }
 }

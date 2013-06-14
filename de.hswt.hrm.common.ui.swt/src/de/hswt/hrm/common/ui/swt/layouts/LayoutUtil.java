@@ -112,7 +112,23 @@ public class LayoutUtil {
 	}
 
 	public static GridData createHorzFillData(int colSpan) {
-		return new GridData(SWT.FILL, SWT.TOP, true, false, colSpan, 1);
+		return createHorzFillData(colSpan, 1);
+	}
+
+	public static GridData createHorzFillData(int colSpan, int rowSpan) {
+		return new GridData(SWT.FILL, SWT.TOP, true, false, colSpan, rowSpan);
+	}
+
+	public static GridData createHorzCenteredFillData() {
+		return createHorzCenteredFillData(1);
+	}
+
+	public static GridData createHorzCenteredFillData(int colSpan) {
+		return createHorzCenteredFillData(colSpan, 1);
+	}
+
+	public static GridData createHorzCenteredFillData(int colSpan, int rowSpan) {
+		return new GridData(SWT.FILL, SWT.CENTER, true, false, colSpan, rowSpan);
 	}
 
 	public static GridData createLeftGridData() {
@@ -120,7 +136,11 @@ public class LayoutUtil {
 	}
 
 	public static GridData createLeftGridData(int colSpan) {
-		return new GridData(SWT.LEFT, SWT.TOP, false, false, colSpan, 1);
+		return createLeftGridData(colSpan, 1);
+	}
+
+	public static GridData createLeftGridData(int colSpan, int rowSpan) {
+		return new GridData(SWT.LEFT, SWT.TOP, false, false, colSpan, rowSpan);
 	}
 
 	public static GridData createRightGridData() {
@@ -136,7 +156,11 @@ public class LayoutUtil {
 	}
 
 	public static GridData createFillData(int colSpan) {
-		return new GridData(SWT.FILL, SWT.FILL, true, true, colSpan, 1);
+		return createFillData(colSpan, 1);
+	}
+
+	public static GridData createFillData(int colSpan, int rowSpan) {
+		return new GridData(SWT.FILL, SWT.FILL, true, true, colSpan, rowSpan);
 	}
 
 	private LayoutUtil() {

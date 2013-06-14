@@ -13,11 +13,13 @@ import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.forms.widgets.Section;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Optional;
 
+import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.common.ui.swt.layouts.PageContainerFillLayout;
 import de.hswt.hrm.contact.model.Contact;
 import de.hswt.hrm.i18n.I18n;
@@ -29,6 +31,7 @@ public class ContactWizardPageOne extends WizardPage {
 
     private Composite container;
     private Optional<Contact> contact;
+    private HashMap<String,Text> mandatoryWidgets;
 
     private RegexValidator plzVal = new RegexValidator("[0-9]{5}");
     private RegexValidator textOnlyVal = new RegexValidator("([A-ZÄÖÜ]{1}[a-zäöü]+[\\s]?[\\-]?)*");
@@ -38,6 +41,7 @@ public class ContactWizardPageOne extends WizardPage {
         super(pageName);
         this.contact = contact;
         setDescription(createDiscription());
+        setTitle(I18N.tr("Contact Wizard"));
     }
 
     private String createDiscription() {
@@ -66,10 +70,20 @@ public class ContactWizardPageOne extends WizardPage {
         if (this.contact.isPresent()) {
             updateFields(container);
         }
-
+        
+        FormUtil.initSectionColors((Section) XWT.findElementByName(container, "Mandatory"));
         setKeyListener();
         setControl(container);
         setPageComplete(false);
+    }
+    
+    private void setToolTipText(Composite container, String textName, String toolTip) {
+        Text t = (Text) XWT.findElementByName(container, textName);
+        if (t == null) {
+            LOG.error("Text '" + textName + "' not found.");
+            return;
+        }
+        t.setToolTipText(toolTip);
     }
 
     private void setLabelText(final Composite container, final String labelName, final String text) {
@@ -84,16 +98,18 @@ public class ContactWizardPageOne extends WizardPage {
     }
 
     private void translate(final Composite container) {
+        // Labels
         setLabelText(container, "lblName", I18N.tr("Name"));
         setLabelText(container, "lblStreet", I18N.tr("Street"));
         setLabelText(container, "lblStreetNumber", I18N.tr("Streetnumber"));
         setLabelText(container, "lblCity", I18N.tr("City"));
         setLabelText(container, "lblZipCode", I18N.tr("Zipcode"));
-        // setLabelText(container, "lblPhone", "Phone");
-        // setLabelText(container, "lblFax", "Fax");
-        // setLabelText(container, "lblMobilePhone", "Mobile");
-        // setLabelText(container, "lblEmail", "Email");
-        // setLabelText(container, "lblShortcut", "Shortcut");
+        // ToolTips
+        setToolTipText(container, "name", I18N.tr("Name"));
+        setToolTipText(container, "street", I18N.tr("Street"));
+        setToolTipText(container, "streetNumber", I18N.tr("Streetnumber"));
+        setToolTipText(container, "zipCode", I18N.tr("Zipcode"));
+        setToolTipText(container, "city", I18N.tr("City"));
     }
 
     private void updateFields(final Composite container) {
@@ -112,26 +128,26 @@ public class ContactWizardPageOne extends WizardPage {
     }
 
     public HashMap<String, Text> getMandatoryWidgets() {
-        HashMap<String, Text> widgets = new HashMap<String, Text>();
-        widgets.put("name", (Text) XWT.findElementByName(container, "name"));
-        widgets.put("street", (Text) XWT.findElementByName(container, "street"));
-        widgets.put("streetNumber", (Text) XWT.findElementByName(container, "streetNumber"));
-        widgets.put("city", (Text) XWT.findElementByName(container, "city"));
-        widgets.put("zipCode", (Text) XWT.findElementByName(container, "zipCode"));
-
-        return widgets;
+        if (mandatoryWidgets == null) {
+            mandatoryWidgets = new HashMap<String, Text>();
+            mandatoryWidgets.put("name", (Text) XWT.findElementByName(container, "name"));
+            mandatoryWidgets.put("street", (Text) XWT.findElementByName(container, "street"));
+            mandatoryWidgets.put("streetNumber", (Text) XWT.findElementByName(container, "streetNumber"));
+            mandatoryWidgets.put("city", (Text) XWT.findElementByName(container, "city"));
+            mandatoryWidgets.put("zipCode", (Text) XWT.findElementByName(container, "zipCode"));
+        }
+        return mandatoryWidgets;
     }
-
+    
     @Override
     public boolean isPageComplete() {
         // Mandatory fields
         HashMap<String, Text> mandatory = getMandatoryWidgets();
-        // Sorted array
+        // Array, sorted in order of validation
         Text[] manArray = { mandatory.get("name"), mandatory.get("street"),
                 mandatory.get("streetNumber"), mandatory.get("zipCode"), mandatory.get("city") };
-        boolean isValid;
         for (int i = 0; i < manArray.length; i++) {
-            isValid = checkValidity(manArray[i]);
+            boolean isValid = checkValidity(manArray[i]);
             if (manArray[i].getText().length() == 0) {
                 setErrorMessage("Field \"" + manArray[i].getToolTipText() + "\" is mandatory.");
                 return false;
@@ -146,13 +162,13 @@ public class ContactWizardPageOne extends WizardPage {
     }
 
     private boolean checkValidity(Text textField) {
-        String toolTip = textField.getToolTipText();
+        String textFieldName = XWT.getElementName((Object) textField);
 
-        boolean isInvalidText = (toolTip.equals("Name") || toolTip.equals("Stadt"))
+        boolean isInvalidText = (textFieldName.equals("name") || textFieldName.equals("city"))
                 && (!textOnlyVal.isValid(textField.getText()));
-        boolean isInvalidStreetNumber = (toolTip.equals("Hausnummer"))
+        boolean isInvalidStreetNumber = (textFieldName.equals("streetNumber"))
                 && (!streetNoVal.isValid(textField.getText()));
-        boolean isInvalidZipCode = (toolTip.equals("PLZ"))
+        boolean isInvalidZipCode = (textFieldName.equals("zipCode"))
                 && (!plzVal.isValid(textField.getText()));
 
         if (isInvalidText || isInvalidStreetNumber || isInvalidZipCode) {
@@ -164,7 +180,7 @@ public class ContactWizardPageOne extends WizardPage {
     public void setKeyListener() {
         HashMap<String, Text> widgets = getMandatoryWidgets();
         for (Text text : widgets.values()) {
-
+           
             text.addKeyListener(new KeyListener() {
 
                 @Override

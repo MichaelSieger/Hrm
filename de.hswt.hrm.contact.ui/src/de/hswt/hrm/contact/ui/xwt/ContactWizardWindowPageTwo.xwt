@@ -5,41 +5,41 @@
 	<Composite.layout>
 		<FillLayout/>
 	</Composite.layout>
-	<Section text="Kommunikation" x:Style="(p1:Section).EXPANDED">
+	<Section text="Kommunikation" x:Style="(p1:Section).EXPANDED" x:Name="Optional">
 		<Section.client>
 			<Composite>
 				<Composite.layout>
 					<GridLayout numColumns="2"  />
 				</Composite.layout>
-				<Label text="Phone" />
+				<Label text="Phone" x:Name="lblPhone"/>
 				<Text x:Style="BORDER" x:Name="phone">
 					<Text.layoutData>
 						<GridData grabExcessHorizontalSpace="true"
 							horizontalAlignment="FILL" horizontalSpan="1" />
 					</Text.layoutData>
 				</Text>
-				<Label text="Mobile" />
+				<Label text="Mobile" x:Name="lblMobilePhone"/>
 				<Text x:Style="BORDER" x:Name="mobilePhone">
 					<Text.layoutData>
 						<GridData grabExcessHorizontalSpace="true"
 							horizontalAlignment="FILL" horizontalSpan="1" />
 					</Text.layoutData>
 				</Text>
-				<Label text="Fax" />
+				<Label text="Fax" x:Name="lblFax"/>
 				<Text x:Style="BORDER" x:Name="fax">
 					<Text.layoutData>
 						<GridData grabExcessHorizontalSpace="true"
 							horizontalAlignment="FILL" horizontalSpan="1" />
 					</Text.layoutData>
 				</Text>
-				<Label text="Mail" />
+				<Label text="Mail" x:Name="lblEmail"/>
 				<Text x:Style="BORDER" x:Name="email">
 					<Text.layoutData>
 						<GridData grabExcessHorizontalSpace="true"
 							horizontalAlignment="FILL" horizontalSpan="1" />
 					</Text.layoutData>
 				</Text>
-				<Label text="Acronym" />
+				<Label text="Acronym" x:Name="lblShortcut"/>
 				<Text x:Style="BORDER" x:Name="shortcut">
 					<Text.layoutData>
 						<GridData
