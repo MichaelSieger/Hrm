@@ -78,7 +78,31 @@ import org.eclipse.swt.graphics.Point;
 
 public class SchemeComposite extends Composite {
 
+	/**
+	 * How much is the grid to be move on button press?
+	 */
 	private static final int MOVE_AMOUNT = 3;
+	
+	/**
+	 * Which Drag operations are allowed
+	 */
+	private static final int DRAG_OPS = DND.DROP_COPY;
+	
+	/**
+	 * Which Drop operations are allowed
+	 */
+	private static final int DROP_OPS = DND.DROP_COPY;
+
+	/**
+	 * The pixel per grid range. Defines how far you can zoom in and out
+	 */
+	private static final int MIN_PPG = 20, MAX_PPG = 70;
+	
+	/**
+	 * The DND transfer type
+	 */
+	private static final Transfer[] TRANSFER = new Transfer[] { DragDataTransfer
+			.getInstance() };
 
 	private final static Logger LOG = LoggerFactory
 			.getLogger(SchemeComposite.class);
@@ -103,28 +127,9 @@ public class SchemeComposite extends Composite {
 	private List<IContributionItem> contributionItems = new ArrayList<IContributionItem>();
 
 	/**
-	 * The DND transfer type
-	 */
-	private static final Transfer[] TRANSFER = new Transfer[] { DragDataTransfer
-			.getInstance() };
-
-	/**
 	 * The background color of the scheme editor.
 	 */
 	private static final RGB EDITOR_BACKGROUND = new RGB(255, 255, 255);
-
-	private static final int DRAG_OPS = DND.DROP_COPY,
-			DROP_OPS = DND.DROP_COPY;
-
-	/**
-	 * The pixel per grid range. Defines how far you can zoom in and out
-	 */
-	private static final int MIN_PPG = 20, MAX_PPG = 70;
-
-	/**
-	 * The topmost gui parent
-	 */
-	// private Composite root;
 
 	private SchemeGrid grid;
 
@@ -136,6 +141,7 @@ public class SchemeComposite extends Composite {
 	 */
 	private PatternFilter filter;
 
+	
 	private List<RenderedComponent> components = new ArrayList<>();
 
 	private Plant plant;
