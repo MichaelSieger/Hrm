@@ -25,7 +25,6 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.layout.GridData;
 
 public class ReportPhysicalComposite extends AbstractComponentRatingComposite {
 
@@ -270,31 +269,6 @@ public class ReportPhysicalComposite extends AbstractComponentRatingComposite {
 	@Override
 	public void setSelectedComponent(Component component) {
 		// TODO Auto-generated method stub
-
-		
-		// GENERAL
-		// report title, given at creation time (ReportsOverviewComposite)
-		// Button select plant => opens wizard with contacts to select contact
-		// Button or dropdown to select overall comment
-		// field with date picker => default current
-		// field for next inspection with date picker 
-		// => radio buttons for 2 or 3 years 
-		// => see pictures in Redmine
-		
-		// PERSONS
-		// Button select customer => opens wizard with contacts to select contact
-		// Button select requester => opens wizard with contacts to select contact
-		// Button select controller => opens wizard with contacts to select contact
-		
-		// VISUAL
-		// import photos
-		// combo to select report style
-		// selection of plant image
-		
-		// rating of physical parameter (Temperatur, relative Luftfeuchtigkeit)
-		// rating of wasserkeimzahl???
-		
-		
 	}
 
 	private void addPhoto() {
