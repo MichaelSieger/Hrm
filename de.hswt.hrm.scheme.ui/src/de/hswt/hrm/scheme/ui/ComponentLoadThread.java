@@ -52,6 +52,15 @@ public class ComponentLoadThread extends Thread{
 		    if(c.getCategory().isPresent()){
 		        try {
                     result.add(ComponentConverter.convert(composite.getDisplay(), c));
+                    //Always copy the list before passing to the ui thread.
+                    final List<RenderedComponent> rCopy = new ArrayList<>(result);
+                    composite.getDisplay().asyncExec(new Runnable() {
+            			
+            			@Override
+            			public void run() {
+            				composite.setRenderedComponents(rCopy);
+            			}
+            		});
                 }
                 catch (IOException e) {
                 	LOG.error("Error on drawing image", e);
@@ -60,15 +69,6 @@ public class ComponentLoadThread extends Thread{
 		    	LOG.warn(String.format("The Component %s has no category, and cannot be drawn", c.getName()));
 		    }
 		}
-        //Always copy the list before passing to the ui thread.
-        final List<RenderedComponent> rCopy = new ArrayList<>(result);
-        composite.getDisplay().asyncExec(new Runnable() {
-			
-			@Override
-			public void run() {
-				composite.setRenderedComponents(rCopy);
-			}
-		});
 	}
 	
 }
