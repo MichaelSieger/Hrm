@@ -25,7 +25,7 @@ import de.hswt.hrm.scheme.ui.part.SchemeComposite;
 public class GridDropTargetListener implements DropTargetListener { 
 
 	private final SchemeGrid grid;
-	private final List<RenderedComponent> comps;
+	private List<RenderedComponent> comps;
 	private final SchemeComposite composite;
 
 	public GridDropTargetListener(SchemeGrid grid, List<RenderedComponent> comps, SchemeComposite schemeCompositeNew) {
@@ -96,4 +96,7 @@ public class GridDropTargetListener implements DropTargetListener {
 		ev.detail = DND.DROP_COPY;
 	}
 
+	public void setComponents(List<RenderedComponent> comps) {
+		this.comps = comps;
+	}
 }

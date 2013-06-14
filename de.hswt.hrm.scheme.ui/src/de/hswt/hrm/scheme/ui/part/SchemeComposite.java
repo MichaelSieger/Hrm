@@ -136,7 +136,7 @@ public class SchemeComposite extends Composite {
 	 */
 	private PatternFilter filter;
 
-	private List<RenderedComponent> components;
+	private List<RenderedComponent> components = new ArrayList<>();
 
 	private Plant plant;
 
@@ -240,7 +240,7 @@ public class SchemeComposite extends Composite {
 
 		// TODO remove
 		newScheme(new Plant(1, "bla"));
-		new ComponentLoadThread(this, this.getDisplay(), componentsService).start();
+		new ComponentLoadThread(this, componentsService).start();
 	}
 
 	/**
@@ -526,6 +526,9 @@ public class SchemeComposite extends Composite {
 	public void setRenderedComponents(List<RenderedComponent> components) {
 		System.out.println("size components: " + components.size());
 		this.components = components;
+		gridDragListener.setComponents(components);
+		gridListener.setComponents(components);
+		treeDragListener.setComponents(components);
 		tree.setInput(components);
 	}
 

@@ -22,7 +22,7 @@ public class GridDragListener implements DragSourceListener {
 
     private final SchemeGrid grid;
 
-    private final List<RenderedComponent> comps;
+    private List<RenderedComponent> comps;
 
     private int startX, startY;
 
@@ -76,4 +76,9 @@ public class GridDragListener implements DragSourceListener {
         return dragging;
     }
 
+	public void setComponents(List<RenderedComponent> comps) {
+		this.comps = comps;
+	}
+
+    
 }

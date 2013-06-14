@@ -21,7 +21,7 @@ import de.hswt.hrm.scheme.ui.tree.SchemeTreeItem;
 public class TreeDragListener implements DragSourceListener{
 
     private final TreeViewer tree;
-    private final List<RenderedComponent> components;
+    private List<RenderedComponent> components;
     private final SchemeGrid grid;
     
     private DragData dragging;
@@ -76,4 +76,7 @@ public class TreeDragListener implements DragSourceListener{
     	return dragging;
     }
 
+	public void setComponents(List<RenderedComponent> comps) {
+		this.components = comps;
+	}
 }
