@@ -1,5 +1,6 @@
 package de.hswt.hrm.scheme.ui.dnd;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.swt.dnd.DragSourceEvent;
@@ -22,15 +23,14 @@ public class GridDragListener implements DragSourceListener {
 
     private final SchemeGrid grid;
 
-    private List<RenderedComponent> comps;
+    private List<RenderedComponent> comps = Collections.emptyList();
 
     private int startX, startY;
 
     private DragData dragging;
 
-    public GridDragListener(SchemeGrid grid, List<RenderedComponent> comps) {
+    public GridDragListener(SchemeGrid grid) {
         this.grid = grid;
-        this.comps = comps;
     }
 
     @Override

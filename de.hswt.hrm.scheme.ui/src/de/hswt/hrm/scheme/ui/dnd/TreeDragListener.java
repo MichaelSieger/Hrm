@@ -1,5 +1,6 @@
 package de.hswt.hrm.scheme.ui.dnd;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.jface.viewers.ITreeSelection;
@@ -21,15 +22,14 @@ import de.hswt.hrm.scheme.ui.tree.SchemeTreeItem;
 public class TreeDragListener implements DragSourceListener{
 
     private final TreeViewer tree;
-    private List<RenderedComponent> components;
+    private List<RenderedComponent> components = Collections.emptyList();
     private final SchemeGrid grid;
     
     private DragData dragging;
 
-    public TreeDragListener(TreeViewer tree, List<RenderedComponent> components, SchemeGrid grid) {
+    public TreeDragListener(TreeViewer tree, SchemeGrid grid) {
         super();
         this.tree = tree;
-        this.components = components;
         this.grid = grid;
     }
 

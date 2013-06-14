@@ -141,9 +141,6 @@ public class SchemeComposite extends Composite {
 	 */
 	private PatternFilter filter;
 
-	
-	private List<RenderedComponent> components = new ArrayList<>();
-
 	private Plant plant;
 
 	/*
@@ -372,7 +369,7 @@ public class SchemeComposite extends Composite {
 	}
 
 	private void initGridDropTargetListener() {
-		gridListener = new GridDropTargetListener(grid, components, this);
+		gridListener = new GridDropTargetListener(grid, this);
 		gridDropTarget.addDropListener(gridListener);
 	}
 
@@ -387,12 +384,12 @@ public class SchemeComposite extends Composite {
 	}
 
 	private void initTreeDND() {
-		treeDragListener = new TreeDragListener(tree, components, grid);
+		treeDragListener = new TreeDragListener(tree, grid);
 		tree.addDragSupport(DRAG_OPS, TRANSFER, treeDragListener);
 	}
 
 	private void initGridDND() {
-		gridDragListener = new GridDragListener(grid, components);
+		gridDragListener = new GridDragListener(grid);
 		gridDragSource.addDragListener(gridDragListener);
 	}
 
@@ -531,7 +528,6 @@ public class SchemeComposite extends Composite {
 
 	public void setRenderedComponents(List<RenderedComponent> components) {
 		System.out.println("size components: " + components.size());
-		this.components = components;
 		gridDragListener.setComponents(components);
 		gridListener.setComponents(components);
 		treeDragListener.setComponents(components);
