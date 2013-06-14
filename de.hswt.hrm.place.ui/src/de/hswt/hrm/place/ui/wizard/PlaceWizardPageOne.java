@@ -18,10 +18,13 @@ import org.slf4j.LoggerFactory;
 import com.google.common.base.Optional;
 
 import de.hswt.hrm.common.ui.swt.layouts.PageContainerFillLayout;
+import de.hswt.hrm.i18n.I18n;
+import de.hswt.hrm.i18n.I18nFactory;
 import de.hswt.hrm.place.model.Place;
 
 public class PlaceWizardPageOne extends WizardPage {
     private static final Logger LOG = LoggerFactory.getLogger(PlaceWizardPageOne.class);
+    private static final I18n I18N = I18nFactory.getI18n(PlaceWizardPageOne.class);
     
 	private Composite container;
 	private HashMap<String, Text> widgets;
@@ -36,6 +39,7 @@ public class PlaceWizardPageOne extends WizardPage {
         super(pageName);
         this.place = place;
         setDescription(createDiscription());
+        setTitle(I18N.tr("Place Wizard"));
     }
 
     private String createDiscription() {
