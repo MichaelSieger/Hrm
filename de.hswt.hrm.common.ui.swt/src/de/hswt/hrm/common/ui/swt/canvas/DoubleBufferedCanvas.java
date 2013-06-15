@@ -24,6 +24,10 @@ public class DoubleBufferedCanvas extends Canvas{
 	private Image backbuffer;
 
 	public DoubleBufferedCanvas(Composite parent, int style) {
+		/*
+		 * SWT.NO_BACKGROUND disables background filling. 
+		 * I do it myself bacause i want to do it in the backbuffer.
+		 */
 		super(parent, style | SWT.NO_BACKGROUND);
 		this.addPaintListener(new PaintListener() {
 			
@@ -31,7 +35,9 @@ public class DoubleBufferedCanvas extends Canvas{
 			public void paintControl(PaintEvent e) {
 				Image backbuffer = getBackbuffer();
 				GC gc = new GC(backbuffer);
+				//Fill image with background color
 				gc.fillRectangle(0, 0, backbuffer.getBounds().width, backbuffer.getBounds().height);
+				//The actual drawing is done here
 				drawBuffered(gc);
 				e.gc.drawImage(backbuffer, 0, 0);	//Copy backbuffer to frontbuffer
 				gc.dispose();
