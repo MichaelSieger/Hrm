@@ -28,6 +28,7 @@ Require-Bundle: com.google.guava;bundle-version="10.0.1",
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Import-Package: de.hswt.hrm.common,
  de.hswt.hrm.common.database.exception,
+ de.hswt.hrm.common.ui.swt.canvas,
  de.hswt.hrm.common.ui.swt.constants,
  de.hswt.hrm.common.ui.swt.forms,
  de.hswt.hrm.common.ui.swt.layouts,
