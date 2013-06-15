@@ -212,8 +212,8 @@ public class SchemeComposite extends Composite {
 		scrolledComposite = new ScrolledComposite(composite, SWT.BORDER
 				| SWT.H_SCROLL | SWT.V_SCROLL);
 		scrolledComposite.setBackgroundMode(SWT.INHERIT_DEFAULT);
-		scrolledComposite.setExpandHorizontal(true);
-		scrolledComposite.setExpandVertical(true);
+		scrolledComposite.setExpandHorizontal(false);
+		scrolledComposite.setExpandVertical(false);
 		scrolledComposite.setLayoutData(LayoutUtil.createFillData());
 
 		zoomSlider = new Slider(composite, SWT.HORIZONTAL);
