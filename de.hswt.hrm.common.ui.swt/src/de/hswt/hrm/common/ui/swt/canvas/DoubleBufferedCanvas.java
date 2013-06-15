@@ -1,9 +1,13 @@
 package de.hswt.hrm.common.ui.swt.canvas;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.ImageData;
+import org.eclipse.swt.graphics.PaletteData;
+import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
@@ -20,15 +24,17 @@ public class DoubleBufferedCanvas extends Canvas{
 	private Image backbuffer;
 
 	public DoubleBufferedCanvas(Composite parent, int style) {
-		super(parent, style);
+		super(parent, style | SWT.NO_BACKGROUND);
 		this.addPaintListener(new PaintListener() {
 			
 			@Override
 			public void paintControl(PaintEvent e) {
-				Image img = getBackbuffer();
-				GC gc = new GC(img);
+				Image backbuffer = getBackbuffer();
+				GC gc = new GC(backbuffer);
+				gc.fillRectangle(0, 0, backbuffer.getBounds().width, backbuffer.getBounds().height);
 				drawBuffered(gc);
-				e.gc.drawImage(img, 0, 0);	//Copy backbuffer to frontbuffer
+				e.gc.drawImage(backbuffer, 0, 0);	//Copy backbuffer to frontbuffer
+				gc.dispose();
 			}
 		});
 	}
@@ -42,12 +48,24 @@ public class DoubleBufferedCanvas extends Canvas{
 	}
 	
 	private Image getBackbuffer(){
-		Rectangle bufRec = backbuffer.getBounds();
 		Rectangle widRec = getBounds();
-		if(backbuffer == null || bufRec.width != widRec.width || bufRec.height != widRec.height){
-			backbuffer = new Image(getDisplay(), widRec.width, widRec.height);
+		if(backbuffer != null){
+			Rectangle bufRec = backbuffer.getBounds();
+			if(bufRec.width != widRec.width || bufRec.height != widRec.height){
+				initBackbuffer();
+			}
+		}else{
+			initBackbuffer();
 		}
 		return backbuffer;
+	}
+	
+	private void initBackbuffer(){
+		if(backbuffer != null){
+			backbuffer.dispose();
+		}
+		Rectangle widRec = getBounds();
+		backbuffer = new Image(getDisplay(), widRec.width, widRec.height);
 	}
 	
 }
