@@ -46,6 +46,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Function;
+import com.google.common.base.Preconditions;
 import com.google.common.collect.Collections2;
 
 import de.hswt.hrm.common.database.exception.ElementNotFoundException;
@@ -238,8 +239,6 @@ public class SchemeComposite extends Composite {
 		contributionItems.add(moveXContribution);
 		contributionItems.add(saveContribution);
 
-		// TODO remove
-		newScheme(new Plant(1, "bla"));
 		new ComponentLoadThread(this, componentsService).start();
 	}
 
@@ -457,6 +456,7 @@ public class SchemeComposite extends Composite {
 										return item.asSchemeComponent();
 									}
 								});
+				Preconditions.checkNotNull(plant, "The Plant must be set before saving");
 				try {
 					schemeService.insert(plant, schemeComps);
 				} catch (SaveException|ElementNotFoundException e1) {
