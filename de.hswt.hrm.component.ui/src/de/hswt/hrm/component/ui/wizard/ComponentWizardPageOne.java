@@ -14,6 +14,7 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
@@ -104,11 +105,12 @@ public class ComponentWizardPageOne extends WizardPage {
     }
     
     private void checkPageComplete() {
-    	if (first) {
-    		first = false;
-    		setPageComplete(false);
-    		return;
-    	}
+//    	if (first) {
+//    		first = false;
+//    		setPageComplete(false);
+//    		return;
+//    	}
+    	setPageComplete(true);
 
     	// FIXME check if category is not empty or it already exists
     	

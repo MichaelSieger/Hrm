@@ -23,11 +23,13 @@ public class ComponentWizard extends Wizard {
     private ComponentService service;
     
     private ComponentWizardPageOne first;
+    private ComponentWizardPageTwo second;
     private Optional<Component> component;
     
     public ComponentWizard(Optional<Component> component) {
         this.component = component;
         first = new ComponentWizardPageOne("Erste Seite", component);
+        second = new ComponentWizardPageTwo("Second Page", component);
         
         if (component.isPresent()) {
             setWindowTitle("Edit Component : "+component.get().getName());
@@ -38,6 +40,7 @@ public class ComponentWizard extends Wizard {
     
     public void addPages() {
         addPage(first);
+        addPage(second);
     }
     
     public boolean canFinish() {
