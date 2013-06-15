@@ -18,6 +18,7 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 
+import de.hswt.hrm.common.ui.swt.canvas.DoubleBufferedCanvas;
 import de.hswt.hrm.scheme.model.Direction;
 import de.hswt.hrm.scheme.model.RenderedComponent;
 
@@ -27,7 +28,7 @@ import de.hswt.hrm.scheme.model.RenderedComponent;
  * @author Michael Sieger
  * 
  */
-public class SchemeGrid extends Canvas {
+public class SchemeGrid extends DoubleBufferedCanvas {
 	
 	private static final int ENLARGE_TRESH = 5;
 	private static final int ENLARGE = 5;
@@ -61,6 +62,7 @@ public class SchemeGrid extends Canvas {
 		this.width = width;
 		this.height = height;
 		setPixelPerGrid(pixelPerGrid);
+		/*
 		super.addPaintListener(new PaintListener() {
 
 			@Override
@@ -68,6 +70,7 @@ public class SchemeGrid extends Canvas {
 				draw(ev.gc);
 			}
 		});
+		*/
 		initMouseListener();
 	}
 	
@@ -90,6 +93,13 @@ public class SchemeGrid extends Canvas {
 			public void mouseDoubleClick(MouseEvent e) {}
 		});
 	}
+
+	@Override
+	protected void drawBuffered(GC gc) {
+		super.drawBuffered(gc);
+		draw(gc);
+	}
+
 
 	/**
 	 * Draws the widget into this GC object
