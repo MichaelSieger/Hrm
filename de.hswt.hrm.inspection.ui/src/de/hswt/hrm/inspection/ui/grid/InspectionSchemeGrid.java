@@ -1,4 +1,4 @@
-package de.hswt.hrm.inspection.ui.part;
+package de.hswt.hrm.inspection.ui.grid;
 
 import java.io.IOException;
 import java.util.Collections;
