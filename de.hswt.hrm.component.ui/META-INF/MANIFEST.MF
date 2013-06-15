@@ -36,5 +36,7 @@ Import-Package: de.hswt.hrm.catalog.service,
  de.hswt.hrm.common.ui.swt.wizards,
  de.hswt.hrm.common.ui.xwt,
  de.hswt.hrm.component.model,
- de.hswt.hrm.component.service
+ de.hswt.hrm.component.service,
+ com.sun.pdfview,
+ de.hswt.hrm.scheme.service
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
