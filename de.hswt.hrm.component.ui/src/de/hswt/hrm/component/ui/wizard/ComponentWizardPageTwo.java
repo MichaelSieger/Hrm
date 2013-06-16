@@ -116,12 +116,27 @@ public class ComponentWizardPageTwo extends WizardPage {
     
     
     private void updateFields(Composite c) {
+    	Component comp = component.get();
+    	if(comp.getDownUpImage() != null){
+    		setPreviewImage(comp.getDownUpImage(), imageDU);
+    	}
+    	if(comp.getRightLeftImage() != null){
+    		setPreviewImage(comp.getRightLeftImage(), imageRL);
+    	}
+    	if(comp.getLeftRightImage() != null){
+    		setPreviewImage(comp.getLeftRightImage(), imageLR);
+    	}
+    	if(comp.getUpDownImage() != null){
+    		setPreviewImage(comp.getUpDownImage(), imageDU);
+    	}
+    	
+    	
 
     }
     
     private void checkPageComplete() {
-    	if(pathLR.getText().isEmpty() && pathRL.getText().isEmpty() && pathUD.getText().isEmpty()
-    				&& pathDU.getText().isEmpty()){
+    	if(imageDU.getImage() == null && imageUD.getImage() == null && imageRL.getImage() == null
+    			&& imageLR.getImage() == null){
     		setPageComplete(false);
     		return;    		
     	}
@@ -161,7 +176,6 @@ public class ComponentWizardPageTwo extends WizardPage {
 	    	data = new byte[in.available()];
 	    	in.read(data);
 		} catch (FileNotFoundException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 
@@ -179,5 +193,74 @@ public class ComponentWizardPageTwo extends WizardPage {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}	    	
+    }
+    
+    private void setPreviewImage(byte[] data, Label preview){
+		ByteBuffer buf = ByteBuffer.wrap(data);
+		PDFFile pdffile;
+		try {
+			pdffile = new PDFFile(buf);
+			PDFPage page = pdffile.getPage(0);
+			
+			Image imge = ComponentConverter.getSWTImage(preview.getDisplay(),ComponentConverter.renderImage(page, 100, 100));
+	        preview.setImage(imge);
+	    	preview.setSize( preview.computeSize( SWT.DEFAULT, SWT.DEFAULT ));
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+    	
+    }
+    
+    public byte[] convertPDF(String path) throws IOException{
+    	File f = new File(path);
+    	FileInputStream in;
+    	byte[] data = null;
+		try {
+			in = new FileInputStream(f);
+	    	data = new byte[in.available()];
+	    	in.read(data);
+		} catch (FileNotFoundException e1) {
+			e1.printStackTrace();
+		}
+		return data;
+    	
+    }
+    
+    public byte[] getImageRL(){    	
+		try {
+			return convertPDF(pathRL.getText());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;    	
+    }
+    public byte[] getImageLR(){    	
+		try {
+			return convertPDF(pathLR.getText());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;    	
+    }
+    public byte[] getImageDU(){    	
+		try {
+			return convertPDF(pathDU.getText());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;    	
+    }
+    public byte[] getImageUD(){    	
+		try {
+			return convertPDF(pathUD.getText());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
     }
 }

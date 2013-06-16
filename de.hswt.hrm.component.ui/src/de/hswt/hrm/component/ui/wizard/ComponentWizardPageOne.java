@@ -7,10 +7,12 @@ import org.eclipse.e4.xwt.XWT;
 import org.eclipse.e4.xwt.forms.XWTForms;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
+import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
@@ -38,12 +40,10 @@ import de.hswt.hrm.component.service.CategoryService;
 public class ComponentWizardPageOne extends WizardPage {
     
     private static final Logger LOG = LoggerFactory.getLogger(ComponentWizardPageOne.class);
-    private static int MAX_QUANIFIER = 10;
     
     private Composite container;
     private Optional<Component> component;
     
-    private int[] validGridSizeValue = {1, 2, 4, 6};
 
     private Text nameText;
     
@@ -94,6 +94,8 @@ public class ComponentWizardPageOne extends WizardPage {
         ratingNo = (Button) XWT.findElementByName(container, "ratingNo");
         ratingYes = (Button) XWT.findElementByName(container, "ratingYes");
         
+        initializeCombo(category);
+        
         if (this.component.isPresent()) {
             updateFields(container);
         }
@@ -119,7 +121,7 @@ public class ComponentWizardPageOne extends WizardPage {
         setControl(container);
         checkPageComplete();
         
-        initializeCombo(category);
+
     }
     
     
@@ -135,7 +137,6 @@ public class ComponentWizardPageOne extends WizardPage {
     	try {
 			category.setInput(catService.findAll());
 		} catch (DatabaseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
        
@@ -146,7 +147,6 @@ public class ComponentWizardPageOne extends WizardPage {
                 checkPageComplete();
             }
         });
-		
 		
 	}
 
@@ -166,6 +166,17 @@ public class ComponentWizardPageOne extends WizardPage {
 	private void updateFields(Composite c) {
         Component comp = component.get();
         nameText.setText(comp.getName());
+        if(comp.getBoolRating()){
+        	ratingYes.setSelection(true);
+        	ratingNo.setSelection(false);
+        } else{
+        	ratingYes.setSelection(false);
+        	ratingNo.setSelection(true);
+        }
+        quantifier.setText(String.valueOf(comp.getQuantifier()));
+        category.setSelection(new StructuredSelection(comp.getCategory()),true);
+        category.refresh();
+       
     }
     
     private void checkPageComplete() {
@@ -198,13 +209,20 @@ public class ComponentWizardPageOne extends WizardPage {
 		return nameText.getText();
 	}
 
-	public String getQuantifier() {
-		return quantifier.getText();
+	public int getQuantifier() {
+		return Integer.parseInt(quantifier.getText());
 	}
 
 
 	public Boolean getRating(){
 		return rating;
+	}
+	
+	public Category getCategory(){
+		ISelection selection = category.getSelection();
+		IStructuredSelection structuredSelection = (IStructuredSelection) selection;      
+		Category cat  = (Category) structuredSelection.getFirstElement();
+		return cat;		
 	}
 
 }

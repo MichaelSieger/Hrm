@@ -88,14 +88,25 @@ public class ComponentWizard extends Wizard {
         if (c.isPresent()) {
             component = c.get();
             component.setName(first.getName());
-            component.setQuantifier(Integer.parseInt(first.getQuantifier()));
-        } 
-//            component = new Category(first.getName(), 
-//            		first.getWidth(), 
-//            		first.getHeight(), 
-//            		first.getWeight(),
-//                    first.isRating());
-//        }
+            component.setQuantifier(first.getQuantifier());            
+            component.setCategory(first.getCategory());
+            component.setBoolRating(first.getRating());
+            if(second.getImageLR()!= null){
+            	component.setLeftRightImage(second.getImageLR());            	
+            }
+            if(second.getImageRL()!= null){
+            	component.setRightLeftImage(second.getImageRL());            	
+            }
+            if(second.getImageDU()!= null){
+            	component.setDownUpImage(second.getImageDU());            	
+            }
+            if(second.getImageUD()!= null){
+            	component.setUpDownImage(second.getImageUD());            	
+            }            
+            
+        } else {        	
+        	component = new Component(first.getName(),second.getImageLR() , second.getImageRL(), second.getImageUD(), second.getImageDU(), first.getQuantifier(), first.getRating());
+        }
         
         return component;
     }

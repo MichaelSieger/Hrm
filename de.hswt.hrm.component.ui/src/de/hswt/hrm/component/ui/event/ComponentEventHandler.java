@@ -182,17 +182,17 @@ public class ComponentEventHandler {
      */
     public void tableEntrySelected(Event event) {
 
-//        TableViewer tv = (TableViewer) XWT.findElementByName(event.widget, "componentTable");
-//
-//        // obtain the contact in the column where the doubleClick happend
-//        Component selectedComponent = (Component) tv.getElementAt(tv.getTable().getSelectionIndex());
-//        if (selectedComponent == null) {
-//            return;
-//        }
+        TableViewer tv = (TableViewer) XWT.findElementByName(event.widget, "componentTable");
+
+        // obtain the contact in the column where the doubleClick happend
+        Component selectedComponent = (Component) tv.getElementAt(tv.getTable().getSelectionIndex());
+        if (selectedComponent == null) {
+            return;
+        }
 //        try {
-////            componentService.refresh(selectedComponent);
-//            Optional<Component> updatedComponent = ComponentPartUtil.showWizard(context,
-//                    event.display.getActiveShell(), Optional.of(selectedComponent));
+//            componentService.refresh(selectedComponent);
+            Optional<Component> updatedComponent = ComponentPartUtil.showWizard(componentService, catService,context,
+                    event.display.getActiveShell(), Optional.of(selectedComponent));
 //
 //            if (updatedComponent.isPresent()) {
 //                tv.refresh();
