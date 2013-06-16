@@ -8,6 +8,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import javax.imageio.ImageIO;
+import javax.inject.Inject;
 import javax.sql.rowset.serial.SerialBlob;
 
 import org.eclipse.e4.core.contexts.ContextInjectionFactory;
@@ -21,6 +22,8 @@ import com.google.common.base.Optional;
 import de.hswt.hrm.common.ui.swt.table.ColumnDescription;
 import de.hswt.hrm.common.ui.swt.wizards.WizardCreator;
 import de.hswt.hrm.component.model.Component;
+import de.hswt.hrm.component.service.CategoryService;
+import de.hswt.hrm.component.service.ComponentService;
 import de.hswt.hrm.component.ui.wizard.ComponentWizard;
 
 
@@ -31,10 +34,10 @@ public final class ComponentPartUtil {
 
     }
 
-    public static Optional<Component> showWizard(IEclipseContext context, Shell shell,
+    public static Optional<Component> showWizard(ComponentService compSer, CategoryService catSer, IEclipseContext context, Shell shell,
             Optional<Component> component) {
-
-        ComponentWizard cw = new ComponentWizard(component);
+    	
+        ComponentWizard cw = new ComponentWizard(component, compSer,catSer);
         ContextInjectionFactory.inject(cw, context);
 
         WizardDialog wd = WizardCreator.createWizardDialog(shell, cw);
@@ -45,10 +48,6 @@ public final class ComponentPartUtil {
     public static List<ColumnDescription<Component>> getColumns() {
         List<ColumnDescription<Component>> columns = new ArrayList<>();
         columns.add(getName());
-//        columns.add(getSymbolLR());
-//        columns.add(getSymbolLR());
-//        columns.add(getSymbolUD());
-//        columns.add(getSymbolDU());
         columns.add(getQuantifier());
         columns.add(getCategory());
         columns.add(getRating());

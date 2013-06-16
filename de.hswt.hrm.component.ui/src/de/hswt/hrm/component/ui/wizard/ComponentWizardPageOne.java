@@ -119,7 +119,7 @@ public class ComponentWizardPageOne extends WizardPage {
         setControl(container);
         checkPageComplete();
         
-       // initializeCombo(category);
+        initializeCombo(category);
     }
     
     
@@ -139,20 +139,13 @@ public class ComponentWizardPageOne extends WizardPage {
 			e.printStackTrace();
 		}
        
-//    	category.addSelectionChangedListener(new ISelectionChangedListener() {
-//            @Override
-//            public void selectionChanged(SelectionChangedEvent event) {
-//                IStructuredSelection selection = (IStructuredSelection) event.getSelection();
-//                Category person = (Category)selection.getFirstElement();
-//
-//                for(Category p : categories)
-//                    p.setSelected(false);
-//
-//                person.setSelected(true);
-//
-//                viewer.refresh();
-//            }
-//        });
+    	category.addSelectionChangedListener(new ISelectionChangedListener() {
+            @Override
+            public void selectionChanged(SelectionChangedEvent event) {
+                IStructuredSelection selection = (IStructuredSelection) event.getSelection();
+                checkPageComplete();
+            }
+        });
 		
 		
 	}
@@ -184,18 +177,12 @@ public class ComponentWizardPageOne extends WizardPage {
        		setPageComplete(false);
     		return;    	    		
     	}
-    	
-    	
-    	setPageComplete(true);
+    	if(category.getSelection().isEmpty()){
+    		setPageComplete(false);
+    		return;
+    	}
 
-    	// FIXME check if category is not empty or it already exists
-    	
-//    	if (weightCombo.getSelectionIndex() > -1) {
-//    		weight = Integer.parseInt(weightCombo.getItem(weightCombo.getSelectionIndex()));
-//    	} else {
-//    		setErrorMessage("Select a standard weight.");
-//    		return;
-//    	}
+    	setPageComplete(true);
     }
     
     private void addSelectionListener(Control control) {

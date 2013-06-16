@@ -31,6 +31,7 @@ import com.sun.pdfview.PDFPage;
 
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.component.model.Component;
+import de.hswt.hrm.component.service.CategoryService;
 import de.hswt.hrm.component.service.ComponentService;
 import de.hswt.hrm.component.ui.filter.ComponentFilter;
 import de.hswt.hrm.component.ui.part.ComponentPartUtil;
@@ -43,7 +44,10 @@ public class ComponentEventHandler {
 
     private final IEclipseContext context;
     private final ComponentService componentService;
-
+    @Inject
+    private CategoryService catService;
+    
+    
     @Inject
     public ComponentEventHandler(IEclipseContext context, ComponentService componentService) {
 
@@ -87,7 +91,8 @@ public class ComponentEventHandler {
     public void buttonSelected(Event event) {
 
         Button b = (Button) event.widget;
-        Optional<Component> newComponent = ComponentPartUtil.showWizard(context,
+        
+        Optional<Component> newComponent = ComponentPartUtil.showWizard(componentService,catService, context,
                 event.display.getActiveShell(), Optional.<Component> absent());
 
         TableViewer tv = (TableViewer) XWT.findElementByName(b, "componentTable");

@@ -19,18 +19,19 @@ import de.hswt.hrm.component.service.ComponentService;
 public class ComponentWizard extends Wizard {
     private static final Logger LOG = LoggerFactory.getLogger(ComponentWizard.class);
     
-    @Inject
     private ComponentService service;
     
-    @Inject
-    CategoryService catService;
+    private CategoryService catService;
     
     private ComponentWizardPageOne first;
     private ComponentWizardPageTwo second;
     private Optional<Component> component;
     
-    public ComponentWizard(Optional<Component> component) {
-        this.component = component;
+    public ComponentWizard(Optional<Component> component, ComponentService compSer, CategoryService catSer) {
+        this.service = compSer;
+        this.catService = catSer;
+    	
+    	this.component = component;
         first = new ComponentWizardPageOne("Erste Seite", component, catService);
         second = new ComponentWizardPageTwo("Second Page", component);
         
