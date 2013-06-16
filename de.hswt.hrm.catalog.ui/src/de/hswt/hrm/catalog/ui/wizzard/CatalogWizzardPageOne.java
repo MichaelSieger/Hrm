@@ -15,6 +15,7 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.forms.widgets.Section;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,10 +25,15 @@ import de.hswt.hrm.catalog.model.Activity;
 import de.hswt.hrm.catalog.model.Current;
 import de.hswt.hrm.catalog.model.ICatalogItem;
 import de.hswt.hrm.catalog.model.Target;
+import de.hswt.hrm.common.ui.swt.forms.FormUtil;
+import de.hswt.hrm.common.ui.swt.layouts.PageContainerFillLayout;
+import de.hswt.hrm.i18n.I18n;
+import de.hswt.hrm.i18n.I18nFactory;
 
 public class CatalogWizzardPageOne extends WizardPage {
 
     private static final Logger LOG = LoggerFactory.getLogger(CatalogWizzardPageOne.class);
+    private static final I18n I18N = I18nFactory.getI18n(CatalogWizzardPageOne.class);
 
     private Composite container;
     private HashMap<String, Text> textFields;
@@ -38,10 +44,11 @@ public class CatalogWizzardPageOne extends WizardPage {
         super(pageName);
         this.item = item;
         setDescription(createDiscription());
+        setTitle(I18N.tr("Catalog Wizard"));
     }
 
     public void createControl(Composite parent) {
-        parent.setLayout(new FillLayout());
+        parent.setLayout(new PageContainerFillLayout());
         URL url = CatalogWizzardPageOne.class.getClassLoader().getResource(
                 "de/hswt/hrm/catalog/ui/xwt/CatalogWizard" + IConstants.XWT_EXTENSION_SUFFIX);
 
@@ -56,7 +63,7 @@ public class CatalogWizzardPageOne extends WizardPage {
         if (item.isPresent()) {
             updateFields(item.get());
         }
-
+        FormUtil.initSectionColors((Section) XWT.findElementByName(container, "Mandatory"));
         setKeyListener();
         setControl(container);
         setPageComplete(false);
@@ -124,10 +131,10 @@ public class CatalogWizzardPageOne extends WizardPage {
 
     private String createDiscription() {
         if (item.isPresent()) {
-            return "Soll/Ist/Maßnahme bearbeiten: "+item.get().getName();
+            return I18N.tr("Edit a catalog.");
         }
 
-        return "Neue Soll/Ist/Maßnahme anlegen";
+        return I18N.tr("Add a new catalog");
     }
 
     public ICatalogItem getItem() {

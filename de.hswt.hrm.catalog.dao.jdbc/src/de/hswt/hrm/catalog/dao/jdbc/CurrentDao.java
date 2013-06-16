@@ -241,6 +241,8 @@ public class CurrentDao implements ICurrentDao {
     				throw new DatabaseException("Delete would accidently affect multiple rows.");
     			}
     		}
+    		
+    		con.commit();
     	} catch (SQLException e) {
 			throw new DatabaseException("Unkown error.", e);
 		}

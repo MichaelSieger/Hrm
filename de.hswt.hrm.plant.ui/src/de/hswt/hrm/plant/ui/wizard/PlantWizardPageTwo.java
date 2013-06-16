@@ -27,6 +27,7 @@ import de.hswt.hrm.plant.model.Plant;
 public class PlantWizardPageTwo extends WizardPage {
 
 	private Place selectedPlace;
+	private Optional<Plant> plant;
 
 	private PlaceComposite placeComposite;
 
@@ -37,12 +38,21 @@ public class PlantWizardPageTwo extends WizardPage {
 	
     public PlantWizardPageTwo(String title, Optional<Plant> plant) {
         super(title);
+        this.plant = plant;
         if (plant.isPresent()) {
-            setDescription("Standort Auswählen für Anlage mit der Bezeichnung: " + plant.get().getDescription());
             if (plant.get().getPlace().isPresent()) {
             	selectedPlace = plant.get().getPlace().get();
             }
         }
+        setTitle("Plant Wizard");
+        setDescription(createDescription());
+    }
+    
+    private String createDescription() {
+        if (plant.isPresent()) {
+            return "Select place for existing plant.";
+        }
+        return "Select place for new plant.";
     }
     
     @Override

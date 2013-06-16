@@ -2,6 +2,7 @@ package de.hswt.hrm.scheme.dao.jdbc;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkState;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -38,16 +39,19 @@ public class SchemeDao implements ISchemeDao {
 
     @Override
     public Scheme insert(Scheme scheme) throws SaveException{
+    	checkNotNull(scheme, "Scheme must not be null.");
+    	checkState(scheme.getPlant().isPresent(), "Scheme must have a valid plant set.");
+    	checkState(scheme.getPlant().get().getId() >= 0, "Scheme must have a valid plant set.");
+    	
         SqlQueryBuilder builder = new SqlQueryBuilder();
-        builder.insert(TABLE_NAME, Fields.TIMESTAMP, Fields.PLANT);
+        builder.insert(TABLE_NAME, Fields.TIMESTAMP, Fields.FK_PLANT);
         
         final String query = builder.toString();
 
         try (Connection con = DatabaseFactory.getConnection()) {
             try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
                 stmt.setParameter(Fields.TIMESTAMP, scheme.getTimestamp());
-                stmt.setParameter(Fields.PLANT, scheme.getPlant());
-
+                stmt.setParameter(Fields.FK_PLANT, scheme.getPlant().get().getId());
 
                 int affectedRows = stmt.executeUpdate();
                 if (affectedRows != 1) {
@@ -78,7 +82,7 @@ public class SchemeDao implements ISchemeDao {
     @Override
     public Collection<Scheme> findAll() throws DatabaseException {
         SqlQueryBuilder builder = new SqlQueryBuilder();
-        builder.select(TABLE_NAME, Fields.ID, Fields.TIMESTAMP, Fields.PLANT);
+        builder.select(TABLE_NAME, Fields.ID, Fields.TIMESTAMP, Fields.FK_PLANT);
 
         final String query = builder.toString();
 
@@ -103,7 +107,7 @@ public class SchemeDao implements ISchemeDao {
         checkArgument(id >= 0, "Id must not be negative.");
 
         SqlQueryBuilder builder = new SqlQueryBuilder();
-        builder.select(TABLE_NAME, Fields.ID, Fields.TIMESTAMP, Fields.PLANT);
+        builder.select(TABLE_NAME, Fields.ID, Fields.TIMESTAMP, Fields.FK_PLANT);
         builder.where(Fields.ID);
 
         final String query = builder.toString();
@@ -140,7 +144,7 @@ public class SchemeDao implements ISchemeDao {
         }
 
         SqlQueryBuilder builder = new SqlQueryBuilder();
-        builder.update(TABLE_NAME, Fields.TIMESTAMP, Fields.PLANT);
+        builder.update(TABLE_NAME, Fields.TIMESTAMP, Fields.FK_PLANT);
         builder.where(Fields.ID);
         
         final String query = builder.toString();
@@ -149,7 +153,7 @@ public class SchemeDao implements ISchemeDao {
             try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
                 stmt.setParameter(Fields.ID, scheme.getId());
                 stmt.setParameter(Fields.TIMESTAMP, scheme.getTimestamp());
-                stmt.setParameter(Fields.PLANT, scheme.getPlant());
+                stmt.setParameter(Fields.FK_PLANT, scheme.getPlant());
 
                 int affectedRows = stmt.executeUpdate();
                 if (affectedRows != 1) {
@@ -171,7 +175,7 @@ public class SchemeDao implements ISchemeDao {
 
             Timestamp timestamp = rs.getTimestamp("Session_Timestamp");
             
-            int plantId = rs.getInt(Fields.PLANT);
+            int plantId = rs.getInt(Fields.FK_PLANT);
             Plant plant = null;
             if (plantId >= 0) {
                 plant = plantDao.findById(plantId);
@@ -190,7 +194,7 @@ public class SchemeDao implements ISchemeDao {
     private static class Fields {
         public static final String ID = "Scheme_ID";
         public static final String TIMESTAMP = "Scheme_Timestamp";
-        public static final String PLANT = "Scheme_Plant_FK";
+        public static final String FK_PLANT = "Scheme_Plant_FK";
 
     }
 

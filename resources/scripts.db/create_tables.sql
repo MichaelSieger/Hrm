@@ -219,7 +219,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `Biological_Flag` (
   `Flag_ID` INT NOT NULL AUTO_INCREMENT ,
-  `Flag_Name` VARCHAR(45) NULL ,
+  `Flag_Name` VARCHAR(45) NULL UNIQUE,
   PRIMARY KEY (`Flag_ID`) )
 ENGINE = InnoDB;
 

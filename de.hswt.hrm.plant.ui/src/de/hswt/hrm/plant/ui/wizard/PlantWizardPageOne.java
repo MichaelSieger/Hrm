@@ -13,12 +13,15 @@ import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.forms.widgets.Section;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Optional;
 
+import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.common.ui.swt.layouts.PageContainerFillLayout;
 import de.hswt.hrm.plant.model.Plant;
 
@@ -36,13 +39,14 @@ public class PlantWizardPageOne extends WizardPage {
         super(title);
         this.plant = plant;
         setDescription(createDescription());
+        setTitle("Plant Wizard");
     }
 
     private String createDescription() {
         if (plant.isPresent()) {
-            return "Anlage bearbeiten: "+plant.get().getDescription();
+            return "Edit a plant.";
         }
-        return "Neue Anlage erstellen";
+        return "Add a new plant.";
     }
 
     public void createControl(Composite parent) {
@@ -56,10 +60,15 @@ public class PlantWizardPageOne extends WizardPage {
         catch (Exception e) {
             LOG.error("An error occured: ", e);
         }
+        
+        translate(container);
         loadConstructionYears();
+        
         if (this.plant.isPresent()) {
             updateFields(container);
         }
+        FormUtil.initSectionColors((Section) XWT.findElementByName(container, "Mandatory"));
+        FormUtil.initSectionColors((Section) XWT.findElementByName(container, "Optional"));
         setControl(container);
         setKeyListener();
         setPageComplete(false);
@@ -68,6 +77,10 @@ public class PlantWizardPageOne extends WizardPage {
     private void loadConstructionYears() {
         int actualYear = Calendar.getInstance().get(Calendar.YEAR);
         Combo constYearCombo = (Combo) XWT.findElementByName(container, "constructionYear");
+        if (constYearCombo == null) {
+            LOG.error("ConstructionYearCombo could not be found.");
+            return;
+        }
         for (int i=FIRST_CONSTRUCTION_YEAR; i<=actualYear; i++) {
             constYearCombo.add(String.valueOf(i));
         }
@@ -156,10 +169,10 @@ public class PlantWizardPageOne extends WizardPage {
         if (textField.getText().length() == 0) {
             return true;
         }
-        String toolTip = textField.getToolTipText();
-        boolean isInvalidNumber = (toolTip.equals("Luftleistung")||toolTip.equals("Motorleistung")||
-                toolTip.equals("Ventilatorleistung")||toolTip.equals("Motordrehzahl")||
-                toolTip.equals("Nennstrom")||toolTip.equals("Spannung")) &&
+        String textFieldName = XWT.getElementName((Object) textField);
+        boolean isInvalidNumber = (textFieldName.equals("airPerformance")||textFieldName.equals("motorPower")||
+                textFieldName.equals("ventilatorPerformance")||textFieldName.equals("motorRPM")||
+                textFieldName.equals("current")||textFieldName.equals("voltage")) &&
                 !numberVal.isValid(textField.getText());
         return !isInvalidNumber;
     }
@@ -184,6 +197,38 @@ public class PlantWizardPageOne extends WizardPage {
         for (Text text : widgets.values()) {
             text.addKeyListener(listener);
         }
+    }
+    
+    private void translate(Composite container) {
+        //TODO: translation - I18N
+        setToolTipText(container, "description", "Description");
+        setToolTipText(container, "manufactor", "Manufactor");
+        setToolTipText(container, "type", "Type");
+        setToolTipText(container, "airPerformance", "AirPerformance");
+        setToolTipText(container, "motorPower", "MotorPower");
+        setToolTipText(container, "ventilatorPerformance", "VentilatorPerformance");
+        setToolTipText(container, "motorRPM", "MotorRPM");
+        setToolTipText(container, "current", "Current");
+        setToolTipText(container, "voltage", "Voltage");
+        setToolTipText(container, "note", "Note"); //Bemerkung
+    }
+    
+    private void setToolTipText(Composite container, String textName, String toolTip) {
+        Text t = (Text) XWT.findElementByName(container, textName);
+        if (t == null) {
+            LOG.error("Text '" + textName + "' not found.");
+            return;
+        }
+        t.setToolTipText(toolTip);
+    }
+    
+    private void setLabelText(Composite container, String labelName, String text) {
+        Label l = (Label) XWT.findElementByName(container, labelName);
+        if (l == null) {
+            LOG.error("Label '" + labelName + "' not found.");
+            return;
+        }
+        l.setText(text);
     }
     
 }
