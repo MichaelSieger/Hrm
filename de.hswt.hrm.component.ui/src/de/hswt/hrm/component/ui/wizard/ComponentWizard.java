@@ -19,15 +19,21 @@ import de.hswt.hrm.component.service.ComponentService;
 public class ComponentWizard extends Wizard {
     private static final Logger LOG = LoggerFactory.getLogger(ComponentWizard.class);
     
-    @Inject
     private ComponentService service;
     
+    private CategoryService catService;
+    
     private ComponentWizardPageOne first;
+    private ComponentWizardPageTwo second;
     private Optional<Component> component;
     
-    public ComponentWizard(Optional<Component> component) {
-        this.component = component;
-        first = new ComponentWizardPageOne("Erste Seite", component);
+    public ComponentWizard(Optional<Component> component, ComponentService compSer, CategoryService catSer) {
+        this.service = compSer;
+        this.catService = catSer;
+    	
+    	this.component = component;
+        first = new ComponentWizardPageOne("Erste Seite", component, catService);
+        second = new ComponentWizardPageTwo("Second Page", component);
         
         if (component.isPresent()) {
             setWindowTitle("Edit Component : "+component.get().getName());
@@ -38,10 +44,11 @@ public class ComponentWizard extends Wizard {
     
     public void addPages() {
         addPage(first);
+        addPage(second);
     }
     
     public boolean canFinish() {
-        return first.isPageComplete();
+        return first.isPageComplete() && second.isPageComplete();
     }
 
     @Override
@@ -81,14 +88,25 @@ public class ComponentWizard extends Wizard {
         if (c.isPresent()) {
             component = c.get();
             component.setName(first.getName());
-            component.setQuantifier(Integer.parseInt(first.getQuantifier()));
-        } 
-//            component = new Category(first.getName(), 
-//            		first.getWidth(), 
-//            		first.getHeight(), 
-//            		first.getWeight(),
-//                    first.isRating());
-//        }
+            component.setQuantifier(first.getQuantifier());            
+            component.setCategory(first.getCategory());
+            component.setBoolRating(first.getRating());
+            if(second.getImageLR()!= null){
+            	component.setLeftRightImage(second.getImageLR());            	
+            }
+            if(second.getImageRL()!= null){
+            	component.setRightLeftImage(second.getImageRL());            	
+            }
+            if(second.getImageDU()!= null){
+            	component.setDownUpImage(second.getImageDU());            	
+            }
+            if(second.getImageUD()!= null){
+            	component.setUpDownImage(second.getImageUD());            	
+            }            
+            
+        } else {        	
+        	component = new Component(first.getName(),second.getImageLR() , second.getImageRL(), second.getImageUD(), second.getImageDU(), first.getQuantifier(), first.getRating());
+        }
         
         return component;
     }
