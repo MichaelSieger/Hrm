@@ -12,7 +12,7 @@
 					<GridLayout numColumns="4"/>
 				</Composite.layout>
 				<Label text="Bezeichnung: "/>
-				<Text x:Style="BORDER" x:Name="description" x:toolTipText="Bezeichnung">
+				<Text x:Style="BORDER" x:Name="description">
 					<Text.layoutData>
 						<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
 					</Text.layoutData>
@@ -40,7 +40,7 @@
 							<GridData horizontalAlignment="LEFT"/>
 						</Label.layoutData>
 					</Label>
-					<Text x:Style="BORDER" x:Name="manufactor" x:toolTipText="Hersteller">
+					<Text x:Style="BORDER" x:Name="manufactor">
 						<Text.layoutData>
 							<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL" horizontalSpan="2"/>
 						</Text.layoutData>
@@ -52,49 +52,49 @@
 						</Combo.layoutData>
 					</Combo>
 					<Label text="Typ: "/>
-					<Text x:Style="BORDER" x:Name="type" x:toolTipText="Typ">
+					<Text x:Style="BORDER" x:Name="type">
 						<Text.layoutData>
 							<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL" horizontalSpan="2"/>
 						</Text.layoutData>
 					</Text>
 					<Label/><Label/><Label/>
 					<Label text="Luftleistung: "/>
-					<Text x:Style="BORDER" x:Name="airPerformance" x:toolTipText="Luftleistung">
+					<Text x:Style="BORDER" x:Name="airPerformance">
 						<Text.layoutData>
 							<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
 						</Text.layoutData>
 					</Text>
 					<Label text="m³/h"/>
 					<Label text="Motorleistung: "/>
-					<Text x:Style="BORDER" x:Name="motorPower" x:toolTipText="Motorleistung">
+					<Text x:Style="BORDER" x:Name="motorPower">
 						<Text.layoutData>
 							<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
 						</Text.layoutData>
 					</Text>
 					<Label text="kW"/>
 					<Label text="Ventilatorleistung: "/>
-					<Text x:Style="BORDER" x:Name="ventilatorPerformance" x:toolTipText="Ventilatorleistung">
+					<Text x:Style="BORDER" x:Name="ventilatorPerformance">
 						<Text.layoutData>
 							<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
 						</Text.layoutData>
 					</Text>
 					<Label text="kW"/>
 					<Label text="Motordrehzahl: "/>
-					<Text x:Style="BORDER" x:Name="motorRPM" x:toolTipText="Motordrehzahl">
+					<Text x:Style="BORDER" x:Name="motorRPM">
 						<Text.layoutData>
 							<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
 						</Text.layoutData>
 					</Text>
 					<Label text="U/min"/>
 					<Label text="Nennstrom: "/>
-					<Text x:Style="BORDER" x:Name="current" x:toolTipText="Nennstrom">
+					<Text x:Style="BORDER" x:Name="current">
 						<Text.layoutData>
 							<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
 						</Text.layoutData>
 					</Text>
 					<Label text="A"/>
 					<Label text="Spannung: "/>
-					<Text x:Style="BORDER" x:Name="voltage" x:toolTipText="Spannung">
+					<Text x:Style="BORDER" x:Name="voltage">
 						<Text.layoutData>
 							<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
 						</Text.layoutData>
@@ -106,7 +106,7 @@
 							<GridData verticalAlignment="TOP"/>
 						</Label.layoutData>
 					</Label>
-					<Text x:Style="BORDER | MULTI" x:Name="note" x:toolTipText="Bemerkungen">
+					<Text x:Style="BORDER | MULTI" x:Name="note">
 						<Text.layoutData>
 							<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL" grabExcessVerticalSpace="true" verticalAlignment="FILL" horizontalSpan="5" minimumHeight="100"/>
 						</Text.layoutData>
