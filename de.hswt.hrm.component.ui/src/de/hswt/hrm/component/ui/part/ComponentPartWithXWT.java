@@ -29,8 +29,8 @@ import de.hswt.hrm.component.service.ComponentService;
 import de.hswt.hrm.component.ui.event.ComponentEventHandler;
 import de.hswt.hrm.component.ui.filter.ComponentFilter;
 
-public class ComponentPart {
-    private final static Logger LOG = LoggerFactory.getLogger(ComponentPart.class);
+public class ComponentPartWithXWT {
+    private final static Logger LOG = LoggerFactory.getLogger(ComponentPartWithXWT.class);
 
     @Inject
     private ComponentService componentService;
@@ -44,7 +44,7 @@ public class ComponentPart {
         layout.marginHeight = 2;
         layout.marginWidth = 2;
         parent.setLayout(layout);
-        URL url = ComponentPart.class.getClassLoader().getResource(
+        URL url = ComponentPartWithXWT.class.getClassLoader().getResource(
                 "de/hswt/hrm/component/ui/xwt/ComponentView" + IConstants.XWT_EXTENSION_SUFFIX);
 
         try {
