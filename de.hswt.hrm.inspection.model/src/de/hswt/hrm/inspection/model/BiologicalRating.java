@@ -17,22 +17,24 @@ public class BiologicalRating {
     private int rating;
     private int quantifier;
     private String comment;
+    private String flag;
 
-    // FIXME private BiologicalFlag flag;
-    
     private static final String IS_MANDATORY = "Field is a mandatory.";
     private static final String INVALID_NUMBER = "%d is an invalid number.%n Must be greater 0";
 
-    public BiologicalRating(int id, int bacteriaCount, int rating, int quantifier, String comment) {
+    public BiologicalRating(int id, int bacteriaCount, int rating, int quantifier, String comment,
+            String flag) {
         this.id = id;
         setBacteriaCount(bacteriaCount);
         setRating(rating);
         setQuantifier(quantifier);
         setComment(comment);
+        setFlag(flag);
     }
 
-    public BiologicalRating(int bacteriaCount, int rating, int quantifier, String comment) {
-        this(-1, bacteriaCount, rating, quantifier, comment);
+    public BiologicalRating(int bacteriaCount, int rating, int quantifier, String comment,
+            String flag) {
+        this(-1, bacteriaCount, rating, quantifier, comment, flag);
     }
 
     public Optional<Component> getComponent() {
@@ -88,16 +90,15 @@ public class BiologicalRating {
         checkArgument(!isNullOrEmpty(comment), IS_MANDATORY);
         this.comment = comment;
     }
-// FIXME 
-//    
-//    public String getFlag() {
-//        return flag;
-//    }
-//
-//    public void setFlag(String flag) {
-//        checkArgument(!isNullOrEmpty(flag), IS_MANDATORY);
-//        this.flag = flag;
-//    }
+
+    public String getFlag() {
+        return flag;
+    }
+
+    public void setFlag(String flag) {
+        checkArgument(!isNullOrEmpty(flag), IS_MANDATORY);
+        this.flag = flag;
+    }
 
     public int getId() {
         return id;
@@ -110,6 +111,7 @@ public class BiologicalRating {
         result = prime * result + bacteriaCount;
         result = prime * result + ((comment == null) ? 0 : comment.hashCode());
         result = prime * result + ((component == null) ? 0 : component.hashCode());
+        result = prime * result + ((flag == null) ? 0 : flag.hashCode());
         result = prime * result + id;
         result = prime * result + ((inspection == null) ? 0 : inspection.hashCode());
         result = prime * result + quantifier;
@@ -146,6 +148,14 @@ public class BiologicalRating {
             }
         }
         else if (!component.equals(other.component)) {
+            return false;
+        }
+        if (flag == null) {
+            if (other.flag != null) {
+                return false;
+            }
+        }
+        else if (!flag.equals(other.flag)) {
             return false;
         }
         if (id != other.id) {
