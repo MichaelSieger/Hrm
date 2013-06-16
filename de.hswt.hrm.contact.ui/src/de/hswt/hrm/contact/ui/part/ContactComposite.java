@@ -127,7 +127,7 @@ public class ContactComposite extends Composite {
     }
 
     private void initializeTable() {
-        List<ColumnDescription<Contact>> columns = ContactPartUtil.getColumns();
+        List<ColumnDescription<Contact>> columns = ContactPartUtil.getCompositeColumns();
 
         // Create columns in tableviewer
         TableViewerController<Contact> filler = new TableViewerController<>(tableViewer);
