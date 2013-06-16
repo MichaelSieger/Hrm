@@ -114,14 +114,18 @@ public final class ComponentPartUtil {
             @Override
             public String getText(Object element) {
                 Component c = (Component) element;
-                return Integer.toString(c.getQuantifier());
+                if (c.getQuantifier().isPresent()) {
+                	return c.getQuantifier().get().toString();
+                }
+                
+                return "";
             }
         }, new Comparator<Component>() {
             @Override
             public int compare(Component c1, Component c2) {
-                String q = Integer.toString(c1.getQuantifier());
-                String q2 = Integer.toString(c2.getQuantifier());
-                return q.compareToIgnoreCase(q2);
+            	int q1 = c1.getQuantifier().or(Integer.MAX_VALUE);
+            	int q2 = c2.getQuantifier().or(Integer.MAX_VALUE);
+            	return q1 - q2;
             }
         });
     }
