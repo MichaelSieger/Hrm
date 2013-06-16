@@ -36,13 +36,14 @@ public class PlantWizardPageOne extends WizardPage {
         super(title);
         this.plant = plant;
         setDescription(createDescription());
+        setTitle("Plant Wizard");
     }
 
     private String createDescription() {
         if (plant.isPresent()) {
-            return "Anlage bearbeiten: "+plant.get().getDescription();
+            return "Edit a plant.";
         }
-        return "Neue Anlage erstellen";
+        return "Add a new plant.";
     }
 
     public void createControl(Composite parent) {
