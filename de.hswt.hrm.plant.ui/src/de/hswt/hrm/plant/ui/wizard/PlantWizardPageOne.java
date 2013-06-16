@@ -161,10 +161,10 @@ public class PlantWizardPageOne extends WizardPage {
         if (textField.getText().length() == 0) {
             return true;
         }
-        String toolTip = textField.getToolTipText();
-        boolean isInvalidNumber = (toolTip.equals("Luftleistung")||toolTip.equals("Motorleistung")||
-                toolTip.equals("Ventilatorleistung")||toolTip.equals("Motordrehzahl")||
-                toolTip.equals("Nennstrom")||toolTip.equals("Spannung")) &&
+        String textFieldName = XWT.getElementName((Object) textField);
+        boolean isInvalidNumber = (textFieldName.equals("airPerformance")||textFieldName.equals("motorPower")||
+                textFieldName.equals("ventilatorPerformance")||textFieldName.equals("motorRPM")||
+                textFieldName.equals("current")||textFieldName.equals("voltage")) &&
                 !numberVal.isValid(textField.getText());
         return !isInvalidNumber;
     }
