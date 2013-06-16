@@ -77,6 +77,10 @@ public class PlantWizardPageOne extends WizardPage {
     private void loadConstructionYears() {
         int actualYear = Calendar.getInstance().get(Calendar.YEAR);
         Combo constYearCombo = (Combo) XWT.findElementByName(container, "constructionYear");
+        if (constYearCombo == null) {
+            LOG.error("ConstructionYearCombo could not be found.");
+            return;
+        }
         for (int i=FIRST_CONSTRUCTION_YEAR; i<=actualYear; i++) {
             constYearCombo.add(String.valueOf(i));
         }
