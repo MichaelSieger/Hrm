@@ -17,11 +17,13 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.forms.widgets.Section;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Optional;
 
+import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.common.ui.swt.layouts.PageContainerFillLayout;
 import de.hswt.hrm.component.model.Category;
 
@@ -61,6 +63,7 @@ public class CategoryWizardPageOne extends WizardPage {
         super(title);
         this.category = category;
         setDescription(createDescription());
+        setTitle("Category Wizard");
     }
 
     private String createDescription() {
@@ -107,6 +110,8 @@ public class CategoryWizardPageOne extends WizardPage {
         addSelectionListener(weightCombo);
         addSelectionListener(heightList);
         addSelectionListener(ratingCheckButton);
+        
+        FormUtil.initSectionColors((Section) XWT.findElementByName(container, "General"));
 
         setControl(container);
         checkPageComplete();
