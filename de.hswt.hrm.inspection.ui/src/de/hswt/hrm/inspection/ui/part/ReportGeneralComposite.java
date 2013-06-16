@@ -300,19 +300,6 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
         Button customerSelectionButton = formToolkit.createButton(personsComposite,
                 "Select customer", SWT.PUSH);
         customerSelectionButton.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
-        customerSelectionButton.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                // TODO request for person and fill out the corresponding fields with selction
-                ContactSelectionDialog csd = new ContactSelectionDialog(shellProvider.getShell(),
-                        context);
-                csd.create();
-                if (csd.open() == Window.OK) {
-                    System.out.println(csd.getContact().getName());
-                }
-
-            }
-        });
 
         Label customerNameLabel = new Label(personsComposite, SWT.NONE);
         customerNameLabel.setLayoutData(LayoutUtil.createLeftGridData());
@@ -346,6 +333,7 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
 
         Label dummy = new Label(personsComposite, SWT.NONE);
         dummy.setLayoutData(LayoutUtil.createFillData(2));
+        new Label(personsComposite, SWT.NONE);
 
         Label requestorLabel = new Label(personsComposite, SWT.NONE);
         formToolkit.adapt(requestorLabel, true, true);
@@ -394,6 +382,7 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
 
         dummy = new Label(personsComposite, SWT.NONE);
         dummy.setLayoutData(LayoutUtil.createFillData(2));
+        new Label(personsComposite, SWT.NONE);
 
         Label controllerLabel = new Label(personsComposite, SWT.NONE);
         formToolkit.adapt(controllerLabel, true, true);
@@ -439,6 +428,23 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
         controllerCityText.setLayoutData(LayoutUtil.createHorzCenteredFillData(2));
         controllerCityText.setEditable(false);
         formToolkit.adapt(controllerCityText, true, true);
+
+        customerSelectionButton.addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                // TODO request for person and fill out the corresponding fields with selction
+                ContactSelectionDialog csd = new ContactSelectionDialog(shellProvider.getShell(),
+                        context);
+                csd.create();
+                if (csd.open() == Window.OK) {
+                    customerNameText.setText(csd.getContact().getName());
+                    customerStreetText.setText(csd.getContact().getStreet() + " "
+                            + csd.getContact().getStreetNo());
+                    customerCityText.setText(csd.getContact().getCity());
+                }
+
+            }
+        });
 
     }
 
