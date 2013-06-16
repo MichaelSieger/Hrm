@@ -35,7 +35,7 @@ public class ContactWizardPageOne extends WizardPage {
 
     private RegexValidator plzVal = new RegexValidator("[0-9]{5}");
     private RegexValidator textOnlyVal = new RegexValidator("([A-ZÄÖÜ]{1}[a-zäöü]+[\\s]?[\\-]?)*");
-    private RegexValidator streetNoVal = new RegexValidator("[0-9]+[a-z]?");
+    private RegexValidator streetNoVal = new RegexValidator("[0-9]+[A-Za-z]?");
 
     public ContactWizardPageOne(String pageName, Optional<Contact> contact) {
         super(pageName);
@@ -46,10 +46,10 @@ public class ContactWizardPageOne extends WizardPage {
 
     private String createDiscription() {
         if (contact.isPresent()) {
-            return I18N.tr("Edit a contact.");
+            return I18N.tr("Edit a contact");
         }
 
-        return I18N.tr("Add a new contact.");
+        return I18N.tr("Add a new contact");
     }
 
     @Override
@@ -77,41 +77,6 @@ public class ContactWizardPageOne extends WizardPage {
         setPageComplete(false);
     }
     
-    private void setToolTipText(Composite container, String textName, String toolTip) {
-        Text t = (Text) XWT.findElementByName(container, textName);
-        if (t == null) {
-            LOG.error("Text '" + textName + "' not found.");
-            return;
-        }
-        t.setToolTipText(toolTip);
-    }
-
-    private void setLabelText(final Composite container, final String labelName, final String text) {
-
-        Label l = (Label) XWT.findElementByName(container, labelName);
-        if (l == null) {
-            LOG.error("Label '" + labelName + "' not found.");
-            return;
-        }
-
-        l.setText(text);
-    }
-
-    private void translate(final Composite container) {
-        // Labels
-        setLabelText(container, "lblName", I18N.tr("Name"));
-        setLabelText(container, "lblStreet", I18N.tr("Street"));
-        setLabelText(container, "lblStreetNumber", I18N.tr("Streetnumber"));
-        setLabelText(container, "lblCity", I18N.tr("City"));
-        setLabelText(container, "lblZipCode", I18N.tr("Zipcode"));
-        // ToolTips
-        setToolTipText(container, "name", I18N.tr("Name"));
-        setToolTipText(container, "street", I18N.tr("Street"));
-        setToolTipText(container, "streetNumber", I18N.tr("Streetnumber"));
-        setToolTipText(container, "zipCode", I18N.tr("Zipcode"));
-        setToolTipText(container, "city", I18N.tr("City"));
-    }
-
     private void updateFields(final Composite container) {
         Contact c = contact.get();
 
@@ -149,11 +114,11 @@ public class ContactWizardPageOne extends WizardPage {
         for (int i = 0; i < manArray.length; i++) {
             boolean isValid = checkValidity(manArray[i]);
             if (manArray[i].getText().length() == 0) {
-                setErrorMessage("Field \"" + manArray[i].getToolTipText() + "\" is mandatory.");
+                setErrorMessage(I18N.tr("Field is mandatory")+ ": " + manArray[i].getToolTipText());
                 return false;
             }
             if (!isValid) {
-                setErrorMessage("Input for \"" + manArray[i].getToolTipText() + "\" is invalid.");
+                setErrorMessage(I18N.tr("Invalid input for field")+ " " + manArray[i].getToolTipText());
                 return false;
             }
         }
@@ -193,6 +158,50 @@ public class ContactWizardPageOne extends WizardPage {
                 }
             });
         }
+    }
+    
+    private void setToolTipText(Composite container, String textName, String toolTip) {
+        Text t = (Text) XWT.findElementByName(container, textName);
+        if (t == null) {
+            LOG.error("Text '" + textName + "' not found.");
+            return;
+        }
+        t.setToolTipText(toolTip);
+    }
+
+    private void setLabelText(final Composite container, final String labelName, final String text) {
+
+        Label l = (Label) XWT.findElementByName(container, labelName);
+        if (l == null) {
+            LOG.error("Label '" + labelName + "' not found.");
+            return;
+        }
+
+        l.setText(text);
+    }
+    
+    private void setSectionText (Composite container, String sectionName, String text) {
+        Section s = (Section) XWT.findElementByName(container, sectionName);
+        if (s == null) {
+            LOG.error("Section '" + sectionName + "' not found.");
+            return;
+        }
+        s.setText(text);
+    }
+
+    private void translate(final Composite container) {
+        // Section
+        setSectionText(container, "Mandatory", I18N.tr("Contact"));
+        // Labels
+        setLabelText(container, "lblFirstName", I18N.tr("Name"));
+        setLabelText(container, "lblStreet", I18N.tr("Street / No."));
+        setLabelText(container, "lblZipCode", I18N.tr("Zipcode / City"));
+        // ToolTips
+        setToolTipText(container, "name", I18N.tr("Name"));
+        setToolTipText(container, "street", I18N.tr("Street"));
+        setToolTipText(container, "streetNumber", I18N.tr("Streetnumber"));
+        setToolTipText(container, "zipCode", I18N.tr("Zipcode"));
+        setToolTipText(container, "city", I18N.tr("City"));
     }
 
 }
