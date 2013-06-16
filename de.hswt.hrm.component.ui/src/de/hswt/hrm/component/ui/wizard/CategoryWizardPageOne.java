@@ -61,6 +61,7 @@ public class CategoryWizardPageOne extends WizardPage {
         super(title);
         this.category = category;
         setDescription(createDescription());
+        setTitle("Category Wizard");
     }
 
     private String createDescription() {
