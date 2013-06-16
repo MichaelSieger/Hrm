@@ -73,8 +73,12 @@ public class SchemeService {
 	
 	public Scheme findById(final int id) throws ElementNotFoundException, DatabaseException {
 	    checkArgument(id >= 0, "Invalid ID.");
+	    Scheme scheme = schemeDao.findById(id);
 	    
-	    return schemeDao.findById(id);
+	    // Eager loading of the scheme components
+	    Collection<SchemeComponent> components = findSchemeComponents(scheme);
+	    scheme.setSchemeComponents(components);
+	    return scheme;
 	}
 	
 	public Collection<SchemeComponent> findSchemeComponents(final Scheme scheme)

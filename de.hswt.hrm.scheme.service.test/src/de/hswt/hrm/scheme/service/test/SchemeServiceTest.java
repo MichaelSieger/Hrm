@@ -105,8 +105,6 @@ public class SchemeServiceTest extends AbstractDatabaseTest {
         		0,
         		Direction.leftRight,
         		attributes.get(0).getComponent());
-        // FIXME: following line hints for wrong using of the API
-//        scheme.getSchemeComponents().add(schemeComp);
         scheme = schemeDao.insert(scheme);
         // FIXME: again wrong usage of the API possible -> scheme should be mandatory
         schemeComp.setScheme(scheme);

@@ -64,6 +64,12 @@ public class Component {
 //    }
 
     public Component(String name, byte[] leftRightImage, byte[] rightLeftImage, byte[] upDownImage,
+            byte[] downUpImage, boolean boolRating) {
+    	
+    	this(name, leftRightImage, rightLeftImage, upDownImage, downUpImage, -1, boolRating);
+    }
+    
+    public Component(String name, byte[] leftRightImage, byte[] rightLeftImage, byte[] upDownImage,
             byte[] downUpImage, int quantifier, boolean boolRating) {
         this(-1, name, leftRightImage, rightLeftImage, upDownImage, downUpImage, quantifier,
                 boolRating);
@@ -145,13 +151,19 @@ public class Component {
         this.downUpImage = downUpImage;
     }
 
-    public int getQuantifier() {
-        return quantifier;
+    public Optional<Integer> getQuantifier() {
+    	if (quantifier < 0) {
+    		return Optional.<Integer>absent();
+    	}
+    	
+        return Optional.of(quantifier);
     }
 
+    /**
+     * @param quantifier Quantifier or '-1' if the default quantifier should be used.
+     */
     public void setQuantifier(int quantifier) {
-        checkArgument(quantifier > 0, INVALID_NUMBER, quantifier);
-        this.quantifier = quantifier;
+    	this.quantifier = quantifier;
     }
 
     public boolean getBoolRating() {

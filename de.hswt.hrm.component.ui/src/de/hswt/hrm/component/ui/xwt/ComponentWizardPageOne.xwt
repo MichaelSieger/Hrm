@@ -1,6 +1,5 @@
 <Composite xmlns="http://www.eclipse.org/xwt/presentation" 
-		xmlns:x="http://www.eclipse.org/xwt" 
-		x:Class="de.hswt.hrm.scheme.ui.xwt.CategoryWizardWindow" 
+		xmlns:x="http://www.eclipse.org/xwt"
 		xmlns:p1="clr-namespace:java.lang">
 	<Composite.layout>
 		<FillLayout/>
@@ -9,7 +8,7 @@
 		<Section.client>
 			<Composite>
 				<Composite.layout>
-					<GridLayout numColumns="2"/>
+					<GridLayout numColumns="3"/>
 				</Composite.layout>
 				<Label text="Name:" x:Name="">
 					<Label.layoutData>
@@ -18,7 +17,7 @@
 				</Label>
 				<Text x:Style="BORDER" x:Name="name">
 					<Text.layoutData>
-						<GridData horizontalAlignment="FILL" grabExcessHorizontalSpace="true"/>
+						<GridData horizontalAlignment="FILL" grabExcessHorizontalSpace="true" horizontalSpan="2"/>
 					</Text.layoutData>
 				</Text>
 				<Label text="Quantifier:">
@@ -28,7 +27,7 @@
 				</Label>
 				<Text x:Style="BORDER" x:Name="quantifier">
 					<Text.layoutData>
-						<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL" verticalAlignment="TOP"/>
+						<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL" verticalAlignment="TOP" horizontalSpan="2"/>
 					</Text.layoutData>
 				</Text>
 				<Label text="Category:">
@@ -36,21 +35,24 @@
 						<GridData horizontalAlignment="RIGHT"/>
 					</Label.layoutData>
 				</Label>
-				<Text x:Style="BORDER" x:Name="category">
-					<Text.layoutData>
-						<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
-					</Text.layoutData>
-				</Text>
+				<ComboViewer x:Name="category">
+					<ComboViewer.combo x:Name="category">
+						<ComboViewer.combo.layoutData>
+							<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL" horizontalSpan="2"/>
+						</ComboViewer.combo.layoutData>
+					</ComboViewer.combo>
+				</ComboViewer>
 				<Label text="Rating:">
 					<Label.layoutData>
 						<GridData horizontalAlignment="RIGHT"/>
 					</Label.layoutData>
 				</Label>
-				<Text x:Style="BORDER" x:Name="rating">
-					<Text.layoutData>
-						<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
-					</Text.layoutData>
-				</Text>
+				<Button x:Style="RADIO" text="Yes" x:Name="ratingYes"/>
+				<Button x:Style="RADIO" text="No" x:Name="ratingNo">
+					<Button.layoutData>
+						<GridData verticalAlignment="TOP"/>
+					</Button.layoutData>
+				</Button>
 			</Composite>
 		</Section.client>	
 	</Section>

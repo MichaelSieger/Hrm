@@ -1,0 +1,126 @@
+<Composite xmlns="http://www.eclipse.org/xwt/presentation" 
+		xmlns:x="http://www.eclipse.org/xwt" 
+		x:Class="de.hswt.hrm.component.ui.event.ComponentWizardHandler" 
+		xmlns:p1="clr-namespace:java.lang" xmlns:p2="clr-namespace:org.eclipse.ui.forms.widgets">
+	<Composite.layout>
+		<FillLayout/>
+	</Composite.layout>
+	<Section text="Category definition" x:Style="(p1:Section).EXPANDED | (p1:Section).TITLE_BAR" x:Name="General">
+		<Section.client>
+			<Composite>
+				<Composite.layout>
+					<GridLayout makeColumnsEqualWidth="true"/>
+				</Composite.layout>
+				<Section text="pathLR" x:Style="(p2:Section).EXPANDED | (p2:Section).TITLE_BAR">
+					<Section.layoutData>
+						<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL" widthHint="480"/>
+					</Section.layoutData>
+					<Section.client>
+						<Composite>
+							<Composite.layout>
+								<GridLayout makeColumnsEqualWidth="true" numColumns="4" marginHeight="1" marginLeft="5"/>
+							</Composite.layout>
+							<Label x:Name="imageLR" background="COLOR_WIDGET_BACKGROUND">
+								<Label.layoutData>
+									<GridData widthHint="100" heightHint="100"/>
+								</Label.layoutData>
+							</Label>
+							<Text x:Style="BORDER" enabled="false" x:Name="pathLR">
+								<Text.layoutData>
+									<GridData horizontalAlignment="FILL" horizontalSpan="2"/>
+								</Text.layoutData>
+							</Text>
+							<Button text="Upload" x:Name="buttonLR" size="50, 25">
+								<Button.layoutData>
+									<GridData horizontalAlignment="CENTER"/>
+								</Button.layoutData>
+							</Button>
+						</Composite>
+					</Section.client>
+				</Section>
+				<Section text="pathRL" x:Style="(p2:Section).EXPANDED | (p2:Section).TITLE_BAR">
+					<Section.layoutData>
+						<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL" widthHint="480"/>
+					</Section.layoutData>
+					<Section.client>
+						<Composite>
+							<Composite.layout>
+								<GridLayout makeColumnsEqualWidth="true" numColumns="4" marginHeight="1" marginLeft="5"/>
+							</Composite.layout>
+							<Label x:Name="imageRL" background="COLOR_WIDGET_BACKGROUND">
+								<Label.layoutData>
+									<GridData widthHint="100" heightHint="100"/>
+								</Label.layoutData>
+							</Label>
+							<Text x:Style="BORDER" enabled="false" x:Name="pathRL">
+								<Text.layoutData>
+									<GridData horizontalAlignment="FILL" horizontalSpan="2"/>
+								</Text.layoutData>
+							</Text>
+							<Button text="Upload" x:Name="buttonRL" size="50, 25">
+								<Button.layoutData>
+									<GridData horizontalAlignment="CENTER"/>
+								</Button.layoutData>
+							</Button>
+						</Composite>
+					</Section.client>
+				</Section>
+				<Section text="pathUD" x:Style="(p2:Section).EXPANDED | (p2:Section).TITLE_BAR">
+					<Section.layoutData>
+						<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL" widthHint="480"/>
+					</Section.layoutData>
+					<Section.client>
+						<Composite>
+							<Composite.layout>
+								<GridLayout makeColumnsEqualWidth="true" numColumns="4" marginHeight="1" marginLeft="5"/>
+							</Composite.layout>
+							<Label x:Name="imageUD" background="COLOR_WIDGET_BACKGROUND">
+								<Label.layoutData>
+									<GridData widthHint="100" heightHint="100"/>
+								</Label.layoutData>
+							</Label>
+							<Text x:Style="BORDER" enabled="false" x:Name="pathUD">
+								<Text.layoutData>
+									<GridData horizontalAlignment="FILL" horizontalSpan="2"/>
+								</Text.layoutData>
+							</Text>
+							<Button text="Upload" x:Name="buttonUD" size="50, 25">
+								<Button.layoutData>
+									<GridData horizontalAlignment="CENTER"/>
+								</Button.layoutData>
+							</Button>
+						</Composite>
+					</Section.client>
+				</Section>
+				<Section text="pathDU" x:Style="(p2:Section).EXPANDED | (p2:Section).TITLE_BAR">
+					<Section.layoutData>
+						<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL" widthHint="480"/>
+					</Section.layoutData>
+					<Section.client>
+						<Composite>
+							<Composite.layout>
+								<GridLayout makeColumnsEqualWidth="true" numColumns="4" marginHeight="1" marginLeft="5"/>
+							</Composite.layout>
+							<Label x:Name="imageDU" background="COLOR_WIDGET_BACKGROUND">
+								<Label.layoutData>
+									<GridData widthHint="100" heightHint="100"/>
+								</Label.layoutData>
+							</Label>
+							<Text x:Style="BORDER" enabled="false" x:Name="pathDU">
+								<Text.layoutData>
+									<GridData horizontalAlignment="FILL" horizontalSpan="2"/>
+								</Text.layoutData>
+							</Text>
+							<Button text="Upload" x:Name="buttonDU" size="50, 25">
+								<Button.layoutData>
+									<GridData horizontalAlignment="CENTER"/>
+								</Button.layoutData>
+							</Button>
+						</Composite>
+					</Section.client>
+				</Section>
+			</Composite>
+		</Section.client>	
+	</Section>
+</Composite>
+<!-- Forms API -->

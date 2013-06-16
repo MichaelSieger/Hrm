@@ -1,5 +1,5 @@
 <Composite xmlns="http://www.eclipse.org/xwt/presentation"
-	xmlns:x="http://www.eclipse.org/xwt" x:Class="de.hswt.hrm.component.ui.event.ComponentEventHandler"
+	xmlns:x="http://www.eclipse.org/xwt" 
 	xmlns:p1="clr-namespace:org.eclipse.ui.forms.widgets">
 	<Composite.layout>
 		<FillLayout />
