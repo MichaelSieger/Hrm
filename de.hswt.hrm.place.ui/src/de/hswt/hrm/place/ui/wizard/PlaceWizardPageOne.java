@@ -71,7 +71,8 @@ public class PlaceWizardPageOne extends WizardPage {
     	    LOG.error("Could not load PlaceWizardPageOne XWT file.", e);
     	    return;
 		}
-    	translate(container);
+    	//TODO: add translation file
+    	//translate(container);
     	
         if (place.isPresent()) {
             updateFields(place.get());
@@ -151,10 +152,10 @@ public class PlaceWizardPageOne extends WizardPage {
     }
     
     private boolean checkValidity(Text textField) {
-        String toolTip = textField.getToolTipText();
-        boolean isInvalidStreetNo = toolTip.equals("Hausnummer") && !streetNoVal.isValid(textField.getText());
-        boolean isInvalidZipCode = toolTip.equals("PLZ") && !plzVal.isValid(textField.getText());
-        boolean isInvalidCity = toolTip.equals("Stadt") && !cityVal.isValid(textField.getText());
+        String textFieldName = XWT.getElementName((Object) textField);
+        boolean isInvalidStreetNo = textFieldName.equals(Fields.STREET_NO) && !streetNoVal.isValid(textField.getText());
+        boolean isInvalidZipCode = textFieldName.equals(Fields.ZIP_CODE) && !plzVal.isValid(textField.getText());
+        boolean isInvalidCity = textFieldName.equals(Fields.CITY) && !cityVal.isValid(textField.getText());
         
         if (isInvalidStreetNo || isInvalidZipCode || isInvalidCity) {
             return false;
