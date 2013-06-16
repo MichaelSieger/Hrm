@@ -112,6 +112,68 @@ public class CatalogMatchingEventHandler {
         }
         try {
             List<Current> currents = (List<Current>) catalogService.findCurrentByTarget(t);
+            if (!currents.isEmpty()) {
+                System.out.println("found currents for " + t.getName() + "! " + currents.size());
+                for (Current cu : currents) {
+                    System.out.println(cu.getName());
+                }
+
+                // We have matched currents...
+                List<Current> temp = new ArrayList<>(currentsFromDb);
+                matchedCurrent.setInput(currents);
+                Collections.copy(temp, currentsFromDb);
+                temp.removeAll(currents);
+                availableCurrent.setInput(temp);
+
+            }
+
+            else {
+                System.out.println("no currents found for " + t.getName());
+                availableCurrent.setInput(currentsFromDb);
+                matchedCurrent.remove(currentsFromDb.toArray());
+
+            }
+        }
+        catch (DatabaseException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
+    public void matchedCurrentSelected(Event event) {
+
+        ListViewer catalogs = (ListViewer) XWT.findElementByName(event.widget, "catalogs");
+        Catalog c = (Catalog) catalogs.getElementAt(catalogs.getList().getSelectionIndex());
+
+        Current cu = (Current) matchedCurrent.getElementAt(matchedCurrent.getList()
+                .getSelectionIndex());
+        if (c == null) {
+            return;
+        }
+        try {
+            List<Activity> activities = (List<Activity>) catalogService.findActivityByCurrent(cu);
+            if (!activities.isEmpty()) {
+                System.out.println("found activities for " + cu.getName() + "! "
+                        + activities.size());
+                for (Activity a : activities) {
+                    System.out.println(a.getName());
+                }
+
+                // We have matched activities...
+                List<Activity> temp = new ArrayList<>(activitiesFromDb);
+                matchedActivity.setInput(activities);
+                Collections.copy(temp, activitiesFromDb);
+                temp.removeAll(activities);
+                availableActivity.setInput(temp);
+
+            }
+
+            else {
+                System.out.println("no activites found for " + cu.getName());
+                availableActivity.setInput(activitiesFromDb);
+                matchedActivity.remove(activitiesFromDb.toArray());
+
+            }
         }
         catch (DatabaseException e) {
             // TODO Auto-generated catch block

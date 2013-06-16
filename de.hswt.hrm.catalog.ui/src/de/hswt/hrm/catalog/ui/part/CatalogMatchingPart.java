@@ -170,13 +170,13 @@ public class CatalogMatchingPart {
         matchedActivities.addFilter(new CatalogTextFilter());
         matchedCurrents.addFilter(new CatalogTextFilter());
 
-        availableTargets.getList().setEnabled(false);
-        availablecurrents.getList().setEnabled(false);
-        availableactivities.getList().setEnabled(false);
+        // availableTargets.getList().setEnabled(false);
+        // availablecurrents.getList().setEnabled(false);
+        // availableactivities.getList().setEnabled(false);
 
-        matchedActivities.getList().setEnabled(false);
-        matchedCurrents.getList().setEnabled(false);
-        matchedTargets.getList().setEnabled(false);
+        // matchedActivities.getList().setEnabled(false);
+        // matchedCurrents.getList().setEnabled(false);
+        // matchedTargets.getList().setEnabled(false);
 
     }
 

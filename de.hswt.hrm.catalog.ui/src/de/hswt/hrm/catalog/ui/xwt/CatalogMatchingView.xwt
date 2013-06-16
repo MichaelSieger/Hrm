@@ -51,7 +51,7 @@
 					</Text.layoutData>
 				</Text>
 				<ListViewer x:Style="BORDER | V_SCROLL" x:Name="matchedTarget">
-					<ListViewer.list x:Name="" MouseDoubleClickEvent="matchedTargetClicked">
+					<ListViewer.list x:Name=""  SelectionEvent="matchedTargetSelected">
 						<ListViewer.list.layoutData>
 							<GridData horizontalAlignment="FILL" verticalAlignment="FILL"
 								grabExcessHorizontalSpace="true" grabExcessVerticalSpace="true"
@@ -80,7 +80,7 @@
 					</Text.layoutData>
 				</Text>
 				<ListViewer x:Style="BORDER | V_SCROLL" x:Name="matchedCurrent">
-					<ListViewer.list x:Name="" MouseDoubleClickEvent="matchedCurrentClicked" SelectionEvent="matchedTargetSelected">
+					<ListViewer.list x:Name=""  SelectionEvent="matchedCurrentSelected">
 						<ListViewer.list.layoutData>
 							<GridData horizontalAlignment="FILL" verticalAlignment="FILL"
 								grabExcessHorizontalSpace="true" grabExcessVerticalSpace="true" />
@@ -108,7 +108,7 @@
 					</Text.layoutData>
 				</Text>
 				<ListViewer x:Style="BORDER | V_SCROLL" x:Name="matchedActivity">
-					<ListViewer.list x:Name="" MouseDoubleClickEvent="matchedActivityClicked">
+					<ListViewer.list x:Name="" >
 						<ListViewer.list.layoutData>
 							<GridData grabExcessHorizontalSpace="true"
 								grabExcessVerticalSpace="true" horizontalAlignment="FILL"
@@ -205,7 +205,7 @@
 					</Text>
 				</Composite>
 				<ListViewer x:Style="BORDER | V_SCROLL" x:Name="availableTarget">
-					<ListViewer.list x:Name="" MouseDoubleClickEvent="availableTargetClicked">
+					<ListViewer.list x:Name="" >
 						<ListViewer.list.layoutData>
 							<GridData horizontalAlignment="FILL" verticalAlignment="FILL"
 								grabExcessHorizontalSpace="true" grabExcessVerticalSpace="true" />
@@ -237,7 +237,7 @@
 					</Text>
 				</Composite>
 				<ListViewer x:Style="BORDER | V_SCROLL" x:Name="availableCurrent">
-					<ListViewer.list x:Name="" MouseDoubleClickEvent="availableCurrentClicked">
+					<ListViewer.list x:Name="" >
 						<ListViewer.list.layoutData>
 							<GridData grabExcessHorizontalSpace="true"
 								grabExcessVerticalSpace="true" horizontalAlignment="FILL"
@@ -270,7 +270,7 @@
 					</Text>
 				</Composite>
 				<ListViewer x:Style="BORDER | V_SCROLL" x:Name="availableActivity">
-					<ListViewer.list x:Name="" MouseDoubleClickEvent="availableActivityClicked">
+					<ListViewer.list x:Name="" >
 						<ListViewer.list.layoutData>
 							<GridData verticalAlignment="FILL" horizontalAlignment="FILL"
 								grabExcessHorizontalSpace="true" grabExcessVerticalSpace="true" />
