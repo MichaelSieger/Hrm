@@ -1,5 +1,7 @@
 package de.hswt.hrm.catalog.ui.event;
 
+import java.util.Collection;
+
 import javax.inject.Inject;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
@@ -16,6 +18,7 @@ import de.hswt.hrm.catalog.model.ICatalogItem;
 import de.hswt.hrm.catalog.model.Target;
 import de.hswt.hrm.catalog.service.CatalogService;
 import de.hswt.hrm.catalog.ui.filter.CatalogTextFilter;
+import de.hswt.hrm.common.database.exception.DatabaseException;
 
 public class CatalogMatchingEventHandler {
 
@@ -158,11 +161,22 @@ public class CatalogMatchingEventHandler {
 
         ListViewer catalogs = (ListViewer) XWT.findElementByName(event.widget, "catalogs");
         Catalog c = (Catalog) catalogs.getElementAt(catalogs.getList().getSelectionIndex());
-        if (c.getTargets().isEmpty()) {
+        Collection<Target> targets = null;
+        try {
+            targets = catalogService.findTargetByCatalog(c);
+        }
+        catch (DatabaseException e) {
+
+            e.printStackTrace();
+        }
+        if (targets.isEmpty()) {
             System.out.println("empty Targets, using defaults");
         }
-        else
-            System.out.println("found matched target");
+        else {
+            for (Target t : targets) {
+                System.out.println(t.getName());
+            }
+        }
 
         availableTarget.getList().setEnabled(true);
 

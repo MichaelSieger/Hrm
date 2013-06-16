@@ -105,6 +105,17 @@ public class CatalogMatchingPart {
                 return c.getName();
             }
         });
+        catalogs.setComparator(new ViewerComparator(){
+            @Override
+            public int compare(Viewer viewer, Object e1, Object e2) {
+
+                ICatalogItem ic1 = (ICatalogItem) e1;
+                ICatalogItem ic2 = (ICatalogItem) e2;
+                return ic1.getName().compareToIgnoreCase(ic2.getName());
+
+            }
+           
+        });
     }
 
     /**
