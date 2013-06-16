@@ -13,6 +13,7 @@ import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.widgets.Section;
 import org.slf4j.Logger;
@@ -59,7 +60,10 @@ public class PlantWizardPageOne extends WizardPage {
         catch (Exception e) {
             LOG.error("An error occured: ", e);
         }
+        
+        translate(container);
         loadConstructionYears();
+        
         if (this.plant.isPresent()) {
             updateFields(container);
         }
@@ -189,6 +193,38 @@ public class PlantWizardPageOne extends WizardPage {
         for (Text text : widgets.values()) {
             text.addKeyListener(listener);
         }
+    }
+    
+    private void translate(Composite container) {
+        //TODO: translation - I18N
+        setToolTipText(container, "description", "Description");
+        setToolTipText(container, "manufactor", "Manufactor");
+        setToolTipText(container, "type", "Type");
+        setToolTipText(container, "airPerformance", "AirPerformance");
+        setToolTipText(container, "motorPower", "MotorPower");
+        setToolTipText(container, "ventilatorPerformance", "VentilatorPerformance");
+        setToolTipText(container, "motorRPM", "MotorRPM");
+        setToolTipText(container, "current", "Current");
+        setToolTipText(container, "voltage", "Voltage");
+        setToolTipText(container, "note", "Note"); //Bemerkung
+    }
+    
+    private void setToolTipText(Composite container, String textName, String toolTip) {
+        Text t = (Text) XWT.findElementByName(container, textName);
+        if (t == null) {
+            LOG.error("Text '" + textName + "' not found.");
+            return;
+        }
+        t.setToolTipText(toolTip);
+    }
+    
+    private void setLabelText(Composite container, String labelName, String text) {
+        Label l = (Label) XWT.findElementByName(container, labelName);
+        if (l == null) {
+            LOG.error("Label '" + labelName + "' not found.");
+            return;
+        }
+        l.setText(text);
     }
     
 }
