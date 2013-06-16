@@ -1,8 +1,8 @@
 package de.hswt.hrm.scheme.model;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 
 import com.google.common.base.Optional;
 
@@ -18,9 +18,8 @@ public class Scheme {
         this(-1, plant, null);
 	}
     
-    @SuppressWarnings("unchecked")
     public Scheme(final int id, final Plant plant, final Timestamp timestamp){
-        this(id, plant, timestamp, Collections.EMPTY_LIST);
+        this(id, plant, timestamp, new ArrayList<SchemeComponent>());
     }
     
     public Scheme(final int id, final Plant plant, final Timestamp timestamp, final Collection<SchemeComponent> schemeComponents) {
