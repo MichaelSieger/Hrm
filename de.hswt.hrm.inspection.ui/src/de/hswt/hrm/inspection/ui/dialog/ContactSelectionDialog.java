@@ -10,11 +10,12 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
 import de.hswt.hrm.common.ui.swt.layouts.LayoutUtil;
+import de.hswt.hrm.contact.ui.part.ContactComposite;
 import de.hswt.hrm.place.ui.part.PlaceComposite;
 
 public class ContactSelectionDialog extends TitleAreaDialog {
 
-    private PlaceComposite placeComposite;
+    private ContactComposite contactComposite;
     private IEclipseContext context;
 
     public ContactSelectionDialog(Shell parentShell, IEclipseContext context) {
@@ -37,12 +38,12 @@ public class ContactSelectionDialog extends TitleAreaDialog {
     }
 
     private void draw(Composite composite) {
-        placeComposite = new PlaceComposite(composite, SWT.NONE);
+        contactComposite = new ContactComposite(composite, SWT.NONE);
 
-        placeComposite = new PlaceComposite(composite, SWT.NONE);
-        ContextInjectionFactory.inject(placeComposite, context);
-        placeComposite.setAllowEditing(false);
-        placeComposite.setLayoutData(LayoutUtil.createFillData());
+        contactComposite = new ContactComposite(composite, SWT.NONE);
+        ContextInjectionFactory.inject(contactComposite, context);
+        contactComposite.setAllowEditing(false);
+        contactComposite.setLayoutData(LayoutUtil.createFillData());
         System.out.println("<^__^>");
 
     }
