@@ -3,6 +3,7 @@ package de.hswt.hrm.catalog.ui.part;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -65,6 +66,12 @@ public class CatalogMatchingPart {
             matchedCurrents = (ListViewer) XWT.findElementByName(composite, "matchedCurrent");
             catalogs = (ListViewer) XWT.findElementByName(composite, "catalogs");
 
+            // Obtain items from the Database
+            Collection<Catalog> catalogsFromDB = catalogService.findAllCatalog();
+            List<Activity> activityFromDB = (List<Activity>) catalogService.findAllActivity();
+            List<Current> currentFromDB = (List<Current>) catalogService.findAllCurrent();
+            List<Target> targetFromDB = (List<Target>) catalogService.findAllTarget();
+
             // Pass them to the event Handler
             cmeh.setAvActivity(availableactivities);
             cmeh.setAvCurrent(availablecurrents);
@@ -72,6 +79,9 @@ public class CatalogMatchingPart {
             cmeh.setMaActivity(matchedActivities);
             cmeh.setMaCurrent(matchedCurrents);
             cmeh.setMaTarget(matchedTargets);
+            cmeh.setActivitiesFromDb(activityFromDB);
+            cmeh.setCurrentsFromDb(currentFromDB);
+            cmeh.setTargetsFromDb(targetFromDB);
 
             // Fill them with data
             initalize(availableactivities);
@@ -82,11 +92,7 @@ public class CatalogMatchingPart {
             initalize(matchedCurrents);
             initializeCatalogs(catalogs);
 
-            Collection<Catalog> catalogsFromDB = catalogService.findAllCatalog();
-
-            Collection<ICatalogItem> items = catalogService.findAllCatalogItem();
-
-            fillAvailableViewer(items);
+            fillAvailableViewer(targetFromDB, currentFromDB, activityFromDB);
 
             catalogs.setInput(catalogsFromDB);
 
@@ -105,16 +111,16 @@ public class CatalogMatchingPart {
                 return c.getName();
             }
         });
-        catalogs.setComparator(new ViewerComparator(){
+        catalogs.setComparator(new ViewerComparator() {
             @Override
             public int compare(Viewer viewer, Object e1, Object e2) {
 
-                ICatalogItem ic1 = (ICatalogItem) e1;
-                ICatalogItem ic2 = (ICatalogItem) e2;
-                return ic1.getName().compareToIgnoreCase(ic2.getName());
+                Catalog c1 = (Catalog) e1;
+                Catalog c2 = (Catalog) e2;
+                return c1.getName().compareToIgnoreCase(c2.getName());
 
             }
-           
+
         });
     }
 
@@ -149,27 +155,12 @@ public class CatalogMatchingPart {
         });
     }
 
-    private void fillAvailableViewer(Collection<ICatalogItem> items) {
+    private void fillAvailableViewer(Collection<Target> targets, Collection<Current> currents,
+            Collection<Activity> activities) {
 
-        Collection<Activity> a = new ArrayList<>();
-        Collection<Current> c = new ArrayList<>();
-        Collection<Target> t = new ArrayList<>();
-
-        for (ICatalogItem i : items) {
-            if (i instanceof Activity) {
-                a.add((Activity) i);
-            }
-            else if (i instanceof Current) {
-                c.add((Current) i);
-            }
-            else {
-                t.add((Target) i);
-            }
-        }
-
-        availableTargets.setInput(t);
-        availablecurrents.setInput(c);
-        availableactivities.setInput(a);
+        // availableTargets.setInput(targets);
+        // availablecurrents.setInput(currents);
+        // availableactivities.setInput(activities);
 
         availableactivities.addFilter(new CatalogTextFilter());
         availablecurrents.addFilter(new CatalogTextFilter());

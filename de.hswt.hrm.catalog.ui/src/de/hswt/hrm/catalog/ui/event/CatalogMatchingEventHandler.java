@@ -1,6 +1,9 @@
 package de.hswt.hrm.catalog.ui.event;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -13,7 +16,9 @@ import org.eclipse.swt.widgets.Text;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.hswt.hrm.catalog.model.Activity;
 import de.hswt.hrm.catalog.model.Catalog;
+import de.hswt.hrm.catalog.model.Current;
 import de.hswt.hrm.catalog.model.ICatalogItem;
 import de.hswt.hrm.catalog.model.Target;
 import de.hswt.hrm.catalog.service.CatalogService;
@@ -31,6 +36,10 @@ public class CatalogMatchingEventHandler {
     private ListViewer matchedCurrent;
     private ListViewer availableActivity;
     private ListViewer matchedActivity;
+
+    private List<Target> targetsFromDb;
+    private List<Current> currentsFromDb;
+    private List<Activity> activitiesFromDb;
 
     private static final Logger LOG = LoggerFactory.getLogger(CatalogMatchingEventHandler.class);
     private static final String DEFAULT_SEARCH_STRING = "Search";
@@ -159,23 +168,33 @@ public class CatalogMatchingEventHandler {
      */
     public void onSelection(Event event) {
 
+        // Obtain ListViewer holding catalogs
         ListViewer catalogs = (ListViewer) XWT.findElementByName(event.widget, "catalogs");
+        // obtain selected catalag
         Catalog c = (Catalog) catalogs.getElementAt(catalogs.getList().getSelectionIndex());
-        Collection<Target> targets = null;
+        List<Target> targets = null;
         try {
-            targets = catalogService.findTargetByCatalog(c);
+            // Obtain a list containing all targets for a given catalog
+            targets = (List<Target>) catalogService.findTargetByCatalog(c);
+
         }
         catch (DatabaseException e) {
 
-            e.printStackTrace();
+            LOG.error("An error occured", e);
         }
         if (targets.isEmpty()) {
             System.out.println("empty Targets, using defaults");
+            availableTarget.setInput(targetsFromDb);
         }
         else {
-            for (Target t : targets) {
-                System.out.println(t.getName());
-            }
+            List<Target> temp = new ArrayList<>(targetsFromDb);
+
+            matchedTarget.setInput(targets);
+            Collections.copy(temp, targetsFromDb);
+            availableTarget.setInput(temp.removeAll(targets));
+            System.out.println(temp);
+            availableTarget.refresh();
+
         }
 
         availableTarget.getList().setEnabled(true);
@@ -241,6 +260,42 @@ public class CatalogMatchingEventHandler {
 
     public void setMaActivity(ListViewer matchedActivity) {
         this.matchedActivity = matchedActivity;
+    }
+
+    public void setAvailableTarget(ListViewer availableTarget) {
+        this.availableTarget = availableTarget;
+    }
+
+    public void setMatchedTarget(ListViewer matchedTarget) {
+        this.matchedTarget = matchedTarget;
+    }
+
+    public void setAvailableCurrent(ListViewer availableCurrent) {
+        this.availableCurrent = availableCurrent;
+    }
+
+    public void setMatchedCurrent(ListViewer matchedCurrent) {
+        this.matchedCurrent = matchedCurrent;
+    }
+
+    public void setAvailableActivity(ListViewer availableActivity) {
+        this.availableActivity = availableActivity;
+    }
+
+    public void setMatchedActivity(ListViewer matchedActivity) {
+        this.matchedActivity = matchedActivity;
+    }
+
+    public void setTargetsFromDb(List<Target> targetsFromDb) {
+        this.targetsFromDb = targetsFromDb;
+    }
+
+    public void setCurrentsFromDb(List<Current> currentsFromDb) {
+        this.currentsFromDb = currentsFromDb;
+    }
+
+    public void setActivitiesFromDb(List<Activity> activitiesFromDb) {
+        this.activitiesFromDb = activitiesFromDb;
     }
 
 }

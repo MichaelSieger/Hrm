@@ -126,45 +126,44 @@ public class ComponentEventHandler {
         }
 
     }
-    
-    public void onClick(Event event){        
-    	byte[] bytes;
-    	Label previewImage = (Label) XWT.findElementByName(event.widget, "imagePreview");
-    	TableViewer viewer = (TableViewer) XWT.findElementByName(event.widget, "componentTable");
-    	
-        IStructuredSelection sel =  (IStructuredSelection) viewer.getSelection();
-        Component selectedComponent = (Component) sel.getFirstElement();
-        
-        bytes = selectedComponent.getRightLeftImage();
-        if(bytes == null){
-        	bytes = selectedComponent.getDownUpImage();
-        }
-         if(bytes == null){
-        	bytes = selectedComponent.getUpDownImage();
-         }
-         if(bytes == null){
-        	bytes = selectedComponent.getLeftRightImage();
-         }
-        
 
-		
-		ByteBuffer buf = ByteBuffer.wrap(bytes);
-		PDFFile pdffile;
-		try {
-			pdffile = new PDFFile(buf);
-			PDFPage page = pdffile.getPage(0);
-			
-			Image imge = ComponentConverter.getSWTImage(previewImage.getDisplay(),ComponentConverter.renderImage(page, 100, 100));
-	        previewImage.setImage(imge);
-	    	previewImage.setSize( previewImage.computeSize( SWT.DEFAULT, SWT.DEFAULT ));
-			
-			
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}	   	
-    	
+    public void onClick(Event event) {
+        byte[] bytes;
+        Label previewImage = (Label) XWT.findElementByName(event.widget, "imagePreview");
+        TableViewer viewer = (TableViewer) XWT.findElementByName(event.widget, "componentTable");
+
+        IStructuredSelection sel = (IStructuredSelection) viewer.getSelection();
+        Component selectedComponent = (Component) sel.getFirstElement();
+
+        bytes = selectedComponent.getRightLeftImage();
+        if (bytes == null) {
+            bytes = selectedComponent.getDownUpImage();
+        }
+        if (bytes == null) {
+            bytes = selectedComponent.getUpDownImage();
+        }
+        if (bytes == null) {
+            bytes = selectedComponent.getLeftRightImage();
+        }
+
+        ByteBuffer buf = ByteBuffer.wrap(bytes);
+        PDFFile pdffile;
+        try {
+            pdffile = new PDFFile(buf);
+            PDFPage page = pdffile.getPage(0);
+
+            // Image imge =
+            // ComponentConverter.getSWTImage(previewImage.getDisplay(),ComponentConverter.renderImage(page,
+            // 100, 100));
+            // previewImage.setImage(imge);
+            // previewImage.setSize( previewImage.computeSize( SWT.DEFAULT, SWT.DEFAULT ));
+
+        }
+        catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
     }
 
     /**
@@ -177,28 +176,29 @@ public class ComponentEventHandler {
      */
     public void tableEntrySelected(Event event) {
 
-//        TableViewer tv = (TableViewer) XWT.findElementByName(event.widget, "componentTable");
-//
-//        // obtain the contact in the column where the doubleClick happend
-//        Component selectedComponent = (Component) tv.getElementAt(tv.getTable().getSelectionIndex());
-//        if (selectedComponent == null) {
-//            return;
-//        }
-//        try {
-////            componentService.refresh(selectedComponent);
-//            Optional<Component> updatedComponent = ComponentPartUtil.showWizard(context,
-//                    event.display.getActiveShell(), Optional.of(selectedComponent));
-//
-//            if (updatedComponent.isPresent()) {
-//                tv.refresh();
-//            }
-//        }
-//        catch (DatabaseException e) {
-//            LOG.error("Could not retrieve the Component from database.", e);
-//
-//            // TODO: übersetzen
-//            MessageDialog.openError(event.display.getActiveShell(), "Connection Error",
-//                    "Could not update selected Component from database.");
-//        }
+        // TableViewer tv = (TableViewer) XWT.findElementByName(event.widget, "componentTable");
+        //
+        // // obtain the contact in the column where the doubleClick happend
+        // Component selectedComponent = (Component)
+        // tv.getElementAt(tv.getTable().getSelectionIndex());
+        // if (selectedComponent == null) {
+        // return;
+        // }
+        // try {
+        // // componentService.refresh(selectedComponent);
+        // Optional<Component> updatedComponent = ComponentPartUtil.showWizard(context,
+        // event.display.getActiveShell(), Optional.of(selectedComponent));
+        //
+        // if (updatedComponent.isPresent()) {
+        // tv.refresh();
+        // }
+        // }
+        // catch (DatabaseException e) {
+        // LOG.error("Could not retrieve the Component from database.", e);
+        //
+        // // TODO: übersetzen
+        // MessageDialog.openError(event.display.getActiveShell(), "Connection Error",
+        // "Could not update selected Component from database.");
+        // }
     }
 }
