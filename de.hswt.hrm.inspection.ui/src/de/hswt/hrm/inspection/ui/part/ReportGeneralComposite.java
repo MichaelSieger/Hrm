@@ -303,7 +303,8 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 // TODO request for person and fill out the corresponding fields with selction
-                ContactSelectionDialog csd = new ContactSelectionDialog(shellProvider.getShell());
+                ContactSelectionDialog csd = new ContactSelectionDialog(shellProvider.getShell(),
+                        context);
                 csd.create();
                 System.out.println(csd.open());
 
