@@ -264,7 +264,7 @@ public class ComponentDao implements IComponentDao {
                         Component inserted = new Component(id, component.getName(),
                                 component.getLeftRightImage(), component.getRightLeftImage(),
                                 component.getUpDownImage(), component.getDownUpImage(),
-                                component.getQuantifier(), component.getBoolRating());
+                                component.getQuantifier().or(-1), component.getBoolRating());
 
                         inserted.setCategory(component.getCategory().orNull());
                         con.commit();
