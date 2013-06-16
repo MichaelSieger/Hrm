@@ -63,7 +63,7 @@ public class CatalogMatchingEventHandler {
      * 
      * @param event
      */
-    public void availableTargetSelected(Event event) {
+    public void availableTargetClicked(Event event) {
 
         ListViewer catalogs = (ListViewer) XWT.findElementByName(event.widget, "catalogs");
         Catalog c = (Catalog) catalogs.getElementAt(catalogs.getList().getSelectionIndex());
@@ -71,32 +71,33 @@ public class CatalogMatchingEventHandler {
         Target t = (Target) moveEntry(availableTarget, matchedTarget);
         try {
 
-            if (t == null) {
-                System.out.println("t is null");
-                return;
-            }
-            else
-
-                catalogService.addToCatalog(c, t);
-            List<Target> ta;
-            try {
-                ta = (List<Target>) catalogService.findTargetByCatalog(c);
-                for (Target tar : ta) {
-                    System.out.println("matched target after insert: " + tar.getName());
-                }
-            }
-            catch (DatabaseException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
+            catalogService.addToCatalog(c, t);
 
         }
         catch (SaveException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            LOG.error("An error occured", e);
         }
 
         enableList(matchedTarget, availableCurrent);
+
+    }
+
+    public void matchedTargetClicked(Event event) {
+
+        ListViewer catalogs = (ListViewer) XWT.findElementByName(event.widget, "catalogs");
+        Catalog c = (Catalog) catalogs.getElementAt(catalogs.getList().getSelectionIndex());
+
+        Target t = (Target) moveEntry(matchedTarget, availableTarget);
+
+        try {
+            catalogService.removeFromCatalog(c, t);
+        }
+        catch (DatabaseException e) {
+            LOG.error("An error occured", e);
+        }
+
+        moveEntry(matchedTarget, availableTarget);
+        disableLists(matchedTarget, matchedCurrent);
 
     }
 
@@ -105,49 +106,34 @@ public class CatalogMatchingEventHandler {
         ListViewer catalogs = (ListViewer) XWT.findElementByName(event.widget, "catalogs");
         Catalog c = (Catalog) catalogs.getElementAt(catalogs.getList().getSelectionIndex());
 
-        Target t = (Target) moveEntry(matchedTarget, availableTarget);
+        Target t = (Target) matchedTarget.getElementAt(matchedTarget.getList().getSelectionIndex());
+        if (t == null) {
+            return;
+        }
         try {
-
-            if (t == null) {
-                System.out.println("t is null");
-                return;
-            }
-            else
-               
-            catalogService.removeFromCatalog(c, t);
-            List<Target> ta;
-
-            ta = (List<Target>) catalogService.findTargetByCatalog(c);
-            for (Target tar : ta) {
-                System.out.println("matched target after delete: " + tar.getName());
-            }
-
+            List<Current> currents = (List<Current>) catalogService.findCurrentByTarget(t);
         }
         catch (DatabaseException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-
-        moveEntry(matchedTarget, availableTarget);
-        disableLists(matchedTarget, matchedCurrent);
-
     }
 
-    public void availableCurrentSelected(Event event) {
+    public void availableCurrentClicked(Event event) {
 
         moveEntry(availableCurrent, matchedCurrent);
         enableList(matchedCurrent, availableActivity);
 
     }
 
-    public void matchedCurrentSelected(Event event) {
+    public void matchedCurrentClicked(Event event) {
 
         moveEntry(matchedCurrent, availableCurrent);
         disableLists(matchedCurrent, availableActivity);
 
     }
 
-    public void availableActivitySelected(Event event) {
+    public void availableActivityClicked(Event event) {
 
         moveEntry(availableActivity, matchedActivity);
         if (availableActivity.getList().getItemCount() > 0) {
@@ -156,7 +142,7 @@ public class CatalogMatchingEventHandler {
 
     }
 
-    public void matchedActivitySelected(Event event) {
+    public void matchedActivityClicked(Event event) {
 
         moveEntry(matchedActivity, availableActivity);
         if (matchedActivity.getList().getItemCount() == 0) {
@@ -198,7 +184,7 @@ public class CatalogMatchingEventHandler {
     }
 
     /**
-     * This event occurs whenever an catalog entry is selected
+     * This event occurs whenever an catalog entry is Clicked
      * 
      * @param event
      */
@@ -206,7 +192,7 @@ public class CatalogMatchingEventHandler {
 
         // Obtain ListViewer holding catalogs
         ListViewer catalogs = (ListViewer) XWT.findElementByName(event.widget, "catalogs");
-        // obtain selected catalag
+        // obtain Clicked catalag
         Catalog c = (Catalog) catalogs.getElementAt(catalogs.getList().getSelectionIndex());
         List<Target> targets = null;
         try {
@@ -225,15 +211,15 @@ public class CatalogMatchingEventHandler {
 
         }
         else {
-            List<Target> temp = new ArrayList<>(targetsFromDb);
 
+            // We have matched targets...
+            List<Target> temp = new ArrayList<>(targetsFromDb);
             matchedTarget.setInput(targets);
             Collections.copy(temp, targetsFromDb);
             temp.removeAll(targets);
             availableTarget.setInput(temp);
 
         }
-
         availableTarget.getList().setEnabled(true);
 
     }
