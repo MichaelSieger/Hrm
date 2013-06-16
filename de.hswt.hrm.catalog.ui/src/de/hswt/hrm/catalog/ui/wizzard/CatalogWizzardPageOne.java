@@ -24,10 +24,13 @@ import de.hswt.hrm.catalog.model.Activity;
 import de.hswt.hrm.catalog.model.Current;
 import de.hswt.hrm.catalog.model.ICatalogItem;
 import de.hswt.hrm.catalog.model.Target;
+import de.hswt.hrm.i18n.I18n;
+import de.hswt.hrm.i18n.I18nFactory;
 
 public class CatalogWizzardPageOne extends WizardPage {
 
     private static final Logger LOG = LoggerFactory.getLogger(CatalogWizzardPageOne.class);
+    private static final I18n I18N = I18nFactory.getI18n(CatalogWizzardPageOne.class);
 
     private Composite container;
     private HashMap<String, Text> textFields;
@@ -38,6 +41,7 @@ public class CatalogWizzardPageOne extends WizardPage {
         super(pageName);
         this.item = item;
         setDescription(createDiscription());
+        setTitle(I18N.tr("Catalog Wizard"));
     }
 
     public void createControl(Composite parent) {
@@ -124,10 +128,10 @@ public class CatalogWizzardPageOne extends WizardPage {
 
     private String createDiscription() {
         if (item.isPresent()) {
-            return "Soll/Ist/Maßnahme bearbeiten: "+item.get().getName();
+            return I18N.tr("Edit a catalog.");
         }
 
-        return "Neue Soll/Ist/Maßnahme anlegen";
+        return I18N.tr("Add a new catalog");
     }
 
     public ICatalogItem getItem() {
