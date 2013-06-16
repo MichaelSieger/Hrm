@@ -39,7 +39,7 @@ public class ContactWizardPageTwo extends WizardPage{
     public ContactWizardPageTwo(String pageName, Optional<Contact> contact) {
         super(pageName);
         this.contact = contact;
-        setDescription("Provide the contacts communication information.");
+        setDescription(I18N.tr("Provide the contacts communication information"));
         setTitle(I18N.tr("Contact Wizard"));
     }
     
@@ -92,7 +92,7 @@ public class ContactWizardPageTwo extends WizardPage{
     public boolean isPageComplete() {
         Text eMail = (Text) XWT.findElementByName(container, "email");
         if (eMail.getText().length() != 0 && !emailVal.isValid(eMail.getText())) {
-            setErrorMessage("Invalid email!");
+            setErrorMessage(I18N.tr("Invalid input for field") + " " + eMail.getToolTipText());
             return false;
         }
         setErrorMessage(null);
@@ -115,6 +115,8 @@ public class ContactWizardPageTwo extends WizardPage{
     }
     
     private void translate(Composite container) {
+        // Section
+        setSectionText(container, "Optional", I18N.tr("Communication"));
         // Labels
         setLabelText(container, "lblPhone", I18N.tr("Phone"));
         setLabelText(container, "lblMobilePhone", I18N.tr("Mobile"));
@@ -145,5 +147,14 @@ public class ContactWizardPageTwo extends WizardPage{
             return;
         }
         l.setText(text);
+    }
+    
+    private void setSectionText(Composite container, String sectionName, String text) {
+        Section s = (Section) XWT.findElementByName(container, sectionName);
+        if (s == null) {
+            LOG.error("Section '" + sectionName + "' not found.");
+            return;
+        }
+        s.setText(text);
     }
 }
