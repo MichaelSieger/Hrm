@@ -4,6 +4,7 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Collection;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -12,6 +13,7 @@ import org.eclipse.e4.core.di.annotations.Creatable;
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.ElementNotFoundException;
 import de.hswt.hrm.common.database.exception.SaveException;
+import de.hswt.hrm.component.model.Attribute;
 import de.hswt.hrm.plant.model.Plant;
 import de.hswt.hrm.scheme.dao.core.ISchemeComponentDao;
 import de.hswt.hrm.scheme.dao.core.ISchemeDao;
@@ -71,8 +73,12 @@ public class SchemeService {
 	
 	public Scheme findById(final int id) throws ElementNotFoundException, DatabaseException {
 	    checkArgument(id >= 0, "Invalid ID.");
+	    Scheme scheme = schemeDao.findById(id);
 	    
-	    return schemeDao.findById(id);
+	    // Eager loading of the scheme components
+	    Collection<SchemeComponent> components = findSchemeComponents(scheme);
+	    scheme.setSchemeComponents(components);
+	    return scheme;
 	}
 	
 	public Collection<SchemeComponent> findSchemeComponents(final Scheme scheme)
@@ -83,4 +89,15 @@ public class SchemeService {
 	    return schemeComponentDao.findAllComponentByScheme(scheme);
 	}
 
+	Map<Attribute, String> findAttributesOfSchemeComponent(SchemeComponent component) 
+    		throws DatabaseException {
+
+		return schemeComponentDao.findAttributesOfSchemeComponent(component);
+	}
+	
+	public void setAttributeValue(SchemeComponent component, Attribute attribute, String value) 
+			throws DatabaseException {
+		
+		schemeComponentDao.setAttributeValue(component, attribute, value);
+	}
 }

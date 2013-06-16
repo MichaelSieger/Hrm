@@ -8,6 +8,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import javax.imageio.ImageIO;
+import javax.inject.Inject;
 import javax.sql.rowset.serial.SerialBlob;
 
 import org.eclipse.e4.core.contexts.ContextInjectionFactory;
@@ -21,6 +22,8 @@ import com.google.common.base.Optional;
 import de.hswt.hrm.common.ui.swt.table.ColumnDescription;
 import de.hswt.hrm.common.ui.swt.wizards.WizardCreator;
 import de.hswt.hrm.component.model.Component;
+import de.hswt.hrm.component.service.CategoryService;
+import de.hswt.hrm.component.service.ComponentService;
 import de.hswt.hrm.component.ui.wizard.ComponentWizard;
 
 
@@ -31,10 +34,10 @@ public final class ComponentPartUtil {
 
     }
 
-    public static Optional<Component> showWizard(IEclipseContext context, Shell shell,
-            Optional<Component> contact) {
-
-        ComponentWizard cw = new ComponentWizard(contact);
+    public static Optional<Component> showWizard(ComponentService compSer, CategoryService catSer, IEclipseContext context, Shell shell,
+            Optional<Component> component) {
+    	
+        ComponentWizard cw = new ComponentWizard(component, compSer,catSer);
         ContextInjectionFactory.inject(cw, context);
 
         WizardDialog wd = WizardCreator.createWizardDialog(shell, cw);
@@ -45,10 +48,6 @@ public final class ComponentPartUtil {
     public static List<ColumnDescription<Component>> getColumns() {
         List<ColumnDescription<Component>> columns = new ArrayList<>();
         columns.add(getName());
-//        columns.add(getSymbolLR());
-//        columns.add(getSymbolLR());
-//        columns.add(getSymbolUD());
-//        columns.add(getSymbolDU());
         columns.add(getQuantifier());
         columns.add(getCategory());
         columns.add(getRating());
@@ -115,14 +114,18 @@ public final class ComponentPartUtil {
             @Override
             public String getText(Object element) {
                 Component c = (Component) element;
-                return Integer.toString(c.getQuantifier());
+                if (c.getQuantifier().isPresent()) {
+                	return c.getQuantifier().get().toString();
+                }
+                
+                return "";
             }
         }, new Comparator<Component>() {
             @Override
             public int compare(Component c1, Component c2) {
-                String q = Integer.toString(c1.getQuantifier());
-                String q2 = Integer.toString(c2.getQuantifier());
-                return q.compareToIgnoreCase(q2);
+            	int q1 = c1.getQuantifier().or(Integer.MAX_VALUE);
+            	int q2 = c2.getQuantifier().or(Integer.MAX_VALUE);
+            	return q1 - q2;
             }
         });
     }

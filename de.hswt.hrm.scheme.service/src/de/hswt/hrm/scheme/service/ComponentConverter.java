@@ -92,7 +92,7 @@ public class ComponentConverter {
 							THUMB_HEIGHT)));
 	}
 
-	private static BufferedImage renderImage(final PDFPage page, final int w,
+	public static BufferedImage renderImage(final PDFPage page, final int w,
 			final int h) {
 	    return convertToBufferedImage(page.getImage(w, h, page.getBBox(), null, true, true));
 	}
@@ -108,7 +108,7 @@ public class ComponentConverter {
 	    return result;
 	}
 
-	private static org.eclipse.swt.graphics.Image getSWTImage(Display display,
+	public static org.eclipse.swt.graphics.Image getSWTImage(Display display,
 			BufferedImage awtImage) {
 		return new org.eclipse.swt.graphics.Image(display, getSWTData(awtImage));
 	}

@@ -1,6 +1,8 @@
 package de.hswt.hrm.inspection.model;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Strings.isNullOrEmpty;
 
 import com.google.common.base.Optional;
 
@@ -14,6 +16,9 @@ public class PhysicalRating {
     private String note;
     private Component component;
     private Inspection inspection;
+    
+    private static final String IS_MANDATORY = "Field is a mandatory.";
+    private static final String INVALID_NUMBER = "%d is an invalid number.%n Must be greater 0";
 
     public PhysicalRating(int id, int rating, String note) {
         this.id = id;
@@ -30,6 +35,7 @@ public class PhysicalRating {
     }
 
     public void setRating(int rating) {
+        checkArgument(rating > 0, INVALID_NUMBER, rating);
         this.rating = rating;
     }
 
@@ -38,6 +44,7 @@ public class PhysicalRating {
     }
 
     public void setNote(String note) {
+        checkArgument(!isNullOrEmpty(note), IS_MANDATORY);
         this.note = note;
     }
 

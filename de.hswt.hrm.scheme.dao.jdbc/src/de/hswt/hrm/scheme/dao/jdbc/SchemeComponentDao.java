@@ -157,7 +157,7 @@ public class SchemeComponentDao implements ISchemeComponentDao {
         try (Connection con = DatabaseFactory.getConnection()) {
             try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
 
-                stmt.setParameter(Fields.COMPONENT, schemeComponent.getComponent());
+                stmt.setParameter(Fields.COMPONENT, schemeComponent.getComponent().getId());
                 stmt.setParameter(Fields.X_POS, schemeComponent.getX());
                 stmt.setParameter(Fields.Y_POS, schemeComponent.getY());
                 stmt.setParameter(Fields.DIRECTION, schemeComponent.getDirection());
@@ -317,6 +317,7 @@ public class SchemeComponentDao implements ISchemeComponentDao {
     		try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
     			stmt.setParameter(AttrCrossFields.FK_COMPONENT, comp.getId());
     			stmt.setParameter(AttrCrossFields.FK_ATTRIBUTE, attribute.getId());
+    			stmt.setParameter(AttrCrossFields.VALUE, value);
     			
     			int affected = stmt.executeUpdate();
     			if (affected != 1) {

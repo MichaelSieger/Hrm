@@ -18,16 +18,18 @@ public class Scheme {
         this(-1, plant, null);
 	}
     
-    public Scheme(final int id) {
-        this.id = id;
+    public Scheme(final Plant plant, final Collection<SchemeComponent> schemeComponents) {
+    	
+    	this(-1, plant, null, schemeComponents);
     }
     
-    @SuppressWarnings("unchecked")
-    public Scheme(final int id, final Plant plant, final Timestamp timestamp){
-        this(id, plant, timestamp, Collections.EMPTY_LIST);
+    public Scheme(final int id, final Plant plant, final Timestamp timestamp) {
+        this(id, plant, timestamp, Collections.<SchemeComponent> emptyList());
     }
     
-    public Scheme(final int id, final Plant plant, final Timestamp timestamp, final Collection<SchemeComponent> schemeComponents) {
+    public Scheme(final int id, final Plant plant, final Timestamp timestamp, 
+    		final Collection<SchemeComponent> schemeComponents) {
+    	
         this.id = id;
         setPlant(plant);
         setTimestamp(timestamp);
@@ -46,8 +48,12 @@ public class Scheme {
         this.plant = plant;
     }
 
+    /**
+     * @return Unmodifiable collection of this schemes components.
+     * Do not try to add values to this collection!
+     */
 	public Collection<SchemeComponent> getSchemeComponents() {
-		return schemeComponents;
+		return Collections.unmodifiableCollection(schemeComponents);
 	}
 
 	public void setSchemeComponents(Collection<SchemeComponent> schemeComponents) {

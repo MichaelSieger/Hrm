@@ -42,11 +42,12 @@ INSERT INTO `hrm`.`Report` (`Report_Layout_FK`, `Report_Plant_FK`, `Report_Reque
 INSERT INTO `hrm`.`Report` (`Report_Layout_FK`, `Report_Plant_FK`, `Report_Requester_FK`, `Report_Contractor_FK`, `Report_Checker_FK`, `Report_Jobdate`, `Report_Reportdate`, `Report_Nextdate`, `Report_Airtemperature`, `Report_Humidity`, `Report_Summary`, `Report_Titel`) VALUES ('2', '2', '2', '4', '5', '2012-01-08', '2012-01-11', '2013-01-11', '22', '40','A so a glumb, schmeiss besser weg und moch was neiss', 'Hubertusstüberl');
 
 ------------------------------------------------------------
--- Insert 3 different cataloges in the `Catalog` Table
+-- Insert 4 different cataloges in the `Catalog` Table
 ------------------------------------------------------------
 INSERT INTO `hrm`.`Catalog` (`Catalog_Name`) VALUES ('Katalog_Filter');
 INSERT INTO `hrm`.`Catalog` (`Catalog_Name`) VALUES ('Katalog_Motor');
 INSERT INTO `hrm`.`Catalog` (`Catalog_Name`) VALUES ('Katalog_Heizung');
+INSERT INTO `hrm`.`Catalog` (`Catalog_Name`) VALUES ('Ohne_Target');
 
 ------------------------------------------------------------
 -- Insert 4 different categories in the `Category` Table
@@ -147,7 +148,9 @@ INSERT INTO `hrm`.`Catalog_Current` (`Category_Current_State_Target_FK`, `Catego
 -- Connect 3 different catalog with targets in the `Catalog_Target` Table
 ------------------------------------------------------------
 INSERT INTO `hrm`.`Catalog_Target` (`Category_Target_State_Target_FK`, `Category_Target_Catalog_FK`) VALUES ('1', '2');
+INSERT INTO `hrm`.`Catalog_Target` (`Category_Target_State_Target_FK`, `Category_Target_Catalog_FK`) VALUES ('3', '2');
 INSERT INTO `hrm`.`Catalog_Target` (`Category_Target_State_Target_FK`, `Category_Target_Catalog_FK`) VALUES ('2', '1');
+INSERT INTO `hrm`.`Catalog_Target` (`Category_Target_State_Target_FK`, `Category_Target_Catalog_FK`) VALUES ('1', '1');
 INSERT INTO `hrm`.`Catalog_Target` (`Category_Target_State_Target_FK`, `Category_Target_Catalog_FK`) VALUES ('2', '3');
 
 
