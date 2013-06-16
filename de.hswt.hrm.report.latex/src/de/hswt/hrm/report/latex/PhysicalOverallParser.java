@@ -38,7 +38,7 @@ public class PhysicalOverallParser {
         // TODO optional component !!
         bufferRow.append(prop.getProperty("physical.overall.inspection").replace(
                 INSPECTION_RATING_AV, String.valueOf(this.inspection_av)));
-        appendNewLine();
+        bufferRow.append("\n");
         bufferRow.append(prop.getProperty("physical.overall.parameter").replace(PARAM_RATING_AV,
                 String.valueOf(this.param_av)));
 
@@ -56,10 +56,6 @@ public class PhysicalOverallParser {
         target.replace(OVERALL_RATING, String.valueOf((this.inspection_av + this.param_av) / 2));
 
         return target;
-    }
-
-    private void appendNewLine() {
-        bufferRow.append("\n");
     }
 
 }

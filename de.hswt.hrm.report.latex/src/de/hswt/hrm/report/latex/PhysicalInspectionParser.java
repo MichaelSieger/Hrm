@@ -11,7 +11,7 @@ import de.hswt.hrm.inspection.model.PhysicalRating;
 
 public class PhysicalInspectionParser {
 
-    private final String INSPECTOIN_SAMPLE_POfloat = ":physicalInspectionSamplingPofloat:";
+    private final String INSPECTOIN_SAMPLE_POINT = ":physicalInspectionSamplingPoint:";
     private final String GRADE = ":physicalInspectionGrade:";
     private final String WHEIGHTING = ":physicalInspectionWheighting:";
     private final String RATING = ":physicalInspectionRating";
@@ -80,7 +80,7 @@ public class PhysicalInspectionParser {
             // this.sumQuantifier += rating.getComponent().getQuantifier();
             // - un-String the calls below..
             preTarget = buffer.toString();
-            preTarget.replace(INSPECTOIN_SAMPLE_POfloat, "rating.getComponent().getName()");
+            preTarget.replace(INSPECTOIN_SAMPLE_POINT, "rating.getComponent().getName()");
             preTarget.replace(GRADE, "rating.getRating()");
             preTarget.replace(WHEIGHTING, "rating.getComponent().getQuantifier()");
             preTarget
