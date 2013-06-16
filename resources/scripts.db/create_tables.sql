@@ -177,7 +177,7 @@ CREATE  TABLE IF NOT EXISTS `Component` (
   `Component_Symbol_RL_FK` INT NULL ,
   `Component_Symbol_UD_FK` INT NULL ,
   `Component_Symbol_DU_FK` INT NULL ,
-  `Component_Quantifier` INT NULL ,
+  `Component_Quantifier` INT NULL DEFAULT -1,
   `Component_Category_FK` INT NULL ,
   `Component_Bool_Rating` TINYINT(1) NULL ,
   PRIMARY KEY (`Component_ID`) ,
