@@ -12,11 +12,13 @@ import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.forms.widgets.Section;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Optional;
 
+import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.common.ui.swt.layouts.PageContainerFillLayout;
 import de.hswt.hrm.i18n.I18n;
 import de.hswt.hrm.i18n.I18nFactory;
@@ -72,7 +74,7 @@ public class PlaceWizardPageOne extends WizardPage {
         if (place.isPresent()) {
             updateFields(place.get());
         }
-    	
+    	FormUtil.initSectionColors((Section) XWT.findElementByName(container, "Mandatory"));
     	setKeyListener();
         setControl(container);
         setPageComplete(false);
