@@ -5,6 +5,12 @@ import java.net.URL;
 import org.eclipse.e4.xwt.IConstants;
 import org.eclipse.e4.xwt.XWT;
 import org.eclipse.e4.xwt.forms.XWTForms;
+import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.ComboViewer;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
@@ -23,9 +29,11 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Optional;
 
+import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.ui.swt.layouts.PageContainerFillLayout;
 import de.hswt.hrm.component.model.Category;
 import de.hswt.hrm.component.model.Component;
+import de.hswt.hrm.component.service.CategoryService;
 
 public class ComponentWizardPageOne extends WizardPage {
     
@@ -41,18 +49,25 @@ public class ComponentWizardPageOne extends WizardPage {
     
     private Text quantifier;
     
-    private Text category;
+    private ComboViewer category;
     
-    private Text rating;
+    private Button ratingNo;
+    
+    private Button ratingYes;
     
     private String name;
+    
+    Boolean rating = null;
+    
+    private CategoryService catService;
     
     
     private boolean first = true;
     
-    public ComponentWizardPageOne(String title, Optional<Component> component) {
+    public ComponentWizardPageOne(String title, Optional<Component> component, CategoryService cat) {
         super(title);
         this.component = component;
+        this.catService = cat;
         setDescription(createDescription());
     }
     
@@ -75,8 +90,9 @@ public class ComponentWizardPageOne extends WizardPage {
         
         nameText = (Text) XWT.findElementByName(container, "name");
         quantifier = (Text) XWT.findElementByName(container, "quantifier");
-        category = (Text) XWT.findElementByName(container, "category");
-        rating = (Text) XWT.findElementByName(container, "rating");
+        category = (ComboViewer) XWT.findElementByName(container, "category");
+        ratingNo = (Button) XWT.findElementByName(container, "ratingNo");
+        ratingYes = (Button) XWT.findElementByName(container, "ratingYes");
         
         if (this.component.isPresent()) {
             updateFields(container);
@@ -90,26 +106,86 @@ public class ComponentWizardPageOne extends WizardPage {
             }    
         });
 
-        addSelectionListener(quantifier);
-        addSelectionListener(category);
-        addSelectionListener(rating);
+        quantifier.addKeyListener(new KeyListener() {
+            public void keyPressed(KeyEvent e) {
+            }
+            public void keyReleased(KeyEvent e) {
+            	checkPageComplete();
+            }    
+        });
+        addSelectionListenerForRadio(ratingNo);
+        addSelectionListenerForRadio(ratingYes);
 
         setControl(container);
         checkPageComplete();
+        
+       // initializeCombo(category);
     }
     
     
-    private void updateFields(Composite c) {
+    private void initializeCombo(ComboViewer category) {
+    	category.setContentProvider(ArrayContentProvider.getInstance());
+    	category.setLabelProvider(new LabelProvider() {
+            @Override
+            public String getText(Object element) {
+                return ((Category)element).getName();
+            }
+        });
+    	
+    	try {
+			category.setInput(catService.findAll());
+		} catch (DatabaseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+       
+//    	category.addSelectionChangedListener(new ISelectionChangedListener() {
+//            @Override
+//            public void selectionChanged(SelectionChangedEvent event) {
+//                IStructuredSelection selection = (IStructuredSelection) event.getSelection();
+//                Category person = (Category)selection.getFirstElement();
+//
+//                for(Category p : categories)
+//                    p.setSelected(false);
+//
+//                person.setSelected(true);
+//
+//                viewer.refresh();
+//            }
+//        });
+		
+		
+	}
+
+	private void addSelectionListenerForRadio(Button button) {
+    	button.addListener(SWT.Selection, new Listener() {
+			@Override
+			public void handleEvent(Event event) {
+            	if(event.widget.equals(ratingNo)){
+            		rating = false;        
+            	}else{
+            		rating = true;            		
+            	}		
+				checkPageComplete();
+			}});
+	}
+
+	private void updateFields(Composite c) {
         Component comp = component.get();
         nameText.setText(comp.getName());
     }
     
     private void checkPageComplete() {
-//    	if (first) {
-//    		first = false;
-//    		setPageComplete(false);
-//    		return;
-//    	}
+    	if(nameText.getText().isEmpty()){
+    		setPageComplete(false);
+    		return;    		
+    	}
+    	if(quantifier.getText().isEmpty()){
+       		setPageComplete(false);
+    		return;    	    		
+    	}
+    	
+    	
     	setPageComplete(true);
 
     	// FIXME check if category is not empty or it already exists
@@ -139,13 +215,9 @@ public class ComponentWizardPageOne extends WizardPage {
 		return quantifier.getText();
 	}
 
-	public String getCategory() {
-		return category.getText();
-	}
 
-	public String getRating() {
-		return rating.getText();
+	public Boolean getRating(){
+		return rating;
 	}
-
 
 }

@@ -120,6 +120,12 @@ public class ComponentWizardPageTwo extends WizardPage {
     }
     
     private void checkPageComplete() {
+    	if(pathLR.getText().isEmpty() && pathRL.getText().isEmpty() && pathUD.getText().isEmpty()
+    				&& pathDU.getText().isEmpty()){
+    		setPageComplete(false);
+    		return;    		
+    	}
+    	setPageComplete(true);
 
     }
     
@@ -132,18 +138,18 @@ public class ComponentWizardPageTwo extends WizardPage {
 		        String[] filterExt = { "*.pdf"};
 		        fileDialog.setFilterExtensions(filterExt);
 		        String selected = fileDialog.open();				
-				path.setText(selected);
-				try {
-					setPreviewImage(selected, preview);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				if(selected != null){			        
+			        path.setText(selected);
+					try {
+						setPreviewImage(selected, preview);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
+				checkPageComplete();
 			}
-		});
-    	
-    	
-    	
+		});    	
     }
     
     private void setPreviewImage(String path, Label preview) throws IOException{

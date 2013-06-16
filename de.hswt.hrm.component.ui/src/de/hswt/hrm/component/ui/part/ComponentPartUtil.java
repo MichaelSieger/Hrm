@@ -32,9 +32,9 @@ public final class ComponentPartUtil {
     }
 
     public static Optional<Component> showWizard(IEclipseContext context, Shell shell,
-            Optional<Component> contact) {
+            Optional<Component> component) {
 
-        ComponentWizard cw = new ComponentWizard(contact);
+        ComponentWizard cw = new ComponentWizard(component);
         ContextInjectionFactory.inject(cw, context);
 
         WizardDialog wd = WizardCreator.createWizardDialog(shell, cw);

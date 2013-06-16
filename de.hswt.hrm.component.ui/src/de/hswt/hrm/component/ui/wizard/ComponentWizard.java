@@ -22,13 +22,16 @@ public class ComponentWizard extends Wizard {
     @Inject
     private ComponentService service;
     
+    @Inject
+    CategoryService catService;
+    
     private ComponentWizardPageOne first;
     private ComponentWizardPageTwo second;
     private Optional<Component> component;
     
     public ComponentWizard(Optional<Component> component) {
         this.component = component;
-        first = new ComponentWizardPageOne("Erste Seite", component);
+        first = new ComponentWizardPageOne("Erste Seite", component, catService);
         second = new ComponentWizardPageTwo("Second Page", component);
         
         if (component.isPresent()) {
@@ -44,7 +47,7 @@ public class ComponentWizard extends Wizard {
     }
     
     public boolean canFinish() {
-        return first.isPageComplete();
+        return first.isPageComplete() && second.isPageComplete();
     }
 
     @Override
