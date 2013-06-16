@@ -28,7 +28,7 @@ public class Component {
 
     private static final String NO_IMAGE_ERROR = "All Images are null";
     private static final String IS_MANDATORY = "Field is a mandatory.";
-    private static final String INVALID_NUMBER = "%d is an invalid number.%n Must be greater 0";
+    private static final String INVALID_NUMBER = "%s is an invalid number. Must be greater 0.";
 
     public Component(int id, String name, byte[] leftRightImage, byte[] rightLeftImage,
             byte[] upDownImage, byte[] downUpImage, int quantifier, boolean boolRating) {
