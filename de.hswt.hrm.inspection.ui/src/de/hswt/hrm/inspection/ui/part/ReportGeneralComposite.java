@@ -5,6 +5,7 @@ import javax.inject.Inject;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.jface.window.IShellProvider;
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -306,7 +307,9 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
                 ContactSelectionDialog csd = new ContactSelectionDialog(shellProvider.getShell(),
                         context);
                 csd.create();
-                System.out.println(csd.open());
+                if (csd.open() == Window.OK) {
+                    System.out.println(csd.getContact().getName());
+                }
 
             }
         });

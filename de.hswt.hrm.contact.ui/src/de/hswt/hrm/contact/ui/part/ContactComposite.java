@@ -190,6 +190,10 @@ public class ContactComposite extends Composite {
     protected void checkSubclass() {
     }
 
+    public TableViewer getTableViewer() {
+        return this.tableViewer;
+    }
+
     public void setSelection(Contact place) {
         tableViewer.setSelection(new StructuredSelection(place), true);
     }

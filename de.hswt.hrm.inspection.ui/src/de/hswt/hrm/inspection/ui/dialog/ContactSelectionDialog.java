@@ -10,13 +10,14 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
 import de.hswt.hrm.common.ui.swt.layouts.LayoutUtil;
+import de.hswt.hrm.contact.model.Contact;
 import de.hswt.hrm.contact.ui.part.ContactComposite;
-import de.hswt.hrm.place.ui.part.PlaceComposite;
 
 public class ContactSelectionDialog extends TitleAreaDialog {
 
     private ContactComposite contactComposite;
     private IEclipseContext context;
+    private Contact contact;
 
     public ContactSelectionDialog(Shell parentShell, IEclipseContext context) {
         super(parentShell);
@@ -39,12 +40,29 @@ public class ContactSelectionDialog extends TitleAreaDialog {
 
     private void draw(Composite composite) {
         contactComposite = new ContactComposite(composite, SWT.NONE);
-
         contactComposite = new ContactComposite(composite, SWT.NONE);
         ContextInjectionFactory.inject(contactComposite, context);
         contactComposite.setAllowEditing(false);
         contactComposite.setLayoutData(LayoutUtil.createFillData());
-        System.out.println("<^__^>");
 
+    }
+
+    @Override
+    protected void okPressed() {
+        System.out.println("OK pressed");
+        Contact c = (Contact) contactComposite.getTableViewer().getElementAt(
+                contactComposite.getTableViewer().getTable().getSelectionIndex());
+
+        if (c == null) {
+            setErrorMessage("no contact selected");
+            return;
+        }
+        this.contact = c;
+
+        super.okPressed();
+    }
+
+    public Contact getContact() {
+        return contact;
     }
 }
