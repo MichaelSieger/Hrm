@@ -126,7 +126,7 @@ public class ComponentWizardPageOne extends WizardPage {
     
     
     private void initializeCombo(ComboViewer category) {
-    	category.setContentProvider(ArrayContentProvider.getInstance());
+    	category.setContentProvider(new ArrayContentProvider());
     	category.setLabelProvider(new LabelProvider() {
             @Override
             public String getText(Object element) {
@@ -139,7 +139,7 @@ public class ComponentWizardPageOne extends WizardPage {
 		} catch (DatabaseException e) {
 			e.printStackTrace();
 		}
-       
+    	category.refresh(true);
     	category.addSelectionChangedListener(new ISelectionChangedListener() {
             @Override
             public void selectionChanged(SelectionChangedEvent event) {
@@ -173,8 +173,9 @@ public class ComponentWizardPageOne extends WizardPage {
         	ratingYes.setSelection(false);
         	ratingNo.setSelection(true);
         }
-        quantifier.setText(String.valueOf(comp.getQuantifier()));
-        category.setSelection(new StructuredSelection(comp.getCategory()),true);
+        quantifier.setText(String.valueOf(comp.getQuantifier().get()));
+        StructuredSelection selection = new StructuredSelection(comp.getCategory().get());
+        category.setSelection(selection,true);
         category.refresh();
        
     }
