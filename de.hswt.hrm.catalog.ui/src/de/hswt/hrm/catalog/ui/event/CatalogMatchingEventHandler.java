@@ -1,7 +1,6 @@
 package de.hswt.hrm.catalog.ui.event;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -10,7 +9,6 @@ import javax.inject.Inject;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.xwt.XWT;
 import org.eclipse.jface.viewers.ListViewer;
-import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Text;
 import org.slf4j.Logger;
@@ -24,6 +22,7 @@ import de.hswt.hrm.catalog.model.Target;
 import de.hswt.hrm.catalog.service.CatalogService;
 import de.hswt.hrm.catalog.ui.filter.CatalogTextFilter;
 import de.hswt.hrm.common.database.exception.DatabaseException;
+import de.hswt.hrm.common.database.exception.SaveException;
 
 public class CatalogMatchingEventHandler {
 
@@ -66,31 +65,68 @@ public class CatalogMatchingEventHandler {
      */
     public void availableTargetSelected(Event event) {
 
-        // ListViewer catalogs = (ListViewer) XWT.findElementByName(event.widget, "catalogs");
-        // Catalog c = (Catalog) catalogs.getElementAt(catalogs.getList().getSelectionIndex());
-        //
+        ListViewer catalogs = (ListViewer) XWT.findElementByName(event.widget, "catalogs");
+        Catalog c = (Catalog) catalogs.getElementAt(catalogs.getList().getSelectionIndex());
+
         Target t = (Target) moveEntry(availableTarget, matchedTarget);
-        // try {
-        //
-        // if (t == null) {
-        // System.out.println("t is null");
-        // return;
-        // }
-        // else
-        // System.out.println(t.getName());
-        //
-        // catalogService.addToCatalog(c, t);
-        // }
-        // catch (SaveException e) {
-        // // TODO Auto-generated catch block
-        // e.printStackTrace();
-        // }
+        try {
+
+            if (t == null) {
+                System.out.println("t is null");
+                return;
+            }
+            else
+
+                catalogService.addToCatalog(c, t);
+            List<Target> ta;
+            try {
+                ta = (List<Target>) catalogService.findTargetByCatalog(c);
+                for (Target tar : ta) {
+                    System.out.println("matched target after insert: " + tar.getName());
+                }
+            }
+            catch (DatabaseException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+
+        }
+        catch (SaveException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
         enableList(matchedTarget, availableCurrent);
 
     }
 
     public void matchedTargetSelected(Event event) {
+
+        ListViewer catalogs = (ListViewer) XWT.findElementByName(event.widget, "catalogs");
+        Catalog c = (Catalog) catalogs.getElementAt(catalogs.getList().getSelectionIndex());
+
+        Target t = (Target) moveEntry(matchedTarget, availableTarget);
+        try {
+
+            if (t == null) {
+                System.out.println("t is null");
+                return;
+            }
+            else
+               
+            catalogService.removeFromCatalog(c, t);
+            List<Target> ta;
+
+            ta = (List<Target>) catalogService.findTargetByCatalog(c);
+            for (Target tar : ta) {
+                System.out.println("matched target after delete: " + tar.getName());
+            }
+
+        }
+        catch (DatabaseException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
         moveEntry(matchedTarget, availableTarget);
         disableLists(matchedTarget, matchedCurrent);
@@ -185,15 +221,16 @@ public class CatalogMatchingEventHandler {
         if (targets.isEmpty()) {
             System.out.println("empty Targets, using defaults");
             availableTarget.setInput(targetsFromDb);
+            matchedTarget.remove(targetsFromDb.toArray());
+
         }
         else {
             List<Target> temp = new ArrayList<>(targetsFromDb);
 
             matchedTarget.setInput(targets);
             Collections.copy(temp, targetsFromDb);
-            availableTarget.setInput(temp.removeAll(targets));
-            System.out.println(temp);
-            availableTarget.refresh();
+            temp.removeAll(targets);
+            availableTarget.setInput(temp);
 
         }
 
