@@ -4,4 +4,21 @@ Bundle-Name: Ui
 Bundle-SymbolicName: de.hswt.hrm.misc.ui
 Bundle-Version: 0.0.1.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Import-Package: de.hswt.hrm.common.ui.swt.constants,
+ de.hswt.hrm.common.ui.swt.forms,
+ de.hswt.hrm.common.ui.swt.layouts,
+ de.hswt.hrm.common.ui.swt.table,
+ de.hswt.hrm.common.ui.swt.wizards,
+ de.hswt.hrm.evaluation.ui.part
+Require-Bundle: org.eclipse.jface;bundle-version="3.8.102",
+ org.eclipse.swt;bundle-version="3.100.1",
+ org.slf4j.api;bundle-version="1.6.4",
+ com.google.guava;bundle-version="10.0.1",
+ org.eclipse.e4.core.contexts;bundle-version="1.2.0",
+ javax.inject;bundle-version="1.0.0",
+ org.eclipse.e4.core.di;bundle-version="1.2.0",
+ org.eclipse.e4.ui.workbench;bundle-version="0.11.0",
+ de.hswt.hrm.commons.validator;bundle-version="0.0.1",
+ org.eclipse.e4.ui.di;bundle-version="0.10.1",
+ org.eclipse.ui.forms;bundle-version="3.5.200"
 
