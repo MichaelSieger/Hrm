@@ -21,10 +21,10 @@ public class PlantPartUtil {
 
     public static Optional<Plant> showWizard(IEclipseContext context, Shell activeShell,
             Optional<Plant> plant) {
-        
+
         PlantWizard pw = new PlantWizard(context, plant);
         ContextInjectionFactory.inject(pw, context);
-        
+
         WizardDialog wd = WizardCreator.createWizardDialog(activeShell, pw);
         wd.open();
         return pw.getPlant();
@@ -33,8 +33,8 @@ public class PlantPartUtil {
     public static List<ColumnDescription<Plant>> getColumns() {
 
         List<ColumnDescription<Plant>> columns = new ArrayList<>();
-        columns.add(getNumberOfElements());
         columns.add(getDescription());
+        columns.add(getNumberOfElements());
         columns.add(getPlace());
         columns.add(getConstructionYear());
         columns.add(getManufactor());
@@ -100,7 +100,8 @@ public class PlantPartUtil {
 
             @Override
             public int compare(Plant o1, Plant o2) {
-                return o1.getPlace().get().getPlaceName().compareToIgnoreCase(o2.getPlace().get().getPlaceName());
+                return o1.getPlace().get().getPlaceName()
+                        .compareToIgnoreCase(o2.getPlace().get().getPlaceName());
             }
 
         });
