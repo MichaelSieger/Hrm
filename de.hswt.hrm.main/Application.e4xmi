@@ -45,9 +45,6 @@
       </children>
     </trimBars>
   </children>
-  <children xsi:type="basic:TrimmedWindow" xmi:id="_wgLL0NZ_EeKnWIddiPCOQA" elementId="de.hswt.hrm.main.trimmedwindow.0" toBeRendered="false" visible="false">
-    <children xsi:type="basic:Part" xmi:id="_xWK_sNZ_EeKnWIddiPCOQA" elementId="de.hswt.hrm.main.part.0" contributionURI="bundleclass://de.hswt.hrm.catalog.ui/de.hswt.hrm.catalog.ui.part.CatalogMatchingPart"/>
-  </children>
   <handlers xmi:id="_ucxpXpSXEeKKYob9VrLbBA" contributionURI="bundleclass://de.hswt.hrm.main/de.hswt.hrm.main.handlers.AboutHandler" command="_ucxpXZSXEeKKYob9VrLbBA"/>
   <bindingTables xmi:id="_ucxpVZSXEeKKYob9VrLbBA" bindingContext="_ucxpUJSXEeKKYob9VrLbBA">
     <bindings xmi:id="_ucxpVpSXEeKKYob9VrLbBA" keySequence="M1+Q" command="_ucxpU5SXEeKKYob9VrLbBA"/>
