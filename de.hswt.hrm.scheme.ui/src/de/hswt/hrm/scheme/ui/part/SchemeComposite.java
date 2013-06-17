@@ -35,6 +35,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Slider;
@@ -54,6 +55,7 @@ import de.hswt.hrm.common.database.exception.SaveException;
 import de.hswt.hrm.common.ui.swt.constants.SearchFieldConstants;
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.common.ui.swt.layouts.LayoutUtil;
+import de.hswt.hrm.common.ui.swt.utils.SWTResourceManager;
 import de.hswt.hrm.component.service.ComponentService;
 import de.hswt.hrm.plant.model.Plant;
 import de.hswt.hrm.scheme.model.RenderedComponent;
@@ -73,6 +75,7 @@ import de.hswt.hrm.scheme.ui.dnd.GridDropTargetListener;
 import de.hswt.hrm.scheme.ui.dnd.TreeDragListener;
 import de.hswt.hrm.scheme.ui.tree.SchemeTreeLabelProvider;
 import de.hswt.hrm.scheme.ui.tree.TreeContentProvider;
+import org.eclipse.swt.graphics.Point;
 
 public class SchemeComposite extends Composite {
 
@@ -194,10 +197,10 @@ public class SchemeComposite extends Composite {
         composite.setBackground(getDisplay().getSystemColor(SWT.COLOR_WHITE));
         composite.setBackgroundMode(SWT.INHERIT_DEFAULT);
         schemeSection.setClient(composite);
-        composite.setLayout(new GridLayout(2, false));
+        composite.setLayout(new GridLayout(4, false));
 
         treeComposite = new Composite(composite, SWT.NONE);
-        treeComposite.setLayoutData(new GridData(SWT.LEFT, SWT.FILL, false, true, 1, 3));
+        treeComposite.setLayoutData(new GridData(SWT.LEFT, SWT.FILL, false, true, 1, 2));
 
         GridLayout gl = new GridLayout();
         gl.marginHeight = 0;
@@ -209,12 +212,20 @@ public class SchemeComposite extends Composite {
         scrolledComposite.setBackgroundMode(SWT.INHERIT_DEFAULT);
         scrolledComposite.setExpandHorizontal(false);
         scrolledComposite.setExpandVertical(false);
-        scrolledComposite.setLayoutData(LayoutUtil.createFillData());
+        scrolledComposite.setLayoutData(LayoutUtil.createFillData(3));
 
+        Label zoomMinusLabel = new Label(composite, SWT.NONE);
+        zoomMinusLabel.setFont(SWTResourceManager.getFont(
+        		zoomMinusLabel.getFont().getFontData()[0].getName(), 15, SWT.BOLD));
+        zoomMinusLabel.setText("-");
+        zoomMinusLabel.setLayoutData(LayoutUtil.createLeftGridData());
         zoomSlider = new Slider(composite, SWT.HORIZONTAL);
-        GridData gdZoomSlider = LayoutUtil.createHorzFillData();
-        // gdZoomSlider.minimumHeight = 100;
-        zoomSlider.setLayoutData(gdZoomSlider);
+        zoomSlider.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+        Label zoomPlusLabel = new Label(composite, SWT.NONE);
+        zoomPlusLabel.setFont(SWTResourceManager.getFont(
+        		zoomPlusLabel.getFont().getFontData()[0].getName(), 15, SWT.BOLD));
+        zoomPlusLabel.setText("+");
+        zoomPlusLabel.setLayoutData(LayoutUtil.createRightGridData());
 
         initTree();
         initSchemeGrid();

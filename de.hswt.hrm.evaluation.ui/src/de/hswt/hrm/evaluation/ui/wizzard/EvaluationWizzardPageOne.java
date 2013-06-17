@@ -43,8 +43,8 @@ public class EvaluationWizzardPageOne extends WizardPage {
     public EvaluationWizzardPageOne(String title, Optional<Evaluation> eval) {
         super(title);
         this.eval = eval;
-        setDescription(createDescription());
 
+        setDescription(createDescription());
     }
 
     private String createDescription() {

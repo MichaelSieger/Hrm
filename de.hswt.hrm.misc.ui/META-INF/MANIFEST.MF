@@ -4,7 +4,8 @@ Bundle-Name: Ui
 Bundle-SymbolicName: de.hswt.hrm.misc.ui
 Bundle-Version: 0.0.1.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Import-Package: de.hswt.hrm.common.ui.swt.constants,
+Import-Package: de.hswt.hrm.common.database.exception,
+ de.hswt.hrm.common.ui.swt.constants,
  de.hswt.hrm.common.ui.swt.forms,
  de.hswt.hrm.common.ui.swt.layouts,
  de.hswt.hrm.common.ui.swt.table,
