@@ -44,14 +44,14 @@ public class EvaluationWizzardPageOne extends WizardPage {
         super(title);
         this.eval = eval;
         setDescription(createDescription());
-
+        setTitle("Summary Wizard");
     }
 
     private String createDescription() {
         if (eval.isPresent()) {
-            return "Change an Evaluation";
+            return "Change a Summary";
         }
-        return "Add a new Evaluation";
+        return "Add a new Summary";
     }
 
     @Override
@@ -127,7 +127,7 @@ public class EvaluationWizzardPageOne extends WizardPage {
         }
 
         else if (isAlreadyPresent(nameText.getText())) {
-            setErrorMessage("An Evaluation with name " + nameText.getText() + " is already present");
+            setErrorMessage("A Summary with name " + nameText.getText() + " is already present");
         }
 
     }
