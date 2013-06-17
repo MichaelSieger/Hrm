@@ -16,6 +16,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.SWT;
 import org.eclipse.ui.forms.widgets.FormToolkit;
+import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.forms.widgets.Form;
 import org.slf4j.Logger;
@@ -29,9 +30,9 @@ import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 
-public class MiskPart {
+public class MiscPart {
 
-    private final static Logger LOG = LoggerFactory.getLogger(MiskPart.class);
+    private final static Logger LOG = LoggerFactory.getLogger(MiscPart.class);
 
     @Inject
     private IShellProvider shellProvider;
@@ -62,7 +63,7 @@ public class MiskPart {
 
 	private EvaluationComposite evaluationComposite;
 
-    public MiskPart() {
+    public MiscPart() {
         // toolkit can be created in PostConstruct, but then then
         // WindowBuilder is unable to parse the code
         toolkit.dispose();
@@ -74,6 +75,7 @@ public class MiskPart {
      */
     @PostConstruct
     public void createControls(Composite parent) {
+
         toolkit.setBorderStyle(SWT.BORDER);
         toolkit.adapt(parent);
         toolkit.paintBordersFor(parent);
@@ -84,9 +86,8 @@ public class MiskPart {
         form.setSeparatorVisible(true);
         form.getBody().setBackgroundMode(SWT.INHERIT_FORCE);
         toolkit.paintBordersFor(form);
-        form.setText("Plants");
+        form.setText("Miscellaneous");
         toolkit.decorateFormHeading(form);
-        createActions();
 
         FillLayout fillLayout = new FillLayout(SWT.HORIZONTAL);
         fillLayout.marginHeight = 5;
@@ -128,14 +129,20 @@ public class MiskPart {
             }
         });
         
-        evaluationComposite = new EvaluationComposite(tabFolder);
+        Section evaluationSection = toolkit.createSection(tabFolder, Section.TITLE_BAR);
+        evaluationSection.setText("Summaries");
+		summaryTab.setControl(evaluationSection);
+
+        evaluationComposite = new EvaluationComposite(evaluationSection);
 		ContextInjectionFactory.inject(evaluationComposite, context);
-		summaryTab.setControl(evaluationComposite);
+		evaluationSection.setClient(evaluationComposite);
+		
+		createActions();
     }
 
     private void createActions() {
         // TODO translate
-        Action addSummaryAction = new Action("Add summary.") {
+        Action addSummaryAction = new Action("Add") {
             @Override
             public void run() {
                 super.run();
@@ -144,7 +151,6 @@ public class MiskPart {
         };
         addSummaryAction.setDescription("Add's a new summary.");
         addSummaryContribution = new ActionContributionItem(addSummaryAction);
-        form.getToolBarManager().add(addSummaryContribution);
 
         Action editSummaryAction = new Action("Edit") {
             @Override
@@ -155,16 +161,17 @@ public class MiskPart {
         };
         editSummaryAction.setDescription("Edit an exisitng plant.");
         editSummaryContribution = new ActionContributionItem(editSummaryAction);
+
         form.getToolBarManager().add(editSummaryContribution);
+        form.getToolBarManager().add(addSummaryContribution);
 
         form.getToolBarManager().update(true);
     }
 
     private void showSummaryActions() {
     	hideAllActions();
-//    	for (IContributionItem item : schemeComposite.getContributionItems()) {
-//        	item.setVisible(true);
-//        }
+        editSummaryContribution.setVisible(true);
+        addSummaryContribution.setVisible(true);
         form.getToolBarManager().update(true);
     }
     

@@ -27,7 +27,7 @@ public class ViewSwitcher {
     public static final String CATALOG_ID = "de.hswt.hrm.catalog.ui.catalog";
     public static final String SIDEBAR_ID = "de.hswt.hrm.main.ui.sidebar";
     public static final String INSPECTION_ID = "de.hswt.hrm.inspection.ui.inspection";
-    public static final String OVERALL_ID = "de.hswt.hrm.evaluation.ui.overall";
+    public static final String MISC_ID = "de.hswt.hrm.misc.ui.misc";
     public static final String MATCHING_ID = "de.hswt.hrm.catalog.ui.matching";
 
     public static void setPartVisible(String id) {
@@ -65,7 +65,7 @@ public class ViewSwitcher {
 		service.findPart(CATEGORY_ID).setVisible(false);
 		service.findPart(CONTACTS_ID).setVisible(false);
 		service.findPart(MAIN_ID).setVisible(false);
-		service.findPart(OVERALL_ID).setVisible(false);
+		service.findPart(MISC_ID).setVisible(false);
 		service.findPart(PLACES_ID).setVisible(false);
 		service.findPart(PLANTS_ID).setVisible(false);
 		service.findPart(INSPECTION_ID).setVisible(false);

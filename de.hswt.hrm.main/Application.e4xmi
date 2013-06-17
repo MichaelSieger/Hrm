@@ -10,7 +10,7 @@
       <children xsi:type="basic:Part" xmi:id="_vau4kMFIEeKATZQj1LmyXg" elementId="de.hswt.hrm.catalog.ui.catalog" toBeRendered="false" visible="false" containerData="95" contributionURI="bundleclass://de.hswt.hrm.catalog.ui/de.hswt.hrm.catalog.ui.part.CatalogPart" label="Catalog"/>
       <children xsi:type="basic:Part" xmi:id="_cxCQ4LGiEeKNWb92nqkQxg" elementId="de.hswt.hrm.scheme.ui.scheme" toBeRendered="false" visible="false" containerData="95" contributionURI="bundleclass://de.hswt.hrm.scheme.ui/de.hswt.hrm.scheme.ui.part.SchemePart" label="Scheme"/>
       <children xsi:type="basic:Part" xmi:id="_8igKoMYrEeKeMOYiO6AxxQ" elementId="de.hswt.hrm.catalog.ui.matching" toBeRendered="false" visible="false" containerData="95" contributionURI="bundleclass://de.hswt.hrm.catalog.ui/de.hswt.hrm.catalog.ui.part.CatalogMatchingPart" label="Matching"/>
-      <children xsi:type="basic:Part" xmi:id="_CcXMsM--EeKqm6O5b6d0Eg" elementId="de.hswt.hrm.evaluation.ui.overall" toBeRendered="false" visible="false" containerData="95" contributionURI="bundleclass://de.hswt.hrm.evaluation.ui/de.hswt.hrm.evaluation.ui.part.EvaluationPart" label="Evaluation"/>
+      <children xsi:type="basic:Part" xmi:id="_CcXMsM--EeKqm6O5b6d0Eg" elementId="de.hswt.hrm.misc.ui.misc" toBeRendered="false" visible="false" containerData="95" contributionURI="bundleclass://de.hswt.hrm.misc.ui/de.hswt.hrm.misc.ui.part.MiscPart" label="Miscellaneous"/>
       <children xsi:type="basic:Part" xmi:id="_7XvGENGvEeKn3rxB4MoInQ" elementId="de.hswt.hrm.inspection.ui.inspection" toBeRendered="false" visible="false" contributionURI="bundleclass://de.hswt.hrm.inspection.ui/de.hswt.hrm.inspection.ui.part.InspectionPart" label="Inspection" tooltip="Inspection"/>
     </children>
     <handlers xmi:id="_GX9rsNAjEeK9kIHbeXbCVQ" elementId="de.hswt.hrm.main.handler.partSwitchHandler" contributionURI="bundleclass://de.hswt.hrm.main.ui/de.hswt.hrm.main.ui.handler.PartSwitchHandler" command="_QNkJwNAhEeK9kIHbeXbCVQ"/>
@@ -32,8 +32,8 @@
         <children xsi:type="menu:HandledToolItem" xmi:id="_jbedMNAuEeK9kIHbeXbCVQ" elementId="de.hswt.hrm.main.toolitem.categories" label="Categories" iconURI="platform:/plugin/de.hswt.hrm.main/icons/components_32.png" tooltip="Categories" command="_QNkJwNAhEeK9kIHbeXbCVQ">
           <parameters xmi:id="_jbedMdAuEeK9kIHbeXbCVQ" elementId="de.hswt.hrm.main.switchpart.idinput.home" name="de.hswt.hrm.main.switchpart.idinput" value="de.hswt.hrm.component.ui.category"/>
         </children>
-        <children xsi:type="menu:HandledToolItem" xmi:id="_mCmQcNAuEeK9kIHbeXbCVQ" elementId="de.hswt.hrm.main.toolitem.overall" label="Overall" iconURI="platform:/plugin/de.hswt.hrm.main/icons/summary_32.png" tooltip="Overall" command="_QNkJwNAhEeK9kIHbeXbCVQ">
-          <parameters xmi:id="_mCmQcdAuEeK9kIHbeXbCVQ" elementId="de.hswt.hrm.main.switchpart.idinput.home" name="de.hswt.hrm.main.switchpart.idinput" value="de.hswt.hrm.evaluation.ui.overall"/>
+        <children xsi:type="menu:HandledToolItem" xmi:id="_mCmQcNAuEeK9kIHbeXbCVQ" elementId="de.hswt.hrm.main.toolitem.misk" label="Miscellaneous" iconURI="platform:/plugin/de.hswt.hrm.main/icons/tools_32.png" tooltip="Miscellaneous" command="_QNkJwNAhEeK9kIHbeXbCVQ">
+          <parameters xmi:id="_mCmQcdAuEeK9kIHbeXbCVQ" elementId="de.hswt.hrm.main.switchpart.idinput.home" name="de.hswt.hrm.main.switchpart.idinput" value="de.hswt.hrm.misc.ui.misc"/>
         </children>
         <children xsi:type="menu:ToolBarSeparator" xmi:id="_dJBv8NQZEeKeR6cHTAzTpA" elementId="de.hswt.hrm.main.toolbarseparator.0"/>
         <children xsi:type="menu:HandledToolItem" xmi:id="_AxiKgNAqEeK9kIHbeXbCVQ" elementId="de.hswt.hrm.main.toolitem.plants" label="Plants" iconURI="platform:/plugin/de.hswt.hrm.main/icons/plants_32.png" tooltip="Plants" command="_QNkJwNAhEeK9kIHbeXbCVQ">
@@ -45,7 +45,7 @@
       </children>
     </trimBars>
   </children>
-  <children xsi:type="basic:TrimmedWindow" xmi:id="_wgLL0NZ_EeKnWIddiPCOQA" elementId="de.hswt.hrm.main.trimmedwindow.0" visible="false">
+  <children xsi:type="basic:TrimmedWindow" xmi:id="_wgLL0NZ_EeKnWIddiPCOQA" elementId="de.hswt.hrm.main.trimmedwindow.0" toBeRendered="false" visible="false">
     <children xsi:type="basic:Part" xmi:id="_xWK_sNZ_EeKnWIddiPCOQA" elementId="de.hswt.hrm.main.part.0" contributionURI="bundleclass://de.hswt.hrm.catalog.ui/de.hswt.hrm.catalog.ui.part.CatalogMatchingPart"/>
   </children>
   <handlers xmi:id="_ucxpXpSXEeKKYob9VrLbBA" contributionURI="bundleclass://de.hswt.hrm.main/de.hswt.hrm.main.handlers.AboutHandler" command="_ucxpXZSXEeKKYob9VrLbBA"/>
