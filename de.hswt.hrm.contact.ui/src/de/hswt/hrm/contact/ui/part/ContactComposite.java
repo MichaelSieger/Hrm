@@ -20,8 +20,10 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 import org.slf4j.Logger;
@@ -54,7 +56,7 @@ public class ContactComposite extends Composite {
     private boolean allowEditing = true;
 
     @Inject
-    private ContactService placeService;
+    private ContactService contactService;
 
     @Inject
     private IEclipseContext context;
@@ -62,19 +64,32 @@ public class ContactComposite extends Composite {
     @Inject
     private IShellProvider shellProvider;
 
-    /**
-     * Create the composite.
-     * 
-     * @param parent
-     * @param style
-     */
-    public ContactComposite(Composite parent, int style) {
+	/**
+	 * Do not use this constructor when instantiate this composite! It is only
+	 * included to make the WindowsBuilder working.
+	 * 
+	 * @param parent
+	 * @param style
+	 */
+    private ContactComposite(Composite parent, int style) {
         super(parent, style);
-        this.setLayout(new FillLayout());
+        createControls();
     }
+
+    /**
+	 * Create the composite.
+	 * 
+	 * @param parent
+	 */
+	public ContactComposite(Composite parent) {
+		super(parent, SWT.NONE);
+	}
 
     @PostConstruct
     public void createControls() {
+        this.setLayout(new FillLayout());
+		this.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_WHITE));
+
         Composite composite = new Composite(this, SWT.NONE);
         composite.setLayout(new GridLayout(1, false));
 
@@ -91,25 +106,29 @@ public class ContactComposite extends Composite {
         tableViewer = new TableViewer(composite, SWT.BORDER | SWT.FULL_SELECTION);
         tableViewer.addDoubleClickListener(new IDoubleClickListener() {
             public void doubleClick(DoubleClickEvent event) {
-                editPlace();
+                editContact();
             }
         });
 
         table = tableViewer.getTable();
         table.setLinesVisible(true);
         table.setHeaderVisible(true);
-        table.setLayoutData(LayoutUtil.createFillData());
-
+        GridData gd = LayoutUtil.createFillData();
+        gd.widthHint = 800;
+        gd.heightHint = 300;
+        table.setLayoutData(gd);
+        
+        
         initializeTable();
         refreshTable();
     }
 
     private void refreshTable() {
         try {
-            tableViewer.setInput(placeService.findAll());
+            tableViewer.setInput(contactService.findAll());
         }
         catch (DatabaseException e) {
-            LOG.error("Unable to retrieve list of places.", e);
+            LOG.error("Unable to retrieve list of contacs.", e);
             showDBConnectionError();
         }
     }
@@ -117,7 +136,7 @@ public class ContactComposite extends Composite {
     private void showDBConnectionError() {
         // TODO translate
         MessageDialog.openError(shellProvider.getShell(), "Connection Error",
-                "Could not load places from Database.");
+                "Could not load contacts from Database.");
     }
 
     private void updateTableFilter(String filterString) {
@@ -148,18 +167,18 @@ public class ContactComposite extends Composite {
     }
 
     @SuppressWarnings("unchecked")
-    public void addPlace() {
+    public void addContact() {
         Optional<Contact> newPlace = ContactPartUtil.showWizard(context, shellProvider.getShell(),
                 Optional.<Contact> absent());
 
         if (newPlace.isPresent()) {
-            Collection<Contact> places = (Collection<Contact>) tableViewer.getInput();
-            places.add(newPlace.get());
+            Collection<Contact> contacts = (Collection<Contact>) tableViewer.getInput();
+            contacts.add(newPlace.get());
             tableViewer.refresh();
         }
     }
 
-    public void editPlace() {
+    public void editContact() {
         if (!allowEditing) {
             return;
         }
@@ -172,16 +191,16 @@ public class ContactComposite extends Composite {
 
         // Refresh the selected place with values from the database
         try {
-            placeService.refresh(selectedPlace);
-            Optional<Contact> updatedPlace = ContactPartUtil.showWizard(context,
+            contactService.refresh(selectedPlace);
+            Optional<Contact> updatedContact = ContactPartUtil.showWizard(context,
                     shellProvider.getShell(), Optional.of(selectedPlace));
 
-            if (updatedPlace.isPresent()) {
+            if (updatedContact.isPresent()) {
                 tableViewer.refresh();
             }
         }
         catch (DatabaseException e) {
-            LOG.error("Could not retrieve the place from database.", e);
+            LOG.error("Could not retrieve the contacts from database.", e);
             showDBConnectionError();
         }
     }
@@ -194,11 +213,11 @@ public class ContactComposite extends Composite {
         return this.tableViewer;
     }
 
-    public void setSelection(Contact place) {
-        tableViewer.setSelection(new StructuredSelection(place), true);
+    public void setSelection(Contact contact) {
+        tableViewer.setSelection(new StructuredSelection(contact), true);
     }
 
-    public Contact getSelectedPlace() {
+    public Contact getSelectedContact() {
         return (Contact) ((IStructuredSelection) tableViewer.getSelection()).getFirstElement();
     }
 

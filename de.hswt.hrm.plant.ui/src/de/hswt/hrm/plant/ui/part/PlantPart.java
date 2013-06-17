@@ -1,6 +1,5 @@
 package de.hswt.hrm.plant.ui.part;
 
-import java.net.URL;
 import java.util.Collection;
 import java.util.List;
 
@@ -11,10 +10,7 @@ import javax.inject.Inject;
 import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.ui.di.Focus;
-import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
-import org.eclipse.e4.xwt.IConstants;
-import org.eclipse.e4.xwt.XWT;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.ActionContributionItem;
 import org.eclipse.jface.action.IContributionItem;
@@ -25,12 +21,12 @@ import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.window.IShellProvider;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.SWT;
 import org.eclipse.ui.forms.widgets.FormToolkit;
@@ -177,10 +173,12 @@ public class PlantPart {
             }
         });
         table = tableViewer.getTable();
-        table.setSize(214, 221);
         table.setLinesVisible(true);
         table.setHeaderVisible(true);
-        table.setLayoutData(LayoutUtil.createFillData());
+        GridData gd = LayoutUtil.createFillData();
+        gd.widthHint = 800;
+        gd.heightHint = 300;
+        table.setLayoutData(gd);
         toolkit.paintBordersFor(table);
 
         schemeTab = new TabItem(tabFolder, SWT.NONE);

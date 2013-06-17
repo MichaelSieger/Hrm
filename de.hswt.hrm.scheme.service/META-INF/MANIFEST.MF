@@ -11,11 +11,11 @@ Import-Package: de.hswt.hrm.common.database.exception,
  de.hswt.hrm.plant.model,
  de.hswt.hrm.scheme.dao.core,
  de.hswt.hrm.scheme.dao.jdbc,
- de.hswt.hrm.scheme.model,
- org.eclipse.swt.graphics
+ de.hswt.hrm.scheme.model
 Export-Package: de.hswt.hrm.scheme.service
 Require-Bundle: org.eclipse.swt;bundle-version="3.100.1",
  com.google.guava;bundle-version="10.0.1",
+ org.eclipse.swt;bundle-version="3.100.1",
  de.hswt.hrm.pdfrenderer;bundle-version="0.0.1",
  org.eclipse.e4.core.di;bundle-version="1.2.0",
  javax.inject;bundle-version="1.0.0"

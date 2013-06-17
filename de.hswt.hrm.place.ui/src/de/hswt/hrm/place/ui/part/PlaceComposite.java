@@ -20,6 +20,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
@@ -98,7 +99,10 @@ public class PlaceComposite extends Composite {
 		table = tableViewer.getTable();
 		table.setLinesVisible(true);
 		table.setHeaderVisible(true);
-		table.setLayoutData(LayoutUtil.createFillData());
+        GridData gd = LayoutUtil.createFillData();
+        gd.widthHint = 800;
+        gd.heightHint = 300;
+        table.setLayoutData(gd);
 
 		initializeTable();
 		refreshTable();
