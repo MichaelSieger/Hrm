@@ -31,10 +31,10 @@ public class EvaluationWizzard extends Wizard {
         ContextInjectionFactory.inject(first, context);
 
         if (eval.isPresent()) {
-            setWindowTitle("Edit Evaluation: " + eval.get().getName());
+            setWindowTitle("Edit Summary: " + eval.get().getName());
         }
         else {
-            setWindowTitle("Create new Evaluation");
+            setWindowTitle("Create new Summary");
         }
     }
 

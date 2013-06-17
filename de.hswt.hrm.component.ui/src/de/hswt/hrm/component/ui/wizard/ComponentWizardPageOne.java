@@ -2,6 +2,7 @@ package de.hswt.hrm.component.ui.wizard;
 
 import java.net.URL;
 
+import org.apache.commons.validator.routines.RegexValidator;
 import org.eclipse.e4.xwt.IConstants;
 import org.eclipse.e4.xwt.XWT;
 import org.eclipse.e4.xwt.forms.XWTForms;
@@ -11,6 +12,7 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.viewers.ListViewer;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.wizard.WizardPage;
@@ -44,7 +46,8 @@ public class ComponentWizardPageOne extends WizardPage {
     private Composite container;
     private Optional<Component> component;
     
-
+    private RegexValidator quant = new RegexValidator("[0-9]{1}");
+   
     private Text nameText;
     
     private Text quantifier;
@@ -60,6 +63,12 @@ public class ComponentWizardPageOne extends WizardPage {
     Boolean rating = null;
     
     private CategoryService catService;
+    
+    private Button add;
+    
+    private Text attribute;
+    
+    private List attributeList;
     
     
     private boolean first = true;
@@ -93,6 +102,9 @@ public class ComponentWizardPageOne extends WizardPage {
         category = (ComboViewer) XWT.findElementByName(container, "category");
         ratingNo = (Button) XWT.findElementByName(container, "ratingNo");
         ratingYes = (Button) XWT.findElementByName(container, "ratingYes");
+        attribute = (Text) XWT.findElementByName(container, "attribute");
+        add = (Button) XWT.findElementByName(container, "add");
+        attributeList = (List) XWT.findElementByName(container, "attributeList");
         
         initializeCombo(category);
         
@@ -110,18 +122,25 @@ public class ComponentWizardPageOne extends WizardPage {
 
         quantifier.addKeyListener(new KeyListener() {
             public void keyPressed(KeyEvent e) {
+            	checkPageComplete();
             }
             public void keyReleased(KeyEvent e) {
             	checkPageComplete();
             }    
         });
+        
+    	add.addListener(SWT.Selection, new Listener() {
+			@Override
+			public void handleEvent(Event event) {
+				if(!attribute.getText().isEmpty())
+					attributeList.add(attribute.getText());
+			}});
+        
         addSelectionListenerForRadio(ratingNo);
         addSelectionListenerForRadio(ratingYes);
 
         setControl(container);
         checkPageComplete();
-        
-
     }
     
     
@@ -181,11 +200,19 @@ public class ComponentWizardPageOne extends WizardPage {
     }
     
     private void checkPageComplete() {
+    	if(!quant.isValid(quantifier.getText())){
+       		setErrorMessage("Qunatifier ungültig");
+       		setPageComplete(false);
+       		return;
+    	} else{
+    		setErrorMessage(null);
+    	}
+    	
     	if(nameText.getText().isEmpty()){
     		setPageComplete(false);
     		return;    		
     	}
-    	if(quantifier.getText().isEmpty()){
+    	if(quantifier.getText().isEmpty() ){
        		setPageComplete(false);
     		return;    	    		
     	}
@@ -193,7 +220,6 @@ public class ComponentWizardPageOne extends WizardPage {
     		setPageComplete(false);
     		return;
     	}
-
     	setPageComplete(true);
     }
     
@@ -224,6 +250,12 @@ public class ComponentWizardPageOne extends WizardPage {
 		IStructuredSelection structuredSelection = (IStructuredSelection) selection;      
 		Category cat  = (Category) structuredSelection.getFirstElement();
 		return cat;		
+	}
+	
+	public void getAttributes(){
+		attributeList.getItems();
+		
+		
 	}
 
 }

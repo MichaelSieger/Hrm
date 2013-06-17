@@ -1,6 +1,6 @@
 <Composite xmlns="http://www.eclipse.org/xwt/presentation" 
 		xmlns:x="http://www.eclipse.org/xwt"
-		xmlns:p1="clr-namespace:java.lang">
+		xmlns:p1="clr-namespace:java.lang" xmlns:p2="clr-namespace:org.eclipse.ui.forms.widgets">
 	<Composite.layout>
 		<FillLayout/>
 	</Composite.layout>
@@ -53,6 +53,38 @@
 						<GridData verticalAlignment="TOP"/>
 					</Button.layoutData>
 				</Button>
+				<Label/>
+				<Label/>
+				<Label/>
+				<Section text="Attributes" x:Style="(p2:Section).EXPANDED | (p2:Section).TITLE_BAR" expanded="false">
+					<Section.layoutData>
+						<GridData horizontalAlignment="FILL" horizontalSpan="3"/>
+					</Section.layoutData>
+					<Section.client>
+						<Composite>
+							<Composite.layout>
+								<GridLayout numColumns="2"/>
+							</Composite.layout>
+						</Composite>
+					</Section.client>
+				</Section>
+				<Button text="Add" x:Name="add">
+					<Button.layoutData>
+						<GridData horizontalAlignment="FILL" verticalAlignment="FILL"/>
+					</Button.layoutData>
+				</Button>
+				<Text x:Style="BORDER" x:Name="attribute">
+					<Text.layoutData>
+						<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL" horizontalSpan="2"/>
+					</Text.layoutData>
+				</Text>
+				<List x:Style="BORDER | H_SCROLL | V_SCROLL" x:Name="attributeList">
+					<List.layoutData>
+						<GridData horizontalSpan="3" horizontalAlignment="FILL"/>
+					</List.layoutData>
+				</List>
+				<Label/>
+				<Label/>
 			</Composite>
 		</Section.client>	
 	</Section>

@@ -29,7 +29,6 @@ import com.google.common.base.Optional;
 
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.ui.swt.constants.SearchFieldConstants;
-import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.common.ui.swt.layouts.LayoutUtil;
 import de.hswt.hrm.common.ui.swt.table.ColumnComparator;
 import de.hswt.hrm.common.ui.swt.table.ColumnDescription;
@@ -39,7 +38,8 @@ import de.hswt.hrm.evaluation.service.EvaluationService;
 import de.hswt.hrm.evaluation.ui.filter.EvaluationFilter;
 
 public class EvaluationComposite extends Composite {
-    private final static Logger LOG = LoggerFactory.getLogger(EvaluationPart.class);
+
+	private final static Logger LOG = LoggerFactory.getLogger(EvaluationComposite.class);
 
     @Inject
     private EvaluationService evalService;
@@ -107,7 +107,6 @@ public class EvaluationComposite extends Composite {
             }
         });
         table = tableViewer.getTable();
-        table.setSize(214, 221);
         table.setLinesVisible(true);
         table.setHeaderVisible(true);
         table.setLayoutData(LayoutUtil.createFillData());
@@ -184,8 +183,8 @@ public class EvaluationComposite extends Composite {
 
     /**
      * This method is called whenever a doubleClick onto the Tableviewer occurs. It obtains the
-     * contact from the selected column of the TableViewer. The Contact is passed to the
-     * ContactWizard. When the Wizard has finished, the contact will be updated in the Database
+     * evaluation from the selected column of the TableViewer. The Contact is passed to the
+     * EvaluationWizard. When the Wizard has finished, the contact will be updated in the Database
      * 
      * @param event
      *            Event which occured within SWT

@@ -63,6 +63,8 @@ public class MiscPart {
 
 	private EvaluationComposite evaluationComposite;
 
+	private CommentComposite commentsComposite;
+
     public MiscPart() {
         // toolkit can be created in PostConstruct, but then then
         // WindowBuilder is unable to parse the code
@@ -136,7 +138,15 @@ public class MiscPart {
         evaluationComposite = new EvaluationComposite(evaluationSection);
 		ContextInjectionFactory.inject(evaluationComposite, context);
 		evaluationSection.setClient(evaluationComposite);
-		
+
+        Section commentsSection = toolkit.createSection(tabFolder, Section.TITLE_BAR);
+        commentsSection.setText("Comments");
+		commentsTab.setControl(commentsSection);
+
+        commentsComposite = new CommentComposite(commentsSection);
+		ContextInjectionFactory.inject(commentsComposite, context);
+		commentsSection.setClient(commentsComposite);
+
 		createActions();
     }
 
@@ -159,11 +169,35 @@ public class MiscPart {
                 evaluationComposite.editEvaluation();
             }
         };
-        editSummaryAction.setDescription("Edit an exisitng plant.");
+        editSummaryAction.setDescription("Edit an exisitng summary.");
         editSummaryContribution = new ActionContributionItem(editSummaryAction);
 
+        
+        Action addCommentAction = new Action("Add") {
+            @Override
+            public void run() {
+                super.run();
+                commentsComposite.addComment();
+            }
+        };
+        addCommentAction.setDescription("Add's a new comment.");
+        addCommentContribution = new ActionContributionItem(addCommentAction);
+
+        Action editCommentAction = new Action("Edit") {
+            @Override
+            public void run() {
+                super.run();
+                evaluationComposite.editEvaluation();
+            }
+        };
+        editCommentAction.setDescription("Edit an exisitng comment.");
+        editCommentContribution = new ActionContributionItem(editCommentAction);
+        
+        
         form.getToolBarManager().add(editSummaryContribution);
         form.getToolBarManager().add(addSummaryContribution);
+        form.getToolBarManager().add(editCommentContribution);
+        form.getToolBarManager().add(addCommentContribution);
 
         form.getToolBarManager().update(true);
     }
@@ -177,7 +211,8 @@ public class MiscPart {
     
     private void showCommentsActions() {
     	hideAllActions();
-
+    	editCommentContribution.setVisible(true);
+    	addCommentContribution.setVisible(true);
     	form.getToolBarManager().update(true);
     }
 
@@ -196,6 +231,8 @@ public class MiscPart {
     private void hideAllActions() {
         editSummaryContribution.setVisible(false);
         addSummaryContribution.setVisible(false);
+        addCommentContribution.setVisible(false);
+        editCommentContribution.setVisible(false);
     }
     
     @PreDestroy

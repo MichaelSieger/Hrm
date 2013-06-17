@@ -13,12 +13,14 @@ import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.forms.widgets.Section;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Optional;
 
 import de.hswt.hrm.common.database.exception.DatabaseException;
+import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.common.ui.swt.layouts.PageContainerFillLayout;
 import de.hswt.hrm.evaluation.model.Evaluation;
 import de.hswt.hrm.evaluation.service.EvaluationService;
@@ -42,14 +44,14 @@ public class EvaluationWizzardPageOne extends WizardPage {
         super(title);
         this.eval = eval;
         setDescription(createDescription());
-
+        setTitle("Summary Wizard");
     }
 
     private String createDescription() {
         if (eval.isPresent()) {
-            return "Change an Evaluation";
+            return "Change a Summary";
         }
-        return "Add a new Evaluation";
+        return "Add a new Summary";
     }
 
     @Override
@@ -78,6 +80,7 @@ public class EvaluationWizzardPageOne extends WizardPage {
             LOG.error("An error occured", e);
         }
 
+        FormUtil.initSectionColors((Section) XWT.findElementByName(container, "Mandatory"));
         addKeyListener(nameText);
         addKeyListener(descText);
         setControl(container);
@@ -124,7 +127,7 @@ public class EvaluationWizzardPageOne extends WizardPage {
         }
 
         else if (isAlreadyPresent(nameText.getText())) {
-            setErrorMessage("An Evaluation with name " + nameText.getText() + " is already present");
+            setErrorMessage("A Summary with name " + nameText.getText() + " is already present");
         }
 
     }
