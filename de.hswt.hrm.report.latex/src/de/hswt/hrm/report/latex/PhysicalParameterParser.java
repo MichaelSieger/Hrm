@@ -8,6 +8,8 @@ import java.nio.file.Path;
 
 public class PhysicalParameterParser {
 
+    private final String COMMENT = "%";
+
     /*
      * keys of physicalparameterrow.tex
      */
@@ -29,13 +31,15 @@ public class PhysicalParameterParser {
     // TODO unccoment follwing line when model ready
     // private Report report;
     private Path path;
+
     private String endTarget;
     private String rows;
+
     private float sumQuantifier;
     private float sumRatings;
     private float totalGrade;
 
-    // private final String = "::";
+    private StringBuffer buffer = new StringBuffer();
 
     public String parse(Path path) throws IOException {
         this.path = path;
@@ -47,11 +51,15 @@ public class PhysicalParameterParser {
     private void parseTable() throws IOException {
         Path pathTable = this.path;
         // TODO append file to path
-        StringBuffer buffer = new StringBuffer();
+        buffer.setLength(0);
         BufferedReader reader = Files.newBufferedReader(pathTable, Charset.defaultCharset());
         String line = null;
         while ((line = reader.readLine()) != null) {
-            buffer.append(line);
+            line = line.trim();
+            if (!line.startsWith(COMMENT)) {
+                buffer.append(line);
+                appendNewLine();
+            }
         }
 
         String target = buffer.toString();
@@ -68,11 +76,15 @@ public class PhysicalParameterParser {
     private void parseRow() throws IOException {
         Path pathRow = this.path;
         // TODO append file to path
-        StringBuffer buffer = new StringBuffer();
+        buffer.setLength(0);
         BufferedReader reader = Files.newBufferedReader(pathRow, Charset.defaultCharset());
         String line = null;
         while ((line = reader.readLine()) != null) {
-            buffer.append(line);
+            line = line.trim();
+            if (!line.startsWith(COMMENT)) {
+                buffer.append(line);
+                appendNewLine();
+            }
         }
 
         String preTarget;
@@ -121,6 +133,10 @@ public class PhysicalParameterParser {
         this.parseTable();
         return this.totalGrade;
 
+    }
+
+    private void appendNewLine() {
+        buffer.append("\n");
     }
 
 }

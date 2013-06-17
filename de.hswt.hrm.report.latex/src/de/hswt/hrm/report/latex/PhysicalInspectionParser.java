@@ -15,20 +15,26 @@ public class PhysicalInspectionParser {
     private final String GRADE = ":physicalInspectionGrade:";
     private final String WHEIGHTING = ":physicalInspectionWheighting:";
     private final String RATING = ":physicalInspectionRating";
-    private final String COMMENT = ":physicalInspectionComment:";
+    private final String PHYS_COMMENT = ":physicalInspectionComment:";
     private final String ROWS = ":rows:";
     private final String GRADE_SUM = ":physicalInspectionGradeSum:";
     private final String WHEIGHTED_SUM = ":physicalInspectionWheightingSum:";
     private final String RATING_AV = ":physicalInspectionRatingAverage:";
 
+    private final String COMMENT = "%";
+
     private String endTarget;
+    private String rows;
+
     private float sumRatings;
     private float sumQuantifier;
     private float totalGrade;
 
     private Path path;
+
     private Collection<PhysicalRating> ratings;
-    private String rows;
+
+    private StringBuffer buffer = new StringBuffer();
 
     public String parse(Path path, Collection<PhysicalRating> ratings) throws IOException {
         this.ratings = ratings;
@@ -42,12 +48,17 @@ public class PhysicalInspectionParser {
     private void parseTable() throws IOException {
         Path pathTable = this.path;
         // TODO append file to path
-        StringBuffer buffer = new StringBuffer();
+        buffer.setLength(0);
         BufferedReader reader = Files.newBufferedReader(pathTable, Charset.defaultCharset());
         String line = null;
         while ((line = reader.readLine()) != null) {
-            buffer.append(line);
+            line = line.trim();
+            if (!line.startsWith(COMMENT)) {
+                buffer.append(line);
+                appendNewLine();
+            }
         }
+
         String target;
         target = buffer.toString();
 
@@ -63,11 +74,16 @@ public class PhysicalInspectionParser {
     private void parseRow() throws IOException {
         Path pathRow = this.path;
         // TODO append file to path
-        StringBuffer buffer = new StringBuffer();
+        buffer.setLength(0);
         BufferedReader reader = Files.newBufferedReader(pathRow, Charset.defaultCharset());
         String line = null;
+
         while ((line = reader.readLine()) != null) {
-            buffer.append(line);
+            line = line.trim();
+            if (!line.startsWith(COMMENT)) {
+                buffer.append(line);
+                appendNewLine();
+            }
         }
 
         String preTarget;
@@ -86,7 +102,7 @@ public class PhysicalInspectionParser {
             preTarget
                     .replace(RATING,
                             "String.valueOf(rating.getRating().tofloat()*rating.getComponent().getQuantifier().tofloat())");
-            preTarget.replace(COMMENT, "rating.getComment()");
+            preTarget.replace(PHYS_COMMENT, "rating.getComment()");
             target.append(preTarget);
         }
         this.rows = target.toString();
@@ -102,6 +118,10 @@ public class PhysicalInspectionParser {
         this.parseTable();
         return this.totalGrade;
 
+    }
+
+    private void appendNewLine() {
+        buffer.append("\n");
     }
 
 }

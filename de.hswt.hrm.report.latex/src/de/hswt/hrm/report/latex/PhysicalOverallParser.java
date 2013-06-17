@@ -15,13 +15,19 @@ public class PhysicalOverallParser {
 
     private final String ROWS = ":rows:";
     private final String OVERALL_RATING = ":physicalOverallRating:";
+    
+    private final String COMMENT = "%";
 
     private float inspection_av;
     private float param_av;
+    
     private String path;
+    
     private Properties prop = new Properties();
+    
     private StringBuffer bufferRow = new StringBuffer();
     private StringBuffer bufferTable = new StringBuffer();
+    
     private Path p = Paths.get(path);
 
     public String parse(String path, PhysicalInspectionParser inspectionParser,
@@ -35,6 +41,7 @@ public class PhysicalOverallParser {
         prop.load(Files.newInputStream(Paths.get(path, "templates",
                 "physicaloverallgraderow.properties")));
 
+        bufferRow.setLength(0);
         // TODO optional component !!
         bufferRow.append(prop.getProperty("physical.overall.inspection").replace(
                 INSPECTION_RATING_AV, String.valueOf(this.inspection_av)));
@@ -43,19 +50,27 @@ public class PhysicalOverallParser {
                 String.valueOf(this.param_av)));
 
         Path pathTable = this.p;
+        bufferTable.setLength(0);
         // TODO append file to path
         BufferedReader reader = Files.newBufferedReader(pathTable, Charset.defaultCharset());
         String line = null;
         while ((line = reader.readLine()) != null) {
-            bufferTable.append(line);
+            line = line.trim();
+            if (!line.startsWith(COMMENT)) {
+                bufferTable.append(line);
+                appendNewLineTable();
+            }
         }
-
         String target = bufferTable.toString();
         // TODO obtional component
         target.replace(ROWS, bufferRow.toString());
         target.replace(OVERALL_RATING, String.valueOf((this.inspection_av + this.param_av) / 2));
 
         return target;
+    }
+
+    private void appendNewLineTable() {
+        bufferTable.append("\n");
     }
 
 }

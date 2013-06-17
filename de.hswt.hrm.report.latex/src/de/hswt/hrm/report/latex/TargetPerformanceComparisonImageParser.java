@@ -8,11 +8,14 @@ import java.util.Properties;
 
 import de.hswt.hrm.photo.model.Photo;
 
+// TODO more than 2 photos possible. To implement: even-odd handler 
 public class TargetPerformanceComparisonImageParser {
 
-    private Properties prop = new Properties();
-    private StringBuffer buffer = new StringBuffer();
     private String target;
+
+    private StringBuffer buffer = new StringBuffer();
+
+    private Properties prop = new Properties();
 
     private final String IMAGE_HEADER_ONE = ":nameFirstImage:";
     private final String IMAGE_HEADER_TWO = ":nameSecondImage:";
@@ -26,6 +29,7 @@ public class TargetPerformanceComparisonImageParser {
 
         if (pictures.size() == 1) {
             Photo picture = pictures.pop();
+            buffer.setLength(0);
             buffer.append(prop.getProperty("targetperformancecomparison.image.header.oneimage")
                     .replace(IMAGE_HEADER_ONE, picture.getLabel()));
             buffer.append("\n");
@@ -36,6 +40,7 @@ public class TargetPerformanceComparisonImageParser {
         else {
 
             Photo picture = pictures.pop();
+            buffer.setLength(0);
             buffer.append(prop.getProperty("targetperformancecomparison.image.header.twoimage")
                     .replace(IMAGE_HEADER_ONE, picture.getLabel()));
             buffer.append("\n");

@@ -5,6 +5,9 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Collection;
+
+import de.hswt.hrm.component.model.Component;
 
 public class TargetPerformanceComparisonParser {
 
@@ -17,33 +20,95 @@ public class TargetPerformanceComparisonParser {
     private final String TABLE_ROWS = ":rows:";
     private final String TABLE_IMG_HEADER = ":imagesHeader:";
     private final String TABLE_IMG_ROWS = ":imageRows:";
+    private final String COMMENT = "%";
 
     private Path path;
 
+    private String line;
+    private String target;
     private String endTarget;
+    private String rowEndTarget;
 
-    // StateTarget target
-    public String parse(Path path) throws IOException {
+    private BufferedReader reader;
+
+    // TODO set right generic
+    private Collection<Collection<Component>> componentsTable;
+
+    private StringBuffer buffer = new StringBuffer();
+
+    public String parse(Path path, Collection<Collection<Component>> componentsTable)
+            throws IOException {
+        this.componentsTable = componentsTable;
         this.path = path;
-        this.parseRow();
+        this.parseTable();
         return endTarget;
 
     }
 
-    private void parseTable() {
+    private void parseTable() throws IOException {
+        Path pathTable = this.path;
+        // TODO append file to path
+        buffer.setLength(0);
+        reader = null;
+        reader = Files.newBufferedReader(pathTable, Charset.defaultCharset());
+        line = null;
+        while ((line = reader.readLine()) != null) {
+            // do not print comments
+            line = line.trim();
+            if (!line.startsWith(COMMENT)) {
+                buffer.append(line);
+                appendNewLine();
+            }
+        }
+        // TODO set right generic
+        for (Collection<Component> component : componentsTable) {
+            this.parseRow(component);
+            target = null;
+            target = buffer.toString();
+            // TODO set models models
+            target.replace(TABLE_COMPONENT_NAME, "");
+            target.replace(TABLE_RATING, "");
+            target.replace(TABLE_ROWS, this.rowEndTarget);
+            target.replace(TABLE_IMG_HEADER, "");
+            target.replace(TABLE_IMG_ROWS, "");
+
+            endTarget += target;
+
+        }
 
     }
 
-    private void parseRow() throws IOException {
+    // TODO set right generic
+    private void parseRow(Collection<Component> components) throws IOException {
+        rowEndTarget = null;
+        reader = null;
         Path pathRow = this.path;
         // TODO append file to path
-        StringBuffer buffer = new StringBuffer();
-        BufferedReader reader = Files.newBufferedReader(pathRow, Charset.defaultCharset());
-        String line = null;
+        buffer.setLength(0);
+        // get template
+        reader = Files.newBufferedReader(pathRow, Charset.defaultCharset());
+        line = null;
         while ((line = reader.readLine()) != null) {
-            buffer.append(line);
+            line = line.trim();
+            if (!line.startsWith(COMMENT)) {
+                buffer.append(line);
+                appendNewLine();
+            }
+        }
+        // create rows
+        // TODO set models models
+        for (Component component : components) {
+            target = buffer.toString();
+            target.replace(ROW_TARGET, "");
+            target.replace(ROW_PERFORMANCE, "");
+            target.replace(ROW_TASK, "");
+            rowEndTarget += target;
         }
 
+    }
+
+    private void appendNewLine() {
+        buffer.append("\n");
     }
 
 }

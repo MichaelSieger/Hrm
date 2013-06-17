@@ -63,6 +63,8 @@ public class ReportDataParser {
 
         prop.load(Files.newInputStream(Paths.get(pathDir, "templates", "reportdata.properties")));
 
+        buffer.setLength(0);
+
         buffer.append(prop.getProperty("reportdata.customer.name").replace(CUSTOMER_NAME,
                 contactCustomer.getName() + " " + contactCustomer.getName()));
 

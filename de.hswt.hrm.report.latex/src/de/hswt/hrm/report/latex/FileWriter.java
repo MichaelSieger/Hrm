@@ -13,10 +13,7 @@ import java.nio.file.StandardOpenOption;
 public class FileWriter {
 
     public void writeToFile(String dirPath, String fileName, String content) throws IOException {
-        Path filePath = Paths.get(dirPath + fileName);
-        Path path = Paths.get(dirPath);
-        Files.createDirectories(path);
-        Files.write(filePath, content.getBytes(), StandardOpenOption.CREATE);
+        Path filePath = Paths.get(dirPath, fileName);
         Files.write(filePath, content.getBytes(), StandardOpenOption.TRUNCATE_EXISTING);
     }
 
