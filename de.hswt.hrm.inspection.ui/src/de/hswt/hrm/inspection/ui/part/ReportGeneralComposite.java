@@ -343,12 +343,6 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
         Button requestorSelectionButton = formToolkit.createButton(personsComposite,
                 "Select requestor", SWT.PUSH);
         requestorSelectionButton.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
-        requestorSelectionButton.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                // TODO request for person and fill out the corresponding fields with selction
-            }
-        });
 
         Label requestorNameLabel = new Label(personsComposite, SWT.NONE);
         requestorNameLabel.setLayoutData(LayoutUtil.createLeftGridData());
@@ -392,12 +386,6 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
         Button controllerSelectionButton = formToolkit.createButton(personsComposite,
                 "Select customer", SWT.PUSH);
         controllerSelectionButton.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
-        controllerSelectionButton.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                // TODO request for person and fill out the corresponding fields with selction
-            }
-        });
 
         Label controllerNameLabel = new Label(personsComposite, SWT.NONE);
         controllerNameLabel.setLayoutData(LayoutUtil.createLeftGridData());
@@ -440,9 +428,42 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
                     customerNameText.setText(csd.getContact().getName());
                     customerStreetText.setText(csd.getContact().getStreet() + " "
                             + csd.getContact().getStreetNo());
-                    customerCityText.setText(csd.getContact().getCity());
+                    customerCityText.setText(csd.getContact().getCity() + " "
+                            + csd.getContact().getPostCode());
                 }
 
+            }
+        });
+
+        controllerSelectionButton.addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                ContactSelectionDialog csd = new ContactSelectionDialog(shellProvider.getShell(),
+                        context);
+                csd.create();
+                if (csd.open() == Window.OK) {
+                    controllerNameText.setText(csd.getContact().getName());
+                    controllerStreetText.setText(csd.getContact().getStreet() + " "
+                            + csd.getContact().getStreetNo());
+                    controllerCityText.setText(csd.getContact().getCity() + " "
+                            + csd.getContact().getPostCode());
+                }
+            }
+        });
+
+        requestorSelectionButton.addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                ContactSelectionDialog csd = new ContactSelectionDialog(shellProvider.getShell(),
+                        context);
+                csd.create();
+                if (csd.open() == Window.OK) {
+                    requestorNameText.setText(csd.getContact().getName());
+                    requestorStreetText.setText(csd.getContact().getStreet() + " "
+                            + csd.getContact().getStreetNo());
+                    requestorCityText.setText(csd.getContact().getCity() + " "
+                            + csd.getContact().getPostCode());
+                }
             }
         });
 
