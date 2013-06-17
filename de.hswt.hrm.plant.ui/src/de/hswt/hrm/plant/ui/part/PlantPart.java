@@ -184,29 +184,6 @@ public class PlantPart {
         schemeTab = new TabItem(tabFolder, SWT.NONE);
         schemeTab.setText("Scheme");
 
-//        MPart scheme = service.findPart("de.hswt.hrm.scheme.ui.scheme");
-//        if (scheme == null) {
-//            System.out.println("scheme is null");
-//        }
-//        System.out.println(scheme.getContext());
-//
-//        // TODO add scheme part here
-//
-//        URL url = SchemePart.class.getClassLoader().getResource(
-//                "de/hswt/hrm/scheme/ui/part/SchemePart" + IConstants.XWT_EXTENSION_SUFFIX);
-//
-//        Composite c;
-//
-//        try {
-//            c = (Composite) XWT.load(tabFolder, url);
-//            schemeTab.setControl(c);
-//
-//        }
-//        catch (Exception e1) {
-//            // TODO Auto-generated catch block
-//            e1.printStackTrace();
-//        }
-
         schemeComposite = new SchemeComposite(tabFolder);
         ContextInjectionFactory.inject(schemeComposite, context);
         schemeTab.setControl(schemeComposite);
