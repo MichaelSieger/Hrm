@@ -24,6 +24,7 @@ import de.hswt.hrm.common.ui.swt.layouts.LayoutUtil;
 import de.hswt.hrm.common.ui.swt.utils.ContentProposalUtil;
 import de.hswt.hrm.component.model.Component;
 import de.hswt.hrm.inspection.ui.dialog.ContactSelectionDialog;
+import de.hswt.hrm.inspection.ui.dialog.PlantSelectionDialog;
 
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.layout.GridData;
@@ -220,6 +221,19 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
         Button plantSelectionButton = formToolkit.createButton(generalComposite, "Select plant",
                 SWT.PUSH);
         plantSelectionButton.setLayoutData(LayoutUtil.createRightGridData(2));
+        plantSelectionButton.addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                PlantSelectionDialog psd = new PlantSelectionDialog(shellProvider.getShell(),
+                        context);
+                psd.create();
+                if (psd.open() == Window.OK) {
+
+                    plantText.setText(psd.getPlant().getDescription());
+
+                }
+            }
+        });
 
         Label reportDateLabel = new Label(generalComposite, SWT.NONE);
         reportDateLabel.setLayoutData(LayoutUtil.createLeftGridData());

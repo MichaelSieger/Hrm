@@ -37,16 +37,16 @@ public final class ContactPartUtil {
         return cw.getContact();
     }
 
-    public static List<ColumnDescription<Contact>> getCompositeColumns() {
-        List<ColumnDescription<Contact>> columns = new ArrayList<>();
-        columns.add(getNameColumn());
-        columns.add(getStreetColumn());
-        columns.add(getStreetNoColumn());
-        columns.add(getPostCodeColumn());
-        columns.add(getCityColumn());
-        columns.add(getShortcutColumn());
-        return columns;
-    }
+    // public static List<ColumnDescription<Contact>> getCompositeColumns() {
+    // List<ColumnDescription<Contact>> columns = new ArrayList<>();
+    // columns.add(getNameColumn());
+    // columns.add(getStreetColumn());
+    // columns.add(getStreetNoColumn());
+    // columns.add(getPostCodeColumn());
+    // columns.add(getCityColumn());
+    // columns.add(getShortcutColumn());
+    // return columns;
+    // }
 
     public static List<ColumnDescription<Contact>> getColumns() {
         List<ColumnDescription<Contact>> columns = new ArrayList<>();
