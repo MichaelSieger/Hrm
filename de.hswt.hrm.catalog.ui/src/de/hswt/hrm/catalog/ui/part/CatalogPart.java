@@ -27,126 +27,131 @@ import org.eclipse.swt.events.SelectionEvent;
 
 public class CatalogPart {
 
-	private final static Logger LOG = LoggerFactory.getLogger(CatalogPart.class);
+    private final static Logger LOG = LoggerFactory.getLogger(CatalogPart.class);
 
-	@Inject
-	private IEclipseContext context;
+    @Inject
+    private IEclipseContext context;
 
-	private FormToolkit toolkit = new FormToolkit(Display.getDefault());
+    private FormToolkit toolkit = new FormToolkit(Display.getDefault());
 
-	private IContributionItem addContribution;
-	private IContributionItem editContribution;
-	
-	private TabFolder tabFolder;
-	private TabItem itemsTab;
-	private TabItem catalogsTab;
+    private IContributionItem addContribution;
+    private IContributionItem editContribution;
 
-	private CatalogItemsPart catalogItemsPart;
-	
-	private Form form;
+    private TabFolder tabFolder;
+    private TabItem itemsTab;
+    private TabItem catalogsTab;
 
-	public CatalogPart() {
-		// toolkit can be created in PostConstruct, but then then
-		// WindowBuilder is unable to parse the code
-		toolkit.dispose();
-		toolkit = FormUtil.createToolkit();
-	}
+    private CatalogItemsPart catalogItemsPart;
+    private CatalogMatchingComposite matchComposite;
 
-	/**
-	 * Create contents of the view part.
-	 */
-	@PostConstruct
-	public void createControls(Composite parent) {
-		toolkit.setBorderStyle(SWT.BORDER);
-		toolkit.adapt(parent);
-		toolkit.paintBordersFor(parent);
-		parent.setLayout(new FillLayout(SWT.HORIZONTAL));
+    private Form form;
 
-		form = toolkit.createForm(parent);
-		form.getHead().setOrientation(SWT.RIGHT_TO_LEFT);
-		form.setSeparatorVisible(true);
-		form.getBody().setBackgroundMode(SWT.INHERIT_FORCE);
-		toolkit.paintBordersFor(form);
-		form.setText("Catalogs");
-		toolkit.decorateFormHeading(form);
-		createActions();
-		
-		FillLayout fillLayout = new FillLayout(SWT.HORIZONTAL);
-		fillLayout.marginHeight = 5;
-		fillLayout.marginWidth = 5;
-		form.getBody().setLayout(fillLayout);
+    public CatalogPart() {
+        // toolkit can be created in PostConstruct, but then then
+        // WindowBuilder is unable to parse the code
+        toolkit.dispose();
+        toolkit = FormUtil.createToolkit();
+    }
 
-		tabFolder = new TabFolder(form.getBody(), SWT.NONE);
-		tabFolder.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				if (tabFolder.getItem(tabFolder.getSelectionIndex()).equals(itemsTab)) {
-					showCatalogItemsActions(true);
-				} else {
-					showCatalogItemsActions(false);
-				}
-			}
-		});
-		tabFolder.setBackgroundMode(SWT.INHERIT_FORCE);
-		toolkit.adapt(tabFolder);
-		toolkit.paintBordersFor(tabFolder);
-		
-		itemsTab = new TabItem(tabFolder, SWT.NONE);
-		itemsTab.setText("Catalog Items");
-		
-		catalogItemsPart = new CatalogItemsPart(tabFolder);
-		// important: inject the services
-		ContextInjectionFactory.inject(catalogItemsPart, context);
-		
-		itemsTab.setControl(catalogItemsPart);
-		
-		catalogsTab = new TabItem(tabFolder, SWT.NONE);
-		catalogsTab.setText("Catalogs");
+    /**
+     * Create contents of the view part.
+     */
+    @PostConstruct
+    public void createControls(Composite parent) {
+        toolkit.setBorderStyle(SWT.BORDER);
+        toolkit.adapt(parent);
+        toolkit.paintBordersFor(parent);
+        parent.setLayout(new FillLayout(SWT.HORIZONTAL));
 
-		// TODO add catalogs part here
-	}
+        form = toolkit.createForm(parent);
+        form.getHead().setOrientation(SWT.RIGHT_TO_LEFT);
+        form.setSeparatorVisible(true);
+        form.getBody().setBackgroundMode(SWT.INHERIT_FORCE);
+        toolkit.paintBordersFor(form);
+        form.setText("Catalogs");
+        toolkit.decorateFormHeading(form);
+        createActions();
 
-	private void createActions() {
-		// TODO translate
-		Action editAction = new Action("Edit") {
-			@Override
-			public void run() {
-				super.run();
-				catalogItemsPart.editPlant();
-			}
-		};
-		editAction.setDescription("Edit an exisitng catalog item.");
-		editContribution = new ActionContributionItem(editAction);
-		form.getToolBarManager().add(editContribution);
-		
-		Action addAction = new Action("Add") {
-				@Override
-				public void run() {
-					super.run();
-					catalogItemsPart.addCatalogItem();
-				}
-			};
-		addAction.setDescription("Add's a new catalog item.");
-		addContribution = new ActionContributionItem(addAction);
-		form.getToolBarManager().add(addContribution);
+        FillLayout fillLayout = new FillLayout(SWT.HORIZONTAL);
+        fillLayout.marginHeight = 5;
+        fillLayout.marginWidth = 5;
+        form.getBody().setLayout(fillLayout);
 
-		form.getToolBarManager().update(true);
-	}
+        tabFolder = new TabFolder(form.getBody(), SWT.NONE);
+        tabFolder.addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                if (tabFolder.getItem(tabFolder.getSelectionIndex()).equals(itemsTab)) {
+                    showCatalogItemsActions(true);
+                }
+                else {
+                    showCatalogItemsActions(false);
+                }
+            }
+        });
+        tabFolder.setBackgroundMode(SWT.INHERIT_FORCE);
+        toolkit.adapt(tabFolder);
+        toolkit.paintBordersFor(tabFolder);
 
-	private void showCatalogItemsActions(boolean show) {
-		addContribution.setVisible(show);
-		editContribution.setVisible(show);
-		form.getToolBarManager().update(true);
-	}
+        itemsTab = new TabItem(tabFolder, SWT.NONE);
+        itemsTab.setText("Catalog Items");
 
-	@PreDestroy
-	public void dispose() {
-		if (toolkit != null) {
-			toolkit.dispose();
-		}
-	}
+        catalogItemsPart = new CatalogItemsPart(tabFolder);
+        // important: inject the services
+        ContextInjectionFactory.inject(catalogItemsPart, context);
 
-	@Focus
-	public void setFocus() {
-	}
+        itemsTab.setControl(catalogItemsPart);
+
+        catalogsTab = new TabItem(tabFolder, SWT.NONE);
+        catalogsTab.setText("Catalogs");
+
+        matchComposite = new CatalogMatchingComposite(tabFolder);
+        ContextInjectionFactory.inject(matchComposite, context);
+        catalogsTab.setControl(matchComposite);
+
+    }
+
+    private void createActions() {
+        // TODO translate
+        Action editAction = new Action("Edit") {
+            @Override
+            public void run() {
+                super.run();
+                catalogItemsPart.editPlant();
+            }
+        };
+        editAction.setDescription("Edit an exisitng catalog item.");
+        editContribution = new ActionContributionItem(editAction);
+        form.getToolBarManager().add(editContribution);
+
+        Action addAction = new Action("Add") {
+            @Override
+            public void run() {
+                super.run();
+                catalogItemsPart.addCatalogItem();
+            }
+        };
+        addAction.setDescription("Add's a new catalog item.");
+        addContribution = new ActionContributionItem(addAction);
+        form.getToolBarManager().add(addContribution);
+
+        form.getToolBarManager().update(true);
+    }
+
+    private void showCatalogItemsActions(boolean show) {
+        addContribution.setVisible(show);
+        editContribution.setVisible(show);
+        form.getToolBarManager().update(true);
+    }
+
+    @PreDestroy
+    public void dispose() {
+        if (toolkit != null) {
+            toolkit.dispose();
+        }
+    }
+
+    @Focus
+    public void setFocus() {
+    }
 }

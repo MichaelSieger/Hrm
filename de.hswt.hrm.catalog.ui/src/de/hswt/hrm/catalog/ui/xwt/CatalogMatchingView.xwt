@@ -22,7 +22,7 @@
 					<GridLayout />
 				</Composite.layout>
 				<ListViewer x:Style="BORDER | V_SCROLL" x:Name="catalogs">
-					<ListViewer.list x:Name="" SelectionEvent="onSelection">
+					<ListViewer.list x:Name="catalogs" SelectionEvent="onSelection">
 						<ListViewer.list.layoutData>
 							<GridData horizontalAlignment="FILL" verticalAlignment="FILL"
 								grabExcessHorizontalSpace="true" grabExcessVerticalSpace="true"
