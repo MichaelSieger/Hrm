@@ -2,7 +2,7 @@
 	<Composite.layout>
 		<FillLayout/>
 	</Composite.layout>
-	<Section x:Style="(p1:Section).EXPANDED | (p1:Section).TITLE_BAR" x:Name="Mandatory" text="Evaluation">
+	<Section x:Style="(p1:Section).EXPANDED | (p1:Section).TITLE_BAR" x:Name="Mandatory" text="Summary">
 		<Section.client>
 			<Composite>
 				<Composite.layout>
