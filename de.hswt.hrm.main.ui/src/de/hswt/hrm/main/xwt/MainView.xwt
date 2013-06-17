@@ -57,7 +57,7 @@
 		text="Inspektion:&#13;&#10;-Inspektionen anlegen&#13;&#10;-Insprektionen bearbeiten" />
 	<Label />
 	<Label />
-	<Button image="/resources/icons/Evaluation.jpg" x:Name="toOverall" />
+	<Button image="/resources/icons/Tools.jpg" x:Name="toMisc" />
 	<Label text="Zur Gesamtbewertung&#13;&#10;" />
 	<Label />
 	<Label />

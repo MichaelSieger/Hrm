@@ -40,7 +40,7 @@ public class MainPart {
 	private Button toCatalog;
 	private Button toCategory;
 	private Button toInspection;
-	private Button toOverall;
+	private Button toMisc;
 
     @PostConstruct
     public void postConstruct(Composite parent) {
@@ -55,7 +55,7 @@ public class MainPart {
             toPlants = (Button) XWT.findElementByName(comp, "toPlants");
             toCatalog = (Button) XWT.findElementByName(comp, "toCatalog");
             toCategory = (Button) XWT.findElementByName(comp, "toCategory");
-            toOverall = (Button) XWT.findElementByName(comp, "toOverall");
+            toMisc = (Button) XWT.findElementByName(comp, "toMisc");
             toInspection = (Button) XWT.findElementByName(comp, "toInspection");
         }
         catch (Exception e) {
@@ -102,10 +102,10 @@ public class MainPart {
 				runCommand(ViewSwitcher.CATALOG_ID);
 			}
 		});
-        toOverall.addListener(SWT.Selection, new Listener() {
+        toMisc.addListener(SWT.Selection, new Listener() {
             @Override
             public void handleEvent(Event event) {
-				runCommand(ViewSwitcher.OVERALL_ID);
+				runCommand(ViewSwitcher.MISC_ID);
             }
         });
         toInspection.addListener(SWT.Selection, new Listener() {
