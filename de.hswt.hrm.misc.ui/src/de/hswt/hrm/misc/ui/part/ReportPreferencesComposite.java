@@ -131,7 +131,7 @@ public class ReportPreferencesComposite extends Composite {
 			return;
 		}
 		TableItem item = table.getItem(table.getSelectionIndex());
-		// init with selected row
+
         StyleCreationDialog dialog = new StyleCreationDialog(getShell(), 
         		new ArrayList<String>(), item.getText(0), item.getText(0));
         dialog.create();

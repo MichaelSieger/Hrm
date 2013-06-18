@@ -28,16 +28,16 @@ import de.hswt.hrm.component.ui.wizard.ComponentWizard;
 
 
 
-public final class ComponentPartUtil {
+public final class ComponentCompositeUtil {
 	
-    private ComponentPartUtil() {
+    private ComponentCompositeUtil() {
 
     }
 
     public static Optional<Component> showWizard(ComponentService compSer, CategoryService catSer, IEclipseContext context, Shell shell,
             Optional<Component> component) {
     	
-        ComponentWizard cw = new ComponentWizard(component, compSer,catSer);
+        ComponentWizard cw = new ComponentWizard(component, compSer);
         ContextInjectionFactory.inject(cw, context);
 
         WizardDialog wd = WizardCreator.createWizardDialog(shell, cw);

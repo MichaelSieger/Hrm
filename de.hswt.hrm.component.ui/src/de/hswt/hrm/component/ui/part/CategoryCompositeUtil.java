@@ -17,9 +17,9 @@ import de.hswt.hrm.common.ui.swt.wizards.WizardCreator;
 import de.hswt.hrm.component.model.Category;
 import de.hswt.hrm.component.ui.wizard.CategoryWizard;
 
-public class CategoryPartUtil {
+public class CategoryCompositeUtil {
 
-    public CategoryPartUtil() {
+    public CategoryCompositeUtil() {
         
     }
     
