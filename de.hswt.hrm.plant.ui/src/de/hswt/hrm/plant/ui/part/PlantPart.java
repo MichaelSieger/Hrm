@@ -1,5 +1,6 @@
 package de.hswt.hrm.plant.ui.part;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 
@@ -37,6 +38,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Optional;
+import com.google.common.base.Throwables;
 
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.ui.swt.constants.SearchFieldConstants;
@@ -48,6 +50,8 @@ import de.hswt.hrm.common.ui.swt.table.TableViewerController;
 import de.hswt.hrm.plant.model.Plant;
 import de.hswt.hrm.plant.service.PlantService;
 import de.hswt.hrm.plant.ui.filter.PlantFilter;
+import de.hswt.hrm.scheme.model.Scheme;
+import de.hswt.hrm.scheme.service.SchemeService;
 import de.hswt.hrm.scheme.ui.part.SchemeComposite;
 
 import org.eclipse.swt.widgets.TabFolder;
@@ -186,7 +190,6 @@ public class PlantPart {
 
         schemeComposite = new SchemeComposite(tabFolder);
         ContextInjectionFactory.inject(schemeComposite, context);
-        schemeTab.setControl(schemeComposite);
     	for (IContributionItem item : schemeComposite.getContributionItems()) {
     		form.getToolBarManager().add(item);
         }
@@ -335,18 +338,15 @@ public class PlantPart {
      */
     private void editPlant() {
 
-        // obtain the place in the column where the doubleClick happend
-        Plant selectedPlant = (Plant) tableViewer.getElementAt(tableViewer.getTable()
-                .getSelectionIndex());
-        if (selectedPlant == null) {
-            return;
-        }
-
+    	Optional<Plant> plant = getSelectedPlant();
+    	if(!plant.isPresent()){
+    		return;
+    	}
         // Refresh the selected place with values from the database
         try {
-            plantService.refresh(selectedPlant);
+            plantService.refresh(plant.get());
             Optional<Plant> updatedPlant = PlantPartUtil.showWizard(context,
-                    shellProvider.getShell(), Optional.of(selectedPlant));
+                    shellProvider.getShell(), Optional.of(plant.get()));
 
             if (updatedPlant.isPresent()) {
                 tableViewer.refresh();
@@ -359,13 +359,27 @@ public class PlantPart {
     }
 
     private void editScheme() {
-        if (table.getSelectionIndex() < 0) {
-            return;
-        }
-
-        // TODO init scheme with selected plant
-
+    	Optional<Plant> plant = getSelectedPlant();
+    	if(!plant.isPresent()){
+    		return;
+    	}
+    	//TODO Load existing scheme
+        try {
+			schemeComposite.modifyScheme(new Scheme(plant.get()));
+		} catch (IOException e) {
+			Throwables.propagate(e);
+		}
+        showSchemeActions();
+        schemeTab.setControl(schemeComposite);
         tabFolder.setSelection(schemeTab);
+    }
+    
+    private Optional<Plant> getSelectedPlant(){
+        if (table.getSelectionIndex() < 0) {
+            return Optional.absent();
+        }
+    	return Optional.fromNullable((Plant) tableViewer.getElementAt(tableViewer.getTable()
+                .getSelectionIndex()));
     }
 
 }
