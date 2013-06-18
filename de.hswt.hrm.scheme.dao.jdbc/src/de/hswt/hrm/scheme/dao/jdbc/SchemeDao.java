@@ -172,8 +172,8 @@ public class SchemeDao implements ISchemeDao {
 		StringBuilder builder = new StringBuilder();
 		builder.append("SELECT");
 		builder.append(" ").append(Fields.ID);
-		builder.append(" ").append(Fields.TIMESTAMP);
-		builder.append(" ").append(Fields.FK_PLANT);
+		builder.append(", ").append(Fields.TIMESTAMP);
+		builder.append(", ").append(Fields.FK_PLANT);
 		builder.append(" FROM ").append(TABLE_NAME);
 		builder.append(" WHERE ").append(Fields.FK_PLANT).append(" = :").append(Fields.FK_PLANT);
 		builder.append(" ORDER BY ").append(Fields.TIMESTAMP).append(" DESC");
@@ -234,12 +234,12 @@ public class SchemeDao implements ISchemeDao {
 
     private Collection<Scheme> fromResultSet(ResultSet rs) throws SQLException, ElementNotFoundException, DatabaseException {
         checkNotNull(rs, "Result must not be null.");
-        Collection<Scheme> placeList = new ArrayList<>();
+        Collection<Scheme> schemeList = new ArrayList<>();
 
         while (rs.next()) {
             int id = rs.getInt(Fields.ID);
 
-            Timestamp timestamp = rs.getTimestamp("Session_Timestamp");
+            Timestamp timestamp = rs.getTimestamp(Fields.TIMESTAMP);
             
             int plantId = rs.getInt(Fields.FK_PLANT);
             Plant plant = null;
@@ -249,10 +249,10 @@ public class SchemeDao implements ISchemeDao {
 
             Scheme scheme = new Scheme(id, plant, timestamp);
 
-            placeList.add(scheme);
+            schemeList.add(scheme);
         }
 
-        return placeList;
+        return schemeList;
     }
 
     private static final String TABLE_NAME = "Scheme";
