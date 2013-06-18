@@ -21,13 +21,14 @@ public class PhotoWizard extends Wizard {
 //    private PhotoService photoService;
     
     private PhotoWizardPageOne first;
+    
     private Optional<List<Photo>> photos;
 
     private Optional<List<Photo>> currentPhotoList;
 
     
     
-    public PhotoWizard(IEclipseContext context, Optional<List<Photo>> photos) {
+    public PhotoWizard(Optional<List<Photo>> photos) {
         this.photos = photos;
         first = new PhotoWizardPageOne(photos);
         

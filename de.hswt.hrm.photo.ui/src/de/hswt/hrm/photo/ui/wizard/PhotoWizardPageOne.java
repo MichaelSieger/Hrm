@@ -10,9 +10,14 @@ import org.eclipse.swt.widgets.Composite;
 
 import com.google.common.base.Optional;
 
+import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.common.ui.swt.layouts.LayoutUtil;
 import de.hswt.hrm.common.ui.swt.layouts.PageContainerFillLayout;
+import de.hswt.hrm.common.ui.swt.utils.SWTResourceManager;
 import de.hswt.hrm.photo.model.Photo;
+
+import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Display;
@@ -29,6 +34,7 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.ui.forms.widgets.Section;
 
 // TODO read a given single image file or a directory (not recursive),
 // see showFileSelectionDialog(...)
@@ -42,17 +48,22 @@ import org.eclipse.swt.widgets.TableColumn;
 // the page is complete, when _one_ or more photos contained in the table
 
 public class PhotoWizardPageOne extends WizardPage {
+
 	private Text directoyText;
+	
 	private Table photosTable;
+	
 	private TableColumn nameClmn;
+	
 	private TableColumn fileClmn;
 
 	/**
 	 * Create the wizard.
 	 */
 	public PhotoWizardPageOne(Optional<List<Photo>> photos) {
-		super("wizardPage");
-        if (photos.isPresent()) {
+		super("Photo import");
+		setTitle("Photo import");
+        if (photos != null && photos.isPresent()) {
     		setTitle("Edit photos");
     		setDescription("Select a directory to add photos. Rename or delete existing ones.");
         } else {
@@ -69,20 +80,29 @@ public class PhotoWizardPageOne extends WizardPage {
     	parent.setLayout(new PageContainerFillLayout());
     	
 		Composite container = new Composite(parent, SWT.NULL);
-		container.setBackgroundMode(SWT.INHERIT_FORCE);
-		container.setBackground(new Color(Display.getCurrent(), 255, 255, 255));
-
 		setControl(container);
-		container.setLayout(new GridLayout(3, false));
+		container.setLayout(new FillLayout());
 		
-		Label lblDirectory = new Label(container, SWT.NONE);
+		Section headerSection = new Section(container, Section.TITLE_BAR);
+		headerSection.setText("Photo import");
+		headerSection.setExpanded(true);
+		headerSection.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+		headerSection.setBackgroundMode(SWT.INHERIT_DEFAULT);
+		FormUtil.initSectionColors(headerSection);
+    	
+		Composite composite = new Composite(headerSection, SWT.NULL);
+		headerSection.setClient(composite);
+		composite.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+		composite.setLayout(new GridLayout(3, false));
+		
+		Label lblDirectory = new Label(composite, SWT.NONE);
 		lblDirectory.setLayoutData(LayoutUtil.createLeftGridData());
 		lblDirectory.setText("Directory");
 		
-		directoyText = new Text(container, SWT.BORDER);
+		directoyText = new Text(composite, SWT.BORDER);
 		directoyText.setLayoutData(LayoutUtil.createHorzFillData());
 		
-		Button btnSelect = new Button(container, SWT.NONE);
+		Button btnSelect = new Button(composite, SWT.NONE);
 		btnSelect.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -91,32 +111,26 @@ public class PhotoWizardPageOne extends WizardPage {
 		});
 		btnSelect.setText("Select ...");
 
-		Label lblFiles = new Label(container, SWT.NONE);
+		Label lblFiles = new Label(composite, SWT.NONE);
 		lblFiles.setLayoutData(LayoutUtil.createLeftGridData());
 		lblFiles.setText("Files");
 
-		photosTable = new Table(container, SWT.BORDER | SWT.FULL_SELECTION);
-		photosTable.setLayoutData(LayoutUtil.createFillData());
+		photosTable = new Table(composite, SWT.BORDER | SWT.FULL_SELECTION);
+		GridData gd = LayoutUtil.createFillData();
+		gd.heightHint = 200;
+		photosTable.setLayoutData(gd);
 		photosTable.setHeaderVisible(true);
 		photosTable.setLinesVisible(true);
-		photosTable.addListener(SWT.Resize, new Listener() {
-			@Override
-			public void handleEvent(Event e) {
-				int width = photosTable.getSize().x / 2;
-				fileClmn.setWidth(width);
-				nameClmn.setWidth(width);
-			}
-		});
 		
 		fileClmn = new TableColumn(photosTable, SWT.NONE);
 		fileClmn.setText("File");
-		fileClmn.setWidth(200);
+		fileClmn.setWidth(250);
 		
 		nameClmn = new TableColumn(photosTable, SWT.NONE);
 		nameClmn.setText("Name");
-		nameClmn.setWidth(200);
+		nameClmn.setWidth(250);
 
-		Button btnDelete = new Button(container, SWT.NONE);
+		Button btnDelete = new Button(composite, SWT.NONE);
 		btnDelete.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -126,11 +140,11 @@ public class PhotoWizardPageOne extends WizardPage {
 		btnDelete.setText("Delete");
 		btnDelete.setLayoutData(LayoutUtil.createRightGridData());
 
-		Label lblPhoto = new Label(container, SWT.NONE);
+		Label lblPhoto = new Label(composite, SWT.NONE);
 		lblPhoto.setLayoutData(LayoutUtil.createLeftGridData());
 		lblPhoto.setText("Photo");
 
-		Canvas canvas = new Canvas(container, SWT.NO_FOCUS);
+		Canvas canvas = new Canvas(composite, SWT.NO_FOCUS);
 		canvas.setVisible(true);
 		canvas.setEnabled(false);
 		canvas.setBackground(new Color(Display.getCurrent(), 255, 255, 255));
