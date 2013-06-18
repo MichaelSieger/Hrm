@@ -141,6 +141,7 @@ public class ComponentWizardPageOne extends WizardPage {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				checkPageComplete();
+				weightCombo.select(getCategory().getDefaultQuantifier() - 1);
 			}
 		});
 
@@ -206,10 +207,11 @@ public class ComponentWizardPageOne extends WizardPage {
 		formToolkit.adapt(attributeList, true, true);
 
 		initializeCombos();
-
+		categoryComboViewer.setSelection(new StructuredSelection(categoryComboViewer.getElementAt(0)));
 		if (this.component.isPresent()) {
 			updateFields(container);
 		}
+		checkPageComplete();
 	}
 
 	private String createDescription() {
