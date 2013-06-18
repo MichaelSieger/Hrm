@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 
 import javax.inject.Inject;
 
@@ -44,13 +45,12 @@ public class SchemeDao implements ISchemeDao {
     	checkState(scheme.getPlant().get().getId() >= 0, "Scheme must have a valid plant set.");
     	
         SqlQueryBuilder builder = new SqlQueryBuilder();
-        builder.insert(TABLE_NAME, Fields.TIMESTAMP, Fields.FK_PLANT);
+        builder.insert(TABLE_NAME, Fields.FK_PLANT);
         
         final String query = builder.toString();
 
         try (Connection con = DatabaseFactory.getConnection()) {
             try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
-                stmt.setParameter(Fields.TIMESTAMP, scheme.getTimestamp());
                 stmt.setParameter(Fields.FK_PLANT, scheme.getPlant().get().getId());
 
                 int affectedRows = stmt.executeUpdate();
@@ -177,6 +177,7 @@ public class SchemeDao implements ISchemeDao {
 		builder.append(" FROM ").append(TABLE_NAME);
 		builder.append(" WHERE ").append(Fields.FK_PLANT).append(" = :").append(Fields.FK_PLANT);
 		builder.append(" ORDER BY ").append(Fields.TIMESTAMP).append(" DESC");
+		builder.append(", ").append(Fields.ID).append(" DESC");
 		builder.append(" LIMIT 1;");
 		
         final String query = builder.toString();
@@ -218,7 +219,7 @@ public class SchemeDao implements ISchemeDao {
         try (Connection con = DatabaseFactory.getConnection()) {
             try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
                 stmt.setParameter(Fields.ID, scheme.getId());
-                stmt.setParameter(Fields.TIMESTAMP, scheme.getTimestamp());
+                stmt.setParameter(Fields.TIMESTAMP, scheme.getTimestamp().or(new Timestamp((new Date()).getTime())));
                 stmt.setParameter(Fields.FK_PLANT, scheme.getPlant());
 
                 int affectedRows = stmt.executeUpdate();
