@@ -43,6 +43,7 @@ import de.hswt.hrm.catalog.model.Target;
 import de.hswt.hrm.catalog.service.CatalogService;
 import de.hswt.hrm.catalog.ui.filter.CatalogTextFilter;
 import de.hswt.hrm.common.database.exception.DatabaseException;
+import de.hswt.hrm.common.database.exception.SaveException;
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.common.ui.swt.layouts.LayoutUtil;
 
@@ -93,17 +94,22 @@ public class CatalogAssignmentComposite extends Composite {
 
 	private List<Target> targetFromDB;
 
-	private List<Target> tempTarget = new ArrayList<>();
+	private List<Target> tempTarget;
 
-	private List<Current> tempCurrent = new ArrayList<>();;
+	private List<Current> tempCurrent;
 
-	private List<Activity> tempActivity = new ArrayList<>();
+	private List<Activity> tempActivity;
+
+	private Catalog selectedCatalog;
 
 	private ISelectionChangedListener selectionChangedListener = new ISelectionChangedListener() {
 		@Override
 		public void selectionChanged(SelectionChangedEvent event) {
 			ICatalogItem item = (ICatalogItem) ((IStructuredSelection) event
 					.getSelectionProvider().getSelection()).getFirstElement();
+			if (item == null) {
+				return;
+			}
 			nameText.setText(item.getName());
 			descText.setText(item.getText());
 		}
@@ -138,6 +144,10 @@ public class CatalogAssignmentComposite extends Composite {
 		super(parent, SWT.NONE);
 		formToolkit.dispose();
 		formToolkit = FormUtil.createToolkit();
+		this.tempTarget = new ArrayList<>();
+		this.tempCurrent = new ArrayList<>();
+		this.tempActivity = new ArrayList<>();
+
 	}
 
 	@PostConstruct
@@ -271,7 +281,14 @@ public class CatalogAssignmentComposite extends Composite {
 		targetAdd.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				addTarget(getSelectedListItem(availableTarget));
+				IStructuredSelection selection = (IStructuredSelection) catalog
+						.getSelection();
+				Catalog c = (Catalog) selection.getFirstElement();
+				if (c == null) {
+					return;
+				}
+				addTarget(c, getSelectedListItem(availableTarget));
+
 			}
 		});
 
@@ -280,7 +297,13 @@ public class CatalogAssignmentComposite extends Composite {
 		targetRemove.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				removeTarget(getSelectedListItem(assignedTarget));
+				IStructuredSelection selection = (IStructuredSelection) catalog
+						.getSelection();
+				Catalog c = (Catalog) selection.getFirstElement();
+				if (c == null) {
+					return;
+				}
+				removeTarget(c, getSelectedListItem(assignedTarget));
 			}
 		});
 
@@ -453,13 +476,12 @@ public class CatalogAssignmentComposite extends Composite {
 		catalog.addSelectionChangedListener(new ISelectionChangedListener() {
 			@Override
 			public void selectionChanged(SelectionChangedEvent event) {
-				IStructuredSelection selection = (IStructuredSelection) catalog
-						.getSelection();
-				Catalog c = (Catalog) selection.getFirstElement();
-				if (c == null) {
+
+				selectedCatalog = getSelectedCatalog();
+				if (selectedCatalog == null) {
 					return;
 				}
-				obtainTargets(c);
+				obtainTargets(selectedCatalog);
 
 			}
 
@@ -488,7 +510,7 @@ public class CatalogAssignmentComposite extends Composite {
 		initalize(assignedActivity);
 		initalize(assignedCurrent);
 		initalize(assignedTarget);
-		fillAvailableViewer(targetFromDB, currentFromDB, activityFromDB);
+		addFilter();
 
 	}
 
@@ -542,12 +564,7 @@ public class CatalogAssignmentComposite extends Composite {
 		});
 	}
 
-	private void fillAvailableViewer(Collection<Target> targets,
-			Collection<Current> currents, Collection<Activity> activities) {
-
-		// availableTarget.setInput(targets);
-		// availableCurrent.setInput(currents);
-		// availableActivity.setInput(activities);
+	private void addFilter() {
 
 		availableActivity.addFilter(new CatalogTextFilter());
 		availableCurrent.addFilter(new CatalogTextFilter());
@@ -593,25 +610,21 @@ public class CatalogAssignmentComposite extends Composite {
 
 	}
 
-	private ICatalogItem getSelectedListItem(ListViewer viewer) {
-		if (viewer.getSelection() == null) {
-			return null;
-		}
-		return (ICatalogItem) ((IStructuredSelection) viewer.getSelection())
-				.getFirstElement();
-	}
-
 	protected void handleDoubleClickEvent(Viewer viewer) {
 		ICatalogItem item = (ICatalogItem) ((IStructuredSelection) viewer
 				.getSelection()).getFirstElement();
+		selectedCatalog = getSelectedCatalog();
+		if (selectedCatalog == null) {
+			return;
+		}
 		if (viewer.equals(availableTarget)) {
-			addTarget(item);
+			addTarget(selectedCatalog, item);
 		} else if (viewer.equals(availableCurrent)) {
 			addCurrent(item);
 		} else if (viewer.equals(availableActivity)) {
 			addActivity(item);
 		} else if (viewer.equals(assignedTarget)) {
-			removeTarget(item);
+			removeTarget(selectedCatalog, item);
 		} else if (viewer.equals(assignedCurrent)) {
 			removeCurrent(item);
 		} else if (viewer.equals(assignedActivity)) {
@@ -619,18 +632,31 @@ public class CatalogAssignmentComposite extends Composite {
 		}
 	}
 
-	private void addTarget(ICatalogItem item) {
+	private void addTarget(Catalog c, ICatalogItem item) {
 		if (item == null) {
 			return;
 		}
-		// TODO implement
+		try {
+
+			catalogService.addToCatalog(c, (Target) item);
+
+		} catch (SaveException e) {
+			LOG.error("An error occured", e);
+		}
+		moveItem(item, availableTarget, assignedTarget);
+
 	}
 
-	private void removeTarget(ICatalogItem item) {
+	private void removeTarget(Catalog c, ICatalogItem item) {
 		if (item == null) {
 			return;
 		}
-		// TODO implement
+		try {
+			catalogService.removeFromCatalog(c, (Target) item);
+		} catch (DatabaseException e) {
+			LOG.error("An error occured", e);
+		}
+		moveItem(item, assignedTarget, availableTarget);
 	}
 
 	private void addCurrent(ICatalogItem item) {
@@ -659,6 +685,33 @@ public class CatalogAssignmentComposite extends Composite {
 			return;
 		}
 		// TODO implement
+	}
+
+	private void moveItem(ICatalogItem item, ListViewer source,
+			ListViewer destination) {
+
+		if (item == null) {
+			return;
+		}
+
+		destination.add(item);
+		source.remove(item);
+
+	}
+
+	private Catalog getSelectedCatalog() {
+		IStructuredSelection selection = (IStructuredSelection) catalog
+				.getSelection();
+		return (Catalog) selection.getFirstElement();
+
+	}
+
+	private ICatalogItem getSelectedListItem(ListViewer viewer) {
+		if (viewer.getSelection() == null) {
+			return null;
+		}
+		return (ICatalogItem) ((IStructuredSelection) viewer.getSelection())
+				.getFirstElement();
 	}
 
 }
