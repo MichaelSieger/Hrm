@@ -24,6 +24,7 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
@@ -75,6 +76,8 @@ public class ComponentComposite extends Composite {
 
 	private Label previewImage;
 
+	private Composite composite;
+
 	/**
 	 * Do not use this constructor when instantiate this composite! It is only
 	 * included to make the WindowsBuilder working.
@@ -104,7 +107,8 @@ public class ComponentComposite extends Composite {
         Composite composite = new Composite(this, SWT.NONE);
         composite.setLayout(new GridLayout(2, false));
         composite.setBackground(getDisplay().getSystemColor(SWT.COLOR_WHITE));
-
+        composite.setBackgroundMode(SWT.INHERIT_FORCE);
+        
 		searchText = new Text(composite, SWT.BORDER | SWT.SEARCH
 				| SWT.ICON_SEARCH | SWT.CANCEL | SWT.ICON_CANCEL);
 		searchText.setMessage(SearchFieldConstants.DEFAULT_SEARCH_STRING);
@@ -113,8 +117,7 @@ public class ComponentComposite extends Composite {
 				updateTableFilter(searchText.getText());
 			}
 		});
-		searchText.setLayoutData(LayoutUtil.createHorzFillData());
-		new Label(composite, SWT.NONE);
+		searchText.setLayoutData(LayoutUtil.createHorzFillData(2));
 
 		tableViewer = new TableViewer(composite, SWT.BORDER
 				| SWT.FULL_SELECTION);
@@ -133,13 +136,24 @@ public class ComponentComposite extends Composite {
 		table = tableViewer.getTable();
 		table.setLinesVisible(true);
 		table.setHeaderVisible(true);
-		table.setLayoutData(LayoutUtil.createFillData());
+		table.setLayoutData(LayoutUtil.createFillData(1, 2));
+
+		Label imageLabel = new Label(composite, SWT.NONE);
+		imageLabel.setAlignment(SWT.CENTER);
+		imageLabel.setText("Image");
+		imageLabel.setLayoutData(LayoutUtil.createRightGridData());
+		imageLabel.setBackground(getDisplay().getSystemColor(SWT.COLOR_WHITE));
+		
+		previewImage = new Label(composite, SWT.BORDER);
+		GridData gd = LayoutUtil.createLeftGridData();
+		gd.widthHint = 100;
+		gd.heightHint = 100;
+		previewImage.setLayoutData(gd);
+		previewImage.setBackground(getDisplay().getSystemColor(SWT.COLOR_WHITE));
 
 		initializeTable(composite, tableViewer);
 		refreshTable(composite);
-
-		previewImage = new Label(composite, SWT.NONE);
-
+		
 		if (service == null) {
 			LOG.error("ComponentService not injected to ComponentsComposite.");
 		}
@@ -250,8 +264,9 @@ public class ComponentComposite extends Composite {
 						previewImage.getDisplay(),
 						ComponentConverter.renderImage(page, 100, 100));
 				previewImage.setImage(imge);
-				previewImage.setSize(previewImage.computeSize(SWT.DEFAULT,
-						SWT.DEFAULT));
+//				previewImage.setSize(previewImage.computeSize(SWT.DEFAULT,
+//						SWT.DEFAULT));
+//				composite.layout(true);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
