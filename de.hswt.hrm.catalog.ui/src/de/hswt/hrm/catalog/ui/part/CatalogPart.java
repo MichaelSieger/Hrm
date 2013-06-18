@@ -39,7 +39,7 @@ public class CatalogPart {
 
     private TabFolder tabFolder;
     private TabItem itemsTab;
-    private TabItem catalogsTab;
+    private TabItem assignmentTab;
 
     private CatalogItemsPart catalogItemsPart;
     private CatalogAssignmentComposite assignmentComposite;
@@ -94,7 +94,7 @@ public class CatalogPart {
         toolkit.paintBordersFor(tabFolder);
 
         itemsTab = new TabItem(tabFolder, SWT.NONE);
-        itemsTab.setText("Catalog Items");
+        itemsTab.setText("Catalog items");
 
         catalogItemsPart = new CatalogItemsPart(tabFolder);
         // important: inject the services
@@ -102,12 +102,12 @@ public class CatalogPart {
 
         itemsTab.setControl(catalogItemsPart);
 
-        catalogsTab = new TabItem(tabFolder, SWT.NONE);
-        catalogsTab.setText("Catalogs");
+        assignmentTab = new TabItem(tabFolder, SWT.NONE);
+        assignmentTab.setText("Item assignment");
 
         assignmentComposite = new CatalogAssignmentComposite(tabFolder);
         ContextInjectionFactory.inject(assignmentComposite, context);
-        catalogsTab.setControl(assignmentComposite);
+        assignmentTab.setControl(assignmentComposite);
 
     }
 
