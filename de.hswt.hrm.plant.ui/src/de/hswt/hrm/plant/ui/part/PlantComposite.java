@@ -1,4 +1,4 @@
-package de.hswt.hrm.contact.ui.part;
+package de.hswt.hrm.plant.ui.part;
 
 import java.util.Collection;
 import java.util.List;
@@ -13,7 +13,6 @@ import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.window.IShellProvider;
 import org.eclipse.swt.SWT;
@@ -37,15 +36,15 @@ import de.hswt.hrm.common.ui.swt.layouts.LayoutUtil;
 import de.hswt.hrm.common.ui.swt.table.ColumnComparator;
 import de.hswt.hrm.common.ui.swt.table.ColumnDescription;
 import de.hswt.hrm.common.ui.swt.table.TableViewerController;
-import de.hswt.hrm.contact.model.Contact;
-import de.hswt.hrm.contact.service.ContactService;
-import de.hswt.hrm.contact.ui.filter.ContactFilter;
+import de.hswt.hrm.plant.model.Plant;
+import de.hswt.hrm.plant.service.PlantService;
+import de.hswt.hrm.plant.ui.filter.PlantFilter;
 
-public class ContactComposite extends Composite {
+public class PlantComposite extends Composite {
 
     public static final int TABLE_SELCTION_EVENT = SWT.Selection + 12341234;
 
-    private final static Logger LOG = LoggerFactory.getLogger(ContactComposite.class);
+    private final static Logger LOG = LoggerFactory.getLogger(PlantComposite.class);
 
     private Text searchText;
 
@@ -56,7 +55,7 @@ public class ContactComposite extends Composite {
     private boolean allowEditing = true;
 
     @Inject
-    private ContactService contactService;
+    private PlantService plantService;
 
     @Inject
     private IEclipseContext context;
@@ -64,27 +63,14 @@ public class ContactComposite extends Composite {
     @Inject
     private IShellProvider shellProvider;
 
-    /**
-     * Do not use this constructor when instantiate this composite! It is only included to make the
-     * WindowsBuilder working.
-     * 
-     * @param parent
-     * @param style
-     */
-    private ContactComposite(Composite parent, int style) {
-        super(parent, style);
-        createControls();
-    }
-
-    /**
-     * Create the composite.
-     * 
-     * @param parent
-     */
-    public ContactComposite(Composite parent) {
+    public PlantComposite(Composite parent) {
         super(parent, SWT.NONE);
+
     }
 
+    /**
+     * Create contents of the view part.
+     */
     @PostConstruct
     public void createControls() {
         this.setLayout(new FillLayout());
@@ -106,7 +92,7 @@ public class ContactComposite extends Composite {
         tableViewer = new TableViewer(composite, SWT.BORDER | SWT.FULL_SELECTION);
         tableViewer.addDoubleClickListener(new IDoubleClickListener() {
             public void doubleClick(DoubleClickEvent event) {
-                editContact();
+                editPlace();
             }
         });
 
@@ -124,10 +110,10 @@ public class ContactComposite extends Composite {
 
     private void refreshTable() {
         try {
-            tableViewer.setInput(contactService.findAll());
+            tableViewer.setInput(plantService.findAll());
         }
         catch (DatabaseException e) {
-            LOG.error("Unable to retrieve list of contacs.", e);
+            LOG.error("Unable to retrieve list of places.", e);
             showDBConnectionError();
         }
     }
@@ -135,54 +121,54 @@ public class ContactComposite extends Composite {
     private void showDBConnectionError() {
         // TODO translate
         MessageDialog.openError(shellProvider.getShell(), "Connection Error",
-                "Could not load contacts from Database.");
+                "Could not load places from Database.");
     }
 
     private void updateTableFilter(String filterString) {
-        ContactFilter filter = (ContactFilter) tableViewer.getFilters()[0];
+        PlantFilter filter = (PlantFilter) tableViewer.getFilters()[0];
         filter.setSearchString(filterString);
         tableViewer.refresh();
     }
 
     private void initializeTable() {
-        List<ColumnDescription<Contact>> columns = ContactPartUtil.getColumns();
+        List<ColumnDescription<Plant>> columns = PlantPartUtil.getColumns();
 
         // Create columns in tableviewer
-        TableViewerController<Contact> filler = new TableViewerController<>(tableViewer);
+        TableViewerController<Plant> filler = new TableViewerController<>(tableViewer);
         filler.createColumns(columns);
 
         // Enable column selection
         filler.createColumnSelectionMenu();
 
         // Enable sorting
-        ColumnComparator<Contact> comparator = new ColumnComparator<>(columns);
+        ColumnComparator<Plant> comparator = new ColumnComparator<>(columns);
         filler.enableSorting(comparator);
 
         // Add dataprovider that handles our collection
         tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 
         // Enable filtering
-        tableViewer.addFilter(new ContactFilter());
+        tableViewer.addFilter(new PlantFilter());
     }
 
     @SuppressWarnings("unchecked")
-    public void addContact() {
-        Optional<Contact> newPlace = ContactPartUtil.showWizard(context, shellProvider.getShell(),
-                Optional.<Contact> absent());
+    public void addPlace() {
+        Optional<Plant> newPlace = PlantPartUtil.showWizard(context, shellProvider.getShell(),
+                Optional.<Plant> absent());
 
         if (newPlace.isPresent()) {
-            Collection<Contact> contacts = (Collection<Contact>) tableViewer.getInput();
-            contacts.add(newPlace.get());
+            Collection<Plant> places = (Collection<Plant>) tableViewer.getInput();
+            places.add(newPlace.get());
             tableViewer.refresh();
         }
     }
 
-    public void editContact() {
+    public void editPlace() {
         if (!allowEditing) {
             return;
         }
         // obtain the place in the column where the doubleClick happend
-        Contact selectedPlace = (Contact) tableViewer.getElementAt(tableViewer.getTable()
+        Plant selectedPlace = (Plant) tableViewer.getElementAt(tableViewer.getTable()
                 .getSelectionIndex());
         if (selectedPlace == null) {
             return;
@@ -190,49 +176,33 @@ public class ContactComposite extends Composite {
 
         // Refresh the selected place with values from the database
         try {
-            contactService.refresh(selectedPlace);
-            Optional<Contact> updatedContact = ContactPartUtil.showWizard(context,
+            plantService.refresh(selectedPlace);
+            Optional<Plant> updatedPlace = PlantPartUtil.showWizard(context,
                     shellProvider.getShell(), Optional.of(selectedPlace));
 
-            if (updatedContact.isPresent()) {
+            if (updatedPlace.isPresent()) {
                 tableViewer.refresh();
             }
         }
         catch (DatabaseException e) {
-            LOG.error("Could not retrieve the contacts from database.", e);
+            LOG.error("Could not retrieve the place from database.", e);
             showDBConnectionError();
         }
-    }
-
-    @Override
-    protected void checkSubclass() {
-    }
-
-    public TableViewer getTableViewer() {
-        return this.tableViewer;
-    }
-
-    public void setSelection(Contact contact) {
-        tableViewer.setSelection(new StructuredSelection(contact), true);
-    }
-
-    public Contact getSelectedContact() {
-        return (Contact) ((IStructuredSelection) tableViewer.getSelection()).getFirstElement();
     }
 
     public void setAllowEditing(boolean allowEditing) {
         this.allowEditing = allowEditing;
     }
 
-    public boolean isAllowEditing() {
-        return allowEditing;
-    }
-
     public void addSelectionChangedListener(ISelectionChangedListener listener) {
         tableViewer.addSelectionChangedListener(listener);
     }
 
-    public void removeSelectionChangedListener(ISelectionChangedListener listener) {
-        tableViewer.removeSelectionChangedListener(listener);
+    @Override
+    protected void checkSubclass() {
+    }
+
+    public Plant getSelectedPlant() {
+        return (Plant) ((IStructuredSelection) tableViewer.getSelection()).getFirstElement();
     }
 }

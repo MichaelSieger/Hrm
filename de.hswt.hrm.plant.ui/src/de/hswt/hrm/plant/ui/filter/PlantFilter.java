@@ -27,6 +27,10 @@ public class PlantFilter extends ViewerFilter {
             return true;
         }
 
+        if (p.getPlace().get().getPlaceName().toLowerCase().matches(searchString)) {
+            return true;
+        }
+
         return false;
 
     }

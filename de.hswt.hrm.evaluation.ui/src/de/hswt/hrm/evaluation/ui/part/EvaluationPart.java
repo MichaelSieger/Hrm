@@ -12,15 +12,10 @@ import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
-import org.eclipse.jface.viewers.DoubleClickEvent;
-import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.window.IShellProvider;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.FillLayout;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Table;
@@ -34,9 +29,7 @@ import org.slf4j.LoggerFactory;
 import com.google.common.base.Optional;
 
 import de.hswt.hrm.common.database.exception.DatabaseException;
-import de.hswt.hrm.common.ui.swt.constants.SearchFieldConstants;
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
-import de.hswt.hrm.common.ui.swt.layouts.LayoutUtil;
 import de.hswt.hrm.common.ui.swt.table.ColumnComparator;
 import de.hswt.hrm.common.ui.swt.table.ColumnDescription;
 import de.hswt.hrm.common.ui.swt.table.TableViewerController;
@@ -46,198 +39,192 @@ import de.hswt.hrm.evaluation.ui.filter.EvaluationFilter;
 
 public class EvaluationPart {
 
-	private final static Logger LOG = LoggerFactory
-			.getLogger(EvaluationPart.class);
+    private final static Logger LOG = LoggerFactory.getLogger(EvaluationPart.class);
 
-	@Inject
-	private EvaluationService evalService;
+    @Inject
+    private EvaluationService evalService;
 
-	@Inject
-	private IShellProvider shellProvider;
+    @Inject
+    private IShellProvider shellProvider;
 
-	@Inject
-	private IEclipseContext context;
+    @Inject
+    private IEclipseContext context;
 
-	private FormToolkit toolkit = new FormToolkit(Display.getDefault());
-	private Table table;
-	private Text searchText;
-	private TableViewer tableViewer;
+    private FormToolkit toolkit = new FormToolkit(Display.getDefault());
+    private Table table;
+    private Text searchText;
+    private TableViewer tableViewer;
 
-	private Action editAction;
-	private Action addAction;
-	private Section headerSection;
-	private Composite evaluationComposite;
+    private Action editAction;
+    private Action addAction;
+    private Section headerSection;
+    private Composite evaluationComposite;
 
-	private Collection<Evaluation> evaluations;
+    private Collection<Evaluation> evaluations;
 
-	private Form form;
+    private Form form;
 
-	public EvaluationPart() {
-		// toolkit can be created in PostConstruct, but then then
-		// WindowBuilder is unable to parse the code
-		toolkit.dispose();
-		toolkit = FormUtil.createToolkit();
-	}
+    public EvaluationPart() {
+        // toolkit can be created in PostConstruct, but then then
+        // WindowBuilder is unable to parse the code
+        toolkit.dispose();
+        toolkit = FormUtil.createToolkit();
+    }
 
-	/**
-	 * Create contents of the view part.
-	 */
-	@PostConstruct
-	public void createControls(Composite parent) {
+    /**
+     * Create contents of the view part.
+     */
+    @PostConstruct
+    public void createControls(Composite parent) {
 
-		toolkit.setBorderStyle(SWT.BORDER);
-		toolkit.adapt(parent);
-		toolkit.paintBordersFor(parent);
-		parent.setLayout(new FillLayout(SWT.HORIZONTAL));
+        toolkit.setBorderStyle(SWT.BORDER);
+        toolkit.adapt(parent);
+        toolkit.paintBordersFor(parent);
+        parent.setLayout(new FillLayout(SWT.HORIZONTAL));
 
-		form = toolkit.createForm(parent);
-		form.getHead().setOrientation(SWT.RIGHT_TO_LEFT);
-		form.setSeparatorVisible(true);
-		toolkit.paintBordersFor(form);
-		form.setText("Evaluation");
-		toolkit.decorateFormHeading(form);
+        form = toolkit.createForm(parent);
+        form.getHead().setOrientation(SWT.RIGHT_TO_LEFT);
+        form.setSeparatorVisible(true);
+        toolkit.paintBordersFor(form);
+        form.setText("Evaluation");
+        toolkit.decorateFormHeading(form);
 
-		FillLayout fillLayout = new FillLayout(SWT.HORIZONTAL);
-		fillLayout.marginHeight = 1;
-		form.getBody().setLayout(fillLayout);
+        FillLayout fillLayout = new FillLayout(SWT.HORIZONTAL);
+        fillLayout.marginHeight = 1;
+        form.getBody().setLayout(fillLayout);
 
-		headerSection = toolkit
-				.createSection(form.getBody(), Section.TITLE_BAR);
-		toolkit.paintBordersFor(headerSection);
-		headerSection.setExpanded(true);
-		FormUtil.initSectionColors(headerSection);
+        headerSection = toolkit.createSection(form.getBody(), Section.TITLE_BAR);
+        toolkit.paintBordersFor(headerSection);
+        headerSection.setExpanded(true);
+        FormUtil.initSectionColors(headerSection);
 
-		evaluationComposite = new EvaluationComposite(headerSection);
-		ContextInjectionFactory.inject(evaluationComposite, context);
-		headerSection.setClient(evaluationComposite);
+        evaluationComposite = new EvaluationComposite(headerSection);
+        ContextInjectionFactory.inject(evaluationComposite, context);
+        headerSection.setClient(evaluationComposite);
 
-		createActions();
-	}
+        createActions();
+    }
 
-	private void createActions() {
-		editAction = new Action("Edit") {
-			@Override
-			public void run() {
-				super.run();
-				editEvaluation();
-			}
-		};
-		editAction.setDescription("Edit an exisitng Evaluation.");
-		addAction = new Action("Add") {
-			@Override
-			public void run() {
-				super.run();
-				addEvaluation();
-			}
-		};
-		addAction.setDescription("Add's a new Evaluation.");
+    private void createActions() {
+        editAction = new Action("Edit") {
+            @Override
+            public void run() {
+                super.run();
+                editEvaluation();
+            }
+        };
+        editAction.setDescription("Edit an exisitng Evaluation.");
+        addAction = new Action("Add") {
+            @Override
+            public void run() {
+                super.run();
+                addEvaluation();
+            }
+        };
+        addAction.setDescription("Add's a new Evaluation.");
 
-		
-		form.getToolBarManager().add(editAction);
-		form.getToolBarManager().add(addAction);
-		form.getToolBarManager().update(true);
-	}
+        form.getToolBarManager().add(editAction);
+        form.getToolBarManager().add(addAction);
+        form.getToolBarManager().update(true);
+    }
 
-	@PreDestroy
-	public void dispose() {
-		if (toolkit != null) {
-			toolkit.dispose();
-		}
-	}
+    @PreDestroy
+    public void dispose() {
+        if (toolkit != null) {
+            toolkit.dispose();
+        }
+    }
 
-	private void refreshTable() {
-		try {
-			this.evaluations = evalService.findAll();
-			tableViewer.setInput(this.evaluations);
-		} catch (DatabaseException e) {
-			LOG.error("Unable to retrieve list of Evaluations.", e);
-			showDBConnectionError();
-		}
-	}
+    private void refreshTable() {
+        try {
+            this.evaluations = evalService.findAll();
+            tableViewer.setInput(this.evaluations);
+        }
+        catch (DatabaseException e) {
+            LOG.error("Unable to retrieve list of Evaluations.", e);
+            showDBConnectionError();
+        }
+    }
 
-	private void initializeTable() {
-		List<ColumnDescription<Evaluation>> columns = EvaluationPartUtil
-				.getColumns();
+    private void initializeTable() {
+        List<ColumnDescription<Evaluation>> columns = EvaluationPartUtil.getColumns();
 
-		// Create columns in tableviewer
-		TableViewerController<Evaluation> filler = new TableViewerController<>(
-				tableViewer);
-		filler.createColumns(columns);
+        // Create columns in tableviewer
+        TableViewerController<Evaluation> filler = new TableViewerController<>(tableViewer);
+        filler.createColumns(columns);
 
-		// Enable column selection
-		filler.createColumnSelectionMenu();
+        // Enable column selection
+        filler.createColumnSelectionMenu();
 
-		// Enable sorting
-		ColumnComparator<Evaluation> comperator = new ColumnComparator<>(
-				columns);
-		filler.enableSorting(comperator);
+        // Enable sorting
+        ColumnComparator<Evaluation> comperator = new ColumnComparator<>(columns);
+        filler.enableSorting(comperator);
 
-		// Add dataprovider that handles our collection
-		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
+        // Add dataprovider that handles our collection
+        tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 
-		// Enable filtering
-		tableViewer.addFilter(new EvaluationFilter());
-	}
+        // Enable filtering
+        tableViewer.addFilter(new EvaluationFilter());
+    }
 
-	private void showDBConnectionError() {
-		// TODO translate
-		MessageDialog.openError(shellProvider.getShell(), "Connection Error",
-				"Could not load evaluations from Database.");
-	}
+    private void showDBConnectionError() {
+        // TODO translate
+        MessageDialog.openError(shellProvider.getShell(), "Connection Error",
+                "Could not load evaluations from Database.");
+    }
 
-	private void updateTableFilter(String filterString) {
-		EvaluationFilter filter = (EvaluationFilter) tableViewer.getFilters()[0];
-		filter.setSearchString(filterString);
-		tableViewer.refresh();
-	}
+    private void updateTableFilter(String filterString) {
+        EvaluationFilter filter = (EvaluationFilter) tableViewer.getFilters()[0];
+        filter.setSearchString(filterString);
+        tableViewer.refresh();
+    }
 
-	/**
-	 * This Event is called whenever the add button is pressed.
-	 * 
-	 * @param event
-	 */
+    /**
+     * This Event is called whenever the add button is pressed.
+     * 
+     * @param event
+     */
 
-	private void addEvaluation() {
-		Evaluation eval = null;
+    private void addEvaluation() {
+        Evaluation eval = null;
 
-		Optional<Evaluation> newEval = EvaluationPartUtil.showWizard(context,
-				shellProvider.getShell(), Optional.fromNullable(eval));
+        Optional<Evaluation> newEval = EvaluationPartUtil.showWizard(context,
+                shellProvider.getShell(), Optional.fromNullable(eval));
 
-		if (newEval.isPresent()) {
-			evaluations.add(newEval.get());
-			tableViewer.refresh();
-		}
-	}
+        if (newEval.isPresent()) {
+            evaluations.add(newEval.get());
+            tableViewer.refresh();
+        }
+    }
 
-	/**
-	 * This method is called whenever a doubleClick onto the Tableviewer occurs.
-	 * It obtains the contact from the selected column of the TableViewer. The
-	 * Contact is passed to the ContactWizard. When the Wizard has finished, the
-	 * contact will be updated in the Database
-	 * 
-	 * @param event
-	 *            Event which occured within SWT
-	 */
-	private void editEvaluation() {
-		// obtain the contact in the column where the doubleClick happend
-		Evaluation selectedEval = (Evaluation) tableViewer
-				.getElementAt(tableViewer.getTable().getSelectionIndex());
-		if (selectedEval == null) {
-			return;
-		}
-		try {
-			evalService.refresh(selectedEval);
-			Optional<Evaluation> updatedEval = EvaluationPartUtil.showWizard(
-					context, shellProvider.getShell(),
-					Optional.of(selectedEval));
+    /**
+     * This method is called whenever a doubleClick onto the Tableviewer occurs. It obtains the
+     * contact from the selected column of the TableViewer. The Contact is passed to the
+     * ContactWizard. When the Wizard has finished, the contact will be updated in the Database
+     * 
+     * @param event
+     *            Event which occured within SWT
+     */
+    private void editEvaluation() {
+        // obtain the contact in the column where the doubleClick happend
+        Evaluation selectedEval = (Evaluation) tableViewer.getElementAt(tableViewer.getTable()
+                .getSelectionIndex());
+        if (selectedEval == null) {
+            return;
+        }
+        try {
+            evalService.refresh(selectedEval);
+            Optional<Evaluation> updatedEval = EvaluationPartUtil.showWizard(context,
+                    shellProvider.getShell(), Optional.of(selectedEval));
 
-			if (updatedEval.isPresent()) {
-				tableViewer.refresh();
-			}
-		} catch (DatabaseException e) {
-			LOG.error("Could not retrieve the place from database.", e);
-			showDBConnectionError();
-		}
-	}
+            if (updatedEval.isPresent()) {
+                tableViewer.refresh();
+            }
+        }
+        catch (DatabaseException e) {
+            LOG.error("Could not retrieve the place from database.", e);
+            showDBConnectionError();
+        }
+    }
 
 }
