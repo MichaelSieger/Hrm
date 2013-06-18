@@ -27,14 +27,18 @@ public interface ISchemeDao {
     /**
      * @param plant
      * @return List of schemes for the given plant.
+     * @throws DatabaseException 
      */
-    Collection<Scheme> findByPlant(Plant plant);
+    Collection<Scheme> findByPlant(Plant plant) throws DatabaseException;
     
     /**
      * @param plant
      * @return The current scheme for the given plant.
+     * @throws ElementNotFoundException If there is no scheme for the given plant.
+     * @throws DatabaseException 
      */
-    Scheme findCurrentSchemeByPlant(Plant plant);
+    Scheme findCurrentSchemeByPlant(Plant plant) 
+    		throws ElementNotFoundException, DatabaseException;
     
     /**
      * Add a new Scheme to storage.
