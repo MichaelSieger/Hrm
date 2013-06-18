@@ -12,11 +12,10 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.forms.widgets.Form;
-import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
 
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
+import de.hswt.hrm.common.ui.swt.utils.SWTResourceManager;
 import de.hswt.hrm.contact.model.Contact;
 import de.hswt.hrm.contact.ui.part.ContactComposite;
 
@@ -26,8 +25,6 @@ public class ContactSelectionDialog extends TitleAreaDialog {
     private IEclipseContext context;
     private Contact contact;
     private Button okButton;
-	private FormToolkit toolkit;
-	private Form form;
     
     public ContactSelectionDialog(Shell parentShell, IEclipseContext context) {
         super(parentShell);
@@ -40,31 +37,16 @@ public class ContactSelectionDialog extends TitleAreaDialog {
 
         draw(composite); // Contents of Dialog
         
-        setMessage("Please select a contact");
+        setMessage("Please select a contact.");
+        setTitle("Contact selection");
         
         return composite;
-
     }
 
     private void draw(Composite parent) {
-		toolkit = FormUtil.createToolkit();
-		toolkit.adapt(parent);
-		toolkit.paintBordersFor(parent);
-
-		form = toolkit.createForm(parent);
-		form.getHead().setOrientation(SWT.RIGHT_TO_LEFT);
-		form.setSeparatorVisible(true);
-		toolkit.paintBordersFor(form);
-		form.setText("Contacts");
-		toolkit.decorateFormHeading(form);
-
-		FillLayout fillLayout = new FillLayout(SWT.HORIZONTAL);
-		fillLayout.marginHeight = 1;
-		form.getBody().setLayout(fillLayout);
-
-		Section headerSection = toolkit
-				.createSection(form.getBody(), Section.TITLE_BAR);
-		toolkit.paintBordersFor(headerSection);
+		Section headerSection = new Section(parent, Section.TITLE_BAR);
+		headerSection.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+		headerSection.setText("Contacts");
 		headerSection.setExpanded(true);
 		FormUtil.initSectionColors(headerSection);
 		headerSection.setLayout(new FillLayout());

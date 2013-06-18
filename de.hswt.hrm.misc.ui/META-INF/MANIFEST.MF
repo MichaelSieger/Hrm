@@ -9,6 +9,7 @@ Import-Package: de.hswt.hrm.common.database.exception,
  de.hswt.hrm.common.ui.swt.forms,
  de.hswt.hrm.common.ui.swt.layouts,
  de.hswt.hrm.common.ui.swt.table,
+ de.hswt.hrm.common.ui.swt.utils,
  de.hswt.hrm.common.ui.swt.wizards,
  de.hswt.hrm.evaluation.ui.part
 Require-Bundle: org.eclipse.jface;bundle-version="3.8.102",

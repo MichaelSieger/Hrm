@@ -17,6 +17,7 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
 
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
+import de.hswt.hrm.common.ui.swt.utils.SWTResourceManager;
 import de.hswt.hrm.contact.model.Contact;
 import de.hswt.hrm.contact.ui.part.ContactComposite;
 import de.hswt.hrm.plant.model.Plant;
@@ -28,8 +29,6 @@ public class PlantSelectionDialog extends TitleAreaDialog {
     private IEclipseContext context;
     private Plant plant;
     private Button okButton;
-    private FormToolkit toolkit;
-    private Form form;
 
     public PlantSelectionDialog(Shell parentShell, IEclipseContext context) {
         super(parentShell);
@@ -42,33 +41,20 @@ public class PlantSelectionDialog extends TitleAreaDialog {
 
         draw(composite); // Contents of Dialog
 
-        setMessage("Please select a Plant");
+        setMessage("Please select a plant.");
+        setTitle("Plant selection");
 
         return composite;
 
     }
 
     private void draw(Composite parent) {
-        toolkit = FormUtil.createToolkit();
-        toolkit.adapt(parent);
-        toolkit.paintBordersFor(parent);
-
-        form = toolkit.createForm(parent);
-        form.getHead().setOrientation(SWT.RIGHT_TO_LEFT);
-        form.setSeparatorVisible(true);
-        toolkit.paintBordersFor(form);
-        form.setText("Plants");
-        toolkit.decorateFormHeading(form);
-
-        FillLayout fillLayout = new FillLayout(SWT.HORIZONTAL);
-        fillLayout.marginHeight = 1;
-        form.getBody().setLayout(fillLayout);
-
-        Section headerSection = toolkit.createSection(form.getBody(), Section.TITLE_BAR);
-        toolkit.paintBordersFor(headerSection);
-        headerSection.setExpanded(true);
-        FormUtil.initSectionColors(headerSection);
-        headerSection.setLayout(new FillLayout());
+		Section headerSection = new Section(parent, Section.TITLE_BAR);
+		headerSection.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+		headerSection.setText("Plants");
+		headerSection.setExpanded(true);
+		FormUtil.initSectionColors(headerSection);
+		headerSection.setLayout(new FillLayout());
 
         plantComposite = new PlantComposite(headerSection);
         ContextInjectionFactory.inject(plantComposite, context);

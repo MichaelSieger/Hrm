@@ -51,6 +51,8 @@ public class MiscPart {
     private IContributionItem editCommentContribution;
     private IContributionItem addPriorityContribution;
     private IContributionItem editPriorityContribution;
+    private IContributionItem addStyleContribution;
+    private IContributionItem editStyleContribution;
 
     private TabFolder tabFolder;
 
@@ -59,11 +61,13 @@ public class MiscPart {
     private TabItem summaryTab;
 	private TabItem commentsTab;
 	private TabItem priorityTab;
-	private TabItem reportDirectoryTab;
+	private TabItem reportPreferencesTab;
 
 	private EvaluationComposite evaluationComposite;
 
 	private CommentComposite commentsComposite;
+
+	private ReportPreferencesComposite reportPreferencesComposite;
 
     public MiscPart() {
         // toolkit can be created in PostConstruct, but then then
@@ -110,8 +114,8 @@ public class MiscPart {
         priorityTab = new TabItem(tabFolder, SWT.NONE);
         priorityTab.setText("Priorities");
         
-        reportDirectoryTab = new TabItem(tabFolder, SWT.NONE);
-        reportDirectoryTab.setText("Report directory");
+        reportPreferencesTab = new TabItem(tabFolder, SWT.NONE);
+        reportPreferencesTab.setText("Report preferences");
 
         tabFolder.addSelectionListener(new SelectionAdapter() {
             @Override
@@ -122,8 +126,8 @@ public class MiscPart {
                     showCommentsActions();
                 } else if (tabFolder.getItem(tabFolder.getSelectionIndex()).equals(priorityTab)) {
                 	showPriorityActions();
-                } else if (tabFolder.getItem(tabFolder.getSelectionIndex()).equals(reportDirectoryTab)) {
-                	showReportDirectoryActions();
+                } else if (tabFolder.getItem(tabFolder.getSelectionIndex()).equals(reportPreferencesTab)) {
+                	showReportPreferencesActions();
                 } else {
                 	hideAllActions();
                 	form.getToolBarManager().update(true);
@@ -147,6 +151,14 @@ public class MiscPart {
 		ContextInjectionFactory.inject(commentsComposite, context);
 		commentsSection.setClient(commentsComposite);
 
+        Section reportPreferencesSection = toolkit.createSection(tabFolder, Section.TITLE_BAR);
+        reportPreferencesSection.setText("Report preferences");
+		reportPreferencesTab.setControl(reportPreferencesSection);
+
+        reportPreferencesComposite = new ReportPreferencesComposite(reportPreferencesSection);
+		ContextInjectionFactory.inject(reportPreferencesComposite, context);
+		reportPreferencesSection.setClient(reportPreferencesComposite);
+
 		createActions();
     }
 
@@ -155,7 +167,6 @@ public class MiscPart {
         Action addSummaryAction = new Action("Add") {
             @Override
             public void run() {
-                super.run();
                 evaluationComposite.addEvaluation();
             }
         };
@@ -165,7 +176,6 @@ public class MiscPart {
         Action editSummaryAction = new Action("Edit") {
             @Override
             public void run() {
-                super.run();
                 evaluationComposite.editEvaluation();
             }
         };
@@ -176,7 +186,6 @@ public class MiscPart {
         Action addCommentAction = new Action("Add") {
             @Override
             public void run() {
-                super.run();
                 commentsComposite.addComment();
             }
         };
@@ -186,18 +195,36 @@ public class MiscPart {
         Action editCommentAction = new Action("Edit") {
             @Override
             public void run() {
-                super.run();
                 evaluationComposite.editEvaluation();
             }
         };
         editCommentAction.setDescription("Edit an exisitng comment.");
         editCommentContribution = new ActionContributionItem(editCommentAction);
-        
+
+        Action addStyleAction = new Action("Add style") {
+            @Override
+            public void run() {
+                reportPreferencesComposite.addStyle();
+            }
+        };
+        addStyleAction.setDescription("Add's a new report style.");
+        addStyleContribution = new ActionContributionItem(addStyleAction);
+
+        Action editStyleAction = new Action("Edit style") {
+            @Override
+            public void run() {
+            	reportPreferencesComposite.editStyle();
+            }
+        };
+        editStyleAction.setDescription("Edit an exisitng style.");
+        editStyleContribution = new ActionContributionItem(editStyleAction);
         
         form.getToolBarManager().add(editSummaryContribution);
         form.getToolBarManager().add(addSummaryContribution);
         form.getToolBarManager().add(editCommentContribution);
         form.getToolBarManager().add(addCommentContribution);
+        form.getToolBarManager().add(editStyleContribution);
+        form.getToolBarManager().add(addStyleContribution);
 
         form.getToolBarManager().update(true);
     }
@@ -222,9 +249,10 @@ public class MiscPart {
     	form.getToolBarManager().update(true);
     }
 
-    private void showReportDirectoryActions() {
+    private void showReportPreferencesActions() {
     	hideAllActions();
-
+        addStyleContribution.setVisible(true);
+        editStyleContribution.setVisible(true);
     	form.getToolBarManager().update(true);
     }
 
@@ -233,6 +261,8 @@ public class MiscPart {
         addSummaryContribution.setVisible(false);
         addCommentContribution.setVisible(false);
         editCommentContribution.setVisible(false);
+        addStyleContribution.setVisible(false);
+        editStyleContribution.setVisible(false);
     }
     
     @PreDestroy
