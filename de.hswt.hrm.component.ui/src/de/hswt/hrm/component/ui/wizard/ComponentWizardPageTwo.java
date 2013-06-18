@@ -4,139 +4,237 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
 import java.nio.ByteBuffer;
 
-import org.eclipse.e4.xwt.IConstants;
-import org.eclipse.e4.xwt.XWT;
-import org.eclipse.e4.xwt.forms.XWTForms;
+import javax.inject.Inject;
+
+import org.eclipse.jface.window.IShellProvider;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.KeyEvent;
-import org.eclipse.swt.events.KeyListener;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.ui.forms.widgets.FormToolkit;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.forms.widgets.Section;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.widgets.Button;
 
 import com.google.common.base.Optional;
 import com.sun.pdfview.PDFFile;
 import com.sun.pdfview.PDFPage;
 
-import de.hswt.hrm.common.ui.swt.layouts.PageContainerFillLayout;
-import de.hswt.hrm.component.model.Category;
+import de.hswt.hrm.common.ui.swt.forms.FormUtil;
+import de.hswt.hrm.common.ui.swt.layouts.LayoutUtil;
+import de.hswt.hrm.common.ui.swt.utils.SWTResourceManager;
 import de.hswt.hrm.component.model.Component;
 import de.hswt.hrm.scheme.service.ComponentConverter;
 
 public class ComponentWizardPageTwo extends WizardPage {
-    
-    private static final Logger LOG = LoggerFactory.getLogger(ComponentWizardPageTwo.class);
-    private static int MAX_QUANIFIER = 10;
-    
-    private Composite container;
+	private final FormToolkit formToolkit = new FormToolkit(Display.getDefault());
+
+	@Inject
+	private IShellProvider shellProvider;
+	
     private Optional<Component> component;
-    
-    private Label imageLR;
-    private Text pathLR;   
-    private Button buttonLR;
-    
-    private Label imageRL;
-    private Text pathRL;
-    private Button buttonRL;
-    
-    private Label imageUD;
-    private Text pathUD;
-    private Button buttonUD;
-    
-    private Label imageDU;
-    private Text pathDU;
-    private Button buttonDU;
-    
-    public ComponentWizardPageTwo(String title, Optional<Component> component) {
-        super(title);
+
+	private Text rlText;
+	private Text udText;
+	private Text lrText;
+	private Text duText;
+
+	private Label lrLabel;
+
+	private Label rlLabel;
+
+	private Label udLabel;
+
+	private Label duLabel;
+
+	/**
+	 * Create the wizard.
+	 */
+	public ComponentWizardPageTwo(Optional<Component> component) {
+		super("Components wizard");
+		setTitle("Components wizard");
         this.component = component;
-        setDescription(createDescription());
-    }
-    
-    private String createDescription() {
-        if (component.isPresent()) {
-            return "Change a category.";
-        }
-        return "Define a new category";
-    }
+        setDescription("Select the files for the component.");
+	}
 
-    public void createControl(Composite parent) {
-        parent.setLayout(new PageContainerFillLayout());
-        URL url = ComponentWizardPageTwo.class.getClassLoader().getResource(
-                "de/hswt/hrm/component/ui/xwt/ComponentWizardPageTwo"+IConstants.XWT_EXTENSION_SUFFIX);
-        try {
-            container = (Composite) XWTForms.load(parent, url);
-        } catch (Exception e) {
-            LOG.error("An error occured: ",e);
-        }
-        imageLR = (Label) XWT.findElementByName(container,"imageLR");
-        pathLR = (Text) XWT.findElementByName(container,"pathLR");   
-        buttonLR = (Button) XWT.findElementByName(container,"buttonLR");
-        
-        imageRL = (Label) XWT.findElementByName(container,"imageRL");
-        pathRL = (Text) XWT.findElementByName(container,"pathRL");
-        buttonRL = (Button) XWT.findElementByName(container,"buttonRL");
-        
-        imageUD = (Label) XWT.findElementByName(container,"imageUD");
-        pathUD = (Text) XWT.findElementByName(container,"pathUD");
-        buttonUD = (Button) XWT.findElementByName(container,"buttonUD");
-        
-        imageDU = (Label) XWT.findElementByName(container,"imageDU");
-        pathDU = (Text) XWT.findElementByName(container,"pathDU");
-        buttonDU = (Button) XWT.findElementByName(container,"buttonDU");
-        
-        setUploadButtons(pathLR, imageLR, buttonLR);
-        setUploadButtons(pathRL, imageRL, buttonRL);
-        setUploadButtons(pathUD, imageUD, buttonUD);
-        setUploadButtons(pathDU, imageDU, buttonDU);
+	/**
+	 * Create contents of the wizard.
+	 * @param parent
+	 */
+	public void createControl(Composite parent) {
+		Composite container = new Composite(parent, SWT.NULL);
+		setControl(container);
 
-        
-        if (this.component.isPresent()) {
-            updateFields(container);
-        }
-        
-        setControl(container);
-        checkPageComplete();
-    }
-    
-    
-    private void updateFields(Composite c) {
+		container.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+		container.setLayout(new GridLayout(2, true));
+		
+		Section lrSection = formToolkit.createSection(container, Section.TITLE_BAR);
+		formToolkit.paintBordersFor(lrSection);
+		lrSection.setText("Left to right");
+		lrSection.setExpanded(true);
+		lrSection.setLayoutData(LayoutUtil.createFillData());
+		FormUtil.initSectionColors(lrSection);
+
+		Composite lrComposite = new Composite(lrSection, SWT.NONE);
+		formToolkit.adapt(lrComposite);
+		formToolkit.paintBordersFor(lrComposite);
+		lrSection.setClient(lrComposite);
+		GridLayout gl = new GridLayout(2, false);
+		gl.marginWidth = 1;
+		lrComposite.setLayout(gl);
+		
+		lrText = new Text(lrComposite, SWT.READ_ONLY);
+		lrText.setLayoutData(LayoutUtil.createHorzCenteredFillData());
+		formToolkit.adapt(lrText, true, true);
+		
+		Button lrButton = new Button(lrComposite, SWT.NONE);
+		lrButton.setLayoutData(LayoutUtil.createRightGridData());
+		formToolkit.adapt(lrButton, true, true);
+		lrButton.setText("Browse ...");
+
+
+		lrLabel = new Label(lrComposite, SWT.BORDER);
+		GridData gd = new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1);
+		gd.widthHint = 100;
+		gd.heightHint = 100;
+		lrLabel.setLayoutData(gd);
+		formToolkit.adapt(lrLabel, true, true);
+
+		Section rlSection = formToolkit.createSection(container, Section.TITLE_BAR);
+		formToolkit.paintBordersFor(rlSection);
+		rlSection.setText("Right to left");
+		rlSection.setExpanded(true);
+		rlSection.setLayoutData(LayoutUtil.createFillData());
+		FormUtil.initSectionColors(rlSection);
+
+		Composite rlComposite = new Composite(rlSection, SWT.NONE);
+		formToolkit.adapt(rlComposite);
+		formToolkit.paintBordersFor(rlComposite);
+		rlSection.setClient(rlComposite);
+		gl = new GridLayout(2, false);
+		gl.marginWidth = 1;
+		rlComposite.setLayout(gl);
+		
+		rlText = new Text(rlComposite, SWT.READ_ONLY);
+		rlText.setLayoutData(LayoutUtil.createHorzCenteredFillData());
+		formToolkit.adapt(rlText, true, true);
+		
+		Button rlButton = new Button(rlComposite, SWT.NONE);
+		rlButton.setLayoutData(LayoutUtil.createRightGridData());
+		formToolkit.adapt(rlButton, true, true);
+		rlButton.setText("Browse ...");
+
+
+		rlLabel = new Label(rlComposite, SWT.BORDER);
+		gd = new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1);
+		gd.widthHint = 100;
+		gd.heightHint = 100;
+		rlLabel.setLayoutData(gd);
+		formToolkit.adapt(rlLabel, true, true);
+
+		Section udSection = formToolkit.createSection(container, Section.TITLE_BAR);
+		formToolkit.paintBordersFor(udSection);
+		udSection.setText("Up to down");
+		udSection.setExpanded(true);
+		udSection.setLayoutData(LayoutUtil.createFillData());
+		FormUtil.initSectionColors(udSection);
+		
+		Composite udComposite = new Composite(udSection, SWT.NONE);
+		formToolkit.adapt(udComposite);
+		formToolkit.paintBordersFor(udComposite);
+		udSection.setClient(udComposite);
+		gl = new GridLayout(2, false);
+		gl.marginWidth = 1;
+		udComposite.setLayout(gl);
+		
+		udText = new Text(udComposite, SWT.READ_ONLY);
+		udText.setLayoutData(LayoutUtil.createHorzCenteredFillData());
+		formToolkit.adapt(udText, true, true);
+		
+		Button udButton = new Button(udComposite, SWT.NONE);
+		udButton.setLayoutData(LayoutUtil.createRightGridData());
+		formToolkit.adapt(udButton, true, true);
+		udButton.setText("Browse ...");
+
+
+		udLabel = new Label(udComposite, SWT.BORDER);
+		gd = new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1);
+		gd.widthHint = 100;
+		gd.heightHint = 100;
+		udLabel.setLayoutData(gd);
+		formToolkit.adapt(udLabel, true, true);
+
+		Section duSection = formToolkit.createSection(container, Section.TITLE_BAR);
+		formToolkit.paintBordersFor(duSection);
+		duSection.setText("Down to up");
+		duSection.setExpanded(true);
+		duSection.setLayoutData(LayoutUtil.createFillData());
+		FormUtil.initSectionColors(duSection);
+		
+		Composite duComposite = new Composite(duSection, SWT.NONE);
+		formToolkit.adapt(duComposite);
+		formToolkit.paintBordersFor(duComposite);
+		duSection.setClient(duComposite);
+		gl = new GridLayout(2, false);
+		gl.marginWidth = 1;
+		duComposite.setLayout(gl);
+		
+		duText = new Text(duComposite, SWT.READ_ONLY);
+		duText.setLayoutData(LayoutUtil.createHorzCenteredFillData());
+		formToolkit.adapt(duText, true, true);
+		
+		Button duButton = new Button(duComposite, SWT.NONE);
+		duButton.setLayoutData(LayoutUtil.createRightGridData());
+		formToolkit.adapt(duButton, true, true);
+		
+		duButton.setText("Browse ...");
+		
+		duLabel = new Label(duComposite, SWT.BORDER);
+		gd = new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1);
+		gd.widthHint = 100;
+		gd.heightHint = 100;
+		duLabel.setLayoutData(gd);
+		formToolkit.adapt(duLabel, true, true);
+		
+		setUploadButtons(duText, duLabel, duButton);
+		setUploadButtons(udText, udLabel, udButton);
+		setUploadButtons(lrText, lrLabel, lrButton);
+		setUploadButtons(rlText, rlLabel, rlButton);
+		
+		
+		if (component.isPresent()) {
+			updateFields();
+		}
+	}
+
+    private void updateFields() {
     	Component comp = component.get();
     	if(comp.getDownUpImage() != null){
-    		setPreviewImage(comp.getDownUpImage(), imageDU);
+    		setPreviewImage(comp.getDownUpImage(), duLabel);
     	}
     	if(comp.getRightLeftImage() != null){
-    		setPreviewImage(comp.getRightLeftImage(), imageRL);
+    		setPreviewImage(comp.getRightLeftImage(), rlLabel);
     	}
     	if(comp.getLeftRightImage() != null){
-    		setPreviewImage(comp.getLeftRightImage(), imageLR);
+    		setPreviewImage(comp.getLeftRightImage(), lrLabel);
     	}
     	if(comp.getUpDownImage() != null){
-    		setPreviewImage(comp.getUpDownImage(), imageDU);
+    		setPreviewImage(comp.getUpDownImage(), udLabel);
     	}
-    	
-    	
-
     }
     
     private void checkPageComplete() {
-    	if(imageDU.getImage() == null && imageUD.getImage() == null && imageRL.getImage() == null
-    			&& imageLR.getImage() == null){
+    	if(lrLabel.getImage() == null && rlLabel.getImage() == null && udLabel.getImage() == null
+    			&& duLabel.getImage() == null){
     		setPageComplete(false);
     		return;    		
     	}
@@ -148,7 +246,7 @@ public class ComponentWizardPageTwo extends WizardPage {
     	upload.addListener(SWT.Selection, new Listener() {
 			@Override
 			public void handleEvent(Event event) {
-				FileDialog fileDialog = new FileDialog(container.getShell(), SWT.OPEN);
+				FileDialog fileDialog = new FileDialog(shellProvider.getShell(), SWT.OPEN);
 		        fileDialog.setText("Open");
 		        String[] filterExt = { "*.pdf"};
 		        fileDialog.setFilterExtensions(filterExt);
@@ -158,7 +256,6 @@ public class ComponentWizardPageTwo extends WizardPage {
 					try {
 						setPreviewImage(selected, preview);
 					} catch (IOException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				}
@@ -212,9 +309,9 @@ public class ComponentWizardPageTwo extends WizardPage {
     	
     }
     
-    public byte[] convertPDF(String path) throws IOException{
+    private byte[] convertPDF(String path) throws IOException{
     	File f = new File(path);
-    	FileInputStream in;
+    	FileInputStream in = null;
     	byte[] data = null;
 		try {
 			in = new FileInputStream(f);
@@ -222,45 +319,52 @@ public class ComponentWizardPageTwo extends WizardPage {
 	    	in.read(data);
 		} catch (FileNotFoundException e1) {
 			e1.printStackTrace();
+		} finally {
+			if (in != null) {
+				in.close();
+			}
 		}
 		return data;
-    	
     }
     
     public byte[] getImageRL(){    	
-		try {
-			return convertPDF(pathRL.getText());
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if(!rlText.getText().isEmpty()){
+	    	try {
+				return convertPDF(rlText.getText());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 		return null;    	
     }
     public byte[] getImageLR(){    	
-		try {
-			return convertPDF(pathLR.getText());
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+    	if(!lrText.getText().isEmpty()){
+	    	try {
+				return convertPDF(lrText.getText());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+    	}
 		return null;    	
     }
     public byte[] getImageDU(){    	
-		try {
-			return convertPDF(pathDU.getText());
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+    	if(!duText.getText().isEmpty()){
+	    	try {
+				return convertPDF(duText.getText());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+    	}
 		return null;    	
     }
     public byte[] getImageUD(){    	
-		try {
-			return convertPDF(pathUD.getText());
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+    	if(!udText.getText().isEmpty()){
+	    	try {
+				return convertPDF(udText.getText());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+    	}
 		return null;
     }
 }

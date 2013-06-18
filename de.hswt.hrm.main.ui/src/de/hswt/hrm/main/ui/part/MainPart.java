@@ -38,7 +38,7 @@ public class MainPart {
 	private Button toPlaces;
 	private Button toPlants;
 	private Button toCatalog;
-	private Button toCategory;
+	private Button toComponents;
 	private Button toInspection;
 	private Button toMisc;
 
@@ -54,7 +54,7 @@ public class MainPart {
             toPlaces = (Button) XWT.findElementByName(comp, "toPlaces");
             toPlants = (Button) XWT.findElementByName(comp, "toPlants");
             toCatalog = (Button) XWT.findElementByName(comp, "toCatalog");
-            toCategory = (Button) XWT.findElementByName(comp, "toCategory");
+            toComponents = (Button) XWT.findElementByName(comp, "toComponents");
             toMisc = (Button) XWT.findElementByName(comp, "toMisc");
             toInspection = (Button) XWT.findElementByName(comp, "toInspection");
         }
@@ -90,10 +90,10 @@ public class MainPart {
 				runCommand(ViewSwitcher.PLANTS_ID);
 			}
 		});
-		toCategory.addListener(SWT.Selection,new Listener() {
+		toComponents.addListener(SWT.Selection,new Listener() {
 			@Override
 			public void handleEvent(Event event) {
-				runCommand(ViewSwitcher.CATEGORY_ID);
+				runCommand(ViewSwitcher.COMPONENTS_ID);
 			}
 		});
 		toCatalog.addListener(SWT.Selection,new Listener() {

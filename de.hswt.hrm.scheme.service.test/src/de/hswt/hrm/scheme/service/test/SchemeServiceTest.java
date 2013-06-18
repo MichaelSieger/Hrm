@@ -1,6 +1,7 @@
 package de.hswt.hrm.scheme.service.test;
 
 import static org.mockito.Mockito.*;
+import static org.junit.Assert.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,6 +9,7 @@ import org.junit.Test;
 
 import de.hswt.hrm.catalog.dao.core.ICatalogDao;
 import de.hswt.hrm.common.database.exception.DatabaseException;
+import de.hswt.hrm.common.database.exception.ElementNotFoundException;
 import de.hswt.hrm.common.database.exception.SaveException;
 import de.hswt.hrm.component.dao.core.ICategoryDao;
 import de.hswt.hrm.component.dao.core.IComponentDao;
@@ -108,13 +110,26 @@ public class SchemeServiceTest extends AbstractDatabaseTest {
         scheme = schemeDao.insert(scheme);
         // FIXME: again wrong usage of the API possible -> scheme should be mandatory
         schemeComp.setScheme(scheme);
-        System.out.println("Comp ID: " + schemeComp.getComponent().getId());
         schemeComp = schemeComponentDao.insert(schemeComp);
         
         Attribute attr = attributes.get(0);
         schemeComponentDao.setAttributeValue(schemeComp, attr, "Some value");
         attr = attributes.get(1);
         schemeComponentDao.setAttributeValue(schemeComp, attr, "Some other value");
+    }
+    
+    @Test
+    public void testFindCurrentSchemeByPlant() throws ElementNotFoundException, DatabaseException {
+    	ISchemeDao schemeDao = createSchemeDao();
+        Plant plant = createTestPlant();
+        Scheme firstScheme = new Scheme(plant);
+        schemeDao.insert(firstScheme);
+        Scheme secondScheme = new Scheme(plant);
+        Scheme parsed = schemeDao.insert(secondScheme);
+        
+        Scheme fromDb = schemeDao.findCurrentSchemeByPlant(plant);
+        assertEquals("Not the last inserted scheme returned.", parsed.getId(), fromDb.getId());
+        assertNotNull("Timestamp not set correctly.", fromDb.getTimestamp());
     }
 
 }

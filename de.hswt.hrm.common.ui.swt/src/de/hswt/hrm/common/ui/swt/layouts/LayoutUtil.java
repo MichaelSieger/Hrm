@@ -143,6 +143,18 @@ public class LayoutUtil {
 		return new GridData(SWT.LEFT, SWT.TOP, false, false, colSpan, rowSpan);
 	}
 
+	public static GridData createLeftCenteredGridData() {
+		return createLeftCenteredGridData(1);
+	}
+
+	public static GridData createLeftCenteredGridData(int colSpan) {
+		return createLeftCenteredGridData(colSpan, 1);
+	}
+
+	public static GridData createLeftCenteredGridData(int colSpan, int rowSpan) {
+		return new GridData(SWT.LEFT, SWT.CENTER, false, false, colSpan, rowSpan);
+	}
+
 	public static GridData createRightGridData() {
 		return createRightGridData(1);
 	}

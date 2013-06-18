@@ -5,6 +5,7 @@ import java.util.Collection;
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.ElementNotFoundException;
 import de.hswt.hrm.common.database.exception.SaveException;
+import de.hswt.hrm.plant.model.Plant;
 import de.hswt.hrm.scheme.model.Scheme;
 
 /**
@@ -22,6 +23,22 @@ public interface ISchemeDao {
      * @throws ElementNotFoundException If the given id is not present in storage.
      */
     Scheme findById(int id) throws DatabaseException, ElementNotFoundException;
+    
+    /**
+     * @param plant
+     * @return List of schemes for the given plant.
+     * @throws DatabaseException 
+     */
+    Collection<Scheme> findByPlant(Plant plant) throws DatabaseException;
+    
+    /**
+     * @param plant
+     * @return The current scheme for the given plant.
+     * @throws ElementNotFoundException If there is no scheme for the given plant.
+     * @throws DatabaseException 
+     */
+    Scheme findCurrentSchemeByPlant(Plant plant) 
+    		throws ElementNotFoundException, DatabaseException;
     
     /**
      * Add a new Scheme to storage.

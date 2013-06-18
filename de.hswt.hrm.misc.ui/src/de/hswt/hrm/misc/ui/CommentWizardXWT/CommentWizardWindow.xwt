@@ -1,0 +1,31 @@
+<Composite xmlns="http://www.eclipse.org/xwt/presentation" xmlns:x="http://www.eclipse.org/xwt" x:Class="de.hswt.hrm.contact.ui.wizard.ContactWizardWindow" xmlns:p1="clr-namespace:org.eclipse.ui.forms.widgets">
+	<Composite.layout>
+		<FillLayout/>
+	</Composite.layout>
+	<Section x:Style="(p1:Section).EXPANDED | (p1:Section).TITLE_BAR" x:Name="Mandatory" text="Comment">
+		<Section.client>
+			<Composite>
+				<Composite.layout>
+					<GridLayout numColumns="4"/>
+				</Composite.layout>
+				<Label text="Name"/>
+				<Text x:Style="BORDER" x:Name="name" x:TooltipText="Name">
+					<Text.layoutData>
+						<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL" horizontalSpan="3"/>
+					</Text.layoutData>
+				</Text>
+				<Label text="Text" x:Name="text">
+					<Label.layoutData>
+						<GridData verticalAlignment="TOP"/>
+					</Label.layoutData>
+				</Label>
+				<Text x:Style="BORDER | WRAP | V_SCROLL | MULTI" x:Name="desc" x:TooltipText="Beschreibung">
+					<Text.layoutData>
+						<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL" verticalAlignment="FILL" heightHint="80" widthHint="300" horizontalSpan="3"/>
+					</Text.layoutData>
+				</Text>
+			</Composite>
+		</Section.client>
+	</Section>
+</Composite>
+<!-- Forms API -->

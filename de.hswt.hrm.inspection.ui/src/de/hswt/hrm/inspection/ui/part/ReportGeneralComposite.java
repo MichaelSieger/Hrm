@@ -3,9 +3,11 @@ package de.hswt.hrm.inspection.ui.part;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
+import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.jface.window.IShellProvider;
 import org.eclipse.jface.window.Window;
+import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -22,15 +24,20 @@ import org.eclipse.ui.forms.widgets.Section;
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.common.ui.swt.layouts.LayoutUtil;
 import de.hswt.hrm.common.ui.swt.utils.ContentProposalUtil;
+import de.hswt.hrm.common.ui.swt.wizards.WizardCreator;
 import de.hswt.hrm.component.model.Component;
 import de.hswt.hrm.inspection.ui.dialog.ContactSelectionDialog;
 import de.hswt.hrm.inspection.ui.dialog.PlantSelectionDialog;
+import de.hswt.hrm.photo.model.Photo;
+import de.hswt.hrm.photo.ui.wizard.PhotoWizard;
 
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.DateTime;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.List;
+
+import com.google.common.base.Optional;
 
 public class ReportGeneralComposite extends AbstractComponentRatingComposite {
 
@@ -759,8 +766,14 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
     }
 
     private void importPhotos() {
-        // TODO import photos with the photo wizard
+    	Optional<java.util.List<Photo>> n = Optional.absent();
+        PhotoWizard pw = new PhotoWizard(n);
+        ContextInjectionFactory.inject(pw, context);
 
+        WizardDialog wd = WizardCreator.createWizardDialog(
+        		shellProvider.getShell(), pw);
+        wd.open();
+        // TODO handle input
     }
 
     @Override

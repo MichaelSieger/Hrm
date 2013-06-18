@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 
 import javax.inject.Inject;
 
@@ -44,13 +45,12 @@ public class SchemeDao implements ISchemeDao {
     	checkState(scheme.getPlant().get().getId() >= 0, "Scheme must have a valid plant set.");
     	
         SqlQueryBuilder builder = new SqlQueryBuilder();
-        builder.insert(TABLE_NAME, Fields.TIMESTAMP, Fields.FK_PLANT);
+        builder.insert(TABLE_NAME, Fields.FK_PLANT);
         
         final String query = builder.toString();
 
         try (Connection con = DatabaseFactory.getConnection()) {
             try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
-                stmt.setParameter(Fields.TIMESTAMP, scheme.getTimestamp());
                 stmt.setParameter(Fields.FK_PLANT, scheme.getPlant().get().getId());
 
                 int affectedRows = stmt.executeUpdate();
@@ -134,6 +134,73 @@ public class SchemeDao implements ISchemeDao {
             throw new DatabaseException(e);
         }
     }
+    
+	@Override
+	public Collection<Scheme> findByPlant(Plant plant) throws DatabaseException {
+		checkNotNull(plant, "Plant must not be null.");
+		checkArgument(plant.getId() >= 0, "Plant must have a valid ID.");
+		
+		SqlQueryBuilder builder = new SqlQueryBuilder();
+        builder.select(TABLE_NAME, Fields.ID, Fields.TIMESTAMP, Fields.FK_PLANT);
+        builder.where(Fields.FK_PLANT);
+
+        final String query = builder.toString();
+
+        try (Connection con = DatabaseFactory.getConnection()) {
+            try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
+                stmt.setParameter(Fields.FK_PLANT, plant.getId());
+                ResultSet result = stmt.executeQuery();
+
+                Collection<Scheme> schemes = fromResultSet(result);
+                DbUtils.closeQuietly(result);
+
+                return schemes;
+            }
+        }
+        catch (SQLException e) {
+            throw new DatabaseException(e);
+        }
+	}
+
+	@Override
+	public Scheme findCurrentSchemeByPlant(Plant plant) 
+			throws DatabaseException {
+		
+		checkNotNull(plant, "Plant must not be null.");
+		checkArgument(plant.getId() >= 0, "Plant must have a valid ID.");
+		
+		StringBuilder builder = new StringBuilder();
+		builder.append("SELECT");
+		builder.append(" ").append(Fields.ID);
+		builder.append(", ").append(Fields.TIMESTAMP);
+		builder.append(", ").append(Fields.FK_PLANT);
+		builder.append(" FROM ").append(TABLE_NAME);
+		builder.append(" WHERE ").append(Fields.FK_PLANT).append(" = :").append(Fields.FK_PLANT);
+		builder.append(" ORDER BY ").append(Fields.TIMESTAMP).append(" DESC");
+		builder.append(", ").append(Fields.ID).append(" DESC");
+		builder.append(" LIMIT 1;");
+		
+        final String query = builder.toString();
+
+        try (Connection con = DatabaseFactory.getConnection()) {
+            try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
+                stmt.setParameter(Fields.FK_PLANT, plant.getId());
+                ResultSet result = stmt.executeQuery();
+
+                Collection<Scheme> schemes = fromResultSet(result);
+                DbUtils.closeQuietly(result);
+
+                if (schemes.size() < 1) {
+                    throw new ElementNotFoundException();
+                }
+
+                return schemes.iterator().next();
+            }
+        }
+        catch (SQLException e) {
+            throw new DatabaseException(e);
+        }
+	}
 
     @Override
     public void update(Scheme scheme) throws ElementNotFoundException, SaveException {
@@ -152,7 +219,7 @@ public class SchemeDao implements ISchemeDao {
         try (Connection con = DatabaseFactory.getConnection()) {
             try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
                 stmt.setParameter(Fields.ID, scheme.getId());
-                stmt.setParameter(Fields.TIMESTAMP, scheme.getTimestamp());
+                stmt.setParameter(Fields.TIMESTAMP, scheme.getTimestamp().or(new Timestamp((new Date()).getTime())));
                 stmt.setParameter(Fields.FK_PLANT, scheme.getPlant());
 
                 int affectedRows = stmt.executeUpdate();
@@ -168,12 +235,12 @@ public class SchemeDao implements ISchemeDao {
 
     private Collection<Scheme> fromResultSet(ResultSet rs) throws SQLException, ElementNotFoundException, DatabaseException {
         checkNotNull(rs, "Result must not be null.");
-        Collection<Scheme> placeList = new ArrayList<>();
+        Collection<Scheme> schemeList = new ArrayList<>();
 
         while (rs.next()) {
             int id = rs.getInt(Fields.ID);
 
-            Timestamp timestamp = rs.getTimestamp("Session_Timestamp");
+            Timestamp timestamp = rs.getTimestamp(Fields.TIMESTAMP);
             
             int plantId = rs.getInt(Fields.FK_PLANT);
             Plant plant = null;
@@ -183,10 +250,10 @@ public class SchemeDao implements ISchemeDao {
 
             Scheme scheme = new Scheme(id, plant, timestamp);
 
-            placeList.add(scheme);
+            schemeList.add(scheme);
         }
 
-        return placeList;
+        return schemeList;
     }
 
     private static final String TABLE_NAME = "Scheme";
@@ -197,5 +264,4 @@ public class SchemeDao implements ISchemeDao {
         public static final String FK_PLANT = "Scheme_Plant_FK";
 
     }
-
 }

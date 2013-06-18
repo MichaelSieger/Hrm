@@ -4,12 +4,9 @@ import java.util.Collection;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
-import org.eclipse.e4.ui.di.Focus;
-import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.DoubleClickEvent;
@@ -22,11 +19,8 @@ import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.forms.widgets.Form;
-import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,9 +38,9 @@ import de.hswt.hrm.component.model.Category;
 import de.hswt.hrm.component.service.CategoryService;
 import de.hswt.hrm.component.ui.filter.CategoryFilter;
 
-public class CategoryPart {
+public class CategoryComposite extends Composite {
 
-    private final static Logger LOG = LoggerFactory.getLogger(CategoryPart.class);
+    private final static Logger LOG = LoggerFactory.getLogger(CategoryComposite.class);
 
     @Inject
     private CategoryService categoryService;
@@ -57,57 +51,39 @@ public class CategoryPart {
     @Inject
     private IEclipseContext context;
 
-    private FormToolkit toolkit = new FormToolkit(Display.getDefault());
     private Table table;
     private Text searchText;
     private TableViewer tableViewer;
 
-    private Action editAction;
-    private Action addAction;
-    private Section headerSection;
-    private Composite composite;
-
-    public CategoryPart() {
-        // toolkit can be created in PostConstruct, but then then
-        // WindowBuilder is unable to parse the code
-        toolkit.dispose();
-        toolkit = FormUtil.createToolkit();
+    /**
+     * Do not use this constructor when instantiate this composite! It is only included to make the
+     * WindowsBuilder working.
+     * 
+     * @param parent
+     * @param style
+     */
+    private CategoryComposite(Composite parent, int style) {
+        super(parent, SWT.NONE);
+        createControls();
     }
 
     /**
-     * Create contents of the view part.
+     * Create the composite.
+     * 
+     * @param parent
      */
+    public CategoryComposite(Composite parent) {
+        super(parent, SWT.NONE);
+    }
+
     @PostConstruct
-    public void createControls(Composite parent) {
+    private void createControls() {
+        setLayout(new FillLayout());
+        setBackground(getDisplay().getSystemColor(SWT.COLOR_WHITE));
 
-        createActions();
-        toolkit.setBorderStyle(SWT.BORDER);
-        toolkit.adapt(parent);
-        toolkit.paintBordersFor(parent);
-        parent.setLayout(new FillLayout(SWT.HORIZONTAL));
-
-        Form form = toolkit.createForm(parent);
-        form.getHead().setOrientation(SWT.RIGHT_TO_LEFT);
-        form.setSeparatorVisible(true);
-        toolkit.paintBordersFor(form);
-        form.setText("Categories");
-        toolkit.decorateFormHeading(form);
-        form.getToolBarManager().add(editAction);
-
-        form.getToolBarManager().add(addAction);
-        FillLayout fillLayout = new FillLayout(SWT.HORIZONTAL);
-        fillLayout.marginHeight = 1;
-        form.getBody().setLayout(fillLayout);
-
-        headerSection = toolkit.createSection(form.getBody(), Section.TITLE_BAR);
-        toolkit.paintBordersFor(headerSection);
-        headerSection.setExpanded(true);
-        FormUtil.initSectionColors(headerSection);
-
-        composite = toolkit.createComposite(headerSection, SWT.NONE);
-        toolkit.paintBordersFor(composite);
-        headerSection.setClient(composite);
-        composite.setLayout(new GridLayout(1, false));
+        Composite composite = new Composite(this, SWT.NONE);
+        composite.setLayout(new GridLayout());
+        composite.setBackground(getDisplay().getSystemColor(SWT.COLOR_WHITE));
 
         searchText = new Text(composite, SWT.BORDER | SWT.SEARCH | SWT.ICON_SEARCH | SWT.CANCEL
                 | SWT.ICON_CANCEL);
@@ -118,7 +94,6 @@ public class CategoryPart {
             }
         });
         searchText.setLayoutData(LayoutUtil.createHorzFillData());
-        toolkit.adapt(searchText, true, true);
 
         tableViewer = new TableViewer(composite, SWT.BORDER | SWT.FULL_SELECTION);
         tableViewer.addDoubleClickListener(new IDoubleClickListener() {
@@ -130,51 +105,15 @@ public class CategoryPart {
         table.setLinesVisible(true);
         table.setHeaderVisible(true);
         table.setLayoutData(LayoutUtil.createFillData());
-        toolkit.paintBordersFor(table);
-        form.getToolBarManager().update(true);
 
         initializeTable();
         refreshTable();
 
         if (categoryService == null) {
-            LOG.error("CategoryService not injected to CategoryPart.");
+            LOG.error("CategoryService not injected to CategoryComposite.");
         }
     }
-
-    private void createActions() {
-        {
-            editAction = new Action("Edit") {
-                @Override
-                public void run() {
-                    super.run();
-                    editCategory();
-                }
-            };
-            editAction.setDescription("Edit an exisitng category.");
-        }
-        {
-            addAction = new Action("Add") {
-                @Override
-                public void run() {
-                    super.run();
-                    addCategory();
-                }
-            };
-            addAction.setDescription("Add's a new category.");
-        }
-    }
-
-    @PreDestroy
-    public void dispose() {
-        if (toolkit != null) {
-            toolkit.dispose();
-        }
-    }
-
-    @Focus
-    public void setFocus() {
-    }
-
+    
     private void refreshTable() {
         try {
             tableViewer.setInput(categoryService.findAll());
@@ -200,7 +139,7 @@ public class CategoryPart {
     }
 
     private void initializeTable() {
-        List<ColumnDescription<Category>> columns = CategoryPartUtil.getColumns();
+        List<ColumnDescription<Category>> columns = CategoryCompositeUtil.getColumns();
         // Create columns in TableViewer
         TableViewerController<Category> filler = new TableViewerController<>(tableViewer);
         filler.createColumns(columns);
@@ -223,7 +162,7 @@ public class CategoryPart {
      * Called whenever the add button is pressed.
      */
     public void addCategory() {
-        Optional<Category> newCat = CategoryPartUtil.showWizard(context, shellProvider.getShell(),
+        Optional<Category> newCat = CategoryCompositeUtil.showWizard(context, shellProvider.getShell(),
                 Optional.<Category> absent());
 
         @SuppressWarnings("unchecked")
@@ -249,7 +188,7 @@ public class CategoryPart {
         }
         try {
             categoryService.refresh(selectedCat);
-            Optional<Category> updatedCat = CategoryPartUtil.showWizard(context,
+            Optional<Category> updatedCat = CategoryCompositeUtil.showWizard(context,
                     shellProvider.getShell(), Optional.of(selectedCat));
             if (updatedCat.isPresent()) {
                 tableViewer.refresh();
@@ -260,4 +199,10 @@ public class CategoryPart {
             showDBConnectionError();
         }
     }
+    
+	@Override
+	protected void checkSubclass() {
+		// Disable the check that prevents subclassing of SWT components
+	}
+
 }

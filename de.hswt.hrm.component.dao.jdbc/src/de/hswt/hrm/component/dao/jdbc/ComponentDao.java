@@ -246,9 +246,11 @@ public class ComponentDao implements IComponentDao {
                 stmt.setParameter(Fields.SYMBOL_RL, rightLeftImageId);
                 stmt.setParameter(Fields.SYMBOL_UD, upDownImageId);
                 stmt.setParameter(Fields.SYMBOL_DU, downUpImageId);
-                stmt.setParameter(Fields.QUANTIFIER, component.getQuantifier());
                 stmt.setParameter(Fields.BOOL_RATING, component.getBoolRating());
                 stmt.setParameter(Fields.CATEGORY, component.getCategory().get().getId());
+                
+            	stmt.setParameter(Fields.QUANTIFIER, component.getQuantifier().or(-1));
+                	
 
                 int affectedRows = stmt.executeUpdate();
                 if (affectedRows != 1) {

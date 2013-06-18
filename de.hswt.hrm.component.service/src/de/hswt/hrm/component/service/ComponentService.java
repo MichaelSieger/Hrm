@@ -11,7 +11,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.hswt.hrm.common.database.exception.DatabaseException;
+import de.hswt.hrm.common.database.exception.ElementNotFoundException;
+import de.hswt.hrm.common.database.exception.SaveException;
 import de.hswt.hrm.component.dao.core.IComponentDao;
+import de.hswt.hrm.component.model.Category;
 import de.hswt.hrm.component.model.Component;
 
 /**
@@ -31,6 +34,30 @@ public class ComponentService {
 	    LOG.debug("ComponentDao injected into ComponentService.");
 	}
 	
+    public Component insert(Component component) throws SaveException {
+        return componentDao.insert(component);
+    }
+	
+    /**
+     * @param id of the target category
+     * @return component with the given id
+     * @throws DatabaseException
+     */
+    public Component findById(int id) throws DatabaseException {
+        return componentDao.findById(id);
+    }
+    
+    /**
+     * Update an existing component in storage
+     * 
+     * @param component CategorComponent that should be updated
+     * @throws ElementNotFoundException
+     * @throws SaveException
+     */
+    public void update(Component component) throws ElementNotFoundException, SaveException {
+        componentDao.update(component);
+    }
+    
     /**
      * @return All components from storage
      * @throws DatabaseException

@@ -49,9 +49,9 @@
 	</Button>
 	<Label
 		text="Katalog:&#13;&#10;-Katalog anlegen&#13;&#10;-Katalog bearbeiten" />
-	<Button x:Name="toCategory" image="/resources/icons/Components.jpg" />
+	<Button x:Name="toComponents" image="/resources/icons/Components.jpg" />
 	<Label
-		text="Kategorie:&#13;&#10;-Kategorien anlegen&#13;&#10;-Kategorien bearbeiten&#13;&#10;" />
+		text="Kategorie:&#13;&#10;-Komponenten anlegen&#13;&#10;-Kategorien bearbeiten&#13;&#10;" />
 	<Button image="/resources/icons/Report.jpg" x:Name="toInspection" />
 	<Label
 		text="Inspektion:&#13;&#10;-Inspektionen anlegen&#13;&#10;-Insprektionen bearbeiten" />

@@ -17,6 +17,8 @@ Import-Package: de.hswt.hrm.common.database.exception,
  de.hswt.hrm.place.ui.part,
  de.hswt.hrm.plant.model,
  de.hswt.hrm.plant.service,
+ de.hswt.hrm.scheme.model,
+ de.hswt.hrm.scheme.service,
  de.hswt.hrm.scheme.ui.part
 Require-Bundle: org.eclipse.jface;bundle-version="3.8.102",
  org.eclipse.swt;bundle-version="3.100.1",

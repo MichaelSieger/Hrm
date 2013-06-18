@@ -34,7 +34,7 @@ import de.hswt.hrm.component.model.Component;
 import de.hswt.hrm.component.service.CategoryService;
 import de.hswt.hrm.component.service.ComponentService;
 import de.hswt.hrm.component.ui.filter.ComponentFilter;
-import de.hswt.hrm.component.ui.part.ComponentPartUtil;
+import de.hswt.hrm.component.ui.part.ComponentCompositeUtil;
 import de.hswt.hrm.scheme.service.ComponentConverter;
 
 public class ComponentEventHandler {
@@ -92,7 +92,7 @@ public class ComponentEventHandler {
 
         Button b = (Button) event.widget;
         
-        Optional<Component> newComponent = ComponentPartUtil.showWizard(componentService,catService, context,
+        Optional<Component> newComponent = ComponentCompositeUtil.showWizard(componentService,catService, context,
                 event.display.getActiveShell(), Optional.<Component> absent());
 
         TableViewer tv = (TableViewer) XWT.findElementByName(b, "componentTable");
@@ -191,7 +191,7 @@ public class ComponentEventHandler {
         }
 //        try {
 //            componentService.refresh(selectedComponent);
-            Optional<Component> updatedComponent = ComponentPartUtil.showWizard(componentService, catService,context,
+            Optional<Component> updatedComponent = ComponentCompositeUtil.showWizard(componentService, catService,context,
                     event.display.getActiveShell(), Optional.of(selectedComponent));
 //
 //            if (updatedComponent.isPresent()) {
