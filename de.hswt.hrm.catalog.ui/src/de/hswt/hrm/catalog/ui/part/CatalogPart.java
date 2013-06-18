@@ -42,7 +42,7 @@ public class CatalogPart {
     private TabItem catalogsTab;
 
     private CatalogItemsPart catalogItemsPart;
-    private CatalogMatchingComposite matchComposite;
+    private CatalogAssignmentComposite assignmentComposite;
 
     private Form form;
 
@@ -105,9 +105,9 @@ public class CatalogPart {
         catalogsTab = new TabItem(tabFolder, SWT.NONE);
         catalogsTab.setText("Catalogs");
 
-        matchComposite = new CatalogMatchingComposite(tabFolder);
-        ContextInjectionFactory.inject(matchComposite, context);
-        catalogsTab.setControl(matchComposite);
+        assignmentComposite = new CatalogAssignmentComposite(tabFolder);
+        ContextInjectionFactory.inject(assignmentComposite, context);
+        catalogsTab.setControl(assignmentComposite);
 
     }
 
