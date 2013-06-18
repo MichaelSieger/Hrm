@@ -7,6 +7,8 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
+import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.ActionContributionItem;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.DoubleClickEvent;
@@ -34,6 +36,7 @@ import de.hswt.hrm.common.ui.swt.layouts.LayoutUtil;
 import de.hswt.hrm.common.ui.swt.table.ColumnComparator;
 import de.hswt.hrm.common.ui.swt.table.ColumnDescription;
 import de.hswt.hrm.common.ui.swt.table.TableViewerController;
+import de.hswt.hrm.evaluation.ui.part.EvaluationPartUtil;
 
 public class CommentComposite extends Composite {
     private final static Logger LOG = LoggerFactory.getLogger(CommentComposite.class);
@@ -52,7 +55,7 @@ public class CommentComposite extends Composite {
     private Text searchText;
     private TableViewer tableViewer;
 
-    private Composite composite;
+    private Composite commentComposite;
 
 	// TODO adapt this to a Comment object and service if it is available
 //    private Collection<Evaluation> evaluations;
@@ -86,10 +89,10 @@ public class CommentComposite extends Composite {
         this.setLayout(new FillLayout());
 		this.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_WHITE));
 
-        composite = new Composite(this, SWT.NONE);
-        composite.setLayout(new GridLayout(1, false));
+        commentComposite = new Composite(this, SWT.NONE);
+        commentComposite.setLayout(new GridLayout(1, false));
 
-        searchText = new Text(composite, SWT.BORDER | SWT.SEARCH | SWT.ICON_SEARCH | SWT.CANCEL
+        searchText = new Text(commentComposite, SWT.BORDER | SWT.SEARCH | SWT.ICON_SEARCH | SWT.CANCEL
                 | SWT.ICON_CANCEL);
         searchText.setMessage(SearchFieldConstants.DEFAULT_SEARCH_STRING);
         searchText.addModifyListener(new ModifyListener() {
@@ -99,7 +102,7 @@ public class CommentComposite extends Composite {
         });
         searchText.setLayoutData(LayoutUtil.createHorzFillData());
 
-        tableViewer = new TableViewer(composite, SWT.BORDER | SWT.FULL_SELECTION);
+        tableViewer = new TableViewer(commentComposite, SWT.BORDER | SWT.FULL_SELECTION);
         tableViewer.addDoubleClickListener(new IDoubleClickListener() {
             public void doubleClick(DoubleClickEvent event) {
                 editComment();
@@ -118,6 +121,59 @@ public class CommentComposite extends Composite {
 //            LOG.error("EvaluationService not injected to EvaluationPart.");
 //        }
     }
+    
+//    private void createActions() {
+//        // TODO translate
+//        Action addCommentAction = new Action("Add") {
+//            @Override
+//            public void run() {
+//                commentComposite.addComment();
+//            }
+//        };
+//        addCommentAction.setDescription("Add's a new comment.");
+//        addSummaryContribution = new ActionContributionItem(addCommentAction);
+//
+//        Action editSummaryAction = new Action("Edit") {
+//            @Override
+//            public void run() {
+//                commentComposite.editEvaluation();
+//            }
+//        };
+//    }
+//    
+//    public void addComponent() {
+//        Comment comment = null;
+//
+//        Optional<comment> newComment = CommentPartUtil.showWizard(context,
+//                shellProvider.getShell(), Optional.fromNullable(comment));
+//
+//        if (newComment.isPresent()) {
+//            comments.add(newComment.get());
+//            tableViewer.refresh();
+//        }
+//    }
+//    
+//    public void editEvaluation() {
+//        // obtain the contact in the column where the doubleClick happend
+//        Comment selectedComment = (Comment) tableViewer.getElementAt(tableViewer.getTable()
+//                .getSelectionIndex());
+//        if (selectedComment == null) {
+//            return;
+//        }
+//        try {
+//            commentService.refresh(selectedComment);
+//            Optional<Comment> updatedComment = CommentPartUtil.showWizard(context,
+//                    shellProvider.getShell(), Optional.of(selectedComment));
+//
+//            if (updatedComment.isPresent()) {
+//                tableViewer.refresh();
+//            }
+//        }
+//        catch (DatabaseException e) {
+//            LOG.error("Could not retrieve the comments from database.", e);
+//            showDBConnectionError();
+//        }
+//    }
 
     private void refreshTable() {
     	// TODO adapt this to a Comment object and service if it is available
