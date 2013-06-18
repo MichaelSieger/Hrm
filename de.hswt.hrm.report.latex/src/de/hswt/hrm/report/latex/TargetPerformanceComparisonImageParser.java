@@ -11,8 +11,6 @@ import de.hswt.hrm.photo.model.Photo;
 // TODO more than 2 photos possible. To implement: even-odd handler 
 public class TargetPerformanceComparisonImageParser {
 
-    private String target;
-
     private StringBuffer buffer = new StringBuffer();
 
     private Properties prop = new Properties();
@@ -25,34 +23,15 @@ public class TargetPerformanceComparisonImageParser {
     private Photo[] pics;
 
     public String parse(String pathDir, Collection<Photo> pictures) throws IOException {
-
+        // TODO check paths
         prop.load(Files.newInputStream(Paths.get(pathDir, "templates",
                 "targetperformancecomparisonimagerow.properties")));
         this.pics = pictures.toArray(new Photo[pictures.size()]);
         buffer.setLength(0);
-        
-        //TODO array indices
-        if (pictures.size() == 1) {
-            buffer.append(prop.getProperty("targetperformancecomparison.image.header.oneimage")
-                    .replace(IMAGE_HEADER_ONE, pics[0].getLabel()));
-            this.appendNewLine();
-            buffer.append(prop.getProperty("targetperformancecomparison.image.row.oneimage")
-                    .replace(IMAGE_ONE, pics[0].getName()));
-            target = buffer.toString();
-        }
-        else if (pictures.size() == 2) {
-            buffer.append(prop.getProperty("targetperformancecomparison.image.header.twoimage")
-                    .replace(IMAGE_HEADER_ONE, pics[0].getLabel())
-                    .replace(IMAGE_HEADER_TWO, pics[1].getLabel()));
-            this.appendNewLine();
-            buffer.append(prop.getProperty("targetperformancecomparison.image.row.twoimage")
-                    .replace(IMAGE_ONE, pics[0].getName()).replace(IMAGE_TWO, pics[1].getName()));
-            this.appendNewLine();
-            target = buffer.toString();
-        }
-        else if ((pictures.size() % 2 == 1)) {
-            for (int i = 0; i < pics.length; i++) {
-                while (i < pics.length - 1) {
+        // Decide, depending on number Photos, what to parse and how
+        for (int i = 0; i <= Math.floor(this.pics.length / 2); i++) {
+            if (pics.length % 2 == 1) {
+                if ((i * 2 + 1) <= pics.length - 2) {
                     buffer.append(prop
                             .getProperty("targetperformancecomparison.image.header.twoimage")
                             .replace(IMAGE_HEADER_ONE, pics[i * 2].getLabel())
@@ -65,31 +44,36 @@ public class TargetPerformanceComparisonImageParser {
                     this.appendNewLine();
 
                 }
-                buffer.append(prop.getProperty("targetperformancecomparison.image.header.oneimage")
-                        .replace(IMAGE_HEADER_ONE, pics[0].getLabel()));
-                this.appendNewLine();
-                buffer.append(prop.getProperty("targetperformancecomparison.image.row.oneimage")
-                        .replace(IMAGE_ONE, pics[0].getName()));
-                this.appendNewLine();
-                target = buffer.toString();
+                else {
+                    buffer.append(prop.getProperty(
+                            "targetperformancecomparison.image.header.oneimage").replace(
+                            IMAGE_HEADER_ONE, pics[pics.length - 1].getLabel()));
+                    this.appendNewLine();
+                    buffer.append(prop
+                            .getProperty("targetperformancecomparison.image.row.oneimage").replace(
+                                    IMAGE_ONE, pics[pics.length - 1].getName()));
+                    this.appendNewLine();
+
+                }
             }
-        }
-        else {
-            for (int i = 0; i < pics.length; i++) {
-                buffer.append(prop.getProperty("targetperformancecomparison.image.header.twoimage")
-                        .replace(IMAGE_HEADER_ONE, pics[0].getLabel())
-                        .replace(IMAGE_HEADER_TWO, pics[1].getLabel()));
-                this.appendNewLine();
-                buffer.append(prop.getProperty("targetperformancecomparison.image.row.twoimage")
-                        .replace(IMAGE_ONE, pics[0].getName())
-                        .replace(IMAGE_TWO, pics[1].getName()));
-                this.appendNewLine();
-                target = buffer.toString();
+            else {
+                if ((i * 2 + 1) <= pics.length - 1) {
+                    buffer.append(prop
+                            .getProperty("targetperformancecomparison.image.header.twoimage")
+                            .replace(IMAGE_HEADER_ONE, pics[i * 2].getLabel())
+                            .replace(IMAGE_HEADER_TWO, pics[i * 2 + 1].getLabel()));
+                    this.appendNewLine();
+                    buffer.append(prop
+                            .getProperty("targetperformancecomparison.image.row.twoimage")
+                            .replace(IMAGE_ONE, pics[i * 2].getName())
+                            .replace(IMAGE_TWO, pics[i * 2 + 1].getName()));
+                    this.appendNewLine();
+                }
             }
 
         }
 
-        return target;
+        return buffer.toString();
 
     }
 
