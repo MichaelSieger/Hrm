@@ -10,6 +10,8 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Optional;
 
+import de.hswt.hrm.common.database.exception.DatabaseException;
+import de.hswt.hrm.common.database.exception.SaveException;
 import de.hswt.hrm.component.model.Component;
 import de.hswt.hrm.component.service.CategoryService;
 import de.hswt.hrm.component.service.ComponentService;
@@ -22,6 +24,9 @@ public class ComponentWizard extends Wizard {
 
     @Inject
     private IEclipseContext context;
+    
+    @Inject
+    private ComponentService service;
     
     private ComponentWizardPageOne first;
     private ComponentWizardPageTwo second;
@@ -60,25 +65,25 @@ public class ComponentWizard extends Wizard {
     }
     
     private boolean editExistingComponent() {
-//        Component c = this.component.get();
-//        try {
-//            c = service.findById(c.getId());
-//            c = setValues(component);
-//            component.update(c);
-//            component = Optional.of(c);
-//        } catch (DatabaseException e) {
-//            LOG.error("An error occured: ", e);
-//        }
+        Component c = this.component.get();
+        try {
+            c = service.findById(c.getId());
+            c = setValues(component);
+            service.update(c);
+            component = Optional.of(c);
+        } catch (DatabaseException e) {
+            LOG.error("An error occured: ", e);
+        }
         return true;
     }
     
     private boolean insertNewComponent() {
         Component c = setValues(Optional.<Component>absent());
-//        try {
-//           component = Optional.of(service.insert(c));
-//        } catch (SaveException e) {
-//            LOG.error("Could not save Element: "+component+" into Database", e);
-//        }
+        try {
+           component = Optional.of(service.insert(c));
+        } catch (SaveException e) {
+            LOG.error("Could not save Element: "+component+" into Database", e);
+        }
         return true;
     }
     
@@ -105,6 +110,7 @@ public class ComponentWizard extends Wizard {
             
         } else {        	
         	component = new Component(first.getName(),second.getImageLR() , second.getImageRL(), second.getImageUD(), second.getImageDU(), first.getQuantifier(), first.getRating());
+        	component.setCategory(first.getCategory());
         }
         
         return component;

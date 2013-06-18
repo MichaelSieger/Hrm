@@ -100,7 +100,7 @@ public class ComponentWizardPageTwo extends WizardPage {
 		lrButton.setLayoutData(LayoutUtil.createRightGridData());
 		formToolkit.adapt(lrButton, true, true);
 		lrButton.setText("Browse ...");
-		setUploadButtons(lrText, lrLabel, lrButton);
+
 
 		lrLabel = new Label(lrComposite, SWT.BORDER);
 		GridData gd = new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1);
@@ -132,7 +132,7 @@ public class ComponentWizardPageTwo extends WizardPage {
 		rlButton.setLayoutData(LayoutUtil.createRightGridData());
 		formToolkit.adapt(rlButton, true, true);
 		rlButton.setText("Browse ...");
-		setUploadButtons(rlText, rlLabel, rlButton);
+
 
 		rlLabel = new Label(rlComposite, SWT.BORDER);
 		gd = new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1);
@@ -164,7 +164,7 @@ public class ComponentWizardPageTwo extends WizardPage {
 		udButton.setLayoutData(LayoutUtil.createRightGridData());
 		formToolkit.adapt(udButton, true, true);
 		udButton.setText("Browse ...");
-		setUploadButtons(udText, udLabel, udButton);
+
 
 		udLabel = new Label(udComposite, SWT.BORDER);
 		gd = new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1);
@@ -195,7 +195,7 @@ public class ComponentWizardPageTwo extends WizardPage {
 		Button duButton = new Button(duComposite, SWT.NONE);
 		duButton.setLayoutData(LayoutUtil.createRightGridData());
 		formToolkit.adapt(duButton, true, true);
-		setUploadButtons(duText, duLabel, duButton);
+		
 		duButton.setText("Browse ...");
 		
 		duLabel = new Label(duComposite, SWT.BORDER);
@@ -204,6 +204,12 @@ public class ComponentWizardPageTwo extends WizardPage {
 		gd.heightHint = 100;
 		duLabel.setLayoutData(gd);
 		formToolkit.adapt(duLabel, true, true);
+		
+		setUploadButtons(duText, duLabel, duButton);
+		setUploadButtons(udText, udLabel, udButton);
+		setUploadButtons(lrText, lrLabel, lrButton);
+		setUploadButtons(rlText, rlLabel, rlButton);
+		
 		
 		if (component.isPresent()) {
 			updateFields();
@@ -322,35 +328,43 @@ public class ComponentWizardPageTwo extends WizardPage {
     }
     
     public byte[] getImageRL(){    	
-		try {
-			return convertPDF(rlText.getText());
-		} catch (IOException e) {
-			e.printStackTrace();
+		if(!rlText.getText().isEmpty()){
+	    	try {
+				return convertPDF(rlText.getText());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 		return null;    	
     }
     public byte[] getImageLR(){    	
-		try {
-			return convertPDF(lrText.getText());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+    	if(!lrText.getText().isEmpty()){
+	    	try {
+				return convertPDF(lrText.getText());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+    	}
 		return null;    	
     }
     public byte[] getImageDU(){    	
-		try {
-			return convertPDF(duText.getText());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+    	if(!duText.getText().isEmpty()){
+	    	try {
+				return convertPDF(duText.getText());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+    	}
 		return null;    	
     }
     public byte[] getImageUD(){    	
-		try {
-			return convertPDF(udText.getText());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+    	if(!udText.getText().isEmpty()){
+	    	try {
+				return convertPDF(udText.getText());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+    	}
 		return null;
     }
 }

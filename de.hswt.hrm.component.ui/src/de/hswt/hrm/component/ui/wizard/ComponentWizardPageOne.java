@@ -1,6 +1,7 @@
 package de.hswt.hrm.component.ui.wizard;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import javax.inject.Inject;
 
@@ -17,6 +18,7 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.swt.widgets.Display;
@@ -189,7 +191,7 @@ public class ComponentWizardPageOne extends WizardPage {
 		addAttributeButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				if(!attributeText.getText().isEmpty()) {
+				if(!attributeText.getText().isEmpty() && !Arrays.asList(attributeList.getItems()).contains(attributeText.getText())) {
 					attributeList.add(attributeText.getText());
 				}
 				attributes.clear();
@@ -260,13 +262,15 @@ public class ComponentWizardPageOne extends WizardPage {
 		IStructuredSelection structuredSelection = (IStructuredSelection) selection;
 		category = (Category) structuredSelection.getFirstElement();
 		name = nameText.getText();
+		rating = ratingCheckButton.getSelection();
+		weight = weightCombo.getSelectionIndex() + 1;
 
 		if (nameText.getText().isEmpty()) {
 			setPageComplete(false);
 			setErrorMessage("Please provide a name.");
 			return;
 		}
-		if (category != null) {
+		if (category == null) {
 			setPageComplete(false);
 			setErrorMessage("Please select a category.");
 			return;
