@@ -93,11 +93,11 @@ public class CatalogAssignmentComposite extends Composite {
 
 	private List<Target> targetFromDB;
 
-	private List<Target> tempTarget;
+	private List<Target> tempTarget = new ArrayList<>();
 
-	private List<Current> tempCurrent;
+	private List<Current> tempCurrent = new ArrayList<>();;
 
-	private List<Activity> tempActivity;
+	private List<Activity> tempActivity = new ArrayList<>();
 
 	private ISelectionChangedListener selectionChangedListener = new ISelectionChangedListener() {
 		@Override
@@ -467,40 +467,6 @@ public class CatalogAssignmentComposite extends Composite {
 
 	}
 
-	/**
-	 * Obtain all assigned targets for a given catalog from the database
-	 * 
-	 * @param c
-	 */
-	private void obtainTargets(Catalog c) {
-		List<Target> targets = null;
-		try {
-			// Obtain a list containing all targets for a given catalog
-			targets = (List<Target>) catalogService.findTargetByCatalog(c);
-
-		} catch (DatabaseException e) {
-
-			LOG.error("An error occured", e);
-		}
-		if (targets.isEmpty()) {
-			LOG.debug("empty targets, using default");
-			availableTarget.setInput(targetFromDB);
-			assignedTarget.getList().removeAll();
-
-		} else {
-			LOG.debug("found " + targets.size() + " assigned items"
-					+ " for catalog " + c.getName());
-			// We have matched targets...
-			tempTarget.clear();
-			tempTarget = new ArrayList<>(targetFromDB);
-			assignedTarget.setInput(targets);
-			tempTarget.removeAll(targets);
-			availableTarget.setInput(tempTarget);
-
-		}
-
-	}
-
 	// Obtain items from the Database
 	private void obtainData() {
 		try {
@@ -590,6 +556,40 @@ public class CatalogAssignmentComposite extends Composite {
 		assignedTarget.addFilter(new CatalogTextFilter());
 		assignedActivity.addFilter(new CatalogTextFilter());
 		assignedCurrent.addFilter(new CatalogTextFilter());
+
+	}
+
+	/**
+	 * Obtain all assigned targets for a given catalog from the database
+	 * 
+	 * @param c
+	 */
+	private void obtainTargets(Catalog c) {
+		List<Target> targets = null;
+		try {
+			// Obtain a list containing all targets for a given catalog
+			targets = (List<Target>) catalogService.findTargetByCatalog(c);
+
+		} catch (DatabaseException e) {
+
+			LOG.error("An error occured", e);
+		}
+		if (targets.isEmpty()) {
+			LOG.debug("empty targets, using default");
+			availableTarget.setInput(targetFromDB);
+			assignedTarget.getList().removeAll();
+
+		} else {
+			LOG.debug("found " + targets.size() + " assigned items"
+					+ " for catalog " + c.getName());
+			// We have already matched targets...
+			tempTarget.clear();
+			tempTarget = new ArrayList<>(targetFromDB);
+			assignedTarget.setInput(targets);
+			tempTarget.removeAll(targets);
+			availableTarget.setInput(tempTarget);
+
+		}
 
 	}
 
