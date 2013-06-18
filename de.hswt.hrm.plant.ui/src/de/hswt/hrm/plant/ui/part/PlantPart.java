@@ -190,7 +190,6 @@ public class PlantPart {
 
         schemeComposite = new SchemeComposite(tabFolder);
         ContextInjectionFactory.inject(schemeComposite, context);
-        schemeTab.setControl(schemeComposite);
     	for (IContributionItem item : schemeComposite.getContributionItems()) {
     		form.getToolBarManager().add(item);
         }
@@ -370,6 +369,8 @@ public class PlantPart {
 		} catch (IOException e) {
 			Throwables.propagate(e);
 		}
+        showSchemeActions();
+        schemeTab.setControl(schemeComposite);
         tabFolder.setSelection(schemeTab);
     }
     
