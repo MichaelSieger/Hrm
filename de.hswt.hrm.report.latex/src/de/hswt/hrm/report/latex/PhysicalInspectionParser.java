@@ -23,8 +23,9 @@ public class PhysicalInspectionParser {
 
     private final String COMMENT = "%";
 
-    private String endTarget;
-    private String rows;
+    private String preTarget;
+    private String target;
+    private StringBuffer targetRow = new StringBuffer();
 
     private float sumRatings;
     private float sumQuantifier;
@@ -42,7 +43,7 @@ public class PhysicalInspectionParser {
         this.parseRow();
         this.parseTable();
 
-        return this.endTarget;
+        return this.target;
     }
 
     private void parseTable() throws IOException {
@@ -59,15 +60,14 @@ public class PhysicalInspectionParser {
             }
         }
 
-        String target;
+        target = null;
         target = buffer.toString();
 
         this.totalGrade = this.sumRatings / this.sumQuantifier;
-        target.replace(ROWS, this.rows);
+        target.replace(ROWS, this.targetRow.toString());
         target.replace(GRADE_SUM, String.valueOf(this.sumRatings));
         target.replace(WHEIGHTED_SUM, String.valueOf(this.sumQuantifier));
         target.replace(RATING_AV, String.valueOf(this.totalGrade));
-        this.endTarget = target;
 
     }
 
@@ -77,7 +77,6 @@ public class PhysicalInspectionParser {
         buffer.setLength(0);
         BufferedReader reader = Files.newBufferedReader(pathRow, Charset.defaultCharset());
         String line = null;
-
         while ((line = reader.readLine()) != null) {
             line = line.trim();
             if (!line.startsWith(COMMENT)) {
@@ -86,9 +85,8 @@ public class PhysicalInspectionParser {
             }
         }
 
-        String preTarget;
-
-        StringBuffer target = new StringBuffer();
+        preTarget = null;
+        targetRow = null;
         for (PhysicalRating rating : this.ratings) {
             // TODO when model ready
             // uncomment the following two lines
@@ -103,9 +101,8 @@ public class PhysicalInspectionParser {
                     .replace(RATING,
                             "String.valueOf(rating.getRating().tofloat()*rating.getComponent().getQuantifier().tofloat())");
             preTarget.replace(PHYS_COMMENT, "rating.getComment()");
-            target.append(preTarget);
+            targetRow.append(preTarget);
         }
-        this.rows = target.toString();
 
     }
 

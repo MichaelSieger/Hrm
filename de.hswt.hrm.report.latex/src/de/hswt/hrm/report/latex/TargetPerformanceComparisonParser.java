@@ -26,8 +26,8 @@ public class TargetPerformanceComparisonParser {
 
     private String line;
     private String target;
-    private String endTarget;
-    private String rowEndTarget;
+    private StringBuffer endTarget = new StringBuffer();
+    private StringBuffer rowEndTarget = new StringBuffer();
 
     private BufferedReader reader;
 
@@ -41,7 +41,7 @@ public class TargetPerformanceComparisonParser {
         this.componentsTable = componentsTable;
         this.path = path;
         this.parseTable();
-        return endTarget;
+        return endTarget.toString();
 
     }
 
@@ -68,11 +68,11 @@ public class TargetPerformanceComparisonParser {
             // TODO set models models
             target.replace(TABLE_COMPONENT_NAME, "");
             target.replace(TABLE_RATING, "");
-            target.replace(TABLE_ROWS, this.rowEndTarget);
+            target.replace(TABLE_ROWS, this.rowEndTarget.toString());
             target.replace(TABLE_IMG_HEADER, "");
             target.replace(TABLE_IMG_ROWS, "");
 
-            endTarget += target;
+            endTarget.append(target);
 
         }
 
@@ -89,6 +89,7 @@ public class TargetPerformanceComparisonParser {
         reader = Files.newBufferedReader(pathRow, Charset.defaultCharset());
         line = null;
         while ((line = reader.readLine()) != null) {
+            // do not print comments
             line = line.trim();
             if (!line.startsWith(COMMENT)) {
                 buffer.append(line);
@@ -102,7 +103,7 @@ public class TargetPerformanceComparisonParser {
             target.replace(ROW_TARGET, "");
             target.replace(ROW_PERFORMANCE, "");
             target.replace(ROW_TASK, "");
-            rowEndTarget += target;
+            rowEndTarget.append(target);
         }
 
     }
