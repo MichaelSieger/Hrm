@@ -81,6 +81,37 @@ public class SchemeService {
 	    return scheme;
 	}
 	
+	/**
+	 * This method does not eager load scheme components. If you need
+	 * components for a certain scheme, you can use {@link #findSchemeComponents(Scheme)}
+	 * to retrieve them.
+	 * 
+	 * @param plant
+	 * @return All schemes for the given plant.
+	 * @throws DatabaseException 
+	 */
+	public Collection<Scheme> findByPlant(final Plant plant) throws DatabaseException {
+		return schemeDao.findByPlant(plant);
+	}
+	
+	/**
+	 * Scheme components get eager load and are present in the returned scheme object.
+	 * 
+	 * @param plant
+	 * @return Current scheme of the given plant.
+	 * @throws DatabaseException 
+	 * @throws ElementNotFoundException If no scheme is available for the given plant.
+	 */
+	public Scheme findCurrentSchemeByPlant(final Plant plant) 
+			throws ElementNotFoundException, DatabaseException {
+		
+		Scheme scheme = schemeDao.findCurrentSchemeByPlant(plant);
+		Collection<SchemeComponent> components = schemeComponentDao.findAllComponentByScheme(scheme);
+		scheme.setSchemeComponents(components);
+		
+		return scheme;
+	}
+	
 	public Collection<SchemeComponent> findSchemeComponents(final Scheme scheme)
 	        throws DatabaseException {
 	    
