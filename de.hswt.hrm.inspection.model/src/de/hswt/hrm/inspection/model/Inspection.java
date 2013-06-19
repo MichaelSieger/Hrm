@@ -22,12 +22,17 @@ public class Inspection {
     private int humidity;
     private String summary;
     private String titel;
+    private String temperatureRating;
+    private String temperatureQuantifier;
+    private String humidityRating;
+    private String humidityQuantifier;
 
     private static final String IS_MANDATORY = "Field is a mandatory.";
     private static final String INVALID_NUMBER = "%d is an invalid number.%n Must be greater 0";
 
     public Inspection(int id, Date jobDate, Date reportDate, Date nextDate, int temperature,
-            int humidity, String summary, String titel) {
+            int humidity, String summary, String titel, String temperatureRating,
+            String temperatureQuantifier, String humidityRating, String humidityQuantifier) {
 
         this.id = id;
 
@@ -38,11 +43,18 @@ public class Inspection {
         setHumidity(humidity);
         setSummary(summary);
         setTitel(titel);
+        setTemperatureRating(temperatureRating);
+        setHumidityRating(humidityRating);
+        setTemperatureQuantifier(temperatureQuantifier);
+        setHumidityQuantifier(humidityQuantifier);
+
     }
 
     public Inspection(Date jobDate, Date reportDate, Date nextDate, int temperature, int humidity,
-            String summary, String titel) {
-        this(-1, jobDate, reportDate, nextDate, temperature, humidity, summary, titel);
+            String summary, String titel, String temperatureRating, String temperatureQuantifier,
+            String humidityRating, String humidityQuantifier) {
+        this(-1, jobDate, reportDate, nextDate, temperature, humidity, summary, titel,
+                temperatureRating, temperatureQuantifier, humidityRating, humidityQuantifier);
     }
 
     public Layout getLayout() {
@@ -151,6 +163,38 @@ public class Inspection {
         this.titel = titel;
     }
 
+    public String getTemperatureRating() {
+        return temperatureRating;
+    }
+
+    public void setTemperatureRating(String temperatureRating) {
+        this.temperatureRating = temperatureRating;
+    }
+
+    public String getTemperatureQuantifier() {
+        return temperatureQuantifier;
+    }
+
+    public void setTemperatureQuantifier(String temperatureQuantifier) {
+        this.temperatureQuantifier = temperatureQuantifier;
+    }
+
+    public String getHumidityRating() {
+        return humidityRating;
+    }
+
+    public void setHumidityRating(String humidityRating) {
+        this.humidityRating = humidityRating;
+    }
+
+    public String getHumidityQuantifier() {
+        return humidityQuantifier;
+    }
+
+    public void setHumidityQuantifier(String humidityQuantifier) {
+        this.humidityQuantifier = humidityQuantifier;
+    }
+
     public int getId() {
         return id;
     }
@@ -162,6 +206,9 @@ public class Inspection {
         result = prime * result + ((checker == null) ? 0 : checker.hashCode());
         result = prime * result + ((contractor == null) ? 0 : contractor.hashCode());
         result = prime * result + humidity;
+        result = prime * result
+                + ((humidityQuantifier == null) ? 0 : humidityQuantifier.hashCode());
+        result = prime * result + ((humidityRating == null) ? 0 : humidityRating.hashCode());
         result = prime * result + id;
         result = prime * result + ((jobDate == null) ? 0 : jobDate.hashCode());
         result = prime * result + ((layout == null) ? 0 : layout.hashCode());
@@ -171,6 +218,9 @@ public class Inspection {
         result = prime * result + ((requester == null) ? 0 : requester.hashCode());
         result = prime * result + ((summary == null) ? 0 : summary.hashCode());
         result = prime * result + temperature;
+        result = prime * result
+                + ((temperatureQuantifier == null) ? 0 : temperatureQuantifier.hashCode());
+        result = prime * result + ((temperatureRating == null) ? 0 : temperatureRating.hashCode());
         result = prime * result + ((titel == null) ? 0 : titel.hashCode());
         return result;
     }
@@ -204,6 +254,22 @@ public class Inspection {
             return false;
         }
         if (humidity != other.humidity) {
+            return false;
+        }
+        if (humidityQuantifier == null) {
+            if (other.humidityQuantifier != null) {
+                return false;
+            }
+        }
+        else if (!humidityQuantifier.equals(other.humidityQuantifier)) {
+            return false;
+        }
+        if (humidityRating == null) {
+            if (other.humidityRating != null) {
+                return false;
+            }
+        }
+        else if (!humidityRating.equals(other.humidityRating)) {
             return false;
         }
         if (id != other.id) {
@@ -268,6 +334,22 @@ public class Inspection {
         if (temperature != other.temperature) {
             return false;
         }
+        if (temperatureQuantifier == null) {
+            if (other.temperatureQuantifier != null) {
+                return false;
+            }
+        }
+        else if (!temperatureQuantifier.equals(other.temperatureQuantifier)) {
+            return false;
+        }
+        if (temperatureRating == null) {
+            if (other.temperatureRating != null) {
+                return false;
+            }
+        }
+        else if (!temperatureRating.equals(other.temperatureRating)) {
+            return false;
+        }
         if (titel == null) {
             if (other.titel != null) {
                 return false;
@@ -278,6 +360,5 @@ public class Inspection {
         }
         return true;
     }
-
 
 }
