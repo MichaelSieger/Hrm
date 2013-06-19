@@ -1,9 +1,18 @@
 package de.hswt.hrm.photo.ui.wizard;
 
+import java.awt.Graphics;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+import javax.swing.JFileChooser;
+
+import org.eclipse.e4.core.contexts.IEclipseContext;
+import org.eclipse.emf.common.EMFPlugin.InternalEclipsePlugin;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.window.IShellProvider;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
@@ -32,9 +41,13 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.ui.forms.widgets.Section;
+import org.eclipse.ui.forms.widgets.FormToolkit;
 
 // TODO read a given single image file or a directory (not recursive),
 // see showFileSelectionDialog(...)
@@ -56,6 +69,15 @@ public class PhotoWizardPageOne extends WizardPage {
 	private TableColumn nameClmn;
 	
 	private TableColumn fileClmn;
+	
+	private Composite container;
+
+	private Label lblFiles;
+
+	private Canvas canvas;
+	private final FormToolkit formToolkit = new FormToolkit(Display.getDefault());
+
+	private Label lblNewLabel;
 
 	/**
 	 * Create the wizard.
@@ -79,7 +101,7 @@ public class PhotoWizardPageOne extends WizardPage {
 	public void createControl(Composite parent) {
     	parent.setLayout(new PageContainerFillLayout());
     	
-		Composite container = new Composite(parent, SWT.NULL);
+		container = new Composite(parent, SWT.NULL);
 		setControl(container);
 		container.setLayout(new FillLayout());
 		
@@ -109,9 +131,10 @@ public class PhotoWizardPageOne extends WizardPage {
 				showFileSelectionDialog();
 			}
 		});
+	
 		btnSelect.setText("Select ...");
 
-		Label lblFiles = new Label(composite, SWT.NONE);
+		lblFiles = new Label(composite, SWT.NONE);
 		lblFiles.setLayoutData(LayoutUtil.createLeftGridData());
 		lblFiles.setText("Files");
 
@@ -121,6 +144,19 @@ public class PhotoWizardPageOne extends WizardPage {
 		photosTable.setLayoutData(gd);
 		photosTable.setHeaderVisible(true);
 		photosTable.setLinesVisible(true);
+		photosTable.addSelectionListener(new SelectionListener() {
+			
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				setPreview();
+			}
+			
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+				
+			}
+		});
+
 		
 		fileClmn = new TableColumn(photosTable, SWT.NONE);
 		fileClmn.setText("File");
@@ -135,6 +171,7 @@ public class PhotoWizardPageOne extends WizardPage {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				deleteSelectedPhoto();
+				setPreview();
 			}
 		});
 		btnDelete.setText("Delete");
@@ -144,13 +181,35 @@ public class PhotoWizardPageOne extends WizardPage {
 		lblPhoto.setLayoutData(LayoutUtil.createLeftGridData());
 		lblPhoto.setText("Photo");
 
-		Canvas canvas = new Canvas(composite, SWT.NO_FOCUS);
+		canvas = new Canvas(composite, SWT.NO_FOCUS);
 		canvas.setVisible(true);
 		canvas.setEnabled(false);
 		canvas.setBackground(new Color(Display.getCurrent(), 255, 255, 255));
 		canvas.setLayoutData(LayoutUtil.createFillData());
+		canvas.setLayout(new GridLayout(1, false));
+		
+		lblNewLabel = formToolkit.createLabel(canvas, "", SWT.NONE);
+		GridData gd_lblNewLabel = new GridData(SWT.FILL, SWT.CENTER, true, true, 1, 1);
+		gd_lblNewLabel.heightHint = 300;
+		gd_lblNewLabel.widthHint = 300;
+		lblNewLabel.setLayoutData(gd_lblNewLabel);
+		lblNewLabel.setBounds(0, 0, 55, 15);
+		new Label(composite, SWT.NONE);
 	}
 
+	private Image resize(Image image, int width, int height) {
+		Image scaled = new Image(Display.getDefault(), width, height);
+		GC gc = new GC(scaled);
+		gc.setAntialias(SWT.ON);
+		gc.setInterpolation(SWT.HIGH);
+		gc.drawImage(image, 0, 0, 
+		image.getBounds().width, image.getBounds().height, 
+		0, 0, width, height);
+		gc.dispose();
+		image.dispose(); // don't forget about me!
+		return scaled;
+	}
+	
 	protected void addFileToTable(String file, String name) {
 		addFileToTable(null, file, name);
 	}
@@ -179,8 +238,10 @@ public class PhotoWizardPageOne extends WizardPage {
 		if (!showDeleteConfirmation(item.getText(0))) {
 			return;
 		}
+		photosTable.remove(photosTable.getSelectionIndex());
+		photosTable.redraw();
 		
-		//TODO remove selected photo
+		
 	}
 	
 	private boolean showDeleteConfirmation(String photo) {
@@ -189,22 +250,43 @@ public class PhotoWizardPageOne extends WizardPage {
 	}
 	
 	private void showFileSelectionDialog() {
-		FileDialog fileDialog = new FileDialog(null, SWT.MULTI);
+		FileDialog fileDialog = new FileDialog(container.getShell(), SWT.MULTI);
+//
 //        fileDialog.setFilterPath(fileFilterPath);
 //        
-//        fileDialog.setFilterExtensions(new String[]{"*.rtf", "*.html", "*.*"});
-//        fileDialog.setFilterNames(new String[]{ "Rich Text Format", "HTML Document", "Any"});
+        fileDialog.setFilterExtensions(new String[]{"*.jpg", "*.bmp",  "*.gif", "*.png"});
 //        
-//        String firstFile = fileDialog.open();
-//
-//        if(firstFile != null) {
+        String firstFile = fileDialog.open();
+
+        if(firstFile != null) {
 //          fileFilterPath = fileDialog.getFilterPath();
-//          String[] selectedFiles = fileDialog.getFileNames();
+          String[] selectedFiles = fileDialog.getFileNames();
 //          StringBuffer sb = new StringBuffer("Selected files under dir " + fileDialog.getFilterPath() +  ": \n");
 //          for(int i=0; i<selectedFiles.length; i++) {
 //            sb.append(selectedFiles[i] + "\n");
 //          }
-//          label.setText(sb.toString());
-//        }
+          List<String> paths = new ArrayList<String>();
+          for( int i = 0; i < selectedFiles.length ; i++){
+        	  paths.add(i, fileDialog.getFilterPath() + File.separatorChar + selectedFiles[i]);        	  
+          }
+          
+          for(String path : paths){
+        	  File a = new File(path);
+        	  addFileToTable(a,a.getName(),a.getName());          
+          }
+        }
+	}
+	
+	private void setPreview(){
+		if(photosTable.getSelectionIndex() != -1){
+			TableItem [] tableItems = photosTable.getItems();
+			File file = (File)tableItems[photosTable.getSelectionIndex()].getData();
+			Image image = new Image(canvas.getDisplay(),file.getAbsolutePath());
+			Image sacledImage = resize(image, lblNewLabel.getBounds().width, lblNewLabel.getBounds().height);
+			lblNewLabel.setBackgroundImage(sacledImage);
+		} else {
+			lblNewLabel.setBackgroundImage(null);
+		}
+		
 	}
 }

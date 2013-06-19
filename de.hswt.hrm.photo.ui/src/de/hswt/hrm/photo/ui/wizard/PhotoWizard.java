@@ -25,12 +25,16 @@ public class PhotoWizard extends Wizard {
     private Optional<List<Photo>> photos;
 
     private Optional<List<Photo>> currentPhotoList;
+    
+    @Inject
+    IEclipseContext context;
 
     
     
     public PhotoWizard(Optional<List<Photo>> photos) {
         this.photos = photos;
         first = new PhotoWizardPageOne(photos);
+        ContextInjectionFactory.inject(first, context);
         
         if (photos.isPresent()) {
         	setWindowTitle("Edit photos");
