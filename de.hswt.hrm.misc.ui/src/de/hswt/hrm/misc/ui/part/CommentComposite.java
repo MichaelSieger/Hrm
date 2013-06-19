@@ -1,6 +1,7 @@
 package de.hswt.hrm.misc.ui.part;
 
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -36,7 +37,11 @@ import de.hswt.hrm.common.ui.swt.layouts.LayoutUtil;
 import de.hswt.hrm.common.ui.swt.table.ColumnComparator;
 import de.hswt.hrm.common.ui.swt.table.ColumnDescription;
 import de.hswt.hrm.common.ui.swt.table.TableViewerController;
+import de.hswt.hrm.evaluation.model.Evaluation;
 import de.hswt.hrm.evaluation.ui.part.EvaluationPartUtil;
+import de.hswt.hrm.misc.comment.model.Comment;
+import de.hswt.hrm.misc.ui.CommentFilter.CommentFilter;
+import de.hswt.hrm.misc.ui.CommentWizard.CommentPartUtil;
 
 public class CommentComposite extends Composite {
     private final static Logger LOG = LoggerFactory.getLogger(CommentComposite.class);
@@ -56,9 +61,9 @@ public class CommentComposite extends Composite {
     private TableViewer tableViewer;
 
     private Composite commentComposite;
+    
+    private Collection<Comment> comments;
 
-	// TODO adapt this to a Comment object and service if it is available
-//    private Collection<Evaluation> evaluations;
 
 	/**
 	 * Do not use this constructor when instantiate this composite! It is only
@@ -122,44 +127,46 @@ public class CommentComposite extends Composite {
 //        }
     }
     
-//    private void createActions() {
-//        // TODO translate
-//        Action addCommentAction = new Action("Add") {
-//            @Override
-//            public void run() {
-//                commentComposite.addComment();
-//            }
-//        };
-//        addCommentAction.setDescription("Add's a new comment.");
-//        addSummaryContribution = new ActionContributionItem(addCommentAction);
-//
-//        Action editSummaryAction = new Action("Edit") {
-//            @Override
-//            public void run() {
-//                commentComposite.editEvaluation();
-//            }
-//        };
-//    }
-//    
-//    public void addComponent() {
-//        Comment comment = null;
-//
-//        Optional<comment> newComment = CommentPartUtil.showWizard(context,
-//                shellProvider.getShell(), Optional.fromNullable(comment));
-//
-//        if (newComment.isPresent()) {
-//            comments.add(newComment.get());
-//            tableViewer.refresh();
-//        }
-//    }
-//    
-//    public void editEvaluation() {
-//        // obtain the contact in the column where the doubleClick happend
-//        Comment selectedComment = (Comment) tableViewer.getElementAt(tableViewer.getTable()
-//                .getSelectionIndex());
-//        if (selectedComment == null) {
-//            return;
-//        }
+    private void createActions() {
+        // TODO translate
+        Action addCommentAction = new Action("Add") {
+            @Override
+            public void run() {
+                addComment();
+            }
+        };
+        addCommentAction.setDescription("Add's a new comment.");
+        //addCommentContribution = new ActionContributionItem(addCommentAction);
+
+        Action editSummaryAction = new Action("Edit") {
+            @Override
+            public void run() {
+                editComment();
+            }
+        };
+    }
+    
+    public void addComment() {
+        Comment comment = null;
+
+        Optional<Comment> newComment = CommentPartUtil.showWizard(context,
+                shellProvider.getShell(), Optional.fromNullable(comment));
+
+        if (newComment.isPresent()) {
+            comments.add(newComment.get());
+            tableViewer.refresh();
+        }
+    }
+    
+    public void editComment() {
+        // obtain the contact in the column where the doubleClick happend
+        Comment selectedComment = (Comment) tableViewer.getElementAt(tableViewer.getTable()
+                .getSelectionIndex());
+        if (selectedComment == null) {
+            return;
+        }
+      Optional<Comment> updatedComment = CommentPartUtil.showWizard(context,
+      shellProvider.getShell(), Optional.of(selectedComment));
 //        try {
 //            commentService.refresh(selectedComment);
 //            Optional<Comment> updatedComment = CommentPartUtil.showWizard(context,
@@ -173,7 +180,7 @@ public class CommentComposite extends Composite {
 //            LOG.error("Could not retrieve the comments from database.", e);
 //            showDBConnectionError();
 //        }
-//    }
+    }
 
     private void refreshTable() {
     	// TODO adapt this to a Comment object and service if it is available
@@ -185,28 +192,35 @@ public class CommentComposite extends Composite {
 //            LOG.error("Unable to retrieve list of comments from database.", e);
 //            showDBConnectionError();
 //        }
+        this.comments = new LinkedList<Comment>();
+        Comment a = new Comment("asdasd","sadasd");
+        Comment b = new Comment("asasddasd","sadasd");
+        Comment c = new Comment("asdaasdasdasdsd","sadasd");
+        this.comments.add(a);
+        this.comments.add(b);
+        this.comments.add(c);
+        tableViewer.setInput(this.comments);
     }
 
     private void initializeTable() {
-    	// TODO adapt this to a Comment object and service if it is available
-//        List<ColumnDescription<Evaluation>> columns = EvaluationPartUtil.getColumns();
-//
-//        // Create columns in tableviewer
-//        TableViewerController<Evaluation> filler = new TableViewerController<>(tableViewer);
-//        filler.createColumns(columns);
-//
-//        // Enable column selection
-//        filler.createColumnSelectionMenu();
-//
-//        // Enable sorting
-//        ColumnComparator<Evaluation> comperator = new ColumnComparator<>(columns);
-//        filler.enableSorting(comperator);
-//
-//        // Add dataprovider that handles our collection
-//        tableViewer.setContentProvider(ArrayContentProvider.getInstance());
-//
-//        // Enable filtering
-//        tableViewer.addFilter(new EvaluationFilter());
+        List<ColumnDescription<Comment>> columns = CommentPartUtil.getColumns();
+
+        // Create columns in tableviewer
+        TableViewerController<Comment> filler = new TableViewerController<>(tableViewer);
+        filler.createColumns(columns);
+
+        // Enable column selection
+        filler.createColumnSelectionMenu();
+
+        // Enable sorting
+        ColumnComparator<Comment> comperator = new ColumnComparator<>(columns);
+        filler.enableSorting(comperator);
+
+        // Add dataprovider that handles our collection
+        tableViewer.setContentProvider(ArrayContentProvider.getInstance());
+
+        // Enable filtering
+        tableViewer.addFilter(new CommentFilter());
     }
 
     private void showDBConnectionError() {
@@ -216,10 +230,9 @@ public class CommentComposite extends Composite {
     }
 
     private void updateTableFilter(String filterString) {
-    	// TODO adapt this to a Comment object and service if it is available
-//        EvaluationFilter filter = (EvaluationFilter) tableViewer.getFilters()[0];
-//        filter.setSearchString(filterString);
-//        tableViewer.refresh();
+        CommentFilter filter = (CommentFilter) tableViewer.getFilters()[0];
+        filter.setSearchString(filterString);
+        tableViewer.refresh();
     }
 
     /**
@@ -228,47 +241,5 @@ public class CommentComposite extends Composite {
      * @param event
      */
 
-    public void addComment() {
-    	// TODO adapt this to a Comment object and service if it is available
-//        Evaluation eval = null;
-//
-//        Optional<Evaluation> newEval = EvaluationPartUtil.showWizard(context,
-//                shellProvider.getShell(), Optional.fromNullable(eval));
-//
-//        if (newEval.isPresent()) {
-//            evaluations.add(newEval.get());
-//            tableViewer.refresh();
-//        }
-    }
 
-    /**
-     * This method is called whenever a doubleClick onto the Tableviewer occurs. It obtains the
-     * comment from the selected column of the TableViewer. The Contact is passed to the
-     * CommentWizard. When the Wizard has finished, the contact will be updated in the Database
-     * 
-     * @param event
-     *            Event which occured within SWT
-     */
-    public void editComment() {
-    	// TODO adapt this to a Comment object and service if it is available
-//        // obtain the contact in the column where the doubleClick happend
-//        Evaluation selectedEval = (Evaluation) tableViewer.getElementAt(tableViewer.getTable()
-//                .getSelectionIndex());
-//        if (selectedEval == null) {
-//            return;
-//        }
-//        try {
-//            evalService.refresh(selectedEval);
-//            Optional<Evaluation> updatedEval = EvaluationPartUtil.showWizard(context,
-//                    shellProvider.getShell(), Optional.of(selectedEval));
-//
-//            if (updatedEval.isPresent()) {
-//                tableViewer.refresh();
-//            }
-//        }
-//        catch (DatabaseException e) {
-//            LOG.error("Could not retrieve the comments from database.", e);
-//            showDBConnectionError();
-//        }
-    }
 }

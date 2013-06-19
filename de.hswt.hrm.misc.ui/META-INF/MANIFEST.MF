@@ -11,7 +11,12 @@ Import-Package: de.hswt.hrm.common.database.exception,
  de.hswt.hrm.common.ui.swt.table,
  de.hswt.hrm.common.ui.swt.utils,
  de.hswt.hrm.common.ui.swt.wizards,
- de.hswt.hrm.evaluation.ui.part
+ de.hswt.hrm.evaluation.model,
+ de.hswt.hrm.evaluation.service,
+ de.hswt.hrm.evaluation.ui.part,
+ de.hswt.hrm.misc.comment.model,
+ org.eclipse.e4.xwt,
+ org.eclipse.e4.xwt.forms
 Require-Bundle: org.eclipse.jface;bundle-version="3.8.102",
  org.eclipse.swt;bundle-version="3.100.1",
  org.slf4j.api;bundle-version="1.6.4",
