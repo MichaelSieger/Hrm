@@ -92,6 +92,10 @@ CREATE  TABLE IF NOT EXISTS `Report` (
   `Report_Humidity` VARCHAR(45) NULL ,
   `Report_Summary` TEXT NULL ,
   `Report_Titel` VARCHAR(255) NULL ,
+  `Report_Humidity_Rating` INT NULL ,
+  `Report_Humidity_Quantifier` INT NULL ,
+  `Report_Airtemperature_Rating` INT NULL ,
+  `Report_Airtemperature_Quantifier` INT NULL ,
   PRIMARY KEY (`Report_ID`) ,
   INDEX `Report_Layout_IDx` (`Report_Layout_FK` ASC) ,
   INDEX `Report_Plant_IDx` (`Report_Plant_FK` ASC) ,
@@ -613,4 +617,5 @@ CREATE  TABLE IF NOT EXISTS `Note` (
   `Note_Text` TEXT NULL ,
   PRIMARY KEY (`Note_ID`) )
 ENGINE = InnoDB;
+
 
