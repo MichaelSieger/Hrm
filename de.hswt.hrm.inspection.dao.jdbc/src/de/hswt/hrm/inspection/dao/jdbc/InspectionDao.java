@@ -1,5 +1,6 @@
 package de.hswt.hrm.inspection.dao.jdbc;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.sql.Connection;
@@ -50,8 +51,39 @@ public class InspectionDao implements IInspectionDao {
 
     @Override
     public Inspection findById(int id) throws DatabaseException, ElementNotFoundException {
-        // TODO Auto-generated method stub
-        return null;
+        checkArgument(id >= 0, "ID must be non negative.");
+
+        SqlQueryBuilder builder = new SqlQueryBuilder();
+        builder.select(TABLE_NAME, Fields.ID, Fields.REQUESTER_FK, Fields.CONTRACTOR_FK,
+                Fields.CHECKER_FK, Fields.JOBDATE, Fields.REPORTDATE, Fields.NEXTDATE,
+                Fields.TEMPERATURE, Fields.HUMIDITY, Fields.SUMMARY, Fields.TITEL,
+                Fields.TEMPERATURERATING, Fields.TEMPERATUREQUANTIFIER, Fields.HUMIDITYRATING,
+                Fields.HUMIDITYQUANTIFIER);
+        builder.where(Fields.ID);
+
+        String query = builder.toString();
+
+        try (Connection con = DatabaseFactory.getConnection()) {
+            try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
+                stmt.setParameter(Fields.ID, id);
+
+                ResultSet rs = stmt.executeQuery();
+                Collection<Inspection> ratings = fromResultSet(rs, Optional.<Inspection> absent());
+                rs.close();
+
+                if (ratings.isEmpty()) {
+                    throw new ElementNotFoundException();
+                }
+                else if (ratings.size() > 1) {
+                    throw new DatabaseException("ID is not unique.");
+                }
+
+                return ratings.iterator().next();
+            }
+        }
+        catch (SQLException e) {
+            throw new DatabaseException("Unknown error.", e);
+        }
     }
 
     @Override
