@@ -89,16 +89,7 @@ public class InspectionPart {
 		tabFolder.setBackgroundMode(SWT.INHERIT_FORCE);
 		formToolkit.adapt(tabFolder);
 		formToolkit.paintBordersFor(tabFolder);
-		tabFolder.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				if (tabFolder.getItem(tabFolder.getSelectionIndex()).equals(overviewTab)) {
-					showOverviewActions(true);
-				} else {
-					showOverviewActions(false);
-				}
-			}
-		});
+
 		
 		overviewTab = new TabItem(tabFolder, SWT.NONE);
 		overviewTab.setText("Overview");
@@ -135,6 +126,16 @@ public class InspectionPart {
 		performanceComposite = new ComponentSelectionComposite(tabFolder, ReportPerformanceComposite.class);
 		ContextInjectionFactory.inject(performanceComposite, context);
 		performanceTab.setControl(performanceComposite);
+		tabFolder.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				if (tabFolder.getItem(tabFolder.getSelectionIndex()).equals(overviewTab)) {
+					showOverviewActions(true);
+				} else {
+					showOverviewActions(false);
+				}
+			}
+		});
 		
 		createActions();
 	}
