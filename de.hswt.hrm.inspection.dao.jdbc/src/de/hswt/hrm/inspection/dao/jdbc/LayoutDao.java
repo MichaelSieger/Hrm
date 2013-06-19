@@ -26,7 +26,7 @@ public class LayoutDao implements ILayoutDao {
     public Collection<Layout> findAll() throws DatabaseException {
 
         SqlQueryBuilder builder = new SqlQueryBuilder();
-        builder.select(TABLE_NAME, Fields.ID, Fields.NAME);
+        builder.select(TABLE_NAME, Fields.ID, Fields.NAME, Fields.FILENAME);
 
         final String query = builder.toString();
 
@@ -51,7 +51,7 @@ public class LayoutDao implements ILayoutDao {
         checkArgument(id >= 0, "Id must not be negative.");
 
         SqlQueryBuilder builder = new SqlQueryBuilder();
-        builder.select(TABLE_NAME, Fields.ID, Fields.NAME);
+        builder.select(TABLE_NAME, Fields.ID, Fields.NAME, Fields.FILENAME);
         builder.where(Fields.ID);
 
         final String query = builder.toString();
@@ -82,13 +82,14 @@ public class LayoutDao implements ILayoutDao {
     @Override
     public Layout insert(Layout layout) throws SaveException {
         SqlQueryBuilder builder = new SqlQueryBuilder();
-        builder.insert(TABLE_NAME, Fields.NAME);
+        builder.insert(TABLE_NAME, Fields.NAME, Fields.FILENAME);
 
         final String query = builder.toString();
 
         try (Connection con = DatabaseFactory.getConnection()) {
             try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
                 stmt.setParameter(Fields.NAME, layout.getName());
+                stmt.setParameter(Fields.FILENAME, layout.getFileName());
 
                 int affectedRows = stmt.executeUpdate();
                 if (affectedRows != 1) {
@@ -100,7 +101,7 @@ public class LayoutDao implements ILayoutDao {
                         int id = generatedKeys.getInt(1);
 
                         // Create new Layout with id
-                        Layout inserted = new Layout(id, layout.getName());
+                        Layout inserted = new Layout(id, layout.getName(), layout.getFileName());
                         return inserted;
                     }
                     else {
@@ -124,7 +125,7 @@ public class LayoutDao implements ILayoutDao {
         }
 
         SqlQueryBuilder builder = new SqlQueryBuilder();
-        builder.update(TABLE_NAME, Fields.NAME);
+        builder.update(TABLE_NAME, Fields.NAME, Fields.FILENAME);
         builder.where(Fields.ID);
 
         final String query = builder.toString();
@@ -133,6 +134,7 @@ public class LayoutDao implements ILayoutDao {
             try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
                 stmt.setParameter(Fields.ID, layout.getId());
                 stmt.setParameter(Fields.NAME, layout.getName());
+                stmt.setParameter(Fields.FILENAME, layout.getFileName());
 
                 int affectedRows = stmt.executeUpdate();
                 if (affectedRows != 1) {
@@ -153,8 +155,10 @@ public class LayoutDao implements ILayoutDao {
         while (rs.next()) {
             int id = rs.getInt(Fields.ID);
             String layoutName = rs.getString(Fields.NAME);
+            String layoutFileName = rs.getString(Fields.FILENAME);
 
-            Layout eval = new Layout(id, layoutName);
+            
+            Layout eval = new Layout(id, layoutName, layoutFileName);
 
             layoutList.add(eval);
         }
@@ -167,6 +171,7 @@ public class LayoutDao implements ILayoutDao {
     private static class Fields {
         public static final String ID = "Layout_ID";
         public static final String NAME = "Layout_Name";
+        public static final String FILENAME = "Layout_Filename";
     }
 
 }
