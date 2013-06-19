@@ -1,7 +1,18 @@
 package de.hswt.hrm.inspection.dao.jdbc;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Collection;
 
+import com.google.common.base.Optional;
+
+import de.hswt.hrm.common.database.DatabaseFactory;
+import de.hswt.hrm.common.database.NamedParameterStatement;
+import de.hswt.hrm.common.database.SqlQueryBuilder;
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.ElementNotFoundException;
 import de.hswt.hrm.common.database.exception.SaveException;
@@ -12,8 +23,29 @@ public class InspectionDao implements IInspectionDao {
 
     @Override
     public Collection<Inspection> findAll() throws DatabaseException {
-        // TODO Auto-generated method stub
-        return null;
+        SqlQueryBuilder builder = new SqlQueryBuilder();
+        builder.select(TABLE_NAME, Fields.ID, Fields.REQUESTER_FK, Fields.CONTRACTOR_FK,
+                Fields.CHECKER_FK, Fields.JOBDATE, Fields.REPORTDATE, Fields.NEXTDATE,
+                Fields.TEMPERATURE, Fields.HUMIDITY, Fields.SUMMARY, Fields.TITEL,
+                Fields.TEMPERATURERATING, Fields.TEMPERATUREQUANTIFIER, Fields.HUMIDITYRATING,
+                Fields.HUMIDITYQUANTIFIER);
+
+        String query = builder.toString();
+
+        try (Connection con = DatabaseFactory.getConnection()) {
+            try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
+
+                ResultSet rs = stmt.executeQuery();
+                Collection<Inspection> inspections = fromResultSet(rs,
+                        Optional.<Inspection> absent());
+                rs.close();
+
+                return inspections;
+            }
+        }
+        catch (SQLException e) {
+            throw new DatabaseException("Unexpected error.", e);
+        }
     }
 
     @Override
@@ -34,15 +66,26 @@ public class InspectionDao implements IInspectionDao {
 
     }
 
+    private Collection<Inspection> fromResultSet(final ResultSet rs, Optional<Inspection> inspection)
+            throws SQLException, ElementNotFoundException, DatabaseException {
+
+        checkNotNull(rs, "Result must not be null.");
+        Collection<Inspection> inspectionList = new ArrayList<>();
+
+        // FIXME
+
+        return inspectionList;
+    }
+
     private static final String TABLE_NAME = "Report";
 
     private static final class Fields {
         public static final String ID = "Report_ID";
-        public static final String LAYOUT = "Report_Layout_FK";
-        public static final String PLANT = "Report_Plant_FK";
-        public static final String REQUESTER = "Report_Requester_FK";
-        public static final String CONTRACTOR = "Report_Contractor_FK";
-        public static final String CHECKER = "Report_Checker_FK";
+        public static final String LAYOUT_KF = "Report_Layout_FK";
+        public static final String PLANT_FK = "Report_Plant_FK";
+        public static final String REQUESTER_FK = "Report_Requester_FK";
+        public static final String CONTRACTOR_FK = "Report_Contractor_FK";
+        public static final String CHECKER_FK = "Report_Checker_FK";
         public static final String JOBDATE = "Report_Jobdate";
         public static final String REPORTDATE = "Report_Reportdate";
         public static final String NEXTDATE = "Report_Nextdate";
