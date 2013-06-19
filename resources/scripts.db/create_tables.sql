@@ -70,6 +70,7 @@ ENGINE = InnoDB;
 CREATE  TABLE IF NOT EXISTS `Layout` (
   `Layout_ID` INT NOT NULL AUTO_INCREMENT ,
   `Layout_Name` VARCHAR(45) NOT NULL ,
+  `Layout_Filename` VARCHAR(255) NULL ,
   PRIMARY KEY (`Layout_ID`) )
 ENGINE = InnoDB;
 
@@ -177,7 +178,7 @@ CREATE  TABLE IF NOT EXISTS `Component` (
   `Component_Symbol_RL_FK` INT NULL ,
   `Component_Symbol_UD_FK` INT NULL ,
   `Component_Symbol_DU_FK` INT NULL ,
-  `Component_Quantifier` INT NULL DEFAULT -1,
+  `Component_Quantifier` INT NULL DEFAULT -1 ,
   `Component_Category_FK` INT NULL ,
   `Component_Bool_Rating` TINYINT(1) NULL ,
   PRIMARY KEY (`Component_ID`) ,
@@ -219,8 +220,9 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `Biological_Flag` (
   `Flag_ID` INT NOT NULL AUTO_INCREMENT ,
-  `Flag_Name` VARCHAR(45) NULL UNIQUE,
-  PRIMARY KEY (`Flag_ID`) )
+  `Flag_Name` VARCHAR(45) NULL ,
+  PRIMARY KEY (`Flag_ID`) ,
+  UNIQUE INDEX `Flag_Name_UNIQUE` (`Flag_Name` ASC) )
 ENGINE = InnoDB;
 
 
@@ -600,6 +602,7 @@ CREATE  TABLE IF NOT EXISTS `Summary` (
   `Summary_Text` TEXT NULL ,
   PRIMARY KEY (`Summary_ID`) )
 ENGINE = InnoDB;
+
 
 -- -----------------------------------------------------
 -- Table `Note`
