@@ -25,11 +25,11 @@ public class InspectionDao implements IInspectionDao {
     @Override
     public Collection<Inspection> findAll() throws DatabaseException {
         SqlQueryBuilder builder = new SqlQueryBuilder();
-        builder.select(TABLE_NAME, Fields.ID, Fields.REQUESTER_FK, Fields.CONTRACTOR_FK,
-                Fields.CHECKER_FK, Fields.JOBDATE, Fields.REPORTDATE, Fields.NEXTDATE,
-                Fields.TEMPERATURE, Fields.HUMIDITY, Fields.SUMMARY, Fields.TITEL,
-                Fields.TEMPERATURERATING, Fields.TEMPERATUREQUANTIFIER, Fields.HUMIDITYRATING,
-                Fields.HUMIDITYQUANTIFIER);
+        builder.select(TABLE_NAME, Fields.ID, Fields.LAYOUT_FK, Fields.PLANT_FK,
+                Fields.REQUESTER_FK, Fields.CONTRACTOR_FK, Fields.CHECKER_FK, Fields.JOBDATE,
+                Fields.REPORTDATE, Fields.NEXTDATE, Fields.TEMPERATURE, Fields.HUMIDITY,
+                Fields.SUMMARY, Fields.TITEL, Fields.TEMPERATURERATING,
+                Fields.TEMPERATUREQUANTIFIER, Fields.HUMIDITYRATING, Fields.HUMIDITYQUANTIFIER);
 
         String query = builder.toString();
 
@@ -54,11 +54,11 @@ public class InspectionDao implements IInspectionDao {
         checkArgument(id >= 0, "ID must be non negative.");
 
         SqlQueryBuilder builder = new SqlQueryBuilder();
-        builder.select(TABLE_NAME, Fields.ID, Fields.REQUESTER_FK, Fields.CONTRACTOR_FK,
-                Fields.CHECKER_FK, Fields.JOBDATE, Fields.REPORTDATE, Fields.NEXTDATE,
-                Fields.TEMPERATURE, Fields.HUMIDITY, Fields.SUMMARY, Fields.TITEL,
-                Fields.TEMPERATURERATING, Fields.TEMPERATUREQUANTIFIER, Fields.HUMIDITYRATING,
-                Fields.HUMIDITYQUANTIFIER);
+        builder.select(TABLE_NAME, Fields.ID, Fields.LAYOUT_FK, Fields.PLANT_FK,
+                Fields.REQUESTER_FK, Fields.CONTRACTOR_FK, Fields.CHECKER_FK, Fields.JOBDATE,
+                Fields.REPORTDATE, Fields.NEXTDATE, Fields.TEMPERATURE, Fields.HUMIDITY,
+                Fields.SUMMARY, Fields.TITEL, Fields.TEMPERATURERATING,
+                Fields.TEMPERATUREQUANTIFIER, Fields.HUMIDITYRATING, Fields.HUMIDITYQUANTIFIER);
         builder.where(Fields.ID);
 
         String query = builder.toString();
@@ -113,7 +113,7 @@ public class InspectionDao implements IInspectionDao {
 
     private static final class Fields {
         public static final String ID = "Report_ID";
-        public static final String LAYOUT_KF = "Report_Layout_FK";
+        public static final String LAYOUT_FK = "Report_Layout_FK";
         public static final String PLANT_FK = "Report_Plant_FK";
         public static final String REQUESTER_FK = "Report_Requester_FK";
         public static final String CONTRACTOR_FK = "Report_Contractor_FK";
