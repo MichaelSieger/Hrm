@@ -3,6 +3,8 @@ package de.hswt.hrm.scheme.service.test;
 import static org.mockito.Mockito.*;
 import static org.junit.Assert.*;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 import org.junit.Test;
@@ -31,6 +33,7 @@ import de.hswt.hrm.scheme.dao.jdbc.SchemeDao;
 import de.hswt.hrm.scheme.model.Direction;
 import de.hswt.hrm.scheme.model.Scheme;
 import de.hswt.hrm.scheme.model.SchemeComponent;
+import de.hswt.hrm.scheme.service.SchemeService;
 import de.hswt.hrm.test.database.AbstractDatabaseTest;
 
 public class SchemeServiceTest extends AbstractDatabaseTest {
@@ -43,6 +46,10 @@ public class SchemeServiceTest extends AbstractDatabaseTest {
 	private IPlantDao createPlantDao() {
 		IPlaceDao placeDao = new PlaceDao();
 		return new PlantDao(placeDao);
+	}
+	
+	private SchemeService createSchemeService() {
+		return new SchemeService(createSchemeDao(), createSchemeComponentDao());
 	}
 	
 	private ISchemeDao createSchemeDao() {
@@ -62,7 +69,7 @@ public class SchemeServiceTest extends AbstractDatabaseTest {
 		return plantDao.insert(plant);
 	}
 	
-	private List<Attribute> createTestAttributes() throws SaveException {
+	private Component createTestComponent() throws SaveException {
 		ICategoryDao categoryDao = createCategoryDao();
 		IComponentDao componentDao = new ComponentDao(categoryDao);
 		Category cat = categoryDao.insert(new Category("SomeCat", 1, 1, 1, true));
@@ -77,6 +84,15 @@ public class SchemeServiceTest extends AbstractDatabaseTest {
 				true);
 		component.setCategory(cat);
 		component = componentDao.insert(component);
+		
+		return component;
+	}
+	
+	private List<Attribute> createTestAttributes() throws SaveException {
+		ICategoryDao categoryDao = createCategoryDao();
+		IComponentDao componentDao = new ComponentDao(categoryDao);
+		
+		Component component = createTestComponent();
 		
 		List<Attribute> attributes = new ArrayList<>();
 		attributes.add(componentDao.addAttribute(component, "FirstAttribute"));
@@ -132,4 +148,65 @@ public class SchemeServiceTest extends AbstractDatabaseTest {
         assertNotNull("Timestamp not set correctly.", fromDb.getTimestamp());
     }
 
+    @Test
+    public void testCopyScheme() throws ElementNotFoundException, DatabaseException {
+    	Component component = createTestComponent();
+    	ISchemeDao schemeDao = createSchemeDao();
+        SchemeService service = createSchemeService();
+        ISchemeComponentDao schemeComponentDao = createSchemeComponentDao();
+        Scheme scheme = new Scheme(createTestPlant());
+        SchemeComponent schemeComp = new SchemeComponent(
+        		0,
+        		0,
+        		Direction.leftRight,
+        		component);
+        scheme = schemeDao.insert(scheme);
+        schemeComp.setScheme(scheme);
+        schemeComp = schemeComponentDao.insert(schemeComp);
+        SchemeComponent comp2 = new SchemeComponent(
+        		10,
+        		10, 
+        		Direction.leftRight, 
+        		component);
+        comp2.setScheme(scheme);
+        schemeComponentDao.insert(comp2);
+        
+        
+        Scheme copy = service.copy(scheme);
+        assertEquals(2, copy.getSchemeComponents().size());
+    }
+    
+    @Test
+    public void testUpdateScheme() throws ElementNotFoundException, DatabaseException {
+    	Component component = createTestComponent();
+    	ISchemeDao schemeDao = createSchemeDao();
+        SchemeService service = createSchemeService();
+        ISchemeComponentDao schemeComponentDao = createSchemeComponentDao();
+        Scheme scheme = new Scheme(createTestPlant());
+        SchemeComponent schemeComp = new SchemeComponent(
+        		0,
+        		0,
+        		Direction.leftRight,
+        		component);
+        scheme = schemeDao.insert(scheme);
+        schemeComp.setScheme(scheme);
+        schemeComp = schemeComponentDao.insert(schemeComp);
+        SchemeComponent comp2 = new SchemeComponent(
+        		10,
+        		10, 
+        		Direction.leftRight, 
+        		component);
+        comp2.setScheme(scheme);
+        schemeComponentDao.insert(comp2);
+        
+        Collection<SchemeComponent> comps = service.findSchemeComponents(scheme);
+        Iterator<SchemeComponent> it = comps.iterator();
+        it.next();
+        it.remove();
+        
+        service.update(scheme, comps);
+        
+        Scheme fromDB = service.findById(scheme.getId());
+        assertEquals(1, fromDB.getSchemeComponents().size());
+    }
 }
