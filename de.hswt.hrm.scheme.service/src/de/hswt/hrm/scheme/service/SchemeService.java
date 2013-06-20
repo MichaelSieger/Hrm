@@ -2,6 +2,7 @@ package de.hswt.hrm.scheme.service;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkState;
 
 import java.util.Collection;
 import java.util.Map;
@@ -43,10 +44,11 @@ public class SchemeService {
 	 * 
 	 * @param plant The Plant which the Scheme belongs to
 	 * @param components The Scheme defined by its components
+	 * @return The created scheme.
 	 * @throws SaveException 
 	 * @throws ElementNotFoundException 
 	 */
-	public void insert(Plant plant, Collection<SchemeComponent> components)
+	public Scheme insert(Plant plant, Collection<SchemeComponent> components)
 			throws SaveException, ElementNotFoundException {
 		
 	    checkNotNull(plant, "Plant is mandatory.");
@@ -58,6 +60,7 @@ public class SchemeService {
 		// We insert a new scheme here !
 	    Scheme scheme = new Scheme(plant);
 	    scheme = schemeDao.insert(scheme);
+	    scheme.setSchemeComponents(components);
 	    
 	    // Add all components
 	    for (SchemeComponent comp : components) {
@@ -69,6 +72,27 @@ public class SchemeService {
 	    		schemeComponentDao.update(comp);
 	    	}
 	    }
+	    
+	    return scheme;
+	}
+	
+	public Scheme copy(final Scheme scheme) 
+			throws SaveException, ElementNotFoundException, DatabaseException {
+		
+		checkNotNull("Scheme must not be null.");
+		checkArgument(scheme.getId() >= 0, "Scheme must have a valid ID.");
+		
+		// Create new scheme row
+		Scheme schemeCopy = schemeDao.insert(scheme);
+		checkState(scheme.getId() != schemeCopy.getId(), "Copy should not have the same ID.");
+		
+		// Copy components
+		for (SchemeComponent comp : findSchemeComponents(scheme)) {
+			comp.setScheme(schemeCopy);
+			schemeComponentDao.insert(comp);
+		}
+		
+		return findById(scheme.getId());
 	}
 	
 	public Scheme findById(final int id) throws ElementNotFoundException, DatabaseException {
