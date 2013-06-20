@@ -39,7 +39,7 @@ public class Inspection {
     		GregorianCalendar inspectionDate, 
     		GregorianCalendar nextInspection,
     		String title,
-    		String style,
+    		Layout reportStyle,
     		Plant plant) {
         this.id = id;
 //        setReportDate(reportDate);
@@ -53,9 +53,9 @@ public class Inspection {
     		GregorianCalendar inspectionDate, 
     		GregorianCalendar nextInspection,
     		String title,
-    		String style,
+    		Layout reportStyle,
     		Plant plant) {
-    	this(-1, reportDate, inspectionDate, nextInspection, title, style, plant);
+    	this(-1, reportDate, inspectionDate, nextInspection, title, reportStyle, plant);
     }
 
     public Inspection(int id, Date jobDate, Date reportDate, Date nextDate, int temperature,

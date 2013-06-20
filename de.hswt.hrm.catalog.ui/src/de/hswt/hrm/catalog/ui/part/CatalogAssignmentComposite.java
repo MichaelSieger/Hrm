@@ -570,6 +570,34 @@ public class CatalogAssignmentComposite extends Composite {
 		}
 	}
 
+	private void obtainActivities(Current c) {
+		List<Activity> activities = null;
+		try {
+			// Obtain a list containing all targets for a given catalog
+			activities = (List<Activity>) catalogService
+					.findActivityByCurrent(c);
+
+		} catch (DatabaseException e) {
+
+			LOG.error("An error occured", e);
+		}
+
+		if (activities.isEmpty()) {
+
+			availableActivity.setInput(activityFromDB);
+			assignedActivity.getList().removeAll();
+
+		} else {
+
+			// We have already matched activities...
+			tempActivity.clear();
+			tempActivity = new ArrayList<>(activityFromDB);
+			assignedActivity.setInput(activities);
+			tempActivity.removeAll(activities);
+			availableActivity.setInput(tempActivity);
+		}
+	}
+
 	protected void handleDoubleClickEvent(Viewer viewer) {
 		ICatalogItem item = (ICatalogItem) ((IStructuredSelection) viewer
 				.getSelection()).getFirstElement();
@@ -577,17 +605,20 @@ public class CatalogAssignmentComposite extends Composite {
 		if (selectedCatalog == null) {
 			return;
 		}
-		Target t = (Target) getSelectedListItem(assignedTarget);
+
 		if (viewer.equals(availableTarget)) {
 			addTarget(selectedCatalog, item);
 		} else if (viewer.equals(availableCurrent)) {
+			Target t = (Target) getSelectedListItem(assignedTarget);
 			obtainCurrents(t);
 			addCurrent(t, item);
 		} else if (viewer.equals(availableActivity)) {
-			addActivity(item);
+			Current c = (Current) getSelectedListItem(assignedCurrent);
+			addActivity(c, item);
 		} else if (viewer.equals(assignedTarget)) {
 			removeTarget(selectedCatalog, item);
 		} else if (viewer.equals(assignedCurrent)) {
+			Target t = (Target) getSelectedListItem(assignedTarget);
 			removeCurrent(t, item);
 		} else if (viewer.equals(assignedActivity)) {
 			removeActivity(item);
@@ -647,11 +678,16 @@ public class CatalogAssignmentComposite extends Composite {
 		moveItem(item, assignedCurrent, availableCurrent);
 	}
 
-	private void addActivity(ICatalogItem item) {
+	private void addActivity(Current c, ICatalogItem item) {
 		if (item == null) {
 			return;
 		}
-		// TODO implement
+		try {
+			catalogService.addToCurrent(c, (Activity) item);
+		} catch (DatabaseException e) {
+			LOG.error("An error occured", e);
+		}
+		moveItem(item, availableActivity, assignedActivity);
 	}
 
 	private void removeActivity(ICatalogItem item) {
