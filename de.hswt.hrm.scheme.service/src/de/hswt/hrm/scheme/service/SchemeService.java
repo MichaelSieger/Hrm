@@ -54,7 +54,7 @@ public class SchemeService {
 	    checkNotNull(plant, "Plant is mandatory.");
 	    checkArgument(plant.getId() >= 0, "Plant must have a valid ID.");
 	    
-	    //Cut away unused space from the scheme
+	    // Cut away unused space from the scheme
 	    components = SchemeCutter.cut(components);
 	    
 		// We insert a new scheme here !
@@ -93,6 +93,26 @@ public class SchemeService {
 		}
 		
 		return findById(scheme.getId());
+	}
+	
+	public void update(Scheme scheme, Collection<SchemeComponent> components) 
+			throws ElementNotFoundException, SaveException, DatabaseException {
+		
+		schemeDao.update(scheme);
+		
+		// Remember old components to delete
+		Collection<SchemeComponent> toDelete = findSchemeComponents(scheme);
+		
+		// Add new componentslist
+		for (SchemeComponent comp : components) {
+			comp.setScheme(scheme);
+			schemeComponentDao.insert(comp);
+		}
+		
+		// Delete old scheme components
+		for (SchemeComponent comp : toDelete) {
+			schemeComponentDao.delete(comp);
+		}
 	}
 	
 	public Scheme findById(final int id) throws ElementNotFoundException, DatabaseException {

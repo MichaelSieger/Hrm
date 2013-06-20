@@ -57,4 +57,12 @@ public interface ISchemeDao {
      * @throws SaveException If the scheme could not be updated.
      */
     void update(Scheme scheme) throws ElementNotFoundException, SaveException;
+
+    /**
+     * @param scheme
+     * @throws ElementNotFoundException
+     * @throws DatabaseException
+     */
+	void delete(Scheme scheme) throws ElementNotFoundException,
+			DatabaseException;
 }

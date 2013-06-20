@@ -15,6 +15,8 @@ import java.util.Date;
 import javax.inject.Inject;
 
 import org.apache.commons.dbutils.DbUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import de.hswt.hrm.common.database.DatabaseFactory;
 import de.hswt.hrm.common.database.NamedParameterStatement;
@@ -28,6 +30,7 @@ import de.hswt.hrm.plant.dao.core.IPlantDao;
 import de.hswt.hrm.scheme.model.Scheme;
 
 public class SchemeDao implements ISchemeDao {
+	private final static Logger LOG = LoggerFactory.getLogger(SchemeDao.class);
     private final IPlantDao plantDao;
     
     @Inject
@@ -35,14 +38,14 @@ public class SchemeDao implements ISchemeDao {
         checkNotNull(plantDao, "PlantDao not injected properly.");
         
         this.plantDao = plantDao;
-        // TODO: Add log message
+        LOG.debug("PlantDao injected to SchemeDao.");
     }
-
+    
     @Override
-    public Scheme insert(Scheme scheme) throws SaveException{
+    public Scheme insert(Scheme scheme) throws SaveException {
     	checkNotNull(scheme, "Scheme must not be null.");
-    	checkState(scheme.getPlant().isPresent(), "Scheme must have a valid plant set.");
-    	checkState(scheme.getPlant().get().getId() >= 0, "Scheme must have a valid plant set.");
+    	checkState(scheme.getPlant().isPresent(), INVALID_PLANT_ERROR);
+    	checkState(scheme.getPlant().get().getId() >= 0, INVALID_PLANT_ERROR);
     	
         SqlQueryBuilder builder = new SqlQueryBuilder();
         builder.insert(TABLE_NAME, Fields.FK_PLANT);
@@ -205,13 +208,10 @@ public class SchemeDao implements ISchemeDao {
     @Override
     public void update(Scheme scheme) throws ElementNotFoundException, SaveException {
         checkNotNull(scheme, "Scheme must not be null.");
-
-        if (scheme.getId() < 0) {
-            throw new ElementNotFoundException("Element has no valid ID.");
-        }
+        checkState(scheme.getId() >= 0, "Scheme has no valid ID.");
 
         SqlQueryBuilder builder = new SqlQueryBuilder();
-        builder.update(TABLE_NAME, Fields.TIMESTAMP, Fields.FK_PLANT);
+        builder.update(TABLE_NAME, Fields.FK_PLANT);
         builder.where(Fields.ID);
         
         final String query = builder.toString();
@@ -219,7 +219,6 @@ public class SchemeDao implements ISchemeDao {
         try (Connection con = DatabaseFactory.getConnection()) {
             try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
                 stmt.setParameter(Fields.ID, scheme.getId());
-                stmt.setParameter(Fields.TIMESTAMP, scheme.getTimestamp().or(new Timestamp((new Date()).getTime())));
                 stmt.setParameter(Fields.FK_PLANT, scheme.getPlant());
 
                 int affectedRows = stmt.executeUpdate();
@@ -231,6 +230,43 @@ public class SchemeDao implements ISchemeDao {
         catch (SQLException | DatabaseException e) {
             throw new SaveException(e);
         }
+    }
+    
+    @Override
+    public void delete(Scheme scheme) throws ElementNotFoundException, DatabaseException {
+    	checkNotNull(scheme, "Scheme must not be null.");
+    	checkState(scheme.getId() >= 0, "Scheme must have a valid ID.");
+    	
+    	StringBuilder builder = new StringBuilder();
+    	builder.append("DELETE FROM ").append(TABLE_NAME);
+    	builder.append(" WHERE ").append(Fields.ID);
+    	builder.append(" = :").append(Fields.ID).append(";");
+    	
+    	String query = builder.toString();
+    	
+    	try (Connection con = DatabaseFactory.getConnection()) {
+    		con.setAutoCommit(false);
+    		
+    		try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
+    			stmt.setParameter(Fields.ID, scheme.getId());
+    			
+    			int affected = stmt.executeUpdate();
+    			
+    			if (affected > 1) {
+    				con.rollback();
+    				throw new DatabaseException("Statement affectes accidently more than one row.");
+    			}
+    			if (affected < 1) {
+    				con.rollback();
+    				throw new ElementNotFoundException();
+    			}
+    			
+    			con.commit();
+    		}
+    	}
+    	catch(SQLException e) {
+    		throw new DatabaseException("Unknown error.", e);
+    	}
     }
 
     private Collection<Scheme> fromResultSet(ResultSet rs) throws SQLException, ElementNotFoundException, DatabaseException {
@@ -264,4 +300,6 @@ public class SchemeDao implements ISchemeDao {
         public static final String FK_PLANT = "Scheme_Plant_FK";
 
     }
+    
+    private static final String INVALID_PLANT_ERROR = "Scheme must have a valid plant.";
 }
