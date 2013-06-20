@@ -6,7 +6,9 @@ import static com.google.common.base.Strings.isNullOrEmpty;
 import de.hswt.hrm.plant.model.Plant;
 import de.hswt.hrm.contact.model.Contact;
 
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 public class Inspection {
     private final int id;
@@ -21,7 +23,7 @@ public class Inspection {
     private int temperature;
     private int humidity;
     private String summary;
-    private String titel;
+    private String title;
     private String temperatureRating;
     private String temperatureQuantifier;
     private String humidityRating;
@@ -29,6 +31,32 @@ public class Inspection {
 
     private static final String IS_MANDATORY = "Field is a mandatory.";
     private static final String INVALID_NUMBER = "%d is an invalid number.%n Must be greater 0";
+
+    // TODO rename jobdate to inspectionDate, rename nextDate to nextInspectionDate
+    // change the types of Date to GregorianCalendar
+    // change String of style in a Style Model Object, if this will exist in future 
+    public Inspection(int id, GregorianCalendar reportDate, 
+    		GregorianCalendar inspectionDate, 
+    		GregorianCalendar nextInspection,
+    		String title,
+    		String style,
+    		Plant plant) {
+        this.id = id;
+//        setReportDate(reportDate);
+//        setJobDate(inspectionDate);
+//        setNextDate(nextInspection);
+//        setTitle(title);
+//        setPlant(plant);
+    }
+
+    public Inspection(GregorianCalendar reportDate, 
+    		GregorianCalendar inspectionDate, 
+    		GregorianCalendar nextInspection,
+    		String title,
+    		String style,
+    		Plant plant) {
+    	this(-1, reportDate, inspectionDate, nextInspection, title, style, plant);
+    }
 
     public Inspection(int id, Date jobDate, Date reportDate, Date nextDate, int temperature,
             int humidity, String summary, String titel, String temperatureRating,
@@ -42,7 +70,7 @@ public class Inspection {
         setTemperature(temperature);
         setHumidity(humidity);
         setSummary(summary);
-        setTitel(titel);
+        setTitle(titel);
         setTemperatureRating(temperatureRating);
         setHumidityRating(humidityRating);
         setTemperatureQuantifier(temperatureQuantifier);
@@ -154,13 +182,13 @@ public class Inspection {
         this.summary = summary;
     }
 
-    public String getTitel() {
-        return titel;
+    public String getTitle() {
+        return title;
     }
 
-    public void setTitel(String titel) {
+    public void setTitle(String titel) {
         checkArgument(!isNullOrEmpty(titel), IS_MANDATORY);
-        this.titel = titel;
+        this.title = titel;
     }
 
     public String getTemperatureRating() {
@@ -221,7 +249,7 @@ public class Inspection {
         result = prime * result
                 + ((temperatureQuantifier == null) ? 0 : temperatureQuantifier.hashCode());
         result = prime * result + ((temperatureRating == null) ? 0 : temperatureRating.hashCode());
-        result = prime * result + ((titel == null) ? 0 : titel.hashCode());
+        result = prime * result + ((title == null) ? 0 : title.hashCode());
         return result;
     }
 
@@ -350,12 +378,12 @@ public class Inspection {
         else if (!temperatureRating.equals(other.temperatureRating)) {
             return false;
         }
-        if (titel == null) {
-            if (other.titel != null) {
+        if (title == null) {
+            if (other.title != null) {
                 return false;
             }
         }
-        else if (!titel.equals(other.titel)) {
+        else if (!title.equals(other.title)) {
             return false;
         }
         return true;
