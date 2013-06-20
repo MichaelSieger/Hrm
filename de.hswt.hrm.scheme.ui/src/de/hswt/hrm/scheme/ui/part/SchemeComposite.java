@@ -53,6 +53,7 @@ import com.google.common.base.Function;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Collections2;
 
+import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.ElementNotFoundException;
 import de.hswt.hrm.common.database.exception.SaveException;
 import de.hswt.hrm.common.ui.swt.constants.SearchFieldConstants;
@@ -549,7 +550,13 @@ public class SchemeComposite extends Composite {
     		return;
     	}
     	
-    	dialog.getScheme();
+    	try {
+			Scheme scheme = schemeService.copy(dialog.getScheme(), plant);
+		} 
+    	catch (DatabaseException e) {
+    		LOG.error("Error during scheme copy.", e);
+			// FIXME: Add message box
+		}
     }
     
     private void importScheme() {
@@ -561,7 +568,13 @@ public class SchemeComposite extends Composite {
     		return;
     	}
     	
-    	dialog.getScheme();
+    	try {
+			Scheme scheme = schemeService.copy(dialog.getScheme(), plant);
+		} 
+    	catch (DatabaseException e) {
+    		LOG.error("Error during scheme copy.", e);
+			// FIXME: Add message box
+		}
     }
     
     // private int getRenderedComponentId(RenderedComponent component) {

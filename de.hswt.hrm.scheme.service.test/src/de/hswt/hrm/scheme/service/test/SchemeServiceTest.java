@@ -63,11 +63,17 @@ public class SchemeServiceTest extends AbstractDatabaseTest {
 	}
 	
 	private Plant createTestPlant() throws SaveException {
+		return createTestPlant("Some plant", "Somewhere");
+	}
+	
+	private Plant createTestPlant(final String name, final String placeName) throws SaveException {
 		IPlantDao plantDao = createPlantDao();
-		Plant plant = new Plant("Some plant");
-		plant.setPlace(new Place("Somewhere", "55555", "City", "Street", "15"));
+		Plant plant = new Plant(name);
+		plant.setPlace(new Place(placeName, "55555", "City", "Street", "15"));
 		return plantDao.insert(plant);
 	}
+	
+	
 	
 	private Component createTestComponent() throws SaveException {
 		ICategoryDao categoryDao = createCategoryDao();
@@ -132,6 +138,22 @@ public class SchemeServiceTest extends AbstractDatabaseTest {
         schemeComponentDao.setAttributeValue(schemeComp, attr, "Some value");
         attr = attributes.get(1);
         schemeComponentDao.setAttributeValue(schemeComp, attr, "Some other value");
+    }
+    
+    @Test
+    public void testPlantUpdateScheme() throws ElementNotFoundException, DatabaseException {
+    	ISchemeDao schemeDao = createSchemeDao();
+    	Scheme scheme = new Scheme(createTestPlant());
+    	Scheme parsed = schemeDao.insert(scheme);
+    	
+    	parsed.setPlant(createTestPlant("New Plant", "Somewhere else"));
+    	schemeDao.update(parsed);
+    	
+    	Scheme fromDb = schemeDao.findById(parsed.getId());
+    	assertEquals(
+    			"Plant not updated.", 
+    			parsed.getPlant().get().getId(), 
+    			fromDb.getPlant().get().getId());
     }
     
     @Test
