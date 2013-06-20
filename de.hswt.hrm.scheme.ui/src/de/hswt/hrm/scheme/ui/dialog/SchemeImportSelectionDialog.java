@@ -65,8 +65,9 @@ public class SchemeImportSelectionDialog extends TitleAreaDialog {
     private void draw(Composite parent) {
 		Section headerSection = new Section(parent, Section.TITLE_BAR);
 		headerSection.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
-		headerSection.setText("Plants");
+		headerSection.setText("Scheme selection");
 		headerSection.setExpanded(true);
+		headerSection.setLayoutData(LayoutUtil.createFillData());
 		FormUtil.initSectionColors(headerSection);
 		headerSection.setLayout(new FillLayout());
 
@@ -75,8 +76,9 @@ public class SchemeImportSelectionDialog extends TitleAreaDialog {
 		gl.marginWidth = 0;
 		gl.marginHeight = 0;
 		headerComposite.setLayout(gl);
-		
-		plantComposite = new PlantComposite(headerSection);
+		headerComposite.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+
+		plantComposite = new PlantComposite(headerComposite);
         ContextInjectionFactory.inject(plantComposite, context);
         plantComposite.setAllowEditing(false);
         plantComposite.setLayoutData(LayoutUtil.createFillData(2));
@@ -84,6 +86,7 @@ public class SchemeImportSelectionDialog extends TitleAreaDialog {
             @Override
             public void selectionChanged(SelectionChangedEvent event) {
             	initSchemeCombo();
+            	setSelectedScheme();
             	validate();
             }
         });
@@ -93,11 +96,11 @@ public class SchemeImportSelectionDialog extends TitleAreaDialog {
         schemeLabel.setLayoutData(LayoutUtil.createLeftCenteredGridData());
         
         schemeCombo = new Combo(headerComposite, SWT.READ_ONLY | SWT.DROP_DOWN);
-        schemeCombo.setLayoutData(LayoutUtil.createHorzCenteredFillData(2));
+        schemeCombo.setLayoutData(LayoutUtil.createHorzCenteredFillData(0));
         schemeCombo.addSelectionListener(new SelectionAdapter() {
         	@Override
         	public void widgetSelected(SelectionEvent e) {
-        		scheme = (Scheme)schemeCombo.getData(schemeCombo.getText());
+            	setSelectedScheme();
         		validate();
         	}
         });
@@ -125,6 +128,11 @@ public class SchemeImportSelectionDialog extends TitleAreaDialog {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+    	schemeCombo.select(schemeCombo.getItemCount() - 1);
+	}
+
+	private void setSelectedScheme() {
+    	scheme = (Scheme)schemeCombo.getData(schemeCombo.getText());
 	}
 
 	private void validate() {

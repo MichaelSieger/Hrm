@@ -62,23 +62,26 @@ public class SchemeCopySelectionDialog extends TitleAreaDialog {
     private void draw(Composite parent) {
 		Section headerSection = new Section(parent, Section.TITLE_BAR);
 		headerSection.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
-		headerSection.setText("Plants");
+		headerSection.setText("Scheme selection");
 		headerSection.setExpanded(true);
+		headerSection.setLayoutData(LayoutUtil.createFillData());
 		FormUtil.initSectionColors(headerSection);
 		headerSection.setLayout(new FillLayout());
+		headerSection.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 
 		Composite headerComposite = new Composite(headerSection, SWT.NONE);
 		GridLayout gl = new GridLayout(2, false);
 		gl.marginWidth = 0;
 		gl.marginHeight = 0;
 		headerComposite.setLayout(gl);
-
+		headerComposite.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+		
         Label schemeLabel = new Label(headerComposite, SWT.NONE);
         schemeLabel.setText("Scheme");
         schemeLabel.setLayoutData(LayoutUtil.createLeftCenteredGridData());
         
         schemeCombo = new Combo(headerComposite, SWT.READ_ONLY | SWT.DROP_DOWN);
-        schemeCombo.setLayoutData(LayoutUtil.createHorzCenteredFillData(2));
+        schemeCombo.setLayoutData(LayoutUtil.createHorzCenteredFillData());
         initSchemeCombo();
         schemeCombo.select(schemeCombo.getItemCount() - 1);
         schemeCombo.addSelectionListener(new SelectionAdapter() {

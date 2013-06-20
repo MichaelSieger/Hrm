@@ -556,7 +556,7 @@ public class SchemeComposite extends Composite {
     	SchemeImportSelectionDialog dialog = new SchemeImportSelectionDialog(
     			shellProvider.getShell(), context);
     	ContextInjectionFactory.inject(dialog, context);
-    	
+
     	if (dialog.open() != Window.OK) {
     		return;
     	}
