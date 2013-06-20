@@ -9,6 +9,8 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
+import org.eclipse.e4.core.contexts.ContextInjectionFactory;
+import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.ActionContributionItem;
@@ -16,6 +18,7 @@ import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.window.IShellProvider;
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.dnd.DND;
@@ -68,6 +71,8 @@ import de.hswt.hrm.scheme.ui.ItemClickListener;
 import de.hswt.hrm.scheme.ui.SchemeGrid;
 import de.hswt.hrm.scheme.ui.SchemeGridItem;
 import de.hswt.hrm.scheme.ui.SchemeTreePatternFilter;
+import de.hswt.hrm.scheme.ui.dialog.SchemeCopySelectionDialog;
+import de.hswt.hrm.scheme.ui.dialog.SchemeImportSelectionDialog;
 import de.hswt.hrm.scheme.ui.dnd.DragData;
 import de.hswt.hrm.scheme.ui.dnd.DragDataTransfer;
 import de.hswt.hrm.scheme.ui.dnd.GridDragListener;
@@ -75,7 +80,6 @@ import de.hswt.hrm.scheme.ui.dnd.GridDropTargetListener;
 import de.hswt.hrm.scheme.ui.dnd.TreeDragListener;
 import de.hswt.hrm.scheme.ui.tree.SchemeTreeLabelProvider;
 import de.hswt.hrm.scheme.ui.tree.TreeContentProvider;
-import org.eclipse.swt.graphics.Point;
 
 public class SchemeComposite extends Composite {
 
@@ -108,17 +112,20 @@ public class SchemeComposite extends Composite {
     private static final String DELETE = "Löschen";
 
     @Inject
-    SchemeService schemeService;
+    private SchemeService schemeService;
 
     @Inject
-    EPartService service;
+    private EPartService service;
 
     @Inject
-    ComponentService componentsService;
+    private ComponentService componentsService;
 
     @Inject
     private IShellProvider shellProvider;
 
+    @Inject 
+    private IEclipseContext context;
+    
     private IContributionItem saveContribution;
     private IContributionItem moveXContribution;
     private IContributionItem moveYContribution;
@@ -157,6 +164,10 @@ public class SchemeComposite extends Composite {
     private Slider zoomSlider;
     private final FormToolkit formToolkit = new FormToolkit(Display.getDefault());
     private Section schemeSection;
+
+	private ActionContributionItem copyContribution;
+
+	private ActionContributionItem importContribution;
 
     /**
      * Create the composite.
@@ -238,10 +249,14 @@ public class SchemeComposite extends Composite {
         initItemClickListener();
 
         initSaveContribution();
+        initCopyContribution();
+        initImportContribution();
         initMoveXContribution();
         initMoveYContribution();
         contributionItems.add(moveYContribution);
         contributionItems.add(moveXContribution);
+        contributionItems.add(importContribution);
+        contributionItems.add(copyContribution);
         contributionItems.add(saveContribution);
 
         new ComponentLoadThread(this, componentsService).start();
@@ -337,6 +352,28 @@ public class SchemeComposite extends Composite {
         };
         moveYAction.setDescription("Move's the grid elements in y direction.");
         moveYContribution = new ActionContributionItem(moveYAction);
+    }
+
+    private void initCopyContribution() {
+        Action copyAction = new Action("Copy") {
+            @Override
+            public void run() {
+            	copyScheme();
+            }
+        };
+        copyAction.setDescription("Copy an existing scheme and set it as current.");
+        copyContribution = new ActionContributionItem(copyAction);
+    }
+
+    private void initImportContribution() {
+        Action importAction = new Action("Import") {
+            @Override
+            public void run() {
+            	importScheme();
+            }
+        };
+        importAction.setDescription("Import an existing scheme from another plabt and set it as current.");
+        importContribution = new ActionContributionItem(importAction);
     }
 
     private void initItemClickListener() {
@@ -501,6 +538,32 @@ public class SchemeComposite extends Composite {
         }
     }
 
+    
+    
+    private void copyScheme() {
+    	SchemeCopySelectionDialog dialog = new SchemeCopySelectionDialog(
+    			shellProvider.getShell(), context, plant);
+    	ContextInjectionFactory.inject(dialog, context);
+    	
+    	if (dialog.open() != Window.OK) {
+    		return;
+    	}
+    	
+    	dialog.getScheme();
+    }
+    
+    private void importScheme() {
+    	SchemeImportSelectionDialog dialog = new SchemeImportSelectionDialog(
+    			shellProvider.getShell(), context);
+    	ContextInjectionFactory.inject(dialog, context);
+    	
+    	if (dialog.open() != Window.OK) {
+    		return;
+    	}
+    	
+    	dialog.getScheme();
+    }
+    
     // private int getRenderedComponentId(RenderedComponent component) {
     // return this.components.indexOf(component);
     // }
