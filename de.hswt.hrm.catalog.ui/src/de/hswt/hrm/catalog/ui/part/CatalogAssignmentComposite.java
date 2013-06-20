@@ -281,14 +281,11 @@ public class CatalogAssignmentComposite extends Composite {
 		targetAdd.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				IStructuredSelection selection = (IStructuredSelection) catalog
-						.getSelection();
-				Catalog c = (Catalog) selection.getFirstElement();
-				if (c == null) {
+				selectedCatalog = getSelectedCatalog();
+				if (selectedCatalog == null) {
 					return;
 				}
-				addTarget(c, getSelectedListItem(availableTarget));
-
+				addTarget(selectedCatalog, getSelectedListItem(availableTarget));
 			}
 		});
 
@@ -297,13 +294,12 @@ public class CatalogAssignmentComposite extends Composite {
 		targetRemove.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				IStructuredSelection selection = (IStructuredSelection) catalog
-						.getSelection();
-				Catalog c = (Catalog) selection.getFirstElement();
-				if (c == null) {
+				selectedCatalog = getSelectedCatalog();
+				if (selectedCatalog == null) {
 					return;
 				}
-				removeTarget(c, getSelectedListItem(assignedTarget));
+				removeTarget(selectedCatalog,
+						getSelectedListItem(assignedTarget));
 			}
 		});
 
@@ -320,7 +316,8 @@ public class CatalogAssignmentComposite extends Composite {
 		currentAdd.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				addCurrent(getSelectedListItem(availableCurrent));
+				addCurrent((Target) getSelectedListItem(availableTarget),
+						getSelectedListItem(availableCurrent));
 			}
 		});
 
@@ -346,7 +343,8 @@ public class CatalogAssignmentComposite extends Composite {
 		activityAdd.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				addCurrent(getSelectedListItem(availableCurrent));
+				addCurrent((Target) getSelectedListItem(assignedTarget),
+						getSelectedListItem(availableCurrent));
 			}
 		});
 
@@ -473,6 +471,7 @@ public class CatalogAssignmentComposite extends Composite {
 
 		obtainData();
 		initListViewers();
+
 		catalog.addSelectionChangedListener(new ISelectionChangedListener() {
 			@Override
 			public void selectionChanged(SelectionChangedEvent event) {
@@ -487,18 +486,16 @@ public class CatalogAssignmentComposite extends Composite {
 
 		});
 
-	}
-
-	// Obtain items from the Database
-	private void obtainData() {
-		try {
-			catalogsFromDB = catalogService.findAllCatalog();
-			activityFromDB = (List<Activity>) catalogService.findAllActivity();
-			currentFromDB = (List<Current>) catalogService.findAllCurrent();
-			targetFromDB = (List<Target>) catalogService.findAllTarget();
-		} catch (DatabaseException e) {
-			LOG.error("An error occured", e);
-		}
+		assignedTarget.getList().addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				Target t = (Target) getSelectedListItem(assignedTarget);
+				if (t == null) {
+					return;
+				}
+				obtainCurrents(t);
+			}
+		});
 
 	}
 
@@ -511,6 +508,194 @@ public class CatalogAssignmentComposite extends Composite {
 		initalize(assignedCurrent);
 		initalize(assignedTarget);
 		addFilter();
+
+	}
+
+	/**
+	 * Obtain all assigned targets for a given catalog from the database
+	 * 
+	 * @param c
+	 */
+	private void obtainTargets(Catalog c) {
+		List<Target> targets = null;
+		try {
+			// Obtain a list containing all targets for a given catalog
+			targets = (List<Target>) catalogService.findTargetByCatalog(c);
+
+		} catch (DatabaseException e) {
+
+			LOG.error("An error occured", e);
+		}
+		if (targets.isEmpty()) {
+			LOG.debug("empty targets, using default");
+			availableTarget.setInput(targetFromDB);
+			assignedTarget.getList().removeAll();
+
+		} else {
+			LOG.debug("found " + targets.size() + " assigned items"
+					+ " for catalog " + c.getName());
+			// We have already matched targets...
+			tempTarget.clear();
+			tempTarget = new ArrayList<>(targetFromDB);
+			assignedTarget.setInput(targets);
+			tempTarget.removeAll(targets);
+			availableTarget.setInput(tempTarget);
+		}
+	}
+
+	private void obtainCurrents(Target t) {
+		List<Current> currents = null;
+		try {
+			// Obtain a list containing all targets for a given catalog
+			currents = (List<Current>) catalogService.findCurrentByTarget(t);
+
+		} catch (DatabaseException e) {
+
+			LOG.error("An error occured", e);
+		}
+
+		if (currents.isEmpty()) {
+			LOG.debug("empty targets, using default");
+			availableTarget.setInput(targetFromDB);
+			assignedTarget.getList().removeAll();
+
+		} else {
+			LOG.debug("found " + currents.size() + " assigned currents"
+					+ " for Target " + t.getName());
+			// We have already matched targets...
+			tempCurrent.clear();
+			tempCurrent = new ArrayList<>(currentFromDB);
+			assignedCurrent.setInput(currents);
+			tempTarget.removeAll(currents);
+			availableCurrent.setInput(tempCurrent);
+		}
+	}
+
+	protected void handleDoubleClickEvent(Viewer viewer) {
+		ICatalogItem item = (ICatalogItem) ((IStructuredSelection) viewer
+				.getSelection()).getFirstElement();
+		selectedCatalog = getSelectedCatalog();
+		if (selectedCatalog == null) {
+			return;
+		}
+		Target t = (Target) getSelectedListItem(assignedTarget);
+		if (viewer.equals(availableTarget)) {
+			addTarget(selectedCatalog, item);
+		} else if (viewer.equals(availableCurrent)) {
+
+			obtainCurrents(t);
+			addCurrent((Target) getSelectedListItem(assignedTarget), item);
+		} else if (viewer.equals(availableActivity)) {
+			addActivity(item);
+		} else if (viewer.equals(assignedTarget)) {
+			removeTarget(selectedCatalog, item);
+		} else if (viewer.equals(assignedCurrent)) {
+			removeCurrent(item);
+		} else if (viewer.equals(assignedActivity)) {
+			removeActivity(item);
+		}
+	}
+
+	private void addTarget(Catalog c, ICatalogItem item) {
+		if (item == null) {
+			return;
+		}
+		try {
+
+			catalogService.addToCatalog(c, (Target) item);
+
+		} catch (SaveException e) {
+			LOG.error("An error occured", e);
+		}
+		moveItem(item, availableTarget, assignedTarget);
+
+	}
+
+	private void removeTarget(Catalog c, ICatalogItem item) {
+		if (item == null) {
+			return;
+		}
+		try {
+			catalogService.removeFromCatalog(c, (Target) item);
+		} catch (DatabaseException e) {
+			LOG.error("An error occured", e);
+		}
+		moveItem(item, assignedTarget, availableTarget);
+	}
+
+	private void addCurrent(Target t, ICatalogItem item) {
+
+		if (t == null || item == null) {
+			return;
+		}
+		try {
+			catalogService.addToTarget(t, (Current) item);
+		} catch (DatabaseException e) {
+			LOG.error("An error occured", e);
+		}
+		moveItem(item, availableCurrent, assignedCurrent);
+
+	}
+
+	private void removeCurrent(ICatalogItem item) {
+		if (item == null) {
+			return;
+		}
+		// TODO implement
+	}
+
+	private void addActivity(ICatalogItem item) {
+		if (item == null) {
+			return;
+		}
+		// TODO implement
+	}
+
+	private void removeActivity(ICatalogItem item) {
+		if (item == null) {
+			return;
+		}
+		// TODO implement
+	}
+
+	private void moveItem(ICatalogItem item, ListViewer source,
+			ListViewer destination) {
+
+		if (item == null) {
+			return;
+		}
+
+		destination.add(item);
+		source.remove(item);
+
+	}
+
+	private Catalog getSelectedCatalog() {
+		IStructuredSelection selection = (IStructuredSelection) catalog
+				.getSelection();
+		return (Catalog) selection.getFirstElement();
+
+	}
+
+	private ICatalogItem getSelectedListItem(ListViewer viewer) {
+		if (viewer.getSelection() == null) {
+			return null;
+		}
+
+		return (ICatalogItem) ((IStructuredSelection) viewer.getSelection())
+				.getFirstElement();
+	}
+
+	// Obtain items from the Database
+	private void obtainData() {
+		try {
+			catalogsFromDB = catalogService.findAllCatalog();
+			activityFromDB = (List<Activity>) catalogService.findAllActivity();
+			currentFromDB = (List<Current>) catalogService.findAllCurrent();
+			targetFromDB = (List<Target>) catalogService.findAllTarget();
+		} catch (DatabaseException e) {
+			LOG.error("An error occured", e);
+		}
 
 	}
 
@@ -574,144 +759,6 @@ public class CatalogAssignmentComposite extends Composite {
 		assignedActivity.addFilter(new CatalogTextFilter());
 		assignedCurrent.addFilter(new CatalogTextFilter());
 
-	}
-
-	/**
-	 * Obtain all assigned targets for a given catalog from the database
-	 * 
-	 * @param c
-	 */
-	private void obtainTargets(Catalog c) {
-		List<Target> targets = null;
-		try {
-			// Obtain a list containing all targets for a given catalog
-			targets = (List<Target>) catalogService.findTargetByCatalog(c);
-
-		} catch (DatabaseException e) {
-
-			LOG.error("An error occured", e);
-		}
-		if (targets.isEmpty()) {
-			LOG.debug("empty targets, using default");
-			availableTarget.setInput(targetFromDB);
-			assignedTarget.getList().removeAll();
-
-		} else {
-			LOG.debug("found " + targets.size() + " assigned items"
-					+ " for catalog " + c.getName());
-			// We have already matched targets...
-			tempTarget.clear();
-			tempTarget = new ArrayList<>(targetFromDB);
-			assignedTarget.setInput(targets);
-			tempTarget.removeAll(targets);
-			availableTarget.setInput(tempTarget);
-
-		}
-
-	}
-
-	protected void handleDoubleClickEvent(Viewer viewer) {
-		ICatalogItem item = (ICatalogItem) ((IStructuredSelection) viewer
-				.getSelection()).getFirstElement();
-		selectedCatalog = getSelectedCatalog();
-		if (selectedCatalog == null) {
-			return;
-		}
-		if (viewer.equals(availableTarget)) {
-			addTarget(selectedCatalog, item);
-		} else if (viewer.equals(availableCurrent)) {
-			addCurrent(item);
-		} else if (viewer.equals(availableActivity)) {
-			addActivity(item);
-		} else if (viewer.equals(assignedTarget)) {
-			removeTarget(selectedCatalog, item);
-		} else if (viewer.equals(assignedCurrent)) {
-			removeCurrent(item);
-		} else if (viewer.equals(assignedActivity)) {
-			removeActivity(item);
-		}
-	}
-
-	private void addTarget(Catalog c, ICatalogItem item) {
-		if (item == null) {
-			return;
-		}
-		try {
-
-			catalogService.addToCatalog(c, (Target) item);
-
-		} catch (SaveException e) {
-			LOG.error("An error occured", e);
-		}
-		moveItem(item, availableTarget, assignedTarget);
-
-	}
-
-	private void removeTarget(Catalog c, ICatalogItem item) {
-		if (item == null) {
-			return;
-		}
-		try {
-			catalogService.removeFromCatalog(c, (Target) item);
-		} catch (DatabaseException e) {
-			LOG.error("An error occured", e);
-		}
-		moveItem(item, assignedTarget, availableTarget);
-	}
-
-	private void addCurrent(ICatalogItem item) {
-		if (item == null) {
-			return;
-		}
-		// TODO implement
-	}
-
-	private void removeCurrent(ICatalogItem item) {
-		if (item == null) {
-			return;
-		}
-		// TODO implement
-	}
-
-	private void addActivity(ICatalogItem item) {
-		if (item == null) {
-			return;
-		}
-		// TODO implement
-	}
-
-	private void removeActivity(ICatalogItem item) {
-		if (item == null) {
-			return;
-		}
-		// TODO implement
-	}
-
-	private void moveItem(ICatalogItem item, ListViewer source,
-			ListViewer destination) {
-
-		if (item == null) {
-			return;
-		}
-
-		destination.add(item);
-		source.remove(item);
-
-	}
-
-	private Catalog getSelectedCatalog() {
-		IStructuredSelection selection = (IStructuredSelection) catalog
-				.getSelection();
-		return (Catalog) selection.getFirstElement();
-
-	}
-
-	private ICatalogItem getSelectedListItem(ListViewer viewer) {
-		if (viewer.getSelection() == null) {
-			return null;
-		}
-		return (ICatalogItem) ((IStructuredSelection) viewer.getSelection())
-				.getFirstElement();
 	}
 
 }
