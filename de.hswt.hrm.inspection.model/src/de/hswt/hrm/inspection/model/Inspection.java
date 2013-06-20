@@ -8,6 +8,8 @@ import de.hswt.hrm.contact.model.Contact;
 
 import java.util.GregorianCalendar;
 
+import com.google.common.base.Optional;
+
 public class Inspection {
     private final int id;
     private Layout layout;
@@ -32,7 +34,8 @@ public class Inspection {
 
     // TODO rename jobdate to inspectionDate, rename nextDate to nextInspectionDate -> done
     // change the types of Date to GregorianCalendar -> done
-    // change String of style in a Style Model Object, if this will exist in future -> no need to ...
+    // change String of style in a Style Model Object, if this will exist in future -> no need to
+    // ...
     // ... change this, layout is already a Layout
     public Inspection(int id, GregorianCalendar reportDate, GregorianCalendar inspectionDate,
             GregorianCalendar nextInspection, String title, Layout layout, Plant plant) {
@@ -67,8 +70,8 @@ public class Inspection {
         this.plant = plant;
     }
 
-    public Contact getRequester() {
-        return requester;
+    public Optional<Contact> getRequester() {
+        return Optional.fromNullable(requester);
     }
 
     public void setRequester(Contact requester) {
@@ -76,8 +79,8 @@ public class Inspection {
         this.requester = requester;
     }
 
-    public Contact getContractor() {
-        return contractor;
+    public Optional<Contact> getContractor() {
+        return Optional.fromNullable(contractor);
     }
 
     public void setContractor(Contact contractor) {
@@ -85,8 +88,8 @@ public class Inspection {
         this.contractor = contractor;
     }
 
-    public Contact getChecker() {
-        return checker;
+    public Optional<Contact> getChecker() {
+        return Optional.fromNullable(checker);
     }
 
     public void setChecker(Contact checker) {
@@ -125,7 +128,6 @@ public class Inspection {
     public void setTemperature(int temperature) {
         checkArgument(temperature > 0, INVALID_NUMBER, temperature);
         this.temperature = temperature;
-
     }
 
     public int getHumidity() {
