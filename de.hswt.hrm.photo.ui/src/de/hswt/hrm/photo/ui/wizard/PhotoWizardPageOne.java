@@ -2,6 +2,7 @@ package de.hswt.hrm.photo.ui.wizard;
 
 import java.awt.Graphics;
 import java.io.File;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -282,6 +283,13 @@ public class PhotoWizardPageOne extends WizardPage {
 			TableItem [] tableItems = photosTable.getItems();
 			File file = (File)tableItems[photosTable.getSelectionIndex()].getData();
 			Image image = new Image(canvas.getDisplay(),file.getAbsolutePath());
+			double width = image.getImageData().width;
+			double heigth = image.getImageData().height;
+			double ratioPix = width/heigth;
+			double temp = ratioPix * 300;
+			temp = Math.round(temp);			
+			 
+			lblNewLabel.setSize((int) temp, 300);
 			Image sacledImage = resize(image, lblNewLabel.getBounds().width, lblNewLabel.getBounds().height);
 			lblNewLabel.setBackgroundImage(sacledImage);
 		} else {
