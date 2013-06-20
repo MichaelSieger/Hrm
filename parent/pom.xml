@@ -179,5 +179,6 @@
 		<module>../de.hswt.hrm.misc.feature</module>
 		<module>../de.hswt.hrm.misc.ui</module>
 		<module>../de.hswt.hrm.misc.model</module>
+		<module>../de.hswt.hrm.plant.ui.shared</module>
 	</modules>
 </project>

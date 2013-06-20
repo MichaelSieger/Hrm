@@ -1,0 +1,118 @@
+<Composite xmlns="http://www.eclipse.org/xwt/presentation" xmlns:x="http://www.eclipse.org/xwt" x:Class="de.hswt.hrm.plant.ui.xwt.PlantWizardWindow" xmlns:p1="clr-namespace:java.lang">
+	<Composite.layout>
+		<GridLayout numColumns="1"/>
+	</Composite.layout>
+	<Section text="Pflichtfelder" x:Style="(p1:Section).EXPANDED | (p1:Section).TITLE_BAR" x:Name="Mandatory">
+		<Section.layoutData>
+			<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
+		</Section.layoutData>
+		<Section.client>
+			<Composite>
+				<Composite.layout>
+					<GridLayout numColumns="4"/>
+				</Composite.layout>
+				<Label text="Description: " x:Name="lblDescription"/>
+				<Text x:Style="BORDER" x:Name="description">
+					<Text.layoutData>
+						<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
+					</Text.layoutData>
+				</Text>
+				<Label text="Scheme: " x:Name="lblScheme"/>
+				<Combo x:Name="scheme">
+					<Combo.layoutData>
+						<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
+					</Combo.layoutData>
+				</Combo>
+			</Composite>
+		</Section.client>	
+	</Section>
+	<Section text="Zusatzinformationen" x:Style="(p1:Section).EXPANDED | (p1:Section).TITLE_BAR" x:Name="Optional">
+		<Section.layoutData>
+				<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
+			</Section.layoutData>
+			<Section.client>
+				<Composite>
+					<Composite.layout>
+						<GridLayout numColumns="6"/>
+					</Composite.layout>
+					<Label text="Manufactor: " x:Name="lblManufactor">
+						<Label.layoutData>
+							<GridData horizontalAlignment="LEFT"/>
+						</Label.layoutData>
+					</Label>
+					<Text x:Style="BORDER" x:Name="manufactor">
+						<Text.layoutData>
+							<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL" horizontalSpan="2"/>
+						</Text.layoutData>
+					</Text>
+					<Label text="ConstYear: " x:Name="lblConstructionYear"/>
+					<Combo x:Style="BORDER" x:Name="constructionYear">
+						<Combo.layoutData>
+							<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL" horizontalSpan="2"/>
+						</Combo.layoutData>
+					</Combo>
+					<Label text="Type: " x:Name="lblType"/>
+					<Text x:Style="BORDER" x:Name="type">
+						<Text.layoutData>
+							<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL" horizontalSpan="2"/>
+						</Text.layoutData>
+					</Text>
+					<Label/><Label/><Label/>
+					<Label text="AirPerformance: " x:Name="lblAirPerformance"/>
+					<Text x:Style="BORDER" x:Name="airPerformance">
+						<Text.layoutData>
+							<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
+						</Text.layoutData>
+					</Text>
+					<Label text="m³/h"/>
+					<Label text="MotorPower: " x:Name="lblMotorPower"/>
+					<Text x:Style="BORDER" x:Name="motorPower">
+						<Text.layoutData>
+							<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
+						</Text.layoutData>
+					</Text>
+					<Label text="kW"/>
+					<Label text="VentilatorPerformance: " x:Name="lblVentilatorPerformance"/>
+					<Text x:Style="BORDER" x:Name="ventilatorPerformance">
+						<Text.layoutData>
+							<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
+						</Text.layoutData>
+					</Text>
+					<Label text="kW"/>
+					<Label text="MotorRPM: " x:Name="lblMotorRPM"/>
+					<Text x:Style="BORDER" x:Name="motorRPM">
+						<Text.layoutData>
+							<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
+						</Text.layoutData>
+					</Text>
+					<Label text="U/min"/>
+					<Label text="Current: " x:Name="lblCurrent"/>
+					<Text x:Style="BORDER" x:Name="current">
+						<Text.layoutData>
+							<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
+						</Text.layoutData>
+					</Text>
+					<Label text="A"/>
+					<Label text="Voltage: " x:Name="lblVoltage"/>
+					<Text x:Style="BORDER" x:Name="voltage">
+						<Text.layoutData>
+							<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
+						</Text.layoutData>
+					</Text>
+					<Label text="V"/>
+					<Label/><Label/><Label/><Label/><Label/><Label/>
+					<Label text="Notes: " x:Name="lblNote">
+						<Label.layoutData>
+							<GridData verticalAlignment="TOP"/>
+						</Label.layoutData>
+					</Label>
+					<Text x:Style="BORDER | MULTI" x:Name="note">
+						<Text.layoutData>
+							<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL" grabExcessVerticalSpace="true" verticalAlignment="FILL" horizontalSpan="5" minimumHeight="100"/>
+						</Text.layoutData>
+					</Text>
+				</Composite>
+			</Section.client>
+	</Section>
+</Composite>
+<!-- Forms API -->
