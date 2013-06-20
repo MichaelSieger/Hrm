@@ -1,5 +1,9 @@
 package de.hswt.hrm.photo.ui.wizard;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,6 +11,7 @@ import javax.inject.Inject;
 import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.jface.wizard.Wizard;
+import org.eclipse.swt.widgets.TableItem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -63,19 +68,51 @@ public class PhotoWizard extends Wizard {
     }
     
     private boolean editExistingPhotos() {
-    	// TODO update photos
+    	TableItem[] tableItems = first.getListItems();
+    	for(TableItem item : tableItems){
+    		File f = (File)item.getData();
+			try {					
+				FileInputStream  in = new FileInputStream(f);
+				byte[] data = new byte[in.available()];
+				in.read(data);
+				Photo photo = new Photo(data, f.getName(), item.getText());
+				
+				//TODO Photoservice insert
+	    		
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			}    	
+			catch (IOException e) {
+				e.printStackTrace();
+			}			
+    	}  	
+    	
     	return true;
     }
     
     private boolean importNewPhotos() {
-    	// TODO add/import photos
+    	TableItem[] tableItems = first.getListItems();
+    	for(TableItem item : tableItems){
+    		File f = (File)item.getData();
+			try {					
+				FileInputStream  in = new FileInputStream(f);
+				byte[] data = new byte[in.available()];
+				in.read(data);
+				Photo photo = new Photo(data, f.getName(), item.getText());
+				//TODO Photoservice insert
+	    		
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			}    	
+			catch (IOException e) {
+				e.printStackTrace();
+			}			
+    	}  	
     	return true;
     }
     
     private void fillPhotoValues(Optional<List<Photo>> photos) {
         List<Photo> newPhotos = new ArrayList<Photo>();
-        
-        // TODO 
         
         currentPhotoList = Optional.fromNullable(newPhotos);
     }

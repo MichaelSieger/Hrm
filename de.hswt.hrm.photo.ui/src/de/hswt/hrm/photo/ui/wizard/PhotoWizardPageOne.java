@@ -165,11 +165,11 @@ public class PhotoWizardPageOne extends WizardPage {
 
 		
 		fileClmn = new TableColumn(photosTable, SWT.NONE);
-		fileClmn.setText("File");
+		fileClmn.setText("Name");
 		fileClmn.setWidth(250);
 		
 		nameClmn = new TableColumn(photosTable, SWT.NONE);
-		nameClmn.setText("Name");
+		nameClmn.setText("File");
 		nameClmn.setWidth(250);
 
 		Button btnDelete = new Button(composite, SWT.NONE);
@@ -210,7 +210,7 @@ public class PhotoWizardPageOne extends WizardPage {
 		editor.grabHorizontal = true;
 		editor.minimumWidth = 50;
 		// editing the second column
-		final int EDITABLECOLUMN = 1;
+		final int EDITABLECOLUMN = 0;
 		
 		photosTable.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
@@ -345,6 +345,10 @@ public class PhotoWizardPageOne extends WizardPage {
 		} else {
 			lblNewLabel.setBackgroundImage(null);
 		}		
+	}
+	
+	public TableItem[] getListItems(){
+		return photosTable.getItems();		
 	}
 	
 }
