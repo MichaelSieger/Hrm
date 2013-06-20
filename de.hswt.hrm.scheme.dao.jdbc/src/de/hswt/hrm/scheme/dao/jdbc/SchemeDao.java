@@ -10,7 +10,6 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 
 import javax.inject.Inject;
 
@@ -209,6 +208,8 @@ public class SchemeDao implements ISchemeDao {
     public void update(Scheme scheme) throws ElementNotFoundException, SaveException {
         checkNotNull(scheme, "Scheme must not be null.");
         checkState(scheme.getId() >= 0, "Scheme has no valid ID.");
+        checkState(scheme.getPlant().isPresent(), "Scheme must have a valid Place.");
+        checkState(scheme.getPlant().get().getId() >= 0, "Scheme must have a valid Place.");
 
         SqlQueryBuilder builder = new SqlQueryBuilder();
         builder.update(TABLE_NAME, Fields.FK_PLANT);
@@ -219,7 +220,7 @@ public class SchemeDao implements ISchemeDao {
         try (Connection con = DatabaseFactory.getConnection()) {
             try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
                 stmt.setParameter(Fields.ID, scheme.getId());
-                stmt.setParameter(Fields.FK_PLANT, scheme.getPlant());
+                stmt.setParameter(Fields.FK_PLANT, scheme.getPlant().get().getId());
 
                 int affectedRows = stmt.executeUpdate();
                 if (affectedRows != 1) {

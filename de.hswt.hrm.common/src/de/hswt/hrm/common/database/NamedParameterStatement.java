@@ -7,6 +7,11 @@ import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.common.base.Optional;
+
 import static com.google.common.base.Preconditions.*;
 
 /**
@@ -26,6 +31,7 @@ import static com.google.common.base.Preconditions.*;
  * </p>
  */
 public class NamedParameterStatement implements AutoCloseable {
+	private final static Logger LOG = LoggerFactory.getLogger(NamedParameterStatement.class);
     private final Statement stmt;
     private String query;
     private Map<String, Object> params = new HashMap<>();
@@ -87,6 +93,11 @@ public class NamedParameterStatement implements AutoCloseable {
      * @param value Value for the parameter.
      */
     public void setParameter(String name, Object value) {
+    	if (value instanceof Optional<?>) {
+    		LOG.error("Optional value provided as input.");
+    		throw new IllegalArgumentException("Value should not be of the type optional.");
+    	}
+    	
         params.put(name, value);
     }
     
@@ -96,6 +107,7 @@ public class NamedParameterStatement implements AutoCloseable {
      * @param params Map of parameters.
      */
     public void setParameter(Map<String, Object> params) {
+    	// FIXME: Also check all incomming values for optionals
         this.params.putAll(params);
     }
     
