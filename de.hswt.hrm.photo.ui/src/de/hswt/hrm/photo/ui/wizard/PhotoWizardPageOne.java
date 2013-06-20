@@ -30,6 +30,7 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.FileDialog;
@@ -40,6 +41,9 @@ import org.eclipse.swt.widgets.Text;
 
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Canvas;
+import org.eclipse.swt.custom.TableEditor;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -130,6 +134,7 @@ public class PhotoWizardPageOne extends WizardPage {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				showFileSelectionDialog();
+				checkPageComplete();
 			}
 		});
 	
@@ -173,6 +178,7 @@ public class PhotoWizardPageOne extends WizardPage {
 			public void widgetSelected(SelectionEvent e) {
 				deleteSelectedPhoto();
 				setPreview();
+				checkPageComplete();
 			}
 		});
 		btnDelete.setText("Delete");
@@ -196,6 +202,42 @@ public class PhotoWizardPageOne extends WizardPage {
 		lblNewLabel.setLayoutData(gd_lblNewLabel);
 		lblNewLabel.setBounds(0, 0, 55, 15);
 		new Label(composite, SWT.NONE);
+		
+		final TableEditor editor = new TableEditor(photosTable);
+		//The editor must have the same size as the cell and must
+		//not be any smaller than 50 pixels.
+		editor.horizontalAlignment = SWT.LEFT;
+		editor.grabHorizontal = true;
+		editor.minimumWidth = 50;
+		// editing the second column
+		final int EDITABLECOLUMN = 1;
+		
+		photosTable.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e) {
+				// Clean up any previous editor control
+				Control oldEditor = editor.getEditor();
+				if (oldEditor != null) oldEditor.dispose();
+		
+				// Identify the selected row
+				TableItem item = (TableItem)e.item;
+				if (item == null) return;
+		
+				// The control that will be the editor must be a child of the Table
+				Text newEditor = new Text(photosTable, SWT.NONE);
+				newEditor.setText(item.getText(EDITABLECOLUMN));
+				newEditor.addModifyListener(new ModifyListener() {
+					public void modifyText(ModifyEvent me) {
+						Text text = (Text)editor.getEditor();
+						editor.getItem().setText(EDITABLECOLUMN, text.getText());
+					}
+				});
+				newEditor.selectAll();
+				newEditor.setFocus();
+				editor.setEditor(newEditor, item, EDITABLECOLUMN);
+			}
+		});
+		
+		checkPageComplete();
 	}
 
 	private Image resize(Image image, int width, int height) {
@@ -243,6 +285,14 @@ public class PhotoWizardPageOne extends WizardPage {
 		photosTable.redraw();
 		
 		
+	}
+	
+	private void checkPageComplete(){
+		if(photosTable.getItems().length == 0){
+			setPageComplete(false);	
+			return;
+		}
+		setPageComplete(true);	
 	}
 	
 	private boolean showDeleteConfirmation(String photo) {
@@ -294,7 +344,7 @@ public class PhotoWizardPageOne extends WizardPage {
 			lblNewLabel.setBackgroundImage(sacledImage);
 		} else {
 			lblNewLabel.setBackgroundImage(null);
-		}
-		
+		}		
 	}
+	
 }
