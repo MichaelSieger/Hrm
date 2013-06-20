@@ -70,4 +70,12 @@ public interface ISchemeComponentDao {
      * @throws IllegalStateException If scheme or component have an invalid ID.
      */
     void update(SchemeComponent schemeComponent) throws ElementNotFoundException, SaveException;
+
+    /**
+     * @param component
+     * @throws ElementNotFoundException
+     * @throws DatabaseException
+     */
+	void delete(SchemeComponent component) throws ElementNotFoundException,
+			DatabaseException;
 }

@@ -204,11 +204,7 @@ public class SchemeComponentDao implements ISchemeComponentDao {
             throws ElementNotFoundException, SaveException {
         
         checkNotNull(schemeComponent, "SchemeComponent must not be null.");
-
-        if (schemeComponent.getId() < 0) {
-            throw new ElementNotFoundException("Element has no valid ID.");
-        }
-        
+        checkState(schemeComponent.getId() >= 0, "SchemeComponent has no valid ID.");
         checkState(schemeComponent.getScheme().isPresent(), "SchemeComponent must belong to a scheme.");
     	checkState(schemeComponent.getScheme().get().getId() >= 0, "Scheme must have a valid ID.");
     	checkState(schemeComponent.getComponent().getId() >= 0, "Component must have a valid ID.");
@@ -243,6 +239,45 @@ public class SchemeComponentDao implements ISchemeComponentDao {
         }
         catch (SQLException | DatabaseException e) {
             throw new SaveException(e);
+        }
+    }
+    
+    @Override
+    public void delete(SchemeComponent component) 
+    		throws ElementNotFoundException, DatabaseException {
+    	
+    	checkNotNull(component, "SchemeComponent must not be null.");
+        checkState(component.getId() >= 0, "SchemeComponent has no valid ID.");
+        
+        StringBuilder builder = new StringBuilder();
+        builder.append("DELETE FROM ").append(TABLE_NAME);
+        builder.append(" WHERE ").append(Fields.ID);
+        builder.append(" = :").append(Fields.ID).append(";");
+        
+        String query = builder.toString();
+        
+        try (Connection con = DatabaseFactory.getConnection()) {
+        	con.setAutoCommit(false);
+        	
+        	try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
+        		stmt.setParameter(Fields.ID, component.getId());
+        		
+        		int affected = stmt.executeUpdate();
+        		
+        		if (affected > 1) {
+        			con.rollback();
+        			throw new DatabaseException("Query would accidently delete more than one row.");
+        		}
+        		else if (affected < 1) {
+        			con.rollback();
+        			throw new ElementNotFoundException();
+        		}
+        		
+        		con.commit();
+        	}
+        }
+        catch (SQLException e) {
+        	throw new DatabaseException("Unknown error.", e);
         }
     }
     
