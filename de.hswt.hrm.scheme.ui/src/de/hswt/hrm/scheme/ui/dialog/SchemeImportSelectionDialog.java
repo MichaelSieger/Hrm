@@ -29,7 +29,7 @@ import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.common.ui.swt.layouts.LayoutUtil;
 import de.hswt.hrm.common.ui.swt.utils.SWTResourceManager;
 import de.hswt.hrm.plant.model.Plant;
-import de.hswt.hrm.plant.ui.part.PlantComposite;
+import de.hswt.hrm.plant.ui.shared.PlantComposite;
 import de.hswt.hrm.scheme.model.Scheme;
 import de.hswt.hrm.scheme.service.SchemeService;
 

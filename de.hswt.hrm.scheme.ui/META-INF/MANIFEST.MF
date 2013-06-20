@@ -25,7 +25,7 @@ Import-Package: de.hswt.hrm.common,
  de.hswt.hrm.component.model,
  de.hswt.hrm.component.service,
  de.hswt.hrm.plant.model,
- de.hswt.hrm.plant.ui.part,
+ de.hswt.hrm.plant.ui.shared,
  de.hswt.hrm.scheme.model,
  de.hswt.hrm.scheme.service
 

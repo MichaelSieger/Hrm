@@ -21,7 +21,7 @@ import de.hswt.hrm.common.ui.swt.utils.SWTResourceManager;
 import de.hswt.hrm.contact.model.Contact;
 import de.hswt.hrm.contact.ui.part.ContactComposite;
 import de.hswt.hrm.plant.model.Plant;
-import de.hswt.hrm.plant.ui.part.PlantComposite;
+import de.hswt.hrm.plant.ui.shared.PlantComposite;
 
 public class PlantSelectionDialog extends TitleAreaDialog {
 
