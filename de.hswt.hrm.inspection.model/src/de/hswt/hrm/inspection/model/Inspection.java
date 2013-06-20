@@ -6,8 +6,6 @@ import static com.google.common.base.Strings.isNullOrEmpty;
 import de.hswt.hrm.plant.model.Plant;
 import de.hswt.hrm.contact.model.Contact;
 
-import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 
 public class Inspection {
@@ -17,9 +15,9 @@ public class Inspection {
     private Contact requester;
     private Contact contractor;
     private Contact checker;
-    private Date jobDate;
-    private Date reportDate;
-    private Date nextDate;
+    private GregorianCalendar inspectionDate;
+    private GregorianCalendar reportDate;
+    private GregorianCalendar nextInspectionDate;
     private int temperature;
     private int humidity;
     private String summary;
@@ -32,57 +30,23 @@ public class Inspection {
     private static final String IS_MANDATORY = "Field is a mandatory.";
     private static final String INVALID_NUMBER = "%d is an invalid number.%n Must be greater 0";
 
-    // TODO rename jobdate to inspectionDate, rename nextDate to nextInspectionDate
-    // change the types of Date to GregorianCalendar
-    // change String of style in a Style Model Object, if this will exist in future 
-    public Inspection(int id, GregorianCalendar reportDate, 
-    		GregorianCalendar inspectionDate, 
-    		GregorianCalendar nextInspection,
-    		String title,
-    		Layout reportStyle,
-    		Plant plant) {
+    // TODO rename jobdate to inspectionDate, rename nextDate to nextInspectionDate -> done
+    // change the types of Date to GregorianCalendar -> done
+    // change String of style in a Style Model Object, if this will exist in future -> no need to ...
+    // ... change this, layout is already a Layout
+    public Inspection(int id, GregorianCalendar reportDate, GregorianCalendar inspectionDate,
+            GregorianCalendar nextInspection, String title, Layout layout, Plant plant) {
         this.id = id;
-//        setReportDate(reportDate);
-//        setJobDate(inspectionDate);
-//        setNextDate(nextInspection);
-//        setTitle(title);
-//        setPlant(plant);
-    }
-
-    public Inspection(GregorianCalendar reportDate, 
-    		GregorianCalendar inspectionDate, 
-    		GregorianCalendar nextInspection,
-    		String title,
-    		Layout reportStyle,
-    		Plant plant) {
-    	this(-1, reportDate, inspectionDate, nextInspection, title, reportStyle, plant);
-    }
-
-    public Inspection(int id, Date jobDate, Date reportDate, Date nextDate, int temperature,
-            int humidity, String summary, String titel, String temperatureRating,
-            String temperatureQuantifier, String humidityRating, String humidityQuantifier) {
-
-        this.id = id;
-
-        setJobDate(jobDate);
         setReportDate(reportDate);
-        setNextDate(nextDate);
-        setTemperature(temperature);
-        setHumidity(humidity);
-        setSummary(summary);
-        setTitle(titel);
-        setTemperatureRating(temperatureRating);
-        setHumidityRating(humidityRating);
-        setTemperatureQuantifier(temperatureQuantifier);
-        setHumidityQuantifier(humidityQuantifier);
-
+        setInspectionDate(inspectionDate);
+        setNextInspectionDate(nextInspection);
+        setTitle(title);
+        setPlant(plant);
     }
 
-    public Inspection(Date jobDate, Date reportDate, Date nextDate, int temperature, int humidity,
-            String summary, String titel, String temperatureRating, String temperatureQuantifier,
-            String humidityRating, String humidityQuantifier) {
-        this(-1, jobDate, reportDate, nextDate, temperature, humidity, summary, titel,
-                temperatureRating, temperatureQuantifier, humidityRating, humidityQuantifier);
+    public Inspection(GregorianCalendar reportDate, GregorianCalendar inspectionDate,
+            GregorianCalendar nextInspection, String title, Layout layout, Plant plant) {
+        this(-1, reportDate, inspectionDate, nextInspection, title, layout, plant);
     }
 
     public Layout getLayout() {
@@ -130,28 +94,28 @@ public class Inspection {
         this.checker = checker;
     }
 
-    public Date getJobDate() {
-        return jobDate;
+    public GregorianCalendar getJobDate() {
+        return inspectionDate;
     }
 
-    public void setJobDate(Date jobDate) {
-        this.jobDate = jobDate;
+    public void setInspectionDate(GregorianCalendar inspectionDate) {
+        this.inspectionDate = inspectionDate;
     }
 
-    public Date getReportDate() {
+    public GregorianCalendar getReportDate() {
         return reportDate;
     }
 
-    public void setReportDate(Date reportDate) {
+    public void setReportDate(GregorianCalendar reportDate) {
         this.reportDate = reportDate;
     }
 
-    public Date getNextDate() {
-        return nextDate;
+    public GregorianCalendar getNextInspectionDate() {
+        return nextInspectionDate;
     }
 
-    public void setNextDate(Date nextDate) {
-        this.nextDate = nextDate;
+    public void setNextInspectionDate(GregorianCalendar nextInspectionDate) {
+        this.nextInspectionDate = nextInspectionDate;
     }
 
     public int getTemperature() {
@@ -238,9 +202,10 @@ public class Inspection {
                 + ((humidityQuantifier == null) ? 0 : humidityQuantifier.hashCode());
         result = prime * result + ((humidityRating == null) ? 0 : humidityRating.hashCode());
         result = prime * result + id;
-        result = prime * result + ((jobDate == null) ? 0 : jobDate.hashCode());
+        result = prime * result + ((inspectionDate == null) ? 0 : inspectionDate.hashCode());
         result = prime * result + ((layout == null) ? 0 : layout.hashCode());
-        result = prime * result + ((nextDate == null) ? 0 : nextDate.hashCode());
+        result = prime * result
+                + ((nextInspectionDate == null) ? 0 : nextInspectionDate.hashCode());
         result = prime * result + ((plant == null) ? 0 : plant.hashCode());
         result = prime * result + ((reportDate == null) ? 0 : reportDate.hashCode());
         result = prime * result + ((requester == null) ? 0 : requester.hashCode());
@@ -303,12 +268,12 @@ public class Inspection {
         if (id != other.id) {
             return false;
         }
-        if (jobDate == null) {
-            if (other.jobDate != null) {
+        if (inspectionDate == null) {
+            if (other.inspectionDate != null) {
                 return false;
             }
         }
-        else if (!jobDate.equals(other.jobDate)) {
+        else if (!inspectionDate.equals(other.inspectionDate)) {
             return false;
         }
         if (layout == null) {
@@ -319,12 +284,12 @@ public class Inspection {
         else if (!layout.equals(other.layout)) {
             return false;
         }
-        if (nextDate == null) {
-            if (other.nextDate != null) {
+        if (nextInspectionDate == null) {
+            if (other.nextInspectionDate != null) {
                 return false;
             }
         }
-        else if (!nextDate.equals(other.nextDate)) {
+        else if (!nextInspectionDate.equals(other.nextInspectionDate)) {
             return false;
         }
         if (plant == null) {

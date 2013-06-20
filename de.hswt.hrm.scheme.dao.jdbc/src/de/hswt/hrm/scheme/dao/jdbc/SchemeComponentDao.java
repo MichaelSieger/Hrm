@@ -141,7 +141,7 @@ public class SchemeComponentDao implements ISchemeComponentDao {
     public SchemeComponent insert(SchemeComponent schemeComponent) throws SaveException {
         checkNotNull(schemeComponent, "SchemeComponent must not be null.");
     	if (schemeComponent.getId() >= 0) {
-            throw new IllegalStateException("SchemeComponent has already a valid ID.");
+    		LOG.info(String.format("SchemeComponent '%d' copied.", schemeComponent.getId()));
         }
         
     	checkState(schemeComponent.getScheme().isPresent(), "SchemeComponent must belong to a scheme.");
@@ -367,6 +367,7 @@ public class SchemeComponentDao implements ISchemeComponentDao {
     
     private Collection<SchemeComponent> fromResultSet(ResultSet rs) throws SQLException, ElementNotFoundException, DatabaseException {
         checkNotNull(rs, "Result must not be null.");
+        
         Collection<SchemeComponent> schemeComponentList = new ArrayList<>();
         while (rs.next()) {
             int id = rs.getInt(Fields.ID);
@@ -385,7 +386,7 @@ public class SchemeComponentDao implements ISchemeComponentDao {
                 scheme = schemeDao.findById(schemeId);
             }
             
-            SchemeComponent schemeComponent = new SchemeComponent(id, xPos, yPos, dir, null);
+            SchemeComponent schemeComponent = new SchemeComponent(id, xPos, yPos, dir, component);
             schemeComponent.setComponent(component);
             schemeComponent.setScheme(scheme);
 

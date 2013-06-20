@@ -95,6 +95,16 @@ public class SchemeService {
 		return findById(scheme.getId());
 	}
 	
+	public Scheme copy (final Scheme scheme, final Plant plant) 
+			throws ElementNotFoundException, SaveException, DatabaseException {
+		
+		Scheme copy = copy(scheme);
+		copy.setPlant(plant);
+		schemeDao.update(copy);
+		
+		return copy;
+	}
+	
 	public void update(Scheme scheme, Collection<SchemeComponent> components) 
 			throws ElementNotFoundException, SaveException, DatabaseException {
 		
