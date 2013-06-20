@@ -316,7 +316,7 @@ public class CatalogAssignmentComposite extends Composite {
 		currentAdd.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				addCurrent((Target) getSelectedListItem(availableTarget),
+				addCurrent((Target) getSelectedListItem(assignedTarget),
 						getSelectedListItem(availableCurrent));
 			}
 		});
@@ -326,7 +326,8 @@ public class CatalogAssignmentComposite extends Composite {
 		currentRemove.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				removeCurrent(getSelectedListItem(assignedCurrent));
+				removeCurrent((Target) getSelectedListItem(assignedTarget),
+						getSelectedListItem(assignedCurrent));
 			}
 		});
 
@@ -527,13 +528,12 @@ public class CatalogAssignmentComposite extends Composite {
 			LOG.error("An error occured", e);
 		}
 		if (targets.isEmpty()) {
-			LOG.debug("empty targets, using default");
+
 			availableTarget.setInput(targetFromDB);
 			assignedTarget.getList().removeAll();
 
 		} else {
-			LOG.debug("found " + targets.size() + " assigned items"
-					+ " for catalog " + c.getName());
+
 			// We have already matched targets...
 			tempTarget.clear();
 			tempTarget = new ArrayList<>(targetFromDB);
@@ -555,18 +555,17 @@ public class CatalogAssignmentComposite extends Composite {
 		}
 
 		if (currents.isEmpty()) {
-			LOG.debug("empty targets, using default");
-			availableTarget.setInput(targetFromDB);
-			assignedTarget.getList().removeAll();
+
+			availableCurrent.setInput(currentFromDB);
+			assignedCurrent.getList().removeAll();
 
 		} else {
-			LOG.debug("found " + currents.size() + " assigned currents"
-					+ " for Target " + t.getName());
+
 			// We have already matched targets...
 			tempCurrent.clear();
 			tempCurrent = new ArrayList<>(currentFromDB);
 			assignedCurrent.setInput(currents);
-			tempTarget.removeAll(currents);
+			tempCurrent.removeAll(currents);
 			availableCurrent.setInput(tempCurrent);
 		}
 	}
@@ -582,15 +581,14 @@ public class CatalogAssignmentComposite extends Composite {
 		if (viewer.equals(availableTarget)) {
 			addTarget(selectedCatalog, item);
 		} else if (viewer.equals(availableCurrent)) {
-
 			obtainCurrents(t);
-			addCurrent((Target) getSelectedListItem(assignedTarget), item);
+			addCurrent(t, item);
 		} else if (viewer.equals(availableActivity)) {
 			addActivity(item);
 		} else if (viewer.equals(assignedTarget)) {
 			removeTarget(selectedCatalog, item);
 		} else if (viewer.equals(assignedCurrent)) {
-			removeCurrent(item);
+			removeCurrent(t, item);
 		} else if (viewer.equals(assignedActivity)) {
 			removeActivity(item);
 		}
@@ -637,11 +635,16 @@ public class CatalogAssignmentComposite extends Composite {
 
 	}
 
-	private void removeCurrent(ICatalogItem item) {
-		if (item == null) {
+	private void removeCurrent(Target t, ICatalogItem item) {
+		if (item == null || item == null) {
 			return;
 		}
-		// TODO implement
+		try {
+			catalogService.removeFromTarget(t, (Current) item);
+		} catch (DatabaseException e) {
+			LOG.error("An error occured", e);
+		}
+		moveItem(item, assignedCurrent, availableCurrent);
 	}
 
 	private void addActivity(ICatalogItem item) {
