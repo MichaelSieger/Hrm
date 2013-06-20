@@ -354,7 +354,8 @@ public class CatalogAssignmentComposite extends Composite {
 		activityRemove.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				removeActivity(getSelectedListItem(assignedActivity));
+				Current c = (Current) getSelectedListItem(assignedCurrent);
+				removeActivity(c, getSelectedListItem(assignedActivity));
 			}
 		});
 
@@ -498,6 +499,17 @@ public class CatalogAssignmentComposite extends Composite {
 			}
 		});
 
+		assignedCurrent.getList().addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				Current c = (Current) getSelectedListItem(assignedCurrent);
+				if (c == null) {
+					return;
+				}
+				obtainActivities(c);
+			}
+		});
+
 	}
 
 	private void initListViewers() {
@@ -610,7 +622,6 @@ public class CatalogAssignmentComposite extends Composite {
 			addTarget(selectedCatalog, item);
 		} else if (viewer.equals(availableCurrent)) {
 			Target t = (Target) getSelectedListItem(assignedTarget);
-			obtainCurrents(t);
 			addCurrent(t, item);
 		} else if (viewer.equals(availableActivity)) {
 			Current c = (Current) getSelectedListItem(assignedCurrent);
@@ -621,7 +632,8 @@ public class CatalogAssignmentComposite extends Composite {
 			Target t = (Target) getSelectedListItem(assignedTarget);
 			removeCurrent(t, item);
 		} else if (viewer.equals(assignedActivity)) {
-			removeActivity(item);
+			Current c = (Current) getSelectedListItem(assignedCurrent);
+			removeActivity(c, item);
 		}
 	}
 
@@ -654,7 +666,7 @@ public class CatalogAssignmentComposite extends Composite {
 
 	private void addCurrent(Target t, ICatalogItem item) {
 
-		if (t == null || item == null) {
+		if (t == null || t == null) {
 			return;
 		}
 		try {
@@ -690,11 +702,16 @@ public class CatalogAssignmentComposite extends Composite {
 		moveItem(item, availableActivity, assignedActivity);
 	}
 
-	private void removeActivity(ICatalogItem item) {
-		if (item == null) {
+	private void removeActivity(Current c, ICatalogItem item) {
+		if (item == null || c == null) {
 			return;
 		}
-		// TODO implement
+		try {
+			catalogService.removeFromCurrent(c, (Activity) item);
+		} catch (DatabaseException e) {
+			LOG.error("An error occured", e);
+		}
+		moveItem(item, assignedCurrent, availableCurrent);
 	}
 
 	private void moveItem(ICatalogItem item, ListViewer source,

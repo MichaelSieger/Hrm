@@ -41,6 +41,7 @@ import com.google.common.base.Optional;
 import com.google.common.base.Throwables;
 
 import de.hswt.hrm.common.database.exception.DatabaseException;
+import de.hswt.hrm.common.database.exception.ElementNotFoundException;
 import de.hswt.hrm.common.ui.swt.constants.SearchFieldConstants;
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.common.ui.swt.layouts.LayoutUtil;
@@ -66,6 +67,9 @@ public class PlantPart {
 
     @Inject
     private PlantService plantService;
+    
+    @Inject
+    private SchemeService schemeService;
 
     @Inject
     private IShellProvider shellProvider;
@@ -364,12 +368,28 @@ public class PlantPart {
     	if(!plant.isPresent()){
     		return;
     	}
-    	//TODO Load existing scheme
+    	
+    	Scheme scheme = null;
+    	try {
+    		scheme = schemeService.findCurrentSchemeByPlant(plant.get());
+    	}
+    	catch (ElementNotFoundException e) {
+        	scheme = new Scheme(plant.get());
+    		LOG.info(String.format("No scheme found for plant '%d'", plant.get().getId()));
+        }
+        catch (DatabaseException e) {
+        	LOG.error("Error loading scheme.", e);
+        	// FIXME: Add message box.
+        	return;
+        }
+    	
         try {
-			schemeComposite.modifyScheme(new Scheme(plant.get()));
-		} catch (IOException e) {
+			schemeComposite.modifyScheme(scheme);
+		} 
+        catch (IOException e) {
 			Throwables.propagate(e);
 		}
+        
         showSchemeActions();
         schemeTab.setControl(schemeComposite);
         tabFolder.setSelection(schemeTab);
