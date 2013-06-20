@@ -1,5 +1,6 @@
 package de.hswt.hrm.inspection.ui.part;
 
+import java.util.Collection;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -24,12 +25,15 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
 
+import com.google.common.base.Optional;
+
 import de.hswt.hrm.common.ui.swt.constants.SearchFieldConstants;
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.common.ui.swt.layouts.LayoutUtil;
 import de.hswt.hrm.common.ui.swt.table.ColumnComparator;
 import de.hswt.hrm.common.ui.swt.table.ColumnDescription;
 import de.hswt.hrm.common.ui.swt.table.TableViewerController;
+import de.hswt.hrm.inspection.model.Inspection;
 
 public class ReportsOverviewComposite extends Composite {
 
@@ -132,11 +136,11 @@ public class ReportsOverviewComposite extends Composite {
 
 	private void initializeTable() {
 		// TODO adapt to the inspectionService and Inspection POJO
-//		List<ColumnDescription<ICatalogItem>> columns = CatalogPartUtil
+//		List<ColumnDescription<Inspection>> columns = CatalogPartUtil
 //				.getColumns();
 //
 //		// Create columns in tableviewer
-//		TableViewerController<ICatalogItem> filler = new TableViewerController<>(
+//		TableViewerController<Inspection> filler = new TableViewerController<>(
 //				tableViewer);
 //		filler.createColumns(columns);
 //
@@ -144,7 +148,7 @@ public class ReportsOverviewComposite extends Composite {
 //		filler.createColumnSelectionMenu();
 //
 //		// Enable sorting
-//		ColumnComparator<ICatalogItem> comparator = new ColumnComparator<>(
+//		ColumnComparator<Inspection> comparator = new ColumnComparator<>(
 //				columns);
 //		filler.enableSorting(comparator);
 //
@@ -156,18 +160,16 @@ public class ReportsOverviewComposite extends Composite {
 	}
 
 	public void addInspection() {
-		// TODO adapt to the inspectionService and Inspection POJO
-//		Optional<ICatalogItem> newItem = CatalogPartUtil.showWizard(context,
-//				shellProvider.getShell(), Optional.<ICatalogItem> absent());
-//
-//		if (newItem.isPresent()) {
-//			@SuppressWarnings("unchecked")
-//			Collection<ICatalogItem> items = (Collection<ICatalogItem>) tableViewer
-//					.getInput();
-//			items.add(newItem.get());
-//			tableViewer.refresh();
-//		}
+		Optional<Inspection> newInspection = InspectionPartUtil.showInspectionCreateWizard(
+				context, shellProvider.getShell());
 
+		if (newInspection.isPresent()) {
+			@SuppressWarnings("unchecked")
+			Collection<Inspection> items = (Collection<Inspection>) tableViewer
+					.getInput();
+			items.add(newInspection.get());
+			tableViewer.refresh();
+		}
 	}
 
 	@Override

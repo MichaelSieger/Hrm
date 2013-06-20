@@ -64,7 +64,7 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
     private Text plantText;
     private DateTime reportDateTime;
     private DateTime inspectionDateTime;
-    private DateTime nextInsectionDateTime;
+    private DateTime nextInspectionDateTime;
 
     private Text titlePhotoText;
     private Text plantPhotoText;
@@ -266,19 +266,19 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
         formToolkit.adapt(nextInspectionLabel, true, true);
         nextInspectionLabel.setText("Next inspection");
 
-        nextInsectionDateTime = new DateTime(generalComposite, SWT.BORDER | SWT.DATE
+        nextInspectionDateTime = new DateTime(generalComposite, SWT.BORDER | SWT.DATE
                 | SWT.DROP_DOWN);
-        formToolkit.adapt(nextInsectionDateTime);
-        formToolkit.paintBordersFor(nextInsectionDateTime);
-        nextInsectionDateTime.setLayoutData(LayoutUtil.createHorzFillData());
-        nextInsectionDateTime.setYear(inspectionDateTime.getYear() + 2);
+        formToolkit.adapt(nextInspectionDateTime);
+        formToolkit.paintBordersFor(nextInspectionDateTime);
+        nextInspectionDateTime.setLayoutData(LayoutUtil.createHorzFillData());
+        nextInspectionDateTime.setYear(inspectionDateTime.getYear() + 2);
 
         Button twoYearsButton = formToolkit.createButton(generalComposite, "2 years", SWT.PUSH);
         twoYearsButton.setLayoutData(LayoutUtil.createRightGridData(2));
         twoYearsButton.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                nextInsectionDateTime.setYear(inspectionDateTime.getYear() + 2);
+                nextInspectionDateTime.setYear(inspectionDateTime.getYear() + 2);
             }
         });
 
@@ -287,7 +287,7 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
         threeYearsButton.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                nextInsectionDateTime.setYear(inspectionDateTime.getYear() + 3);
+                nextInspectionDateTime.setYear(inspectionDateTime.getYear() + 3);
             }
         });
 

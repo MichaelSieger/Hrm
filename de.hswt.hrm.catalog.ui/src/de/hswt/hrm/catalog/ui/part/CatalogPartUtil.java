@@ -18,6 +18,7 @@ import de.hswt.hrm.catalog.model.ICatalogItem;
 import de.hswt.hrm.catalog.model.Target;
 import de.hswt.hrm.catalog.ui.wizzard.CatalogWizard;
 import de.hswt.hrm.common.ui.swt.table.ColumnDescription;
+import de.hswt.hrm.common.ui.swt.wizards.WizardCreator;
 
 public final class CatalogPartUtil {
 
@@ -38,7 +39,7 @@ public final class CatalogPartUtil {
         ContextInjectionFactory.inject(wizard, context);
 
         // Show wizard
-        WizardDialog wd = new WizardDialog(shell, wizard);
+		WizardDialog wd = WizardCreator.createWizardDialog(shell, wizard);
         wd.open();
         return wizard.getItem();
 
