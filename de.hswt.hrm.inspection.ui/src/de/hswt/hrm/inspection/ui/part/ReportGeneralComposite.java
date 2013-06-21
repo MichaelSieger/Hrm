@@ -1,5 +1,8 @@
 package de.hswt.hrm.inspection.ui.part;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
+
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
@@ -18,6 +21,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
 
@@ -88,6 +92,8 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
     private Combo humidityGradeCombo;
     private Combo humidityWeightCombo;
     private Combo humitiyCommentCombo;
+    
+    java.util.List<Photo> photos = new LinkedList<Photo>();
 
     /**
      * Do not use this constructor when instantiate this composite! It is only included to make the
@@ -755,13 +761,22 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
 
     private void importPhotos() {
     	Optional<java.util.List<Photo>> n = Optional.absent();
-        PhotoWizard pw = new PhotoWizard(n);
+    	
+        PhotoWizard pw = new PhotoWizard(photos);
         ContextInjectionFactory.inject(pw, context);
 
         WizardDialog wd = WizardCreator.createWizardDialog(
         		shellProvider.getShell(), pw);
         wd.open();
         // TODO handle input
+
+        String[] tableItems = new String[photos.size()];
+        int i = 0;
+        for(Photo photo : photos){
+        	tableItems[i] = photo.getLabel();
+        	i++;       	
+        }
+        photosList.setItems(tableItems);
     }
 
     @Override

@@ -1,7 +1,12 @@
 package de.hswt.hrm.photo.ui.wizard;
 
 import java.awt.Graphics;
+import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -50,6 +55,7 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.forms.widgets.FormToolkit;
@@ -78,6 +84,8 @@ public class PhotoWizardPageOne extends WizardPage {
 	private Composite container;
 
 	private Label lblFiles;
+	
+	private List<Photo> photos;
 
 	private Canvas canvas;
 	private final FormToolkit formToolkit = new FormToolkit(Display.getDefault());
@@ -87,16 +95,17 @@ public class PhotoWizardPageOne extends WizardPage {
 	/**
 	 * Create the wizard.
 	 */
-	public PhotoWizardPageOne(Optional<List<Photo>> photos) {
+	public PhotoWizardPageOne(List<Photo> photos) {		
 		super("Photo import");
+		this.photos = photos;
 		setTitle("Photo import");
-        if (photos != null && photos.isPresent()) {
+//        if (photos != null && photos.isPresent()) {
     		setTitle("Edit photos");
     		setDescription("Select a directory to add photos. Rename or delete existing ones.");
-        } else {
-    		setTitle("Import photos");
-    		setDescription("Select a directory to add photos.");
-        } 
+//        } else {
+//    		setTitle("Import photos");
+//    		setDescription("Select a directory to add photos.");
+//        } 
 	}
 
 	/**
@@ -233,11 +242,18 @@ public class PhotoWizardPageOne extends WizardPage {
 				});
 				newEditor.selectAll();
 				newEditor.setFocus();
-				editor.setEditor(newEditor, item, EDITABLECOLUMN);
+				editor.setEditor(newEditor, item, EDITABLECOLUMN);				
 			}
 		});
 		
+		if(photos != null && photos.size() != 0){
+			for(Photo photo : photos){
+				addFileToTable(photo,photo.getLabel(),photo.getName());				
+			}		
+		}
+		
 		checkPageComplete();
+		
 	}
 
 	private Image resize(Image image, int width, int height) {
@@ -257,19 +273,19 @@ public class PhotoWizardPageOne extends WizardPage {
 		addFileToTable(null, file, name);
 	}
 
-	protected void addFileToTable(File file, String fileName, String name) {
+	protected void addFileToTable(Photo photo, String fileName, String name) {
 		TableItem item = new TableItem(photosTable, SWT.NONE);
 		item.setText(0, fileName);
 		item.setText(1, name);
-		item.setData(file);
+		item.setData(photo);
 	}
 
-	protected void addFileToTable(File file, String name) {
-		addFileToTable(file.getName(), name);
+	protected void addFileToTable(Photo photo, String name) {
+		addFileToTable(photo.getName(), name);
 	}
 
-	protected void addFileToTable(File file) {
-		addFileToTable(file.getName(), file.getName());
+	protected void addFileToTable(Photo photo) {
+		addFileToTable(photo.getName(), photo.getName());
 	}
 	
 	protected void deleteSelectedPhoto() {
@@ -281,6 +297,7 @@ public class PhotoWizardPageOne extends WizardPage {
 		if (!showDeleteConfirmation(item.getText(0))) {
 			return;
 		}
+		photos.remove(photosTable.getSelectionIndex());
 		photosTable.remove(photosTable.getSelectionIndex());
 		photosTable.redraw();
 		
@@ -305,7 +322,7 @@ public class PhotoWizardPageOne extends WizardPage {
 //
 //        fileDialog.setFilterPath(fileFilterPath);
 //        
-        fileDialog.setFilterExtensions(new String[]{"*.jpg", "*.bmp",  "*.gif", "*.png"});
+        fileDialog.setFilterExtensions(new String[]{"*.jpg;*.bmp;*.gif;*.png"});
 //        
         String firstFile = fileDialog.open();
 
@@ -322,8 +339,22 @@ public class PhotoWizardPageOne extends WizardPage {
           }
           
           for(String path : paths){
-        	  File a = new File(path);
-        	  addFileToTable(a,a.getName(),a.getName());          
+        	  File f = new File(path);
+  			try {					
+  				FileInputStream  in = new FileInputStream(f);
+  				byte[] data = new byte[in.available()];
+  				in.read(data);
+  				Photo photo = new Photo(data, f.getName(), f.getName());
+  				addFileToTable(photo,photo.getLabel(),photo.getName());   
+  	    		
+  			} catch (FileNotFoundException e) {
+  				e.printStackTrace();
+  			}    	
+  			catch (IOException e) {
+  				e.printStackTrace();}			
+        	  
+        	  
+        	         
           }
         }
 	}
@@ -331,8 +362,12 @@ public class PhotoWizardPageOne extends WizardPage {
 	private void setPreview(){
 		if(photosTable.getSelectionIndex() != -1){
 			TableItem [] tableItems = photosTable.getItems();
-			File file = (File)tableItems[photosTable.getSelectionIndex()].getData();
-			Image image = new Image(canvas.getDisplay(),file.getAbsolutePath());
+			Photo photo = (Photo)tableItems[photosTable.getSelectionIndex()].getData();
+			InputStream istream = new ByteArrayInputStream(photo.getBlob());  
+	          
+			ImageData imageData = new ImageData(istream);  
+			Image image = new Image(Display.getDefault(), imageData);
+			
 			double width = image.getImageData().width;
 			double heigth = image.getImageData().height;
 			double ratioPix = width/heigth;
@@ -347,8 +382,12 @@ public class PhotoWizardPageOne extends WizardPage {
 		}		
 	}
 	
-	public TableItem[] getListItems(){
-		return photosTable.getItems();		
+	public Table getListItems(){
+		return photosTable;		
+	}
+
+	public TableItem[] getTableItems() {
+		return photosTable.getItems();
 	}
 	
 }
