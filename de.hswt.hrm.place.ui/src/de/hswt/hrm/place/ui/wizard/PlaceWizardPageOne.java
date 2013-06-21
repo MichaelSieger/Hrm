@@ -47,10 +47,10 @@ public class PlaceWizardPageOne extends WizardPage {
 
     private String createDiscription() {
         if (place.isPresent()) {
-            return "Change the location information.";
+            return I18N.tr("Edit the location.");
         }
 
-        return "Add a new location.";
+        return I18N.tr("Add a new location.");
     }
     
     public Place getPlace() {
@@ -71,8 +71,8 @@ public class PlaceWizardPageOne extends WizardPage {
     	    LOG.error("Could not load PlaceWizardPageOne XWT file.", e);
     	    return;
 		}
-    	//TODO: add translation file
-    	//translate(container);
+
+    	translate(container);
     	
         if (place.isPresent()) {
             updateFields(place.get());
@@ -139,11 +139,11 @@ public class PlaceWizardPageOne extends WizardPage {
         for (int i = 0; i < widArray.length; i++) {
             isValid = checkValidity(widArray[i]);
             if (widArray[i].getText().length() == 0) {
-                setErrorMessage("Field \"" + widArray[i].getToolTipText() + "\" is mandatory.");
+                setErrorMessage(I18N.tr("Field is mandatory")+ ": " + I18N.tr(XWT.getElementName((Object) widArray[i])));
                 return false;
             }
             if (!isValid) {
-                setErrorMessage("Input for \"" + widArray[i].getToolTipText() + "\" is invalid.");
+                setErrorMessage(I18N.tr("Invalid input for field")+ " " + I18N.tr(XWT.getElementName((Object) widArray[i])));
                 return false;
             }
         }
@@ -184,14 +184,8 @@ public class PlaceWizardPageOne extends WizardPage {
     private void translate(Composite container) {
         // Labels
         setLabelText(container, "lblName", I18N.tr("Name"));
-        setLabelText(container, "lblStreet", I18N.tr("Street"));
-        setLabelText(container, "lblZipCode", I18N.tr("ZipCode"));
-        // ToolTips
-        setToolTipText(container, Fields.NAME, I18N.tr("Name"));
-        setToolTipText(container, Fields.STREET, I18N.tr("Street"));
-        setToolTipText(container, Fields.STREET_NO, I18N.tr("Streetnumber"));
-        setToolTipText(container, Fields.CITY, I18N.tr("City"));
-        setToolTipText(container, Fields.ZIP_CODE, I18N.tr("Zipcode"));
+        setLabelText(container, "lblStreet", I18N.tr("Street / No."));
+        setLabelText(container, "lblZipCode", I18N.tr("Zipcode / City"));
     }
     
     private void setLabelText(Composite container, String labelName, String text) {
@@ -202,16 +196,7 @@ public class PlaceWizardPageOne extends WizardPage {
         }
         l.setText(text);
     }
-    
-    private void setToolTipText(Composite container, String textName, String toolTip) {
-        Text t = (Text) XWT.findElementByName(container, textName);
-        if (t==null) {
-            LOG.error("Text '"+textName+"' not found.");
-            return;
-        }
-        t.setToolTipText(toolTip);
-    }
-    
+        
     private static final class Fields {
         public static final String NAME = "name";
         public static final String STREET = "street";

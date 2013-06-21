@@ -10,11 +10,14 @@ import com.google.common.base.Optional;
 
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.SaveException;
+import de.hswt.hrm.i18n.I18n;
+import de.hswt.hrm.i18n.I18nFactory;
 import de.hswt.hrm.place.model.Place;
 import de.hswt.hrm.place.service.PlaceService;
 
 public class PlaceWizard extends Wizard {
     private static final Logger LOG = LoggerFactory.getLogger(PlaceWizard.class);
+    private static final I18n I18N = I18nFactory.getI18n(PlaceWizard.class);
     private PlaceWizardPageOne first;
     private Optional<Place> place;
 
@@ -25,10 +28,10 @@ public class PlaceWizard extends Wizard {
         this.place = place;
 
         if (place.isPresent()) {
-            setWindowTitle("Standort bearbeiten");
+            setWindowTitle(I18N.tr("Edit place"));
         }
         else {
-            setWindowTitle("Neuen Standort hinzufügen");
+            setWindowTitle(I18N.tr("Add place"));
         }
     }
 
