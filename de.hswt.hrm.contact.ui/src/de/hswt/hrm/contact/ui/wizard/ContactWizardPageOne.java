@@ -114,11 +114,11 @@ public class ContactWizardPageOne extends WizardPage {
         for (int i = 0; i < manArray.length; i++) {
             boolean isValid = checkValidity(manArray[i]);
             if (manArray[i].getText().length() == 0) {
-                setErrorMessage(I18N.tr("Field is mandatory")+ ": " + manArray[i].getToolTipText());
+                setErrorMessage(I18N.tr("Field is mandatory")+ ": " + I18N.tr(XWT.getElementName((Object) manArray[i])));
                 return false;
             }
             if (!isValid) {
-                setErrorMessage(I18N.tr("Invalid input for field")+ " " + manArray[i].getToolTipText());
+                setErrorMessage(I18N.tr("Invalid input for field")+ " " + I18N.tr(XWT.getElementName((Object) manArray[i])));
                 return false;
             }
         }
@@ -160,15 +160,6 @@ public class ContactWizardPageOne extends WizardPage {
         }
     }
     
-    private void setToolTipText(Composite container, String textName, String toolTip) {
-        Text t = (Text) XWT.findElementByName(container, textName);
-        if (t == null) {
-            LOG.error("Text '" + textName + "' not found.");
-            return;
-        }
-        t.setToolTipText(toolTip);
-    }
-
     private void setLabelText(final Composite container, final String labelName, final String text) {
 
         Label l = (Label) XWT.findElementByName(container, labelName);
@@ -196,12 +187,6 @@ public class ContactWizardPageOne extends WizardPage {
         setLabelText(container, "lblFirstName", I18N.tr("Name"));
         setLabelText(container, "lblStreet", I18N.tr("Street / No."));
         setLabelText(container, "lblZipCode", I18N.tr("Zipcode / City"));
-        // ToolTips
-        setToolTipText(container, "name", I18N.tr("Name"));
-        setToolTipText(container, "street", I18N.tr("Street"));
-        setToolTipText(container, "streetNumber", I18N.tr("Streetnumber"));
-        setToolTipText(container, "zipCode", I18N.tr("Zipcode"));
-        setToolTipText(container, "city", I18N.tr("City"));
     }
 
 }
