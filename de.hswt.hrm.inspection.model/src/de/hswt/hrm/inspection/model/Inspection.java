@@ -117,8 +117,8 @@ public class Inspection {
         this.nextInspectionDate = nextInspectionDate;
     }
 
-    public int getTemperature() {
-        return temperature;
+    public Optional<Integer> getTemperature() {
+        return Optional.fromNullable(temperature);
     }
 
     public void setTemperature(int temperature) {
@@ -126,8 +126,8 @@ public class Inspection {
         this.temperature = temperature;
     }
 
-    public int getHumidity() {
-        return humidity;
+    public Optional<Integer> getHumidity() {
+        return Optional.fromNullable(humidity);
     }
 
     public void setHumidity(int humidity) {
@@ -135,8 +135,8 @@ public class Inspection {
         this.humidity = humidity;
     }
 
-    public String getSummary() {
-        return summary;
+    public Optional<String> getSummary() {
+        return Optional.fromNullable(summary);
     }
 
     public void setSummary(String summary) {
