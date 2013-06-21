@@ -40,12 +40,16 @@ import de.hswt.hrm.common.ui.swt.table.TableViewerController;
 import de.hswt.hrm.contact.model.Contact;
 import de.hswt.hrm.contact.service.ContactService;
 import de.hswt.hrm.contact.ui.filter.ContactFilter;
+import de.hswt.hrm.i18n.I18n;
+import de.hswt.hrm.i18n.I18nFactory;
 
 public class ContactComposite extends Composite {
 
     public static final int TABLE_SELCTION_EVENT = SWT.Selection + 12341234;
 
     private final static Logger LOG = LoggerFactory.getLogger(ContactComposite.class);
+    
+    private final static I18n I18N = I18nFactory.getI18n(ContactComposite.class);
 
     private Text searchText;
 
@@ -133,9 +137,9 @@ public class ContactComposite extends Composite {
     }
 
     private void showDBConnectionError() {
-        // TODO translate
-        MessageDialog.openError(shellProvider.getShell(), "Connection Error",
-                "Could not load contacts from Database.");
+        // TODO check translation
+        MessageDialog.openError(shellProvider.getShell(), I18N.tr("Connection Error"),
+                I18N.tr("Could not load contacts from Database."));
     }
 
     private void updateTableFilter(String filterString) {
