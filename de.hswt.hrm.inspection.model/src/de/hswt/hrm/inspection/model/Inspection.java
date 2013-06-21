@@ -45,6 +45,7 @@ public class Inspection {
         setNextInspectionDate(nextInspection);
         setTitle(title);
         setPlant(plant);
+        setLayout(layout);
     }
 
     public Inspection(GregorianCalendar reportDate, GregorianCalendar inspectionDate,
