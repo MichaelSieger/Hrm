@@ -66,7 +66,7 @@ public final class ContactPartUtil {
     }
 
     private static ColumnDescription<Contact> getNameColumn() {
-        return new ColumnDescription<>("Name", new ColumnLabelProvider() {
+        return new ColumnDescription<>(I18N.tr("Name"), new ColumnLabelProvider() {
             @Override
             public String getText(Object element) {
                 Contact c = (Contact) element;
@@ -81,7 +81,7 @@ public final class ContactPartUtil {
     }
 
     private static ColumnDescription<Contact> getStreetColumn() {
-        return new ColumnDescription<>("Street", new ColumnLabelProvider() {
+        return new ColumnDescription<>(I18N.tr("Street"), new ColumnLabelProvider() {
             @Override
             public String getText(Object element) {
                 Contact c = (Contact) element;
@@ -96,7 +96,7 @@ public final class ContactPartUtil {
     }
 
     private static ColumnDescription<Contact> getStreetNoColumn() {
-        return new ColumnDescription<>("Street No.", new ColumnLabelProvider() {
+        return new ColumnDescription<>(I18N.tr("Streetnumber"), new ColumnLabelProvider() {
             @Override
             public String getText(Object element) {
                 Contact c = (Contact) element;
@@ -111,7 +111,7 @@ public final class ContactPartUtil {
     }
 
     private static ColumnDescription<Contact> getPostCodeColumn() {
-        return new ColumnDescription<>("Post Code", new ColumnLabelProvider() {
+        return new ColumnDescription<>(I18N.tr("Zipcode"), new ColumnLabelProvider() {
             @Override
             public String getText(Object element) {
                 Contact c = (Contact) element;
@@ -126,7 +126,7 @@ public final class ContactPartUtil {
     }
 
     private static ColumnDescription<Contact> getCityColumn() {
-        return new ColumnDescription<>("City", new ColumnLabelProvider() {
+        return new ColumnDescription<>(I18N.tr("City"), new ColumnLabelProvider() {
             @Override
             public String getText(Object element) {
                 Contact c = (Contact) element;
@@ -141,7 +141,7 @@ public final class ContactPartUtil {
     }
 
     private static ColumnDescription<Contact> getShortcutColumn() {
-        return new ColumnDescription<>("Shortcut", new ColumnLabelProvider() {
+        return new ColumnDescription<>(I18N.tr("Shortcut"), new ColumnLabelProvider() {
             @Override
             public String getText(Object element) {
                 Contact c = (Contact) element;
@@ -156,7 +156,7 @@ public final class ContactPartUtil {
     }
 
     private static ColumnDescription<Contact> getPhoneColumn() {
-        return new ColumnDescription<>("Phone No.", new ColumnLabelProvider() {
+        return new ColumnDescription<>(I18N.tr("Phone"), new ColumnLabelProvider() {
             @Override
             public String getText(Object element) {
                 Contact c = (Contact) element;
@@ -171,7 +171,7 @@ public final class ContactPartUtil {
     }
 
     private static ColumnDescription<Contact> getFaxColumn() {
-        return new ColumnDescription<>("Fax No.", new ColumnLabelProvider() {
+        return new ColumnDescription<>(I18N.tr("Fax"), new ColumnLabelProvider() {
             @Override
             public String getText(Object element) {
                 Contact c = (Contact) element;
@@ -186,7 +186,7 @@ public final class ContactPartUtil {
     }
 
     private static ColumnDescription<Contact> getMobileColumn() {
-        return new ColumnDescription<>("Mobile No.", new ColumnLabelProvider() {
+        return new ColumnDescription<>(I18N.tr("Mobile"), new ColumnLabelProvider() {
             @Override
             public String getText(Object element) {
                 Contact c = (Contact) element;
@@ -201,7 +201,7 @@ public final class ContactPartUtil {
     }
 
     private static ColumnDescription<Contact> getEmailColumn() {
-        return new ColumnDescription<>("E-Mail", new ColumnLabelProvider() {
+        return new ColumnDescription<>(I18N.tr("Email"), new ColumnLabelProvider() {
             @Override
             public String getText(Object element) {
                 Contact c = (Contact) element;
