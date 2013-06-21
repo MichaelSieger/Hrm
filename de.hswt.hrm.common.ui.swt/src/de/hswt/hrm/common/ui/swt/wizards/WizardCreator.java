@@ -6,6 +6,7 @@ import org.eclipse.jface.wizard.IWizard;
 import org.eclipse.jface.wizard.ProgressMonitorPart;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
@@ -33,8 +34,14 @@ public class WizardCreator {
                 super.createButtonsForButtonBar(parent);
                 getButton(IDialogConstants.CANCEL_ID).setText(I18N.tr("Cancel"));
                 getButton(IDialogConstants.FINISH_ID).setText(I18N.tr("Finish"));
-                getButton(IDialogConstants.NEXT_ID).setText(I18N.tr("Next"));
-                getButton(IDialogConstants.BACK_ID).setText(I18N.tr("Back"));
+                Button next = getButton(IDialogConstants.NEXT_ID);
+                Button back = getButton(IDialogConstants.BACK_ID);
+                if (next != null) {
+                    next.setText(I18N.tr("Next"));
+                }
+                if (back != null) {
+                    back.setText(I18N.tr("Back"));
+                }
             }
 
             @Override
