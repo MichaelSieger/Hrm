@@ -14,8 +14,10 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Event;
 
 import de.hswt.hrm.common.ui.swt.canvas.DoubleBufferedCanvas;
+import de.hswt.hrm.scheme.listener.ModifyListener;
 import de.hswt.hrm.scheme.model.Direction;
 import de.hswt.hrm.scheme.model.RenderedComponent;
 
@@ -32,6 +34,8 @@ public class SchemeGrid extends DoubleBufferedCanvas {
 
 	private List<SchemeGridItem> images = new ArrayList<>();
 	private final List<Colorbox> colors = new ArrayList<>();
+
+	private final List<ModifyListener> modifyListeners = new ArrayList<>();
 	
 	/**
 	 * Width and Height in grid
@@ -239,7 +243,7 @@ public class SchemeGrid extends DoubleBufferedCanvas {
 			}
 		}
 		images.add(item);
-		dirty = true;
+		setDirty();
 		enlarge(r.x + r.width, r.y + r.height);
 		this.redraw();
 	}
@@ -294,7 +298,7 @@ public class SchemeGrid extends DoubleBufferedCanvas {
 		if (res != null) {
 			if(images.remove(res)){
 			    this.redraw();
-			    dirty = true;
+			    setDirty();
 			}
 			return res;
 		}
@@ -365,8 +369,8 @@ public class SchemeGrid extends DoubleBufferedCanvas {
 
 	public void removeItem(SchemeGridItem item) {
 		if(images.remove(item)){
-		    dirty = true;
-		    this.redraw();
+			setDirty();
+			this.redraw();
 		}
 	}
 	
@@ -386,6 +390,20 @@ public class SchemeGrid extends DoubleBufferedCanvas {
 	    dirty = false;
 	}
 
+	private void setDirty() {
+		dirty = true;
+		fireModifyEvent();
+	}
+	
+	private void fireModifyEvent() {
+		for (ModifyListener listener : modifyListeners) {
+			Event e = new Event();
+			e.widget = this;
+			listener.modified(e);
+		}
+	}
+
+
 	public Collection<SchemeGridItem> getItems() {
 		/*
 		 * Copy everything so that the caller can't play around with internal data.
@@ -404,11 +422,22 @@ public class SchemeGrid extends DoubleBufferedCanvas {
 	 * @throws PlaceOccupiedException If two or more Items overlap
 	 */
 	public void setItems(Collection<SchemeGridItem> c) throws PlaceOccupiedException{
-	    dirty = true;
-	    images.clear();
+		setDirty();
+		images.clear();
 	    for(SchemeGridItem item : c){
 	    	setImage(item);
 	    }
 		redraw();
+	}
+	
+	public void addModifyListener(ModifyListener listener) {
+		if (modifyListeners.contains(listener)) {
+			return;
+		}
+		modifyListeners.add(listener);
+	}
+	
+	public void removeModifyListener(ModifyListener listener) {
+		modifyListeners.remove(listener);
 	}
 }

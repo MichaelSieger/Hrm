@@ -100,6 +100,8 @@ public class PlantPart {
 
 	private SchemeComposite schemeComposite;
 
+	private ActionContributionItem saveContribution;
+
     public PlantPart() {
         // toolkit can be created in PostConstruct, but then then
         // WindowBuilder is unable to parse the code
@@ -145,7 +147,7 @@ public class PlantPart {
                 if (tabFolder.getItem(tabFolder.getSelectionIndex()).equals(plantsTab)) {
                     showPlantActions();
                 } else if (tabFolder.getItem(tabFolder.getSelectionIndex()).equals(schemeTab)) {
-                	showSchemeActions();
+                	initSchemeTabForSelection();
                 } else {
                 	hideAllActions();
                 	form.getToolBarManager().update(true);
@@ -198,6 +200,7 @@ public class PlantPart {
     	for (IContributionItem item : schemeComposite.getContributionItems()) {
     		form.getToolBarManager().add(item);
         }
+        schemeTab.setControl(schemeComposite);
 
         initializeTable();
         refreshTable();
@@ -207,13 +210,12 @@ public class PlantPart {
         }
     }
 
-    private void createActions() {
+	private void createActions() {
         // TODO translate
         Action schemeAction = new Action("Edit Scheme") {
             @Override
             public void run() {
-                super.run();
-                editScheme();
+            	initSchemeTabForSelection();
             }
         };
         schemeAction.setDescription("Edit the scheme of the selected plant.");
@@ -364,8 +366,13 @@ public class PlantPart {
     }
 
     private void editScheme() {
+    	initSchemeTabForSelection();
+    }
+    
+    protected void initSchemeTabForSelection() {
     	Optional<Plant> plant = getSelectedPlant();
     	if(!plant.isPresent()){
+    		schemeComposite.setVisible(false);
     		return;
     	}
     	
@@ -390,10 +397,10 @@ public class PlantPart {
 			Throwables.propagate(e);
 		}
         
-        showSchemeActions();
-        schemeTab.setControl(schemeComposite);
+        schemeComposite.setVisible(true);
+    	showSchemeActions();
         tabFolder.setSelection(schemeTab);
-    }
+	}
     
     private Optional<Plant> getSelectedPlant(){
         if (table.getSelectionIndex() < 0) {
