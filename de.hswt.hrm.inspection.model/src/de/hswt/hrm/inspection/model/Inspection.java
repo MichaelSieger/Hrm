@@ -32,11 +32,6 @@ public class Inspection {
     private static final String IS_MANDATORY = "Field is a mandatory.";
     private static final String INVALID_NUMBER = "%d is an invalid number.%n Must be greater 0";
 
-    // TODO rename jobdate to inspectionDate, rename nextDate to nextInspectionDate -> done
-    // change the types of Date to GregorianCalendar -> done
-    // change String of style in a Style Model Object, if this will exist in future -> no need to
-    // ...
-    // ... change this, layout is already a Layout
     public Inspection(int id, GregorianCalendar reportDate, GregorianCalendar inspectionDate,
             GregorianCalendar nextInspection, String title, Layout layout, Plant plant) {
         this.id = id;
