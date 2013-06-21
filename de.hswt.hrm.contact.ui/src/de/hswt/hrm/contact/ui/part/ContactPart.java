@@ -18,6 +18,9 @@ import org.eclipse.ui.forms.widgets.Form;
 
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.contact.service.ContactService;
+import de.hswt.hrm.i18n.I18n;
+import de.hswt.hrm.i18n.I18nFactory;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,6 +30,8 @@ public class ContactPart {
 
 	private final static Logger LOG = LoggerFactory
 			.getLogger(ContactPart.class);
+	
+	private final static I18n I18N = I18nFactory.getI18n(ContactPart.class);
 
 	@Inject
 	private ContactService contactService;
@@ -68,7 +73,7 @@ public class ContactPart {
 		form.getHead().setOrientation(SWT.RIGHT_TO_LEFT);
 		form.setSeparatorVisible(true);
 		toolkit.paintBordersFor(form);
-		form.setText("Contacts");
+		form.setText(I18N.tr("Contacts"));
 		toolkit.decorateFormHeading(form);
 
 		FillLayout fillLayout = new FillLayout(SWT.HORIZONTAL);
@@ -94,23 +99,24 @@ public class ContactPart {
 	}
 
 	private void createActions() {
-		editAction = new Action("Edit") {
+	    //TODO translate
+		editAction = new Action(I18N.tr("Edit")) {
 			@Override
 			public void run() {
 				super.run();
 				contactComposite.editContact();
 			}
 		};
-		editAction.setDescription("Edit an exisitng contact.");
+		editAction.setDescription(I18N.tr("Edit an existing contact."));
 		
-		addAction = new Action("Add") {
+		addAction = new Action(I18N.tr("Add")) {
 			@Override
 			public void run() {
 				super.run();
 				contactComposite.addContact();
 			}
 		};
-		addAction.setDescription("Add's a new contact.");
+		addAction.setDescription(I18N.tr("Add a new contact."));
 		
 		form.getToolBarManager().add(editAction);
 		form.getToolBarManager().add(addAction);
