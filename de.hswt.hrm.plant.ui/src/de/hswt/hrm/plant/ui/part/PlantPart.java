@@ -100,8 +100,6 @@ public class PlantPart {
 
 	private SchemeComposite schemeComposite;
 
-	private ActionContributionItem saveContribution;
-
     public PlantPart() {
         // toolkit can be created in PostConstruct, but then then
         // WindowBuilder is unable to parse the code
@@ -270,6 +268,7 @@ public class PlantPart {
         for (IContributionItem item : schemeComposite.getContributionItems()) {
         	item.setVisible(false);
         }
+        form.getToolBarManager().update(true);
     }
     
     @PreDestroy
@@ -365,11 +364,10 @@ public class PlantPart {
         }
     }
 
-    private void editScheme() {
-    	initSchemeTabForSelection();
-    }
-    
     protected void initSchemeTabForSelection() {
+        hideAllActions();
+    	tabFolder.setSelection(schemeTab);
+        
     	Optional<Plant> plant = getSelectedPlant();
     	if(!plant.isPresent()){
     		schemeComposite.setVisible(false);
@@ -397,9 +395,8 @@ public class PlantPart {
 			Throwables.propagate(e);
 		}
         
-        schemeComposite.setVisible(true);
     	showSchemeActions();
-        tabFolder.setSelection(schemeTab);
+        schemeComposite.setVisible(true);
 	}
     
     private Optional<Plant> getSelectedPlant(){
