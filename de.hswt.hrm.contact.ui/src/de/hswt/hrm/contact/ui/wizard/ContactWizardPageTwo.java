@@ -122,24 +122,9 @@ public class ContactWizardPageTwo extends WizardPage{
         setLabelText(container, "lblMobilePhone", I18N.tr("Mobile"));
         setLabelText(container, "lblFax", I18N.tr("Fax"));
         setLabelText(container, "lblEmail", I18N.tr("Email"));
-        setLabelText(container, "lblShortcut", I18N.tr("Shortcut"));
-        // ToolTips
-        setToolTipText(container, "phone", I18N.tr("Phone"));
-        setToolTipText(container, "mobilePhone", I18N.tr("Mobile"));
-        setToolTipText(container, "fax", I18N.tr("Fax"));
-        setToolTipText(container, "email", I18N.tr("Email"));
-        setToolTipText(container, "shortcut", I18N.tr("Shortcut"));        
+        setLabelText(container, "lblShortcut", I18N.tr("Shortcut"));     
     }
-    
-    private void setToolTipText(Composite container, String textName, String toolTip) {
-        Text t = (Text) XWT.findElementByName(container, textName);
-        if (t == null) {
-            LOG.error("Text '" + textName + "' not found.");
-            return;
-        }
-        t.setToolTipText(toolTip);
-    }
-    
+        
     private void setLabelText(Composite container, String labelName, String text) {
         Label l = (Label) XWT.findElementByName(container, labelName);
         if (l == null) {
