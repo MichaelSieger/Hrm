@@ -92,7 +92,7 @@ public class ContactWizardPageTwo extends WizardPage{
     public boolean isPageComplete() {
         Text eMail = (Text) XWT.findElementByName(container, "email");
         if (eMail.getText().length() != 0 && !emailVal.isValid(eMail.getText())) {
-            setErrorMessage(I18N.tr("Invalid input for field") + " " + eMail.getToolTipText());
+            setErrorMessage(I18N.tr("Invalid input for field") + " " + I18N.tr(XWT.getElementName((Object) eMail)));
             return false;
         }
         setErrorMessage(null);
