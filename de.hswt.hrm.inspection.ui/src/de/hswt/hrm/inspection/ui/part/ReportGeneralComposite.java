@@ -1,6 +1,7 @@
 package de.hswt.hrm.inspection.ui.part;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.LinkedList;
 
 import javax.annotation.PostConstruct;
@@ -30,6 +31,8 @@ import de.hswt.hrm.common.ui.swt.layouts.LayoutUtil;
 import de.hswt.hrm.common.ui.swt.utils.ContentProposalUtil;
 import de.hswt.hrm.common.ui.swt.wizards.WizardCreator;
 import de.hswt.hrm.component.model.Component;
+import de.hswt.hrm.inspection.model.Inspection;
+import de.hswt.hrm.inspection.service.InspectionService;
 import de.hswt.hrm.inspection.ui.dialog.ContactSelectionDialog;
 import de.hswt.hrm.inspection.ui.dialog.PlantSelectionDialog;
 import de.hswt.hrm.photo.model.Photo;
@@ -45,10 +48,8 @@ import com.google.common.base.Optional;
 
 public class ReportGeneralComposite extends AbstractComponentRatingComposite {
 
-    // TODO remove unused injections, add others as needed
-    // TODO use this if it is implemented
-    // @Inject
-    // private InspectionService inspectionService;
+    @Inject
+    private InspectionService inspectionService;
 
     @Inject
     private IEclipseContext context;
@@ -92,8 +93,10 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
     private Combo humidityGradeCombo;
     private Combo humidityWeightCombo;
     private Combo humitiyCommentCombo;
-    
+
     java.util.List<Photo> photos = new LinkedList<Photo>();
+
+    private Inspection inspection;
 
     /**
      * Do not use this constructor when instantiate this composite! It is only included to make the
@@ -307,7 +310,7 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
         reportStyleCombo.setLayoutData(LayoutUtil.createHorzCenteredFillData(4));
         formToolkit.adapt(reportStyleCombo);
         formToolkit.paintBordersFor(reportStyleCombo);
-        
+
         Label overallLabel = new Label(generalComposite, SWT.NONE);
         overallLabel.setLayoutData(LayoutUtil.createLeftCenteredGridData());
         formToolkit.adapt(overallLabel, true, true);
@@ -760,21 +763,20 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
     }
 
     private void importPhotos() {
-    	Optional<java.util.List<Photo>> n = Optional.absent();
-    	
+        Optional<java.util.List<Photo>> n = Optional.absent();
+
         PhotoWizard pw = new PhotoWizard(photos);
         ContextInjectionFactory.inject(pw, context);
 
-        WizardDialog wd = WizardCreator.createWizardDialog(
-        		shellProvider.getShell(), pw);
+        WizardDialog wd = WizardCreator.createWizardDialog(shellProvider.getShell(), pw);
         wd.open();
         // TODO handle input
 
         String[] tableItems = new String[photos.size()];
         int i = 0;
-        for(Photo photo : photos){
-        	tableItems[i] = photo.getLabel();
-        	i++;       	
+        for (Photo photo : photos) {
+            tableItems[i] = photo.getLabel();
+            i++;
         }
         photosList.setItems(tableItems);
     }
@@ -808,5 +810,25 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
     @Override
     protected void checkSubclass() {
         // Disable the check that prevents subclassing of SWT components
+    }
+
+    public void setInspection(Inspection inspection) {
+
+        this.inspection = inspection;
+        System.out.println("rgc: " + this.inspection);
+
+    }
+
+    public void refresh() {
+
+        if (inspection == null) {
+            return;
+        }
+
+        titleText.setText(inspection.getTitle());
+        reportDateTime.setDay(inspection.getReportDate().get(Calendar.DAY_OF_MONTH));
+        reportDateTime.setMonth(inspection.getReportDate().get(Calendar.MONTH));
+        reportDateTime.setMonth(inspection.getReportDate().get(Calendar.YEAR));
+
     }
 }

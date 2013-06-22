@@ -13,6 +13,9 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.window.IShellProvider;
 import org.eclipse.swt.SWT;
@@ -66,6 +69,12 @@ public class ReportsOverviewComposite extends Composite {
 
     private InspectionFilter searchFilter = new InspectionFilter();
 
+    private Inspection selectedInspection;
+
+    public Inspection getSelectedInspection() {
+        return selectedInspection;
+    }
+
     private static final Logger LOG = LoggerFactory.getLogger(ReportsOverviewComposite.class);
 
     /**
@@ -112,6 +121,16 @@ public class ReportsOverviewComposite extends Composite {
         table.setHeaderVisible(true);
         toolkit.paintBordersFor(table);
         table.setLayoutData(LayoutUtil.createFillData());
+        tableViewer.addSelectionChangedListener(new ISelectionChangedListener() {
+            @Override
+            public void selectionChanged(SelectionChangedEvent event) {
+                IStructuredSelection selection = (IStructuredSelection) tableViewer.getSelection();
+                Inspection firstElement = (Inspection) selection.getFirstElement();
+                selectedInspection = firstElement;
+                System.out.println(selectedInspection);
+            }
+
+        });
 
         initializeTable();
         refreshTable();
@@ -185,6 +204,7 @@ public class ReportsOverviewComposite extends Composite {
     public void addInspection() {
         Optional<Inspection> newInspection = InspectionPartUtil.showInspectionCreateWizard(context,
                 shellProvider.getShell());
+        System.out.println(newInspection.isPresent());
 
         if (newInspection.isPresent()) {
             @SuppressWarnings("unchecked")
