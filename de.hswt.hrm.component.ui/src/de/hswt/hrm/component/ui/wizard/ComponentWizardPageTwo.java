@@ -214,6 +214,7 @@ public class ComponentWizardPageTwo extends WizardPage {
 		if (component.isPresent()) {
 			updateFields();
 		}
+		checkPageComplete();
 	}
 
     private void updateFields() {
