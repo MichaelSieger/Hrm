@@ -26,9 +26,9 @@ public class SummaryService {
     @Inject
     public SummaryService(ISummaryDao evalDao) {
 
-        checkNotNull(evalDao, "EvaluationDao must be injected properly");
+        checkNotNull(evalDao, "SummaryDao must be injected properly");
         this.evalDao = evalDao;
-        LOG.debug("Evaluation Dao injected successfully");
+        LOG.debug("Summary Dao injected successfully");
     }
 
     public Collection<Summary> findAll() throws DatabaseException {

@@ -10,18 +10,17 @@ import de.hswt.hrm.summary.dao.core.ISummaryDao;
 
 public class JdbcSummaryDaoContextFunction extends ContextFunction {
 
-    private final static Logger LOG = LoggerFactory
-            .getLogger(JdbcSummaryDaoContextFunction.class);
+    private final static Logger LOG = LoggerFactory.getLogger(JdbcSummaryDaoContextFunction.class);
 
     @Override
     public Object compute(IEclipseContext context) {
-        // Create evaluation dao and inject context as it might need it for further injection
-        ISummaryDao evalDao = ContextInjectionFactory.make(SummaryDao.class, context);
-        context.set(ISummaryDao.class, evalDao);
+        // Create summarydao and inject context as it might need it for further injection
+        ISummaryDao sumDao = ContextInjectionFactory.make(SummaryDao.class, context);
+        context.set(ISummaryDao.class, sumDao);
 
-        LOG.debug("Made EvaluationDao available in Eclipse Context");
+        LOG.debug("Made SummaryDao available in Eclipse Context");
 
-        return evalDao;
+        return sumDao;
     }
 
 }

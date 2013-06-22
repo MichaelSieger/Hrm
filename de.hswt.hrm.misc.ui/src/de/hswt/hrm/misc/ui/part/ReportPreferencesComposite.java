@@ -198,7 +198,7 @@ public class ReportPreferencesComposite extends Composite {
 
     /**
      * This method is called whenever a doubleClick onto the Tableviewer occurs. It obtains the
-     * evaluation from the selected column of the TableViewer. The Contact is passed to the
+     * summaryfrom the selected column of the TableViewer. The Contact is passed to the
      * EvaluationWizard. When the Wizard has finished, the contact will be updated in the Database
      * 
      * @param event

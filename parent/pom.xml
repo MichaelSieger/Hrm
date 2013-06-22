@@ -169,6 +169,17 @@
 		<module>../de.hswt.hrm.photo.model</module>
 		<module>../de.hswt.hrm.photo.service</module>
 		<module>../de.hswt.hrm.photo.ui</module>
+		
+		
+		
+		
+		
+		
+		
+		<module>../de.hswt.hrm.misc.feature</module>
+		<module>../de.hswt.hrm.misc.ui</module>
+		<module>../de.hswt.hrm.misc.model</module>
+		<module>../de.hswt.hrm.plant.ui.shared</module>
 		<module>../de.hswt.hrm.evaluation.dao.core</module>
 		<module>../de.hswt.hrm.evaluation.dao.jdbc</module>
 		<module>../de.hswt.hrm.evaluation.feature</module>
@@ -176,9 +187,5 @@
 		<module>../de.hswt.hrm.evaluation.service</module>
 		<module>../de.hswt.hrm.evaluation.ui</module>
 		<module>../de.hswt.hrm.evaluation.service.test</module>
-		<module>../de.hswt.hrm.misc.feature</module>
-		<module>../de.hswt.hrm.misc.ui</module>
-		<module>../de.hswt.hrm.misc.model</module>
-		<module>../de.hswt.hrm.plant.ui.shared</module>
 	</modules>
 </project>

@@ -100,7 +100,7 @@ public class SummaryDao implements ISummaryDao {
                     if (generatedKeys.next()) {
                         int id = generatedKeys.getInt(1);
 
-                        // Create new Evaluation with id
+                        // Create new Summary with id
                         Summary inserted = new Summary(id, evaluation.getName(),
                                 evaluation.getText());
                         return inserted;
@@ -119,7 +119,7 @@ public class SummaryDao implements ISummaryDao {
 
     @Override
     public void update(Summary evaluation) throws ElementNotFoundException, SaveException {
-        checkNotNull(evaluation, "Evaluation must not be null.");
+        checkNotNull(evaluation, "Summary must not be null.");
 
         if (evaluation.getId() < 0) {
             throw new ElementNotFoundException("Element has no valid ID.");

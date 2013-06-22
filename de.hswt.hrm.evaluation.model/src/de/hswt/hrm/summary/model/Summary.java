@@ -4,7 +4,7 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Strings.isNullOrEmpty;
 
 /**
- * Represents a common used evaluation for various plants
+ * Represents a common used summaryfor various plants
  * 
  */
 public class Summary {
