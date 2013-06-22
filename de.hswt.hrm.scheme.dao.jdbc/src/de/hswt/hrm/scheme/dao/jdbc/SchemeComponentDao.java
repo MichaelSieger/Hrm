@@ -160,7 +160,7 @@ public class SchemeComponentDao implements ISchemeComponentDao {
                 stmt.setParameter(Fields.COMPONENT, schemeComponent.getComponent().getId());
                 stmt.setParameter(Fields.X_POS, schemeComponent.getX());
                 stmt.setParameter(Fields.Y_POS, schemeComponent.getY());
-                stmt.setParameter(Fields.DIRECTION, schemeComponent.getDirection());
+                stmt.setParameter(Fields.DIRECTION, schemeComponent.getDirection().ordinal());
                 
                 if (schemeComponent.getScheme().isPresent() 
                         && schemeComponent.getScheme().get().getId() >= 0) {
