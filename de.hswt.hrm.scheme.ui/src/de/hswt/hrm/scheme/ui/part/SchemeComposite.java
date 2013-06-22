@@ -313,9 +313,6 @@ public class SchemeComposite extends Composite {
 			Collection<SchemeComponent> sc) throws IOException {
 		List<SchemeGridItem> l = new ArrayList<>();
 		for (SchemeComponent c : sc) {
-			SchemeGridItem i = new SchemeGridItem(getRenderedComponent(c.getComponent()), c.getDirection(), c
-					.getX(), c.getY());
-			i.getImage();
 			l.add(new SchemeGridItem(getRenderedComponent(c.getComponent()), c.getDirection(), c
 					.getX(), c.getY()));
 		}
