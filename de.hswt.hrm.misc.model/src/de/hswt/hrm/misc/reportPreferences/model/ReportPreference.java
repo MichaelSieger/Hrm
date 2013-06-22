@@ -6,7 +6,7 @@ import static com.google.common.base.Strings.isNullOrEmpty;
 /**
  * Represents a common used report preferences * 
  */
-public class ReportPreferences {
+public class ReportPreference {
 
     private int id;
     private String name;
@@ -14,11 +14,11 @@ public class ReportPreferences {
 
     private static final String IS_MANDATORY = "Field is a mandatory.";
 
-    public ReportPreferences(String name, String fileName) {
+    public ReportPreference(String name, String fileName) {
         this(-1, name, fileName);
     }
 
-    public ReportPreferences(int id, String name, String fileName) {
+    public ReportPreference(int id, String name, String fileName) {
 
         this.id = id;
         setName(name);
@@ -76,7 +76,7 @@ public class ReportPreferences {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        ReportPreferences other = (ReportPreferences) obj;
+        ReportPreference other = (ReportPreference) obj;
         if (id != other.id) {
             return false;
         }

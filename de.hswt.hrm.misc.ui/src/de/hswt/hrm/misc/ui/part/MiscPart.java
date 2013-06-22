@@ -195,7 +195,7 @@ public class MiscPart {
         Action editCommentAction = new Action("Edit") {
             @Override
             public void run() {
-                evaluationComposite.editEvaluation();
+               commentsComposite.editComment();
             }
         };
         editCommentAction.setDescription("Edit an exisitng comment.");
@@ -204,7 +204,7 @@ public class MiscPart {
         Action addStyleAction = new Action("Add style") {
             @Override
             public void run() {
-                reportPreferencesComposite.addStyle();
+                reportPreferencesComposite.addPrefernence();
             }
         };
         addStyleAction.setDescription("Add's a new report style.");
@@ -213,7 +213,7 @@ public class MiscPart {
         Action editStyleAction = new Action("Edit style") {
             @Override
             public void run() {
-            	reportPreferencesComposite.editStyle();
+            	reportPreferencesComposite.editPreference();
             }
         };
         editStyleAction.setDescription("Edit an exisitng style.");
