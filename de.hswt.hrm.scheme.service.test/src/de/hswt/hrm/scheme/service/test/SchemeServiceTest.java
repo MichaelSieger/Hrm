@@ -124,12 +124,14 @@ public class SchemeServiceTest extends AbstractDatabaseTest {
         ISchemeDao schemeDao = createSchemeDao();
         ISchemeComponentDao schemeComponentDao = createSchemeComponentDao();
         Scheme scheme = new Scheme(createTestPlant());
+        scheme = schemeDao.insert(scheme);
         SchemeComponent schemeComp = new SchemeComponent(
+        		scheme,
         		0,
         		0,
         		Direction.leftRight,
         		attributes.get(0).getComponent());
-        scheme = schemeDao.insert(scheme);
+        
         // FIXME: again wrong usage of the API possible -> scheme should be mandatory
         schemeComp.setScheme(scheme);
         schemeComp = schemeComponentDao.insert(schemeComp);
@@ -177,15 +179,16 @@ public class SchemeServiceTest extends AbstractDatabaseTest {
         SchemeService service = createSchemeService();
         ISchemeComponentDao schemeComponentDao = createSchemeComponentDao();
         Scheme scheme = new Scheme(createTestPlant());
+        scheme = schemeDao.insert(scheme);
         SchemeComponent schemeComp = new SchemeComponent(
+        		scheme,
         		0,
         		0,
         		Direction.leftRight,
         		component);
-        scheme = schemeDao.insert(scheme);
-        schemeComp.setScheme(scheme);
         schemeComp = schemeComponentDao.insert(schemeComp);
         SchemeComponent comp2 = new SchemeComponent(
+        		scheme,
         		10,
         		10, 
         		Direction.leftRight, 
@@ -205,15 +208,17 @@ public class SchemeServiceTest extends AbstractDatabaseTest {
         SchemeService service = createSchemeService();
         ISchemeComponentDao schemeComponentDao = createSchemeComponentDao();
         Scheme scheme = new Scheme(createTestPlant());
+        scheme = schemeDao.insert(scheme);
         SchemeComponent schemeComp = new SchemeComponent(
+        		scheme,
         		0,
         		0,
         		Direction.leftRight,
         		component);
-        scheme = schemeDao.insert(scheme);
         schemeComp.setScheme(scheme);
         schemeComp = schemeComponentDao.insert(schemeComp);
         SchemeComponent comp2 = new SchemeComponent(
+        		scheme,
         		10,
         		10, 
         		Direction.leftRight, 

@@ -22,16 +22,19 @@ public class SchemeComponent {
     private Scheme scheme;
     
     
-    public SchemeComponent(int id, int x, int y, Direction direction, Component component) {
+    public SchemeComponent(int id, Scheme scheme, int x, int y, Direction direction, 
+    		Component component) {
+    	
         this.id = id;
         setX(x);
         setY(y);
         setDirection(direction);
         setComponent(component);
+        setScheme(scheme);
     }
     
-    public SchemeComponent(int x, int y, Direction direction, Component component){
-        this(-1, x, y, direction, component);
+    public SchemeComponent(Scheme scheme, int x, int y, Direction direction, Component component) {
+        this(-1, scheme, x, y, direction, component);
     }
 
     public Direction getDirection() {
@@ -73,8 +76,8 @@ public class SchemeComponent {
 		this.component = component;
 	}
 	
-	public Optional<Scheme> getScheme() {
-	    return Optional.fromNullable(scheme);
+	public Scheme getScheme() {
+	    return scheme;
 	}
 	
 	public void setScheme(final Scheme scheme) {

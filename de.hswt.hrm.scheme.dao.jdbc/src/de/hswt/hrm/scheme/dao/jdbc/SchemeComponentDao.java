@@ -144,8 +144,7 @@ public class SchemeComponentDao implements ISchemeComponentDao {
     		LOG.info(String.format("SchemeComponent '%d' copied.", schemeComponent.getId()));
         }
         
-    	checkState(schemeComponent.getScheme().isPresent(), "SchemeComponent must belong to a scheme.");
-    	checkState(schemeComponent.getScheme().get().getId() >= 0, "Scheme must have a valid ID.");
+    	checkState(schemeComponent.getScheme().getId() >= 0, "Scheme must have a valid ID.");
     	checkState(schemeComponent.getComponent().getId() >= 0, "Component must have a valid ID.");
         
         SqlQueryBuilder builder = new SqlQueryBuilder();
@@ -161,15 +160,7 @@ public class SchemeComponentDao implements ISchemeComponentDao {
                 stmt.setParameter(Fields.X_POS, schemeComponent.getX());
                 stmt.setParameter(Fields.Y_POS, schemeComponent.getY());
                 stmt.setParameter(Fields.DIRECTION, schemeComponent.getDirection().ordinal());
-                
-                if (schemeComponent.getScheme().isPresent() 
-                        && schemeComponent.getScheme().get().getId() >= 0) {
-                    
-                    stmt.setParameter(Fields.SCHEME, schemeComponent.getScheme().get().getId());
-                }
-                else {
-                    stmt.setParameter(Fields.SCHEME, null);
-                }
+                stmt.setParameter(Fields.SCHEME, schemeComponent.getScheme().getId());
 
                 int affectedRows = stmt.executeUpdate();
                 if (affectedRows != 1) {
@@ -180,10 +171,12 @@ public class SchemeComponentDao implements ISchemeComponentDao {
                     if (generatedKeys.next()) {
                         int id = generatedKeys.getInt(1);
 
-                        SchemeComponent inserted = new SchemeComponent(id, schemeComponent.getX(),
+                        SchemeComponent inserted = new SchemeComponent(
+                        		id,
+                        		schemeComponent.getScheme(),
+                        		schemeComponent.getX(),
                                 schemeComponent.getY(), schemeComponent.getDirection(),
                                 schemeComponent.getComponent());
-                        inserted.setScheme(schemeComponent.getScheme().orNull());
 
                         return inserted;
                     }
@@ -205,8 +198,7 @@ public class SchemeComponentDao implements ISchemeComponentDao {
         
         checkNotNull(schemeComponent, "SchemeComponent must not be null.");
         checkState(schemeComponent.getId() >= 0, "SchemeComponent has no valid ID.");
-        checkState(schemeComponent.getScheme().isPresent(), "SchemeComponent must belong to a scheme.");
-    	checkState(schemeComponent.getScheme().get().getId() >= 0, "Scheme must have a valid ID.");
+    	checkState(schemeComponent.getScheme().getId() >= 0, "Scheme must have a valid ID.");
     	checkState(schemeComponent.getComponent().getId() >= 0, "Component must have a valid ID.");
 
         SqlQueryBuilder builder = new SqlQueryBuilder();
@@ -222,14 +214,7 @@ public class SchemeComponentDao implements ISchemeComponentDao {
                 stmt.setParameter(Fields.X_POS, schemeComponent.getX());
                 stmt.setParameter(Fields.Y_POS, schemeComponent.getY());
                 stmt.setParameter(Fields.DIRECTION, schemeComponent.getDirection().ordinal());
-                
-                if (schemeComponent.getScheme().isPresent() 
-                        && schemeComponent.getScheme().get().getId() >= 0) {
-                    stmt.setParameter(Fields.SCHEME, schemeComponent.getScheme().get().getId());
-                }
-                else {
-                    stmt.setParameter(Fields.SCHEME, null);
-                }
+                stmt.setParameter(Fields.SCHEME, schemeComponent.getScheme().getId());
 
                 int affectedRows = stmt.executeUpdate();
                 if (affectedRows != 1) {
@@ -381,16 +366,13 @@ public class SchemeComponentDao implements ISchemeComponentDao {
             checkState(componentId >= 0, "Invalid component ID retrieved from database.");
             Component component = componentDao.findById(componentId);
             
-            SchemeComponent schemeComponent = new SchemeComponent(id, xPos, yPos, dir, component);
-            schemeComponent.setComponent(component);
-            
             int schemeId = rs.getInt(Fields.SCHEME);
-            if (schemeId >= 0) {
-            	if (scheme == null || scheme.getId() != schemeId) {
-            		scheme = schemeDao.findById(schemeId);
-            		schemeComponent.setScheme(scheme);
-            	}
+            if (scheme == null || scheme.getId() != schemeId) {
+        		scheme = schemeDao.findById(schemeId);
             }
+            
+            SchemeComponent schemeComponent = new SchemeComponent(id, scheme, xPos, yPos, dir, component);
+            schemeComponent.setComponent(component);
             
             schemeComponentList.add(schemeComponent);
             

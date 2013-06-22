@@ -9,6 +9,7 @@ import static com.google.common.base.Preconditions.*;
 import de.hswt.hrm.component.model.Category;
 import de.hswt.hrm.scheme.model.Direction;
 import de.hswt.hrm.scheme.model.RenderedComponent;
+import de.hswt.hrm.scheme.model.Scheme;
 import de.hswt.hrm.scheme.model.SchemeComponent;
 import de.hswt.hrm.scheme.model.ThumbnailImage;
 
@@ -43,8 +44,9 @@ public class SchemeGridItem {
 		this.y = item.y;
 	}
 
-	public SchemeComponent asSchemeComponent(){
-		return new SchemeComponent(x, y, direction, renderedComponent.getComponent());
+	public SchemeComponent asSchemeComponent() {
+		Scheme scheme = null; // FIXME: set the correct scheme here!
+		return new SchemeComponent(scheme, x, y, direction, renderedComponent.getComponent());
 	}
 
 	public ThumbnailImage getImage(){
