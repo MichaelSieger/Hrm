@@ -56,8 +56,7 @@ public class ReportsOverviewComposite extends Composite {
 
     private Table table;
 
-    // TODO use this if implemented
-    // private InspectionFilter searchFilter = new InspectionFilter();
+    private InspectionFilter searchFilter = new InspectionFilter();
 
     /**
      * Create the composite.
