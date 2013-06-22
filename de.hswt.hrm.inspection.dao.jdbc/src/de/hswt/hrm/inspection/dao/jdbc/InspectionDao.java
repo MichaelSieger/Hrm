@@ -6,21 +6,45 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.GregorianCalendar;
+
+import javax.inject.Inject;
 
 import com.google.common.base.Optional;
 
 import de.hswt.hrm.common.database.DatabaseFactory;
+import de.hswt.hrm.common.database.JdbcUtil;
 import de.hswt.hrm.common.database.NamedParameterStatement;
 import de.hswt.hrm.common.database.SqlQueryBuilder;
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.ElementNotFoundException;
 import de.hswt.hrm.common.database.exception.SaveException;
+import de.hswt.hrm.contact.model.Contact;
 import de.hswt.hrm.inspection.dao.core.IInspectionDao;
+import de.hswt.hrm.inspection.dao.core.ILayoutDao;
 import de.hswt.hrm.inspection.model.Inspection;
+import de.hswt.hrm.inspection.model.Layout;
+import de.hswt.hrm.plant.dao.core.IPlantDao;
+import de.hswt.hrm.plant.model.Plant;
+import de.hswt.hrm.contact.dao.core.IContactDao;
 
 public class InspectionDao implements IInspectionDao {
+    // FIXME Make dao injectable
+    ILayoutDao layoutDao = new LayoutDao();
+
+    private final IContactDao contactDao;
+    private final IPlantDao plantDao;
+
+    @Inject
+    public InspectionDao(IContactDao contactDao, IPlantDao plantDao) {
+        this.contactDao = contactDao;
+        this.plantDao = plantDao;
+
+    }
 
     @Override
     public Collection<Inspection> findAll() throws DatabaseException {
@@ -215,8 +239,67 @@ public class InspectionDao implements IInspectionDao {
 
         checkNotNull(rs, "Result must not be null.");
         Collection<Inspection> inspectionList = new ArrayList<>();
+        while (rs.next()) {
+            int id = rs.getInt(Fields.ID);
+            
+            // mandatory fk's
+            int layoutId = JdbcUtil.getId(rs, Fields.LAYOUT_FK);
+            checkArgument(layoutId >= 0, "Invalid layout key from database.");
+            Layout layout = layoutDao.findById(layoutId);
+            int plantId = JdbcUtil.getId(rs, Fields.PLANT_FK);
+            checkArgument(plantId >= 0, "Invalid plant key from database.");
+            Plant plant = plantDao.findById(plantId);
+            
+            // optional fks's
+            int requesterId = JdbcUtil.getId(rs, Fields.REQUESTER_FK);
+            int contractorId = JdbcUtil.getId(rs, Fields.CONTRACTOR_FK);
+            int checkerId = JdbcUtil.getId(rs, Fields.CHECKER_FK);
+            
+            // calendars
+            Timestamp inspectionTimestamp = rs.getTimestamp(Fields.INSPECTIONDATE);
+            Calendar inspectionDate = JdbcUtil.calendarFromTimestamp(inspectionTimestamp);
+            Timestamp reportTimestamp = rs.getTimestamp(Fields.REPORTDATE);
+            Calendar reportDate = JdbcUtil.calendarFromTimestamp(reportTimestamp);
+            Timestamp nextInspectionTimestamp = rs.getTimestamp(Fields.NEXTDATE);
+            Calendar nextInspectionDate = JdbcUtil.calendarFromTimestamp(nextInspectionTimestamp);
+            // rest
+            int temperature = rs.getInt(Fields.TEMPERATURE);
+            int humidity = rs.getInt(Fields.HUMIDITY);
+            String summary = rs.getString(Fields.SUMMARY);
+            String title = rs.getString(Fields.TITEL);
+            int temperatureRating = rs.getInt(Fields.TEMPERATURERATING);
+            int temperatureQuantifier = rs.getInt(Fields.TEMPERATUREQUANTIFIER);
+            int humidityRating = rs.getInt(Fields.HUMIDITYRATING);
+            int humidityQuantifier = rs.getInt(Fields.HUMIDITYQUANTIFIER);
 
-        // FIXME
+            Inspection inserted = new Inspection(id, reportDate, inspectionDate,
+                    nextInspectionDate, title, layout, plant);
+
+            // optional fk's
+            if (requesterId >= 0) {
+                Contact requester = contactDao.findById(requesterId);
+                inserted.setRequester(requester);
+            }
+            if (contractorId >= 0) {
+                Contact contractor = contactDao.findById(contractorId);
+                inserted.setContractor(contractor);
+            }
+            if (checkerId >= 0) {
+                Contact checker = contactDao.findById(checkerId);
+                inserted.setChecker(checker);
+            }
+
+            // rest
+            inserted.setTemperature(temperature);
+            inserted.setHumidity(humidity);
+            inserted.setSummary(summary);
+            inserted.setTemperatureRating(temperatureRating);
+            inserted.setTemperatureQuantifier(temperatureQuantifier);
+            inserted.setHumidityRating(humidityRating);
+            inserted.setHumidityQuantifier(humidityQuantifier);
+
+            inspectionList.add(inserted);
+        }
 
         return inspectionList;
     }
