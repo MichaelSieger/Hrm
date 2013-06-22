@@ -54,6 +54,7 @@ import org.slf4j.LoggerFactory;
 import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
+import com.google.common.base.Throwables;
 import com.google.common.collect.Collections2;
 
 import de.hswt.hrm.common.database.exception.DatabaseException;
@@ -61,6 +62,7 @@ import de.hswt.hrm.common.ui.swt.constants.SearchFieldConstants;
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.common.ui.swt.layouts.LayoutUtil;
 import de.hswt.hrm.common.ui.swt.utils.SWTResourceManager;
+import de.hswt.hrm.component.model.Component;
 import de.hswt.hrm.component.service.ComponentService;
 import de.hswt.hrm.plant.model.Plant;
 import de.hswt.hrm.scheme.model.RenderedComponent;
@@ -70,6 +72,7 @@ import de.hswt.hrm.scheme.service.ComponentConverter;
 import de.hswt.hrm.scheme.service.SchemeService;
 import de.hswt.hrm.scheme.ui.ComponentLoadThread;
 import de.hswt.hrm.scheme.ui.ItemClickListener;
+import de.hswt.hrm.scheme.ui.PlaceOccupiedException;
 import de.hswt.hrm.scheme.ui.SchemeGrid;
 import de.hswt.hrm.scheme.ui.SchemeGridItem;
 import de.hswt.hrm.scheme.ui.SchemeTreePatternFilter;
@@ -117,12 +120,11 @@ public class SchemeComposite extends Composite {
 
 	@Inject
 	private SchemeService schemeService;
+	
+	private final ComponentService componentsService;
 
 	@Inject
 	private EPartService service;
-
-	@Inject
-	private ComponentService componentsService;
 
 	@Inject
 	private IShellProvider shellProvider;
@@ -156,7 +158,9 @@ public class SchemeComposite extends Composite {
 	private Plant plant;
 
 	private Scheme currentScheme;
-
+	
+	private final List<RenderedComponent> renderedComponents = new ArrayList<>();
+	
 	/*
 	 * DND items for the grid
 	 */
@@ -181,21 +185,24 @@ public class SchemeComposite extends Composite {
 	 * @param parent
 	 * @param style
 	 */
-	private SchemeComposite(Composite parent, int style) {
+	public SchemeComposite(Composite parent, int style, ComponentService componentsService, Scheme scheme) {
 		super(parent, style);
+		if (scheme == null || !scheme.getPlant().isPresent()) {
+			throw new IllegalArgumentException(
+					"The scheme must not be null and plant must be present here");
+		}
+		this.componentsService = componentsService;
+		this.currentScheme = scheme;
 		createControls();
+		plant = scheme.getPlant().get();
+		try {
+			grid.setItems(toSchemeGridItems(scheme.getSchemeComponents()));
+		} catch (PlaceOccupiedException | IOException e) {
+			Throwables.propagate(e);
+		} 
+		clearDirty();
 	}
 
-	/**
-	 * Create the composite.
-	 * 
-	 * @param parent
-	 */
-	public SchemeComposite(Composite parent) {
-		super(parent, SWT.NONE);
-	}
-
-	@PostConstruct
 	private void createControls() {
 		setLayout(new FillLayout());
 
@@ -274,31 +281,24 @@ public class SchemeComposite extends Composite {
 		contributionItems.add(copyContribution);
 		contributionItems.add(saveContribution);
 
-		new ComponentLoadThread(this, componentsService).start();
-	}
-
-	/**
-	 * The given scheme is loaded into the editor. The user can save a new
-	 * scheme for the given plant.
-	 * 
-	 * @param scheme
-	 * @throws IOException
-	 *             If a pdf file could not be read
-	 */
-	public void modifyScheme(Scheme scheme) throws IOException {
-		if (scheme == null || !scheme.getPlant().isPresent()) {
-			throw new IllegalArgumentException(
-					"The scheme must not be null and plant must be present here");
+		/*
+		 * The Images are loaded synchronously at the moment
+		 */
+		try {
+			setRenderedComponents(Collections2.transform(componentsService.findAll(), new Function<Component, RenderedComponent>() {
+				public RenderedComponent apply(Component c){
+					try {
+						return ComponentConverter.convert(getDisplay(), c);
+					} catch (IOException e) {
+						LOG.error("Error on drawing image", e);
+						return null;
+					}
+				}
+			}));
+		} catch (DatabaseException e1) {
+			Throwables.propagate(e1);
 		}
-
-		if (!checkToSave(scheme)) {
-			return;
-		}
-		
-		currentScheme = scheme;
-		plant = scheme.getPlant().get();
-		grid.setItems(toSchemeGridItems(scheme.getSchemeComponents()));
-		clearDirty();
+		//new ComponentLoadThread(this, componentsService).start();
 	}
 
 	/**
@@ -313,11 +313,19 @@ public class SchemeComposite extends Composite {
 			Collection<SchemeComponent> sc) throws IOException {
 		List<SchemeGridItem> l = new ArrayList<>();
 		for (SchemeComponent c : sc) {
-			l.add(new SchemeGridItem(ComponentConverter.convert(
-					this.getDisplay(), c.getComponent()), c.getDirection(), c
+			l.add(new SchemeGridItem(getRenderedComponent(c.getComponent()), c.getDirection(), c
 					.getX(), c.getY()));
 		}
 		return l;
+	}
+	
+	private RenderedComponent getRenderedComponent(Component c){
+		for(RenderedComponent rc : renderedComponents){
+			if(rc.getComponent().equals(c)){
+				return rc;
+			}
+		}
+		throw new RuntimeException("Internal Error");
 	}
 
 	/*
@@ -571,7 +579,10 @@ public class SchemeComposite extends Composite {
 		}
 	}
 
+	
 	private void copyScheme() {
+		//TODO implementation
+		/*
 		if (grid.isDirty()) {
 
 		}
@@ -596,9 +607,13 @@ public class SchemeComposite extends Composite {
 			MessageDialog.openError(shellProvider.getShell(), "Copy Error",
 					"Could not copy the requested scheme.");
 		}
+		*/
 	}
-
+	
+	
 	private void importScheme() {
+		//TODO implementation
+		/*
 		SchemeImportSelectionDialog dialog = new SchemeImportSelectionDialog(
 				shellProvider.getShell(), context);
 		ContextInjectionFactory.inject(dialog, context);
@@ -619,8 +634,9 @@ public class SchemeComposite extends Composite {
 			MessageDialog.openError(shellProvider.getShell(), "Copy Error",
 					"Could not copy the requested scheme.");
 		}
+		*/
 	}
-
+	
 	// private int getRenderedComponentId(RenderedComponent component) {
 	// return this.components.indexOf(component);
 	// }
@@ -640,6 +656,7 @@ public class SchemeComposite extends Composite {
 		Preconditions
 				.checkNotNull(plant, "The Plant must be set before saving");
 		try {
+			/*
 			if (currentScheme.getPlant().isPresent()) {
 				schemeService.update(currentScheme, schemeComps);
 				System.out.println("after update");
@@ -647,6 +664,8 @@ public class SchemeComposite extends Composite {
 				schemeService.insert(plant, schemeComps);
 				System.out.println("after insert");
 			}
+			*/
+			schemeService.insert(plant, schemeComps);
 			clearDirty();
 		} catch (DatabaseException e) {
 			LOG.error("Error during scheme saving.", e);
@@ -668,12 +687,22 @@ public class SchemeComposite extends Composite {
 			return i2;
 		}
 	}
+	
+	public void setRenderedComponents(Collection<RenderedComponent> c){
+		setRenderedComponents(new ArrayList<>(c));
+	}
 
 	public void setRenderedComponents(List<RenderedComponent> components) {
-		gridDragListener.setComponents(components);
-		gridListener.setComponents(components);
-		treeDragListener.setComponents(components);
-		tree.setInput(components);
+		for(RenderedComponent c : components){
+			if(!renderedComponents.contains(c)){
+				renderedComponents.add(c);
+			}
+		}
+		treeDragListener.setComponents(renderedComponents);
+		gridDragListener.setComponents(renderedComponents);
+		gridListener.setComponents(renderedComponents);
+		tree.setInput(renderedComponents);
+		tree.refresh();
 	}
 
 	public List<IContributionItem> getContributionItems() {

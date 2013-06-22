@@ -4,6 +4,7 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 
 import com.google.common.base.Optional;
+import static com.google.common.base.Preconditions.*;
 
 import de.hswt.hrm.component.model.Category;
 import de.hswt.hrm.scheme.model.Direction;
@@ -27,6 +28,8 @@ public class SchemeGridItem {
 	public SchemeGridItem(RenderedComponent renderedComponent, Direction direction, 
 								int x, int y) {
 		super();
+		checkNotNull(renderedComponent);
+		checkNotNull(direction);
 		this.renderedComponent = renderedComponent;
 		this.direction = direction;
 		this.x = x;
@@ -139,4 +142,43 @@ public class SchemeGridItem {
         		getHeight());
     }
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((direction == null) ? 0 : direction.hashCode());
+		result = prime
+				* result
+				+ ((renderedComponent == null) ? 0 : renderedComponent
+						.hashCode());
+		result = prime * result + x;
+		result = prime * result + y;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		SchemeGridItem other = (SchemeGridItem) obj;
+		if (direction != other.direction)
+			return false;
+		if (renderedComponent == null) {
+			if (other.renderedComponent != null)
+				return false;
+		} else if (!renderedComponent.equals(other.renderedComponent))
+			return false;
+		if (x != other.x)
+			return false;
+		if (y != other.y)
+			return false;
+		return true;
+	}
+
+    
 }

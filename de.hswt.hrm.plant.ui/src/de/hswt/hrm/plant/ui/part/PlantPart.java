@@ -48,6 +48,7 @@ import de.hswt.hrm.common.ui.swt.layouts.LayoutUtil;
 import de.hswt.hrm.common.ui.swt.table.ColumnComparator;
 import de.hswt.hrm.common.ui.swt.table.ColumnDescription;
 import de.hswt.hrm.common.ui.swt.table.TableViewerController;
+import de.hswt.hrm.component.service.ComponentService;
 import de.hswt.hrm.plant.model.Plant;
 import de.hswt.hrm.plant.service.PlantService;
 import de.hswt.hrm.plant.ui.shared.filter.PlantFilter;
@@ -70,6 +71,9 @@ public class PlantPart {
     
     @Inject
     private SchemeService schemeService;
+    
+    @Inject
+    private ComponentService componentService;
 
     @Inject
     private IShellProvider shellProvider;
@@ -193,13 +197,6 @@ public class PlantPart {
         schemeTab = new TabItem(tabFolder, SWT.NONE);
         schemeTab.setText("Scheme");
 
-        schemeComposite = new SchemeComposite(tabFolder);
-        ContextInjectionFactory.inject(schemeComposite, context);
-    	for (IContributionItem item : schemeComposite.getContributionItems()) {
-    		form.getToolBarManager().add(item);
-        }
-        schemeTab.setControl(schemeComposite);
-
         initializeTable();
         refreshTable();
 
@@ -265,8 +262,10 @@ public class PlantPart {
         addContribution.setVisible(false);
         editContribution.setVisible(false);
         editSchemeContribution.setVisible(false);
-        for (IContributionItem item : schemeComposite.getContributionItems()) {
-        	item.setVisible(false);
+        if(schemeComposite != null){
+            for (IContributionItem item : schemeComposite.getContributionItems()) {
+            	item.setVisible(false);
+            }
         }
         form.getToolBarManager().update(true);
     }
@@ -370,7 +369,7 @@ public class PlantPart {
         
     	Optional<Plant> plant = getSelectedPlant();
     	if(!plant.isPresent()){
-    		schemeComposite.setVisible(false);
+    		schemeTab.setControl(null);
     		return;
     	}
     	
@@ -387,13 +386,12 @@ public class PlantPart {
         	// FIXME: Add message box.
         	return;
         }
-    	
-        try {
-			schemeComposite.modifyScheme(scheme);
-		} 
-        catch (IOException e) {
-			Throwables.propagate(e);
-		}
+        schemeComposite = new SchemeComposite(tabFolder, SWT.NONE, componentService, scheme);
+        ContextInjectionFactory.inject(schemeComposite, context);
+    	for (IContributionItem item : schemeComposite.getContributionItems()) {
+    		form.getToolBarManager().add(item);
+        }
+        schemeTab.setControl(schemeComposite);
         
     	showSchemeActions();
         schemeComposite.setVisible(true);

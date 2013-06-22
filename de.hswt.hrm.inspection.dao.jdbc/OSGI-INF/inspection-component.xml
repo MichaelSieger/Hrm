@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" 
-	name="de.hswt.hrm.inspection.dao.jdbc.biologicalrating">
+	name="de.hswt.hrm.inspection.dao.jdbc.inspection">
    
-   <implementation class="de.hswt.hrm.inspection.dao.context.JdbcBiologicalRatingDaoContextFunction"/>
+   <implementation class="de.hswt.hrm.inspection.dao.context.JdbcInspectionDaoContextFunction"/>
    
    <service>
       <provide interface="org.eclipse.e4.core.contexts.IContextFunction"/>
@@ -11,5 +11,5 @@
    <property 
    		name="service.context.key" 
    		type="String" 
-   		value="de.hswt.hrm.inspection.dao.core.IBiologicalRatingDao" />
+   		value="de.hswt.hrm.inspection.dao.core.IInspectionDao" />
 </scr:component>

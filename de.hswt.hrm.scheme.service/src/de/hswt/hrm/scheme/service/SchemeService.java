@@ -10,6 +10,8 @@ import java.util.Map;
 import javax.inject.Inject;
 
 import org.eclipse.e4.core.di.annotations.Creatable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.ElementNotFoundException;
@@ -18,6 +20,7 @@ import de.hswt.hrm.component.model.Attribute;
 import de.hswt.hrm.plant.model.Plant;
 import de.hswt.hrm.scheme.dao.core.ISchemeComponentDao;
 import de.hswt.hrm.scheme.dao.core.ISchemeDao;
+import de.hswt.hrm.scheme.dao.jdbc.SchemeDao;
 import de.hswt.hrm.scheme.model.Scheme;
 import de.hswt.hrm.scheme.model.SchemeComponent;
 
@@ -26,7 +29,7 @@ import de.hswt.hrm.scheme.model.SchemeComponent;
  */
 @Creatable
 public class SchemeService {
-	
+	private final static Logger LOG = LoggerFactory.getLogger(SchemeService.class);
     private final ISchemeDao schemeDao;
     private final ISchemeComponentDao schemeComponentDao;
     
@@ -159,9 +162,13 @@ public class SchemeService {
 	public Scheme findCurrentSchemeByPlant(final Plant plant) 
 			throws ElementNotFoundException, DatabaseException {
 		
+		LOG.debug(String.format("Loading current scheme for plant '%s'.", plant.getDescription()));
+		
 		Scheme scheme = schemeDao.findCurrentSchemeByPlant(plant);
 		Collection<SchemeComponent> components = schemeComponentDao.findAllComponentByScheme(scheme);
 		scheme.setSchemeComponents(components);
+		
+		LOG.debug(String.format("Current scheme load for plant '%s'.", plant.getDescription()));
 		
 		return scheme;
 	}

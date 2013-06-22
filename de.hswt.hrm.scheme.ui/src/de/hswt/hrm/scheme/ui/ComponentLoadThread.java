@@ -14,6 +14,7 @@ import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.component.model.Component;
 import de.hswt.hrm.component.service.ComponentService;
 import de.hswt.hrm.scheme.model.RenderedComponent;
+import de.hswt.hrm.scheme.model.Scheme;
 import de.hswt.hrm.scheme.service.ComponentConverter;
 import de.hswt.hrm.scheme.ui.part.SchemeComposite;
 
@@ -31,9 +32,9 @@ public class ComponentLoadThread extends Thread{
 	private final SchemeComposite composite;
 	private final ComponentService componentsService;
 	
-	public ComponentLoadThread(SchemeComposite schemeCompositeNew, ComponentService compService) {
+	public ComponentLoadThread(SchemeComposite composite, ComponentService compService) {
 		super();
-		this.composite = schemeCompositeNew;
+		this.composite = composite;
 		this.componentsService = compService;
 	}
 
