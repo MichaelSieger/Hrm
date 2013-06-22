@@ -2,6 +2,7 @@ package de.hswt.hrm.inspection.ui.part;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.LinkedList;
 
 import javax.annotation.PostConstruct;
@@ -26,11 +27,14 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
 
+import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.common.ui.swt.layouts.LayoutUtil;
 import de.hswt.hrm.common.ui.swt.utils.ContentProposalUtil;
 import de.hswt.hrm.common.ui.swt.wizards.WizardCreator;
 import de.hswt.hrm.component.model.Component;
+import de.hswt.hrm.evaluation.model.Evaluation;
+import de.hswt.hrm.evaluation.service.EvaluationService;
 import de.hswt.hrm.inspection.model.Inspection;
 import de.hswt.hrm.inspection.service.InspectionService;
 import de.hswt.hrm.inspection.ui.dialog.ContactSelectionDialog;
@@ -50,6 +54,9 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
 
     @Inject
     private InspectionService inspectionService;
+
+    @Inject
+    private EvaluationService evaluationService;
 
     @Inject
     private IEclipseContext context;
@@ -320,6 +327,8 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
         overallCombo.setLayoutData(LayoutUtil.createHorzCenteredFillData(4));
         formToolkit.adapt(overallCombo);
         formToolkit.paintBordersFor(overallCombo);
+        initAutoCompletion(overallCombo);
+
     }
 
     private void createPersonsComponents() {
@@ -819,6 +828,28 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
 
     }
 
+    private void initAutoCompletion(Combo combo) {
+
+        try {
+            Collection<Evaluation> summaries = evaluationService.findAll();
+            String[] s = new String[summaries.size()];
+            int i = 0;
+
+            for (Evaluation e : summaries) {
+                s[i] = e.getName();
+                i++;
+            }
+
+            combo.setItems(s);
+            ContentProposalUtil.enableContentProposal(combo);
+        }
+
+        catch (DatabaseException e) {
+
+        }
+
+    }
+
     public void refresh() {
 
         if (inspection == null) {
@@ -829,6 +860,14 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
         reportDateTime.setDay(inspection.getReportDate().get(Calendar.DAY_OF_MONTH));
         reportDateTime.setMonth(inspection.getReportDate().get(Calendar.MONTH));
         reportDateTime.setMonth(inspection.getReportDate().get(Calendar.YEAR));
+
+        inspectionDateTime.setDay(inspection.getJobDate().get(Calendar.DAY_OF_MONTH));
+        inspectionDateTime.setMonth(inspection.getJobDate().get(Calendar.MONTH));
+        inspectionDateTime.setYear(inspection.getJobDate().get(Calendar.YEAR));
+
+        nextInspectionDateTime.setDay(inspection.getJobDate().get(Calendar.DAY_OF_MONTH));
+        nextInspectionDateTime.setMonth(inspection.getJobDate().get(Calendar.MONTH));
+        nextInspectionDateTime.setYear(inspection.getJobDate().get(Calendar.YEAR));
 
     }
 }
