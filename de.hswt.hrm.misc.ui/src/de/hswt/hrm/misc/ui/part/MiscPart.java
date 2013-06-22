@@ -24,6 +24,7 @@ import org.slf4j.LoggerFactory;
 
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.evaluation.ui.part.EvaluationComposite;
+import de.hswt.hrm.misc.ui.PriorityComposite.PriorityComposite;
 
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
@@ -68,6 +69,8 @@ public class MiscPart {
 	private CommentComposite commentsComposite;
 
 	private ReportPreferencesComposite reportPreferencesComposite;
+	
+	private PriorityComposite priorityComposite;
 
     public MiscPart() {
         // toolkit can be created in PostConstruct, but then then
@@ -151,6 +154,7 @@ public class MiscPart {
 		ContextInjectionFactory.inject(commentsComposite, context);
 		commentsSection.setClient(commentsComposite);
 
+
         Section reportPreferencesSection = toolkit.createSection(tabFolder, Section.TITLE_BAR);
         reportPreferencesSection.setText("Report preferences");
 		reportPreferencesTab.setControl(reportPreferencesSection);
@@ -158,6 +162,14 @@ public class MiscPart {
         reportPreferencesComposite = new ReportPreferencesComposite(reportPreferencesSection);
 		ContextInjectionFactory.inject(reportPreferencesComposite, context);
 		reportPreferencesSection.setClient(reportPreferencesComposite);
+		
+        Section prioritySection = toolkit.createSection(tabFolder, Section.TITLE_BAR);
+        prioritySection.setText("Priorities");
+        priorityTab.setControl(prioritySection);
+		
+		priorityComposite = new PriorityComposite(prioritySection);
+		ContextInjectionFactory.inject(priorityComposite, context);
+		prioritySection.setClient(priorityComposite);
 
 		createActions();
     }
@@ -219,12 +231,32 @@ public class MiscPart {
         editStyleAction.setDescription("Edit an exisitng style.");
         editStyleContribution = new ActionContributionItem(editStyleAction);
         
+        Action editPriorityAction = new Action("Edit Priority") {
+            @Override
+            public void run() {
+            	priorityComposite.editPriority();
+            }
+        };
+        editPriorityAction.setDescription("Edit an exisitng Priority.");
+        editPriorityContribution = new ActionContributionItem(editPriorityAction);
+        
+        Action addPriorityAction = new Action("Add Priority") {
+            @Override
+            public void run() {
+            	priorityComposite.addPriority();
+            }
+        };
+        addPriorityAction.setDescription("Add a new Priority");
+        addPriorityContribution = new ActionContributionItem(addPriorityAction);
+        
         form.getToolBarManager().add(editSummaryContribution);
         form.getToolBarManager().add(addSummaryContribution);
         form.getToolBarManager().add(editCommentContribution);
         form.getToolBarManager().add(addCommentContribution);
         form.getToolBarManager().add(editStyleContribution);
         form.getToolBarManager().add(addStyleContribution);
+        form.getToolBarManager().add(editPriorityContribution);
+        form.getToolBarManager().add(addPriorityContribution);
 
         form.getToolBarManager().update(true);
     }
@@ -245,7 +277,8 @@ public class MiscPart {
 
     private void showPriorityActions() {
     	hideAllActions();
-
+    	addPriorityContribution.setVisible(true);
+    	editPriorityContribution.setVisible(true);
     	form.getToolBarManager().update(true);
     }
 
@@ -263,8 +296,9 @@ public class MiscPart {
         editCommentContribution.setVisible(false);
         addStyleContribution.setVisible(false);
         editStyleContribution.setVisible(false);
-    }
-    
+        addPriorityContribution.setVisible(false);
+        editPriorityContribution.setVisible(false);
+    }    
     @PreDestroy
     public void dispose() {
         if (toolkit != null) {
