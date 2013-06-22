@@ -133,7 +133,7 @@ public class InspectionDao implements IInspectionDao {
                                 inspection.getInspectionDate(), inspection.getNextInspectionDate(),
                                 inspection.getTitle(), inspection.getLayout(),
                                 inspection.getPlant());
-                        
+
                         inserted.setRequester(inspection.getRequester().orNull());
                         inserted.setContractor(inspection.getContractor().orNull());
                         inserted.setChecker(inspection.getChecker().orNull());
@@ -161,8 +161,53 @@ public class InspectionDao implements IInspectionDao {
 
     @Override
     public void update(Inspection inspection) throws ElementNotFoundException, SaveException {
-        // TODO Auto-generated method stub
+        checkNotNull(inspection, "inspection must not be null.");
 
+        if (inspection.getId() < 0) {
+            throw new ElementNotFoundException("Element has no valid ID.");
+        }
+
+        SqlQueryBuilder builder = new SqlQueryBuilder();
+        builder.update(TABLE_NAME, Fields.LAYOUT_FK, Fields.PLANT_FK, Fields.REQUESTER_FK,
+                Fields.CONTRACTOR_FK, Fields.CHECKER_FK, Fields.INSPECTIONDATE, Fields.REPORTDATE,
+                Fields.NEXTDATE, Fields.TEMPERATURE, Fields.HUMIDITY, Fields.SUMMARY, Fields.TITEL,
+                Fields.TEMPERATURERATING, Fields.TEMPERATUREQUANTIFIER, Fields.HUMIDITYRATING,
+                Fields.HUMIDITYQUANTIFIER);
+        builder.where(Fields.ID);
+
+        final String query = builder.toString();
+
+        try (Connection con = DatabaseFactory.getConnection()) {
+            try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
+                stmt.setParameter(Fields.LAYOUT_FK, inspection.getLayout().getId());
+                stmt.setParameter(Fields.PLANT_FK, inspection.getPlant().getId());
+                stmt.setParameter(Fields.REQUESTER_FK, inspection.getRequester().get().getId());
+                stmt.setParameter(Fields.CONTRACTOR_FK, inspection.getContractor().get().getId());
+                stmt.setParameter(Fields.CHECKER_FK, inspection.getChecker().get().getId());
+                stmt.setParameter(Fields.INSPECTIONDATE, inspection.getInspectionDate());
+                stmt.setParameter(Fields.REPORTDATE, inspection.getReportDate());
+                stmt.setParameter(Fields.NEXTDATE, inspection.getNextInspectionDate());
+                stmt.setParameter(Fields.TEMPERATURE, inspection.getTemperature().orNull());
+                stmt.setParameter(Fields.HUMIDITY, inspection.getHumidity().orNull());
+                stmt.setParameter(Fields.SUMMARY, inspection.getSummary().orNull());
+                stmt.setParameter(Fields.TITEL, inspection.getTitle());
+                stmt.setParameter(Fields.TEMPERATURERATING, inspection.getTemperatureRating()
+                        .orNull());
+                stmt.setParameter(Fields.TEMPERATUREQUANTIFIER, inspection
+                        .getTemperatureQuantifier().orNull());
+                stmt.setParameter(Fields.HUMIDITYRATING, inspection.getHumidityRating().orNull());
+                stmt.setParameter(Fields.HUMIDITYQUANTIFIER, inspection.getHumidityQuantifier()
+                        .orNull());
+
+                int affectedRows = stmt.executeUpdate();
+                if (affectedRows != 1) {
+                    throw new SaveException();
+                }
+            }
+        }
+        catch (SQLException | DatabaseException e) {
+            throw new SaveException(e);
+        }
     }
 
     private Collection<Inspection> fromResultSet(final ResultSet rs, Optional<Inspection> inspection)
