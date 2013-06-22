@@ -34,13 +34,13 @@ import de.hswt.hrm.common.ui.swt.table.ColumnComparator;
 import de.hswt.hrm.common.ui.swt.table.ColumnDescription;
 import de.hswt.hrm.common.ui.swt.table.TableViewerController;
 import de.hswt.hrm.inspection.model.Inspection;
+import de.hswt.hrm.inspection.service.InspectionService;
 import de.hswt.hrm.inspection.ui.filter.InspectionFilter;
 
 public class ReportsOverviewComposite extends Composite {
 
-    // TODO use this if it is implemented
-    // @Inject
-    // private InspectionService inspectionService;
+    @Inject
+    private InspectionService inspectionService;
 
     @Inject
     private IEclipseContext context;
@@ -129,10 +129,9 @@ public class ReportsOverviewComposite extends Composite {
     }
 
     private void updateSearchTableFilter(String filterString) {
-        // TODO adapt to the inspectionService and Inspection POJO
         InspectionFilter filter = (InspectionFilter) tableViewer.getFilters()[0];
         filter.setSearchString(filterString);
-        // tableViewer.refresh();
+        tableViewer.refresh();
     }
 
     private void initializeTable() {
