@@ -24,9 +24,12 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Optional;
 
+import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.ui.swt.constants.SearchFieldConstants;
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.common.ui.swt.layouts.LayoutUtil;
@@ -57,6 +60,8 @@ public class ReportsOverviewComposite extends Composite {
     private Table table;
 
     private InspectionFilter searchFilter = new InspectionFilter();
+
+    private static final Logger LOG = LoggerFactory.getLogger(ReportsOverviewComposite.class);
 
     /**
      * Create the composite.
@@ -112,13 +117,14 @@ public class ReportsOverviewComposite extends Composite {
     }
 
     private void refreshTable() {
-        // TODO adapt to the inspectionService
-        // try {
-        // tableViewer.setInput(catalogService.findAllCatalogItem());
-        // } catch (DatabaseException e) {
-        // LOG.error("Unable to retrieve list of catalog items.", e);
-        // showDBConnectionError();
-        // }
+
+        try {
+            tableViewer.setInput(inspectionService.findAll());
+        }
+        catch (DatabaseException e) {
+            LOG.error("Unable to retrieve list of catalog items.", e);
+            showDBConnectionError();
+        }
     }
 
     private void showDBConnectionError() {
