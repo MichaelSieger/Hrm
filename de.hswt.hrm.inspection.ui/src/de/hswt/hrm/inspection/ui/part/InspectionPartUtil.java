@@ -1,5 +1,6 @@
 package de.hswt.hrm.inspection.ui.part;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -11,13 +12,14 @@ import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.Shell;
 
 import com.google.common.base.Optional;
-
 import de.hswt.hrm.common.ui.swt.table.ColumnDescription;
 import de.hswt.hrm.common.ui.swt.wizards.WizardCreator;
 import de.hswt.hrm.inspection.model.Inspection;
 import de.hswt.hrm.inspection.ui.wizard.ReportCreationWizard;
 
 public class InspectionPartUtil {
+
+    private static SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
     public static Optional<Inspection> showInspectionCreateWizard(IEclipseContext context,
             Shell shell) {
@@ -78,13 +80,13 @@ public class InspectionPartUtil {
             @Override
             public String getText(Object element) {
                 Inspection i = (Inspection) element;
-                return i.getReportDate().toString();
+                return dateFormat.format(i.getReportDate().getTime());
             }
         }, new Comparator<Inspection>() {
             @Override
             public int compare(Inspection i1, Inspection i2) {
-                return i1.getReportDate().toString()
-                        .compareToIgnoreCase(i2.getReportDate().toString());
+                return dateFormat.format(i1.getReportDate().getTime()).compareToIgnoreCase(
+                        dateFormat.format(i2.getReportDate().getTime()));
             }
         });
     }
@@ -94,12 +96,13 @@ public class InspectionPartUtil {
             @Override
             public String getText(Object element) {
                 Inspection i = (Inspection) element;
-                return i.getJobDate().toString();
+                return dateFormat.format(i.getJobDate().getTime());
             }
         }, new Comparator<Inspection>() {
             @Override
             public int compare(Inspection i1, Inspection i2) {
-                return i1.getJobDate().toString().compareToIgnoreCase(i2.getJobDate().toString());
+                return dateFormat.format(i1.getJobDate().getTime()).compareToIgnoreCase(
+                        dateFormat.format(i2.getJobDate().getTime()));
             }
         });
     }
@@ -109,13 +112,13 @@ public class InspectionPartUtil {
             @Override
             public String getText(Object element) {
                 Inspection i = (Inspection) element;
-                return i.getNextInspectionDate().toString();
+                return dateFormat.format(i.getNextInspectionDate().getTime());
             }
         }, new Comparator<Inspection>() {
             @Override
             public int compare(Inspection i1, Inspection i2) {
-                return i1.getNextInspectionDate().toString()
-                        .compareToIgnoreCase(i2.getNextInspectionDate().toString());
+                return dateFormat.format(i1.getNextInspectionDate().getTime()).compareToIgnoreCase(
+                        dateFormat.format(i2.getNextInspectionDate().getTime()));
             }
         });
     }
