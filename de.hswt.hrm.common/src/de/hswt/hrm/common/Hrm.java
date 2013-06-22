@@ -33,7 +33,7 @@ public final class Hrm {
         }
         
         // Try to find the current config
-        Path configPath = getConfigPath().resolve("hrm.properties");
+        Path configPath = getConfigPath();
         if (!Files.exists(configPath)) {
             try {
                 // Create a default one
@@ -73,11 +73,15 @@ public final class Hrm {
         
         initialized = true;
     }
+    
+    public static Path getConfigPath() {
+    	return getConfigDir().resolve("hrm.properties");
+    }
 
     /**
      * @return The correct home directory of the current user.
      */
-    private static Path getConfigPath() {
+    private static Path getConfigDir() {
         // We have to do this as the java standard way seems to be broken
         // for Windows
         if (SystemUtils.IS_OS_WINDOWS) {

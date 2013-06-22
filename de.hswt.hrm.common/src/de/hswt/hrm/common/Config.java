@@ -1,11 +1,15 @@
 package de.hswt.hrm.common;
 
+import static com.google.common.base.Preconditions.checkState;
+import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkArgument;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.util.Properties;
 
 /**
@@ -38,6 +42,38 @@ public final class Config {
     public void load(Path path) throws IOException {
         checkArgument(Files.exists(path), "Configuration file is not present.");
         props = loadFromFile(path);
+    }
+    
+    public void store(Path path) throws IOException {
+    	store(path, false, false);
+    }
+    
+    /**
+     * Write out the current properties to the target specified by path.
+     * 
+     * @param path
+     * @param createParentPath
+     * @param override
+     * @throws IOException 
+     * @throws IllegalStateException If createParentPath is false and the target path does not exist.
+     * @throws IllegalStateException If override is false and the target file already exists.
+     */
+    public void store(Path path, boolean createParentPath, boolean override) throws IOException {
+    	checkNotNull(path, "Path must not be null.");
+    	
+    	if (!createParentPath) {
+    		checkState(Files.exists(path.getParent()), "Parent folder does not exist.");
+    	}
+    	
+    	if (!override) {
+    		checkArgument(Files.exists(path), "Target file already exists.");
+    	}
+    	
+    	OutputStream stream = Files.newOutputStream(
+    			path,
+    			StandardOpenOption.CREATE,
+    			StandardOpenOption.WRITE);
+    	props.store(stream, "Automatically written by hrm");
     }
 
     /**
@@ -111,5 +147,6 @@ public final class Config {
         public static final String DB_LOCKING = "db.locking.enabled";
         public static final String SESSION_UUID = "session.uuid";
         public static final String LOCALE = "locale";
+        public static final String REPORT_STYLE_FOLDER = "report.style.directory";
     }
 }
