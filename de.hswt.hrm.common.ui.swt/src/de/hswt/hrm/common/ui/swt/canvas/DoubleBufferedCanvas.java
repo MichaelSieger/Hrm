@@ -34,13 +34,19 @@ public class DoubleBufferedCanvas extends Canvas{
 			@Override
 			public void paintControl(PaintEvent e) {
 				Image backbuffer = getBackbuffer();
-				GC gc = new GC(backbuffer);
-				//Fill image with background color
-				gc.fillRectangle(0, 0, backbuffer.getBounds().width, backbuffer.getBounds().height);
-				//The actual drawing is done here
-				drawBuffered(gc);
-				e.gc.drawImage(backbuffer, 0, 0);	//Copy backbuffer to frontbuffer
-				gc.dispose();
+				GC gc = null;
+				try{
+					gc = new GC(backbuffer);
+					//Fill image with background color
+					gc.fillRectangle(0, 0, backbuffer.getBounds().width, backbuffer.getBounds().height);
+					//The actual drawing is done here
+					drawBuffered(gc);
+					e.gc.drawImage(backbuffer, 0, 0);	//Copy backbuffer to frontbuffer
+				}finally{
+					if(gc != null){
+						gc.dispose();
+					}
+				}
 			}
 		});
 	}
