@@ -14,7 +14,7 @@ import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.ElementNotFoundException;
 import de.hswt.hrm.common.database.exception.SaveException;
 import de.hswt.hrm.component.dao.core.IComponentDao;
-import de.hswt.hrm.component.model.Category;
+import de.hswt.hrm.component.model.Attribute;
 import de.hswt.hrm.component.model.Component;
 
 /**
@@ -65,5 +65,62 @@ public class ComponentService {
     public Collection<Component> findAll() throws DatabaseException {
         return componentDao.findAll();
     }
+    
+    /**
+     * @param id
+     * @return The attribute with the given ID.
+     * @throws ElementNotFoundException
+     * @throws DatabaseException
+     */
+	public Attribute findAttributeById(int id) 
+			throws ElementNotFoundException, DatabaseException {
+		return componentDao.findAttributeById(id);
+	}
+	
+	/**
+     * Returns the list of attributes for a given component.
+     * 
+     * @param component
+     * @return List of attributes for the given component.
+     * @throws DatabaseException
+     */
+	Collection<Attribute> findAttributesByComponent(Component component)
+			throws DatabaseException {
+		return componentDao.findAttributesByComponent(component);
+	}
+
+	/**
+	 * Returns a list of all attribute names that were currently added to
+	 * the database (attributes that were added to multiple components are
+	 * just returned once, so there are no duplicates in the result).
+	 * 
+	 * @return Collection of attribute names already used.
+	 * @throws DatabaseException
+	 */
+	Collection<String> findAttributeNames() throws DatabaseException {
+		return findAttributeNames();
+	}
+	
+	/**
+     * Add an attribute to a component.
+     * 
+     * @param component 
+     * @param attributeName
+     * @return The added attribute with its valid ID.
+     * @throws SaveException 
+     */
+    Attribute addAttribute(Component component, String attributeName) throws SaveException {
+    	return componentDao.addAttribute(component, attributeName);
+    }
+    
+    /**
+     * Delete an attribute.
+     * 
+     * @param attribute
+     * @throws DatabaseException
+     */
+	void deleteAttribute(Attribute attribute) throws DatabaseException {
+		componentDao.deleteAttribute(attribute);
+	}
 
 }
