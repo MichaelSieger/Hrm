@@ -460,7 +460,7 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
         customerSelectionButton.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                // TODO request for person and fill out the corresponding fields with selction
+
                 ContactSelectionDialog csd = new ContactSelectionDialog(shellProvider.getShell(),
                         context);
                 csd.create();

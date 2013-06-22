@@ -180,7 +180,7 @@ public class ReportsOverviewComposite extends Composite {
     }
 
     private void initializeTable() {
-        // TODO adapt to the inspectionService and Inspection POJO
+
         List<ColumnDescription<Inspection>> columns = InspectionPartUtil.getColumns();
 
         // Create columns in tableviewer
