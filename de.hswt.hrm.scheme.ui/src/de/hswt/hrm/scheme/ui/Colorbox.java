@@ -4,10 +4,10 @@ import org.eclipse.swt.graphics.Color;
 
 public class Colorbox {
 	
-	private final int x, y, width, height;
+	private final double x, y, width, height;
 	private final Color color;
 	
-	public Colorbox(int x, int y, int width, int height, Color color) {
+	public Colorbox(double x, double y, double width, double height, Color color) {
 		super();
 		this.x = x;
 		this.y = y;
@@ -16,19 +16,19 @@ public class Colorbox {
 		this.color = color;
 	}
 
-	public int getX() {
+	public double getX() {
 		return x;
 	}
 
-	public int getY() {
+	public double getY() {
 		return y;
 	}
 
-	public int getWidth() {
+	public double getWidth() {
 		return width;
 	}
 
-	public int getHeight() {
+	public double getHeight() {
 		return height;
 	}
 

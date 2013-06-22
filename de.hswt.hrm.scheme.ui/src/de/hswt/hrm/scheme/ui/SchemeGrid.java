@@ -16,10 +16,13 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 
+import com.google.common.base.Preconditions;
+
 import de.hswt.hrm.common.ui.swt.canvas.DoubleBufferedCanvas;
 import de.hswt.hrm.scheme.listener.ModifyListener;
 import de.hswt.hrm.scheme.model.Direction;
 import de.hswt.hrm.scheme.model.RenderedComponent;
+import de.hswt.hrm.scheme.model.ThumbnailImage;
 
 /**
  * A Widget that displays components in a grid.
@@ -119,10 +122,10 @@ public class SchemeGrid extends DoubleBufferedCanvas {
 		final float quadH = getQuadHeight();
 		for (Colorbox box : colors) {
 			gc.setBackground(box.getColor());
-			gc.fillRectangle(Math.round(quadW * box.getX()) + 1,
-					Math.round(quadH * box.getY()) + 1,
-					Math.round(quadW * box.getWidth()) - 1,
-					Math.round(quadH * box.getHeight()) - 1);
+			gc.fillRectangle((int)Math.round(quadW * box.getX()) + 1,
+					(int)Math.round(quadH * box.getY()) + 1,
+					(int)Math.round(quadW * box.getWidth()) - 1,
+					(int)Math.round(quadH * box.getHeight()) - 1);
 		}
 	}
 
@@ -133,9 +136,10 @@ public class SchemeGrid extends DoubleBufferedCanvas {
 	 */
 	private void drawImages(GC gc) {
 		for (SchemeGridItem item : images) {
+			ThumbnailImage img = item.getImage();
 			drawImage(
 					gc,
-					item.getImage().getImage(),
+					img.getImage(),
 					item.getBoundingBox());
 		}
 	}
@@ -233,6 +237,7 @@ public class SchemeGrid extends DoubleBufferedCanvas {
 	 *             If the space is occupied already
 	 */
 	public void setImage(SchemeGridItem item) throws PlaceOccupiedException {
+		Preconditions.checkNotNull(item);
 		Rectangle r = item.getBoundingBox();
 		checkArgument(r.x >= 0 && r.x + r.width <= width);
 		checkArgument(r.y >= 0 && r.y + r.height <= height);
