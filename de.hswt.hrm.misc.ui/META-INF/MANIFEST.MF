@@ -15,6 +15,7 @@ Import-Package: de.hswt.hrm.common.database.exception,
  de.hswt.hrm.evaluation.service,
  de.hswt.hrm.evaluation.ui.part,
  de.hswt.hrm.misc.comment.model,
+ de.hswt.hrm.misc.reportPreferences.model,
  org.eclipse.e4.xwt,
  org.eclipse.e4.xwt.forms
 Require-Bundle: org.eclipse.jface;bundle-version="3.8.102",

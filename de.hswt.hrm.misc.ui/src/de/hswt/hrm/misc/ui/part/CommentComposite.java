@@ -138,7 +138,7 @@ public class CommentComposite extends Composite {
         addCommentAction.setDescription("Add's a new comment.");
         //addCommentContribution = new ActionContributionItem(addCommentAction);
 
-        Action editSummaryAction = new Action("Edit") {
+        Action editCommentAction = new Action("Edit") {
             @Override
             public void run() {
                 editComment();
