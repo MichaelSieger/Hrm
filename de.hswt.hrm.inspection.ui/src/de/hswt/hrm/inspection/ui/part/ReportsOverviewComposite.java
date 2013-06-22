@@ -1,6 +1,8 @@
 package de.hswt.hrm.inspection.ui.part;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -37,8 +39,11 @@ import de.hswt.hrm.common.ui.swt.table.ColumnComparator;
 import de.hswt.hrm.common.ui.swt.table.ColumnDescription;
 import de.hswt.hrm.common.ui.swt.table.TableViewerController;
 import de.hswt.hrm.inspection.model.Inspection;
+import de.hswt.hrm.inspection.model.Layout;
 import de.hswt.hrm.inspection.service.InspectionService;
+import de.hswt.hrm.inspection.ui.dialog.PlantSelectionDialog;
 import de.hswt.hrm.inspection.ui.filter.InspectionFilter;
+import de.hswt.hrm.plant.model.Plant;
 
 public class ReportsOverviewComposite extends Composite {
 
@@ -103,11 +108,13 @@ public class ReportsOverviewComposite extends Composite {
 
         tableViewer = new TableViewer(overviewComposite, SWT.BORDER | SWT.FULL_SELECTION);
         table = tableViewer.getTable();
+        table.setLinesVisible(true);
+        table.setHeaderVisible(true);
         toolkit.paintBordersFor(table);
         table.setLayoutData(LayoutUtil.createFillData());
 
-        // initializeTable();
-        // refreshTable();
+        initializeTable();
+        refreshTable();
 
         // data for table
         // report title
@@ -121,13 +128,24 @@ public class ReportsOverviewComposite extends Composite {
 
     private void refreshTable() {
 
-        try {
-            tableViewer.setInput(inspectionService.findAll());
-        }
-        catch (DatabaseException e) {
-            LOG.error("Unable to retrieve list of catalog items.", e);
-            showDBConnectionError();
-        }
+        // TODO remove dummies when findAll is wokring
+
+        Inspection i = new Inspection(new GregorianCalendar(1, 1, 1),
+                new GregorianCalendar(1, 1, 1), new GregorianCalendar(1, 1, 1), "Dummy",
+                new Layout("dummie", "dummy File name"), new Plant("super mega plant"));
+
+        // try {
+
+        ArrayList t = new ArrayList<>();
+        t.add(i);
+
+        // tableViewer.setInput(inspectionService.findAll());
+        tableViewer.setInput(t);
+        // }
+        // catch (DatabaseException e) {
+        // LOG.error("Unable to retrieve list of catalog items.", e);
+        // showDBConnectionError();
+        // }
     }
 
     private void showDBConnectionError() {
