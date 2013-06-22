@@ -172,6 +172,7 @@ public class MiscPart {
 		prioritySection.setClient(priorityComposite);
 
 		createActions();
+		showSummaryActions();
     }
 
     private void createActions() {
