@@ -6,7 +6,7 @@ import static com.google.common.base.Strings.isNullOrEmpty;
 import de.hswt.hrm.plant.model.Plant;
 import de.hswt.hrm.contact.model.Contact;
 
-import java.util.GregorianCalendar;
+import java.util.Calendar;
 
 import com.google.common.base.Optional;
 
@@ -17,9 +17,9 @@ public class Inspection {
     private Contact requester;
     private Contact contractor;
     private Contact checker;
-    private GregorianCalendar inspectionDate;
-    private GregorianCalendar reportDate;
-    private GregorianCalendar nextInspectionDate;
+    private Calendar inspectionDate;
+    private Calendar reportDate;
+    private Calendar nextInspectionDate;
     private int temperature;
     private int humidity;
     private String summary;
@@ -32,8 +32,8 @@ public class Inspection {
     private static final String IS_MANDATORY = "Field is a mandatory.";
     private static final String INVALID_NUMBER = "%d is an invalid number.%n Must be greater 0";
 
-    public Inspection(int id, GregorianCalendar reportDate, GregorianCalendar inspectionDate,
-            GregorianCalendar nextInspection, String title, Layout layout, Plant plant) {
+    public Inspection(int id, Calendar reportDate, Calendar inspectionDate,
+            Calendar nextInspection, String title, Layout layout, Plant plant) {
         this.id = id;
         setReportDate(reportDate);
         setInspectionDate(inspectionDate);
@@ -43,8 +43,8 @@ public class Inspection {
         setLayout(layout);
     }
 
-    public Inspection(GregorianCalendar reportDate, GregorianCalendar inspectionDate,
-            GregorianCalendar nextInspection, String title, Layout layout, Plant plant) {
+    public Inspection(Calendar reportDate, Calendar inspectionDate,
+            Calendar nextInspection, String title, Layout layout, Plant plant) {
         this(-1, reportDate, inspectionDate, nextInspection, title, layout, plant);
     }
 
@@ -93,27 +93,27 @@ public class Inspection {
         this.checker = checker;
     }
 
-    public GregorianCalendar getInspectionDate() {
+    public Calendar getInspectionDate() {
         return inspectionDate;
     }
 
-    public void setInspectionDate(GregorianCalendar inspectionDate) {
+    public void setInspectionDate(Calendar inspectionDate) {
         this.inspectionDate = inspectionDate;
     }
 
-    public GregorianCalendar getReportDate() {
+    public Calendar getReportDate() {
         return reportDate;
     }
 
-    public void setReportDate(GregorianCalendar reportDate) {
+    public void setReportDate(Calendar reportDate) {
         this.reportDate = reportDate;
     }
 
-    public GregorianCalendar getNextInspectionDate() {
+    public Calendar getNextInspectionDate() {
         return nextInspectionDate;
     }
 
-    public void setNextInspectionDate(GregorianCalendar nextInspectionDate) {
+    public void setNextInspectionDate(Calendar nextInspectionDate) {
         this.nextInspectionDate = nextInspectionDate;
     }
 
