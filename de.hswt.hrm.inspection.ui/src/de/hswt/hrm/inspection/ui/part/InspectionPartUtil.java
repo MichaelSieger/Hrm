@@ -96,13 +96,13 @@ public class InspectionPartUtil {
             @Override
             public String getText(Object element) {
                 Inspection i = (Inspection) element;
-                return dateFormat.format(i.getJobDate().getTime());
+                return dateFormat.format(i.getReportDate().getTime());
             }
         }, new Comparator<Inspection>() {
             @Override
             public int compare(Inspection i1, Inspection i2) {
-                return dateFormat.format(i1.getJobDate().getTime()).compareToIgnoreCase(
-                        dateFormat.format(i2.getJobDate().getTime()));
+                return dateFormat.format(i1.getReportDate().getTime()).compareToIgnoreCase(
+                        dateFormat.format(i2.getReportDate().getTime()));
             }
         });
     }

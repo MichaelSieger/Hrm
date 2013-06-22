@@ -153,18 +153,18 @@ public class ReportsOverviewComposite extends Composite {
                 new GregorianCalendar(1, 1, 1), new GregorianCalendar(1, 1, 1), "Dummy",
                 new Layout("dummie", "dummy File name"), new Plant("super mega plant"));
 
-        // try {
+        try {
 
-        ArrayList t = new ArrayList<>();
-        t.add(i);
+            ArrayList t = new ArrayList<>();
+            t.add(i);
 
-        // tableViewer.setInput(inspectionService.findAll());
-        tableViewer.setInput(t);
-        // }
-        // catch (DatabaseException e) {
-        // LOG.error("Unable to retrieve list of catalog items.", e);
-        // showDBConnectionError();
-        // }
+            tableViewer.setInput(t);
+            tableViewer.setInput(inspectionService.findAll());
+        }
+        catch (DatabaseException e) {
+            LOG.error("Unable to retrieve list of catalog items.", e);
+            showDBConnectionError();
+        }
     }
 
     private void showDBConnectionError() {

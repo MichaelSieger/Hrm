@@ -861,13 +861,13 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
         reportDateTime.setMonth(inspection.getReportDate().get(Calendar.MONTH));
         reportDateTime.setMonth(inspection.getReportDate().get(Calendar.YEAR));
 
-        inspectionDateTime.setDay(inspection.getJobDate().get(Calendar.DAY_OF_MONTH));
-        inspectionDateTime.setMonth(inspection.getJobDate().get(Calendar.MONTH));
-        inspectionDateTime.setYear(inspection.getJobDate().get(Calendar.YEAR));
+        inspectionDateTime.setDay(inspection.getReportDate().get(Calendar.DAY_OF_MONTH));
+        inspectionDateTime.setMonth(inspection.getReportDate().get(Calendar.MONTH));
+        inspectionDateTime.setYear(inspection.getReportDate().get(Calendar.YEAR));
 
-        nextInspectionDateTime.setDay(inspection.getJobDate().get(Calendar.DAY_OF_MONTH));
-        nextInspectionDateTime.setMonth(inspection.getJobDate().get(Calendar.MONTH));
-        nextInspectionDateTime.setYear(inspection.getJobDate().get(Calendar.YEAR));
+        nextInspectionDateTime.setDay(inspection.getReportDate().get(Calendar.DAY_OF_MONTH));
+        nextInspectionDateTime.setMonth(inspection.getReportDate().get(Calendar.MONTH));
+        nextInspectionDateTime.setYear(inspection.getReportDate().get(Calendar.YEAR));
 
     }
 }
