@@ -2,6 +2,9 @@ package de.hswt.hrm.common.database;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 /**
  * Provides some common JDBC utility methods.
@@ -25,5 +28,26 @@ public final class JdbcUtil {
         }
         
         return (int) value;
+    }
+    
+    /**
+     * @param calendar
+     * @return Timestamp set to the time of the given calendar.
+     */
+    public static Timestamp timestampFromCalendar(final Calendar calendar) {
+    	Timestamp ts = new Timestamp(calendar.getTimeInMillis());
+    	return ts;
+    }
+    
+    /**
+     * 
+     * @param ts
+     * @return Calendar which is set to the time of the given timestamp.
+     */
+    public static Calendar CalendarfromTimestamp(final Timestamp ts) {
+    	Calendar calendar = GregorianCalendar.getInstance();
+    	calendar.setTimeInMillis(ts.getTime());
+    	
+    	return calendar;
     }
 }
