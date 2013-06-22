@@ -93,7 +93,7 @@ public class Inspection {
         this.checker = checker;
     }
 
-    public GregorianCalendar getJobDate() {
+    public GregorianCalendar getInspectionDate() {
         return inspectionDate;
     }
 
