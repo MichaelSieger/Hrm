@@ -2,15 +2,13 @@ package de.hswt.hrm.inspection.dao.jdbc;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
-
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
-import java.util.GregorianCalendar;
 
 import javax.inject.Inject;
 
@@ -255,13 +253,6 @@ public class InspectionDao implements IInspectionDao {
             int contractorId = JdbcUtil.getId(rs, Fields.CONTRACTOR_FK);
             int checkerId = JdbcUtil.getId(rs, Fields.CHECKER_FK);
             
-            // calendars
-            Timestamp inspectionTimestamp = rs.getTimestamp(Fields.INSPECTIONDATE);
-            Calendar inspectionDate = JdbcUtil.calendarFromTimestamp(inspectionTimestamp);
-            Timestamp reportTimestamp = rs.getTimestamp(Fields.REPORTDATE);
-            Calendar reportDate = JdbcUtil.calendarFromTimestamp(reportTimestamp);
-            Timestamp nextInspectionTimestamp = rs.getTimestamp(Fields.NEXTDATE);
-            Calendar nextInspectionDate = JdbcUtil.calendarFromTimestamp(nextInspectionTimestamp);
             // rest
             int temperature = rs.getInt(Fields.TEMPERATURE);
             int humidity = rs.getInt(Fields.HUMIDITY);
@@ -272,6 +263,19 @@ public class InspectionDao implements IInspectionDao {
             int humidityRating = rs.getInt(Fields.HUMIDITYRATING);
             int humidityQuantifier = rs.getInt(Fields.HUMIDITYQUANTIFIER);
 
+            // calendars
+            Date date = rs.getDate(Fields.INSPECTIONDATE);
+            checkNotNull(date, "Inspection date is mandatory.");
+            Calendar inspectionDate = JdbcUtil.calendarFromDate(date);
+            
+            date = rs.getDate(Fields.REPORTDATE);
+            checkNotNull(date, "Report date is mandatory.");
+            Calendar reportDate = JdbcUtil.calendarFromDate(date);
+            
+            date = rs.getDate(Fields.NEXTDATE);
+            checkNotNull(date, "Next date is mandatory.");
+            Calendar nextInspectionDate = JdbcUtil.calendarFromDate(date);
+            
             Inspection inserted = new Inspection(id, reportDate, inspectionDate,
                     nextInspectionDate, title, layout, plant);
 

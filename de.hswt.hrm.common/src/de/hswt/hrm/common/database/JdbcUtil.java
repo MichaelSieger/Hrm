@@ -1,5 +1,6 @@
 package de.hswt.hrm.common.database;
 
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -40,13 +41,23 @@ public final class JdbcUtil {
     }
     
     /**
-     * 
      * @param ts
      * @return Calendar which is set to the time of the given timestamp.
      */
     public static Calendar calendarFromTimestamp(final Timestamp ts) {
     	Calendar calendar = GregorianCalendar.getInstance();
     	calendar.setTimeInMillis(ts.getTime());
+    	
+    	return calendar;
+    }
+    
+    /**
+     * @param date
+     * @return Calendar which is set to the time of the given date.
+     */
+    public static Calendar calendarFromDate(final Date date) {
+    	Calendar calendar = GregorianCalendar.getInstance();
+    	calendar.setTime(date);
     	
     	return calendar;
     }
