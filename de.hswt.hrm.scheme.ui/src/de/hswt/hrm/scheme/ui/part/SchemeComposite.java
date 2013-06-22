@@ -62,6 +62,7 @@ import de.hswt.hrm.common.ui.swt.constants.SearchFieldConstants;
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.common.ui.swt.layouts.LayoutUtil;
 import de.hswt.hrm.common.ui.swt.utils.SWTResourceManager;
+import de.hswt.hrm.component.model.Component;
 import de.hswt.hrm.component.service.ComponentService;
 import de.hswt.hrm.plant.model.Plant;
 import de.hswt.hrm.scheme.model.RenderedComponent;
@@ -158,6 +159,8 @@ public class SchemeComposite extends Composite {
 
 	private Scheme currentScheme;
 	
+	private final List<RenderedComponent> renderedComponents = new ArrayList<>();
+	
 	/*
 	 * DND items for the grid
 	 */
@@ -189,16 +192,9 @@ public class SchemeComposite extends Composite {
 					"The scheme must not be null and plant must be present here");
 		}
 		this.componentsService = componentsService;
-		this.currentScheme = currentScheme;
+		this.currentScheme = scheme;
 		createControls();
 		plant = scheme.getPlant().get();
-		//TODO
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		try {
 			grid.setItems(toSchemeGridItems(scheme.getSchemeComponents()));
 		} catch (PlaceOccupiedException | IOException e) {
@@ -285,7 +281,24 @@ public class SchemeComposite extends Composite {
 		contributionItems.add(copyContribution);
 		contributionItems.add(saveContribution);
 
-		new ComponentLoadThread(this, componentsService).start();
+		/*
+		 * The Images are loaded synchronously at the moment
+		 */
+		try {
+			setRenderedComponents(Collections2.transform(componentsService.findAll(), new Function<Component, RenderedComponent>() {
+				public RenderedComponent apply(Component c){
+					try {
+						return ComponentConverter.convert(getDisplay(), c);
+					} catch (IOException e) {
+						LOG.error("Error on drawing image", e);
+						return null;
+					}
+				}
+			}));
+		} catch (DatabaseException e1) {
+			Throwables.propagate(e1);
+		}
+		//new ComponentLoadThread(this, componentsService).start();
 	}
 
 	/**
@@ -300,11 +313,22 @@ public class SchemeComposite extends Composite {
 			Collection<SchemeComponent> sc) throws IOException {
 		List<SchemeGridItem> l = new ArrayList<>();
 		for (SchemeComponent c : sc) {
-			l.add(new SchemeGridItem(ComponentConverter.convert(
-					this.getDisplay(), c.getComponent()), c.getDirection(), c
+			SchemeGridItem i = new SchemeGridItem(getRenderedComponent(c.getComponent()), c.getDirection(), c
+					.getX(), c.getY());
+			i.getImage();
+			l.add(new SchemeGridItem(getRenderedComponent(c.getComponent()), c.getDirection(), c
 					.getX(), c.getY()));
 		}
 		return l;
+	}
+	
+	private RenderedComponent getRenderedComponent(Component c){
+		for(RenderedComponent rc : renderedComponents){
+			if(rc.getComponent().equals(c)){
+				return rc;
+			}
+		}
+		throw new RuntimeException("Internal Error");
 	}
 
 	/*
@@ -635,6 +659,7 @@ public class SchemeComposite extends Composite {
 		Preconditions
 				.checkNotNull(plant, "The Plant must be set before saving");
 		try {
+			/*
 			if (currentScheme.getPlant().isPresent()) {
 				schemeService.update(currentScheme, schemeComps);
 				System.out.println("after update");
@@ -642,6 +667,8 @@ public class SchemeComposite extends Composite {
 				schemeService.insert(plant, schemeComps);
 				System.out.println("after insert");
 			}
+			*/
+			schemeService.insert(plant, schemeComps);
 			clearDirty();
 		} catch (DatabaseException e) {
 			LOG.error("Error during scheme saving.", e);
@@ -663,12 +690,22 @@ public class SchemeComposite extends Composite {
 			return i2;
 		}
 	}
+	
+	public void setRenderedComponents(Collection<RenderedComponent> c){
+		setRenderedComponents(new ArrayList<>(c));
+	}
 
 	public void setRenderedComponents(List<RenderedComponent> components) {
-		gridDragListener.setComponents(components);
-		gridListener.setComponents(components);
-		treeDragListener.setComponents(components);
-		tree.setInput(components);
+		for(RenderedComponent c : components){
+			if(!renderedComponents.contains(c)){
+				renderedComponents.add(c);
+			}
+		}
+		treeDragListener.setComponents(renderedComponents);
+		gridDragListener.setComponents(renderedComponents);
+		gridListener.setComponents(renderedComponents);
+		tree.setInput(renderedComponents);
+		tree.refresh();
 	}
 
 	public List<IContributionItem> getContributionItems() {
