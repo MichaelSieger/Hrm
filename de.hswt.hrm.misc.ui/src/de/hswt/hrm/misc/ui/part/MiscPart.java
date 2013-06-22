@@ -23,8 +23,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
-import de.hswt.hrm.evaluation.ui.part.EvaluationComposite;
 import de.hswt.hrm.misc.ui.PriorityComposite.PriorityComposite;
+import de.hswt.hrm.summary.ui.part.SummaryComposite;
 
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
@@ -64,7 +64,7 @@ public class MiscPart {
 	private TabItem priorityTab;
 	private TabItem reportPreferencesTab;
 
-	private EvaluationComposite evaluationComposite;
+	private SummaryComposite evaluationComposite;
 
 	private CommentComposite commentsComposite;
 
@@ -142,7 +142,7 @@ public class MiscPart {
         evaluationSection.setText("Summaries");
 		summaryTab.setControl(evaluationSection);
 
-        evaluationComposite = new EvaluationComposite(evaluationSection);
+        evaluationComposite = new SummaryComposite(evaluationSection);
 		ContextInjectionFactory.inject(evaluationComposite, context);
 		evaluationSection.setClient(evaluationComposite);
 

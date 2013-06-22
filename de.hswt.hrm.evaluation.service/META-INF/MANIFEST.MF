@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Service
-Bundle-SymbolicName: de.hswt.hrm.evaluation.service
+Bundle-SymbolicName: de.hswt.hrm.summary.service
 Bundle-Version: 0.0.1.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Require-Bundle: org.eclipse.e4.core.di;bundle-version="1.2.0",
@@ -11,6 +11,6 @@ Require-Bundle: org.eclipse.e4.core.di;bundle-version="1.2.0",
  javax.inject;bundle-version="1.0.0",
  com.google.guava;bundle-version="10.0.1"
 Import-Package: de.hswt.hrm.common.database.exception,
- de.hswt.hrm.evaluation.dao.core,
- de.hswt.hrm.evaluation.model
-Export-Package: de.hswt.hrm.evaluation.service
+ de.hswt.hrm.summary.dao.core,
+ de.hswt.hrm.summary.model
+Export-Package: de.hswt.hrm.summary.service

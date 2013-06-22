@@ -1,8 +1,8 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Model
-Bundle-SymbolicName: de.hswt.hrm.evaluation.model
+Bundle-SymbolicName: de.hswt.hrm.summary.model
 Bundle-Version: 0.0.1.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Export-Package: de.hswt.hrm.evaluation.model
+Export-Package: de.hswt.hrm.summary.model
 Require-Bundle: com.google.guava;bundle-version="10.0.1"

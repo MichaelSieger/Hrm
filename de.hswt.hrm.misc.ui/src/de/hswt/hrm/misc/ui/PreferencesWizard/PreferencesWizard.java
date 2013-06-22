@@ -12,9 +12,9 @@ import com.google.common.base.Optional;
 
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.SaveException;
-import de.hswt.hrm.evaluation.model.Evaluation;
-import de.hswt.hrm.evaluation.service.EvaluationService;
 import de.hswt.hrm.misc.reportPreferences.model.ReportPreference;
+import de.hswt.hrm.summary.model.Summary;
+import de.hswt.hrm.summary.service.SummaryService;
 
 public class PreferencesWizard extends Wizard {
 

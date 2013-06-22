@@ -1,4 +1,4 @@
-package de.hswt.hrm.evaluation.ui.part;
+package de.hswt.hrm.summary.ui.part;
 
 import java.util.Collection;
 import java.util.List;
@@ -33,16 +33,16 @@ import de.hswt.hrm.common.ui.swt.layouts.LayoutUtil;
 import de.hswt.hrm.common.ui.swt.table.ColumnComparator;
 import de.hswt.hrm.common.ui.swt.table.ColumnDescription;
 import de.hswt.hrm.common.ui.swt.table.TableViewerController;
-import de.hswt.hrm.evaluation.model.Evaluation;
-import de.hswt.hrm.evaluation.service.EvaluationService;
-import de.hswt.hrm.evaluation.ui.filter.EvaluationFilter;
+import de.hswt.hrm.summary.model.Summary;
+import de.hswt.hrm.summary.service.SummaryService;
+import de.hswt.hrm.summary.ui.filter.SummaryFilter;
 
-public class EvaluationComposite extends Composite {
+public class SummaryComposite extends Composite {
 
-	private final static Logger LOG = LoggerFactory.getLogger(EvaluationComposite.class);
+	private final static Logger LOG = LoggerFactory.getLogger(SummaryComposite.class);
 
     @Inject
-    private EvaluationService evalService;
+    private SummaryService evalService;
 
     @Inject
     private IShellProvider shellProvider;
@@ -56,7 +56,7 @@ public class EvaluationComposite extends Composite {
 
     private Composite composite;
 
-    private Collection<Evaluation> evaluations;
+    private Collection<Summary> evaluations;
 
 	/**
 	 * Do not use this constructor when instantiate this composite! It is only
@@ -65,7 +65,7 @@ public class EvaluationComposite extends Composite {
 	 * @param parent
 	 * @param style
 	 */
-    private EvaluationComposite(Composite parent, int style) {
+    private SummaryComposite(Composite parent, int style) {
         super(parent, style);
         createControls();
     }
@@ -75,7 +75,7 @@ public class EvaluationComposite extends Composite {
 	 * 
 	 * @param parent
 	 */
-	public EvaluationComposite(Composite parent) {
+	public SummaryComposite(Composite parent) {
 		super(parent, SWT.NONE);
 	}
 
@@ -131,24 +131,24 @@ public class EvaluationComposite extends Composite {
     }
 
     private void initializeTable() {
-        List<ColumnDescription<Evaluation>> columns = EvaluationPartUtil.getColumns();
+        List<ColumnDescription<Summary>> columns = SummaryPartUtil.getColumns();
 
         // Create columns in tableviewer
-        TableViewerController<Evaluation> filler = new TableViewerController<>(tableViewer);
+        TableViewerController<Summary> filler = new TableViewerController<>(tableViewer);
         filler.createColumns(columns);
 
         // Enable column selection
         filler.createColumnSelectionMenu();
 
         // Enable sorting
-        ColumnComparator<Evaluation> comperator = new ColumnComparator<>(columns);
+        ColumnComparator<Summary> comperator = new ColumnComparator<>(columns);
         filler.enableSorting(comperator);
 
         // Add dataprovider that handles our collection
         tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 
         // Enable filtering
-        tableViewer.addFilter(new EvaluationFilter());
+        tableViewer.addFilter(new SummaryFilter());
     }
 
     private void showDBConnectionError() {
@@ -158,7 +158,7 @@ public class EvaluationComposite extends Composite {
     }
 
     private void updateTableFilter(String filterString) {
-        EvaluationFilter filter = (EvaluationFilter) tableViewer.getFilters()[0];
+        SummaryFilter filter = (SummaryFilter) tableViewer.getFilters()[0];
         filter.setSearchString(filterString);
         tableViewer.refresh();
     }
@@ -170,9 +170,9 @@ public class EvaluationComposite extends Composite {
      */
 
     public void addEvaluation() {
-        Evaluation eval = null;
+        Summary eval = null;
 
-        Optional<Evaluation> newEval = EvaluationPartUtil.showWizard(context,
+        Optional<Summary> newEval = SummaryPartUtil.showWizard(context,
                 shellProvider.getShell(), Optional.fromNullable(eval));
 
         if (newEval.isPresent()) {
@@ -191,14 +191,14 @@ public class EvaluationComposite extends Composite {
      */
     public void editEvaluation() {
         // obtain the contact in the column where the doubleClick happend
-        Evaluation selectedEval = (Evaluation) tableViewer.getElementAt(tableViewer.getTable()
+        Summary selectedEval = (Summary) tableViewer.getElementAt(tableViewer.getTable()
                 .getSelectionIndex());
         if (selectedEval == null) {
             return;
         }
         try {
             evalService.refresh(selectedEval);
-            Optional<Evaluation> updatedEval = EvaluationPartUtil.showWizard(context,
+            Optional<Summary> updatedEval = SummaryPartUtil.showWizard(context,
                     shellProvider.getShell(), Optional.of(selectedEval));
 
             if (updatedEval.isPresent()) {

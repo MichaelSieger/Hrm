@@ -38,9 +38,10 @@ import de.hswt.hrm.common.ui.swt.layouts.LayoutUtil;
 import de.hswt.hrm.common.ui.swt.table.ColumnComparator;
 import de.hswt.hrm.common.ui.swt.table.ColumnDescription;
 import de.hswt.hrm.common.ui.swt.table.TableViewerController;
-import de.hswt.hrm.evaluation.model.Evaluation;
-import de.hswt.hrm.evaluation.service.EvaluationService;
 import de.hswt.hrm.misc.model.priorities.model.Priority;
+import de.hswt.hrm.summary.model.Summary;
+import de.hswt.hrm.summary.service.SummaryService;
+
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.layout.GridData;

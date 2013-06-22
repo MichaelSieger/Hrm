@@ -1,11 +1,11 @@
-package de.hswt.hrm.evaluation.ui.filter;
+package de.hswt.hrm.summary.ui.filter;
 
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 
-import de.hswt.hrm.evaluation.model.Evaluation;
+import de.hswt.hrm.summary.model.Summary;
 
-public class EvaluationFilter extends ViewerFilter {
+public class SummaryFilter extends ViewerFilter {
 
     private String searchString;
 
@@ -19,7 +19,7 @@ public class EvaluationFilter extends ViewerFilter {
             return true;
         }
 
-        Evaluation e = (Evaluation) element;
+        Summary e = (Summary) element;
 
         if (e.getName().toLowerCase().matches(searchString)) {
             return true;

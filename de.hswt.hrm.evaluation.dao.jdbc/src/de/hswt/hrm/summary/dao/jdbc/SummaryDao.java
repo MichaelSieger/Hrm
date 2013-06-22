@@ -1,4 +1,4 @@
-package de.hswt.hrm.evaluation.dao.jdbc;
+package de.hswt.hrm.summary.dao.jdbc;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -17,13 +17,13 @@ import de.hswt.hrm.common.database.SqlQueryBuilder;
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.ElementNotFoundException;
 import de.hswt.hrm.common.database.exception.SaveException;
-import de.hswt.hrm.evaluation.dao.core.IEvaluationDao;
-import de.hswt.hrm.evaluation.model.Evaluation;
+import de.hswt.hrm.summary.dao.core.ISummaryDao;
+import de.hswt.hrm.summary.model.Summary;
 
-public class EvaluationDao implements IEvaluationDao {
+public class SummaryDao implements ISummaryDao {
 
     @Override
-    public Collection<Evaluation> findAll() throws DatabaseException {
+    public Collection<Summary> findAll() throws DatabaseException {
 
         SqlQueryBuilder builder = new SqlQueryBuilder();
         builder.select(TABLE_NAME, Fields.ID, Fields.NAME, Fields.TEXT);
@@ -34,7 +34,7 @@ public class EvaluationDao implements IEvaluationDao {
             try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
                 ResultSet result = stmt.executeQuery();
 
-                Collection<Evaluation> evaluations = fromResultSet(result);
+                Collection<Summary> evaluations = fromResultSet(result);
                 DbUtils.closeQuietly(result);
 
                 return evaluations;
@@ -46,7 +46,7 @@ public class EvaluationDao implements IEvaluationDao {
     }
 
     @Override
-    public Evaluation findById(int id) throws DatabaseException, ElementNotFoundException {
+    public Summary findById(int id) throws DatabaseException, ElementNotFoundException {
 
         checkArgument(id >= 0, "Id must not be negative.");
 
@@ -61,7 +61,7 @@ public class EvaluationDao implements IEvaluationDao {
                 stmt.setParameter(Fields.ID, id);
                 ResultSet result = stmt.executeQuery();
 
-                Collection<Evaluation> evaluations = fromResultSet(result);
+                Collection<Summary> evaluations = fromResultSet(result);
                 DbUtils.closeQuietly(result);
 
                 if (evaluations.size() < 1) {
@@ -80,7 +80,7 @@ public class EvaluationDao implements IEvaluationDao {
     }
 
     @Override
-    public Evaluation insert(Evaluation evaluation) throws SaveException {
+    public Summary insert(Summary evaluation) throws SaveException {
         SqlQueryBuilder builder = new SqlQueryBuilder();
         builder.insert(TABLE_NAME, Fields.NAME, Fields.TEXT);
 
@@ -101,7 +101,7 @@ public class EvaluationDao implements IEvaluationDao {
                         int id = generatedKeys.getInt(1);
 
                         // Create new Evaluation with id
-                        Evaluation inserted = new Evaluation(id, evaluation.getName(),
+                        Summary inserted = new Summary(id, evaluation.getName(),
                                 evaluation.getText());
                         return inserted;
                     }
@@ -118,7 +118,7 @@ public class EvaluationDao implements IEvaluationDao {
     }
 
     @Override
-    public void update(Evaluation evaluation) throws ElementNotFoundException, SaveException {
+    public void update(Summary evaluation) throws ElementNotFoundException, SaveException {
         checkNotNull(evaluation, "Evaluation must not be null.");
 
         if (evaluation.getId() < 0) {
@@ -149,16 +149,16 @@ public class EvaluationDao implements IEvaluationDao {
 
     }
 
-    private Collection<Evaluation> fromResultSet(ResultSet rs) throws SQLException {
+    private Collection<Summary> fromResultSet(ResultSet rs) throws SQLException {
         checkNotNull(rs, "Result must not be null.");
-        Collection<Evaluation> evaluationList = new ArrayList<>();
+        Collection<Summary> evaluationList = new ArrayList<>();
 
         while (rs.next()) {
             int id = rs.getInt(Fields.ID);
             String evaluationName = rs.getString(Fields.NAME);
             String evaluationTest = rs.getString(Fields.TEXT);
 
-            Evaluation eval = new Evaluation(id, evaluationName, evaluationTest);
+            Summary eval = new Summary(id, evaluationName, evaluationTest);
 
             evaluationList.add(eval);
         }

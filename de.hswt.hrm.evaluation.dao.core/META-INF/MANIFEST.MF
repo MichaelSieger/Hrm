@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Evaluation
-Bundle-SymbolicName: de.hswt.hrm.evaluation.dao.core
+Bundle-SymbolicName: de.hswt.hrm.summary.dao.core
 Bundle-Version: 0.0.1.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Export-Package: de.hswt.hrm.evaluation.dao.core
+Export-Package: de.hswt.hrm.summary.dao.core
 Import-Package: de.hswt.hrm.common.database.exception,
- de.hswt.hrm.evaluation.model
+ de.hswt.hrm.summary.model

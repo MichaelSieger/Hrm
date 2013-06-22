@@ -23,9 +23,9 @@ import com.google.common.base.Optional;
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.common.ui.swt.layouts.PageContainerFillLayout;
-import de.hswt.hrm.evaluation.model.Evaluation;
-import de.hswt.hrm.evaluation.service.EvaluationService;
 import de.hswt.hrm.misc.comment.model.Comment;
+import de.hswt.hrm.summary.model.Summary;
+import de.hswt.hrm.summary.service.SummaryService;
 
 public class CommentWizardPageOne extends WizardPage {
 

@@ -1,4 +1,4 @@
-package de.hswt.hrm.evaluation.model;
+package de.hswt.hrm.summary.model;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Strings.isNullOrEmpty;
@@ -7,7 +7,7 @@ import static com.google.common.base.Strings.isNullOrEmpty;
  * Represents a common used evaluation for various plants
  * 
  */
-public class Evaluation {
+public class Summary {
 
     private int id;
     private String name;
@@ -15,11 +15,11 @@ public class Evaluation {
 
     private static final String IS_MANDATORY = "Field is a mandatory.";
 
-    public Evaluation(String name, String text) {
+    public Summary(String name, String text) {
         this(-1, name, text);
     }
 
-    public Evaluation(int id, String name, String text) {
+    public Summary(int id, String name, String text) {
 
         this.id = id;
         setName(name);
@@ -75,7 +75,7 @@ public class Evaluation {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        Evaluation other = (Evaluation) obj;
+        Summary other = (Summary) obj;
         if (id != other.id) {
             return false;
         }

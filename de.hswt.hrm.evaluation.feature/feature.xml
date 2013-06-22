@@ -17,35 +17,35 @@
    </license>
 
    <plugin
-         id="de.hswt.hrm.evaluation.dao.core"
+         id="de.hswt.hrm.summary.dao.core"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="de.hswt.hrm.evaluation.dao.jdbc"
+         id="de.hswt.hrm.summary.dao.jdbc"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="de.hswt.hrm.evaluation.model"
+         id="de.hswt.hrm.summary.model"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="de.hswt.hrm.evaluation.service"
+         id="de.hswt.hrm.summary.service"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="de.hswt.hrm.evaluation.ui"
+         id="de.hswt.hrm.summary.ui"
          download-size="0"
          install-size="0"
          version="0.0.0"

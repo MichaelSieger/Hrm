@@ -33,14 +33,14 @@ import de.hswt.hrm.common.ui.swt.layouts.LayoutUtil;
 import de.hswt.hrm.common.ui.swt.utils.ContentProposalUtil;
 import de.hswt.hrm.common.ui.swt.wizards.WizardCreator;
 import de.hswt.hrm.component.model.Component;
-import de.hswt.hrm.evaluation.model.Evaluation;
-import de.hswt.hrm.evaluation.service.EvaluationService;
 import de.hswt.hrm.inspection.model.Inspection;
 import de.hswt.hrm.inspection.service.InspectionService;
 import de.hswt.hrm.inspection.ui.dialog.ContactSelectionDialog;
 import de.hswt.hrm.inspection.ui.dialog.PlantSelectionDialog;
 import de.hswt.hrm.photo.model.Photo;
 import de.hswt.hrm.photo.ui.wizard.PhotoWizard;
+import de.hswt.hrm.summary.model.Summary;
+import de.hswt.hrm.summary.service.SummaryService;
 
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.layout.GridData;
@@ -56,7 +56,7 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
     private InspectionService inspectionService;
 
     @Inject
-    private EvaluationService evaluationService;
+    private SummaryService evaluationService;
 
     @Inject
     private IEclipseContext context;
@@ -831,11 +831,11 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
     private void initAutoCompletion(Combo combo) {
 
         try {
-            Collection<Evaluation> summaries = evaluationService.findAll();
+            Collection<Summary> summaries = evaluationService.findAll();
             String[] s = new String[summaries.size()];
             int i = 0;
 
-            for (Evaluation e : summaries) {
+            for (Summary e : summaries) {
                 s[i] = e.getName();
                 i++;
             }

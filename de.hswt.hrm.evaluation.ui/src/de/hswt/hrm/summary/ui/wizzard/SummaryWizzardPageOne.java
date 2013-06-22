@@ -1,4 +1,4 @@
-package de.hswt.hrm.evaluation.ui.wizzard;
+package de.hswt.hrm.summary.ui.wizzard;
 
 import java.net.URL;
 import java.util.Collection;
@@ -22,25 +22,25 @@ import com.google.common.base.Optional;
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.common.ui.swt.layouts.PageContainerFillLayout;
-import de.hswt.hrm.evaluation.model.Evaluation;
-import de.hswt.hrm.evaluation.service.EvaluationService;
+import de.hswt.hrm.summary.model.Summary;
+import de.hswt.hrm.summary.service.SummaryService;
 
-public class EvaluationWizzardPageOne extends WizardPage {
+public class SummaryWizzardPageOne extends WizardPage {
 
-    private Optional<Evaluation> eval;
+    private Optional<Summary> eval;
     private Composite container;
     private Text nameText;
     private Text descText;
 
-    private Collection<Evaluation> evaluations;
+    private Collection<Summary> evaluations;
     private boolean first = true;
 
     @Inject
-    private EvaluationService evalService;
+    private SummaryService evalService;
 
-    private static final Logger LOG = LoggerFactory.getLogger(EvaluationWizzardPageOne.class);
+    private static final Logger LOG = LoggerFactory.getLogger(SummaryWizzardPageOne.class);
 
-    public EvaluationWizzardPageOne(String title, Optional<Evaluation> eval) {
+    public SummaryWizzardPageOne(String title, Optional<Summary> eval) {
         super(title);
         this.eval = eval;
         setDescription(createDescription());
@@ -57,9 +57,8 @@ public class EvaluationWizzardPageOne extends WizardPage {
     @Override
     public void createControl(Composite parent) {
         parent.setLayout(new PageContainerFillLayout());
-        URL url = EvaluationWizzardPageOne.class.getClassLoader().getResource(
-                "de/hswt/hrm/evaluation/ui/xwt/EvaluationWizardWindow"
-                        + IConstants.XWT_EXTENSION_SUFFIX);
+        URL url = SummaryWizzardPageOne.class.getClassLoader().getResource(
+                "de/hswt/hrm/summary/ui/xwt/SummaryWizardWindow" + IConstants.XWT_EXTENSION_SUFFIX);
         try {
             container = (Composite) XWTForms.load(parent, url);
         }
@@ -103,7 +102,7 @@ public class EvaluationWizzardPageOne extends WizardPage {
     }
 
     private void updateFields() {
-        Evaluation e = eval.get();
+        Summary e = eval.get();
         nameText.setText(e.getName());
         descText.setText(e.getText());
     }
@@ -140,7 +139,7 @@ public class EvaluationWizzardPageOne extends WizardPage {
             present = true;
         }
 
-        for (Evaluation e : this.evaluations) {
+        for (Summary e : this.evaluations) {
             if (e.getName().equals(text)) {
                 present = true;
             }

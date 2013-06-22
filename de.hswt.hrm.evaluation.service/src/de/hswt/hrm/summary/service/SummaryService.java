@@ -1,4 +1,4 @@
-package de.hswt.hrm.evaluation.service;
+package de.hswt.hrm.summary.service;
 
 import java.util.Collection;
 
@@ -13,44 +13,44 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.ElementNotFoundException;
 import de.hswt.hrm.common.database.exception.SaveException;
-import de.hswt.hrm.evaluation.dao.core.IEvaluationDao;
-import de.hswt.hrm.evaluation.model.Evaluation;
+import de.hswt.hrm.summary.dao.core.ISummaryDao;
+import de.hswt.hrm.summary.model.Summary;
 
 @Creatable
-public class EvaluationService {
+public class SummaryService {
 
-    private final static Logger LOG = LoggerFactory.getLogger(EvaluationService.class);
+    private final static Logger LOG = LoggerFactory.getLogger(SummaryService.class);
 
-    private final IEvaluationDao evalDao;
+    private final ISummaryDao evalDao;
 
     @Inject
-    public EvaluationService(IEvaluationDao evalDao) {
+    public SummaryService(ISummaryDao evalDao) {
 
         checkNotNull(evalDao, "EvaluationDao must be injected properly");
         this.evalDao = evalDao;
         LOG.debug("Evaluation Dao injected successfully");
     }
 
-    public Collection<Evaluation> findAll() throws DatabaseException {
+    public Collection<Summary> findAll() throws DatabaseException {
         return evalDao.findAll();
 
     }
 
-    public Evaluation findById(int id) throws ElementNotFoundException, DatabaseException {
+    public Summary findById(int id) throws ElementNotFoundException, DatabaseException {
         return evalDao.findById(id);
     }
 
-    public Evaluation insert(final Evaluation evaluation) throws SaveException {
+    public Summary insert(final Summary evaluation) throws SaveException {
         return evalDao.insert(evaluation);
     }
 
-    public void update(final Evaluation evaluation) throws ElementNotFoundException, SaveException {
+    public void update(final Summary evaluation) throws ElementNotFoundException, SaveException {
         evalDao.update(evaluation);
     }
 
-    public void refresh(Evaluation eval) throws DatabaseException {
+    public void refresh(Summary eval) throws DatabaseException {
 
-        Evaluation fromDb = evalDao.findById(eval.getId());
+        Summary fromDb = evalDao.findById(eval.getId());
 
         eval.setName(fromDb.getName());
         eval.setText(fromDb.getText());

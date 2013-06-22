@@ -37,11 +37,11 @@ import de.hswt.hrm.common.ui.swt.layouts.LayoutUtil;
 import de.hswt.hrm.common.ui.swt.table.ColumnComparator;
 import de.hswt.hrm.common.ui.swt.table.ColumnDescription;
 import de.hswt.hrm.common.ui.swt.table.TableViewerController;
-import de.hswt.hrm.evaluation.model.Evaluation;
-import de.hswt.hrm.evaluation.ui.part.EvaluationPartUtil;
 import de.hswt.hrm.misc.comment.model.Comment;
 import de.hswt.hrm.misc.ui.CommentFilter.CommentFilter;
 import de.hswt.hrm.misc.ui.CommentWizard.CommentPartUtil;
+import de.hswt.hrm.summary.model.Summary;
+import de.hswt.hrm.summary.ui.part.SummaryPartUtil;
 
 public class CommentComposite extends Composite {
     private final static Logger LOG = LoggerFactory.getLogger(CommentComposite.class);

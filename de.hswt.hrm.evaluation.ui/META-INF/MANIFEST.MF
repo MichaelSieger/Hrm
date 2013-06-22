@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Ui
-Bundle-SymbolicName: de.hswt.hrm.evaluation.ui
+Bundle-SymbolicName: de.hswt.hrm.summary.ui
 Bundle-Version: 0.0.1.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Require-Bundle: javax.inject,
@@ -22,6 +22,6 @@ Import-Package: de.hswt.hrm.common.database.exception,
  de.hswt.hrm.common.ui.swt.table,
  de.hswt.hrm.common.ui.swt.wizards,
  de.hswt.hrm.common.ui.xwt,
- de.hswt.hrm.evaluation.model,
- de.hswt.hrm.evaluation.service
-Export-Package: de.hswt.hrm.evaluation.ui.part
+ de.hswt.hrm.summary.model,
+ de.hswt.hrm.summary.service
+Export-Package: de.hswt.hrm.summary.ui.part

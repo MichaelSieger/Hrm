@@ -1,4 +1,4 @@
-package de.hswt.hrm.evaluation.ui.part;
+package de.hswt.hrm.summary.ui.part;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -14,15 +14,15 @@ import com.google.common.base.Optional;
 
 import de.hswt.hrm.common.ui.swt.table.ColumnDescription;
 import de.hswt.hrm.common.ui.swt.wizards.WizardCreator;
-import de.hswt.hrm.evaluation.model.Evaluation;
-import de.hswt.hrm.evaluation.ui.wizzard.EvaluationWizzard;
+import de.hswt.hrm.summary.model.Summary;
+import de.hswt.hrm.summary.ui.wizzard.SummaryWizzard;
 
-public class EvaluationPartUtil {
+public class SummaryPartUtil {
 
-	public static Optional<Evaluation> showWizard(IEclipseContext context,
-			Shell shell, Optional<Evaluation> eval) {
+	public static Optional<Summary> showWizard(IEclipseContext context,
+			Shell shell, Optional<Summary> eval) {
 
-		EvaluationWizzard ew = new EvaluationWizzard(context,eval);
+		SummaryWizzard ew = new SummaryWizzard(context,eval);
 		ContextInjectionFactory.inject(ew, context);
 
 		WizardDialog wd = WizardCreator.createWizardDialog(shell, ew);
@@ -31,8 +31,8 @@ public class EvaluationPartUtil {
 
 	}
 
-	public static List<ColumnDescription<Evaluation>> getColumns() {
-		List<ColumnDescription<Evaluation>> columns = new ArrayList<>();
+	public static List<ColumnDescription<Summary>> getColumns() {
+		List<ColumnDescription<Summary>> columns = new ArrayList<>();
 
 		columns.add(getNameColumn());
 		columns.add(getTextColumn());
@@ -40,31 +40,31 @@ public class EvaluationPartUtil {
 		return columns;
 	}
 
-	private static ColumnDescription<Evaluation> getNameColumn() {
+	private static ColumnDescription<Summary> getNameColumn() {
 		return new ColumnDescription<>("Name", new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
-				Evaluation e = (Evaluation) element;
+				Summary e = (Summary) element;
 				return e.getName();
 			}
-		}, new Comparator<Evaluation>() {
+		}, new Comparator<Summary>() {
 			@Override
-			public int compare(Evaluation e1, Evaluation e2) {
+			public int compare(Summary e1, Summary e2) {
 				return e1.getName().compareToIgnoreCase(e2.getName());
 			}
 		});
 	}
 
-	private static ColumnDescription<Evaluation> getTextColumn() {
+	private static ColumnDescription<Summary> getTextColumn() {
 		return new ColumnDescription<>("Text", new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
-				Evaluation e = (Evaluation) element;
+				Summary e = (Summary) element;
 				return e.getText();
 			}
-		}, new Comparator<Evaluation>() {
+		}, new Comparator<Summary>() {
 			@Override
-			public int compare(Evaluation e1, Evaluation e2) {
+			public int compare(Summary e1, Summary e2) {
 				return e1.getText().compareToIgnoreCase(e2.getText());
 			}
 		});

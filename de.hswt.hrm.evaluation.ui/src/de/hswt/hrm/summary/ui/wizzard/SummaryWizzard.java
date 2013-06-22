@@ -1,4 +1,4 @@
-package de.hswt.hrm.evaluation.ui.wizzard;
+package de.hswt.hrm.summary.ui.wizzard;
 
 import javax.inject.Inject;
 
@@ -12,22 +12,22 @@ import com.google.common.base.Optional;
 
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.SaveException;
-import de.hswt.hrm.evaluation.model.Evaluation;
-import de.hswt.hrm.evaluation.service.EvaluationService;
+import de.hswt.hrm.summary.model.Summary;
+import de.hswt.hrm.summary.service.SummaryService;
 
-public class EvaluationWizzard extends Wizard {
+public class SummaryWizzard extends Wizard {
 
-    private static final Logger LOG = LoggerFactory.getLogger(EvaluationWizzard.class);
+    private static final Logger LOG = LoggerFactory.getLogger(SummaryWizzard.class);
 
     @Inject
-    private EvaluationService evalService;
+    private SummaryService evalService;
 
-    private EvaluationWizzardPageOne first;
-    private Optional<Evaluation> eval;
+    private SummaryWizzardPageOne first;
+    private Optional<Summary> eval;
 
-    public EvaluationWizzard(IEclipseContext context, Optional<Evaluation> eval) {
+    public SummaryWizzard(IEclipseContext context, Optional<Summary> eval) {
         this.eval = eval;
-        this.first = new EvaluationWizzardPageOne("First Page", eval);
+        this.first = new SummaryWizzardPageOne("First Page", eval);
         ContextInjectionFactory.inject(first, context);
 
         if (eval.isPresent()) {
@@ -56,7 +56,7 @@ public class EvaluationWizzard extends Wizard {
 
     private boolean insertNewEvaluation() {
 
-        Evaluation e = new Evaluation(first.getName(), first.getDesc());
+        Summary e = new Summary(first.getName(), first.getDesc());
         try {
             this.eval = Optional.of(evalService.insert(e));
         }
@@ -70,7 +70,7 @@ public class EvaluationWizzard extends Wizard {
     }
 
     private boolean editExistingEvaluation() {
-        Evaluation e = this.eval.get();
+        Summary e = this.eval.get();
 
         try {
             e = setValues(eval);
@@ -85,9 +85,9 @@ public class EvaluationWizzard extends Wizard {
         return true;
     }
 
-    private Evaluation setValues(Optional<Evaluation> e) {
+    private Summary setValues(Optional<Summary> e) {
 
-        Evaluation eval = null;
+        Summary eval = null;
 
         if (e.isPresent()) {
             eval = e.get();
@@ -98,7 +98,7 @@ public class EvaluationWizzard extends Wizard {
         return eval;
     }
 
-    public Optional<Evaluation> getEval() {
+    public Optional<Summary> getEval() {
         return eval;
     }
 

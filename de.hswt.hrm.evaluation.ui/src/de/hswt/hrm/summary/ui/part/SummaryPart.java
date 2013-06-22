@@ -1,7 +1,6 @@
-package de.hswt.hrm.evaluation.ui.part;
+package de.hswt.hrm.summary.ui.part;
 
 import java.util.Collection;
-import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -11,15 +10,12 @@ import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.window.IShellProvider;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.widgets.Form;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
@@ -30,19 +26,15 @@ import com.google.common.base.Optional;
 
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
-import de.hswt.hrm.common.ui.swt.table.ColumnComparator;
-import de.hswt.hrm.common.ui.swt.table.ColumnDescription;
-import de.hswt.hrm.common.ui.swt.table.TableViewerController;
-import de.hswt.hrm.evaluation.model.Evaluation;
-import de.hswt.hrm.evaluation.service.EvaluationService;
-import de.hswt.hrm.evaluation.ui.filter.EvaluationFilter;
+import de.hswt.hrm.summary.model.Summary;
+import de.hswt.hrm.summary.service.SummaryService;
 
-public class EvaluationPart {
+public class SummaryPart {
 
-    private final static Logger LOG = LoggerFactory.getLogger(EvaluationPart.class);
+    private final static Logger LOG = LoggerFactory.getLogger(SummaryPart.class);
 
     @Inject
-    private EvaluationService evalService;
+    private SummaryService evalService;
 
     @Inject
     private IShellProvider shellProvider;
@@ -51,8 +43,6 @@ public class EvaluationPart {
     private IEclipseContext context;
 
     private FormToolkit toolkit = new FormToolkit(Display.getDefault());
-    private Table table;
-    private Text searchText;
     private TableViewer tableViewer;
 
     private Action editAction;
@@ -60,11 +50,11 @@ public class EvaluationPart {
     private Section headerSection;
     private Composite evaluationComposite;
 
-    private Collection<Evaluation> evaluations;
+    private Collection<Summary> evaluations;
 
     private Form form;
 
-    public EvaluationPart() {
+    public SummaryPart() {
         // toolkit can be created in PostConstruct, but then then
         // WindowBuilder is unable to parse the code
         toolkit.dispose();
@@ -98,7 +88,7 @@ public class EvaluationPart {
         headerSection.setExpanded(true);
         FormUtil.initSectionColors(headerSection);
 
-        evaluationComposite = new EvaluationComposite(headerSection);
+        evaluationComposite = new SummaryComposite(headerSection);
         ContextInjectionFactory.inject(evaluationComposite, context);
         headerSection.setClient(evaluationComposite);
 
@@ -135,48 +125,10 @@ public class EvaluationPart {
         }
     }
 
-    private void refreshTable() {
-        try {
-            this.evaluations = evalService.findAll();
-            tableViewer.setInput(this.evaluations);
-        }
-        catch (DatabaseException e) {
-            LOG.error("Unable to retrieve list of Evaluations.", e);
-            showDBConnectionError();
-        }
-    }
-
-    private void initializeTable() {
-        List<ColumnDescription<Evaluation>> columns = EvaluationPartUtil.getColumns();
-
-        // Create columns in tableviewer
-        TableViewerController<Evaluation> filler = new TableViewerController<>(tableViewer);
-        filler.createColumns(columns);
-
-        // Enable column selection
-        filler.createColumnSelectionMenu();
-
-        // Enable sorting
-        ColumnComparator<Evaluation> comperator = new ColumnComparator<>(columns);
-        filler.enableSorting(comperator);
-
-        // Add dataprovider that handles our collection
-        tableViewer.setContentProvider(ArrayContentProvider.getInstance());
-
-        // Enable filtering
-        tableViewer.addFilter(new EvaluationFilter());
-    }
-
     private void showDBConnectionError() {
         // TODO translate
         MessageDialog.openError(shellProvider.getShell(), "Connection Error",
                 "Could not load evaluations from Database.");
-    }
-
-    private void updateTableFilter(String filterString) {
-        EvaluationFilter filter = (EvaluationFilter) tableViewer.getFilters()[0];
-        filter.setSearchString(filterString);
-        tableViewer.refresh();
     }
 
     /**
@@ -186,9 +138,9 @@ public class EvaluationPart {
      */
 
     private void addEvaluation() {
-        Evaluation eval = null;
+        Summary eval = null;
 
-        Optional<Evaluation> newEval = EvaluationPartUtil.showWizard(context,
+        Optional<Summary> newEval = SummaryPartUtil.showWizard(context,
                 shellProvider.getShell(), Optional.fromNullable(eval));
 
         if (newEval.isPresent()) {
@@ -207,14 +159,14 @@ public class EvaluationPart {
      */
     private void editEvaluation() {
         // obtain the contact in the column where the doubleClick happend
-        Evaluation selectedEval = (Evaluation) tableViewer.getElementAt(tableViewer.getTable()
+        Summary selectedEval = (Summary) tableViewer.getElementAt(tableViewer.getTable()
                 .getSelectionIndex());
         if (selectedEval == null) {
             return;
         }
         try {
             evalService.refresh(selectedEval);
-            Optional<Evaluation> updatedEval = EvaluationPartUtil.showWizard(context,
+            Optional<Summary> updatedEval = SummaryPartUtil.showWizard(context,
                     shellProvider.getShell(), Optional.of(selectedEval));
 
             if (updatedEval.isPresent()) {

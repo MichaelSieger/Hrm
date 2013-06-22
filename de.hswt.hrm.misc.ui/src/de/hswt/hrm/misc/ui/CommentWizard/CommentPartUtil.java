@@ -14,8 +14,8 @@ import com.google.common.base.Optional;
 
 import de.hswt.hrm.common.ui.swt.table.ColumnDescription;
 import de.hswt.hrm.common.ui.swt.wizards.WizardCreator;
-import de.hswt.hrm.evaluation.model.Evaluation;
 import de.hswt.hrm.misc.comment.model.Comment;
+import de.hswt.hrm.summary.model.Summary;
 
 public class CommentPartUtil {
 
