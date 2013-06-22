@@ -34,153 +34,153 @@ import de.hswt.hrm.common.ui.swt.table.ColumnComparator;
 import de.hswt.hrm.common.ui.swt.table.ColumnDescription;
 import de.hswt.hrm.common.ui.swt.table.TableViewerController;
 import de.hswt.hrm.inspection.model.Inspection;
+import de.hswt.hrm.inspection.ui.filter.InspectionFilter;
 
 public class ReportsOverviewComposite extends Composite {
 
-	// TODO use this if it is implemented
-//	@Inject
-//	private InspectionService inspectionService;
+    // TODO use this if it is implemented
+    // @Inject
+    // private InspectionService inspectionService;
 
-	@Inject
-	private IEclipseContext context;
-	
-	@Inject
-	private IShellProvider shellProvider;
-	
-	private FormToolkit toolkit = new FormToolkit(Display.getDefault());
+    @Inject
+    private IEclipseContext context;
 
-	private Text searchText;
+    @Inject
+    private IShellProvider shellProvider;
 
-	private TableViewer tableViewer;
+    private FormToolkit toolkit = new FormToolkit(Display.getDefault());
 
-	private Table table;
+    private Text searchText;
 
-	// TODO use this if implemented
-//	private InspectionFilter searchFilter = new InspectionFilter();
-	
-	/**
-	 * Create the composite.
-	 * @param parent
-	 * @param style
-	 */
-	public ReportsOverviewComposite(Composite parent) {
-		super(parent, SWT.NONE);
-		toolkit.dispose();
-		toolkit = FormUtil.createToolkit();
-	}
+    private TableViewer tableViewer;
 
-	@PostConstruct
-	public void createControlls() {
-		this.setLayout(new FillLayout());
-		
-		Section overviewSection = toolkit.createSection(this, Section.TITLE_BAR);
-		toolkit.paintBordersFor(overviewSection);
-		overviewSection.setText("Reports overview");
-		FormUtil.initSectionColors(overviewSection);
-		
-		Composite overviewComposite = new Composite(overviewSection, SWT.NONE);
-		toolkit.adapt(overviewComposite);
-		toolkit.paintBordersFor(overviewComposite);
-		overviewSection.setClient(overviewComposite);
-		overviewComposite.setLayout(new GridLayout(1, false));
-		
-		searchText = new Text(overviewComposite, SWT.BORDER | 
-				SWT.SEARCH | SWT.ICON_SEARCH | SWT.CANCEL | SWT.ICON_CANCEL);
-		searchText.setMessage(SearchFieldConstants.DEFAULT_SEARCH_STRING);
-		searchText.setLayoutData(LayoutUtil.createHorzFillData());
-		searchText.addModifyListener(new ModifyListener() {
-			public void modifyText(ModifyEvent e) {
-				updateSearchTableFilter(searchText.getText());
-			}
-		});
-		toolkit.adapt(searchText, true, true);
-		
-		tableViewer = new TableViewer(overviewComposite, SWT.BORDER | SWT.FULL_SELECTION);
-		table = tableViewer.getTable();
-		toolkit.paintBordersFor(table);
-		table.setLayoutData(LayoutUtil.createFillData());
-		
-		// data for table
-		// report title
-		// inspection date
-		// next inspection date
-		// only names of customer, requester, controller
-		// name of plant
-		
-		// to add a new report only request only the name of the report
-	}
-	
-	private void refreshTable() {
-		// TODO adapt to the inspectionService
-//		try {
-//			tableViewer.setInput(catalogService.findAllCatalogItem());
-//		} catch (DatabaseException e) {
-//			LOG.error("Unable to retrieve list of catalog items.", e);
-//			showDBConnectionError();
-//		}
-	}
+    private Table table;
 
-	private void showDBConnectionError() {
-		// TODO translate
-		MessageDialog.openError(shellProvider.getShell(), "Connection Error",
-				"Could not load inspections from Database.");
-	}
+    // TODO use this if implemented
+    // private InspectionFilter searchFilter = new InspectionFilter();
 
-	private void updateSearchTableFilter(String filterString) {
-		// TODO adapt to the inspectionService and Inspection POJO
-//		InspectionFilter filter = (InspectionFilter) tableViewer.getFilters()[0];
-//		filter.setSearchString(filterString);
-//		tableViewer.refresh();
-	}
+    /**
+     * Create the composite.
+     * 
+     * @param parent
+     * @param style
+     */
+    public ReportsOverviewComposite(Composite parent) {
+        super(parent, SWT.NONE);
+        toolkit.dispose();
+        toolkit = FormUtil.createToolkit();
+    }
 
+    @PostConstruct
+    public void createControlls() {
+        this.setLayout(new FillLayout());
 
-	private void initializeTable() {
-		// TODO adapt to the inspectionService and Inspection POJO
-//		List<ColumnDescription<Inspection>> columns = CatalogPartUtil
-//				.getColumns();
-//
-//		// Create columns in tableviewer
-//		TableViewerController<Inspection> filler = new TableViewerController<>(
-//				tableViewer);
-//		filler.createColumns(columns);
-//
-//		// Enable column selection
-//		filler.createColumnSelectionMenu();
-//
-//		// Enable sorting
-//		ColumnComparator<Inspection> comparator = new ColumnComparator<>(
-//				columns);
-//		filler.enableSorting(comparator);
-//
-//		// Add dataprovider that handles our collection
-//		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
-//
-//		// Enable filtering
-//		tableViewer.addFilter(searchFilter);
-	}
+        Section overviewSection = toolkit.createSection(this, Section.TITLE_BAR);
+        toolkit.paintBordersFor(overviewSection);
+        overviewSection.setText("Reports overview");
+        FormUtil.initSectionColors(overviewSection);
 
-	public void addInspection() {
-		Optional<Inspection> newInspection = InspectionPartUtil.showInspectionCreateWizard(
-				context, shellProvider.getShell());
+        Composite overviewComposite = new Composite(overviewSection, SWT.NONE);
+        toolkit.adapt(overviewComposite);
+        toolkit.paintBordersFor(overviewComposite);
+        overviewSection.setClient(overviewComposite);
+        overviewComposite.setLayout(new GridLayout(1, false));
 
-		if (newInspection.isPresent()) {
-			@SuppressWarnings("unchecked")
-			Collection<Inspection> items = (Collection<Inspection>) tableViewer
-					.getInput();
-			items.add(newInspection.get());
-			tableViewer.refresh();
-		}
-	}
+        searchText = new Text(overviewComposite, SWT.BORDER | SWT.SEARCH | SWT.ICON_SEARCH
+                | SWT.CANCEL | SWT.ICON_CANCEL);
+        searchText.setMessage(SearchFieldConstants.DEFAULT_SEARCH_STRING);
+        searchText.setLayoutData(LayoutUtil.createHorzFillData());
+        searchText.addModifyListener(new ModifyListener() {
+            public void modifyText(ModifyEvent e) {
+                updateSearchTableFilter(searchText.getText());
+            }
+        });
+        toolkit.adapt(searchText, true, true);
 
-	@Override
-	public void dispose() {
-		if (toolkit != null) {
-			toolkit.dispose();
-		}
-		super.dispose();
-	}
+        tableViewer = new TableViewer(overviewComposite, SWT.BORDER | SWT.FULL_SELECTION);
+        table = tableViewer.getTable();
+        toolkit.paintBordersFor(table);
+        table.setLayoutData(LayoutUtil.createFillData());
 
-	@Override
-	protected void checkSubclass() {
-	}
+        // data for table
+        // report title
+        // inspection date
+        // next inspection date
+        // only names of customer, requester, controller
+        // name of plant
+
+        // to add a new report only request only the name of the report
+    }
+
+    private void refreshTable() {
+        // TODO adapt to the inspectionService
+        // try {
+        // tableViewer.setInput(catalogService.findAllCatalogItem());
+        // } catch (DatabaseException e) {
+        // LOG.error("Unable to retrieve list of catalog items.", e);
+        // showDBConnectionError();
+        // }
+    }
+
+    private void showDBConnectionError() {
+        // TODO translate
+        MessageDialog.openError(shellProvider.getShell(), "Connection Error",
+                "Could not load inspections from Database.");
+    }
+
+    private void updateSearchTableFilter(String filterString) {
+        // TODO adapt to the inspectionService and Inspection POJO
+        InspectionFilter filter = (InspectionFilter) tableViewer.getFilters()[0];
+        filter.setSearchString(filterString);
+        // tableViewer.refresh();
+    }
+
+    private void initializeTable() {
+        // TODO adapt to the inspectionService and Inspection POJO
+        // List<ColumnDescription<Inspection>> columns = CatalogPartUtil
+        // .getColumns();
+        //
+        // // Create columns in tableviewer
+        // TableViewerController<Inspection> filler = new TableViewerController<>(
+        // tableViewer);
+        // filler.createColumns(columns);
+        //
+        // // Enable column selection
+        // filler.createColumnSelectionMenu();
+        //
+        // // Enable sorting
+        // ColumnComparator<Inspection> comparator = new ColumnComparator<>(
+        // columns);
+        // filler.enableSorting(comparator);
+        //
+        // // Add dataprovider that handles our collection
+        // tableViewer.setContentProvider(ArrayContentProvider.getInstance());
+        //
+        // // Enable filtering
+        // tableViewer.addFilter(searchFilter);
+    }
+
+    public void addInspection() {
+        Optional<Inspection> newInspection = InspectionPartUtil.showInspectionCreateWizard(context,
+                shellProvider.getShell());
+
+        if (newInspection.isPresent()) {
+            @SuppressWarnings("unchecked")
+            Collection<Inspection> items = (Collection<Inspection>) tableViewer.getInput();
+            items.add(newInspection.get());
+            tableViewer.refresh();
+        }
+    }
+
+    @Override
+    public void dispose() {
+        if (toolkit != null) {
+            toolkit.dispose();
+        }
+        super.dispose();
+    }
+
+    @Override
+    protected void checkSubclass() {
+    }
 }
