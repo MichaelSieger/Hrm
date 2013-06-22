@@ -1,5 +1,8 @@
 package de.hswt.hrm.component.ui.wizard;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import javax.inject.Inject;
 
 import org.eclipse.e4.core.contexts.ContextInjectionFactory;
@@ -12,6 +15,7 @@ import com.google.common.base.Optional;
 
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.SaveException;
+import de.hswt.hrm.component.model.Attribute;
 import de.hswt.hrm.component.model.Component;
 import de.hswt.hrm.component.service.CategoryService;
 import de.hswt.hrm.component.service.ComponentService;
@@ -74,6 +78,46 @@ public class ComponentWizard extends Wizard {
         } catch (DatabaseException e) {
             LOG.error("An error occured: ", e);
         }
+        List<String> attributes = first.getAttributes();
+        List<String> atts = new LinkedList<String>(); 
+        try {
+			for(Attribute attFromDB : service.findAttributesByComponent(c)){
+				atts.add(attFromDB.getName());       	
+			}        
+	        for(String attFromList : attributes){
+	        	if(atts.contains(attFromList)== false){
+	        		service.addAttribute(c, attFromList);        		
+	        	}       	
+	        }
+		} catch (DatabaseException e) {
+			e.printStackTrace();
+		}
+        
+        try {
+			for(Attribute attFromDb : service.findAttributesByComponent(c)){
+				if(attributes.contains(attFromDb.getName())== false){
+					service.deleteAttribute(attFromDb);        		
+				}       	
+			}
+		} catch (DatabaseException e) {
+			e.printStackTrace();
+		}
+        
+        
+        
+//        List<String> attributes = first.getAttributes();
+//        Attribute existingAttributes = service.findAttributesByComponent(c).toArray()[0];
+//        
+//        
+//        for(String attribute : first.getAttributes()){
+//        	for(Attribute att : service.findAttributesByComponent(c)){
+//        		if(att.getName() != attribute){
+//        			service.addAttribute(c, attribute);        			
+//        		}
+//        	}
+        	
+        	
+//        }
         return true;
     }
     
@@ -83,6 +127,13 @@ public class ComponentWizard extends Wizard {
            component = Optional.of(service.insert(c));
         } catch (SaveException e) {
             LOG.error("Could not save Element: "+component+" into Database", e);
+        }
+        for(String attribute : first.getAttributes()){
+        	try {
+				service.addAttribute(component.get(), attribute);
+			} catch (SaveException e) {
+				e.printStackTrace();
+			}        	
         }
         return true;
     }

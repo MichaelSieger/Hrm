@@ -2,6 +2,7 @@ package de.hswt.hrm.component.ui.wizard;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 
 import javax.inject.Inject;
 
@@ -35,14 +36,20 @@ import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.common.ui.swt.layouts.LayoutUtil;
 import de.hswt.hrm.common.ui.swt.layouts.PageContainerFillLayout;
+import de.hswt.hrm.component.model.Attribute;
 import de.hswt.hrm.component.model.Category;
 import de.hswt.hrm.component.model.Component;
 import de.hswt.hrm.component.service.CategoryService;
+import de.hswt.hrm.component.service.ComponentService;
+import org.eclipse.swt.layout.GridData;
 
 public class ComponentWizardPageOne extends WizardPage {
 
 	@Inject
 	private CategoryService categoryService;
+	
+	@Inject
+	private ComponentService componentService;
 
 	private Optional<Component> component;
 
@@ -180,12 +187,13 @@ public class ComponentWizardPageOne extends WizardPage {
 		formToolkit.adapt(attributesComposite);
 		formToolkit.paintBordersFor(attributesComposite);
 		attributesSection.setClient(attributesComposite);
-		attributesComposite.setLayout(new GridLayout(2, false));
+		attributesComposite.setLayout(new GridLayout(3, false));
 
 		attributeText = new Text(attributesComposite, SWT.BORDER);
+		attributeText.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
 		attributeText.setLayoutData(LayoutUtil.createHorzCenteredFillData());
 		formToolkit.adapt(attributeText, true, true);
-
+		
 		Button addAttributeButton = new Button(attributesComposite, SWT.NONE);
 		formToolkit.adapt(addAttributeButton, true, true);
 		addAttributeButton.setText("Add");
@@ -196,15 +204,36 @@ public class ComponentWizardPageOne extends WizardPage {
 					attributeList.add(attributeText.getText());
 				}
 				attributes.clear();
-				for (String attr : attributeList.getItems()) {
-					attributes.add(attr);
+				for (String attri : attributeList.getItems()) {
+					attributes.add(attri);
 				}
 			}
 		});
+		new Label(attributesComposite, SWT.NONE);
 
 		attributeList = new List(attributesComposite, SWT.BORDER);
+		GridData gd_attributeList = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
+		gd_attributeList.widthHint = 500;
+		attributeList.setLayoutData(gd_attributeList);
 		attributeList.setLayoutData(LayoutUtil.createFillData(2));
 		formToolkit.adapt(attributeList, true, true);
+		new Label(attributesComposite, SWT.NONE);
+		
+		Button deleteButton = new Button(attributesComposite, SWT.NONE);
+		deleteButton.setAlignment(SWT.RIGHT);
+		formToolkit.adapt(deleteButton, true, true);
+		deleteButton.setText("Delete");
+		new Label(attributesComposite, SWT.NONE);
+		new Label(attributesComposite, SWT.NONE);
+		deleteButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				if(attributeList.getSelectionIndex() != -1){
+					attributes.remove(attributeList.getSelectionIndex());
+					attributeList.remove(attributeList.getSelectionIndex());
+				}
+			}
+		});
 
 		initializeCombos();
 		categoryComboViewer.setSelection(new StructuredSelection(categoryComboViewer.getElementAt(0)));
@@ -257,9 +286,27 @@ public class ComponentWizardPageOne extends WizardPage {
         		new StructuredSelection(comp.getCategory().get());
         categoryComboViewer.setSelection(selection);
         categoryComboViewer.refresh();
+        
+        Collection<Attribute> coll;
+		try {
+			coll = componentService.findAttributesByComponent(comp);
+	        String[] attributes = new String[coll.size()];
+	        int i = 0;
+	        for(Attribute att : coll){
+	        	attributes[i] = att.getName();
+	        	i++;
+	        }
+	        attributeList.setItems(attributes);
+		} catch (DatabaseException e) {
+			e.printStackTrace();
+		}
+		attributeList.redraw();
     }
 
 	private void checkPageComplete() {
+		for (String attri : attributeList.getItems()) {
+			attributes.add(attri);
+		}
 		ISelection selection = categoryComboViewer.getSelection();
 		IStructuredSelection structuredSelection = (IStructuredSelection) selection;
 		category = (Category) structuredSelection.getFirstElement();
