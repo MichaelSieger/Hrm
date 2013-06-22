@@ -12,14 +12,10 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.forms.widgets.Form;
-import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
 
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.common.ui.swt.utils.SWTResourceManager;
-import de.hswt.hrm.contact.model.Contact;
-import de.hswt.hrm.contact.ui.part.ContactComposite;
 import de.hswt.hrm.plant.model.Plant;
 import de.hswt.hrm.plant.ui.shared.PlantComposite;
 
@@ -49,12 +45,12 @@ public class PlantSelectionDialog extends TitleAreaDialog {
     }
 
     private void draw(Composite parent) {
-		Section headerSection = new Section(parent, Section.TITLE_BAR);
-		headerSection.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
-		headerSection.setText("Plants");
-		headerSection.setExpanded(true);
-		FormUtil.initSectionColors(headerSection);
-		headerSection.setLayout(new FillLayout());
+        Section headerSection = new Section(parent, Section.TITLE_BAR);
+        headerSection.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+        headerSection.setText("Plants");
+        headerSection.setExpanded(true);
+        FormUtil.initSectionColors(headerSection);
+        headerSection.setLayout(new FillLayout());
 
         plantComposite = new PlantComposite(headerSection);
         ContextInjectionFactory.inject(plantComposite, context);

@@ -43,170 +43,209 @@ import de.hswt.hrm.plant.ui.shared.util.PlantPartUtil;
 
 public class PlantComposite extends Composite {
 
-	public static final int TABLE_SELCTION_EVENT = SWT.Selection + 12341234;
+    public static final int TABLE_SELCTION_EVENT = SWT.Selection + 12341234;
 
-	private final static Logger LOG = LoggerFactory
-			.getLogger(PlantComposite.class);
+    private final static Logger LOG = LoggerFactory.getLogger(PlantComposite.class);
 
-	private Text searchText;
+    private Text searchText;
 
-	private TableViewer tableViewer;
+    private TableViewer tableViewer;
 
-	private Table table;
+    private Table table;
 
-	private boolean allowEditing = true;
+    private boolean allowEditing = true;
 
-	@Inject
-	private PlantService plantService;
+    @Inject
+    private PlantService plantService;
 
-	@Inject
-	private IEclipseContext context;
+    @Inject
+    private IEclipseContext context;
 
-	@Inject
-	private IShellProvider shellProvider;
+    @Inject
+    private IShellProvider shellProvider;
 
-	public PlantComposite(Composite parent) {
-		super(parent, SWT.NONE);
+    public PlantComposite(Composite parent) {
+        super(parent, SWT.NONE);
 
-	}
+    }
 
-	/**
-	 * Create contents of the view part.
-	 */
-	@PostConstruct
-	public void createControls() {
-		this.setLayout(new FillLayout());
-		this.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_WHITE));
+    /**
+     * Create contents of the view part.
+     */
+    @PostConstruct
+    public void createControls() {
+        this.setLayout(new FillLayout());
+        this.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_WHITE));
 
-		Composite composite = new Composite(this, SWT.NONE);
-		composite.setLayout(new GridLayout(1, false));
+        Composite composite = new Composite(this, SWT.NONE);
+        composite.setLayout(new GridLayout(1, false));
 
-		searchText = new Text(composite, SWT.BORDER | SWT.SEARCH
-				| SWT.ICON_SEARCH | SWT.CANCEL | SWT.ICON_CANCEL);
-		searchText.setMessage(SearchFieldConstants.DEFAULT_SEARCH_STRING);
-		searchText.addModifyListener(new ModifyListener() {
-			public void modifyText(ModifyEvent e) {
-				updateTableFilter(searchText.getText());
-			}
-		});
-		searchText.setLayoutData(LayoutUtil.createHorzFillData());
+        searchText = new Text(composite, SWT.BORDER | SWT.SEARCH | SWT.ICON_SEARCH | SWT.CANCEL
+                | SWT.ICON_CANCEL);
+        searchText.setMessage(SearchFieldConstants.DEFAULT_SEARCH_STRING);
+        searchText.addModifyListener(new ModifyListener() {
+            public void modifyText(ModifyEvent e) {
+                updateTableFilter(searchText.getText());
+            }
+        });
+        searchText.setLayoutData(LayoutUtil.createHorzFillData());
 
-		tableViewer = new TableViewer(composite, SWT.BORDER
-				| SWT.FULL_SELECTION);
-		tableViewer.addDoubleClickListener(new IDoubleClickListener() {
-			public void doubleClick(DoubleClickEvent event) {
-				editPlace();
-			}
-		});
+        tableViewer = new TableViewer(composite, SWT.BORDER | SWT.FULL_SELECTION);
+        tableViewer.addDoubleClickListener(new IDoubleClickListener() {
+            public void doubleClick(DoubleClickEvent event) {
+                editPlace();
+            }
+        });
 
-		table = tableViewer.getTable();
-		table.setLinesVisible(true);
-		table.setHeaderVisible(true);
-		GridData gd = LayoutUtil.createFillData();
-		gd.widthHint = 800;
-		gd.heightHint = 300;
-		table.setLayoutData(gd);
+        table = tableViewer.getTable();
+        table.setLinesVisible(true);
+        table.setHeaderVisible(true);
+        GridData gd = LayoutUtil.createFillData();
+        gd.widthHint = 800;
+        gd.heightHint = 300;
+        table.setLayoutData(gd);
 
-		initializeTable();
-		refreshTable();
-	}
+        initializeTable();
+        refreshTable();
+    }
 
-	private void refreshTable() {
-		try {
-			tableViewer.setInput(plantService.findAll());
-		} catch (DatabaseException e) {
-			LOG.error("Unable to retrieve list of places.", e);
-			showDBConnectionError();
-		}
-	}
+    private void refreshTable() {
+        try {
+            tableViewer.setInput(plantService.findAll());
+        }
+        catch (DatabaseException e) {
+            LOG.error("Unable to retrieve list of places.", e);
+            showDBConnectionError();
+        }
+    }
 
-	private void showDBConnectionError() {
-		// TODO translate
-		MessageDialog.openError(shellProvider.getShell(), "Connection Error",
-				"Could not load places from Database.");
-	}
+    private void showDBConnectionError() {
+        // TODO translate
+        MessageDialog.openError(shellProvider.getShell(), "Connection Error",
+                "Could not load places from Database.");
+    }
 
-	private void updateTableFilter(String filterString) {
-		PlantFilter filter = (PlantFilter) tableViewer.getFilters()[0];
-		filter.setSearchString(filterString);
-		tableViewer.refresh();
-	}
+    private void updateTableFilter(String filterString) {
+        PlantFilter filter = (PlantFilter) tableViewer.getFilters()[0];
+        filter.setSearchString(filterString);
+        tableViewer.refresh();
+    }
 
-	private void initializeTable() {
-		List<ColumnDescription<Plant>> columns = PlantPartUtil.getColumns();
+    private void initializeTable() {
+        List<ColumnDescription<Plant>> columns = PlantPartUtil.getColumns();
 
-		// Create columns in tableviewer
-		TableViewerController<Plant> filler = new TableViewerController<>(
-				tableViewer);
-		filler.createColumns(columns);
+        // Create columns in tableviewer
+        TableViewerController<Plant> filler = new TableViewerController<>(tableViewer);
+        filler.createColumns(columns);
 
-		// Enable column selection
-		filler.createColumnSelectionMenu();
+        // Enable column selection
+        filler.createColumnSelectionMenu();
 
-		// Enable sorting
-		ColumnComparator<Plant> comparator = new ColumnComparator<>(columns);
-		filler.enableSorting(comparator);
+        // Enable sorting
+        ColumnComparator<Plant> comparator = new ColumnComparator<>(columns);
+        filler.enableSorting(comparator);
 
-		// Add dataprovider that handles our collection
-		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
+        // Add dataprovider that handles our collection
+        tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 
-		// Enable filtering
-		tableViewer.addFilter(new PlantFilter());
-	}
+        // Enable filtering
+        tableViewer.addFilter(new PlantFilter());
+    }
 
-	@SuppressWarnings("unchecked")
-	public void addPlace() {
-		Optional<Plant> newPlace = PlantPartUtil.showWizard(context,
-				shellProvider.getShell(), Optional.<Plant> absent());
+    @SuppressWarnings("unchecked")
+    public void addPlace() {
+        Optional<Plant> newPlace = PlantPartUtil.showWizard(context, shellProvider.getShell(),
+                Optional.<Plant> absent());
 
-		if (newPlace.isPresent()) {
-			Collection<Plant> places = (Collection<Plant>) tableViewer
-					.getInput();
-			places.add(newPlace.get());
-			tableViewer.refresh();
-		}
-	}
+        if (newPlace.isPresent()) {
+            Collection<Plant> places = (Collection<Plant>) tableViewer.getInput();
+            places.add(newPlace.get());
+            tableViewer.refresh();
+        }
+    }
 
-	public void editPlace() {
-		if (!allowEditing) {
-			return;
-		}
-		// obtain the place in the column where the doubleClick happend
-		Plant selectedPlace = (Plant) tableViewer.getElementAt(tableViewer
-				.getTable().getSelectionIndex());
-		if (selectedPlace == null) {
-			return;
-		}
+    public void editPlace() {
+        if (!allowEditing) {
+            return;
+        }
+        // obtain the place in the column where the doubleClick happend
+        Plant selectedPlace = (Plant) tableViewer.getElementAt(tableViewer.getTable()
+                .getSelectionIndex());
+        if (selectedPlace == null) {
+            return;
+        }
 
-		// Refresh the selected place with values from the database
-		try {
-			plantService.refresh(selectedPlace);
-			Optional<Plant> updatedPlace = PlantPartUtil.showWizard(context,
-					shellProvider.getShell(), Optional.of(selectedPlace));
+        // Refresh the selected place with values from the database
+        try {
+            plantService.refresh(selectedPlace);
+            Optional<Plant> updatedPlace = PlantPartUtil.showWizard(context,
+                    shellProvider.getShell(), Optional.of(selectedPlace));
 
-			if (updatedPlace.isPresent()) {
-				tableViewer.refresh();
-			}
-		} catch (DatabaseException e) {
-			LOG.error("Could not retrieve the place from database.", e);
-			showDBConnectionError();
-		}
-	}
+            if (updatedPlace.isPresent()) {
+                tableViewer.refresh();
+            }
+        }
+        catch (DatabaseException e) {
+            LOG.error("Could not retrieve the place from database.", e);
+            showDBConnectionError();
+        }
+    }
 
-	public void setAllowEditing(boolean allowEditing) {
-		this.allowEditing = allowEditing;
-	}
+    public void setAllowEditing(boolean allowEditing) {
+        this.allowEditing = allowEditing;
+    }
 
-	public void addSelectionChangedListener(ISelectionChangedListener listener) {
-		tableViewer.addSelectionChangedListener(listener);
-	}
+    public void addSelectionChangedListener(ISelectionChangedListener listener) {
+        tableViewer.addSelectionChangedListener(listener);
+    }
 
-	@Override
-	protected void checkSubclass() {
-	}
+    @Override
+    protected void checkSubclass() {
+    }
 
-	public Plant getSelectedPlant() {
-		return (Plant) ((IStructuredSelection) tableViewer.getSelection())
-				.getFirstElement();
-	}
+    public Plant getSelectedPlant() {
+        return (Plant) ((IStructuredSelection) tableViewer.getSelection()).getFirstElement();
+    }
+
+    public void addPlant() {
+        Optional<Plant> newPlant = PlantPartUtil.showWizard(context, shellProvider.getShell(),
+                Optional.<Plant> absent());
+
+        @SuppressWarnings("unchecked")
+        Collection<Plant> contacs = (Collection<Plant>) tableViewer.getInput();
+        if (newPlant.isPresent()) {
+            contacs.add(newPlant.get());
+            tableViewer.refresh();
+        }
+    }
+
+    public void editPlant() {
+
+        Optional<Plant> plant = getPlant();
+        if (!plant.isPresent()) {
+            return;
+        }
+        // Refresh the selected place with values from the database
+        try {
+            plantService.refresh(plant.get());
+            Optional<Plant> updatedPlant = PlantPartUtil.showWizard(context,
+                    shellProvider.getShell(), Optional.of(plant.get()));
+
+            if (updatedPlant.isPresent()) {
+                tableViewer.refresh();
+            }
+        }
+        catch (DatabaseException e) {
+            LOG.error("Could not retrieve the plant from database.", e);
+            showDBConnectionError();
+        }
+    }
+
+    public Optional<Plant> getPlant() {
+        if (table.getSelectionIndex() < 0) {
+            return Optional.absent();
+        }
+        return Optional.fromNullable((Plant) tableViewer.getElementAt(tableViewer.getTable()
+                .getSelectionIndex()));
+    }
 }
