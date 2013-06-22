@@ -106,6 +106,9 @@ public class ReportsOverviewComposite extends Composite {
         toolkit.paintBordersFor(table);
         table.setLayoutData(LayoutUtil.createFillData());
 
+        // initializeTable();
+        // refreshTable();
+
         // data for table
         // report title
         // inspection date
@@ -141,27 +144,24 @@ public class ReportsOverviewComposite extends Composite {
 
     private void initializeTable() {
         // TODO adapt to the inspectionService and Inspection POJO
-        // List<ColumnDescription<Inspection>> columns = CatalogPartUtil
-        // .getColumns();
-        //
-        // // Create columns in tableviewer
-        // TableViewerController<Inspection> filler = new TableViewerController<>(
-        // tableViewer);
-        // filler.createColumns(columns);
-        //
-        // // Enable column selection
-        // filler.createColumnSelectionMenu();
-        //
-        // // Enable sorting
-        // ColumnComparator<Inspection> comparator = new ColumnComparator<>(
-        // columns);
-        // filler.enableSorting(comparator);
-        //
-        // // Add dataprovider that handles our collection
-        // tableViewer.setContentProvider(ArrayContentProvider.getInstance());
-        //
-        // // Enable filtering
-        // tableViewer.addFilter(searchFilter);
+        List<ColumnDescription<Inspection>> columns = InspectionPartUtil.getColumns();
+
+        // Create columns in tableviewer
+        TableViewerController<Inspection> filler = new TableViewerController<>(tableViewer);
+        filler.createColumns(columns);
+
+        // Enable column selection
+        filler.createColumnSelectionMenu();
+
+        // Enable sorting
+        ColumnComparator<Inspection> comparator = new ColumnComparator<>(columns);
+        filler.enableSorting(comparator);
+
+        // Add dataprovider that handles our collection
+        tableViewer.setContentProvider(ArrayContentProvider.getInstance());
+
+        // Enable filtering
+        tableViewer.addFilter(searchFilter);
     }
 
     public void addInspection() {

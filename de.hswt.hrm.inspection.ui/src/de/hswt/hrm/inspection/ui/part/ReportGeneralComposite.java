@@ -250,7 +250,7 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
         Label reportDateLabel = new Label(generalComposite, SWT.NONE);
         reportDateLabel.setLayoutData(LayoutUtil.createLeftCenteredGridData());
         formToolkit.adapt(reportDateLabel, true, true);
-        reportDateLabel.setText("Inspection data");
+        reportDateLabel.setText("Report date");
 
         reportDateTime = new DateTime(generalComposite, SWT.BORDER | SWT.DATE | SWT.DROP_DOWN);
         formToolkit.adapt(reportDateTime);
