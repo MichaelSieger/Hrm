@@ -407,10 +407,13 @@ public class ComponentDao implements IComponentDao {
         while (rs.next()) {
             int id = rs.getInt(Fields.ID);
             String name = rs.getString(Fields.NAME);
+long start = System.nanoTime();            
             byte[] leftRightImage = findBlob(rs.getInt(Fields.SYMBOL_LR));
             byte[] rightLeftImage = findBlob(rs.getInt(Fields.SYMBOL_RL));
             byte[] upDownImage = findBlob(rs.getInt(Fields.SYMBOL_UD));
             byte[] downUpImage = findBlob(rs.getInt(Fields.SYMBOL_DU));
+long stop = System.nanoTime();
+LOG.debug(String.format("Blobs retrieved in %d ms.", (stop - start)/1000000));
             int quantifier = rs.getInt(Fields.QUANTIFIER);
             boolean boolRating = rs.getBoolean(Fields.BOOL_RATING);
             Component component = new Component(id, name, leftRightImage, rightLeftImage,
