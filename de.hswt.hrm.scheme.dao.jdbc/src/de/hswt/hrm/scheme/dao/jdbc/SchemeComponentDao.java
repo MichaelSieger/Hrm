@@ -368,31 +368,37 @@ public class SchemeComponentDao implements ISchemeComponentDao {
     private Collection<SchemeComponent> fromResultSet(ResultSet rs) throws SQLException, ElementNotFoundException, DatabaseException {
         checkNotNull(rs, "Result must not be null.");
         
+        LOG.debug("Parsing resultset from scheme component.");
+        
         Collection<SchemeComponent> schemeComponentList = new ArrayList<>();
+        Scheme scheme = null;
         while (rs.next()) {
             int id = rs.getInt(Fields.ID);
             int xPos = rs.getInt(Fields.X_POS);
             int yPos = rs.getInt(Fields.Y_POS);
             Direction dir = Direction.values()[rs.getInt(Fields.DIRECTION)];
             int componentId = rs.getInt(Fields.COMPONENT);
-            Component component = null;
-            if (componentId >= 0) {
-                component = componentDao.findById(componentId);
-            }
-            
-            int schemeId = rs.getInt(Fields.SCHEME);
-            Scheme scheme = null;
-            if (schemeId >= 0) {
-                scheme = schemeDao.findById(schemeId);
-            }
+            checkState(componentId >= 0, "Invalid component ID retrieved from database.");
+            Component component = componentDao.findById(componentId);
             
             SchemeComponent schemeComponent = new SchemeComponent(id, xPos, yPos, dir, component);
             schemeComponent.setComponent(component);
-            schemeComponent.setScheme(scheme);
-
+            
+            int schemeId = rs.getInt(Fields.SCHEME);
+            if (schemeId >= 0) {
+            	if (scheme == null || scheme.getId() != schemeId) {
+            		scheme = schemeDao.findById(schemeId);
+            		schemeComponent.setScheme(scheme);
+            	}
+            }
+            
             schemeComponentList.add(schemeComponent);
+            
+            LOG.debug("SchemeComponent parsed.");
         }
 
+        LOG.debug("Finished parsing resultset from scheme component.");
+        
         return schemeComponentList;
     }
 
