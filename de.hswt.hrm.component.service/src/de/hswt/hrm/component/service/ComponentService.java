@@ -84,7 +84,7 @@ public class ComponentService {
      * @return List of attributes for the given component.
      * @throws DatabaseException
      */
-	Collection<Attribute> findAttributesByComponent(Component component)
+	public Collection<Attribute> findAttributesByComponent(Component component)
 			throws DatabaseException {
 		return componentDao.findAttributesByComponent(component);
 	}
@@ -97,7 +97,7 @@ public class ComponentService {
 	 * @return Collection of attribute names already used.
 	 * @throws DatabaseException
 	 */
-	Collection<String> findAttributeNames() throws DatabaseException {
+	public Collection<String> findAttributeNames() throws DatabaseException {
 		return findAttributeNames();
 	}
 	
@@ -109,7 +109,7 @@ public class ComponentService {
      * @return The added attribute with its valid ID.
      * @throws SaveException 
      */
-    Attribute addAttribute(Component component, String attributeName) throws SaveException {
+	public Attribute addAttribute(Component component, String attributeName) throws SaveException {
     	return componentDao.addAttribute(component, attributeName);
     }
     
@@ -119,7 +119,7 @@ public class ComponentService {
      * @param attribute
      * @throws DatabaseException
      */
-	void deleteAttribute(Attribute attribute) throws DatabaseException {
+	public void deleteAttribute(Attribute attribute) throws DatabaseException {
 		componentDao.deleteAttribute(attribute);
 	}
 
