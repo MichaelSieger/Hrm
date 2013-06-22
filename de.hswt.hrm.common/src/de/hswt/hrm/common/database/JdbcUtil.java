@@ -34,7 +34,7 @@ public final class JdbcUtil {
      * @param calendar
      * @return Timestamp set to the time of the given calendar.
      */
-    public static Timestamp fromCalendar(final GregorianCalendar calendar) {
+    public static Timestamp timestampFromCalendar(final Calendar calendar) {
     	Timestamp ts = new Timestamp(calendar.getTimeInMillis());
     	return ts;
     }
@@ -44,7 +44,7 @@ public final class JdbcUtil {
      * @param ts
      * @return Calendar which is set to the time of the given timestamp.
      */
-    public static Calendar fromTimestamp(final Timestamp ts) {
+    public static Calendar CalendarfromTimestamp(final Timestamp ts) {
     	Calendar calendar = GregorianCalendar.getInstance();
     	calendar.setTimeInMillis(ts.getTime());
     	
