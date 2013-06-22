@@ -2,8 +2,6 @@ package de.hswt.hrm.scheme.model;
 
 import static com.google.common.base.Preconditions.*;
 
-import com.google.common.base.Optional;
-
 import de.hswt.hrm.component.model.Component;
 
 /**
