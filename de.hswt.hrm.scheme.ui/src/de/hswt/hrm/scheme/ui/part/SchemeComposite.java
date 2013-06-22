@@ -54,6 +54,7 @@ import org.slf4j.LoggerFactory;
 import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
+import com.google.common.base.Throwables;
 import com.google.common.collect.Collections2;
 
 import de.hswt.hrm.common.database.exception.DatabaseException;
@@ -70,6 +71,7 @@ import de.hswt.hrm.scheme.service.ComponentConverter;
 import de.hswt.hrm.scheme.service.SchemeService;
 import de.hswt.hrm.scheme.ui.ComponentLoadThread;
 import de.hswt.hrm.scheme.ui.ItemClickListener;
+import de.hswt.hrm.scheme.ui.PlaceOccupiedException;
 import de.hswt.hrm.scheme.ui.SchemeGrid;
 import de.hswt.hrm.scheme.ui.SchemeGridItem;
 import de.hswt.hrm.scheme.ui.SchemeTreePatternFilter;
@@ -117,12 +119,11 @@ public class SchemeComposite extends Composite {
 
 	@Inject
 	private SchemeService schemeService;
+	
+	private final ComponentService componentsService;
 
 	@Inject
 	private EPartService service;
-
-	@Inject
-	private ComponentService componentsService;
 
 	@Inject
 	private IShellProvider shellProvider;
@@ -156,7 +157,7 @@ public class SchemeComposite extends Composite {
 	private Plant plant;
 
 	private Scheme currentScheme;
-
+	
 	/*
 	 * DND items for the grid
 	 */
@@ -181,21 +182,31 @@ public class SchemeComposite extends Composite {
 	 * @param parent
 	 * @param style
 	 */
-	private SchemeComposite(Composite parent, int style) {
+	public SchemeComposite(Composite parent, int style, ComponentService componentsService, Scheme scheme) {
 		super(parent, style);
+		if (scheme == null || !scheme.getPlant().isPresent()) {
+			throw new IllegalArgumentException(
+					"The scheme must not be null and plant must be present here");
+		}
+		this.componentsService = componentsService;
+		this.currentScheme = currentScheme;
 		createControls();
+		plant = scheme.getPlant().get();
+		//TODO
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			grid.setItems(toSchemeGridItems(scheme.getSchemeComponents()));
+		} catch (PlaceOccupiedException | IOException e) {
+			Throwables.propagate(e);
+		} 
+		clearDirty();
 	}
 
-	/**
-	 * Create the composite.
-	 * 
-	 * @param parent
-	 */
-	public SchemeComposite(Composite parent) {
-		super(parent, SWT.NONE);
-	}
-
-	@PostConstruct
 	private void createControls() {
 		setLayout(new FillLayout());
 
@@ -275,30 +286,6 @@ public class SchemeComposite extends Composite {
 		contributionItems.add(saveContribution);
 
 		new ComponentLoadThread(this, componentsService).start();
-	}
-
-	/**
-	 * The given scheme is loaded into the editor. The user can save a new
-	 * scheme for the given plant.
-	 * 
-	 * @param scheme
-	 * @throws IOException
-	 *             If a pdf file could not be read
-	 */
-	public void modifyScheme(Scheme scheme) throws IOException {
-		if (scheme == null || !scheme.getPlant().isPresent()) {
-			throw new IllegalArgumentException(
-					"The scheme must not be null and plant must be present here");
-		}
-
-		if (!checkToSave(scheme)) {
-			return;
-		}
-		
-		currentScheme = scheme;
-		plant = scheme.getPlant().get();
-		grid.setItems(toSchemeGridItems(scheme.getSchemeComponents()));
-		clearDirty();
 	}
 
 	/**
@@ -571,7 +558,10 @@ public class SchemeComposite extends Composite {
 		}
 	}
 
+	
 	private void copyScheme() {
+		//TODO implementation
+		/*
 		if (grid.isDirty()) {
 
 		}
@@ -596,9 +586,13 @@ public class SchemeComposite extends Composite {
 			MessageDialog.openError(shellProvider.getShell(), "Copy Error",
 					"Could not copy the requested scheme.");
 		}
+		*/
 	}
-
+	
+	
 	private void importScheme() {
+		//TODO implementation
+		/*
 		SchemeImportSelectionDialog dialog = new SchemeImportSelectionDialog(
 				shellProvider.getShell(), context);
 		ContextInjectionFactory.inject(dialog, context);
@@ -619,8 +613,9 @@ public class SchemeComposite extends Composite {
 			MessageDialog.openError(shellProvider.getShell(), "Copy Error",
 					"Could not copy the requested scheme.");
 		}
+		*/
 	}
-
+	
 	// private int getRenderedComponentId(RenderedComponent component) {
 	// return this.components.indexOf(component);
 	// }
