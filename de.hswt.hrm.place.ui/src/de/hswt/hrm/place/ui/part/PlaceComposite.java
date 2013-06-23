@@ -36,6 +36,8 @@ import de.hswt.hrm.common.ui.swt.layouts.LayoutUtil;
 import de.hswt.hrm.common.ui.swt.table.ColumnComparator;
 import de.hswt.hrm.common.ui.swt.table.ColumnDescription;
 import de.hswt.hrm.common.ui.swt.table.TableViewerController;
+import de.hswt.hrm.i18n.I18n;
+import de.hswt.hrm.i18n.I18nFactory;
 import de.hswt.hrm.place.model.Place;
 import de.hswt.hrm.place.service.PlaceService;
 import de.hswt.hrm.place.ui.filter.PlaceFilter;
@@ -45,6 +47,8 @@ public class PlaceComposite extends Composite {
 	public static final int TABLE_SELCTION_EVENT = SWT.Selection + 12341234;
 	
 	private final static Logger LOG = LoggerFactory.getLogger(PlaceComposite.class);
+	
+	private final static I18n I18N = I18nFactory.getI18n(PlaceComposite.class);
 
 	private Text searchText;
 
@@ -118,9 +122,8 @@ public class PlaceComposite extends Composite {
 	}
 	
 	private void showDBConnectionError() {
-		// TODO translate
-		MessageDialog.openError(shellProvider.getShell(), "Connection Error",
-				"Could not load places from Database.");
+		MessageDialog.openError(shellProvider.getShell(), I18N.tr("Connection Error"),
+				I18N.tr("Could not load places from Database."));
 	}
 
 	private void updateTableFilter(String filterString) {
