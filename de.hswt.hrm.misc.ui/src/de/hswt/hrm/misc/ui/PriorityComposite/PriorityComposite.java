@@ -36,6 +36,7 @@ import de.hswt.hrm.common.ui.swt.layouts.LayoutUtil;
 import de.hswt.hrm.common.ui.swt.table.ColumnDescription;
 import de.hswt.hrm.common.ui.swt.table.TableViewerController;
 import de.hswt.hrm.misc.model.priorities.model.Priority;
+import org.eclipse.wb.swt.SWTResourceManager;
 
 public class PriorityComposite extends Composite {
 
@@ -89,10 +90,23 @@ public class PriorityComposite extends Composite {
 
         composite = new Composite(this, SWT.NONE);
         composite.setLayout(new GridLayout(2, false));
-                new Label(composite, SWT.NONE);
                 
+	    tableViewer = new TableViewer(composite, SWT.BORDER | SWT.FULL_SELECTION);
+	    tableViewer.addDoubleClickListener(new IDoubleClickListener() {
+	        public void doubleClick(DoubleClickEvent event) {
+	            editPriority();
+	        }
+	    });
+	    table = tableViewer.getTable();
+	    GridData gd_table = new GridData(SWT.FILL, SWT.FILL, true, true, 2, 2);
+	    gd_table.widthHint = 465;
+	    gd_table.heightHint = 265;
+	    table.setLayoutData(gd_table);
+	    table.setLinesVisible(true);
+	    table.setHeaderVisible(true);
+        
         Button plusButton = new Button(composite, SWT.NONE);
-        plusButton.setText("+");
+        plusButton.setImage(SWTResourceManager.getImage(PriorityComposite.class, "/de/hswt/hrm/misc/ui/PriorityComposite/plus.jpg"));
         plusButton.addSelectionListener(new SelectionListener() {			
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -106,24 +120,9 @@ public class PriorityComposite extends Composite {
 			}
 		});
         
-        tableViewer = new TableViewer(composite, SWT.BORDER | SWT.FULL_SELECTION);
-        tableViewer.addDoubleClickListener(new IDoubleClickListener() {
-            public void doubleClick(DoubleClickEvent event) {
-                editPriority();
-            }
-        });
-        table = tableViewer.getTable();
-        GridData gd_table = new GridData(SWT.CENTER, SWT.CENTER, false, true, 2, 1);
-        gd_table.widthHint = 450;
-        gd_table.heightHint = 265;
-        table.setLayoutData(gd_table);
-        table.setLinesVisible(true);
-        table.setHeaderVisible(true);
-        table.setLayoutData(LayoutUtil.createFillData());
-        
         minusButton = new Button(composite, SWT.NONE);
+        minusButton.setImage(SWTResourceManager.getImage(PriorityComposite.class, "/de/hswt/hrm/misc/ui/PriorityComposite/minus.jpg"));
         minusButton.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false, 1, 1));
-        minusButton.setText("- ");
         minusButton.addSelectionListener(new SelectionListener() {			
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -285,7 +284,7 @@ public class PriorityComposite extends Composite {
 	private void movePriorityDown() {
 
 		//JUST TESTING
-//		Priority a = (Priority) prios.toArray()[0];
+//		Priority a = (Priority)tableViewer.getElementAt(tableViewer.getTable().getSelectionIndex());
 //		Priority b = null;
 //		int temp = a.getPriority();
 //		for(Priority prio : prios){
