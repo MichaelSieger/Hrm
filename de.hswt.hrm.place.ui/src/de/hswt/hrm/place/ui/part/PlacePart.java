@@ -18,8 +18,12 @@ import org.eclipse.ui.forms.widgets.Section;
 
 
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
+import de.hswt.hrm.i18n.I18n;
+import de.hswt.hrm.i18n.I18nFactory;
 
 public class PlacePart {
+    
+    private final static I18n I18N = I18nFactory.getI18n(PlacePart.class);
 
     @Inject
     private IEclipseContext context;
@@ -54,7 +58,7 @@ public class PlacePart {
 		form.getHead().setOrientation(SWT.RIGHT_TO_LEFT);
 		form.setSeparatorVisible(true);
 		toolkit.paintBordersFor(form);
-		form.setText("Places");
+		form.setText(I18N.tr("Places"));
 		toolkit.decorateFormHeading(form);
 
 		form.getToolBarManager().add(editAction);
@@ -81,24 +85,24 @@ public class PlacePart {
 
 	private void createActions() {
 		{
-			editAction = new Action("Edit") {
+			editAction = new Action(I18N.tr("Edit")) {
 				@Override
 				public void run() {
 					super.run();
 					placeComposite.editPlace();
 				}
 			};
-			editAction.setDescription("Edit an exisitng place.");
+			editAction.setDescription(I18N.tr("Edit an exisitng place."));
 		}
 		{
-			addAction = new Action("Add") {
+			addAction = new Action(I18N.tr("Add")) {
 				@Override
 				public void run() {
 					super.run();
 					placeComposite.addPlace();
 				}
 			};
-			addAction.setDescription("Add's a new place.");
+			addAction.setDescription(I18N.tr("Add a new place."));
 		}
 	}
 
