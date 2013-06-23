@@ -13,6 +13,7 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.widgets.Section;
 import org.slf4j.Logger;
@@ -58,6 +59,7 @@ public class CatalogWizzardPageOne extends WizardPage {
             LOG.error("Coult not load Wizzard XWT file.", e);
             return;
         }
+        translate(container);
 
         if (item.isPresent()) {
             updateFields(item.get());
@@ -133,7 +135,7 @@ public class CatalogWizzardPageOne extends WizardPage {
             return I18N.tr("Edit a catalog.");
         }
 
-        return I18N.tr("Add a new catalog");
+        return I18N.tr("Add a new catalog.");
     }
 
     public ICatalogItem getItem() {
@@ -209,15 +211,15 @@ public class CatalogWizzardPageOne extends WizardPage {
         }
 
         if (!oneButtonisSelected) {
-            setErrorMessage("Soll/Ist/Maßnahme muss ausgewählt sein.");
+            setErrorMessage(I18N.tr("Target/Current/Activity has to be selected."));
             return false;
         }
 
         else if (oneButtonisSelected) {
-            for (Text textField : getTextWidgets().values()) {
-                if (textField.getText().length() == 0) {
-                    setErrorMessage("Feld \"" + textField.getToolTipText()
-                            + "\" darf nicht leer sein.");
+            Text[] manArray = {getTextWidgets().get(Fields.NAME), getTextWidgets().get(Fields.DESCRIPTION)}; 
+            for (int i=0; i<manArray.length; i++) {
+                if (manArray[i].getText().length() == 0) {
+                    setErrorMessage(I18N.tr("Field is mandatory")+ ": " + I18N.tr(XWT.getElementName((Object) manArray[i])));
                     return false;
                 }
             }
@@ -250,6 +252,45 @@ public class CatalogWizzardPageOne extends WizardPage {
             buttons.get(Fields.TARGET).setSelection(true);
         }
 
+    }
+    
+    private void translate(Composite container) {
+        // Section
+        setSectionText(container, "Mandatory", I18N.tr("Catalog Item"));
+        // RadioButtons
+        setButtonText(container, "target", I18N.tr("Target"));
+        setButtonText(container, "current", I18N.tr("Current"));
+        setButtonText(container, "activity", I18N.tr("Activity"));
+        // Labels
+        setLabelText(container, "lblName", I18N.tr("Name")+":");
+        setLabelText(container, "lblDescription", I18N.tr("Description")+":");
+    }
+    
+    private void setSectionText(Composite container, String sectionName, String text) {
+        Section s = (Section) XWT.findElementByName(container, sectionName);
+        if (s == null) {
+            LOG.error("Section '" + sectionName + "' not found.");
+            return;
+        }
+        s.setText(text);
+    }
+    
+    private void setButtonText(Composite container, String buttonName, String text) {
+        Button b = (Button) XWT.findElementByName(container, buttonName);
+        if (b == null) {
+            LOG.error("Button '" + buttonName + "' not found.");
+            return;
+        }
+        b.setText(text);
+    }
+    
+    private void setLabelText(Composite container, String labelName, String text) {
+        Label l = (Label) XWT.findElementByName(container, labelName);
+        if (l == null) {
+            LOG.error("Label '" + labelName + "' not found.");
+            return;
+        }
+        l.setText(text);
     }
 
     private static final class Fields {

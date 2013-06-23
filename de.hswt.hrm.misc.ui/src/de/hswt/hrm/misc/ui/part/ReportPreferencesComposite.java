@@ -136,6 +136,12 @@ public class ReportPreferencesComposite extends Composite {
 
         initializeTable();
         refreshTable();
+        
+        Config cfg = Config.getInstance();
+        String dir = cfg.getProperty(Config.Keys.REPORT_STYLE_FOLDER);
+        if(dir != null){        
+        	directoryText.setText(dir);
+        }
 
         // TODO if (prefService == null) {
         // LOG.error("EvaluationService not injected to EvaluationPart.");
@@ -233,16 +239,17 @@ public class ReportPreferencesComposite extends Composite {
         String dir = dialog.open();
         if (dir != null) {
             directoryText.setText(dir);
-        }
-        Config cfg = Config.getInstance();
-        cfg.setProperty(Config.Keys.REPORT_STYLE_FOLDER, dir);
-
-        Path configPath = Hrm.getConfigPath();
-        try {
-            cfg.store(configPath, true, true);
-        }
-        catch (IOException e) {
-            e.printStackTrace();
+        
+	        Config cfg = Config.getInstance();
+	        cfg.setProperty(Config.Keys.REPORT_STYLE_FOLDER, dir);
+	
+	        Path configPath = Hrm.getConfigPath();
+	        try {
+	            cfg.store(configPath, true, true);
+	        }
+	        catch (IOException e) {
+	            e.printStackTrace();
+	        }
         }
     }
 }

@@ -29,17 +29,19 @@ INSERT INTO `hrm`.`Plant` (`Plant_Place_FK`, `Plant_Manufacturer`, `Plant_Year_O
 INSERT INTO `hrm`.`Plant` (`Plant_Place_FK`, `Plant_Manufacturer`, `Plant_Year_Of_Construction`, `Plant_Type`, `Plant_Airperformance`, `Plant_Motorpower`, `Plant_Motor_Rpm`, `Plant_Ventilatorperformance`, `Plant_Current`, `Plant_Voltage`, `Plant_Note`, `Plant_Description`, `Plant_Area`, `Plant_Location`) VALUES ('3', 'Medion', '1999', 'PowerBlast 3.1' , '400', '160', '2200', '2', '16', '230', 'aus Plastik *würg*', 'Tower 3', 'Dachgeschoss', 'Flur');
 
 ------------------------------------------------------------
--- Insert 2 different layouts in the `Layout` Table
+-- Insert 3 different layouts in the `Layout` Table
 ------------------------------------------------------------
 INSERT INTO `hrm`.`Layout` (`Layout_Name`, `Layout_Filename`) VALUES ('LayoutA','LayoutFile1');
 INSERT INTO `hrm`.`Layout` (`Layout_Name`, `Layout_Filename`) VALUES ('LayoutB','LayoutFile2');
+INSERT INTO `hrm`.`Layout` (`Layout_Name`, `Layout_Filename`) VALUES ('LayoutC','LayoutFile3');
 
 ------------------------------------------------------------
--- Insert 2 different reports in the `Report` Table
+-- Insert 3 different reports in the `Report` Table
 ------------------------------------------------------------
 
 INSERT INTO `hrm`.`Report` (`Report_Layout_FK`, `Report_Plant_FK`, `Report_Requester_FK`, `Report_Contractor_FK`, `Report_Checker_FK`, `Report_Jobdate`, `Report_Reportdate`, `Report_Nextdate`, `Report_Airtemperature`, `Report_Humidity`, `Report_Summary`, `Report_Titel`, `Report_Humidity_Rating`, `Report_Humidity_Quantifier`, `Report_Airtemperature_Rating`, `Report_Airtemperature_Quantifier`) VALUES ('1', '1', '1', '3', '5', '2012-12-31', '2013-01-07', '2016-01-07', '20', '37', 'Mei is des a guade Anlage, da muassd nix mocha', 'Schnaxlwirt','1','3','2','2');
 INSERT INTO `hrm`.`Report` (`Report_Layout_FK`, `Report_Plant_FK`, `Report_Requester_FK`, `Report_Contractor_FK`, `Report_Checker_FK`, `Report_Jobdate`, `Report_Reportdate`, `Report_Nextdate`, `Report_Airtemperature`, `Report_Humidity`, `Report_Summary`, `Report_Titel`, `Report_Humidity_Rating`, `Report_Humidity_Quantifier`, `Report_Airtemperature_Rating`, `Report_Airtemperature_Quantifier`) VALUES ('2', '2', '2', '4', '5', '2012-01-08', '2012-01-11', '2013-01-11', '22', '40','A so a glumb, schmeiss besser weg und moch was neiss', 'Hubertusstüberl','2','3','1','1');
+INSERT INTO `hrm`.`Report` (`Report_Layout_FK`, `Report_Plant_FK`, `Report_Requester_FK`, `Report_Contractor_FK`, `Report_Checker_FK`, `Report_Jobdate`, `Report_Reportdate`, `Report_Nextdate`, `Report_Airtemperature`, `Report_Humidity`, `Report_Summary`, `Report_Titel`, `Report_Humidity_Rating`, `Report_Humidity_Quantifier`, `Report_Airtemperature_Rating`, `Report_Airtemperature_Quantifier`) VALUES ('3', '2', '2', '4', '5', '2012-01-08', '2012-01-11', '2013-01-11', '22', '40','Copy Paste', 'SchmuckiAlle','2','3','1','1');
 
 ------------------------------------------------------------
 -- Insert 4 different cataloges in the `Catalog` Table

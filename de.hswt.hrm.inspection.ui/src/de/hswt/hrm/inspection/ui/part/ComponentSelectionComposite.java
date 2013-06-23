@@ -10,6 +10,7 @@ import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
+import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -111,8 +112,8 @@ public class ComponentSelectionComposite extends Composite {
 		verticalSash.setWeights(new int[] {3, 1});
 		horizontalSash.setWeights(new int[] {1, 5});
 
-		// TODO add scheme
-		schemeGrid = new InspectionSchemeGrid(schemeComposite, SWT.NONE);
+		ScrolledComposite schemeScroll = new ScrolledComposite(schemeComposite, SWT.H_SCROLL | SWT.V_SCROLL);
+		schemeGrid = new InspectionSchemeGrid(schemeScroll, SWT.NONE);
 		// TODO set the component selection to the ratingCompiste
 	}
 

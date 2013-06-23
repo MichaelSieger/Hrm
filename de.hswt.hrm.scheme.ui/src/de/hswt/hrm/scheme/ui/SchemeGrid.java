@@ -77,8 +77,8 @@ public class SchemeGrid extends DoubleBufferedCanvas {
 
 			@Override
 			public void mouseUp(MouseEvent e) {
-				SchemeGridItem item = getImage((int)Math.round(getGridX(e.x)), (int)Math.round(getGridY(e.y)));
-				if(item != null){
+				SchemeGridItem item = getImage((int)getGridX(e.x), (int)getGridY(e.y));
+				if(listener != null && item != null){
 					listener.itemClicked(e, item);
 				}
 			}
@@ -134,21 +134,25 @@ public class SchemeGrid extends DoubleBufferedCanvas {
 		final float quadW = getQuadWidth();
 		final float quadH = getQuadHeight();
 		for (Colorbox box : colors) {
-			Color oBackground = gc.getBackground();
-			gc.setBackground(box.getColor());
+			
 			final int x = (int)Math.round(quadW * box.getX()) + 1;
 			final int y = (int)Math.round(quadH * box.getY()) + 1;
 			final int w = (int)Math.round(quadW * box.getWidth()) - 1;
 			final int h = (int)Math.round(quadH * box.getHeight()) - 1;
 			if(box.isFill()){
+				Color oBackground = gc.getBackground();
+				gc.setBackground(box.getColor());
 				gc.fillRectangle(x, y, w, h);
+				gc.setBackground(oBackground);
 			}else{
 				int oLineWidth = gc.getLineWidth();
+				Color oColor = gc.getForeground();
+				gc.setForeground(box.getColor());
 				gc.setLineWidth(OUTLINE_WIDTH);
 				gc.drawRectangle(x, y, w, h);
 				gc.setLineWidth(oLineWidth);
+				gc.setForeground(oColor);
 			}
-			gc.setBackground(oBackground);
 		}
 	}
 
@@ -401,8 +405,8 @@ public class SchemeGrid extends DoubleBufferedCanvas {
 	 * @param snapToGrid Snap to grid lines or move freely
 	 */
 	public void setColor(Color shadowColor, double x, double y, double w, double h, boolean fill, boolean snapToGrid) {
-		double gridX = getGridX(x);
-		double gridY = getGridY(y);
+		double gridX = x;
+		double gridY = y;
 		if(snapToGrid){
 			gridX = (int) gridX;
 			gridY = (int) gridY;
@@ -473,6 +477,15 @@ public class SchemeGrid extends DoubleBufferedCanvas {
 	public void setItems(Collection<SchemeGridItem> c) throws PlaceOccupiedException{
 		setDirty();
 		images.clear();
+		int w = -1;
+		int h = -1;
+		for(SchemeGridItem item : c){
+			w = Math.max(w, item.getX() + item.getWidth());
+			h = Math.max(h, item.getY() + item.getHeight());
+		}
+		this.width = w;
+		this.height = h;
+		updateSize();
 	    for(SchemeGridItem item : c){
 	    	setImage(item);
 	    }

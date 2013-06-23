@@ -30,15 +30,19 @@ import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Optional;
 
 import de.hswt.hrm.common.database.exception.DatabaseException;
+import de.hswt.hrm.common.database.exception.ElementNotFoundException;
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.common.ui.swt.layouts.LayoutUtil;
 import de.hswt.hrm.common.ui.swt.utils.ContentProposalUtil;
 import de.hswt.hrm.common.ui.swt.wizards.WizardCreator;
 import de.hswt.hrm.component.model.Component;
+import de.hswt.hrm.contact.model.Contact;
 import de.hswt.hrm.inspection.model.Inspection;
 import de.hswt.hrm.inspection.model.Layout;
 import de.hswt.hrm.inspection.service.InspectionService;
@@ -47,10 +51,19 @@ import de.hswt.hrm.inspection.ui.dialog.ContactSelectionDialog;
 import de.hswt.hrm.inspection.ui.dialog.PlantSelectionDialog;
 import de.hswt.hrm.photo.model.Photo;
 import de.hswt.hrm.photo.ui.wizard.PhotoWizard;
+import de.hswt.hrm.plant.model.Plant;
+import de.hswt.hrm.scheme.model.Scheme;
+import de.hswt.hrm.scheme.model.SchemeComponent;
+import de.hswt.hrm.scheme.service.ComponentConverter;
+import de.hswt.hrm.scheme.service.SchemeService;
+import de.hswt.hrm.scheme.ui.SchemeGridItem;
 import de.hswt.hrm.summary.model.Summary;
 import de.hswt.hrm.summary.service.SummaryService;
 
 public class ReportGeneralComposite extends AbstractComponentRatingComposite {
+	
+	private final static Logger LOG = LoggerFactory
+			.getLogger(ReportGeneralComposite.class);
 
     @Inject
     private InspectionService inspectionService;
@@ -104,9 +117,25 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
     private Combo humidityWeightCombo;
     private Combo humitiyCommentCombo;
 
+    Combo reportStyleCombo;
+
     java.util.List<Photo> photos = new LinkedList<Photo>();
+    
+    private PlantSelectedListener plantListener;
 
     private Inspection inspection;
+
+    private Text customerNameText;
+    private Text customerStreetText;
+    private Text customerCityText;
+
+    private Text requestorNameText;
+    private Text requestorStreetText;
+    private Text requestorCityText;
+
+    private Text controllerNameText;
+    private Text controllerStreetText;
+    private Text controllerCityText;
 
     /**
      * Do not use this constructor when instantiate this composite! It is only included to make the
@@ -253,9 +282,7 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
                         context);
                 psd.create();
                 if (psd.open() == Window.OK) {
-
-                    plantText.setText(psd.getPlant().getDescription());
-
+                	plantSelected(psd.getPlant());
                 }
             }
         });
@@ -315,7 +342,7 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
         formToolkit.adapt(reportStyleLabel, true, true);
         reportStyleLabel.setText("Report Layout");
 
-        Combo reportStyleCombo = new Combo(generalComposite, SWT.DROP_DOWN | SWT.READ_ONLY);
+        reportStyleCombo = new Combo(generalComposite, SWT.DROP_DOWN | SWT.READ_ONLY);
         initLayouts(reportStyleCombo);
         reportStyleCombo.setLayoutData(LayoutUtil.createHorzCenteredFillData(4));
 
@@ -333,6 +360,20 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
         formToolkit.paintBordersFor(overallCombo);
         initAutoCompletion(overallCombo);
 
+    }
+    
+    private void plantSelected(Plant plant){
+        plantText.setText(plant.getDescription());
+        if(plantListener != null){
+        	plantListener.selected(plant);
+        }
+    }
+    
+    public void setPlantListener(PlantSelectedListener l){
+    	if(this.plantListener != null){
+    		throw new RuntimeException("There is already a listener present");
+    	}
+    	this.plantListener = l;
     }
 
     private void initLayouts(Combo combo) {
@@ -354,7 +395,6 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
                 combo.setData(s, layouts.get(index));
                 index++;
             }
-            combo.select(0);
         }
 
         catch (DatabaseException e) {
@@ -387,7 +427,7 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
         formToolkit.adapt(customerNameLabel, true, true);
         customerNameLabel.setText("Name");
 
-        final Text customerNameText = new Text(personsComposite, SWT.READ_ONLY);
+        customerNameText = new Text(personsComposite, SWT.READ_ONLY);
         customerNameText.setLayoutData(LayoutUtil.createHorzCenteredFillData(2));
         formToolkit.adapt(customerNameText, true, true);
 
@@ -396,7 +436,7 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
         formToolkit.adapt(customerStreetLabel, true, true);
         customerStreetLabel.setText("Street");
 
-        final Text customerStreetText = new Text(personsComposite, SWT.READ_ONLY);
+        customerStreetText = new Text(personsComposite, SWT.READ_ONLY);
         customerStreetText.setLayoutData(LayoutUtil.createHorzCenteredFillData(2));
         formToolkit.adapt(customerStreetText, true, true);
 
@@ -405,7 +445,7 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
         formToolkit.adapt(customerCityLabel, true, true);
         customerCityLabel.setText("City");
 
-        final Text customerCityText = new Text(personsComposite, SWT.READ_ONLY);
+        customerCityText = new Text(personsComposite, SWT.READ_ONLY);
         customerCityText.setLayoutData(LayoutUtil.createHorzCenteredFillData(2));
         formToolkit.adapt(customerCityText, true, true);
 
@@ -427,7 +467,7 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
         formToolkit.adapt(requestorNameLabel, true, true);
         requestorNameLabel.setText("Name");
 
-        final Text requestorNameText = new Text(personsComposite, SWT.READ_ONLY);
+        requestorNameText = new Text(personsComposite, SWT.READ_ONLY);
         requestorNameText.setLayoutData(LayoutUtil.createHorzCenteredFillData(2));
         formToolkit.adapt(requestorNameText, true, true);
 
@@ -436,7 +476,7 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
         formToolkit.adapt(requestorStreetLabel, true, true);
         requestorStreetLabel.setText("Street");
 
-        final Text requestorStreetText = new Text(personsComposite, SWT.READ_ONLY);
+        requestorStreetText = new Text(personsComposite, SWT.READ_ONLY);
         requestorStreetText.setLayoutData(LayoutUtil.createHorzCenteredFillData(2));
         formToolkit.adapt(requestorStreetText, true, true);
 
@@ -445,7 +485,7 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
         formToolkit.adapt(requestorCityLabel, true, true);
         requestorCityLabel.setText("City");
 
-        final Text requestorCityText = new Text(personsComposite, SWT.READ_ONLY);
+        requestorCityText = new Text(personsComposite, SWT.READ_ONLY);
         requestorCityText.setLayoutData(LayoutUtil.createHorzCenteredFillData(2));
         formToolkit.adapt(requestorCityText, true, true);
 
@@ -467,7 +507,7 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
         formToolkit.adapt(controllerNameLabel, true, true);
         controllerNameLabel.setText("Name");
 
-        final Text controllerNameText = new Text(personsComposite, SWT.READ_ONLY);
+        controllerNameText = new Text(personsComposite, SWT.READ_ONLY);
         controllerNameText.setLayoutData(LayoutUtil.createHorzCenteredFillData(2));
         formToolkit.adapt(controllerNameText, true, true);
 
@@ -476,7 +516,7 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
         formToolkit.adapt(controllerStreetLabel, true, true);
         controllerStreetLabel.setText("Street");
 
-        final Text controllerStreetText = new Text(personsComposite, SWT.READ_ONLY);
+        controllerStreetText = new Text(personsComposite, SWT.READ_ONLY);
         controllerStreetText.setLayoutData(LayoutUtil.createHorzCenteredFillData(2));
         formToolkit.adapt(controllerStreetText, true, true);
 
@@ -485,7 +525,7 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
         formToolkit.adapt(controllerCityLabel, true, true);
         controllerCityLabel.setText("City");
 
-        final Text controllerCityText = new Text(personsComposite, SWT.READ_ONLY);
+        controllerCityText = new Text(personsComposite, SWT.READ_ONLY);
         controllerCityText.setLayoutData(LayoutUtil.createHorzCenteredFillData(2));
         formToolkit.adapt(controllerCityText, true, true);
 
@@ -904,9 +944,46 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
                 .setDay(inspection.getNextInspectionDate().get(Calendar.DAY_OF_MONTH));
         nextInspectionDateTime.setMonth(inspection.getNextInspectionDate().get(Calendar.MONTH));
         nextInspectionDateTime.setYear(inspection.getNextInspectionDate().get(Calendar.YEAR));
-        
+
         plantText.setText(inspection.getPlant().getDescription());
-        
+        setlayout(inspection);
+
+        fillOptionalFields(inspection);
+
+    }
+
+    private void fillOptionalFields(Inspection inspection) {
+
+        Contact c = null;
+
+        if (inspection.getContractor().isPresent()) {
+            c = inspection.getContractor().get();
+            customerNameText.setText(c.getName());
+            customerStreetText.setText(c.getStreet() + " " + c.getStreetNo());
+            customerCityText.setText(c.getCity() + " " + c.getPostCode());
+        }
+        if (inspection.getRequester().isPresent()) {
+            c = inspection.getRequester().get();
+            requestorNameText.setText(c.getName());
+            requestorStreetText.setText(c.getStreet() + " " + c.getStreetNo());
+            requestorCityText.setText(c.getCity() + " " + c.getPostCode());
+        }
+        if (inspection.getChecker().isPresent()) {
+            c = inspection.getChecker().get();
+            controllerNameText.setText(c.getName());
+            controllerStreetText.setText(c.getStreet() + " " + c.getStreetNo());
+            controllerCityText.setText(c.getCity() + " " + c.getPostCode());
+        }
+    }
+
+    private void setlayout(Inspection inspection) {
+
+        String[] items = reportStyleCombo.getItems();
+        int i = 0;
+        while (!inspection.getLayout().getName().equals(items[i])) {
+            i++;
+        }
+        reportStyleCombo.select(i);
 
     }
 }

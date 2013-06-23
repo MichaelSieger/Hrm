@@ -3,6 +3,7 @@ package de.hswt.hrm.inspection.ui.grid;
 import java.util.Collection;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Composite;
 import org.slf4j.Logger;
@@ -11,8 +12,8 @@ import org.slf4j.LoggerFactory;
 import com.google.common.base.Optional;
 
 import de.hswt.hrm.component.model.Category;
-import de.hswt.hrm.scheme.model.Scheme;
 import de.hswt.hrm.scheme.model.SchemeComponent;
+import de.hswt.hrm.scheme.ui.ItemClickListener;
 import de.hswt.hrm.scheme.ui.SchemeGrid;
 import de.hswt.hrm.scheme.ui.SchemeGridItem;
 
@@ -28,7 +29,7 @@ public class InspectionSchemeGrid {
 	private final static Logger LOG = LoggerFactory
 			.getLogger(InspectionSchemeGrid.class);
 	
-	private static final int PPG = 50;
+	private static final int PPG = 30;
 	
 	private final SchemeGrid grid;
 	private SchemeComponent selected;
@@ -36,6 +37,13 @@ public class InspectionSchemeGrid {
 	
 	public InspectionSchemeGrid(final Composite parent, int style){
 		grid = new SchemeGrid(parent, style, 1, 1, PPG);
+		grid.setItemClickListener(new ItemClickListener() {
+			
+			@Override
+			public void itemClicked(MouseEvent e, SchemeGridItem item) {
+				setSelected(item.asSchemeComponent());
+			}
+		});
 	}
 	
 	/**
@@ -76,7 +84,7 @@ public class InspectionSchemeGrid {
 	}
 	
 	private Color getColor(){
-		return grid.getDisplay().getSystemColor(SWT.COLOR_BLUE);
+		return grid.getDisplay().getSystemColor(SWT.COLOR_GREEN);
 	}
 
 }
