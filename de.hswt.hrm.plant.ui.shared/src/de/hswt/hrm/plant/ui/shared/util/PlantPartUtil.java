@@ -153,14 +153,14 @@ public class PlantPartUtil {
             @Override
             public String getText(Object element) {
                 Plant p = (Plant) element;
-                return p.getConstructionYear().get().toString();
+                return p.getType().get().toString();
 
             }
         }, new Comparator<Plant>() {
 
             @Override
             public int compare(Plant o1, Plant o2) {
-                return o1.getConstructionYear().get().compareTo(o2.getConstructionYear().get());
+                return o1.getType().get().compareTo(o2.getType().get());
             }
 
         });
