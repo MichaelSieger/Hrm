@@ -153,7 +153,7 @@ public class CatalogWizzardPageOne extends WizardPage {
         ICatalogItem ic = null;
 
         for (Button bu : b.values()) {
-            if (bu.getSelection() && bu.getText().equalsIgnoreCase("maßnahme")) {
+            if (bu.getSelection() && bu.getText().equalsIgnoreCase("Activity")) {
                 if (item.isPresent()) {
                     ic = item.get();
                     Activity a = (Activity) ic;
@@ -166,7 +166,7 @@ public class CatalogWizzardPageOne extends WizardPage {
 
                 }
             }
-            else if (bu.getSelection() && bu.getText().equalsIgnoreCase("soll")) {
+            else if (bu.getSelection() && bu.getText().equalsIgnoreCase("target")) {
                 if (item.isPresent()) {
                     ic = item.get();
                     Target t = (Target) ic;
@@ -179,7 +179,7 @@ public class CatalogWizzardPageOne extends WizardPage {
 
                 }
             }
-            else if (bu.getSelection() && bu.getText().equalsIgnoreCase("ist")) {
+            else if (bu.getSelection() && bu.getText().equalsIgnoreCase("current")) {
                 if (item.isPresent()) {
                     ic = item.get();
                     Current c = (Current) ic;

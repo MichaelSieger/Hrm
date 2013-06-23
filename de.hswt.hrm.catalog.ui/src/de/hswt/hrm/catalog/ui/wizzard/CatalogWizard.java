@@ -69,7 +69,7 @@ public class CatalogWizard extends Wizard {
             ICatalogItem i = first.getItem();
             if (i instanceof Activity) {
                 catalogService.updateActivity((Activity) i);
-                System.out.println("item instance of Activity");
+
             }
             else if (i instanceof Current) {
                 catalogService.updateCurrent((Current) i);
@@ -77,11 +77,9 @@ public class CatalogWizard extends Wizard {
             }
             else if (i instanceof Target) {
                 catalogService.updateTarget((Target) i);
-                System.out.println("item instance of Target");
+
             }
-            else {
-                System.out.println("neither of all...");
-            }
+
             item = Optional.of(i);
 
         }
