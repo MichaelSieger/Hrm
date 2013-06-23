@@ -14,10 +14,14 @@ import com.google.common.base.Optional;
 
 import de.hswt.hrm.common.ui.swt.table.ColumnDescription;
 import de.hswt.hrm.common.ui.swt.wizards.WizardCreator;
+import de.hswt.hrm.i18n.I18n;
+import de.hswt.hrm.i18n.I18nFactory;
 import de.hswt.hrm.place.model.Place;
 import de.hswt.hrm.place.ui.wizard.PlaceWizard;
 
 public final class PlacePartUtil {
+    
+    private final static I18n I18N = I18nFactory.getI18n(PlacePartUtil.class);
 
     public PlacePartUtil() {
 
@@ -50,7 +54,7 @@ public final class PlacePartUtil {
     }
 
     private static ColumnDescription<Place> getPlaceColumn() {
-        return new ColumnDescription<Place>("Place Name", new ColumnLabelProvider() {
+        return new ColumnDescription<Place>(I18N.tr("Name"), new ColumnLabelProvider() {
             @Override
             public String getText(Object element) {
                 Place p = (Place) element;
@@ -67,7 +71,7 @@ public final class PlacePartUtil {
     }
 
     private static ColumnDescription<Place> getPostCodeColumn() {
-        return new ColumnDescription<>("Postcode", new ColumnLabelProvider() {
+        return new ColumnDescription<>(I18N.tr("Zipcode"), new ColumnLabelProvider() {
             @Override
             public String getText(Object element) {
                 Place p = (Place) element;
@@ -82,7 +86,7 @@ public final class PlacePartUtil {
     }
 
     private static ColumnDescription<Place> getCityColumn() {
-        return new ColumnDescription<>("City", new ColumnLabelProvider() {
+        return new ColumnDescription<>(I18N.tr("City"), new ColumnLabelProvider() {
             @Override
             public String getText(Object element) {
                 Place p = (Place) element;
@@ -97,7 +101,7 @@ public final class PlacePartUtil {
     }
 
     private static ColumnDescription<Place> getStreetColumn() {
-        return new ColumnDescription<>("Street", new ColumnLabelProvider() {
+        return new ColumnDescription<>(I18N.tr("Street"), new ColumnLabelProvider() {
             @Override
             public String getText(Object element) {
                 Place p = (Place) element;
@@ -112,7 +116,7 @@ public final class PlacePartUtil {
     }
 
     private static ColumnDescription<Place> getStreetNoColumn() {
-        return new ColumnDescription<>("Street Number", new ColumnLabelProvider() {
+        return new ColumnDescription<>(I18N.tr("Streetnumber"), new ColumnLabelProvider() {
             @Override
             public String getText(Object element) {
                 Place p = (Place) element;
