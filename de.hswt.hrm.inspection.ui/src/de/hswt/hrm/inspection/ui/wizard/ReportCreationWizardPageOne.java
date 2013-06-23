@@ -243,7 +243,7 @@ public class ReportCreationWizardPageOne extends WizardPage {
         checkPage();
     }
 
-    private void initLayouts(final Combo combo) {
+    private void initLayouts(Combo combo) {
 
         try {
             // Obtain all layouts form the DB
