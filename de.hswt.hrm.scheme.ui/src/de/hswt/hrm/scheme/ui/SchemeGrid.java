@@ -387,11 +387,27 @@ public class SchemeGrid extends DoubleBufferedCanvas {
 	}
 	
 	public void setColor(Color shadowColor, double x, double y, double w, double h){
-		setColor(shadowColor, x, y, w, h, true);
+		setColor(shadowColor, x, y, w, h, true, true);
 	}
 
-	public void setColor(Color shadowColor, double x, double y, double w, double h, boolean fill) {
-		colors.add(new Colorbox(getGridX(x), getGridY(y), w, h, shadowColor, fill));
+	/**
+	 * 
+	 * @param shadowColor The color
+	 * @param x The left margin
+	 * @param y The top margin
+	 * @param w The Width
+	 * @param h The Height
+	 * @param fill Fill the box or outline it
+	 * @param snapToGrid Snap to grid lines or move freely
+	 */
+	public void setColor(Color shadowColor, double x, double y, double w, double h, boolean fill, boolean snapToGrid) {
+		double gridX = getGridX(x);
+		double gridY = getGridY(y);
+		if(snapToGrid){
+			gridX = (int) gridX;
+			gridY = (int) gridY;
+		}
+		colors.add(new Colorbox(gridX, gridY, w, h, shadowColor, fill));
 		this.redraw();
 	}
 	
