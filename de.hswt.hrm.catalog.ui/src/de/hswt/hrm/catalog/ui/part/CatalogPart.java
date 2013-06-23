@@ -117,7 +117,7 @@ public class CatalogPart {
             @Override
             public void run() {
                 super.run();
-                catalogItemsPart.editPlant();
+                catalogItemsPart.editItem();
             }
         };
         editAction.setDescription("Edit an exisitng catalog item.");

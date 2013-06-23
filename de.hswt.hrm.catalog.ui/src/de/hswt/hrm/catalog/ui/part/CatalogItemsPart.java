@@ -142,7 +142,7 @@ public class CatalogItemsPart extends Composite {
 				| SWT.FULL_SELECTION);
 		tableViewer.addDoubleClickListener(new IDoubleClickListener() {
 			public void doubleClick(DoubleClickEvent event) {
-				editPlant();
+				editItem();
 			}
 		});
 		table = tableViewer.getTable();
@@ -244,8 +244,8 @@ public class CatalogItemsPart extends Composite {
 
 	}
 
-	public void editPlant() {
-		// obtain the place in the column where the doubleClick happend
+	public void editItem() {
+		// obtain the Item in the column where the doubleClick happend
 		ICatalogItem selectedItem = (ICatalogItem) tableViewer
 				.getElementAt(tableViewer.getTable().getSelectionIndex());
 		if (selectedItem == null) {

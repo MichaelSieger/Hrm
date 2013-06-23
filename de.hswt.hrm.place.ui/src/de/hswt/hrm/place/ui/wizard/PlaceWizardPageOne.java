@@ -183,9 +183,9 @@ public class PlaceWizardPageOne extends WizardPage {
     
     private void translate(Composite container) {
         // Labels
-        setLabelText(container, "lblName", I18N.tr("Name"));
-        setLabelText(container, "lblStreet", I18N.tr("Street / No."));
-        setLabelText(container, "lblZipCode", I18N.tr("Zipcode / City"));
+        setLabelText(container, "lblName", I18N.tr("Name")+":");
+        setLabelText(container, "lblStreet", I18N.tr("Street / No.")+":");
+        setLabelText(container, "lblZipCode", I18N.tr("Zipcode / City")+":");
     }
     
     private void setLabelText(Composite container, String labelName, String text) {

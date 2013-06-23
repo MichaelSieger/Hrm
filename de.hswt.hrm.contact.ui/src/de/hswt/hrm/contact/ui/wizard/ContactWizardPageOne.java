@@ -184,9 +184,9 @@ public class ContactWizardPageOne extends WizardPage {
         // Section
         setSectionText(container, "Mandatory", I18N.tr("Contact"));
         // Labels
-        setLabelText(container, "lblFirstName", I18N.tr("Name"));
-        setLabelText(container, "lblStreet", I18N.tr("Street / No."));
-        setLabelText(container, "lblZipCode", I18N.tr("Zipcode / City"));
+        setLabelText(container, "lblFirstName", I18N.tr("Name")+":");
+        setLabelText(container, "lblStreet", I18N.tr("Street / No.")+":");
+        setLabelText(container, "lblZipCode", I18N.tr("Zipcode / City")+":");
     }
 
 }
