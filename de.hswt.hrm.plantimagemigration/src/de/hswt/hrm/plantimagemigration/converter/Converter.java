@@ -12,7 +12,7 @@ import java.io.IOException;
 public abstract class Converter {
 
     protected File tmpDir;
-    private File resultDir, srcDir;
+    protected File resultDir, srcDir;
 
     /**
      * 
@@ -81,6 +81,33 @@ public abstract class Converter {
             }
         }
         catch (InterruptedException e) {
+        }
+        return new File(tmpDir, changeFileend(inputFile.getName(), ending));
+    }
+    
+    /**
+     * Calls a program with the given name, the fileending that it produces, and the inputfile as
+     * sole parameter.
+     * 
+     * @param progname
+     * @param ending
+     * @param inputFile
+     * @return
+     * @throws IOException
+     */
+    protected File executeProgram(String[] args, String ending, File inputFile)
+            throws IOException {
+        try {
+            ProcessBuilder builder = new ProcessBuilder(args);
+            builder.directory(tmpDir);
+            builder.redirectErrorStream(true);
+            int resultCode = builder.start().waitFor();
+            if (resultCode != 0) {
+                throw new RuntimeException(args[0] + " error");
+            }
+        }
+        catch (InterruptedException e) {
+        	e.printStackTrace();
         }
         return new File(tmpDir, changeFileend(inputFile.getName(), ending));
     }

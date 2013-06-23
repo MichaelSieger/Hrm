@@ -2,6 +2,7 @@ package de.hswt.hrm.plantimagemigration;
 
 /**
  * This program converts the pstricks latex files from the previous hrm project, to svg files.
+ * The program needs pdflatex and pdfcrop installed.
  * 
  * @author Michael Sieger
  * 

@@ -9,9 +9,9 @@ import java.io.IOException;
  * @author Michael Sieger
  * 
  */
-public class PdfConverter extends Converter {
+public class DVItoPdfConverter extends Converter {
 
-    public PdfConverter(File resultDir, File srcDir, File tmpDir) {
+    public DVItoPdfConverter(File resultDir, File srcDir, File tmpDir) {
         super(resultDir, srcDir, tmpDir);
     }
 
