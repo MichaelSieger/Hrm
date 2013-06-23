@@ -21,14 +21,19 @@ public class PhysicalRating {
     private static final String IS_MANDATORY = "Field is a mandatory.";
     private static final String INVALID_NUMBER = "%d is an invalid number.%n Must be greater 0";
 
-    public PhysicalRating(int id, int rating, String note, int quantifier) {
+    public PhysicalRating(int id, Inspection inspection, Component component, int rating, 
+    		String note, int quantifier) {
+    	
         this.id = id;
+        setInspection(inspection);
+        setComponent(component);
         setRating(rating);
         setNote(note);
+        setQuantifier(quantifier);
     }
 
-    public PhysicalRating(int rating, String note, int quantifier) {
-        this(-1, rating, note, quantifier);
+    public PhysicalRating(Inspection inspection, Component component, int rating, String note, int quantifier) {
+        this(-1, inspection, component, rating, note, quantifier);
     }
 
     public int getRating() {
@@ -49,8 +54,8 @@ public class PhysicalRating {
         this.note = note;
     }
 
-    public Optional<Component> getComponent() {
-        return Optional.fromNullable(component);
+    public Component getComponent() {
+        return component;
     }
 
     public void setComponent(Component component) {
@@ -58,8 +63,8 @@ public class PhysicalRating {
         this.component = component;
     }
 
-    public Optional<Inspection> getInspection() {
-        return Optional.fromNullable(inspection);
+    public Inspection getInspection() {
+        return inspection;
     }
 
     public void setInspection(Inspection inspection) {

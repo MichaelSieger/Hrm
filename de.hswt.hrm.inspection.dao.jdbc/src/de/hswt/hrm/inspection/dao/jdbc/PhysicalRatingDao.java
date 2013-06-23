@@ -2,6 +2,7 @@ package de.hswt.hrm.inspection.dao.jdbc;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkState;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -20,20 +21,21 @@ import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.ElementNotFoundException;
 import de.hswt.hrm.common.database.exception.SaveException;
 import de.hswt.hrm.component.dao.core.IComponentDao;
+import de.hswt.hrm.component.model.Component;
 import de.hswt.hrm.inspection.dao.core.IInspectionDao;
 import de.hswt.hrm.inspection.dao.core.IPhysicalRatingDao;
 import de.hswt.hrm.inspection.model.Inspection;
 import de.hswt.hrm.inspection.model.PhysicalRating;
 
 public class PhysicalRatingDao implements IPhysicalRatingDao {
-    private final IInspectionDao inspectionDao;
+	private final IInspectionDao inspectionDao;
     private final IComponentDao componentDao;
 
     // TODO: add LOG messages
     @Inject
     public PhysicalRatingDao(final IInspectionDao inspectionDao, final IComponentDao componentDao) {
-        checkNotNull(inspectionDao, "Inspectiondao not properly injected to PhysicalRatingDao");
-        checkNotNull(componentDao, "ComponentDao not properly injected to PhysicalRatingDao.");
+    	checkNotNull(inspectionDao, "Inspectiondao not properly injected to PhysicalRatingDao");
+    	checkNotNull(componentDao, "ComponentDao not properly injected to PhysicalRatingDao.");
 
         this.inspectionDao = inspectionDao;
         this.componentDao = componentDao;
@@ -111,8 +113,8 @@ public class PhysicalRatingDao implements IPhysicalRatingDao {
             try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
                 stmt.setParameter(Fields.RATING, physicalRating.getRating());
                 stmt.setParameter(Fields.NOTE, physicalRating.getNote());
-                stmt.setParameter(Fields.COMPONENT_FK, physicalRating.getComponent().get().getId());
-                stmt.setParameter(Fields.REPORT_FK, physicalRating.getInspection().get().getId());
+                stmt.setParameter(Fields.COMPONENT_FK, physicalRating.getComponent().getId());
+                stmt.setParameter(Fields.REPORT_FK, physicalRating.getInspection().getId());
                 stmt.setParameter(Fields.QUANTIFIER, physicalRating.getQuantifier());
 
                 int affectedRows = stmt.executeUpdate();
@@ -125,12 +127,13 @@ public class PhysicalRatingDao implements IPhysicalRatingDao {
                         int id = generatedKeys.getInt(1);
 
                         // Create new Physical Rating with id
-                        PhysicalRating inserted = new PhysicalRating(id,
-                                physicalRating.getRating(), physicalRating.getNote(),
+                        PhysicalRating inserted = new PhysicalRating(
+                        		id,
+                        		physicalRating.getInspection(),
+                        		physicalRating.getComponent(),
+                                physicalRating.getRating(), 
+                                physicalRating.getNote(),
                                 physicalRating.getQuantifier());
-
-                        inserted.setComponent(physicalRating.getComponent().orNull());
-                        inserted.setInspection(physicalRating.getInspection().orNull());
 
                         return inserted;
                     }
@@ -166,8 +169,8 @@ public class PhysicalRatingDao implements IPhysicalRatingDao {
             try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
                 stmt.setParameter(Fields.RATING, physicalRating.getRating());
                 stmt.setParameter(Fields.NOTE, physicalRating.getNote());
-                stmt.setParameter(Fields.COMPONENT_FK, physicalRating.getComponent().get().getId());
-                stmt.setParameter(Fields.REPORT_FK, physicalRating.getInspection().get().getId());
+                stmt.setParameter(Fields.COMPONENT_FK, physicalRating.getComponent().getId());
+                stmt.setParameter(Fields.REPORT_FK, physicalRating.getInspection().getId());
                 stmt.setParameter(Fields.QUANTIFIER, physicalRating.getQuantifier());
 
                 int affectedRows = stmt.executeUpdate();
@@ -232,17 +235,22 @@ public class PhysicalRatingDao implements IPhysicalRatingDao {
             int rating = rs.getInt(Fields.RATING);
             String note = rs.getString(Fields.NOTE);
             int quantifier = rs.getInt(Fields.QUANTIFIER);
-            PhysicalRating physicalRating = new PhysicalRating(id, rating, note, quantifier);
-            physicalRating.setComponent(componentDao.findById(rs.getInt(Fields.COMPONENT_FK)));
-            physicalRatingList.add(physicalRating);
-
             int inspectionId = rs.getInt(Fields.REPORT_FK);
-
-            // If we don't have the inspection or it doesn't match -> retrieve it
-            if (!inspection.isPresent() || inspection.get().getId() != inspectionId) {
-                inspection = Optional.of(inspectionDao.findById(inspectionId));
+            if (!(inspection.isPresent()) || inspection.get().getId() != inspectionId) {
+            	inspection = Optional.of(inspectionDao.findById(inspectionId));
             }
-            physicalRating.setInspection(inspection.get());
+            int componentId = rs.getInt(Fields.COMPONENT_FK);
+            checkState(componentId >= 0, "Invalid component ID retrieved from database.");
+            Component component = componentDao.findById(componentId);
+            
+            PhysicalRating physicalRating = new PhysicalRating(
+            		id,
+            		inspection.get(),
+            		component,
+            		rating, 
+            		note,
+                    quantifier);
+            physicalRatingList.add(physicalRating);
         }
 
         return physicalRatingList;
