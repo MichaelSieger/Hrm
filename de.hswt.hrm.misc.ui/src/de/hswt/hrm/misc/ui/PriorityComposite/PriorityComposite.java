@@ -35,7 +35,7 @@ import com.google.common.base.Optional;
 import de.hswt.hrm.common.ui.swt.layouts.LayoutUtil;
 import de.hswt.hrm.common.ui.swt.table.ColumnDescription;
 import de.hswt.hrm.common.ui.swt.table.TableViewerController;
-import de.hswt.hrm.misc.model.priorities.model.Priority;
+import de.hswt.hrm.misc.model.priority.model.Priority;
 
 public class PriorityComposite extends Composite {
 
