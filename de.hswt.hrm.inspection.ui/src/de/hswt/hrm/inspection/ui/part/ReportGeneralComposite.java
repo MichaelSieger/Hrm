@@ -116,6 +116,8 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
     private Combo humidityWeightCombo;
     private Combo humitiyCommentCombo;
 
+    Combo reportStyleCombo;
+
     java.util.List<Photo> photos = new LinkedList<Photo>();
     
     private PlantSelectedListener plantListener;
@@ -327,7 +329,7 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
         formToolkit.adapt(reportStyleLabel, true, true);
         reportStyleLabel.setText("Report Layout");
 
-        Combo reportStyleCombo = new Combo(generalComposite, SWT.DROP_DOWN | SWT.READ_ONLY);
+        reportStyleCombo = new Combo(generalComposite, SWT.DROP_DOWN | SWT.READ_ONLY);
         initLayouts(reportStyleCombo);
         reportStyleCombo.setLayoutData(LayoutUtil.createHorzCenteredFillData(4));
 
@@ -380,7 +382,6 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
                 combo.setData(s, layouts.get(index));
                 index++;
             }
-            combo.select(0);
         }
 
         catch (DatabaseException e) {
@@ -930,9 +931,20 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
                 .setDay(inspection.getNextInspectionDate().get(Calendar.DAY_OF_MONTH));
         nextInspectionDateTime.setMonth(inspection.getNextInspectionDate().get(Calendar.MONTH));
         nextInspectionDateTime.setYear(inspection.getNextInspectionDate().get(Calendar.YEAR));
-        
+
         plantText.setText(inspection.getPlant().getDescription());
-        
+        setlayout(inspection);
+
+    }
+
+    private void setlayout(Inspection inspection) {
+
+        String[] items = reportStyleCombo.getItems();
+        int i = 0;
+        while (!inspection.getLayout().getName().equals(items[i])) {
+            i++;
+        }
+        reportStyleCombo.select(i);
 
     }
 }
