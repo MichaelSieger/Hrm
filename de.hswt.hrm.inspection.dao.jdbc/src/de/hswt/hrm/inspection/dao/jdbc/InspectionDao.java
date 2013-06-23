@@ -334,6 +334,9 @@ public class InspectionDao implements IInspectionDao {
         public static final String TEMPERATUREQUANTIFIER = "Report_Airtemperature_Quantifier";
         public static final String HUMIDITYRATING = "Report_Humidity_Rating";
         public static final String HUMIDITYQUANTIFIER = "Report_Humidity_Quantifier";
+        public static final String FRONTPICTURE_FK = "Report_Frontpicture_FK";
+        public static final String PLANTPICTURE_FK = "Report_Plantpicture_FK";
+
     }
 
 }
