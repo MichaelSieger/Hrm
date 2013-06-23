@@ -1,4 +1,4 @@
-package de.hswt.hrm.misc.model.priority.model;
+package de.hswt.hrm.misc.priority.model;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Strings.isNullOrEmpty;

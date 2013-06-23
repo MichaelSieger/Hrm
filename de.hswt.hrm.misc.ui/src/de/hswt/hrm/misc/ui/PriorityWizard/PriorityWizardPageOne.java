@@ -24,7 +24,7 @@ import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.common.ui.swt.layouts.PageContainerFillLayout;
 import de.hswt.hrm.misc.comment.model.Comment;
-import de.hswt.hrm.misc.model.priority.model.Priority;
+import de.hswt.hrm.misc.priority.model.Priority;
 import de.hswt.hrm.summary.model.Summary;
 import de.hswt.hrm.summary.service.SummaryService;
 
