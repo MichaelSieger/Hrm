@@ -35,15 +35,15 @@ import com.google.common.base.Optional;
 import de.hswt.hrm.common.ui.swt.layouts.LayoutUtil;
 import de.hswt.hrm.common.ui.swt.table.ColumnDescription;
 import de.hswt.hrm.common.ui.swt.table.TableViewerController;
+import de.hswt.hrm.common.ui.swt.utils.SWTResourceManager;
 import de.hswt.hrm.misc.model.priorities.model.Priority;
-import org.eclipse.wb.swt.SWTResourceManager;
 
 public class PriorityComposite extends Composite {
 
-	private final static Logger LOG = LoggerFactory.getLogger(PriorityComposite.class);
+    private final static Logger LOG = LoggerFactory.getLogger(PriorityComposite.class);
 
-//    @Inject
-//    private PriorityService prioService;
+    // @Inject
+    // private PriorityService prioService;
 
     @Inject
     private IShellProvider shellProvider;
@@ -59,26 +59,26 @@ public class PriorityComposite extends Composite {
     private Collection<Priority> prios;
     private Button minusButton;
 
-	/**
-	 * Do not use this constructor when instantiate this composite! It is only
-	 * included to make the WindowsBuilder working.
-	 * 
-	 * @param parent
-	 * @param style
-	 */
+    /**
+     * Do not use this constructor when instantiate this composite! It is only included to make the
+     * WindowsBuilder working.
+     * 
+     * @param parent
+     * @param style
+     */
     private PriorityComposite(Composite parent, int style) {
         super(parent, style);
         createControls();
     }
 
     /**
-	 * Create the composite.
-	 * 
-	 * @param parent
-	 */
-	public PriorityComposite(Composite parent) {
-		super(parent, SWT.NONE);
-	}
+     * Create the composite.
+     * 
+     * @param parent
+     */
+    public PriorityComposite(Composite parent) {
+        super(parent, SWT.NONE);
+    }
 
     /**
      * Create contents of the view part.
@@ -86,89 +86,90 @@ public class PriorityComposite extends Composite {
     @PostConstruct
     public void createControls() {
         this.setLayout(new FillLayout());
-		this.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_WHITE));
+        this.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_WHITE));
 
         composite = new Composite(this, SWT.NONE);
         composite.setLayout(new GridLayout(2, false));
-                
-	    tableViewer = new TableViewer(composite, SWT.BORDER | SWT.FULL_SELECTION);
-	    tableViewer.addDoubleClickListener(new IDoubleClickListener() {
-	        public void doubleClick(DoubleClickEvent event) {
-	            editPriority();
-	        }
-	    });
-	    table = tableViewer.getTable();
-	    GridData gd_table = new GridData(SWT.FILL, SWT.FILL, true, true, 2, 2);
-	    gd_table.widthHint = 465;
-	    gd_table.heightHint = 265;
-	    table.setLayoutData(gd_table);
-	    table.setLinesVisible(true);
-	    table.setHeaderVisible(true);
-        
+
+        tableViewer = new TableViewer(composite, SWT.BORDER | SWT.FULL_SELECTION);
+        tableViewer.addDoubleClickListener(new IDoubleClickListener() {
+            public void doubleClick(DoubleClickEvent event) {
+                editPriority();
+            }
+        });
+        table = tableViewer.getTable();
+        GridData gd_table = new GridData(SWT.FILL, SWT.FILL, true, true, 2, 2);
+        gd_table.widthHint = 465;
+        gd_table.heightHint = 265;
+        table.setLayoutData(gd_table);
+        table.setLinesVisible(true);
+        table.setHeaderVisible(true);
+
         Button plusButton = new Button(composite, SWT.NONE);
-        plusButton.setImage(SWTResourceManager.getImage(PriorityComposite.class, "/de/hswt/hrm/misc/ui/PriorityComposite/plus.jpg"));
-        plusButton.addSelectionListener(new SelectionListener() {			
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				movePriorityUp();				
-			}			
+        plusButton.setImage(SWTResourceManager.getImage(PriorityComposite.class,
+                "/de/hswt/hrm/misc/ui/PriorityComposite/plus.jpg"));
+        plusButton.addSelectionListener(new SelectionListener() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                movePriorityUp();
+            }
 
-			@Override
-			public void widgetDefaultSelected(SelectionEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-		});
-        
+            @Override
+            public void widgetDefaultSelected(SelectionEvent e) {
+                // TODO Auto-generated method stub
+
+            }
+        });
+
         minusButton = new Button(composite, SWT.NONE);
-        minusButton.setImage(SWTResourceManager.getImage(PriorityComposite.class, "/de/hswt/hrm/misc/ui/PriorityComposite/minus.jpg"));
+        minusButton.setImage(SWTResourceManager.getImage(PriorityComposite.class,
+                "/de/hswt/hrm/misc/ui/PriorityComposite/minus.jpg"));
         minusButton.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false, 1, 1));
-        minusButton.addSelectionListener(new SelectionListener() {			
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				movePriorityDown();		
-			}			
+        minusButton.addSelectionListener(new SelectionListener() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                movePriorityDown();
+            }
 
-			@Override
-			public void widgetDefaultSelected(SelectionEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-		});
+            @Override
+            public void widgetDefaultSelected(SelectionEvent e) {
+                // TODO Auto-generated method stub
+
+            }
+        });
 
         initializeTable();
         refreshTable();
 
-// TODO       if (prioService == null) {
-//            LOG.error("EvaluationService not injected to EvaluationPart.");
-//        }
+        // TODO if (prioService == null) {
+        // LOG.error("EvaluationService not injected to EvaluationPart.");
+        // }
     }
 
     private void refreshTable() {
-    	if(prios == null){
-    		Priority a = new Priority("eins", "einsTExt", 3);
-    	
-	    	Priority b = new Priority("zwei", "einsTExt", 2);
-	    	Priority c = new Priority("drei", "einsTExt", 1);
-	    	Priority d = new Priority("vier", "einsTExt", 4);
-	    	prios = new LinkedList<Priority>();
-	    	prios.add(a);
-	    	prios.add(b);
-	    	prios.add(c);
-	    	prios.add(d);
-    	}
-    	
-    	tableViewer.setInput(this.prios);
-    	
-    	
-//  TODO      try {
-//            this.prios = prioService.findAll();
-//            tableViewer.setInput(this.prios);
-//        }
-//        catch (DatabaseException e) {
-//            LOG.error("Unable to retrieve list of Evaluations.", e);
-//            showDBConnectionError();
-//        }
+        if (prios == null) {
+            Priority a = new Priority("eins", "einsTExt", 3);
+
+            Priority b = new Priority("zwei", "einsTExt", 2);
+            Priority c = new Priority("drei", "einsTExt", 1);
+            Priority d = new Priority("vier", "einsTExt", 4);
+            prios = new LinkedList<Priority>();
+            prios.add(a);
+            prios.add(b);
+            prios.add(c);
+            prios.add(d);
+        }
+
+        tableViewer.setInput(this.prios);
+
+        // TODO try {
+        // this.prios = prioService.findAll();
+        // tableViewer.setInput(this.prios);
+        // }
+        // catch (DatabaseException e) {
+        // LOG.error("Unable to retrieve list of Evaluations.", e);
+        // showDBConnectionError();
+        // }
     }
 
     private void initializeTable() {
@@ -180,23 +181,22 @@ public class PriorityComposite extends Composite {
 
         // Enable column selection
         filler.createColumnSelectionMenu();
-        
+
         tableViewer.setComparator(new ViewerComparator() {
-        	@Override
-        	public int compare(Viewer viewer, Object e1, Object e2) {
-        		if (e1 instanceof Priority && e2 instanceof Priority) {
-        				String prio1 = Integer.toString(((Priority) e1).getPriority());
-                        String prio2 = Integer.toString(((Priority) e2).getPriority());
-                        return prio1.compareToIgnoreCase(prio2);
-        		}
-        		throw new IllegalArgumentException("Not comparable: " + e1 + " " + e2);
-        	}
+            @Override
+            public int compare(Viewer viewer, Object e1, Object e2) {
+                if (e1 instanceof Priority && e2 instanceof Priority) {
+                    String prio1 = Integer.toString(((Priority) e1).getPriority());
+                    String prio2 = Integer.toString(((Priority) e2).getPriority());
+                    return prio1.compareToIgnoreCase(prio2);
+                }
+                throw new IllegalArgumentException("Not comparable: " + e1 + " " + e2);
+            }
         });
-        
 
         // Enable sorting
-//        ColumnComparator<Priority> comperator = new ColumnComparator<>(columns);
-//        filler.enableSorting(comperator);
+        // ColumnComparator<Priority> comperator = new ColumnComparator<>(columns);
+        // filler.enableSorting(comperator);
 
         // Add dataprovider that handles our collection
         tableViewer.setContentProvider(ArrayContentProvider.getInstance());
@@ -218,8 +218,8 @@ public class PriorityComposite extends Composite {
     public void addPriority() {
         Priority prio = null;
 
-        Optional<Priority> newPrio = PriorityPartUtil.showWizard(context,
-                shellProvider.getShell(), Optional.fromNullable(prio));
+        Optional<Priority> newPrio = PriorityPartUtil.showWizard(context, shellProvider.getShell(),
+                Optional.fromNullable(prio));
 
         if (newPrio.isPresent()) {
             prios.add(newPrio.get());
@@ -242,82 +242,83 @@ public class PriorityComposite extends Composite {
         if (selectedPrio == null) {
             return;
         }
-//   TODO     try {
-//            prioService.refresh(selectedPrio);
-//            Optional<Priority> updatedEval = PriorityPartUtil.showWizard(context,
-//                    shellProvider.getShell(), Optional.of(selectedPrio));
-//
-//            if (updatedEval.isPresent()) {
-//                tableViewer.refresh();
-//            }
-//        }
-//        catch (DatabaseException e) {
-//            LOG.error("Could not retrieve the evaluations from database.", e);
-//            showDBConnectionError();
-//        }
+        // TODO try {
+        // prioService.refresh(selectedPrio);
+        // Optional<Priority> updatedEval = PriorityPartUtil.showWizard(context,
+        // shellProvider.getShell(), Optional.of(selectedPrio));
+        //
+        // if (updatedEval.isPresent()) {
+        // tableViewer.refresh();
+        // }
+        // }
+        // catch (DatabaseException e) {
+        // LOG.error("Could not retrieve the evaluations from database.", e);
+        // showDBConnectionError();
+        // }
     }
-    
-	private void movePriorityUp() {		
-//	TODO    Priority selectedPrio = (Priority) tableViewer.getElementAt(tableViewer.getTable()
-//     														 .getSelectionIndex());
-//		if (selectedPrio == null) {
-//		  return;
-//		}
-//		Priority tempPrio = null;
-//
-//		if(selectedPrio.getPriority() > 1){	       
-//		  for(Priority prio : prioService.findAll()){
-//		  	if(prio.getPriority() == selectedPrio.getPriority()-1){
-//		  		tempPrio = prio;
-//		  		break;
-//		  	}        	
-//		  }
-//		  selectedPrio.setPriority(selectedPrio.getPriority()-1);
-//		  tempPrio.setPriority(tempPrio.getPriority() +1);
-//		  
-//		  prioService.update(selectedPrio);
-//		  prioService.update(tempPrio);
-//		}
-//		refreshTable();
-	}
-	
-	private void movePriorityDown() {
 
-		//JUST TESTING
-//		Priority a = (Priority)tableViewer.getElementAt(tableViewer.getTable().getSelectionIndex());
-//		Priority b = null;
-//		int temp = a.getPriority();
-//		for(Priority prio : prios){
-//			if(prio.getPriority() == a.getPriority()+1){
-//				b = prio;
-//			}		
-//		}		
-//		a.setPriority(a.getPriority()+1);
-//		b.setPriority(b.getPriority() -1);
-//		
-//	
-//		tableViewer.refresh();
-		
-// TODO    Priority selectedPrio = (Priority) tableViewer.getElementAt(tableViewer.getTable()
-//                .getSelectionIndex());
-//        if (selectedPrio == null) {
-//            return;
-//        }
-//        Priority tempPrio = null;
-//        
-//        if(selectedPrio.getPriority() < prioService.findAll().size()){	        
-//	        for(Priority prio : prioService.findAll()){
-//	        	if(prio.getPriority() == selectedPrio.getPriority()+1){
-//	        		tempPrio = prio;
-//	        		break;
-//	        	}        	
-//	        }
-//	        selectedPrio.setPriority(selectedPrio.getPriority()+1);
-//	        tempPrio.setPriority(tempPrio.getPriority() -1);
-//	        
-//	        prioService.update(selectedPrio);
-//	        prioService.update(tempPrio);
-//	     }
-//        refreshTable();
-	}
+    private void movePriorityUp() {
+        // TODO Priority selectedPrio = (Priority) tableViewer.getElementAt(tableViewer.getTable()
+        // .getSelectionIndex());
+        // if (selectedPrio == null) {
+        // return;
+        // }
+        // Priority tempPrio = null;
+        //
+        // if(selectedPrio.getPriority() > 1){
+        // for(Priority prio : prioService.findAll()){
+        // if(prio.getPriority() == selectedPrio.getPriority()-1){
+        // tempPrio = prio;
+        // break;
+        // }
+        // }
+        // selectedPrio.setPriority(selectedPrio.getPriority()-1);
+        // tempPrio.setPriority(tempPrio.getPriority() +1);
+        //
+        // prioService.update(selectedPrio);
+        // prioService.update(tempPrio);
+        // }
+        // refreshTable();
+    }
+
+    private void movePriorityDown() {
+
+        // JUST TESTING
+        // Priority a =
+        // (Priority)tableViewer.getElementAt(tableViewer.getTable().getSelectionIndex());
+        // Priority b = null;
+        // int temp = a.getPriority();
+        // for(Priority prio : prios){
+        // if(prio.getPriority() == a.getPriority()+1){
+        // b = prio;
+        // }
+        // }
+        // a.setPriority(a.getPriority()+1);
+        // b.setPriority(b.getPriority() -1);
+        //
+        //
+        // tableViewer.refresh();
+
+        // TODO Priority selectedPrio = (Priority) tableViewer.getElementAt(tableViewer.getTable()
+        // .getSelectionIndex());
+        // if (selectedPrio == null) {
+        // return;
+        // }
+        // Priority tempPrio = null;
+        //
+        // if(selectedPrio.getPriority() < prioService.findAll().size()){
+        // for(Priority prio : prioService.findAll()){
+        // if(prio.getPriority() == selectedPrio.getPriority()+1){
+        // tempPrio = prio;
+        // break;
+        // }
+        // }
+        // selectedPrio.setPriority(selectedPrio.getPriority()+1);
+        // tempPrio.setPriority(tempPrio.getPriority() -1);
+        //
+        // prioService.update(selectedPrio);
+        // prioService.update(tempPrio);
+        // }
+        // refreshTable();
+    }
 }

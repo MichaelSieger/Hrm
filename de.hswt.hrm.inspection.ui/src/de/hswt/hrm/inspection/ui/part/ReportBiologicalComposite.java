@@ -22,278 +22,273 @@ import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.common.ui.swt.layouts.LayoutUtil;
 import de.hswt.hrm.common.ui.swt.utils.ContentProposalUtil;
 import de.hswt.hrm.component.model.Component;
+import de.hswt.hrm.inspection.service.InspectionService;
 
 public class ReportBiologicalComposite extends AbstractComponentRatingComposite {
 
-	// TODO remove unused injections, add others as needed
-	// TODO use this if it is implemented
-	// @Inject
-	// private InspectionService inspectionService;
+    @Inject
+    private InspectionService inspectionService;
 
-	@Inject
-	private IEclipseContext context;
+    @Inject
+    private IEclipseContext context;
 
-	@Inject
-	private IShellProvider shellProvider;
+    @Inject
+    private IShellProvider shellProvider;
 
-	private FormToolkit formToolkit = new FormToolkit(Display.getDefault());
+    private FormToolkit formToolkit = new FormToolkit(Display.getDefault());
 
-	private Button nothingRadioButton;
-	private Button airGermsRadioButton;
-	private Button waterAnalysisRadioButton;
-	private Button contactCultureRadioButton;
+    private Button nothingRadioButton;
+    private Button airGermsRadioButton;
+    private Button waterAnalysisRadioButton;
+    private Button contactCultureRadioButton;
 
-	private List contactGgradeList;
-	private List contactWeightList;
-	private Combo contactCommentCombo;
+    private List contactGgradeList;
+    private List contactWeightList;
+    private Combo contactCommentCombo;
 
-	private List airGradeList;
-	private List airWeightList;
-	private Combo airCommentCombo;
+    private List airGradeList;
+    private List airWeightList;
+    private Combo airCommentCombo;
 
-	// @TODO remove when example is no longer needed
-	private static final String[] items = new String[] { "Alpha", "Beta",
-			"gaama", "pie", "alge", "bata" };
+    // @TODO remove when example is no longer needed
+    private static final String[] items = new String[] { "Alpha", "Beta", "gaama", "pie", "alge",
+            "bata" };
 
-	/**
-	 * Do not use this constructor when instantiate this composite! It is only
-	 * included to make the WindowsBuilder working.
-	 * 
-	 * @param parent
-	 * @param style
-	 */
-	private ReportBiologicalComposite(Composite parent, int style) {
-		super(parent, SWT.NONE);
-		setBackgroundMode(SWT.INHERIT_FORCE);
-		createControls();
-	}
+    /**
+     * Do not use this constructor when instantiate this composite! It is only included to make the
+     * WindowsBuilder working.
+     * 
+     * @param parent
+     * @param style
+     */
+    private ReportBiologicalComposite(Composite parent, int style) {
+        super(parent, SWT.NONE);
+        setBackgroundMode(SWT.INHERIT_FORCE);
+        createControls();
+    }
 
-	/**
-	 * Create the composite.
-	 * 
-	 * @param parent
-	 */
-	public ReportBiologicalComposite(Composite parent) {
-		super(parent, SWT.NONE);
-		formToolkit.dispose();
-		formToolkit = FormUtil.createToolkit();
-	}
+    /**
+     * Create the composite.
+     * 
+     * @param parent
+     */
+    public ReportBiologicalComposite(Composite parent) {
+        super(parent, SWT.NONE);
+        formToolkit.dispose();
+        formToolkit = FormUtil.createToolkit();
+    }
 
-	@PostConstruct
-	public void createControls() {
-		GridLayout gl = new GridLayout(1, false);
-		gl.marginBottom = 5;
-		gl.marginLeft = 5;
-		gl.marginWidth = 0;
-		gl.marginHeight = 0;
-		setLayout(gl);
-		setBackground(getDisplay().getSystemColor(SWT.COLOR_WHITE));
+    @PostConstruct
+    public void createControls() {
+        GridLayout gl = new GridLayout(1, false);
+        gl.marginBottom = 5;
+        gl.marginLeft = 5;
+        gl.marginWidth = 0;
+        gl.marginHeight = 0;
+        setLayout(gl);
+        setBackground(getDisplay().getSystemColor(SWT.COLOR_WHITE));
 
-		Composite c = new Composite(this, SWT.NONE);
-		c.setLayoutData(LayoutUtil.createFillData());
-		c.setLayout(new FillLayout());
-		
-		ScrolledComposite sc = new ScrolledComposite(c, SWT.H_SCROLL
-				| SWT.V_SCROLL);
-		sc.setExpandVertical(true);
-		sc.setExpandHorizontal(true);
+        Composite c = new Composite(this, SWT.NONE);
+        c.setLayoutData(LayoutUtil.createFillData());
+        c.setLayout(new FillLayout());
 
-		Composite composite = new Composite(sc, SWT.None);
-		composite.setBackgroundMode(SWT.INHERIT_FORCE);
-		gl = new GridLayout(2, false);
-		gl.marginWidth = 0;
-		gl.marginHeight = 0;
-		composite.setLayout(gl);
-		sc.setContent(composite);
+        ScrolledComposite sc = new ScrolledComposite(c, SWT.H_SCROLL | SWT.V_SCROLL);
+        sc.setExpandVertical(true);
+        sc.setExpandHorizontal(true);
 
-		Section contactCultureSection = formToolkit.createSection(composite,
-				Section.TITLE_BAR);
-		formToolkit.paintBordersFor(contactCultureSection);
-		contactCultureSection.setText("Contact cultures");
-		contactCultureSection.setLayoutData(LayoutUtil.createHorzFillData());
-		FormUtil.initSectionColors(contactCultureSection);
+        Composite composite = new Composite(sc, SWT.None);
+        composite.setBackgroundMode(SWT.INHERIT_FORCE);
+        gl = new GridLayout(2, false);
+        gl.marginWidth = 0;
+        gl.marginHeight = 0;
+        composite.setLayout(gl);
+        sc.setContent(composite);
 
-		Section airSection = formToolkit.createSection(composite, Section.TITLE_BAR);
-		formToolkit.paintBordersFor(airSection);
-		airSection.setText("Air germs concentration");
-		airSection.setLayoutData(LayoutUtil.createHorzFillData());
-		FormUtil.initSectionColors(airSection);
+        Section contactCultureSection = formToolkit.createSection(composite, Section.TITLE_BAR);
+        formToolkit.paintBordersFor(contactCultureSection);
+        contactCultureSection.setText("Contact cultures");
+        contactCultureSection.setLayoutData(LayoutUtil.createHorzFillData());
+        FormUtil.initSectionColors(contactCultureSection);
 
-		Section tagSection = formToolkit.createSection(composite, Section.TITLE_BAR);
-		formToolkit.paintBordersFor(tagSection);
-		tagSection.setText("Scheme tags");
-		tagSection.setLayoutData(LayoutUtil.createHorzFillData(2));
-		FormUtil.initSectionColors(tagSection);
+        Section airSection = formToolkit.createSection(composite, Section.TITLE_BAR);
+        formToolkit.paintBordersFor(airSection);
+        airSection.setText("Air germs concentration");
+        airSection.setLayoutData(LayoutUtil.createHorzFillData());
+        FormUtil.initSectionColors(airSection);
 
-		/*****************************
-		 * contact culture components
-		 ****************************/
-		Composite contactCultureComposite = new Composite(
-				contactCultureSection, SWT.NONE);
-		contactCultureComposite.setBackgroundMode(SWT.INHERIT_DEFAULT);
-		formToolkit.adapt(contactCultureComposite);
-		formToolkit.paintBordersFor(contactCultureComposite);
-		gl = new GridLayout(4, false);
-		gl.marginWidth = 0;
-		contactCultureComposite.setLayout(gl);
-		contactCultureSection.setClient(contactCultureComposite);
-		
-		Label contactGradeLabel = new Label(contactCultureComposite, SWT.NONE);
-		contactGradeLabel.setLayoutData(LayoutUtil.createHorzFillData(2));
-		formToolkit.adapt(contactGradeLabel, true, true);
-		contactGradeLabel.setText("Grade");
+        Section tagSection = formToolkit.createSection(composite, Section.TITLE_BAR);
+        formToolkit.paintBordersFor(tagSection);
+        tagSection.setText("Scheme tags");
+        tagSection.setLayoutData(LayoutUtil.createHorzFillData(2));
+        FormUtil.initSectionColors(tagSection);
 
-		Label contactWeightLabel = new Label(contactCultureComposite, SWT.NONE);
-		contactWeightLabel.setLayoutData(LayoutUtil.createHorzFillData(2));
-		formToolkit.adapt(contactWeightLabel, true, true);
-		contactWeightLabel.setText("Weight");
+        /*****************************
+         * contact culture components
+         ****************************/
+        Composite contactCultureComposite = new Composite(contactCultureSection, SWT.NONE);
+        contactCultureComposite.setBackgroundMode(SWT.INHERIT_DEFAULT);
+        formToolkit.adapt(contactCultureComposite);
+        formToolkit.paintBordersFor(contactCultureComposite);
+        gl = new GridLayout(4, false);
+        gl.marginWidth = 0;
+        contactCultureComposite.setLayout(gl);
+        contactCultureSection.setClient(contactCultureComposite);
 
-		contactGgradeList = new List(contactCultureComposite, SWT.BORDER);
-		contactGgradeList.setLayoutData(LayoutUtil.createHorzFillData(2));
-		formToolkit.adapt(contactGgradeList, true, true);
-		// 0 = not rated
-		for (int i = 0; i < 6; i++) {
-			contactGgradeList.add(Integer.toString(i));
-		}
-		// TODO set 0 selected or grade from db
-		contactGgradeList.select(0);
+        Label contactGradeLabel = new Label(contactCultureComposite, SWT.NONE);
+        contactGradeLabel.setLayoutData(LayoutUtil.createHorzFillData(2));
+        formToolkit.adapt(contactGradeLabel, true, true);
+        contactGradeLabel.setText("Grade");
 
-		contactWeightList = new List(contactCultureComposite, SWT.BORDER);
-		contactWeightList.setLayoutData(LayoutUtil.createHorzFillData(2));
-		formToolkit.adapt(contactWeightList, true, true);
-		for (int i = 1; i <= 6; i++) {
-			contactWeightList.add(Integer.toString(i));
-		}
-		// TODO set category weight or weight from db
-		contactWeightList.select(0);
+        Label contactWeightLabel = new Label(contactCultureComposite, SWT.NONE);
+        contactWeightLabel.setLayoutData(LayoutUtil.createHorzFillData(2));
+        formToolkit.adapt(contactWeightLabel, true, true);
+        contactWeightLabel.setText("Weight");
 
-		Label contactCommentLabel = new Label(contactCultureComposite, SWT.NONE);
-		contactCommentLabel.setLayoutData(LayoutUtil.createLeftGridData());
-		formToolkit.adapt(contactCommentLabel, true, true);
-		contactCommentLabel.setText("Comment");
+        contactGgradeList = new List(contactCultureComposite, SWT.BORDER);
+        contactGgradeList.setLayoutData(LayoutUtil.createHorzFillData(2));
+        formToolkit.adapt(contactGgradeList, true, true);
+        // 0 = not rated
+        for (int i = 0; i < 6; i++) {
+            contactGgradeList.add(Integer.toString(i));
+        }
+        // TODO set 0 selected or grade from db
+        contactGgradeList.select(0);
 
-		contactCommentCombo = new Combo(contactCultureComposite, SWT.NONE);
-		contactCommentCombo.setLayoutData(LayoutUtil.createHorzFillData(3));
-		formToolkit.adapt(contactCommentCombo);
-		formToolkit.paintBordersFor(contactCommentCombo);
+        contactWeightList = new List(contactCultureComposite, SWT.BORDER);
+        contactWeightList.setLayoutData(LayoutUtil.createHorzFillData(2));
+        formToolkit.adapt(contactWeightList, true, true);
+        for (int i = 1; i <= 6; i++) {
+            contactWeightList.add(Integer.toString(i));
+        }
+        // TODO set category weight or weight from db
+        contactWeightList.select(0);
 
-		// TODO fill with comments from db
-		// allow custom inputs
-		// use content proposals, like google search, see below
+        Label contactCommentLabel = new Label(contactCultureComposite, SWT.NONE);
+        contactCommentLabel.setLayoutData(LayoutUtil.createLeftGridData());
+        formToolkit.adapt(contactCommentLabel, true, true);
+        contactCommentLabel.setText("Comment");
 
-		// example of content proposal
-		// TODO replace this with the content of comments
-		// set items first!
-		contactCommentCombo.setItems(items);
-		ContentProposalUtil.enableContentProposal(contactCommentCombo);
+        contactCommentCombo = new Combo(contactCultureComposite, SWT.NONE);
+        contactCommentCombo.setLayoutData(LayoutUtil.createHorzFillData(3));
+        formToolkit.adapt(contactCommentCombo);
+        formToolkit.paintBordersFor(contactCommentCombo);
 
-		/*************************************
-		 * air germs concentration components
-		 ************************************/
-		Composite airGermsComposite = new Composite(airSection, SWT.NONE);
-		airGermsComposite.setBackgroundMode(SWT.INHERIT_DEFAULT);
-		formToolkit.adapt(airGermsComposite);
-		formToolkit.paintBordersFor(airGermsComposite);
-		gl = new GridLayout(4, false);
-		gl.marginWidth = 0;
-		airGermsComposite.setLayout(gl);
-		airSection.setClient(airGermsComposite);
+        // TODO fill with comments from db
+        // allow custom inputs
+        // use content proposals, like google search, see below
 
-		Label airGradeLabel = new Label(airGermsComposite, SWT.NONE);
-		airGradeLabel.setLayoutData(LayoutUtil.createHorzFillData(2));
-		formToolkit.adapt(contactGradeLabel, true, true);
-		airGradeLabel.setText("Grade");
+        // example of content proposal
+        // TODO replace this with the content of comments
+        // set items first!
+        contactCommentCombo.setItems(items);
+        ContentProposalUtil.enableContentProposal(contactCommentCombo);
 
-		Label airWeightLabel = new Label(airGermsComposite, SWT.NONE);
-		airWeightLabel.setLayoutData(LayoutUtil.createHorzFillData(2));
-		formToolkit.adapt(contactWeightLabel, true, true);
-		airWeightLabel.setText("Weight");
+        /*************************************
+         * air germs concentration components
+         ************************************/
+        Composite airGermsComposite = new Composite(airSection, SWT.NONE);
+        airGermsComposite.setBackgroundMode(SWT.INHERIT_DEFAULT);
+        formToolkit.adapt(airGermsComposite);
+        formToolkit.paintBordersFor(airGermsComposite);
+        gl = new GridLayout(4, false);
+        gl.marginWidth = 0;
+        airGermsComposite.setLayout(gl);
+        airSection.setClient(airGermsComposite);
 
-		airGradeList = new List(airGermsComposite, SWT.BORDER);
-		airGradeList.setLayoutData(LayoutUtil.createHorzFillData(2));
-		formToolkit.adapt(airGradeList, true, true);
-		// 0 = not rated
-		for (int i = 0; i < 6; i++) {
-			airGradeList.add(Integer.toString(i));
-		}
-		// TODO set 0 selected or grade from db
-		airGradeList.select(0);
+        Label airGradeLabel = new Label(airGermsComposite, SWT.NONE);
+        airGradeLabel.setLayoutData(LayoutUtil.createHorzFillData(2));
+        formToolkit.adapt(contactGradeLabel, true, true);
+        airGradeLabel.setText("Grade");
 
-		airWeightList = new List(airGermsComposite, SWT.BORDER);
-		airWeightList.setLayoutData(LayoutUtil.createHorzFillData(2));
-		formToolkit.adapt(airWeightList, true, true);
-		for (int i = 1; i <= 6; i++) {
-			airWeightList.add(Integer.toString(i));
-		}
-		// TODO set category weight or weight from db
-		airWeightList.select(0);
+        Label airWeightLabel = new Label(airGermsComposite, SWT.NONE);
+        airWeightLabel.setLayoutData(LayoutUtil.createHorzFillData(2));
+        formToolkit.adapt(contactWeightLabel, true, true);
+        airWeightLabel.setText("Weight");
 
-		Label airCommentLabel = new Label(airGermsComposite, SWT.NONE);
-		airCommentLabel.setLayoutData(LayoutUtil.createLeftGridData());
-		formToolkit.adapt(airCommentLabel, true, true);
-		airCommentLabel.setText("Comment");
+        airGradeList = new List(airGermsComposite, SWT.BORDER);
+        airGradeList.setLayoutData(LayoutUtil.createHorzFillData(2));
+        formToolkit.adapt(airGradeList, true, true);
+        // 0 = not rated
+        for (int i = 0; i < 6; i++) {
+            airGradeList.add(Integer.toString(i));
+        }
+        // TODO set 0 selected or grade from db
+        airGradeList.select(0);
 
-		airCommentCombo = new Combo(airGermsComposite, SWT.NONE);
-		airCommentCombo.setLayoutData(LayoutUtil.createHorzFillData(3));
-		formToolkit.adapt(airCommentCombo);
-		formToolkit.paintBordersFor(airCommentCombo);
+        airWeightList = new List(airGermsComposite, SWT.BORDER);
+        airWeightList.setLayoutData(LayoutUtil.createHorzFillData(2));
+        formToolkit.adapt(airWeightList, true, true);
+        for (int i = 1; i <= 6; i++) {
+            airWeightList.add(Integer.toString(i));
+        }
+        // TODO set category weight or weight from db
+        airWeightList.select(0);
 
-		// TODO fill with comments from db
-		// allow custom inputs
-		// use content proposals, like google search, see below
+        Label airCommentLabel = new Label(airGermsComposite, SWT.NONE);
+        airCommentLabel.setLayoutData(LayoutUtil.createLeftGridData());
+        formToolkit.adapt(airCommentLabel, true, true);
+        airCommentLabel.setText("Comment");
 
-		// example of content proposal
-		// TODO replace this with the content of comments
-		// set items first!
-		airCommentCombo.setItems(items);
-		ContentProposalUtil.enableContentProposal(airCommentCombo);
+        airCommentCombo = new Combo(airGermsComposite, SWT.NONE);
+        airCommentCombo.setLayoutData(LayoutUtil.createHorzFillData(3));
+        formToolkit.adapt(airCommentCombo);
+        formToolkit.paintBordersFor(airCommentCombo);
 
-		/********************************
-		 * tags components
-		 *******************************/
+        // TODO fill with comments from db
+        // allow custom inputs
+        // use content proposals, like google search, see below
 
-		Composite tagsComposite = new Composite(tagSection, SWT.NONE);
-		gl = new GridLayout(2, true);
-		gl.marginHeight = 0;
-		gl.marginWidth = 0;
-		tagsComposite.setLayout(gl);
-		tagsComposite.setLayoutData(LayoutUtil.createHorzFillData(4));
-		tagsComposite.setBackground(getDisplay().getSystemColor(SWT.COLOR_WHITE));
-		tagSection.setClient(tagsComposite);
+        // example of content proposal
+        // TODO replace this with the content of comments
+        // set items first!
+        airCommentCombo.setItems(items);
+        ContentProposalUtil.enableContentProposal(airCommentCombo);
 
-		nothingRadioButton = new Button(tagsComposite, SWT.RADIO);
-		formToolkit.adapt(nothingRadioButton, true, true);
-		nothingRadioButton.setLayoutData(LayoutUtil.createHorzFillData());
-		nothingRadioButton.setText("Nothing");
-		nothingRadioButton.setSelection(true);
+        /********************************
+         * tags components
+         *******************************/
 
-		airGermsRadioButton = new Button(tagsComposite, SWT.RADIO);
-		formToolkit.adapt(airGermsRadioButton, true, true);
-		airGermsRadioButton.setLayoutData(LayoutUtil
-				.createHorzFillData());
-		airGermsRadioButton.setText("Air germs meassurement");
+        Composite tagsComposite = new Composite(tagSection, SWT.NONE);
+        gl = new GridLayout(2, true);
+        gl.marginHeight = 0;
+        gl.marginWidth = 0;
+        tagsComposite.setLayout(gl);
+        tagsComposite.setLayoutData(LayoutUtil.createHorzFillData(4));
+        tagsComposite.setBackground(getDisplay().getSystemColor(SWT.COLOR_WHITE));
+        tagSection.setClient(tagsComposite);
 
-		waterAnalysisRadioButton = new Button(tagsComposite, SWT.RADIO);
-		formToolkit.adapt(waterAnalysisRadioButton, true, true);
-		waterAnalysisRadioButton.setLayoutData(LayoutUtil.createHorzFillData());
-		waterAnalysisRadioButton.setText("Water analysis / Legionella");
+        nothingRadioButton = new Button(tagsComposite, SWT.RADIO);
+        formToolkit.adapt(nothingRadioButton, true, true);
+        nothingRadioButton.setLayoutData(LayoutUtil.createHorzFillData());
+        nothingRadioButton.setText("Nothing");
+        nothingRadioButton.setSelection(true);
 
-		contactCultureRadioButton = new Button(tagsComposite, SWT.RADIO);
-		formToolkit.adapt(contactCultureRadioButton, true, true);
-		contactCultureRadioButton.setLayoutData(LayoutUtil.createHorzFillData());
-		contactCultureRadioButton.setText("Contact culture");
+        airGermsRadioButton = new Button(tagsComposite, SWT.RADIO);
+        formToolkit.adapt(airGermsRadioButton, true, true);
+        airGermsRadioButton.setLayoutData(LayoutUtil.createHorzFillData());
+        airGermsRadioButton.setText("Air germs meassurement");
 
-		sc.setMinSize(composite.computeSize(SWT.DEFAULT, SWT.DEFAULT));
-	}
+        waterAnalysisRadioButton = new Button(tagsComposite, SWT.RADIO);
+        formToolkit.adapt(waterAnalysisRadioButton, true, true);
+        waterAnalysisRadioButton.setLayoutData(LayoutUtil.createHorzFillData());
+        waterAnalysisRadioButton.setText("Water analysis / Legionella");
 
-	@Override
-	public void setSelectedComponent(Component component) {
-		// TODO Auto-generated method stub
+        contactCultureRadioButton = new Button(tagsComposite, SWT.RADIO);
+        formToolkit.adapt(contactCultureRadioButton, true, true);
+        contactCultureRadioButton.setLayoutData(LayoutUtil.createHorzFillData());
+        contactCultureRadioButton.setText("Contact culture");
 
-	}
+        sc.setMinSize(composite.computeSize(SWT.DEFAULT, SWT.DEFAULT));
+    }
 
-	@Override
-	protected void checkSubclass() {
-		// Disable the check that prevents subclassing of SWT components
-	}
+    @Override
+    public void setSelectedComponent(Component component) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    protected void checkSubclass() {
+        // Disable the check that prevents subclassing of SWT components
+    }
 }
