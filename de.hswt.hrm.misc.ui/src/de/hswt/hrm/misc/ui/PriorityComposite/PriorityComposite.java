@@ -32,11 +32,10 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Optional;
 
-import de.hswt.hrm.common.ui.swt.layouts.LayoutUtil;
 import de.hswt.hrm.common.ui.swt.table.ColumnDescription;
 import de.hswt.hrm.common.ui.swt.table.TableViewerController;
 import de.hswt.hrm.common.ui.swt.utils.SWTResourceManager;
-import de.hswt.hrm.misc.model.priorities.model.Priority;
+import de.hswt.hrm.misc.priority.model.Priority;
 
 public class PriorityComposite extends Composite {
 
@@ -90,6 +89,7 @@ public class PriorityComposite extends Composite {
 
         composite = new Composite(this, SWT.NONE);
         composite.setLayout(new GridLayout(2, false));
+        new Label(composite, SWT.NONE);
 
         tableViewer = new TableViewer(composite, SWT.BORDER | SWT.FULL_SELECTION);
         tableViewer.addDoubleClickListener(new IDoubleClickListener() {

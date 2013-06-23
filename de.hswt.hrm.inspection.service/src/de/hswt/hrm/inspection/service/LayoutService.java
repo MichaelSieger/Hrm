@@ -27,7 +27,7 @@ public class LayoutService {
 
         checkNotNull(layoutDao, "LayoutDao must be injected properly");
         this.layoutDao = layoutDao;
-        LOG.debug("LAyout Dao injected successfully");
+        LOG.debug("Layout Dao injected successfully");
     }
 
     public Collection<Layout> findAll() throws DatabaseException {

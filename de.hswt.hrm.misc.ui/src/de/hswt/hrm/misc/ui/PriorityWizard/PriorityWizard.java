@@ -13,7 +13,7 @@ import com.google.common.base.Optional;
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.SaveException;
 import de.hswt.hrm.misc.comment.model.Comment;
-import de.hswt.hrm.misc.model.priorities.model.Priority;
+import de.hswt.hrm.misc.priority.model.Priority;
 
 public class PriorityWizard extends Wizard {
 
