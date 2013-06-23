@@ -124,7 +124,7 @@ public class CommentWizardPageOne extends WizardPage {
         }
 
         else if (isAlreadyPresent(nameText.getText())) {
-            setErrorMessage("A Component with name " + nameText.getText() + " is already present");
+            setErrorMessage("A Comment with name " + nameText.getText() + " is already present");
         }
 
     }
