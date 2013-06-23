@@ -119,8 +119,34 @@ public class PriorityDao implements IPriorityDao {
 
     @Override
     public void update(Priority priority) throws ElementNotFoundException, SaveException {
-        // TODO Auto-generated method stub
+        checkNotNull(priority, "Priority must not be null.");
 
+        if (priority.getId() < 0) {
+            throw new ElementNotFoundException("Element has no valid ID.");
+        }
+
+        SqlQueryBuilder builder = new SqlQueryBuilder();
+        builder.update(TABLE_NAME, Fields.NAME, Fields.TEXT, Fields.PRIORITY);
+        builder.where(Fields.ID);
+
+        final String query = builder.toString();
+
+        try (Connection con = DatabaseFactory.getConnection()) {
+            try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
+                stmt.setParameter(Fields.ID, priority.getId());
+                stmt.setParameter(Fields.NAME, priority.getName());
+                stmt.setParameter(Fields.TEXT, priority.getText());
+                stmt.setParameter(Fields.PRIORITY, priority.getPriority());
+
+                int affectedRows = stmt.executeUpdate();
+                if (affectedRows != 1) {
+                    throw new SaveException();
+                }
+            }
+        }
+        catch (SQLException | DatabaseException e) {
+            throw new SaveException(e);
+        }
     }
 
     private Collection<Priority> fromResultSet(ResultSet rs) throws SQLException {
