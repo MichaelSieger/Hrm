@@ -21,8 +21,8 @@ public class Inspection {
     private Calendar inspectionDate;
     private Calendar reportDate;
     private Calendar nextInspectionDate;
-    private int temperature;
-    private int humidity;
+    private float temperature;
+    private float humidity;
     private String summary;
     private String title;
     private int temperatureRating;
@@ -120,7 +120,7 @@ public class Inspection {
         this.nextInspectionDate = nextInspectionDate;
     }
 
-    public Optional<Integer> getTemperature() {
+    public Optional<Float> getTemperature() {
         return Optional.fromNullable(temperature);
     }
 
@@ -129,7 +129,7 @@ public class Inspection {
         this.temperature = temperature;
     }
 
-    public Optional<Integer> getHumidity() {
+    public Optional<Float> getHumidity() {
         return Optional.fromNullable(humidity);
     }
 
@@ -206,6 +206,165 @@ public class Inspection {
 
     public void setPlantpicture(Photo plantpicture) {
         this.plantpicture = plantpicture;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((checker == null) ? 0 : checker.hashCode());
+        result = prime * result + ((contractor == null) ? 0 : contractor.hashCode());
+        result = prime * result + ((frontpicture == null) ? 0 : frontpicture.hashCode());
+        result = prime * result + Float.floatToIntBits(humidity);
+        result = prime * result + humidityQuantifier;
+        result = prime * result + humidityRating;
+        result = prime * result + id;
+        result = prime * result + ((inspectionDate == null) ? 0 : inspectionDate.hashCode());
+        result = prime * result + ((layout == null) ? 0 : layout.hashCode());
+        result = prime * result
+                + ((nextInspectionDate == null) ? 0 : nextInspectionDate.hashCode());
+        result = prime * result + ((plant == null) ? 0 : plant.hashCode());
+        result = prime * result + ((plantpicture == null) ? 0 : plantpicture.hashCode());
+        result = prime * result + ((reportDate == null) ? 0 : reportDate.hashCode());
+        result = prime * result + ((requester == null) ? 0 : requester.hashCode());
+        result = prime * result + ((summary == null) ? 0 : summary.hashCode());
+        result = prime * result + Float.floatToIntBits(temperature);
+        result = prime * result + temperatureQuantifier;
+        result = prime * result + temperatureRating;
+        result = prime * result + ((title == null) ? 0 : title.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        Inspection other = (Inspection) obj;
+        if (checker == null) {
+            if (other.checker != null) {
+                return false;
+            }
+        }
+        else if (!checker.equals(other.checker)) {
+            return false;
+        }
+        if (contractor == null) {
+            if (other.contractor != null) {
+                return false;
+            }
+        }
+        else if (!contractor.equals(other.contractor)) {
+            return false;
+        }
+        if (frontpicture == null) {
+            if (other.frontpicture != null) {
+                return false;
+            }
+        }
+        else if (!frontpicture.equals(other.frontpicture)) {
+            return false;
+        }
+        if (Float.floatToIntBits(humidity) != Float.floatToIntBits(other.humidity)) {
+            return false;
+        }
+        if (humidityQuantifier != other.humidityQuantifier) {
+            return false;
+        }
+        if (humidityRating != other.humidityRating) {
+            return false;
+        }
+        if (id != other.id) {
+            return false;
+        }
+        if (inspectionDate == null) {
+            if (other.inspectionDate != null) {
+                return false;
+            }
+        }
+        else if (!inspectionDate.equals(other.inspectionDate)) {
+            return false;
+        }
+        if (layout == null) {
+            if (other.layout != null) {
+                return false;
+            }
+        }
+        else if (!layout.equals(other.layout)) {
+            return false;
+        }
+        if (nextInspectionDate == null) {
+            if (other.nextInspectionDate != null) {
+                return false;
+            }
+        }
+        else if (!nextInspectionDate.equals(other.nextInspectionDate)) {
+            return false;
+        }
+        if (plant == null) {
+            if (other.plant != null) {
+                return false;
+            }
+        }
+        else if (!plant.equals(other.plant)) {
+            return false;
+        }
+        if (plantpicture == null) {
+            if (other.plantpicture != null) {
+                return false;
+            }
+        }
+        else if (!plantpicture.equals(other.plantpicture)) {
+            return false;
+        }
+        if (reportDate == null) {
+            if (other.reportDate != null) {
+                return false;
+            }
+        }
+        else if (!reportDate.equals(other.reportDate)) {
+            return false;
+        }
+        if (requester == null) {
+            if (other.requester != null) {
+                return false;
+            }
+        }
+        else if (!requester.equals(other.requester)) {
+            return false;
+        }
+        if (summary == null) {
+            if (other.summary != null) {
+                return false;
+            }
+        }
+        else if (!summary.equals(other.summary)) {
+            return false;
+        }
+        if (Float.floatToIntBits(temperature) != Float.floatToIntBits(other.temperature)) {
+            return false;
+        }
+        if (temperatureQuantifier != other.temperatureQuantifier) {
+            return false;
+        }
+        if (temperatureRating != other.temperatureRating) {
+            return false;
+        }
+        if (title == null) {
+            if (other.title != null) {
+                return false;
+            }
+        }
+        else if (!title.equals(other.title)) {
+            return false;
+        }
+        return true;
     }
 
 }
