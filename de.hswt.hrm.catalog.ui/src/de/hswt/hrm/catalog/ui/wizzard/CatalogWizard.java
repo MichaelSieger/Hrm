@@ -76,7 +76,7 @@ public class CatalogWizard extends Wizard {
             }
             else if (i instanceof Current) {
                 catalogService.updateCurrent((Current) i);
-                System.out.println("item instance of Current");
+
             }
             else if (i instanceof Target) {
                 catalogService.updateTarget((Target) i);
