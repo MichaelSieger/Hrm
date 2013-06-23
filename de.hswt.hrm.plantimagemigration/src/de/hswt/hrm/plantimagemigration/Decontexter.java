@@ -30,6 +30,7 @@ public class Decontexter {
                     String line = sc.nextLine();
                     for (String[] rep : REPLACE) {
                         line = line.replaceAll(rep[0], rep[1]);
+                        line = addOpacity(line);
                     }
                     if (isBlacklisted(line)) {
                         continue;
@@ -41,7 +42,17 @@ public class Decontexter {
         }
     }
 
-    private boolean isBlacklisted(String s) {
+	private String addOpacity(String line) {
+		if (!line.startsWith("\\psframe") &&
+				!line.startsWith("\\pspolygon")) {
+			return line;
+		}
+		// if this makes no transparency, try to add opacity=0.0
+		String l = line.replaceFirst("fillstyle=solid", "fillstyle=none");
+		return l.replace("]", ", opacity=0.0]");
+	}
+
+	private boolean isBlacklisted(String s) {
         for (String black : BLACKLIST) {
             if (s.startsWith(black)) {
                 return true;
@@ -50,8 +61,6 @@ public class Decontexter {
         return false;
     }
 
-    //\psframe[linewidth=0.1pt](0,0)(1,1)
-
     private void appendPreamble(PrintWriter w) {
         w.println("\\documentclass{minimal}");
         w.println("\\usepackage{auto-pst-pdf}");
@@ -59,6 +68,9 @@ public class Decontexter {
         w.println("\\usepackage{pstricks-add}");
         w.println("\\usepackage{pst-all}");
         w.println("\\usepackage[utf8]{inputenc}");
+//        w.println("\\usepackage[T1]{fontenc}");
+        w.println("\\usepackage{helvet}");
+        w.println("\\renewcommand{\\rmdefault}{\\sfdefault}");
         w.println("\\begin{document}");
         w.println("\\thispagestyle{empty}");
         w.println("\\begin{pspicture}");
@@ -82,9 +94,9 @@ public class Decontexter {
         	}
     	}
 
-        w.println("\\psframe[linewidth=0.1pt](0,0)(" + width + "," + height + ")");
+        w.println("\\psframe[fillstyle=none, linewidth=0.1pt, opacity=0.0](0,0)(" + width + "," + height + ")");
     }
-    
+
     private void appendFooter(PrintWriter w) {
         w.println("\\end{pspicture}");
         w.println("\\end{document}");
