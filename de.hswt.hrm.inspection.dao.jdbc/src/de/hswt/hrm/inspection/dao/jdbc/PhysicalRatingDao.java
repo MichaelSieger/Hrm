@@ -26,14 +26,14 @@ import de.hswt.hrm.inspection.model.Inspection;
 import de.hswt.hrm.inspection.model.PhysicalRating;
 
 public class PhysicalRatingDao implements IPhysicalRatingDao {
-	private final IInspectionDao inspectionDao;
+    private final IInspectionDao inspectionDao;
     private final IComponentDao componentDao;
 
     // TODO: add LOG messages
     @Inject
     public PhysicalRatingDao(final IInspectionDao inspectionDao, final IComponentDao componentDao) {
-    	checkNotNull(inspectionDao, "Inspectiondao not properly injected to PhysicalRatingDao");
-    	checkNotNull(componentDao, "ComponentDao not properly injected to PhysicalRatingDao.");
+        checkNotNull(inspectionDao, "Inspectiondao not properly injected to PhysicalRatingDao");
+        checkNotNull(componentDao, "ComponentDao not properly injected to PhysicalRatingDao.");
 
         this.inspectionDao = inspectionDao;
         this.componentDao = componentDao;
@@ -43,7 +43,7 @@ public class PhysicalRatingDao implements IPhysicalRatingDao {
     public Collection<PhysicalRating> findAll() throws DatabaseException {
         SqlQueryBuilder builder = new SqlQueryBuilder();
         builder.select(TABLE_NAME, Fields.ID, Fields.RATING, Fields.NOTE, Fields.COMPONENT_FK,
-                Fields.REPORT_FK);
+                Fields.REPORT_FK, Fields.QUANTIFIER);
 
         String query = builder.toString();
 
@@ -51,7 +51,8 @@ public class PhysicalRatingDao implements IPhysicalRatingDao {
             try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
 
                 ResultSet rs = stmt.executeQuery();
-                Collection<PhysicalRating> ratings = fromResultSet(rs, Optional.<Inspection>absent());
+                Collection<PhysicalRating> ratings = fromResultSet(rs,
+                        Optional.<Inspection> absent());
                 rs.close();
 
                 return ratings;
@@ -69,7 +70,7 @@ public class PhysicalRatingDao implements IPhysicalRatingDao {
 
         SqlQueryBuilder builder = new SqlQueryBuilder();
         builder.select(TABLE_NAME, Fields.ID, Fields.RATING, Fields.NOTE, Fields.COMPONENT_FK,
-                Fields.REPORT_FK);
+                Fields.REPORT_FK, Fields.QUANTIFIER);
         builder.where(Fields.ID);
 
         String query = builder.toString();
@@ -79,7 +80,8 @@ public class PhysicalRatingDao implements IPhysicalRatingDao {
                 stmt.setParameter(Fields.ID, id);
 
                 ResultSet rs = stmt.executeQuery();
-                Collection<PhysicalRating> ratings = fromResultSet(rs, Optional.<Inspection>absent());
+                Collection<PhysicalRating> ratings = fromResultSet(rs,
+                        Optional.<Inspection> absent());
                 rs.close();
 
                 if (ratings.isEmpty()) {
@@ -101,7 +103,7 @@ public class PhysicalRatingDao implements IPhysicalRatingDao {
     public PhysicalRating insert(PhysicalRating physicalRating) throws SaveException {
         SqlQueryBuilder builder = new SqlQueryBuilder();
         builder.insert(TABLE_NAME, Fields.RATING, Fields.NOTE, Fields.COMPONENT_FK,
-                Fields.REPORT_FK);
+                Fields.REPORT_FK, Fields.QUANTIFIER);
 
         final String query = builder.toString();
 
@@ -111,6 +113,7 @@ public class PhysicalRatingDao implements IPhysicalRatingDao {
                 stmt.setParameter(Fields.NOTE, physicalRating.getNote());
                 stmt.setParameter(Fields.COMPONENT_FK, physicalRating.getComponent().get().getId());
                 stmt.setParameter(Fields.REPORT_FK, physicalRating.getInspection().get().getId());
+                stmt.setParameter(Fields.QUANTIFIER, physicalRating.getQuantifier());
 
                 int affectedRows = stmt.executeUpdate();
                 if (affectedRows != 1) {
@@ -123,7 +126,8 @@ public class PhysicalRatingDao implements IPhysicalRatingDao {
 
                         // Create new Physical Rating with id
                         PhysicalRating inserted = new PhysicalRating(id,
-                                physicalRating.getRating(), physicalRating.getNote());
+                                physicalRating.getRating(), physicalRating.getNote(),
+                                physicalRating.getQuantifier());
 
                         inserted.setComponent(physicalRating.getComponent().orNull());
                         inserted.setInspection(physicalRating.getInspection().orNull());
@@ -153,7 +157,7 @@ public class PhysicalRatingDao implements IPhysicalRatingDao {
 
         SqlQueryBuilder builder = new SqlQueryBuilder();
         builder.update(TABLE_NAME, Fields.RATING, Fields.NOTE, Fields.COMPONENT_FK,
-                Fields.REPORT_FK);
+                Fields.REPORT_FK, Fields.QUANTIFIER);
         builder.where(Fields.ID);
 
         final String query = builder.toString();
@@ -164,6 +168,7 @@ public class PhysicalRatingDao implements IPhysicalRatingDao {
                 stmt.setParameter(Fields.NOTE, physicalRating.getNote());
                 stmt.setParameter(Fields.COMPONENT_FK, physicalRating.getComponent().get().getId());
                 stmt.setParameter(Fields.REPORT_FK, physicalRating.getInspection().get().getId());
+                stmt.setParameter(Fields.QUANTIFIER, physicalRating.getQuantifier());
 
                 int affectedRows = stmt.executeUpdate();
                 if (affectedRows != 1) {
@@ -185,7 +190,7 @@ public class PhysicalRatingDao implements IPhysicalRatingDao {
 
         SqlQueryBuilder builder = new SqlQueryBuilder();
         builder.select(TABLE_NAME, Fields.ID, Fields.RATING, Fields.NOTE, Fields.COMPONENT_FK,
-                Fields.REPORT_FK);
+                Fields.REPORT_FK, Fields.QUANTIFIER);
         builder.where(Fields.REPORT_FK);
 
         String query = builder.toString();
@@ -208,17 +213,17 @@ public class PhysicalRatingDao implements IPhysicalRatingDao {
     /**
      * 
      * @param rs
-     * @param inspection Optional field which can be used to avoid loading an
-     * 				     already present inspection.
+     * @param inspection
+     *            Optional field which can be used to avoid loading an already present inspection.
      * @return
      * @throws SQLException
      * @throws ElementNotFoundException
      * @throws DatabaseException
      */
-    private Collection<PhysicalRating> fromResultSet(final ResultSet rs, 
-    		Optional<Inspection> inspection) 
-    				throws SQLException, ElementNotFoundException, DatabaseException {
-    	
+    private Collection<PhysicalRating> fromResultSet(final ResultSet rs,
+            Optional<Inspection> inspection) throws SQLException, ElementNotFoundException,
+            DatabaseException {
+
         checkNotNull(rs, "Result must not be null.");
         Collection<PhysicalRating> physicalRatingList = new ArrayList<>();
 
@@ -226,17 +231,18 @@ public class PhysicalRatingDao implements IPhysicalRatingDao {
             int id = rs.getInt(Fields.ID);
             int rating = rs.getInt(Fields.RATING);
             String note = rs.getString(Fields.NOTE);
-            PhysicalRating physicalRating = new PhysicalRating(id, rating, note);
+            int quantifier = rs.getInt(Fields.QUANTIFIER);
+            PhysicalRating physicalRating = new PhysicalRating(id, rating, note, quantifier);
             physicalRating.setComponent(componentDao.findById(rs.getInt(Fields.COMPONENT_FK)));
             physicalRatingList.add(physicalRating);
-            
+
             int inspectionId = rs.getInt(Fields.REPORT_FK);
-            
+
             // If we don't have the inspection or it doesn't match -> retrieve it
             if (!inspection.isPresent() || inspection.get().getId() != inspectionId) {
-            	inspection = Optional.of(inspectionDao.findById(inspectionId));
+                inspection = Optional.of(inspectionDao.findById(inspectionId));
             }
-            physicalRating.setInspection(inspection.get());            
+            physicalRating.setInspection(inspection.get());
         }
 
         return physicalRatingList;
@@ -250,5 +256,6 @@ public class PhysicalRatingDao implements IPhysicalRatingDao {
         private static final String NOTE = "Component_Physical_Rating_Note";
         private static final String COMPONENT_FK = "Component_Physical_Rating_Component_FK";
         private static final String REPORT_FK = "Component_Physical_Rating_Report_FK";
+        private static final String QUANTIFIER = "Component_Physical_Rating_Quantifier";
     }
 }
