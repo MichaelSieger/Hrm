@@ -275,7 +275,7 @@ public class PlantPartUtil {
     }
 
     private static ColumnDescription<Plant> getNote() {
-        return new ColumnDescription<Plant>(I18N.tr("Note"), new ColumnLabelProvider() {
+        return new ColumnDescription<Plant>(I18N.tr("Notes"), new ColumnLabelProvider() {
             @Override
             public String getText(Object element) {
                 Plant p = (Plant) element;
