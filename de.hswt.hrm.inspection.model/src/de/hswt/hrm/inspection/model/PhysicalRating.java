@@ -21,14 +21,14 @@ public class PhysicalRating {
     private static final String IS_MANDATORY = "Field is a mandatory.";
     private static final String INVALID_NUMBER = "%d is an invalid number.%n Must be greater 0";
 
-    public PhysicalRating(int id, int rating, String note) {
+    public PhysicalRating(int id, int rating, String note, int quantifier) {
         this.id = id;
         setRating(rating);
         setNote(note);
     }
 
-    public PhysicalRating(int rating, String note) {
-        this(-1, rating, note);
+    public PhysicalRating(int rating, String note, int quantifier) {
+        this(-1, rating, note, quantifier);
     }
 
     public int getRating() {
@@ -76,6 +76,7 @@ public class PhysicalRating {
     }
 
     public void setQuantifier(int quantifier) {
+        checkArgument(quantifier > 0, INVALID_NUMBER, quantifier);
         this.quantifier = quantifier;
     }
 
