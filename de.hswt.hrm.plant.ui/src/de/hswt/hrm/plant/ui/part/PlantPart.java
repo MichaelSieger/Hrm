@@ -1,44 +1,65 @@
 package de.hswt.hrm.plant.ui.part;
 
+import java.io.IOException;
+import java.util.Collection;
+import java.util.List;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 
 import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
+import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.ActionContributionItem;
 import org.eclipse.jface.action.IContributionItem;
+import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.DoubleClickEvent;
+import org.eclipse.jface.viewers.IDoubleClickListener;
+import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.window.IShellProvider;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.TabFolder;
-import org.eclipse.swt.widgets.TabItem;
-import org.eclipse.ui.forms.widgets.Form;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.SWT;
 import org.eclipse.ui.forms.widgets.FormToolkit;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.forms.widgets.Form;
 import org.eclipse.ui.forms.widgets.Section;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Optional;
+import com.google.common.base.Throwables;
 
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.ElementNotFoundException;
+import de.hswt.hrm.common.ui.swt.constants.SearchFieldConstants;
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.common.ui.swt.layouts.LayoutUtil;
-import de.hswt.hrm.component.service.ComponentService;
+import de.hswt.hrm.common.ui.swt.table.ColumnComparator;
+import de.hswt.hrm.common.ui.swt.table.ColumnDescription;
+import de.hswt.hrm.common.ui.swt.table.TableViewerController;
 import de.hswt.hrm.plant.model.Plant;
 import de.hswt.hrm.plant.service.PlantService;
-import de.hswt.hrm.plant.ui.shared.PlantComposite;
+import de.hswt.hrm.plant.ui.shared.filter.PlantFilter;
+import de.hswt.hrm.plant.ui.shared.util.PlantPartUtil;
 import de.hswt.hrm.scheme.model.Scheme;
 import de.hswt.hrm.scheme.service.SchemeService;
 import de.hswt.hrm.scheme.ui.part.SchemeComposite;
+
+import org.eclipse.swt.widgets.TabFolder;
+import org.eclipse.swt.widgets.TabItem;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 
 public class PlantPart {
 
@@ -46,12 +67,9 @@ public class PlantPart {
 
     @Inject
     private PlantService plantService;
-
+    
     @Inject
     private SchemeService schemeService;
-
-    @Inject
-    private ComponentService componentService;
 
     @Inject
     private IShellProvider shellProvider;
@@ -64,19 +82,23 @@ public class PlantPart {
 
     private FormToolkit toolkit = new FormToolkit(Display.getDefault());
 
+    private Table table;
+    private Text searchText;
+    private TableViewer tableViewer;
+
     private IContributionItem addContribution;
     private IContributionItem editContribution;
     private IContributionItem editSchemeContribution;
 
     private Section plantsHeaderSection;
+    private Composite composite;
     private TabFolder tabFolder;
     private TabItem plantsTab;
     private TabItem schemeTab;
 
     private Form form;
 
-    private SchemeComposite schemeComposite;
-    private PlantComposite plantComposite;
+	private SchemeComposite schemeComposite;
 
     public PlantPart() {
         // toolkit can be created in PostConstruct, but then then
@@ -122,49 +144,76 @@ public class PlantPart {
             public void widgetSelected(SelectionEvent e) {
                 if (tabFolder.getItem(tabFolder.getSelectionIndex()).equals(plantsTab)) {
                     showPlantActions();
-                }
-                else if (tabFolder.getItem(tabFolder.getSelectionIndex()).equals(schemeTab)) {
-                    initSchemeTabForSelection();
-                }
-                else {
-                    hideAllActions();
-                    form.getToolBarManager().update(true);
+                } else if (tabFolder.getItem(tabFolder.getSelectionIndex()).equals(schemeTab)) {
+                	initSchemeTabForSelection();
+                } else {
+                	hideAllActions();
+                	form.getToolBarManager().update(true);
                 }
             }
         });
-
+        
         plantsHeaderSection = toolkit.createSection(tabFolder, Section.TITLE_BAR);
         plantsTab.setControl(plantsHeaderSection);
         toolkit.paintBordersFor(plantsHeaderSection);
         plantsHeaderSection.setExpanded(true);
         FormUtil.initSectionColors(plantsHeaderSection);
 
-        // composite = toolkit.createComposite(plantsHeaderSection, SWT.NONE);
-        // toolkit.paintBordersFor(composite);
-        // plantsHeaderSection.setClient(composite);
-        // composite.setLayout(new GridLayout(1, false));
+        composite = toolkit.createComposite(plantsHeaderSection, SWT.NONE);
+        toolkit.paintBordersFor(composite);
+        plantsHeaderSection.setClient(composite);
+        composite.setLayout(new GridLayout(1, false));
 
-        plantComposite = new PlantComposite(plantsHeaderSection);
-        ContextInjectionFactory.inject(plantComposite, context);
-        plantsHeaderSection.setClient(plantComposite);
+        searchText = new Text(composite, SWT.BORDER | SWT.SEARCH | SWT.ICON_SEARCH | SWT.CANCEL
+                | SWT.ICON_CANCEL);
+        searchText.setMessage(SearchFieldConstants.DEFAULT_SEARCH_STRING);
+        searchText.addModifyListener(new ModifyListener() {
+            public void modifyText(ModifyEvent e) {
+                updateTableFilter(searchText.getText());
+            }
+        });
+        searchText.setLayoutData(LayoutUtil.createHorzFillData());
+        toolkit.adapt(searchText, true, true);
 
+        tableViewer = new TableViewer(composite, SWT.BORDER | SWT.FULL_SELECTION);
+        tableViewer.addDoubleClickListener(new IDoubleClickListener() {
+            public void doubleClick(DoubleClickEvent event) {
+                editPlant();
+            }
+        });
+        table = tableViewer.getTable();
+        table.setLinesVisible(true);
+        table.setHeaderVisible(true);
         GridData gd = LayoutUtil.createFillData();
         gd.widthHint = 800;
         gd.heightHint = 300;
+        table.setLayoutData(gd);
+        toolkit.paintBordersFor(table);
+
         schemeTab = new TabItem(tabFolder, SWT.NONE);
         schemeTab.setText("Scheme");
+
+        schemeComposite = new SchemeComposite(tabFolder);
+        ContextInjectionFactory.inject(schemeComposite, context);
+    	for (IContributionItem item : schemeComposite.getContributionItems()) {
+    		form.getToolBarManager().add(item);
+        }
+        schemeTab.setControl(schemeComposite);
+
+        initializeTable();
+        refreshTable();
 
         if (plantService == null) {
             LOG.error("PlantService not injected to PlantPart.");
         }
     }
 
-    private void createActions() {
+	private void createActions() {
         // TODO translate
         Action schemeAction = new Action("Edit Scheme") {
             @Override
             public void run() {
-                initSchemeTabForSelection();
+            	initSchemeTabForSelection();
             }
         };
         schemeAction.setDescription("Edit the scheme of the selected plant.");
@@ -175,7 +224,7 @@ public class PlantPart {
             @Override
             public void run() {
                 super.run();
-                plantComposite.editPlant();
+                editPlant();
             }
         };
         editAction.setDescription("Edit an exisitng plant.");
@@ -186,7 +235,7 @@ public class PlantPart {
             @Override
             public void run() {
                 super.run();
-                plantComposite.addPlant();
+                addPlant();
             }
         };
         addAction.setDescription("Add's a new plant.");
@@ -197,15 +246,15 @@ public class PlantPart {
     }
 
     private void showSchemeActions() {
-        hideAllActions();
-        for (IContributionItem item : schemeComposite.getContributionItems()) {
-            item.setVisible(true);
+    	hideAllActions();
+    	for (IContributionItem item : schemeComposite.getContributionItems()) {
+        	item.setVisible(true);
         }
         form.getToolBarManager().update(true);
     }
-
+    
     private void showPlantActions() {
-        hideAllActions();
+    	hideAllActions();
         addContribution.setVisible(true);
         editContribution.setVisible(true);
         editSchemeContribution.setVisible(true);
@@ -216,14 +265,12 @@ public class PlantPart {
         addContribution.setVisible(false);
         editContribution.setVisible(false);
         editSchemeContribution.setVisible(false);
-        if (schemeComposite != null) {
-            for (IContributionItem item : schemeComposite.getContributionItems()) {
-                item.setVisible(false);
-            }
+        for (IContributionItem item : schemeComposite.getContributionItems()) {
+        	item.setVisible(false);
         }
         form.getToolBarManager().update(true);
     }
-
+    
     @PreDestroy
     public void dispose() {
         if (toolkit != null) {
@@ -231,38 +278,133 @@ public class PlantPart {
         }
     }
 
-    protected void initSchemeTabForSelection() {
-        hideAllActions();
-        tabFolder.setSelection(schemeTab);
+    @Focus
+    public void setFocus() {
+    }
 
-        Optional<Plant> plant = plantComposite.getPlant();
-        if (!plant.isPresent()) {
-            schemeTab.setControl(null);
-            return;
-        }
-
-        Scheme scheme = null;
+    private void refreshTable() {
         try {
-            scheme = schemeService.findCurrentSchemeByPlant(plant.get());
-        }
-        catch (ElementNotFoundException e) {
-            scheme = new Scheme(plant.get());
-            LOG.info(String.format("No scheme found for plant '%d'", plant.get().getId()));
+            tableViewer.setInput(plantService.findAll());
         }
         catch (DatabaseException e) {
-            LOG.error("Error loading scheme.", e);
-            // FIXME: Add message box.
-            return;
+            LOG.error("Unable to retrieve list of plants.", e);
+            showDBConnectionError();
         }
-        schemeComposite = new SchemeComposite(tabFolder, SWT.NONE, componentService, scheme);
-        ContextInjectionFactory.inject(schemeComposite, context);
-        for (IContributionItem item : schemeComposite.getContributionItems()) {
-            form.getToolBarManager().add(item);
-        }
-        schemeTab.setControl(schemeComposite);
+    }
 
-        showSchemeActions();
+    private void showDBConnectionError() {
+        // TODO translate
+        MessageDialog.openError(shellProvider.getShell(), "Connection Error",
+                "Could not load plants from Database.");
+    }
+
+    private void updateTableFilter(String filterString) {
+        PlantFilter filter = (PlantFilter) tableViewer.getFilters()[0];
+        filter.setSearchString(filterString);
+        tableViewer.refresh();
+    }
+
+    private void initializeTable() {
+        List<ColumnDescription<Plant>> columns = PlantPartUtil.getColumns();
+
+        // Create columns in tableviewer
+        TableViewerController<Plant> filler = new TableViewerController<>(tableViewer);
+        filler.createColumns(columns);
+
+        // Enable column selection
+        filler.createColumnSelectionMenu();
+
+        // Enable sorting
+        ColumnComparator<Plant> comparator = new ColumnComparator<>(columns);
+        filler.enableSorting(comparator);
+
+        // Add dataprovider that handles our collection
+        tableViewer.setContentProvider(ArrayContentProvider.getInstance());
+
+        // Enable filtering
+        tableViewer.addFilter(new PlantFilter());
+    }
+
+    private void addPlant() {
+        Optional<Plant> newPlant = PlantPartUtil.showWizard(context, shellProvider.getShell(),
+                Optional.<Plant> absent());
+
+        @SuppressWarnings("unchecked")
+        Collection<Plant> contacs = (Collection<Plant>) tableViewer.getInput();
+        if (newPlant.isPresent()) {
+            contacs.add(newPlant.get());
+            tableViewer.refresh();
+        }
+    }
+
+    /**
+     * This method is called whenever a doubleClick onto the TableViewer occurs. It obtains the
+     * Plant from the selected column of the TableViewer. The Plant is passed to the PlantWizard.
+     * When the Wizard has finished, the Plant will be updated in the Database
+     */
+    private void editPlant() {
+
+    	Optional<Plant> plant = getSelectedPlant();
+    	if(!plant.isPresent()){
+    		return;
+    	}
+        // Refresh the selected place with values from the database
+        try {
+            plantService.refresh(plant.get());
+            Optional<Plant> updatedPlant = PlantPartUtil.showWizard(context,
+                    shellProvider.getShell(), Optional.of(plant.get()));
+
+            if (updatedPlant.isPresent()) {
+                tableViewer.refresh();
+            }
+        }
+        catch (DatabaseException e) {
+            LOG.error("Could not retrieve the plant from database.", e);
+            showDBConnectionError();
+        }
+    }
+
+    protected void initSchemeTabForSelection() {
+        hideAllActions();
+    	tabFolder.setSelection(schemeTab);
+        
+    	Optional<Plant> plant = getSelectedPlant();
+    	if(!plant.isPresent()){
+    		schemeComposite.setVisible(false);
+    		return;
+    	}
+    	
+    	Scheme scheme = null;
+    	try {
+    		scheme = schemeService.findCurrentSchemeByPlant(plant.get());
+    	}
+    	catch (ElementNotFoundException e) {
+        	scheme = new Scheme(plant.get());
+    		LOG.info(String.format("No scheme found for plant '%d'", plant.get().getId()));
+        }
+        catch (DatabaseException e) {
+        	LOG.error("Error loading scheme.", e);
+        	// FIXME: Add message box.
+        	return;
+        }
+    	
+        try {
+			schemeComposite.modifyScheme(scheme);
+		} 
+        catch (IOException e) {
+			Throwables.propagate(e);
+		}
+        
+    	showSchemeActions();
         schemeComposite.setVisible(true);
+	}
+    
+    private Optional<Plant> getSelectedPlant(){
+        if (table.getSelectionIndex() < 0) {
+            return Optional.absent();
+        }
+    	return Optional.fromNullable((Plant) tableViewer.getElementAt(tableViewer.getTable()
+                .getSelectionIndex()));
     }
 
 }
