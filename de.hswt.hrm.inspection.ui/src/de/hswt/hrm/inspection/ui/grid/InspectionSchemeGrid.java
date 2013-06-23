@@ -1,7 +1,6 @@
 package de.hswt.hrm.inspection.ui.grid;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-import java.io.IOException;
+import java.util.Collection;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
@@ -9,15 +8,11 @@ import org.eclipse.swt.widgets.Composite;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.base.Function;
 import com.google.common.base.Optional;
-import com.google.common.collect.Collections2;
 
 import de.hswt.hrm.component.model.Category;
-import de.hswt.hrm.scheme.model.RenderedComponent;
 import de.hswt.hrm.scheme.model.Scheme;
 import de.hswt.hrm.scheme.model.SchemeComponent;
-import de.hswt.hrm.scheme.service.ComponentConverter;
 import de.hswt.hrm.scheme.ui.SchemeGrid;
 import de.hswt.hrm.scheme.ui.SchemeGridItem;
 
@@ -36,30 +31,11 @@ public class InspectionSchemeGrid {
 	private static final int PPG = 50;
 	
 	private final SchemeGrid grid;
-	private final Scheme scheme;
 	private SchemeComponent selected;
 	private SchemeComponentSelectionListener listener;
 	
-	public InspectionSchemeGrid(final Composite parent, int style, Scheme scheme){
-		checkNotNull(scheme);
-		this.scheme = scheme;
+	public InspectionSchemeGrid(final Composite parent, int style){
 		grid = new SchemeGrid(parent, style, 1, 1, PPG);
-		grid.setItems(Collections2.transform(scheme.getSchemeComponents(), new Function<SchemeComponent, SchemeGridItem>() {
-			public SchemeGridItem apply(SchemeComponent comp){
-				RenderedComponent rcomp = null;;
-				try {
-					rcomp = ComponentConverter.convert(parent.getDisplay(), comp.getComponent());
-				} catch (IOException e) {
-					LOG.error("Error on rendering Component", e);
-					return null;
-				}
-				return new SchemeGridItem(
-						rcomp, 
-						comp.getDirection(), 
-						comp.getX(), 
-						comp.getY());
-			}
-		}));
 	}
 	
 	/**
@@ -92,6 +68,11 @@ public class InspectionSchemeGrid {
 			grid.clearColors();
 			grid.setColor(getColor(), selected.getX(), selected.getY(), c.get().getWidth(), c.get().getHeight(), false, false);
 		}
+	}
+	
+	public void setItems(Collection<SchemeGridItem> items){
+		setSelected(null);
+		grid.setItems(items);
 	}
 	
 	private Color getColor(){
