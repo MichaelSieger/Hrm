@@ -2,6 +2,8 @@ package de.hswt.hrm.scheme.ui;
 
 import org.eclipse.swt.graphics.Color;
 
+import com.google.common.base.Preconditions;
+
 public class Colorbox {
 	
 	private final double x, y, width, height;
@@ -10,6 +12,8 @@ public class Colorbox {
 	
 	public Colorbox(double x, double y, double width, double height, Color color, boolean fill) {
 		super();
+		Preconditions.checkArgument(width > 0);
+		Preconditions.checkArgument(height > 0);
 		this.x = x;
 		this.y = y;
 		this.width = width;
