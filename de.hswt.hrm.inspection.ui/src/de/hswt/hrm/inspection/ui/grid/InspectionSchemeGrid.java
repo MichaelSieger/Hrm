@@ -1,16 +1,19 @@
 package de.hswt.hrm.inspection.ui.grid;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-
 import java.io.IOException;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Composite;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Function;
+import com.google.common.base.Optional;
 import com.google.common.collect.Collections2;
 
+import de.hswt.hrm.component.model.Category;
 import de.hswt.hrm.scheme.model.RenderedComponent;
 import de.hswt.hrm.scheme.model.Scheme;
 import de.hswt.hrm.scheme.model.SchemeComponent;
@@ -81,7 +84,18 @@ public class InspectionSchemeGrid {
 			if(listener != null){
 				listener.selected(selected);
 			}
+			Optional<Category> c = selected.getComponent().getCategory();
+			if(!c.isPresent()) {
+				//Shouldnt be possible
+				throw new RuntimeException("Internal Error");
+			}
+			grid.clearColors();
+			grid.setColor(getColor(), selected.getX(), selected.getY(), c.get().getWidth(), c.get().getHeight(), false);
 		}
+	}
+	
+	private Color getColor(){
+		return grid.getDisplay().getSystemColor(SWT.COLOR_BLUE);
 	}
 
 }

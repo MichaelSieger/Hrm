@@ -34,6 +34,7 @@ public class SchemeGrid extends DoubleBufferedCanvas {
 	
 	private static final int ENLARGE_TRESH = 5;
 	private static final int ENLARGE = 5;
+	private static final int OUTLINE_WIDTH = 5;
 
 	private List<SchemeGridItem> images = new ArrayList<>();
 	private final List<Colorbox> colors = new ArrayList<>();
@@ -84,7 +85,7 @@ public class SchemeGrid extends DoubleBufferedCanvas {
 
 			@Override
 			public void mouseUp(MouseEvent e) {
-				SchemeGridItem item = getImage(getGridX(e.x), getGridY(e.y));
+				SchemeGridItem item = getImage((int)Math.round(getGridX(e.x)), (int)Math.round(getGridY(e.y)));
 				if(item != null){
 					listener.itemClicked(e, item);
 				}
@@ -122,10 +123,18 @@ public class SchemeGrid extends DoubleBufferedCanvas {
 		final float quadH = getQuadHeight();
 		for (Colorbox box : colors) {
 			gc.setBackground(box.getColor());
-			gc.fillRectangle((int)Math.round(quadW * box.getX()) + 1,
-					(int)Math.round(quadH * box.getY()) + 1,
-					(int)Math.round(quadW * box.getWidth()) - 1,
-					(int)Math.round(quadH * box.getHeight()) - 1);
+			final int x = (int)Math.round(quadW * box.getX()) + 1;
+			final int y = (int)Math.round(quadH * box.getY()) + 1;
+			final int w = (int)Math.round(quadW * box.getWidth()) - 1;
+			final int h = (int)Math.round(quadH * box.getHeight()) - 1;
+			if(box.isFill()){
+				gc.fillRectangle(x, y, w, h);
+			}else{
+				int oLineWidth = gc.getLineWidth();
+				gc.setLineWidth(OUTLINE_WIDTH);
+				gc.drawRectangle(x, y, w, h);
+				gc.setLineWidth(oLineWidth);
+			}
 		}
 	}
 
@@ -213,8 +222,8 @@ public class SchemeGrid extends DoubleBufferedCanvas {
 	 * @param x
 	 * @return
 	 */
-	private int getGridX(int x) {
-		return (int) (((float) x) / getQuadWidth());
+	private double getGridX(double x) {
+		return x / getQuadWidth();
 	}
 
 	/**
@@ -223,8 +232,8 @@ public class SchemeGrid extends DoubleBufferedCanvas {
 	 * @param x
 	 * @return
 	 */
-	private int getGridY(int y) {
-		return (int) (((float) y) / getQuadHeight());
+	private double getGridY(double y) {
+		return y / getQuadHeight();
 	}
 
 	/**
@@ -287,7 +296,7 @@ public class SchemeGrid extends DoubleBufferedCanvas {
 	 */
 	public void setImageAtPixel(RenderedComponent image, Direction direction,
 			int x, int y) throws PlaceOccupiedException {
-		setImage(new SchemeGridItem(image, direction, getGridX(x), getGridY(y)));
+		setImage(new SchemeGridItem(image, direction, (int)Math.round(getGridX(x)), (int)Math.round(getGridY(y))));
 	}
 
 	/**
@@ -339,7 +348,7 @@ public class SchemeGrid extends DoubleBufferedCanvas {
 	 * @return
 	 */
 	public SchemeGridItem removeImagePixel(int x, int y) {
-		return removeImage(getGridX(x), getGridY(y));
+		return removeImage((int)Math.round(getGridX(x)), (int)Math.round(getGridY(y)));
 	}
 
 	/**
@@ -361,9 +370,13 @@ public class SchemeGrid extends DoubleBufferedCanvas {
 		colors.clear();
 		this.redraw();
 	}
+	
+	public void setColor(Color shadowColor, double x, double y, double w, double h){
+		setColor(shadowColor, x, y, w, h, true);
+	}
 
-	public void setColor(Color shadowColor, int x, int y, int w, int h) {
-		colors.add(new Colorbox(getGridX(x), getGridY(y), w, h, shadowColor));
+	public void setColor(Color shadowColor, double x, double y, double w, double h, boolean fill) {
+		colors.add(new Colorbox(getGridX(x), getGridY(y), w, h, shadowColor, fill));
 		this.redraw();
 	}
 	
