@@ -6,7 +6,6 @@ import javax.inject.Inject;
 
 import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
-import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.ActionContributionItem;
 import org.eclipse.jface.window.IShellProvider;
@@ -21,15 +20,11 @@ import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.ui.forms.widgets.Form;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.component.service.CategoryService;
 
 public class ComponentPart {
-
-    private final static Logger LOG = LoggerFactory.getLogger(ComponentPart.class);
 
     @Inject
     private CategoryService categoryService;

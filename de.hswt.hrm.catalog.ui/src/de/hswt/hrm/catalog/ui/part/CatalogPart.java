@@ -81,7 +81,7 @@ public class CatalogPart {
                 if (tabFolder.getItem(tabFolder.getSelectionIndex()).equals(itemsTab)) {
                     showCatalogItemsAction();
                 }
-                else {
+                else if (tabFolder.getItem(tabFolder.getSelectionIndex()).equals(assignmentTab)) {
                     showCatalogActions();
                 }
             }
@@ -144,7 +144,7 @@ public class CatalogPart {
         };
         editCatalogAction.setDescription("Edit an Existing Catalog");
         editCatalogContribution = new ActionContributionItem(editCatalogAction);
-        form.getToolBarManager().add(editCatalogAction);
+        form.getToolBarManager().add(editCatalogContribution);
 
         Action addCatalogItemAction = new Action("Add") {
             @Override
@@ -166,7 +166,7 @@ public class CatalogPart {
         };
         addCatalogAction.setDescription("Add's a new catalog .");
         addCatalogContribution = new ActionContributionItem(addCatalogAction);
-        form.getToolBarManager().add(addCatalogItemContribution);
+        form.getToolBarManager().add(addCatalogContribution);
 
         form.getToolBarManager().update(true);
     }
