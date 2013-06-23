@@ -126,9 +126,12 @@ public class InspectionDao implements IInspectionDao {
                 stmt.setParameter(Fields.REQUESTER_FK, inspection.getRequester().get().getId());
                 stmt.setParameter(Fields.CONTRACTOR_FK, inspection.getContractor().get().getId());
                 stmt.setParameter(Fields.CHECKER_FK, inspection.getChecker().get().getId());
-                stmt.setParameter(Fields.INSPECTIONDATE, inspection.getInspectionDate());
-                stmt.setParameter(Fields.REPORTDATE, inspection.getReportDate());
-                stmt.setParameter(Fields.NEXTDATE, inspection.getNextInspectionDate());
+                stmt.setParameter(Fields.INSPECTIONDATE, 
+                		JdbcUtil.timestampFromCalendar(inspection.getInspectionDate()));
+                stmt.setParameter(Fields.REPORTDATE, 
+                		JdbcUtil.timestampFromCalendar(inspection.getReportDate()));
+                stmt.setParameter(Fields.NEXTDATE, 
+                		JdbcUtil.timestampFromCalendar(inspection.getNextInspectionDate()));
                 stmt.setParameter(Fields.TEMPERATURE, inspection.getTemperature().orNull());
                 stmt.setParameter(Fields.HUMIDITY, inspection.getHumidity().orNull());
                 stmt.setParameter(Fields.SUMMARY, inspection.getSummary().orNull());
@@ -206,9 +209,12 @@ public class InspectionDao implements IInspectionDao {
                 stmt.setParameter(Fields.REQUESTER_FK, inspection.getRequester().get().getId());
                 stmt.setParameter(Fields.CONTRACTOR_FK, inspection.getContractor().get().getId());
                 stmt.setParameter(Fields.CHECKER_FK, inspection.getChecker().get().getId());
-                stmt.setParameter(Fields.INSPECTIONDATE, inspection.getInspectionDate());
-                stmt.setParameter(Fields.REPORTDATE, inspection.getReportDate());
-                stmt.setParameter(Fields.NEXTDATE, inspection.getNextInspectionDate());
+                stmt.setParameter(Fields.INSPECTIONDATE, 
+                		JdbcUtil.timestampFromCalendar(inspection.getInspectionDate()));
+                stmt.setParameter(Fields.REPORTDATE, 
+                		JdbcUtil.timestampFromCalendar(inspection.getReportDate()));
+                stmt.setParameter(Fields.NEXTDATE, 
+                		JdbcUtil.timestampFromCalendar(inspection.getNextInspectionDate()));
                 stmt.setParameter(Fields.TEMPERATURE, inspection.getTemperature().orNull());
                 stmt.setParameter(Fields.HUMIDITY, inspection.getHumidity().orNull());
                 stmt.setParameter(Fields.SUMMARY, inspection.getSummary().orNull());

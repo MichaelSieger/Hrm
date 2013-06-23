@@ -48,7 +48,7 @@ public class CommentComposite extends Composite {
 
 	// TODO adapt this to a Comment object and service if it is available
 //    @Inject
-//    private EvaluationService evalService;
+//    private CommentService serviceService;
 
     @Inject
     private IShellProvider shellProvider;
@@ -127,24 +127,6 @@ public class CommentComposite extends Composite {
 //        }
     }
     
-    private void createActions() {
-        // TODO translate
-        Action addCommentAction = new Action("Add") {
-            @Override
-            public void run() {
-                addComment();
-            }
-        };
-        addCommentAction.setDescription("Add's a new comment.");
-        //addCommentContribution = new ActionContributionItem(addCommentAction);
-
-        Action editCommentAction = new Action("Edit") {
-            @Override
-            public void run() {
-                editComment();
-            }
-        };
-    }
     
     public void addComment() {
         Comment comment = null;

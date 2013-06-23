@@ -30,10 +30,10 @@ public class CommentWizard extends Wizard {
         ContextInjectionFactory.inject(first, context);
 
         if (comment.isPresent()) {
-            setWindowTitle("Edit Summary: " + comment.get().getName());
+            setWindowTitle("Edit Comment: " + comment.get().getName());
         }
         else {
-            setWindowTitle("Create new Summary");
+            setWindowTitle("Create new Comment");
         }
     }
 

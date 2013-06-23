@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -92,20 +93,122 @@ public class NamedParameterStatement implements AutoCloseable {
      * @param name Key of the parameter.
      * @param value Value for the parameter.
      */
-    public void setParameter(String name, Object value) {
-    	if (value instanceof Optional<?>) {
-    		LOG.error("Optional value provided as input.");
-    		throw new IllegalArgumentException("Value should not be of the type optional.");
-    	}
-    	
-        params.put(name, value);
+//    public void setParameter(String name, Object value) {
+//    	if (value instanceof Optional<?>) {
+//    		LOG.error("Optional value provided as input.");
+//    		throw new IllegalArgumentException("Value should not be of the type optional.");
+//    	}
+//    	
+//        params.put(name, value);
+//    }
+    
+    /**
+     * Add a value for a named parameter.
+     * 
+     * @param name Key of the parameter.
+     * @param value Value for the parameter.
+     */
+    public void setParameter(String name, boolean value) {
+    	params.put(name, value);
     }
     
     /**
+     * Add a value for a named parameter.
+     * 
+     * @param name Key of the parameter.
+     * @param value Value for the parameter.
+     */
+    public void setParameter(String name, byte[] value) {
+    	params.put(name, value);
+    }
+    
+    /**
+     * Add a value for a named parameter.
+     * 
+     * @param name Key of the parameter.
+     * @param value Value for the parameter.
+     */
+    public void setParameter(String name, Timestamp value) {
+    	params.put(name, value);
+    }
+    
+    /**
+     * Add a value for a named parameter.
+     * 
+     * @param name Key of the parameter.
+     * @param value Value for the parameter.
+     */
+    public void setParameter(String name, String value) {
+    	params.put(name, value);
+    }
+    
+    /**
+     * Add a value for a named parameter.
+     * 
+     * @param name Key of the parameter.
+     * @param value Value for the parameter.
+     */
+    public void setParameter(String name, int value) {
+    	params.put(name, value);
+    }
+    
+    /**
+     * Add a value for a named parameter.
+     * 
+     * @param name Key of the parameter.
+     * @param value Value for the parameter.
+     */
+    public void setParameter(String name, long value) {
+    	params.put(name, value);
+    }
+    
+    /**
+     * Add a value for a named parameter.
+     * 
+     * @param name Key of the parameter.
+     * @param value Value for the parameter.
+     */
+    public void setParameter(String name, double value) {
+    	params.put(name, value);
+    }
+    
+    /**
+     * Add a value for a named parameter.
+     * 
+     * @param name Key of the parameter.
+     * @param value Value for the parameter.
+     */
+    public void setParameter(String name, float value) {
+    	params.put(name, value);
+    }
+    
+    /**
+     * Add a value for a named parameter.
+     * 
+     * @param name Key of the parameter.
+     * @param value Value for the parameter.
+     */
+    public void setParameter(String name, byte value) {
+    	params.put(name, value);
+    }
+    
+    /**
+     * Set the value of a named parameter to 'null'.
+     * 
+     * @param name Key of the parameter.
+     */
+    public void setParameterNull(String name) {
+    	params.put(name, null);
+    }
+
+    /**
      * Add a couple of named parameters.
+     * 
+     * @deprecated As it does not check given parameters. (Should not be used at the moment)
      * 
      * @param params Map of parameters.
      */
+    @Deprecated 
     public void setParameter(Map<String, Object> params) {
     	// FIXME: Also check all incomming values for optionals
         this.params.putAll(params);
