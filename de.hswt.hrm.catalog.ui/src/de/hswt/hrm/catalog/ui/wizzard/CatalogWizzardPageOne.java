@@ -11,7 +11,6 @@ import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
@@ -217,7 +216,8 @@ public class CatalogWizzardPageOne extends WizardPage {
         else if (oneButtonisSelected) {
             for (Text textField : getTextWidgets().values()) {
                 if (textField.getText().length() == 0) {
-                    setErrorMessage("Feld \""+textField.getToolTipText()+"\" darf nicht leer sein."); 
+                    setErrorMessage("Feld \"" + textField.getToolTipText()
+                            + "\" darf nicht leer sein.");
                     return false;
                 }
             }
