@@ -38,7 +38,7 @@ public class CatalogPart {
     private TabItem itemsTab;
     private TabItem assignmentTab;
 
-    private CatalogItemsPart catalogItemsPart;
+    private CatalogItemsComposite catalogItemsPart;
     private CatalogAssignmentComposite assignmentComposite;
 
     private Form form;
@@ -107,7 +107,7 @@ public class CatalogPart {
         itemsTab = new TabItem(tabFolder, SWT.NONE);
         itemsTab.setText("Catalog items");
 
-        catalogItemsPart = new CatalogItemsPart(tabFolder);
+        catalogItemsPart = new CatalogItemsComposite(tabFolder);
         // important: inject the services
         ContextInjectionFactory.inject(catalogItemsPart, context);
 
