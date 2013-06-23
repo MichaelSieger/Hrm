@@ -50,7 +50,7 @@ public class CatalogWizzardPageOne extends WizardPage {
     public void createControl(Composite parent) {
         parent.setLayout(new PageContainerFillLayout());
         URL url = CatalogWizzardPageOne.class.getClassLoader().getResource(
-                "de/hswt/hrm/catalog/ui/xwt/CatalogWizard" + IConstants.XWT_EXTENSION_SUFFIX);
+                "de/hswt/hrm/catalog/ui/xwt/CatalogWizardWindow" + IConstants.XWT_EXTENSION_SUFFIX);
 
         try {
             container = (Composite) XWTForms.load(parent, url);
