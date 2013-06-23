@@ -16,15 +16,16 @@ import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.window.IShellProvider;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 import org.slf4j.Logger;
@@ -34,17 +35,11 @@ import com.google.common.base.Optional;
 
 import de.hswt.hrm.common.Config;
 import de.hswt.hrm.common.Hrm;
-import de.hswt.hrm.common.database.exception.DatabaseException;
-import de.hswt.hrm.common.ui.swt.constants.SearchFieldConstants;
 import de.hswt.hrm.common.ui.swt.layouts.LayoutUtil;
 import de.hswt.hrm.common.ui.swt.table.ColumnComparator;
 import de.hswt.hrm.common.ui.swt.table.ColumnDescription;
 import de.hswt.hrm.common.ui.swt.table.TableViewerController;
 import de.hswt.hrm.misc.reportPreferences.model.ReportPreference;
-
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.widgets.Button;
 
 public class ReportPreferencesComposite extends Composite {
 
@@ -241,12 +236,13 @@ public class ReportPreferencesComposite extends Composite {
         }
         Config cfg = Config.getInstance();
         cfg.setProperty(Config.Keys.REPORT_STYLE_FOLDER, dir);
-        
+
         Path configPath = Hrm.getConfigPath();
         try {
-			cfg.store(configPath, true, true);
-		} catch (IOException e) {
-			e.printStackTrace();
-		} 
+            cfg.store(configPath, true, true);
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
