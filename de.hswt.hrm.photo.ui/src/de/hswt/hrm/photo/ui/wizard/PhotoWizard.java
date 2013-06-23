@@ -65,27 +65,39 @@ public class PhotoWizard extends Wizard {
 
     @Override
     public boolean performFinish() {
-    	List<String> oldPhotoNames = new LinkedList<String>();
-    	for(Photo photo : photos){
-    		oldPhotoNames.add(photo.getName());    		
-    	}    	
-    	for(TableItem item : first.getTableItems()){    		
-    		if(!oldPhotoNames.contains(((Photo)item.getData()).getName())){
-    			this.photos.add((Photo)item.getData());
-    			//photoService.insert((Photo)item.getData());
-    		}
-    	}
+//    	List<String> oldPhotoNames = new LinkedList<String>();
+//    	for(Photo photo : photos){
+//    		oldPhotoNames.add(photo.getName());    		
+//    	}    	
+//    	for(TableItem item : first.getTableItems()){    		
+//    		if(!oldPhotoNames.contains(((Photo)item.getData()).getName())){
+//    			this.photos.add((Photo)item.getData());
+//    			//photoService.insert((Photo)item.getData());
+//    		}
+//    	}
     	int i = 0;
     	for(TableItem item : first.getTableItems()){
     		item.getText();
     		this.photos.get(i).setLabel(item.getText());
     		i++;
     	}
+//    	for(Photo photo : photos){
+//    		//photoService.update(photo);
+//    		
+//    	}
+//    	oldPhotoNames.clear();
+    	
+    	int x = 0;
     	for(Photo photo : photos){
-    		//photoService.update(photo);
+    		if(photo.getId() == -1){
+//   TODO 			photos.set(x,photoService.insert(photo)); 
+    			photos.set(x, null);
+    		} else {
+//    TODO		photoService.update(photo);   			
+    		}
+    		x++;
     		
     	}
-    	oldPhotoNames.clear();
 		return true;
     
 //    	if (photos.isPresent()) {
