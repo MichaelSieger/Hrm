@@ -124,7 +124,7 @@ public class Inspection {
         return Optional.fromNullable(temperature);
     }
 
-    public void setTemperature(int temperature) {
+    public void setTemperature(float temperature) {
         checkArgument(temperature > 0, INVALID_NUMBER, temperature);
         this.temperature = temperature;
     }
@@ -133,7 +133,7 @@ public class Inspection {
         return Optional.fromNullable(humidity);
     }
 
-    public void setHumidity(int humidity) {
+    public void setHumidity(float humidity) {
         checkArgument(humidity > 0, INVALID_NUMBER, humidity);
         this.humidity = humidity;
     }
