@@ -139,6 +139,7 @@ public class SchemeGrid extends DoubleBufferedCanvas {
 			final int y = (int)Math.round(quadH * box.getY()) + 1;
 			final int w = (int)Math.round(quadW * box.getWidth()) - 1;
 			final int h = (int)Math.round(quadH * box.getHeight()) - 1;
+			
 			if(box.isFill()){
 				Color oBackground = gc.getBackground();
 				gc.setBackground(box.getColor());
@@ -405,8 +406,8 @@ public class SchemeGrid extends DoubleBufferedCanvas {
 	 * @param snapToGrid Snap to grid lines or move freely
 	 */
 	public void setColor(Color shadowColor, double x, double y, double w, double h, boolean fill, boolean snapToGrid) {
-		double gridX = x;
-		double gridY = y;
+		double gridX = getGridX(x);
+		double gridY = getGridY(y);
 		if(snapToGrid){
 			gridX = (int) gridX;
 			gridY = (int) gridY;
