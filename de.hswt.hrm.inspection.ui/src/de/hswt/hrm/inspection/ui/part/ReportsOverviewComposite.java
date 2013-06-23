@@ -115,7 +115,7 @@ public class ReportsOverviewComposite extends Composite {
         });
         toolkit.adapt(searchText, true, true);
 
-        tableViewer = new TableViewer(overviewComposite, SWT.BORDER | SWT.FULL_SELECTION);
+        tableViewer = new TableViewer(overviewComposite, SWT.BORDER | SWT.HIDE_SELECTION);
         table = tableViewer.getTable();
         table.setLinesVisible(true);
         table.setHeaderVisible(true);
