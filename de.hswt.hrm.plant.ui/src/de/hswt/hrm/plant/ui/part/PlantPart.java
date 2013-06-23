@@ -48,6 +48,9 @@ import de.hswt.hrm.common.ui.swt.layouts.LayoutUtil;
 import de.hswt.hrm.common.ui.swt.table.ColumnComparator;
 import de.hswt.hrm.common.ui.swt.table.ColumnDescription;
 import de.hswt.hrm.common.ui.swt.table.TableViewerController;
+import de.hswt.hrm.component.service.ComponentService;
+import de.hswt.hrm.i18n.I18n;
+import de.hswt.hrm.i18n.I18nFactory;
 import de.hswt.hrm.plant.model.Plant;
 import de.hswt.hrm.plant.service.PlantService;
 import de.hswt.hrm.plant.ui.shared.filter.PlantFilter;
@@ -64,6 +67,7 @@ import org.eclipse.swt.events.SelectionEvent;
 public class PlantPart {
 
     private final static Logger LOG = LoggerFactory.getLogger(PlantPart.class);
+    private final static I18n I18N = I18nFactory.getI18n(PlantPart.class);
 
     @Inject
     private PlantService plantService;
@@ -122,7 +126,7 @@ public class PlantPart {
         form.setSeparatorVisible(true);
         form.getBody().setBackgroundMode(SWT.INHERIT_FORCE);
         toolkit.paintBordersFor(form);
-        form.setText("Plants");
+        form.setText(I18N.tr("Plants"));
         toolkit.decorateFormHeading(form);
         createActions();
 
@@ -137,7 +141,7 @@ public class PlantPart {
         toolkit.paintBordersFor(tabFolder);
 
         plantsTab = new TabItem(tabFolder, SWT.NONE);
-        plantsTab.setText("Plants");
+        plantsTab.setText(I18N.tr("Plants"));
 
         tabFolder.addSelectionListener(new SelectionAdapter() {
             @Override
@@ -191,7 +195,7 @@ public class PlantPart {
         toolkit.paintBordersFor(table);
 
         schemeTab = new TabItem(tabFolder, SWT.NONE);
-        schemeTab.setText("Scheme");
+        schemeTab.setText(I18N.tr("Scheme"));
 
         schemeComposite = new SchemeComposite(tabFolder);
         ContextInjectionFactory.inject(schemeComposite, context);
@@ -210,35 +214,35 @@ public class PlantPart {
 
 	private void createActions() {
         // TODO translate
-        Action schemeAction = new Action("Edit Scheme") {
+        Action schemeAction = new Action(I18N.tr("Edit Scheme")) {
             @Override
             public void run() {
             	initSchemeTabForSelection();
             }
         };
-        schemeAction.setDescription("Edit the scheme of the selected plant.");
+        schemeAction.setDescription(I18N.tr("Edit the scheme of the selected plant."));
         editSchemeContribution = new ActionContributionItem(schemeAction);
         form.getToolBarManager().add(editSchemeContribution);
 
-        Action editAction = new Action("Edit") {
+        Action editAction = new Action(I18N.tr("Edit")) {
             @Override
             public void run() {
                 super.run();
                 editPlant();
             }
         };
-        editAction.setDescription("Edit an exisitng plant.");
+        editAction.setDescription(I18N.tr("Edit an exisitng plant."));
         editContribution = new ActionContributionItem(editAction);
         form.getToolBarManager().add(editContribution);
 
-        Action addAction = new Action("Add") {
+        Action addAction = new Action(I18N.tr("Add")) {
             @Override
             public void run() {
                 super.run();
                 addPlant();
             }
         };
-        addAction.setDescription("Add's a new plant.");
+        addAction.setDescription(I18N.tr("Add a new plant."));
         addContribution = new ActionContributionItem(addAction);
         form.getToolBarManager().add(addContribution);
 
