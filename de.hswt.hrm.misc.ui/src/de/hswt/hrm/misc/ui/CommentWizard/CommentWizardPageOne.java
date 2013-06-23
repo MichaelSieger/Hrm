@@ -40,7 +40,7 @@ public class CommentWizardPageOne extends WizardPage {
         super(title);
         this.comment = comment;
         setDescription(createDescription());
-        setTitle("Summary Wizard");
+        setTitle("Comment Wizard");
     }
 
     private String createDescription() {

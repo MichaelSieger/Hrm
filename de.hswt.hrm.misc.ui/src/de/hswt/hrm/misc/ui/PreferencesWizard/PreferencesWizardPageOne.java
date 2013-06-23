@@ -40,7 +40,7 @@ public class PreferencesWizardPageOne extends WizardPage {
         super(title);
         this.preference = preference;
         setDescription(createDescription());
-        setTitle("Summary Wizard");
+        setTitle("Style Wizard");
     }
 
     private String createDescription() {
