@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.graphics.Color;
@@ -67,15 +68,6 @@ public class SchemeGrid extends DoubleBufferedCanvas {
 		this.width = width;
 		this.height = height;
 		setPixelPerGrid(pixelPerGrid);
-		/*
-		super.addPaintListener(new PaintListener() {
-
-			@Override
-			public void paintControl(PaintEvent ev) {
-				draw(ev.gc);
-			}
-		});
-		*/
 		initMouseListener();
 	}
 	
@@ -112,16 +104,37 @@ public class SchemeGrid extends DoubleBufferedCanvas {
 	 * @param gc
 	 */
 	private void draw(GC gc) {
-		drawColors(gc);
 		drawHorizontalLines(gc);
 		drawVerticalLines(gc);
+		for(SchemeGridItem item : images){
+			fillImageBackground(gc, item.getBoundingBox());
+		}
+		drawColors(gc);
 		drawImages(gc);
+	}
+	
+	/**
+	 * Fills the backgrounds of the images white so that the gridlines are not visible there
+	 * @param gc
+	 */
+	private void fillImageBackground(GC gc, Rectangle rec){
+		final float quadW = getQuadWidth();
+		final float quadH = getQuadHeight();
+		final int x = (int)Math.round(quadW * rec.x) + 1;
+		final int y = (int)Math.round(quadH * rec.y) + 1;
+		final int w = (int)Math.round(quadW * rec.width) - 1;
+		final int h = (int)Math.round(quadH * rec.height) - 1;
+		Color oColor = gc.getBackground();
+		gc.setBackground(getDisplay().getSystemColor(SWT.COLOR_WHITE));
+		gc.fillRectangle(x, y, w, h);
+		gc.setBackground(oColor);
 	}
 
 	private void drawColors(GC gc) {
 		final float quadW = getQuadWidth();
 		final float quadH = getQuadHeight();
 		for (Colorbox box : colors) {
+			Color oBackground = gc.getBackground();
 			gc.setBackground(box.getColor());
 			final int x = (int)Math.round(quadW * box.getX()) + 1;
 			final int y = (int)Math.round(quadH * box.getY()) + 1;
@@ -135,6 +148,7 @@ public class SchemeGrid extends DoubleBufferedCanvas {
 				gc.drawRectangle(x, y, w, h);
 				gc.setLineWidth(oLineWidth);
 			}
+			gc.setBackground(oBackground);
 		}
 	}
 
@@ -166,10 +180,11 @@ public class SchemeGrid extends DoubleBufferedCanvas {
 		final float quadW = getQuadWidth();
 		final float quadH = getQuadHeight();
 		Rectangle imageBounds = image.getBounds();
-		gc.drawImage(image, 0, 0, imageBounds.width, imageBounds.height,
-				Math.round(quadW * rec.x) + 1, Math.round(quadH * rec.y) + 1,
-				Math.round(quadW * rec.width) - 1,
-				Math.round(quadH * rec.height) - 1);
+		final int x = Math.round(quadW * rec.x) + 1;
+		final int y = Math.round(quadH * rec.y) + 1;
+		final int w = Math.round(quadW * rec.width) - 1;
+		final int h = Math.round(quadH * rec.height) - 1;
+		gc.drawImage(image, 0, 0, imageBounds.width, imageBounds.height, x, y, w, h);
 	}
 
 	/**
