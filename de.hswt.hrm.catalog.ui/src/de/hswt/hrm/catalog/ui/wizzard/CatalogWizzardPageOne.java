@@ -133,7 +133,7 @@ public class CatalogWizzardPageOne extends WizardPage {
             return I18N.tr("Edit a catalog.");
         }
 
-        return I18N.tr("Add a new catalog");
+        return I18N.tr("Add a new catalog.");
     }
 
     public ICatalogItem getItem() {
@@ -209,15 +209,15 @@ public class CatalogWizzardPageOne extends WizardPage {
         }
 
         if (!oneButtonisSelected) {
-            setErrorMessage("Soll/Ist/Maßnahme muss ausgewählt sein.");
+            setErrorMessage(I18N.tr("Target/Current/Activity has to be selected."));
             return false;
         }
 
         else if (oneButtonisSelected) {
-            for (Text textField : getTextWidgets().values()) {
-                if (textField.getText().length() == 0) {
-                    setErrorMessage("Feld \"" + textField.getToolTipText()
-                            + "\" darf nicht leer sein.");
+            Text[] manArray = {getTextWidgets().get(Fields.NAME), getTextWidgets().get(Fields.DESCRIPTION)}; 
+            for (int i=0; i<manArray.length; i++) {
+                if (manArray[i].getText().length() == 0) {
+                    setErrorMessage(I18N.tr("Field is mandatory")+ ": " + I18N.tr(XWT.getElementName((Object) manArray[i])));
                     return false;
                 }
             }
