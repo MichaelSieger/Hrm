@@ -78,7 +78,7 @@ public class SchemeGrid extends DoubleBufferedCanvas {
 			@Override
 			public void mouseUp(MouseEvent e) {
 				SchemeGridItem item = getImage((int)Math.round(getGridX(e.x)), (int)Math.round(getGridY(e.y)));
-				if(item != null){
+				if(listener != null && item != null){
 					listener.itemClicked(e, item);
 				}
 			}
@@ -473,6 +473,15 @@ public class SchemeGrid extends DoubleBufferedCanvas {
 	public void setItems(Collection<SchemeGridItem> c) throws PlaceOccupiedException{
 		setDirty();
 		images.clear();
+		int w = -1;
+		int h = -1;
+		for(SchemeGridItem item : c){
+			w = Math.max(w, item.getX() + item.getWidth());
+			h = Math.max(h, item.getY() + item.getHeight());
+		}
+		this.width = w;
+		this.height = h;
+		updateSize();
 	    for(SchemeGridItem item : c){
 	    	setImage(item);
 	    }
