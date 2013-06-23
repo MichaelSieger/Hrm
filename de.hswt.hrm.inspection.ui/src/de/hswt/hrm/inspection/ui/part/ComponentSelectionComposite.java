@@ -1,6 +1,7 @@
 package de.hswt.hrm.inspection.ui.part;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.Collection;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -18,6 +19,8 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
 
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
+import de.hswt.hrm.inspection.ui.grid.InspectionSchemeGrid;
+import de.hswt.hrm.scheme.ui.SchemeGridItem;
 
 public class ComponentSelectionComposite extends Composite {
 
@@ -31,6 +34,8 @@ public class ComponentSelectionComposite extends Composite {
 	private List componentsList;
 
 	private AbstractComponentRatingComposite ratingComposite;
+	
+	private InspectionSchemeGrid schemeGrid;
 
 	/**
 	 * Do not use this constructor when instantiate this composite! It is only
@@ -107,6 +112,7 @@ public class ComponentSelectionComposite extends Composite {
 		horizontalSash.setWeights(new int[] {1, 5});
 
 		// TODO add scheme
+		schemeGrid = new InspectionSchemeGrid(schemeComposite, SWT.NONE);
 		// TODO set the component selection to the ratingCompiste
 	}
 
@@ -134,6 +140,10 @@ public class ComponentSelectionComposite extends Composite {
 			}
 		}
 		return composite;
+	}
+	
+	public void setSchemeGridItems(Collection<SchemeGridItem> items){
+		schemeGrid.setItems(items);
 	}
 
 	@Override
