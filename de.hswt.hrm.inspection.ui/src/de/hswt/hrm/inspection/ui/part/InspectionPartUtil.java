@@ -2,7 +2,9 @@ package de.hswt.hrm.inspection.ui.part;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 import org.eclipse.e4.core.contexts.ContextInjectionFactory;
@@ -14,6 +16,7 @@ import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyleRange;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
@@ -117,7 +120,19 @@ public class InspectionPartUtil {
         return new ColumnDescription<>("Next Inspection Date", new StyledCellLabelProvider() {
             @Override
             public void update(ViewerCell cell) {
+
+                // The Element of the cell
                 Inspection i = (Inspection) cell.getElement();
+                // Current Date
+                Date date = new Date();
+
+                Color c;
+
+                Calendar cal = Calendar.getInstance();
+                cal.setTimeInMillis(date.getTime());
+                int mYear = cal.get(Calendar.YEAR) - 1970;
+                System.out.println(mYear);
+
                 StyledString text = new StyledString();
 
                 text.append(dateFormat.format(i.getNextInspectionDate().getTime()),
@@ -125,7 +140,7 @@ public class InspectionPartUtil {
                 StyleRange myStyledRange = new StyleRange(0, text.length(), null, Display
                         .getCurrent().getSystemColor(SWT.COLOR_RED));
                 cell.setText(text.toString());
-//                cell.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_RED));
+                // cell.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_RED));
 
                 StyleRange[] range = { myStyledRange };
                 cell.setStyleRanges(range);
