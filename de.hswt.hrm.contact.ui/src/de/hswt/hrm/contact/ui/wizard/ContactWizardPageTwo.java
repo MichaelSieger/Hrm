@@ -118,11 +118,11 @@ public class ContactWizardPageTwo extends WizardPage{
         // Section
         setSectionText(container, "Optional", I18N.tr("Communication"));
         // Labels
-        setLabelText(container, "lblPhone", I18N.tr("Phone"));
-        setLabelText(container, "lblMobilePhone", I18N.tr("Mobile"));
-        setLabelText(container, "lblFax", I18N.tr("Fax"));
-        setLabelText(container, "lblEmail", I18N.tr("Email"));
-        setLabelText(container, "lblShortcut", I18N.tr("Shortcut"));     
+        setLabelText(container, "lblPhone", I18N.tr("Phone")+":");
+        setLabelText(container, "lblMobilePhone", I18N.tr("Mobile")+":");
+        setLabelText(container, "lblFax", I18N.tr("Fax")+":");
+        setLabelText(container, "lblEmail", I18N.tr("Email")+":");
+        setLabelText(container, "lblShortcut", I18N.tr("Shortcut")+":");     
     }
         
     private void setLabelText(Composite container, String labelName, String text) {
