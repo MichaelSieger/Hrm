@@ -214,22 +214,22 @@ public class MiscPart {
         editCommentAction.setDescription("Edit an exisitng comment.");
         editCommentContribution = new ActionContributionItem(editCommentAction);
 
-        Action addStyleAction = new Action("Add style") {
+        Action addStyleAction = new Action("Add Layout") {
             @Override
             public void run() {
                 reportPreferencesComposite.addPrefernence();
             }
         };
-        addStyleAction.setDescription("Add's a new report style.");
+        addStyleAction.setDescription("Add's a new report layout.");
         addStyleContribution = new ActionContributionItem(addStyleAction);
 
-        Action editStyleAction = new Action("Edit style") {
+        Action editStyleAction = new Action("Edit Layout") {
             @Override
             public void run() {
             	reportPreferencesComposite.editPreference();
             }
         };
-        editStyleAction.setDescription("Edit an exisitng style.");
+        editStyleAction.setDescription("Edit an exisitng Layout.");
         editStyleContribution = new ActionContributionItem(editStyleAction);
         
         Action editPriorityAction = new Action("Edit Priority") {

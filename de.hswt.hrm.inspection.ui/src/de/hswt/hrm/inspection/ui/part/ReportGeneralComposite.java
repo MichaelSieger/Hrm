@@ -310,7 +310,7 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
         Label reportStyleLabel = new Label(generalComposite, SWT.NONE);
         reportStyleLabel.setLayoutData(LayoutUtil.createLeftCenteredGridData());
         formToolkit.adapt(reportStyleLabel, true, true);
-        reportStyleLabel.setText("Report style");
+        reportStyleLabel.setText("Report Layout");
 
         // TODO init with styles, select the first
         Combo reportStyleCombo = new Combo(generalComposite, SWT.DROP_DOWN | SWT.READ_ONLY);

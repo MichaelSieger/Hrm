@@ -44,10 +44,10 @@ import org.eclipse.swt.widgets.Button;
 
 public class ReportPreferencesComposite extends Composite {
 
-	private final static Logger LOG = LoggerFactory.getLogger(ReportPreferencesComposite.class);
+    private final static Logger LOG = LoggerFactory.getLogger(ReportPreferencesComposite.class);
 
-//    @Inject
-//    private ReportPreferencesService prefService;
+    // @Inject
+    // private ReportPreferencesService prefService;
 
     @Inject
     private IShellProvider shellProvider;
@@ -66,26 +66,26 @@ public class ReportPreferencesComposite extends Composite {
     private Button browseButton;
     private Label lblStyles;
 
-	/**
-	 * Do not use this constructor when instantiate this composite! It is only
-	 * included to make the WindowsBuilder working.
-	 * 
-	 * @param parent
-	 * @param style
-	 */
+    /**
+     * Do not use this constructor when instantiate this composite! It is only included to make the
+     * WindowsBuilder working.
+     * 
+     * @param parent
+     * @param style
+     */
     private ReportPreferencesComposite(Composite parent, int style) {
         super(parent, style);
         createControls();
     }
 
     /**
-	 * Create the composite.
-	 * 
-	 * @param parent
-	 */
-	public ReportPreferencesComposite(Composite parent) {
-		super(parent, SWT.NONE);
-	}
+     * Create the composite.
+     * 
+     * @param parent
+     */
+    public ReportPreferencesComposite(Composite parent) {
+        super(parent, SWT.NONE);
+    }
 
     /**
      * Create contents of the view part.
@@ -93,31 +93,32 @@ public class ReportPreferencesComposite extends Composite {
     @PostConstruct
     public void createControls() {
         this.setLayout(new FillLayout());
-		this.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_WHITE));
+        this.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_WHITE));
 
         composite = new Composite(this, SWT.NONE);
         composite.setLayout(new GridLayout(3, false));
-        
+
         lblNewLabel = new Label(composite, SWT.NONE);
         lblNewLabel.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
         lblNewLabel.setText("StandardDirectory");
-        
+
         directoryText = new Text(composite, SWT.BORDER | SWT.READ_ONLY);
         directoryText.setToolTipText("A local directory where all the reports are created.");
         directoryText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-        
+
         browseButton = new Button(composite, SWT.NONE);
-        browseButton.setToolTipText("Browse for a local directory where all the reports are created.");
+        browseButton
+                .setToolTipText("Browse for a local directory where all the reports are created.");
         browseButton.setText("Browse ...");
-		browseButton.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				setStandardReportDirectory();
-			}
-		});
-                        
+        browseButton.addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                setStandardReportDirectory();
+            }
+        });
+
         lblStyles = new Label(composite, SWT.NONE);
-        lblStyles.setText("Styles");
+        lblStyles.setText("Layouts");
 
         tableViewer = new TableViewer(composite, SWT.BORDER | SWT.FULL_SELECTION);
         tableViewer.addDoubleClickListener(new IDoubleClickListener() {
@@ -137,20 +138,20 @@ public class ReportPreferencesComposite extends Composite {
         initializeTable();
         refreshTable();
 
-//      TODO  if (prefService == null) {
-//            LOG.error("EvaluationService not injected to EvaluationPart.");
-//        }
+        // TODO if (prefService == null) {
+        // LOG.error("EvaluationService not injected to EvaluationPart.");
+        // }
     }
 
     private void refreshTable() {
-//  TODO      try {
-//            this.preferences = prefService.findAll();
-//            tableViewer.setInput(this.preferences);
-//        }
-//        catch (DatabaseException e) {
-//            LOG.error("Unable to retrieve list of Evaluations.", e);
-//            showDBConnectionError();
-//        }
+        // TODO try {
+        // this.preferences = prefService.findAll();
+        // tableViewer.setInput(this.preferences);
+        // }
+        // catch (DatabaseException e) {
+        // LOG.error("Unable to retrieve list of Evaluations.", e);
+        // showDBConnectionError();
+        // }
     }
 
     private void initializeTable() {
@@ -206,35 +207,35 @@ public class ReportPreferencesComposite extends Composite {
      */
     public void editPreference() {
         // obtain the contact in the column where the doubleClick happend
-        ReportPreference selectedPreference = (ReportPreference) tableViewer.getElementAt(tableViewer.getTable()
-                .getSelectionIndex());
+        ReportPreference selectedPreference = (ReportPreference) tableViewer
+                .getElementAt(tableViewer.getTable().getSelectionIndex());
         if (selectedPreference == null) {
             return;
         }
-//    TODO    try {
-//        	prefService.refresh(selectedPreference);
-//            Optional<ReportPreference> updatedPreference = ReportPreferenceUtil.showWizard(context,
-//                    shellProvider.getShell(), Optional.of(selectedPreference));
-//
-//            if (updatedPreference.isPresent()) {
-//                tableViewer.refresh();
-//            }
-//        }
-//        catch (DatabaseException e) {
-//            LOG.error("Could not retrieve the Preferences from database.", e);
-//            showDBConnectionError();
-//        }
+        // TODO try {
+        // prefService.refresh(selectedPreference);
+        // Optional<ReportPreference> updatedPreference = ReportPreferenceUtil.showWizard(context,
+        // shellProvider.getShell(), Optional.of(selectedPreference));
+        //
+        // if (updatedPreference.isPresent()) {
+        // tableViewer.refresh();
+        // }
+        // }
+        // catch (DatabaseException e) {
+        // LOG.error("Could not retrieve the Preferences from database.", e);
+        // showDBConnectionError();
+        // }
     }
-    
-	private void setStandardReportDirectory() {
-		DirectoryDialog dialog = new DirectoryDialog(this.getShell());
-		dialog.setText("Report standard directory selection");
-		dialog.setMessage("Select a directory as root of all created reports.");
+
+    private void setStandardReportDirectory() {
+        DirectoryDialog dialog = new DirectoryDialog(this.getShell());
+        dialog.setText("Report standard directory selection");
+        dialog.setMessage("Select a directory as root of all created reports.");
         String dir = dialog.open();
         if (dir != null) {
-        	directoryText.setText(dir);
+            directoryText.setText(dir);
         }
         // TODO write it to the local properties file
         // ask Ben
-	}
+    }
 }
