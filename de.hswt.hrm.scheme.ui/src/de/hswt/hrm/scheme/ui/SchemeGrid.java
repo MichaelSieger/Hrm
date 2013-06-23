@@ -85,7 +85,7 @@ public class SchemeGrid extends DoubleBufferedCanvas {
 
 			@Override
 			public void mouseUp(MouseEvent e) {
-				SchemeGridItem item = getImage(getGridX(e.x), getGridY(e.y));
+				SchemeGridItem item = getImage((int)Math.round(getGridX(e.x)), (int)Math.round(getGridY(e.y)));
 				if(item != null){
 					listener.itemClicked(e, item);
 				}
@@ -222,8 +222,8 @@ public class SchemeGrid extends DoubleBufferedCanvas {
 	 * @param x
 	 * @return
 	 */
-	private int getGridX(int x) {
-		return (int) (((float) x) / getQuadWidth());
+	private double getGridX(double x) {
+		return x / getQuadWidth();
 	}
 
 	/**
@@ -232,8 +232,8 @@ public class SchemeGrid extends DoubleBufferedCanvas {
 	 * @param x
 	 * @return
 	 */
-	private int getGridY(int y) {
-		return (int) (((float) y) / getQuadHeight());
+	private double getGridY(double y) {
+		return y / getQuadHeight();
 	}
 
 	/**
@@ -296,7 +296,7 @@ public class SchemeGrid extends DoubleBufferedCanvas {
 	 */
 	public void setImageAtPixel(RenderedComponent image, Direction direction,
 			int x, int y) throws PlaceOccupiedException {
-		setImage(new SchemeGridItem(image, direction, getGridX(x), getGridY(y)));
+		setImage(new SchemeGridItem(image, direction, (int)Math.round(getGridX(x)), (int)Math.round(getGridY(y))));
 	}
 
 	/**
@@ -348,7 +348,7 @@ public class SchemeGrid extends DoubleBufferedCanvas {
 	 * @return
 	 */
 	public SchemeGridItem removeImagePixel(int x, int y) {
-		return removeImage(getGridX(x), getGridY(y));
+		return removeImage((int)Math.round(getGridX(x)), (int)Math.round(getGridY(y)));
 	}
 
 	/**
@@ -371,11 +371,11 @@ public class SchemeGrid extends DoubleBufferedCanvas {
 		this.redraw();
 	}
 	
-	public void setColor(Color shadowColor, int x, int y, int w, int h){
+	public void setColor(Color shadowColor, double x, double y, double w, double h){
 		setColor(shadowColor, x, y, w, h, true);
 	}
 
-	public void setColor(Color shadowColor, int x, int y, int w, int h, boolean fill) {
+	public void setColor(Color shadowColor, double x, double y, double w, double h, boolean fill) {
 		colors.add(new Colorbox(getGridX(x), getGridY(y), w, h, shadowColor, fill));
 		this.redraw();
 	}
