@@ -3,6 +3,7 @@ package de.hswt.hrm.report.latex;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collection;
@@ -10,6 +11,10 @@ import java.util.Collection;
 import de.hswt.hrm.inspection.model.PhysicalRating;
 
 public class PhysicalInspectionParser {
+
+    private final String FILE_NAME_ROW = "physicalinspectionrow.tex";
+    private final String FILE_DIR = "templates";
+    private final String FILE_NAME_TABLE = "physicalinspectiontable.tex";
 
     private final String INSPECTOIN_SAMPLE_POINT = ":physicalInspectionSamplingPoint:";
     private final String GRADE = ":physicalInspectionGrade:";
@@ -31,13 +36,13 @@ public class PhysicalInspectionParser {
     private float sumQuantifier;
     private float totalGrade;
 
-    private Path path;
+    private String path;
 
     private Collection<PhysicalRating> ratings;
 
     private StringBuffer buffer = new StringBuffer();
 
-    public String parse(Path path, Collection<PhysicalRating> ratings) throws IOException {
+    public String parse(String path, Collection<PhysicalRating> ratings) throws IOException {
         this.ratings = ratings;
         this.path = path;
         this.parseRow();
@@ -47,8 +52,7 @@ public class PhysicalInspectionParser {
     }
 
     private void parseTable() throws IOException {
-        Path pathTable = this.path;
-        // TODO append file to path
+        Path pathTable = FileSystems.getDefault().getPath(this.path, FILE_DIR, FILE_NAME_TABLE);
         buffer.setLength(0);
         BufferedReader reader = Files.newBufferedReader(pathTable, Charset.defaultCharset());
         String line = null;
@@ -63,7 +67,7 @@ public class PhysicalInspectionParser {
         target = null;
         target = buffer.toString();
 
-        this.totalGrade = this.sumRatings / this.sumQuantifier;
+        this.totalGrade = Math.round(10F * this.sumRatings / this.sumQuantifier) / 10F;
         target.replace(ROWS, this.targetRow.toString());
         target.replace(GRADE_SUM, String.valueOf(this.sumRatings));
         target.replace(WHEIGHTED_SUM, String.valueOf(this.sumQuantifier));
@@ -72,8 +76,7 @@ public class PhysicalInspectionParser {
     }
 
     private void parseRow() throws IOException {
-        Path pathRow = this.path;
-        // TODO append file to path
+        Path pathRow = FileSystems.getDefault().getPath(this.path, FILE_DIR, FILE_NAME_ROW);
         buffer.setLength(0);
         BufferedReader reader = Files.newBufferedReader(pathRow, Charset.defaultCharset());
         String line = null;
@@ -88,20 +91,21 @@ public class PhysicalInspectionParser {
         preTarget = null;
         targetRow = null;
         for (PhysicalRating rating : this.ratings) {
-            // TODO when model ready
-            // uncomment the following two lines
-            // this.sumRatings += rating.getRating().tofloat();
-            // this.sumQuantifier += rating.getComponent().getQuantifier();
-            // - un-String the calls below..
+            this.sumRatings += rating.getRating();
+            if (rating.getComponent().isPresent()) {
+                this.sumQuantifier += rating.getComponent().orNull().getQuantifier().or(0);
+            }
             preTarget = buffer.toString();
-            preTarget.replace(INSPECTOIN_SAMPLE_POINT, "rating.getComponent().getName()");
-            preTarget.replace(GRADE, "rating.getRating()");
-            preTarget.replace(WHEIGHTING, "rating.getComponent().getQuantifier()");
-            preTarget
-                    .replace(RATING,
-                            "String.valueOf(rating.getRating().tofloat()*rating.getComponent().getQuantifier().tofloat())");
-            preTarget.replace(PHYS_COMMENT, "rating.getComment()");
+            preTarget.replace(INSPECTOIN_SAMPLE_POINT, rating.getComponent().getName());
+            preTarget.replace(GRADE, String.valueOf(rating.getRating()));
+            preTarget.replace(WHEIGHTING, String.valueOf(rating.getQuantifier()));
+            preTarget.replace(
+                    RATING,
+                    String.valueOf(Math.round(10F * Float.valueOf(rating.getRating())
+                            * Float.valueOf(rating.getQuantifier())) % 10F));
+            preTarget.replace(PHYS_COMMENT, rating.getNote());
             targetRow.append(preTarget);
+
         }
 
     }
@@ -109,7 +113,7 @@ public class PhysicalInspectionParser {
     /*
      * returns the totalGrade, calculated from the components.
      */
-    public float getTotalGrade(Path path) throws IOException {
+    public float getTotalGrade(String path) throws IOException {
         this.path = path;
         this.parseRow();
         this.parseTable();
