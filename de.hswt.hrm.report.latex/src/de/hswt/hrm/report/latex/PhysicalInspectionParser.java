@@ -67,7 +67,7 @@ public class PhysicalInspectionParser {
         target = null;
         target = buffer.toString();
 
-        this.totalGrade = Math.round(10F*this.sumRatings / this.sumQuantifier)/10F;
+        this.totalGrade = Math.round(10F * this.sumRatings / this.sumQuantifier) / 10F;
         target.replace(ROWS, this.targetRow.toString());
         target.replace(GRADE_SUM, String.valueOf(this.sumRatings));
         target.replace(WHEIGHTED_SUM, String.valueOf(this.sumQuantifier));
@@ -96,8 +96,7 @@ public class PhysicalInspectionParser {
                 this.sumQuantifier += rating.getComponent().orNull().getQuantifier().or(0);
             }
             preTarget = buffer.toString();
-            // TODO when optional removed from rating.getComponent(), uncomment following line!
-            // preTarget.replace(INSPECTOIN_SAMPLE_POINT, rating.getComponent().getName());
+            preTarget.replace(INSPECTOIN_SAMPLE_POINT, rating.getComponent().getName());
             preTarget.replace(GRADE, String.valueOf(rating.getRating()));
             preTarget.replace(WHEIGHTING, String.valueOf(rating.getQuantifier()));
             preTarget.replace(
