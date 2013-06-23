@@ -15,9 +15,10 @@ public class Priority {
     private int priority;
 
     private static final String IS_MANDATORY = "Field is a mandatory.";
+    private static final String INVALID_NUMBER = "%d is an invalid number.%n Must be greater 0";
 
     public Priority(String name, String text, int priority) {
-        this(-1, name, text,priority);
+        this(-1, name, text, priority);
     }
 
     public Priority(int id, String name, String text, int priority) {
@@ -39,10 +40,10 @@ public class Priority {
         this.text = text;
 
     }
-    
-    public void setPriority(int prio) {
-        checkArgument(!isNullOrEmpty(String.valueOf(prio)), IS_MANDATORY);
-        this.priority = prio;
+
+    public void setPriority(int priority) {
+        checkArgument(priority > 0, INVALID_NUMBER, priority);
+        this.priority = priority;
 
     }
 
@@ -61,7 +62,7 @@ public class Priority {
     public String getText() {
         return text;
     }
-    
+
     public int getPriority() {
         return priority;
     }
@@ -108,9 +109,9 @@ public class Priority {
         else if (!text.equals(other.text)) {
             return false;
         }
-        
-        if(priority != other.priority){
-        	return false;
+
+        if (priority != other.priority) {
+            return false;
         }
         return true;
     }
