@@ -40,5 +40,4 @@ Import-Package: de.hswt.hrm.catalog.model,
  org.eclipse.e4.core.contexts,
  org.eclipse.e4.xwt,
  org.eclipse.e4.xwt.forms
-Export-Package: de.hswt.hrm.catalog.ui.event,
- de.hswt.hrm.catalog.ui.part
+Export-Package: de.hswt.hrm.catalog.ui.part

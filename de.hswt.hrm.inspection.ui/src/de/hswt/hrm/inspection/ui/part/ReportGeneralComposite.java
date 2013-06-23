@@ -10,6 +10,12 @@ import javax.inject.Inject;
 import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.ComboViewer;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.window.IShellProvider;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardDialog;
@@ -36,7 +42,6 @@ import org.slf4j.LoggerFactory;
 import com.google.common.base.Optional;
 
 import de.hswt.hrm.common.database.exception.DatabaseException;
-import de.hswt.hrm.common.database.exception.ElementNotFoundException;
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.common.ui.swt.layouts.LayoutUtil;
 import de.hswt.hrm.common.ui.swt.utils.ContentProposalUtil;
@@ -52,25 +57,12 @@ import de.hswt.hrm.inspection.ui.dialog.PlantSelectionDialog;
 import de.hswt.hrm.photo.model.Photo;
 import de.hswt.hrm.photo.ui.wizard.PhotoWizard;
 import de.hswt.hrm.plant.model.Plant;
-import de.hswt.hrm.scheme.model.Scheme;
-import de.hswt.hrm.scheme.model.SchemeComponent;
-import de.hswt.hrm.scheme.service.ComponentConverter;
-import de.hswt.hrm.scheme.service.SchemeService;
-import de.hswt.hrm.scheme.ui.SchemeGridItem;
 import de.hswt.hrm.summary.model.Summary;
 import de.hswt.hrm.summary.service.SummaryService;
 
-import org.eclipse.jface.viewers.ArrayContentProvider;
-import org.eclipse.jface.viewers.ComboViewer;
-import org.eclipse.jface.viewers.ISelectionChangedListener;
-import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.jface.viewers.SelectionChangedEvent;
-
 public class ReportGeneralComposite extends AbstractComponentRatingComposite {
-	
-	private final static Logger LOG = LoggerFactory
-			.getLogger(ReportGeneralComposite.class);
+
+    private final static Logger LOG = LoggerFactory.getLogger(ReportGeneralComposite.class);
 
     @Inject
     private InspectionService inspectionService;
@@ -124,7 +116,7 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
     Combo reportStyleCombo;
 
     java.util.List<Photo> photos = new LinkedList<Photo>();
-    
+
     private PlantSelectedListener plantListener;
 
     private Inspection inspection;
@@ -141,13 +133,13 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
     private Text controllerStreetText;
     private Text controllerCityText;
 
-	private ComboViewer titlePhotoComboViewer;
+    private ComboViewer titlePhotoComboViewer;
 
-	private ComboViewer plantPhotoComboViewer;
-	
-	private Photo selectedTitlePhoto;
-	
-	private Photo selectedPlantPhoto;
+    private ComboViewer plantPhotoComboViewer;
+
+    private Photo selectedTitlePhoto;
+
+    private Photo selectedPlantPhoto;
 
     /**
      * Do not use this constructor when instantiate this composite! It is only included to make the
@@ -294,7 +286,7 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
                         context);
                 psd.create();
                 if (psd.open() == Window.OK) {
-                	plantSelected(psd.getPlant());
+                    plantSelected(psd.getPlant());
                 }
             }
         });
@@ -373,19 +365,19 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
         initAutoCompletion(overallCombo);
 
     }
-    
-    private void plantSelected(Plant plant){
+
+    private void plantSelected(Plant plant) {
         plantText.setText(plant.getDescription());
-        if(plantListener != null){
-        	plantListener.selected(plant);
+        if (plantListener != null) {
+            plantListener.selected(plant);
         }
     }
-    
-    public void setPlantListener(PlantSelectedListener l){
-    	if(this.plantListener != null){
-    		throw new RuntimeException("There is already a listener present");
-    	}
-    	this.plantListener = l;
+
+    public void setPlantListener(PlantSelectedListener l) {
+        if (this.plantListener != null) {
+            throw new RuntimeException("There is already a listener present");
+        }
+        this.plantListener = l;
     }
 
     private void initLayouts(Combo combo) {
@@ -628,7 +620,7 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
         titlePhotoLabel.setLayoutData(LayoutUtil.createLeftCenteredGridData());
         formToolkit.adapt(titlePhotoLabel, true, true);
         titlePhotoLabel.setText("Title photo");
-        
+
         titlePhotoComboViewer = new ComboViewer(visualComposite, SWT.NONE);
         Combo titlePhotoCombo = titlePhotoComboViewer.getCombo();
         titlePhotoCombo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
@@ -646,20 +638,20 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
         });
         titlePhotoComboViewer.setInput(photos);
         titlePhotoComboViewer.addSelectionChangedListener(new ISelectionChangedListener() {
-			@Override
-			public void selectionChanged(SelectionChangedEvent event) {
-				IStructuredSelection selection = (IStructuredSelection) event.getSelection();
-				selectedTitlePhoto = (Photo)selection.getFirstElement();
-				
-			}
-		});
+            @Override
+            public void selectionChanged(SelectionChangedEvent event) {
+                IStructuredSelection selection = (IStructuredSelection) event.getSelection();
+                selectedTitlePhoto = (Photo) selection.getFirstElement();
+
+            }
+        });
 
         Label plantPhotoLabel = new Label(visualComposite, SWT.READ_ONLY);
         plantPhotoLabel.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
         plantPhotoLabel.setLayoutData(LayoutUtil.createLeftCenteredGridData());
         formToolkit.adapt(plantPhotoLabel, true, true);
         plantPhotoLabel.setText("Plant photo");
-        
+
         plantPhotoComboViewer = new ComboViewer(visualComposite, SWT.NONE);
         Combo plantPhotoCombo = plantPhotoComboViewer.getCombo();
         plantPhotoCombo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
@@ -678,13 +670,13 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
         });
         plantPhotoComboViewer.setInput(photos);
         plantPhotoComboViewer.addSelectionChangedListener(new ISelectionChangedListener() {
-			@Override
-			public void selectionChanged(SelectionChangedEvent event) {
-				IStructuredSelection selection = (IStructuredSelection) event.getSelection();
-				selectedPlantPhoto = (Photo)selection.getFirstElement();
-				
-			}
-		});
+            @Override
+            public void selectionChanged(SelectionChangedEvent event) {
+                IStructuredSelection selection = (IStructuredSelection) event.getSelection();
+                selectedPlantPhoto = (Photo) selection.getFirstElement();
+
+            }
+        });
     }
 
     private void createBiologicalComponents() {
@@ -897,7 +889,7 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
         photosList.setItems(tableItems);
         plantPhotoComboViewer.refresh();
         titlePhotoComboViewer.refresh();
-        
+
     }
 
     @Override
@@ -934,7 +926,6 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
     public void setInspection(Inspection inspection) {
 
         this.inspection = inspection;
-        System.out.println("rgc: " + this.inspection);
 
     }
 
@@ -960,13 +951,13 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
 
     }
 
-    public void refreshGeneralInformation() {
+    public boolean refreshGeneralInformation() {
 
         if (inspection == null) {
             // TODO Übersetzen
             MessageDialog.openError(shellProvider.getShell(), "Selection Error",
                     "No Inspection Selected");
-            return;
+            return false;
         }
 
         titleText.setText(inspection.getTitle());
@@ -988,11 +979,24 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
 
         fillOptionalFields(inspection);
 
+        return true;
+
     }
 
     private void fillOptionalFields(Inspection inspection) {
 
         Contact c = null;
+        customerNameText.setText("");
+        customerStreetText.setText("");
+        customerCityText.setText("");
+
+        requestorNameText.setText("");
+        requestorStreetText.setText("");
+        requestorCityText.setText("");
+
+        controllerNameText.setText("");
+        controllerStreetText.setText("");
+        controllerCityText.setText("");
 
         if (inspection.getContractor().isPresent()) {
             c = inspection.getContractor().get();

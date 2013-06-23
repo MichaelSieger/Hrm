@@ -39,8 +39,9 @@ public interface IBiologicalRatingDao {
      * @param biological Biological that should be stored.
      * @return Newly generated biological (also holding the correct id).
      * @throws SaveException If the biological could not be inserted.
+     * @throws DatabaseException 
      */
-    BiologicalRating insert(BiologicalRating biological) throws SaveException;
+    BiologicalRating insert(BiologicalRating biological) throws SaveException, DatabaseException;
 
     /**
      * Update an existing biological in storage.

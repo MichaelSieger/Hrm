@@ -47,10 +47,10 @@ import de.hswt.hrm.common.ui.swt.table.ColumnComparator;
 import de.hswt.hrm.common.ui.swt.table.ColumnDescription;
 import de.hswt.hrm.common.ui.swt.table.TableViewerController;
 
-public class CatalogItemsPart extends Composite {
+public class CatalogItemsComposite extends Composite {
 
 	private final static Logger LOG = LoggerFactory
-			.getLogger(CatalogItemsPart.class);
+			.getLogger(CatalogItemsComposite.class);
 
 	@Inject
 	private CatalogService catalogService;
@@ -79,7 +79,7 @@ public class CatalogItemsPart extends Composite {
 	 * @param parent
 	 * @param style
 	 */
-	public CatalogItemsPart(Composite parent, int style) {
+	public CatalogItemsComposite(Composite parent, int style) {
 		super(parent, style);
 		createControls();
 	}
@@ -89,7 +89,7 @@ public class CatalogItemsPart extends Composite {
 	 * 
 	 * @param parent
 	 */
-	public CatalogItemsPart(Composite parent) {
+	public CatalogItemsComposite(Composite parent) {
 		super(parent, SWT.NONE);
 	}
 
