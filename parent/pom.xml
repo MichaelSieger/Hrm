@@ -187,5 +187,8 @@
 		<module>../de.hswt.hrm.evaluation.service</module>
 		<module>../de.hswt.hrm.evaluation.ui</module>
 		<module>../de.hswt.hrm.evaluation.service.test</module>
+		<module>../de.hswt.hrm.misc.dao.core</module>
+		<module>../de.hswt.hrm.misc.dao.jdbc</module>
+		<module>../de.hswt.hrm.misc.service</module>
 	</modules>
 </project>

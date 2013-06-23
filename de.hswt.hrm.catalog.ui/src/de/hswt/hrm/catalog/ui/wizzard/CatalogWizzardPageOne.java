@@ -11,7 +11,6 @@ import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
@@ -50,7 +49,7 @@ public class CatalogWizzardPageOne extends WizardPage {
     public void createControl(Composite parent) {
         parent.setLayout(new PageContainerFillLayout());
         URL url = CatalogWizzardPageOne.class.getClassLoader().getResource(
-                "de/hswt/hrm/catalog/ui/xwt/CatalogWizard" + IConstants.XWT_EXTENSION_SUFFIX);
+                "de/hswt/hrm/catalog/ui/xwt/CatalogWizardWindow" + IConstants.XWT_EXTENSION_SUFFIX);
 
         try {
             container = (Composite) XWTForms.load(parent, url);
@@ -153,7 +152,7 @@ public class CatalogWizzardPageOne extends WizardPage {
         ICatalogItem ic = null;
 
         for (Button bu : b.values()) {
-            if (bu.getSelection() && bu.getText().equalsIgnoreCase("maßnahme")) {
+            if (bu.getSelection() && bu.getText().equalsIgnoreCase("Activity")) {
                 if (item.isPresent()) {
                     ic = item.get();
                     Activity a = (Activity) ic;
@@ -166,7 +165,7 @@ public class CatalogWizzardPageOne extends WizardPage {
 
                 }
             }
-            else if (bu.getSelection() && bu.getText().equalsIgnoreCase("soll")) {
+            else if (bu.getSelection() && bu.getText().equalsIgnoreCase("target")) {
                 if (item.isPresent()) {
                     ic = item.get();
                     Target t = (Target) ic;
@@ -179,7 +178,7 @@ public class CatalogWizzardPageOne extends WizardPage {
 
                 }
             }
-            else if (bu.getSelection() && bu.getText().equalsIgnoreCase("ist")) {
+            else if (bu.getSelection() && bu.getText().equalsIgnoreCase("current")) {
                 if (item.isPresent()) {
                     ic = item.get();
                     Current c = (Current) ic;
@@ -217,7 +216,8 @@ public class CatalogWizzardPageOne extends WizardPage {
         else if (oneButtonisSelected) {
             for (Text textField : getTextWidgets().values()) {
                 if (textField.getText().length() == 0) {
-                    setErrorMessage("Feld \""+textField.getToolTipText()+"\" darf nicht leer sein."); 
+                    setErrorMessage("Feld \"" + textField.getToolTipText()
+                            + "\" darf nicht leer sein.");
                     return false;
                 }
             }

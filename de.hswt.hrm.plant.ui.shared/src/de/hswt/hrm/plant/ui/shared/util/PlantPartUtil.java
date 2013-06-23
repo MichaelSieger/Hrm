@@ -14,11 +14,15 @@ import com.google.common.base.Optional;
 
 import de.hswt.hrm.common.ui.swt.table.ColumnDescription;
 import de.hswt.hrm.common.ui.swt.wizards.WizardCreator;
+import de.hswt.hrm.i18n.I18n;
+import de.hswt.hrm.i18n.I18nFactory;
 import de.hswt.hrm.plant.model.Plant;
 import de.hswt.hrm.plant.ui.shared.ui.wizzard.PlantWizard;
 
 
 public class PlantPartUtil {
+    
+    private final static I18n I18N = I18nFactory.getI18n(PlantPartUtil.class);
 
     public static Optional<Plant> showWizard(IEclipseContext context, Shell activeShell,
             Optional<Plant> plant) {
@@ -52,7 +56,7 @@ public class PlantPartUtil {
     }
 
     private static ColumnDescription<Plant> getNumberOfElements() {
-        return new ColumnDescription<Plant>("Number of Elements", new ColumnLabelProvider() {
+        return new ColumnDescription<Plant>(I18N.tr("Number of Elements"), new ColumnLabelProvider() {
             @Override
             public String getText(Object element) {
                 Plant p = (Plant) element;
@@ -70,7 +74,7 @@ public class PlantPartUtil {
     }
 
     private static ColumnDescription<Plant> getDescription() {
-        return new ColumnDescription<Plant>("Description", new ColumnLabelProvider() {
+        return new ColumnDescription<Plant>(I18N.tr("Description"), new ColumnLabelProvider() {
             @Override
             public String getText(Object element) {
                 Plant p = (Plant) element;
@@ -87,7 +91,7 @@ public class PlantPartUtil {
     }
 
     private static ColumnDescription<Plant> getPlace() {
-        return new ColumnDescription<Plant>("Place Name", new ColumnLabelProvider() {
+        return new ColumnDescription<Plant>(I18N.tr("Place"), new ColumnLabelProvider() {
             @Override
             public String getText(Object element) {
                 Plant p = (Plant) element;
@@ -109,7 +113,7 @@ public class PlantPartUtil {
     }
 
     private static ColumnDescription<Plant> getConstructionYear() {
-        return new ColumnDescription<Plant>("Construction Year", new ColumnLabelProvider() {
+        return new ColumnDescription<Plant>(I18N.tr("Construction Year"), new ColumnLabelProvider() {
             @Override
             public String getText(Object element) {
                 Plant p = (Plant) element;
@@ -127,7 +131,7 @@ public class PlantPartUtil {
     }
 
     private static ColumnDescription<Plant> getManufactor() {
-        return new ColumnDescription<Plant>("Number of Elements", new ColumnLabelProvider() {
+        return new ColumnDescription<Plant>(I18N.tr("Manufactor"), new ColumnLabelProvider() {
             @Override
             public String getText(Object element) {
                 Plant p = (Plant) element;
@@ -145,25 +149,25 @@ public class PlantPartUtil {
     }
 
     private static ColumnDescription<Plant> getType() {
-        return new ColumnDescription<Plant>("Construction Year", new ColumnLabelProvider() {
+        return new ColumnDescription<Plant>(I18N.tr("Type"), new ColumnLabelProvider() {
             @Override
             public String getText(Object element) {
                 Plant p = (Plant) element;
-                return p.getConstructionYear().get().toString();
+                return p.getType().get().toString();
 
             }
         }, new Comparator<Plant>() {
 
             @Override
             public int compare(Plant o1, Plant o2) {
-                return o1.getConstructionYear().get().compareTo(o2.getConstructionYear().get());
+                return o1.getType().get().compareTo(o2.getType().get());
             }
 
         });
     }
 
     private static ColumnDescription<Plant> getAirPerformance() {
-        return new ColumnDescription<Plant>("Air Performance", new ColumnLabelProvider() {
+        return new ColumnDescription<Plant>(I18N.tr("Air Performance"), new ColumnLabelProvider() {
             @Override
             public String getText(Object element) {
                 Plant p = (Plant) element;
@@ -182,7 +186,7 @@ public class PlantPartUtil {
     }
 
     private static ColumnDescription<Plant> getMotorPower() {
-        return new ColumnDescription<Plant>("Motor Power", new ColumnLabelProvider() {
+        return new ColumnDescription<Plant>(I18N.tr("Motor Power"), new ColumnLabelProvider() {
             @Override
             public String getText(Object element) {
                 Plant p = (Plant) element;
@@ -200,7 +204,7 @@ public class PlantPartUtil {
     }
 
     private static ColumnDescription<Plant> getMotorRPM() {
-        return new ColumnDescription<Plant>("Motor RPM", new ColumnLabelProvider() {
+        return new ColumnDescription<Plant>(I18N.tr("Motor RPM"), new ColumnLabelProvider() {
             @Override
             public String getText(Object element) {
                 Plant p = (Plant) element;
@@ -218,7 +222,7 @@ public class PlantPartUtil {
     }
 
     private static ColumnDescription<Plant> getVentilatorPerformance() {
-        return new ColumnDescription<Plant>("Ventilator Performance", new ColumnLabelProvider() {
+        return new ColumnDescription<Plant>(I18N.tr("Ventilator Performance"), new ColumnLabelProvider() {
             @Override
             public String getText(Object element) {
                 Plant p = (Plant) element;
@@ -237,7 +241,7 @@ public class PlantPartUtil {
     }
 
     private static ColumnDescription<Plant> getCurrent() {
-        return new ColumnDescription<Plant>("Current", new ColumnLabelProvider() {
+        return new ColumnDescription<Plant>(I18N.tr("Current"), new ColumnLabelProvider() {
             @Override
             public String getText(Object element) {
                 Plant p = (Plant) element;
@@ -254,7 +258,7 @@ public class PlantPartUtil {
     }
 
     private static ColumnDescription<Plant> getVoltage() {
-        return new ColumnDescription<Plant>("Voltage", new ColumnLabelProvider() {
+        return new ColumnDescription<Plant>(I18N.tr("Voltage"), new ColumnLabelProvider() {
             @Override
             public String getText(Object element) {
                 Plant p = (Plant) element;
@@ -271,7 +275,7 @@ public class PlantPartUtil {
     }
 
     private static ColumnDescription<Plant> getNote() {
-        return new ColumnDescription<Plant>("Note", new ColumnLabelProvider() {
+        return new ColumnDescription<Plant>(I18N.tr("Notes"), new ColumnLabelProvider() {
             @Override
             public String getText(Object element) {
                 Plant p = (Plant) element;
