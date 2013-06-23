@@ -95,9 +95,7 @@ public class PhysicalInspectionParser {
         targetRow = null;
         for (PhysicalRating rating : this.ratings) {
             this.sumRatings += rating.getRating();
-            if (rating.getComponent().isPresent()) {
-                this.sumQuantifier += rating.getComponent().orNull().getQuantifier().or(0);
-            }
+            this.sumQuantifier += rating.getQuantifier();
             preTarget = buffer.toString();
             preTarget.replace(INSPECTOIN_SAMPLE_POINT, rating.getComponent().getName());
             preTarget.replace(GRADE, String.valueOf(rating.getRating()));
