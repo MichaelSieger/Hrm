@@ -124,7 +124,7 @@ public class CategoryDao implements ICategoryDao {
                     stmt.setParameter(Fields.CATALOG, category.getCatalog().get().getId());
                 }
                 else {
-                    stmt.setParameter(Fields.CATALOG, null);
+                    stmt.setParameterNull(Fields.CATALOG);
                 }
 
                 int affectedRows = stmt.executeUpdate();
