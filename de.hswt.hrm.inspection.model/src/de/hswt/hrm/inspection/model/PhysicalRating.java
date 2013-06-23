@@ -13,10 +13,11 @@ public class PhysicalRating {
     private final int id;
 
     private int rating;
+    private int quantifier;
     private String note;
     private Component component;
     private Inspection inspection;
-    
+
     private static final String IS_MANDATORY = "Field is a mandatory.";
     private static final String INVALID_NUMBER = "%d is an invalid number.%n Must be greater 0";
 
@@ -68,6 +69,14 @@ public class PhysicalRating {
 
     public int getId() {
         return id;
+    }
+
+    public int getQuantifier() {
+        return quantifier;
+    }
+
+    public void setQuantifier(int quantifier) {
+        this.quantifier = quantifier;
     }
 
     @Override
