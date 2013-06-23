@@ -175,8 +175,8 @@ INSERT INTO `hrm`.`Catalog_Activity` (`Category_Activity_State_Current_FK`, `Cat
 -- Insert 2 different component physical ratings in the `Component_Physical_Rating` Table
 ------------------------------------------------------------
 
-INSERT INTO `hrm`.`Component_Physical_Rating` (`Component_Physical_Rating_Component_FK`, `Component_Physical_Rating_Rating`, `Component_Physical_Rating_Note`, `Component_Physical_Rating_Report_FK`) VALUES ('1', '3.5', 'passt scho', '1');
-INSERT INTO `hrm`.`Component_Physical_Rating` (`Component_Physical_Rating_Component_FK`, `Component_Physical_Rating_Rating`, `Component_Physical_Rating_Note`, `Component_Physical_Rating_Report_FK`) VALUES ('2', '2.1', 'guad', '2');
+INSERT INTO `hrm`.`Component_Physical_Rating` (`Component_Physical_Rating_Component_FK`, `Component_Physical_Rating_Rating`, `Component_Physical_Rating_Note`, `Component_Physical_Rating_Report_FK`, `Component_Physical_Rating_Quantifier`) VALUES ('1', '3.5', 'passt scho', '1', '2');
+INSERT INTO `hrm`.`Component_Physical_Rating` (`Component_Physical_Rating_Component_FK`, `Component_Physical_Rating_Rating`, `Component_Physical_Rating_Note`, `Component_Physical_Rating_Report_FK`, `Component_Physical_Rating_Quantifier`) VALUES ('2', '2.1', 'guad', '2', '3');
 
 ------------------------------------------------------------
 -- Insert 3 different priorities in the `Priority` Table
