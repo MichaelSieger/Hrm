@@ -1,8 +1,6 @@
 package de.hswt.hrm.inspection.ui.part;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -11,8 +9,6 @@ import javax.inject.Inject;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
-import org.eclipse.jface.viewers.DoubleClickEvent;
-import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
@@ -42,11 +38,8 @@ import de.hswt.hrm.common.ui.swt.table.ColumnComparator;
 import de.hswt.hrm.common.ui.swt.table.ColumnDescription;
 import de.hswt.hrm.common.ui.swt.table.TableViewerController;
 import de.hswt.hrm.inspection.model.Inspection;
-import de.hswt.hrm.inspection.model.Layout;
 import de.hswt.hrm.inspection.service.InspectionService;
-import de.hswt.hrm.inspection.ui.dialog.PlantSelectionDialog;
 import de.hswt.hrm.inspection.ui.filter.InspectionFilter;
-import de.hswt.hrm.plant.model.Plant;
 
 public class ReportsOverviewComposite extends Composite {
 
@@ -147,18 +140,8 @@ public class ReportsOverviewComposite extends Composite {
 
     private void refreshTable() {
 
-        // TODO remove dummies when findAll is wokring
-
-        Inspection i = new Inspection(new GregorianCalendar(1, 1, 1),
-                new GregorianCalendar(1, 1, 1), new GregorianCalendar(1, 1, 1), "Dummy",
-                new Layout("dummie", "dummy File name"), new Plant("super mega plant"));
-
         try {
 
-            ArrayList t = new ArrayList<>();
-            t.add(i);
-
-            tableViewer.setInput(t);
             tableViewer.setInput(inspectionService.findAll());
         }
         catch (DatabaseException e) {
@@ -225,4 +208,5 @@ public class ReportsOverviewComposite extends Composite {
     @Override
     protected void checkSubclass() {
     }
+
 }

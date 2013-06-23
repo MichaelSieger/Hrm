@@ -9,18 +9,25 @@ import javax.inject.Inject;
 
 import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
-import org.eclipse.e4.ui.di.Focus;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.SWT;
-import org.eclipse.ui.forms.widgets.FormToolkit;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.forms.widgets.Form;
-import org.eclipse.swt.layout.FillLayout;
-import org.eclipse.swt.widgets.TabFolder;
-import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.ActionContributionItem;
 import org.eclipse.jface.action.Separator;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.TabFolder;
+import org.eclipse.swt.widgets.TabItem;
+import org.eclipse.ui.forms.widgets.Form;
+import org.eclipse.ui.forms.widgets.FormToolkit;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.common.base.Function;
+import com.google.common.base.Throwables;
+import com.google.common.collect.Collections2;
 
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.ElementNotFoundException;
@@ -32,25 +39,15 @@ import de.hswt.hrm.scheme.service.ComponentConverter;
 import de.hswt.hrm.scheme.service.SchemeService;
 import de.hswt.hrm.scheme.ui.SchemeGridItem;
 
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.common.base.Function;
-import com.google.common.base.Throwables;
-import com.google.common.collect.Collections2;
-
 public class InspectionPart {
-	
-	private static final String RENDER_ERROR = "Error on rendering image";
 
-	private final static Logger LOG = LoggerFactory
-			.getLogger(InspectionPart.class);
-	
+    private static final String RENDER_ERROR = "Error on rendering image";
+
+    private final static Logger LOG = LoggerFactory.getLogger(InspectionPart.class);
+
     @Inject
     private IEclipseContext context;
-    
+
     @Inject
     private SchemeService schemeService;
 
@@ -128,34 +125,40 @@ public class InspectionPart {
 
         reportGeneralComposite = new ReportGeneralComposite(tabFolder);
         reportGeneralComposite.setPlantListener(new PlantSelectedListener() {
-			
-			@Override
-			public void selected(Plant plant) {
-				Scheme scheme;
-				try {
-					scheme = schemeService.findCurrentSchemeByPlant(plant);
-				} catch(ElementNotFoundException e){
-					//TODO what to do if there is no scheme?
-					throw Throwables.propagate(e);
-				}catch (DatabaseException e) {
-					throw Throwables.propagate(e);
-				}
-				Collection<SchemeGridItem> schemeGridItems = Collections2.transform(scheme.getSchemeComponents(), new Function<SchemeComponent, SchemeGridItem>() {
-					public SchemeGridItem apply(SchemeComponent c){
-						try {
-							return new SchemeGridItem(ComponentConverter.convert(parent.getDisplay(), c.getComponent()),
-														c.getDirection(), c.getX(), c.getY());
-						} catch (IOException e) {
-							LOG.error(RENDER_ERROR);
-							return null;
-						}
-					}
-				});
-				physicalComposite.setSchemeGridItems(schemeGridItems);
-				biologicalComposite.setSchemeGridItems(schemeGridItems);
-				performanceComposite.setSchemeGridItems(schemeGridItems);
-			}
-		});
+
+            @Override
+            public void selected(Plant plant) {
+                Scheme scheme;
+                try {
+                    scheme = schemeService.findCurrentSchemeByPlant(plant);
+                }
+                catch (ElementNotFoundException e) {
+                    // TODO what to do if there is no scheme?
+                    throw Throwables.propagate(e);
+                }
+                catch (DatabaseException e) {
+                    throw Throwables.propagate(e);
+                }
+                Collection<SchemeGridItem> schemeGridItems = Collections2.transform(
+                        scheme.getSchemeComponents(),
+                        new Function<SchemeComponent, SchemeGridItem>() {
+                            public SchemeGridItem apply(SchemeComponent c) {
+                                try {
+                                    return new SchemeGridItem(ComponentConverter.convert(
+                                            parent.getDisplay(), c.getComponent()), c
+                                            .getDirection(), c.getX(), c.getY());
+                                }
+                                catch (IOException e) {
+                                    LOG.error(RENDER_ERROR);
+                                    return null;
+                                }
+                            }
+                        });
+                physicalComposite.setSchemeGridItems(schemeGridItems);
+                biologicalComposite.setSchemeGridItems(schemeGridItems);
+                performanceComposite.setSchemeGridItems(schemeGridItems);
+            }
+        });
         ContextInjectionFactory.inject(reportGeneralComposite, context);
         generalTab.setControl(reportGeneralComposite);
 
@@ -280,10 +283,4 @@ public class InspectionPart {
         formToolkit.dispose();
     }
 
-    private void updateTableFilter(String filterString) {
-        // TODO adapt to this class
-        // ContactFilter filter = (ContactFilter) tableViewer.getFilters()[0];
-        // filter.setSearchString(filterString);
-        // tableViewer.refresh();
-    }
 }
