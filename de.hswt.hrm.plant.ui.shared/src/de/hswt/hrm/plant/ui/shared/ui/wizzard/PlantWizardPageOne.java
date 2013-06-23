@@ -226,12 +226,12 @@ public class PlantWizardPageOne extends WizardPage {
 	    setLabelText(container, "lblDescription", I18N.tr("Description")+":");
 	    setLabelText(container, "lblScheme", I18N.tr("Scheme")+":");
 	    setLabelText(container, "lblManufactor", I18N.tr("Manufactor")+":");
-	    setLabelText(container, "lblConstructionYear", I18N.tr("ConstYear")+":");
+	    setLabelText(container, "lblConstructionYear", I18N.tr("Construction Year")+":");
 	    setLabelText(container, "lblType", I18N.tr("Type")+":");
-	    setLabelText(container, "lblAirPerformance", I18N.tr("AirPerformance")+":");
-	    setLabelText(container, "lblMotorPower", I18N.tr("MotorPower")+":");
-	    setLabelText(container, "lblVentilatorPerformance", I18N.tr("VentilatorPerformance")+":");
-	    setLabelText(container, "lblMotorRPM", I18N.tr("MotorRPM")+":");
+	    setLabelText(container, "lblAirPerformance", I18N.tr("Air Performance")+":");
+	    setLabelText(container, "lblMotorPower", I18N.tr("Motor Power")+":");
+	    setLabelText(container, "lblVentilatorPerformance", I18N.tr("Ventilator Performance")+":");
+	    setLabelText(container, "lblMotorRPM", I18N.tr("Motor RPM")+":");
 	    setLabelText(container, "lblCurrent", I18N.tr("Current")+":");
 	    setLabelText(container, "lblVoltage", I18N.tr("Voltage")+":");
 	    setLabelText(container, "lblNote", I18N.tr("Notes")+":");
