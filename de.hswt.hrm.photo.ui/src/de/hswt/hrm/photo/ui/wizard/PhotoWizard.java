@@ -91,7 +91,6 @@ public class PhotoWizard extends Wizard {
     	for(Photo photo : photos){
     		if(photo.getId() == -1){
 //   TODO 			photos.set(x,photoService.insert(photo)); 
-    			photos.set(x, null);
     		} else {
 //    TODO		photoService.update(photo);   			
     		}
