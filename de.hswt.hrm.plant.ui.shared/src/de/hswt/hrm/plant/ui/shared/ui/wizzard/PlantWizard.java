@@ -17,12 +17,15 @@ import com.google.common.base.Optional;
 
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.SaveException;
+import de.hswt.hrm.i18n.I18n;
+import de.hswt.hrm.i18n.I18nFactory;
 import de.hswt.hrm.place.model.Place;
 import de.hswt.hrm.plant.model.Plant;
 import de.hswt.hrm.plant.service.PlantService;
 
 public class PlantWizard extends Wizard {
     private static final Logger LOG = LoggerFactory.getLogger(PlantWizard.class);
+    private static final I18n I18N = I18nFactory.getI18n(PlantWizard.class);
     
     @Inject
     private PlantService plantService;
@@ -33,14 +36,14 @@ public class PlantWizard extends Wizard {
 
     public PlantWizard(IEclipseContext context, Optional<Plant> plant) {
         this.plant = plant;
-        first = new PlantWizardPageOne("Erste Seite", plant);
-        second = new PlantWizardPageTwo("Zweite Seite", plant);
+        first = new PlantWizardPageOne("First page", plant);
+        second = new PlantWizardPageTwo("Second page", plant);
         ContextInjectionFactory.inject(second, context);
         
         if (plant.isPresent()) {
-            setWindowTitle("Anlage bearbeiten");
+            setWindowTitle(I18N.tr("Edit plant"));
         } else {
-            setWindowTitle("Neue Anlage erstellen");
+            setWindowTitle(I18N.tr("Add plant"));
         } 
     }
 
@@ -93,8 +96,6 @@ public class PlantWizard extends Wizard {
     private Plant setValues(Optional<Plant> p) {
         HashMap<String, Text> mandatoryWidgets = first.getMandatoryWidgets();
         String description = mandatoryWidgets.get("description").getText();
-        //TODO nextInspection
-        //TODO scheme
         
         HashMap<String, Text> optionalWidgets = first.getOptionalWidgets();
         String manufactor = optionalWidgets.get("manufactor").getText();
@@ -115,12 +116,8 @@ public class PlantWizard extends Wizard {
         if (p.isPresent()) {
             plant = p.get();
             plant.setDescription(description);
-            //TODO nextInspection
-            //TODO scheme
         } else {
             plant = new Plant(description);
-            //TODO nextInspection
-            //TODO scheme
         }
         plant.setManufactor(manufactor);
         if (!constructionYear.equals("")) {
