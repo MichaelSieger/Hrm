@@ -77,7 +77,7 @@ public class SchemeGrid extends DoubleBufferedCanvas {
 
 			@Override
 			public void mouseUp(MouseEvent e) {
-				SchemeGridItem item = getImage((int)Math.round(getGridX(e.x)), (int)Math.round(getGridY(e.y)));
+				SchemeGridItem item = getImage((int)getGridX(e.x), (int)getGridY(e.y));
 				if(listener != null && item != null){
 					listener.itemClicked(e, item);
 				}
@@ -134,21 +134,25 @@ public class SchemeGrid extends DoubleBufferedCanvas {
 		final float quadW = getQuadWidth();
 		final float quadH = getQuadHeight();
 		for (Colorbox box : colors) {
-			Color oBackground = gc.getBackground();
-			gc.setBackground(box.getColor());
+			
 			final int x = (int)Math.round(quadW * box.getX()) + 1;
 			final int y = (int)Math.round(quadH * box.getY()) + 1;
 			final int w = (int)Math.round(quadW * box.getWidth()) - 1;
 			final int h = (int)Math.round(quadH * box.getHeight()) - 1;
 			if(box.isFill()){
+				Color oBackground = gc.getBackground();
+				gc.setBackground(box.getColor());
 				gc.fillRectangle(x, y, w, h);
+				gc.setBackground(oBackground);
 			}else{
 				int oLineWidth = gc.getLineWidth();
+				Color oColor = gc.getForeground();
+				gc.setForeground(box.getColor());
 				gc.setLineWidth(OUTLINE_WIDTH);
 				gc.drawRectangle(x, y, w, h);
 				gc.setLineWidth(oLineWidth);
+				gc.setForeground(oColor);
 			}
-			gc.setBackground(oBackground);
 		}
 	}
 
