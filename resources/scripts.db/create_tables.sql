@@ -472,6 +472,7 @@ CREATE  TABLE IF NOT EXISTS `Component_Physical_Rating` (
   `Component_Physical_Rating_Rating` INT NULL ,
   `Component_Physical_Rating_Note` TEXT NULL ,
   `Component_Physical_Rating_Report_FK` INT NULL ,
+  `Component_Physical_Rating_Quantifier` INT NULL ,
   PRIMARY KEY (`Component_Physical_Rating_ID`) ,
   INDEX `Component_Physical_Rating_Component_FK` (`Component_Physical_Rating_Component_FK` ASC) ,
   INDEX `Component_Physical_Rating_Report_FK` (`Component_Physical_Rating_Report_FK` ASC) ,
