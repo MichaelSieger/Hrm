@@ -74,7 +74,7 @@ public class GridDropTargetListener implements DropTargetListener {
 			final int x = ev.x - org.x;
 			final int y = ev.y - org.y;
 			grid.clearColors();
-			grid.setColor(getShadowColor(), x, y, item.getWidth(), item.getHeight());
+			grid.setColorPixel(getShadowColor(), x, y, item.getWidth(), item.getHeight());
 		}
 	}
 	

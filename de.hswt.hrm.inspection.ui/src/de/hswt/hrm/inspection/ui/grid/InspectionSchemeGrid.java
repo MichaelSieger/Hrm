@@ -74,7 +74,7 @@ public class InspectionSchemeGrid {
 				throw new RuntimeException("Internal Error");
 			}
 			grid.clearColors();
-			grid.setColor(getColor(), selected.getX(), selected.getY(), c.get().getWidth(), c.get().getHeight(), false, false);
+			grid.setColorGrid(getColor(), selected.getX(), selected.getY(), c.get().getWidth(), c.get().getHeight(), false, false);
 		}
 	}
 	
