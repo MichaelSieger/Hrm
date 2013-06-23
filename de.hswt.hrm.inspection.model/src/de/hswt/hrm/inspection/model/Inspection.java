@@ -20,8 +20,8 @@ public class Inspection {
     private Calendar inspectionDate;
     private Calendar reportDate;
     private Calendar nextInspectionDate;
-    private int temperature;
-    private int humidity;
+    private float temperature;
+    private float humidity;
     private String summary;
     private String title;
     private int temperatureRating;
@@ -117,20 +117,20 @@ public class Inspection {
         this.nextInspectionDate = nextInspectionDate;
     }
 
-    public Optional<Integer> getTemperature() {
+    public Optional<Float> getTemperature() {
         return Optional.fromNullable(temperature);
     }
 
-    public void setTemperature(int temperature) {
+    public void setTemperature(float temperature) {
         checkArgument(temperature > 0, INVALID_NUMBER, temperature);
         this.temperature = temperature;
     }
 
-    public Optional<Integer> getHumidity() {
+    public Optional<Float> getHumidity() {
         return Optional.fromNullable(humidity);
     }
 
-    public void setHumidity(int humidity) {
+    public void setHumidity(float humidity) {
         checkArgument(humidity > 0, INVALID_NUMBER, humidity);
         this.humidity = humidity;
     }
@@ -195,7 +195,7 @@ public class Inspection {
         int result = 1;
         result = prime * result + ((checker == null) ? 0 : checker.hashCode());
         result = prime * result + ((contractor == null) ? 0 : contractor.hashCode());
-        result = prime * result + humidity;
+        result = prime * result + Integer.valueOf(Math.round(humidity));
         result = prime * result + humidityQuantifier;
         result = prime * result + humidityRating;
         result = prime * result + id;
@@ -207,7 +207,7 @@ public class Inspection {
         result = prime * result + ((reportDate == null) ? 0 : reportDate.hashCode());
         result = prime * result + ((requester == null) ? 0 : requester.hashCode());
         result = prime * result + ((summary == null) ? 0 : summary.hashCode());
-        result = prime * result + temperature;
+        result = prime * result + Integer.valueOf(Math.round(temperature));
         result = prime * result + temperatureQuantifier;
         result = prime * result + temperatureRating;
         result = prime * result + ((title == null) ? 0 : title.hashCode());
