@@ -23,12 +23,14 @@ import com.google.common.base.Optional;
 
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.common.ui.swt.layouts.PageContainerFillLayout;
+import de.hswt.hrm.i18n.I18n;
+import de.hswt.hrm.i18n.I18nFactory;
 import de.hswt.hrm.plant.model.Plant;
 
 public class PlantWizardPageOne extends WizardPage {
 
-	private static final Logger LOG = LoggerFactory
-			.getLogger(PlantWizardPageOne.class);
+	private static final Logger LOG = LoggerFactory.getLogger(PlantWizardPageOne.class);
+	private static final I18n I18N = I18nFactory.getI18n(PlantWizardPageOne.class);
 	private static final int FIRST_CONSTRUCTION_YEAR = 1985;
 
 	private Composite container;
@@ -41,14 +43,14 @@ public class PlantWizardPageOne extends WizardPage {
 		super(title);
 		this.plant = plant;
 		setDescription(createDescription());
-		setTitle("Plant Wizard");
+		setTitle(I18N.tr("Plant Wizard"));
 	}
 
 	private String createDescription() {
 		if (plant.isPresent()) {
-			return "Edit a plant.";
+			return I18N.tr("Edit a plant.");
 		}
-		return "Add a new plant.";
+		return I18N.tr("Add a new plant.");
 	}
 
 	public void createControl(Composite parent) {
@@ -95,7 +97,6 @@ public class PlantWizardPageOne extends WizardPage {
 		Plant p = plant.get();
 		Text t = (Text) XWT.findElementByName(c, "description");
 		t.setText(p.getDescription());
-		// TODO scheme
 		t = (Text) XWT.findElementByName(c, "manufactor");
 		t.setText(p.getManufactor().or(""));
 		Combo combo = (Combo) XWT.findElementByName(c, "constructionYear");
@@ -122,7 +123,6 @@ public class PlantWizardPageOne extends WizardPage {
 		HashMap<String, Text> widgets = new HashMap<String, Text>();
 		widgets.put("description",
 				(Text) XWT.findElementByName(container, "description"));
-		// TODO scheme
 		return widgets;
 	}
 
@@ -159,8 +159,7 @@ public class PlantWizardPageOne extends WizardPage {
 		// Mandatory: just one textfield
 		Text description = getMandatoryWidgets().get("description");
 		if (description.getText().length() == 0) {
-			setErrorMessage("Field \"" + description.getToolTipText()
-					+ "\" is mandatory.");
+		    setErrorMessage(I18N.tr("Field is mandatory")+ ": " + I18N.tr(XWT.getElementName((Object) description)));
 			return false;
 		}
 		// Optional
@@ -173,8 +172,7 @@ public class PlantWizardPageOne extends WizardPage {
 				optWidgets.get("voltage") };
 		for (int i = 0; i < optArray.length; i++) {
 			if (!checkValidity(optArray[i])) {
-				setErrorMessage("Input for \"" + optArray[i].getToolTipText()
-						+ "\" is invalid.");
+			    setErrorMessage(I18N.tr("Invalid input for field")+ " " + I18N.tr(XWT.getElementName((Object) optArray[i])));
 				return false;
 			}
 		}
@@ -221,28 +219,22 @@ public class PlantWizardPageOne extends WizardPage {
 	}
 
 	private void translate(Composite container) {
-		// TODO: translation - I18N
-		setToolTipText(container, "description", "Description");
-		setToolTipText(container, "manufactor", "Manufactor");
-		setToolTipText(container, "type", "Type");
-		setToolTipText(container, "airPerformance", "AirPerformance");
-		setToolTipText(container, "motorPower", "MotorPower");
-		setToolTipText(container, "ventilatorPerformance",
-				"VentilatorPerformance");
-		setToolTipText(container, "motorRPM", "MotorRPM");
-		setToolTipText(container, "current", "Current");
-		setToolTipText(container, "voltage", "Voltage");
-		setToolTipText(container, "note", "Note"); // Bemerkung
-	}
-
-	private void setToolTipText(Composite container, String textName,
-			String toolTip) {
-		Text t = (Text) XWT.findElementByName(container, textName);
-		if (t == null) {
-			LOG.error("Text '" + textName + "' not found.");
-			return;
-		}
-		t.setToolTipText(toolTip);
+		// Sections
+	    setSectionText(container, "Mandatory", I18N.tr("Mandatory"));
+	    setSectionText(container, "Optional", I18N.tr("Optional"));
+	    // Labels
+	    setLabelText(container, "lblDescription", I18N.tr("Description")+":");
+	    setLabelText(container, "lblScheme", I18N.tr("Scheme")+":");
+	    setLabelText(container, "lblManufactor", I18N.tr("Manufactor")+":");
+	    setLabelText(container, "lblConstructionYear", I18N.tr("ConstYear")+":");
+	    setLabelText(container, "lblType", I18N.tr("Type")+":");
+	    setLabelText(container, "lblAirPerformance", I18N.tr("AirPerformance")+":");
+	    setLabelText(container, "lblMotorPower", I18N.tr("MotorPower")+":");
+	    setLabelText(container, "lblVentilatorPerformance", I18N.tr("VentilatorPerformance")+":");
+	    setLabelText(container, "lblMotorRPM", I18N.tr("MotorRPM")+":");
+	    setLabelText(container, "lblCurrent", I18N.tr("Current")+":");
+	    setLabelText(container, "lblVoltage", I18N.tr("Voltage")+":");
+	    setLabelText(container, "lblNote", I18N.tr("Notes")+":");
 	}
 
 	private void setLabelText(Composite container, String labelName, String text) {
@@ -253,5 +245,14 @@ public class PlantWizardPageOne extends WizardPage {
 		}
 		l.setText(text);
 	}
+	
+	private void setSectionText (Composite container, String sectionName, String text) {
+        Section s = (Section) XWT.findElementByName(container, sectionName);
+        if (s == null) {
+            LOG.error("Section '" + sectionName + "' not found.");
+            return;
+        }
+        s.setText(text);
+    }
 
 }
