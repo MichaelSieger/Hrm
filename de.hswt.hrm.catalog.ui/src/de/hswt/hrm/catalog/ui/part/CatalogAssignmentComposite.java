@@ -271,7 +271,7 @@ public class CatalogAssignmentComposite extends Composite {
 
             @Override
             public void modifyText(ModifyEvent e) {
-                updateSearchTableFilter(assignedCurrent, assignedCurrentSearch.getText());
+                updateSearchTableFilter(assignedActivity, assignedActivitySearch.getText());
             }
         });
         formToolkit.adapt(assignedActivitySearch, true, true);
@@ -414,6 +414,13 @@ public class CatalogAssignmentComposite extends Composite {
         availableTargetSearch = new Text(targetComposite, SWT.H_SCROLL | SWT.SEARCH
                 | SWT.ICON_SEARCH | SWT.CANCEL);
         availableTargetSearch.setLayoutData(LayoutUtil.createHorzFillData());
+        availableTargetSearch.addModifyListener(new ModifyListener() {
+
+            @Override
+            public void modifyText(ModifyEvent e) {
+                updateSearchTableFilter(availableTarget, availableTargetSearch.getText());
+            }
+        });
         formToolkit.adapt(availableTargetSearch, true, true);
 
         availableTarget = new ListViewer(targetComposite, SWT.BORDER | SWT.V_SCROLL);
@@ -438,6 +445,13 @@ public class CatalogAssignmentComposite extends Composite {
         availableCurrentSearch = new Text(currentComposite, SWT.H_SCROLL | SWT.SEARCH
                 | SWT.ICON_SEARCH | SWT.CANCEL);
         availableCurrentSearch.setLayoutData(LayoutUtil.createHorzFillData());
+        availableCurrentSearch.addModifyListener(new ModifyListener() {
+
+            @Override
+            public void modifyText(ModifyEvent e) {
+                updateSearchTableFilter(availableCurrent, availableCurrentSearch.getText());
+            }
+        });
         formToolkit.adapt(availableCurrentSearch, true, true);
 
         availableCurrent = new ListViewer(currentComposite, SWT.BORDER | SWT.V_SCROLL);
@@ -462,6 +476,13 @@ public class CatalogAssignmentComposite extends Composite {
         availableActivitySearch = new Text(activityComposite, SWT.H_SCROLL | SWT.SEARCH
                 | SWT.ICON_SEARCH | SWT.CANCEL);
         availableActivitySearch.setLayoutData(LayoutUtil.createHorzFillData());
+        availableActivitySearch.addModifyListener(new ModifyListener() {
+
+            @Override
+            public void modifyText(ModifyEvent e) {
+                updateSearchTableFilter(availableActivity, availableActivitySearch.getText());
+            }
+        });
         formToolkit.adapt(availableActivitySearch, true, true);
 
         availableActivity = new ListViewer(activityComposite, SWT.BORDER | SWT.V_SCROLL);
