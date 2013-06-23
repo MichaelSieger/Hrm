@@ -36,12 +36,21 @@ INSERT INTO `hrm`.`Layout` (`Layout_Name`, `Layout_Filename`) VALUES ('LayoutB',
 INSERT INTO `hrm`.`Layout` (`Layout_Name`, `Layout_Filename`) VALUES ('LayoutC','LayoutFile3');
 
 ------------------------------------------------------------
+-- Insert 4 different pictures in the `Picture` Table
+------------------------------------------------------------
+-- hier brauche ich erst die blobs von 2 Bildern
+INSERT INTO `hrm`.`Picture` (`Picture_Blob`, `Picture_Name`, `Picture_Label`) VALUES (NULL, 'bildA', 'Bild zeigt A');
+INSERT INTO `hrm`.`Picture` (`Picture_Blob`, `Picture_Name`, `Picture_Label`) VALUES (NULL, 'bildB', 'Bild zeigt B');
+INSERT INTO `hrm`.`Picture` (`Picture_Blob`, `Picture_Name`, `Picture_Label`) VALUES (NULL, 'Frontbild', 'Bild zeigt ein Haus');
+INSERT INTO `hrm`.`Picture` (`Picture_Blob`, `Picture_Name`, `Picture_Label`) VALUES (NULL, 'Plantbild', 'Bild zeigt eine Anlage');
+
+------------------------------------------------------------
 -- Insert 3 different reports in the `Report` Table
 ------------------------------------------------------------
 
-INSERT INTO `hrm`.`Report` (`Report_Layout_FK`, `Report_Plant_FK`, `Report_Requester_FK`, `Report_Contractor_FK`, `Report_Checker_FK`, `Report_Jobdate`, `Report_Reportdate`, `Report_Nextdate`, `Report_Airtemperature`, `Report_Humidity`, `Report_Summary`, `Report_Titel`, `Report_Humidity_Rating`, `Report_Humidity_Quantifier`, `Report_Airtemperature_Rating`, `Report_Airtemperature_Quantifier`) VALUES ('1', '1', '1', '3', '5', '2012-12-31', '2013-01-07', '2016-01-07', '20', '37', 'Mei is des a guade Anlage, da muassd nix mocha', 'Schnaxlwirt','1','3','2','2');
-INSERT INTO `hrm`.`Report` (`Report_Layout_FK`, `Report_Plant_FK`, `Report_Requester_FK`, `Report_Contractor_FK`, `Report_Checker_FK`, `Report_Jobdate`, `Report_Reportdate`, `Report_Nextdate`, `Report_Airtemperature`, `Report_Humidity`, `Report_Summary`, `Report_Titel`, `Report_Humidity_Rating`, `Report_Humidity_Quantifier`, `Report_Airtemperature_Rating`, `Report_Airtemperature_Quantifier`) VALUES ('2', '2', '2', '4', '5', '2012-01-08', '2012-01-11', '2013-01-11', '22', '40','A so a glumb, schmeiss besser weg und moch was neiss', 'Hubertusstüberl','2','3','1','1');
-INSERT INTO `hrm`.`Report` (`Report_Layout_FK`, `Report_Plant_FK`, `Report_Requester_FK`, `Report_Contractor_FK`, `Report_Checker_FK`, `Report_Jobdate`, `Report_Reportdate`, `Report_Nextdate`, `Report_Airtemperature`, `Report_Humidity`, `Report_Summary`, `Report_Titel`, `Report_Humidity_Rating`, `Report_Humidity_Quantifier`, `Report_Airtemperature_Rating`, `Report_Airtemperature_Quantifier`) VALUES ('3', '2', '2', '4', '5', '2012-01-08', '2012-01-11', '2013-01-11', '22', '40','Copy Paste', 'SchmuckiAlle','2','3','1','1');
+INSERT INTO `hrm`.`Report` (`Report_Layout_FK`, `Report_Plant_FK`, `Report_Requester_FK`, `Report_Contractor_FK`, `Report_Checker_FK`, `Report_Jobdate`, `Report_Reportdate`, `Report_Nextdate`, `Report_Airtemperature`, `Report_Humidity`, `Report_Summary`, `Report_Titel`, `Report_Humidity_Rating`, `Report_Humidity_Quantifier`, `Report_Airtemperature_Rating`, `Report_Airtemperature_Quantifier`, `Report_Frontpicture_FK`, `Report_Plantpicture_FK`) VALUES ('1', '1', '1', '3', '5', '2012-12-31', '2013-01-07', '2016-01-07', '20', '37', 'Mei is des a guade Anlage, da muassd nix mocha', 'Schnaxlwirt','1','3','2','2','3','4');
+INSERT INTO `hrm`.`Report` (`Report_Layout_FK`, `Report_Plant_FK`, `Report_Requester_FK`, `Report_Contractor_FK`, `Report_Checker_FK`, `Report_Jobdate`, `Report_Reportdate`, `Report_Nextdate`, `Report_Airtemperature`, `Report_Humidity`, `Report_Summary`, `Report_Titel`, `Report_Humidity_Rating`, `Report_Humidity_Quantifier`, `Report_Airtemperature_Rating`, `Report_Airtemperature_Quantifier`, `Report_Frontpicture_FK`, `Report_Plantpicture_FK`) VALUES ('2', '2', '2', '4', '5', '2012-01-08', '2012-01-11', '2013-01-11', '22', '40','A so a glumb, schmeiss besser weg und moch was neiss', 'Hubertusstüberl','2','3','1','1','3','4');
+INSERT INTO `hrm`.`Report` (`Report_Layout_FK`, `Report_Plant_FK`, `Report_Requester_FK`, `Report_Contractor_FK`, `Report_Checker_FK`, `Report_Jobdate`, `Report_Reportdate`, `Report_Nextdate`, `Report_Airtemperature`, `Report_Humidity`, `Report_Summary`, `Report_Titel`, `Report_Humidity_Rating`, `Report_Humidity_Quantifier`, `Report_Airtemperature_Rating`, `Report_Airtemperature_Quantifier`, `Report_Frontpicture_FK`, `Report_Plantpicture_FK`) VALUES ('3', '2', '2', '4', '5', '2012-01-08', '2012-01-11', '2013-01-11', '22', '40','Copy Paste', 'SchmuckiAlle','2','3','1','1','3','4');
 
 ------------------------------------------------------------
 -- Insert 4 different cataloges in the `Catalog` Table
@@ -155,20 +164,12 @@ INSERT INTO `hrm`.`Catalog_Target` (`Category_Target_State_Target_FK`, `Category
 INSERT INTO `hrm`.`Catalog_Target` (`Category_Target_State_Target_FK`, `Category_Target_Catalog_FK`) VALUES ('1', '1');
 INSERT INTO `hrm`.`Catalog_Target` (`Category_Target_State_Target_FK`, `Category_Target_Catalog_FK`) VALUES ('2', '3');
 
-
 ------------------------------------------------------------
 -- Connect 3 different catalog with activities the `Catalog_Activity` Table
 ------------------------------------------------------------
 INSERT INTO `hrm`.`Catalog_Activity` (`Category_Activity_State_Current_FK`, `Category_Activity_State_Activity_FK`) VALUES ('1', '2');
 INSERT INTO `hrm`.`Catalog_Activity` (`Category_Activity_State_Current_FK`, `Category_Activity_State_Activity_FK`) VALUES ('2', '1');
 INSERT INTO `hrm`.`Catalog_Activity` (`Category_Activity_State_Current_FK`, `Category_Activity_State_Activity_FK`) VALUES ('2', '3');
-
-------------------------------------------------------------
--- Insert 2 different pictures in the `Picture` Table
-------------------------------------------------------------
--- hier brauche ich erst die blobs von 2 Bildern
-INSERT INTO `hrm`.`Picture` (`Picture_Blob`, `Picture_Name`, `Picture_Label`) VALUES (NULL, 'bildA', 'Bild zeigt A');
-INSERT INTO `hrm`.`Picture` (`Picture_Blob`, `Picture_Name`, `Picture_Label`) VALUES (NULL, 'bildB', 'Bild zeigt B');
 
 ------------------------------------------------------------
 -- Insert 2 different component physical ratings in the `Component_Physical_Rating` Table
