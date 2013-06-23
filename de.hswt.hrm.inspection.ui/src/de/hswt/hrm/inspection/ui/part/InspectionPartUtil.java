@@ -129,9 +129,14 @@ public class InspectionPartUtil {
                 Color c;
 
                 Calendar cal = Calendar.getInstance();
+
                 cal.setTimeInMillis(date.getTime());
-                int mYear = cal.get(Calendar.YEAR) - 1970;
-                System.out.println(mYear);
+                int current = cal.get(Calendar.YEAR) - 1970;
+
+                cal.setTimeInMillis(i.getNextInspectionDate().getTimeInMillis());
+                int next = cal.get(Calendar.YEAR) - 1970;
+
+                System.out.println(next - current);
 
                 StyledString text = new StyledString();
 
