@@ -5,6 +5,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Strings.isNullOrEmpty;
 import de.hswt.hrm.plant.model.Plant;
 import de.hswt.hrm.contact.model.Contact;
+import de.hswt.hrm.photo.model.Photo;
 
 import java.util.Calendar;
 
@@ -28,6 +29,8 @@ public class Inspection {
     private int temperatureQuantifier;
     private int humidityRating;
     private int humidityQuantifier;
+    private Photo frontpicture;
+    private Photo plantpicture;
 
     private static final String IS_MANDATORY = "Field is a mandatory.";
     private static final String INVALID_NUMBER = "%d is an invalid number.%n Must be greater 0";
@@ -43,8 +46,8 @@ public class Inspection {
         setLayout(layout);
     }
 
-    public Inspection(Calendar reportDate, Calendar inspectionDate,
-            Calendar nextInspection, String title, Layout layout, Plant plant) {
+    public Inspection(Calendar reportDate, Calendar inspectionDate, Calendar nextInspection,
+            String title, Layout layout, Plant plant) {
         this(-1, reportDate, inspectionDate, nextInspection, title, layout, plant);
     }
 
@@ -189,145 +192,20 @@ public class Inspection {
         return id;
     }
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((checker == null) ? 0 : checker.hashCode());
-        result = prime * result + ((contractor == null) ? 0 : contractor.hashCode());
-        result = prime * result + humidity;
-        result = prime * result + humidityQuantifier;
-        result = prime * result + humidityRating;
-        result = prime * result + id;
-        result = prime * result + ((inspectionDate == null) ? 0 : inspectionDate.hashCode());
-        result = prime * result + ((layout == null) ? 0 : layout.hashCode());
-        result = prime * result
-                + ((nextInspectionDate == null) ? 0 : nextInspectionDate.hashCode());
-        result = prime * result + ((plant == null) ? 0 : plant.hashCode());
-        result = prime * result + ((reportDate == null) ? 0 : reportDate.hashCode());
-        result = prime * result + ((requester == null) ? 0 : requester.hashCode());
-        result = prime * result + ((summary == null) ? 0 : summary.hashCode());
-        result = prime * result + temperature;
-        result = prime * result + temperatureQuantifier;
-        result = prime * result + temperatureRating;
-        result = prime * result + ((title == null) ? 0 : title.hashCode());
-        return result;
+    public Optional<Photo> getFrontpicture() {
+        return Optional.fromNullable(frontpicture);
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        Inspection other = (Inspection) obj;
-        if (checker == null) {
-            if (other.checker != null) {
-                return false;
-            }
-        }
-        else if (!checker.equals(other.checker)) {
-            return false;
-        }
-        if (contractor == null) {
-            if (other.contractor != null) {
-                return false;
-            }
-        }
-        else if (!contractor.equals(other.contractor)) {
-            return false;
-        }
-        if (humidity != other.humidity) {
-            return false;
-        }
-        if (humidityQuantifier != other.humidityQuantifier) {
-            return false;
-        }
-        if (humidityRating != other.humidityRating) {
-            return false;
-        }
-        if (id != other.id) {
-            return false;
-        }
-        if (inspectionDate == null) {
-            if (other.inspectionDate != null) {
-                return false;
-            }
-        }
-        else if (!inspectionDate.equals(other.inspectionDate)) {
-            return false;
-        }
-        if (layout == null) {
-            if (other.layout != null) {
-                return false;
-            }
-        }
-        else if (!layout.equals(other.layout)) {
-            return false;
-        }
-        if (nextInspectionDate == null) {
-            if (other.nextInspectionDate != null) {
-                return false;
-            }
-        }
-        else if (!nextInspectionDate.equals(other.nextInspectionDate)) {
-            return false;
-        }
-        if (plant == null) {
-            if (other.plant != null) {
-                return false;
-            }
-        }
-        else if (!plant.equals(other.plant)) {
-            return false;
-        }
-        if (reportDate == null) {
-            if (other.reportDate != null) {
-                return false;
-            }
-        }
-        else if (!reportDate.equals(other.reportDate)) {
-            return false;
-        }
-        if (requester == null) {
-            if (other.requester != null) {
-                return false;
-            }
-        }
-        else if (!requester.equals(other.requester)) {
-            return false;
-        }
-        if (summary == null) {
-            if (other.summary != null) {
-                return false;
-            }
-        }
-        else if (!summary.equals(other.summary)) {
-            return false;
-        }
-        if (temperature != other.temperature) {
-            return false;
-        }
-        if (temperatureQuantifier != other.temperatureQuantifier) {
-            return false;
-        }
-        if (temperatureRating != other.temperatureRating) {
-            return false;
-        }
-        if (title == null) {
-            if (other.title != null) {
-                return false;
-            }
-        }
-        else if (!title.equals(other.title)) {
-            return false;
-        }
-        return true;
+    public void setFrontpicture(Photo frontpicture) {
+        this.frontpicture = frontpicture;
+    }
+
+    public Optional<Photo> getPlantpicture() {
+        return Optional.fromNullable(plantpicture);
+    }
+
+    public void setPlantpicture(Photo plantpicture) {
+        this.plantpicture = plantpicture;
     }
 
 }
