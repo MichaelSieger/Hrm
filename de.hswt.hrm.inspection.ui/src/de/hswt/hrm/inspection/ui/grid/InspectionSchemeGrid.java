@@ -84,7 +84,7 @@ public class InspectionSchemeGrid {
 	}
 	
 	private Color getColor(){
-		return grid.getDisplay().getSystemColor(SWT.COLOR_BLUE);
+		return grid.getDisplay().getSystemColor(SWT.COLOR_GREEN);
 	}
 
 }
