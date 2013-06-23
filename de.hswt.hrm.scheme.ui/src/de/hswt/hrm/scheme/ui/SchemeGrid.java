@@ -311,7 +311,7 @@ public class SchemeGrid extends DoubleBufferedCanvas {
 	 */
 	public void setImageAtPixel(RenderedComponent image, Direction direction,
 			int x, int y) throws PlaceOccupiedException {
-		setImage(new SchemeGridItem(image, direction, (int)Math.round(getGridX(x)), (int)Math.round(getGridY(y))));
+		setImage(new SchemeGridItem(image, direction, (int)getGridX(x), (int)getGridY(y)));
 	}
 
 	/**
