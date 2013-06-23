@@ -30,4 +30,23 @@
          version="0.0.0"
          unpack="false"/>
 
+   <plugin
+         id="de.hswt.hrm.misc.dao.core"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="de.hswt.hrm.misc.dao.jdbc"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="de.hswt.hrm.misc.service"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
 </feature>
