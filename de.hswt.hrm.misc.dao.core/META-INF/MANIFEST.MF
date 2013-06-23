@@ -4,3 +4,5 @@ Bundle-Name: Core
 Bundle-SymbolicName: de.hswt.hrm.misc.dao.core
 Bundle-Version: 0.0.1.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Import-Package: de.hswt.hrm.common.database.exception,
+ de.hswt.hrm.misc.priority.model
