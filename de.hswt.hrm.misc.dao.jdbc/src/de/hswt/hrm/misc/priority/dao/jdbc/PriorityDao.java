@@ -1,5 +1,6 @@
 package de.hswt.hrm.misc.priority.dao.jdbc;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.sql.Connection;
@@ -18,7 +19,6 @@ import de.hswt.hrm.common.database.exception.ElementNotFoundException;
 import de.hswt.hrm.common.database.exception.SaveException;
 import de.hswt.hrm.misc.priority.dao.core.IPriorityDao;
 import de.hswt.hrm.misc.priority.model.Priority;
-
 
 public class PriorityDao implements IPriorityDao {
 
@@ -46,8 +46,35 @@ public class PriorityDao implements IPriorityDao {
 
     @Override
     public Priority findById(int id) throws DatabaseException, ElementNotFoundException {
-        // TODO Auto-generated method stub
-        return null;
+        checkArgument(id >= 0, "Id must not be negative.");
+
+        SqlQueryBuilder builder = new SqlQueryBuilder();
+        builder.select(TABLE_NAME, Fields.ID, Fields.NAME, Fields.TEXT, Fields.PRIORITY);
+        builder.where(Fields.ID);
+
+        final String query = builder.toString();
+
+        try (Connection con = DatabaseFactory.getConnection()) {
+            try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
+                stmt.setParameter(Fields.ID, id);
+                ResultSet result = stmt.executeQuery();
+
+                Collection<Priority> priorities = fromResultSet(result);
+                DbUtils.closeQuietly(result);
+
+                if (priorities.size() < 1) {
+                    throw new ElementNotFoundException();
+                }
+                else if (priorities.size() > 1) {
+                    throw new DatabaseException("ID '" + id + "' is not unique.");
+                }
+
+                return priorities.iterator().next();
+            }
+        }
+        catch (SQLException e) {
+            throw new DatabaseException(e);
+        }
     }
 
     @Override
