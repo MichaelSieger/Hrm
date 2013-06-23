@@ -1,5 +1,7 @@
 package de.hswt.hrm.misc.ui.part;
 
+import java.io.IOException;
+import java.nio.file.Path;
 import java.util.Collection;
 import java.util.List;
 
@@ -30,6 +32,8 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Optional;
 
+import de.hswt.hrm.common.Config;
+import de.hswt.hrm.common.Hrm;
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.ui.swt.constants.SearchFieldConstants;
 import de.hswt.hrm.common.ui.swt.layouts.LayoutUtil;
@@ -235,7 +239,14 @@ public class ReportPreferencesComposite extends Composite {
         if (dir != null) {
             directoryText.setText(dir);
         }
-        // TODO write it to the local properties file
-        // ask Ben
+        Config cfg = Config.getInstance();
+        cfg.setProperty(Config.Keys.REPORT_STYLE_FOLDER, dir);
+        
+        Path configPath = Hrm.getConfigPath();
+        try {
+			cfg.store(configPath, true, true);
+		} catch (IOException e) {
+			e.printStackTrace();
+		} 
     }
 }
