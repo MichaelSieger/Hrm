@@ -76,6 +76,18 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
+-- Table `Picture`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `Picture` (
+  `Picture_ID` INT NOT NULL AUTO_INCREMENT ,
+  `Picture_Blob` LONGBLOB NULL ,
+  `Picture_Name` VARCHAR(255) NULL ,
+  `Picture_Label` VARCHAR(100) NULL ,
+  PRIMARY KEY (`Picture_ID`) )
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
 -- Table `Report`
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `Report` (
@@ -96,12 +108,16 @@ CREATE  TABLE IF NOT EXISTS `Report` (
   `Report_Humidity_Quantifier` INT NULL ,
   `Report_Airtemperature_Rating` INT NULL ,
   `Report_Airtemperature_Quantifier` INT NULL ,
+  `Report_Frontpicture_FK` INT NULL ,
+  `Report_Plantpicture_FK` INT NULL ,
   PRIMARY KEY (`Report_ID`) ,
   INDEX `Report_Layout_IDx` (`Report_Layout_FK` ASC) ,
   INDEX `Report_Plant_IDx` (`Report_Plant_FK` ASC) ,
   INDEX `Report_Contact_Req_IDx` (`Report_Requester_FK` ASC) ,
   INDEX `Report_Contact_Con_IDx` (`Report_Contractor_FK` ASC) ,
   INDEX `Report_Contact_Che_IDx` (`Report_Checker_FK` ASC) ,
+  INDEX `Report_Frontpicture_FK` (`Report_Frontpicture_FK` ASC) ,
+  INDEX `Report_Plantpicture_FK` (`Report_Plantpicture_FK` ASC) ,
   CONSTRAINT `Report_Layout_FK`
     FOREIGN KEY (`Report_Layout_FK` )
     REFERENCES `Layout` (`Layout_ID` )
@@ -125,6 +141,16 @@ CREATE  TABLE IF NOT EXISTS `Report` (
   CONSTRAINT `Report_Contact_Che_FK`
     FOREIGN KEY (`Report_Checker_FK` )
     REFERENCES `Contact` (`Contact_ID` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `Report_Frontpicture_FK`
+    FOREIGN KEY (`Report_Frontpicture_FK` )
+    REFERENCES `Picture` (`Picture_ID` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `Report_Plantpicture_FK`
+    FOREIGN KEY (`Report_Plantpicture_FK` )
+    REFERENCES `Picture` (`Picture_ID` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -434,18 +460,6 @@ CREATE  TABLE IF NOT EXISTS `Lock` (
     REFERENCES `Session` (`Session_Uuid` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `Picture`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `Picture` (
-  `Picture_ID` INT NOT NULL AUTO_INCREMENT ,
-  `Picture_Blob` LONGBLOB NULL ,
-  `Picture_Name` VARCHAR(255) NULL ,
-  `Picture_Label` VARCHAR(100) NULL ,
-  PRIMARY KEY (`Picture_ID`) )
 ENGINE = InnoDB;
 
 
