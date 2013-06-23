@@ -1,5 +1,7 @@
 package de.hswt.hrm.inspection.ui.part;
 
+import java.awt.image.ComponentColorModel;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
@@ -28,6 +30,7 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
 
 import de.hswt.hrm.common.database.exception.DatabaseException;
+import de.hswt.hrm.common.database.exception.ElementNotFoundException;
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.common.ui.swt.layouts.LayoutUtil;
 import de.hswt.hrm.common.ui.swt.utils.ContentProposalUtil;
@@ -39,6 +42,12 @@ import de.hswt.hrm.inspection.ui.dialog.ContactSelectionDialog;
 import de.hswt.hrm.inspection.ui.dialog.PlantSelectionDialog;
 import de.hswt.hrm.photo.model.Photo;
 import de.hswt.hrm.photo.ui.wizard.PhotoWizard;
+import de.hswt.hrm.plant.model.Plant;
+import de.hswt.hrm.scheme.model.Scheme;
+import de.hswt.hrm.scheme.model.SchemeComponent;
+import de.hswt.hrm.scheme.service.ComponentConverter;
+import de.hswt.hrm.scheme.service.SchemeService;
+import de.hswt.hrm.scheme.ui.SchemeGridItem;
 import de.hswt.hrm.summary.model.Summary;
 import de.hswt.hrm.summary.service.SummaryService;
 
@@ -47,10 +56,18 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.DateTime;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import com.google.common.base.Function;
 import com.google.common.base.Optional;
+import com.google.common.base.Throwables;
+import com.google.common.collect.Collections2;
 
 public class ReportGeneralComposite extends AbstractComponentRatingComposite {
+	
+	private final static Logger LOG = LoggerFactory
+			.getLogger(ReportGeneralComposite.class);
 
     @Inject
     private InspectionService inspectionService;
@@ -102,6 +119,8 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
     private Combo humitiyCommentCombo;
 
     java.util.List<Photo> photos = new LinkedList<Photo>();
+    
+    private PlantSelectedListener plantListener;
 
     private Inspection inspection;
 
@@ -250,9 +269,7 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
                         context);
                 psd.create();
                 if (psd.open() == Window.OK) {
-
-                    plantText.setText(psd.getPlant().getDescription());
-
+                	plantSelected(psd.getPlant());
                 }
             }
         });
@@ -329,6 +346,20 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
         formToolkit.paintBordersFor(overallCombo);
         initAutoCompletion(overallCombo);
 
+    }
+    
+    private void plantSelected(Plant plant){
+        plantText.setText(plant.getDescription());
+        if(plantListener != null){
+        	plantListener.selected(plant);
+        }
+    }
+    
+    public void setPlantListener(PlantSelectedListener l){
+    	if(this.plantListener != null){
+    		throw new RuntimeException("There is already a listener present");
+    	}
+    	this.plantListener = l;
     }
 
     private void createPersonsComponents() {
