@@ -241,7 +241,7 @@ public class InspectionPart {
                 tabFolder.setSelection(generalTab);
                 reportGeneralComposite.setInspection(reportsOverviewComposite
                         .getSelectedInspection());
-                reportGeneralComposite.refresh();
+                reportGeneralComposite.refreshGeneralInformation();
 
             }
         };
@@ -278,11 +278,6 @@ public class InspectionPart {
     @PreDestroy
     public void dispose() {
         formToolkit.dispose();
-    }
-
-    @Focus
-    public void setFocus() {
-        // TODO Set the focus to control
     }
 
     private void updateTableFilter(String filterString) {

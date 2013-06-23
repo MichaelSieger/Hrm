@@ -2,7 +2,7 @@
 	<Composite.layout>
 		<GridLayout numColumns="3"/>
 	</Composite.layout>
-	<Section x:Style="(p1:Section).EXPANDED | (p1:Section).TITLE_BAR" x:Name="Mandatory" text="CatalogItem">
+	<Section x:Style="(p1:Section).EXPANDED | (p1:Section).TITLE_BAR" x:Name="Mandatory">
 		<Section.layoutData>
 			<GridData grabExcessHorizontalSpace="true" widthHint="277" horizontalAlignment="FILL" horizontalSpan="2" heightHint="190"/>
 		</Section.layoutData>
@@ -12,21 +12,21 @@
 					<GridLayout numColumns="4"/>
 				</Composite.layout>
 				<Label/>
-				<Button x:Style="RADIO" text="Target" x:Name="target"/>
-				<Button x:Style="RADIO" text="Current" x:Name="current"/>
-				<Button x:Style="RADIO" text="Activity" x:Name="activity"/>
-				<Label text="Name"/>
-				<Text x:Style="BORDER" x:Name="name" x:TooltipText="Name">
+				<Button x:Style="RADIO" text="Target______" x:Name="target"/>
+				<Button x:Style="RADIO" text="Current_____" x:Name="current"/>
+				<Button x:Style="RADIO" text="Activity____" x:Name="activity"/>
+				<Label text="Name__" x:Name="lblName"/>
+				<Text x:Style="BORDER" x:Name="name">
 					<Text.layoutData>
 						<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL" horizontalSpan="3"/>
 					</Text.layoutData>
 				</Text>
-				<Label text="Description">
+				<Label text="Description___" x:Name="lblDescription">
 					<Label.layoutData>
 						<GridData verticalAlignment="TOP"/>
 					</Label.layoutData>
 				</Label>
-				<Text x:Style="BORDER | WRAP | V_SCROLL | MULTI" x:Name="desc" x:TooltipText="Beschreibung">
+				<Text x:Style="BORDER | WRAP | V_SCROLL | MULTI" x:Name="desc">
 					<Text.layoutData>
 						<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL" verticalAlignment="FILL" heightHint="80" widthHint="300" horizontalSpan="3"/>
 					</Text.layoutData>

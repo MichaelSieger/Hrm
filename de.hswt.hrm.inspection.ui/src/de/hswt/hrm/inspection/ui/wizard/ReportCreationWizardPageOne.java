@@ -1,6 +1,7 @@
 package de.hswt.hrm.inspection.ui.wizard;
 
 import java.util.GregorianCalendar;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -23,12 +24,14 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
 
+import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.common.ui.swt.layouts.LayoutUtil;
 import de.hswt.hrm.common.ui.swt.layouts.PageContainerFillLayout;
 import de.hswt.hrm.common.ui.swt.utils.SWTResourceManager;
 import de.hswt.hrm.inspection.model.Inspection;
 import de.hswt.hrm.inspection.model.Layout;
+import de.hswt.hrm.inspection.service.LayoutService;
 import de.hswt.hrm.inspection.ui.dialog.PlantSelectionDialog;
 import de.hswt.hrm.plant.model.Plant;
 
@@ -40,9 +43,8 @@ public class ReportCreationWizardPageOne extends WizardPage {
     @Inject
     private IShellProvider shellProvider;
 
-    // TODO adapt to style service
-    // @Inject
-    // private StyleService styleService;
+    @Inject
+    private LayoutService layoutService;
 
     private FormToolkit formToolkit;
     private Text titleText;
@@ -234,13 +236,39 @@ public class ReportCreationWizardPageOne extends WizardPage {
         reportStyleCombo.setLayoutData(LayoutUtil.createHorzCenteredFillData(4));
         formToolkit.adapt(reportStyleCombo);
         formToolkit.paintBordersFor(reportStyleCombo);
-        // TODO init with styles, select the first
-        reportStyleCombo.add("dummy style");
-        reportStyleCombo.select(0);
 
+        initLayouts(reportStyleCombo);
         setControl(generalSection);
 
         checkPage();
+    }
+
+    private void initLayouts(Combo combo) {
+
+        try {
+            // Obtain all layouts form the DB
+            List<Layout> layouts = (List<Layout>) layoutService.findAll();
+
+            String[] items = new String[layouts.size()];
+            int index = 0;
+            for (Layout l : layouts) {
+                items[index] = l.getName();
+                index++;
+
+            }
+            combo.setItems(items);
+            index = 0;
+            for (String s : items) {
+                combo.setData(s, layouts.get(index));
+                index++;
+            }
+            combo.select(0);
+        }
+
+        catch (DatabaseException e) {
+            e.printStackTrace();
+        }
+
     }
 
     private void checkPage() {

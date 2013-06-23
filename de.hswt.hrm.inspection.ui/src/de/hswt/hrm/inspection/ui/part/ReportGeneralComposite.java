@@ -1,8 +1,5 @@
 package de.hswt.hrm.inspection.ui.part;
 
-import java.awt.image.ComponentColorModel;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -12,6 +9,7 @@ import javax.inject.Inject;
 
 import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.window.IShellProvider;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardDialog;
@@ -20,14 +18,22 @@ import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.DateTime;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.TableItem;
+import org.eclipse.swt.widgets.List;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.common.base.Optional;
 
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.ElementNotFoundException;
@@ -37,7 +43,9 @@ import de.hswt.hrm.common.ui.swt.utils.ContentProposalUtil;
 import de.hswt.hrm.common.ui.swt.wizards.WizardCreator;
 import de.hswt.hrm.component.model.Component;
 import de.hswt.hrm.inspection.model.Inspection;
+import de.hswt.hrm.inspection.model.Layout;
 import de.hswt.hrm.inspection.service.InspectionService;
+import de.hswt.hrm.inspection.service.LayoutService;
 import de.hswt.hrm.inspection.ui.dialog.ContactSelectionDialog;
 import de.hswt.hrm.inspection.ui.dialog.PlantSelectionDialog;
 import de.hswt.hrm.photo.model.Photo;
@@ -51,19 +59,6 @@ import de.hswt.hrm.scheme.ui.SchemeGridItem;
 import de.hswt.hrm.summary.model.Summary;
 import de.hswt.hrm.summary.service.SummaryService;
 
-import org.eclipse.swt.widgets.Text;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.widgets.DateTime;
-import org.eclipse.swt.widgets.Combo;
-import org.eclipse.swt.widgets.List;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.common.base.Function;
-import com.google.common.base.Optional;
-import com.google.common.base.Throwables;
-import com.google.common.collect.Collections2;
-
 public class ReportGeneralComposite extends AbstractComponentRatingComposite {
 	
 	private final static Logger LOG = LoggerFactory
@@ -74,6 +69,9 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
 
     @Inject
     private SummaryService evaluationService;
+
+    @Inject
+    private LayoutService layoutService;
 
     @Inject
     private IEclipseContext context;
@@ -329,9 +327,10 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
         formToolkit.adapt(reportStyleLabel, true, true);
         reportStyleLabel.setText("Report Layout");
 
-        // TODO init with styles, select the first
         Combo reportStyleCombo = new Combo(generalComposite, SWT.DROP_DOWN | SWT.READ_ONLY);
+        initLayouts(reportStyleCombo);
         reportStyleCombo.setLayoutData(LayoutUtil.createHorzCenteredFillData(4));
+
         formToolkit.adapt(reportStyleCombo);
         formToolkit.paintBordersFor(reportStyleCombo);
 
@@ -360,6 +359,34 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
     		throw new RuntimeException("There is already a listener present");
     	}
     	this.plantListener = l;
+    }
+
+    private void initLayouts(Combo combo) {
+
+        try {
+            // Obtain all layouts form the DB
+            java.util.List<Layout> layouts = (java.util.List<Layout>) layoutService.findAll();
+
+            String[] items = new String[layouts.size()];
+            int index = 0;
+            for (Layout l : layouts) {
+                items[index] = l.getName();
+                index++;
+
+            }
+            combo.setItems(items);
+            index = 0;
+            for (String s : items) {
+                combo.setData(s, layouts.get(index));
+                index++;
+            }
+            combo.select(0);
+        }
+
+        catch (DatabaseException e) {
+            e.printStackTrace();
+        }
+
     }
 
     private void createPersonsComponents() {
@@ -881,9 +908,12 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
 
     }
 
-    public void refresh() {
+    public void refreshGeneralInformation() {
 
         if (inspection == null) {
+            // TODO Übersetzen
+            MessageDialog.openError(shellProvider.getShell(), "Selection Error",
+                    "No Inspection Selected");
             return;
         }
 
@@ -900,6 +930,9 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
                 .setDay(inspection.getNextInspectionDate().get(Calendar.DAY_OF_MONTH));
         nextInspectionDateTime.setMonth(inspection.getNextInspectionDate().get(Calendar.MONTH));
         nextInspectionDateTime.setYear(inspection.getNextInspectionDate().get(Calendar.YEAR));
+        
+        plantText.setText(inspection.getPlant().getDescription());
+        
 
     }
 }

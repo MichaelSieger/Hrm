@@ -15,10 +15,13 @@ import de.hswt.hrm.catalog.model.Target;
 import de.hswt.hrm.catalog.service.CatalogService;
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.SaveException;
+import de.hswt.hrm.i18n.I18n;
+import de.hswt.hrm.i18n.I18nFactory;
 
 public class CatalogWizard extends Wizard {
 
     private static final Logger LOG = LoggerFactory.getLogger(CatalogWizard.class);
+    private static final I18n I18N = I18nFactory.getI18n(CatalogWizard.class);
     private CatalogWizzardPageOne first;
     private Optional<ICatalogItem> item;
 
@@ -29,10 +32,10 @@ public class CatalogWizard extends Wizard {
         this.item = item;
 
         if (item.isPresent()) {
-            setWindowTitle("Soll/Ist/Maßnahme bearbeiten");
+            setWindowTitle(I18N.tr("Edit Target/Current/Activity"));
         }
         else {
-            setWindowTitle("Neue Soll/Ist/Maßnahme hinzufügen");
+            setWindowTitle(I18N.tr("Add Target/Current/Activity"));
         }
     }
 
