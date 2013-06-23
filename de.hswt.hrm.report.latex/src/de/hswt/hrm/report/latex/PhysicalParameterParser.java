@@ -3,8 +3,11 @@ package de.hswt.hrm.report.latex;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
+
+import de.hswt.hrm.inspection.model.Inspection;
 
 public class PhysicalParameterParser {
 
@@ -28,9 +31,16 @@ public class PhysicalParameterParser {
     private final String WHEIGHTING_SUM = ":physicalParameterWheightingSum:";
     private final String RATING_AV = ":physicalParameterRatingAverage:";
 
+    /*
+     * path specifications
+     */
+    private final String FILE_DIR = "templates";
+    private final String FILE_NAME_TABLE = "physicalparametertable.tex";
+    private final String FILE_NAME_ROW = "physicalparameterrow.tex";
+
     // TODO unccoment follwing line when model ready
-    // private Report report;
-    private Path path;
+    private Inspection inspection;
+    private String path;
 
     private String endTarget;
     private String rows;
@@ -41,16 +51,19 @@ public class PhysicalParameterParser {
 
     private StringBuffer buffer = new StringBuffer();
 
-    public String parse(Path path) throws IOException {
+    public PhysicalParameterParser(String path, Inspection inspection) {
+        this.inspection = inspection;
         this.path = path;
+    }
+
+    public String parse() throws IOException {
         this.parseRow();
         this.parseTable();
         return this.endTarget;
     }
 
     private void parseTable() throws IOException {
-        Path pathTable = this.path;
-        // TODO append file to path
+        Path pathTable = FileSystems.getDefault().getPath(this.path, FILE_DIR, FILE_NAME_TABLE);
         buffer.setLength(0);
         BufferedReader reader = Files.newBufferedReader(pathTable, Charset.defaultCharset());
         String line = null;
@@ -74,8 +87,7 @@ public class PhysicalParameterParser {
     }
 
     private void parseRow() throws IOException {
-        Path pathRow = this.path;
-        // TODO append file to path
+        Path pathRow = FileSystems.getDefault().getPath(this.path, FILE_DIR, FILE_NAME_ROW);
         buffer.setLength(0);
         BufferedReader reader = Files.newBufferedReader(pathRow, Charset.defaultCharset());
         String line = null;
@@ -91,33 +103,39 @@ public class PhysicalParameterParser {
 
         StringBuffer target = new StringBuffer();
 
-        // TODO when model ready
-        // uncomment the following two lines
-        // this.sumRatings += report.getTempRating().tofloat();
-        // this.sumRatings += report.getHumidityRating().tofloat();
-        // this.sumQuantifier += report.getTempQuantifier();
-        // this.sumQuantifier += report.getHumidityQuantifier();
+        this.sumRatings += inspection.getTemperatureRating().or(0);
+        this.sumRatings += inspection.getHumidityRating().or(0);
+        this.sumQuantifier += inspection.getTemperatureQuantifier().or(0);
+        this.sumQuantifier += inspection.getHumidityQuantifier().or(0);
 
         // - un-String the calls below..
         preTarget = buffer.toString();
         preTarget.replace(PROPERTY, "Temperatur");
-        preTarget.replace(VALUE, "report.getAirTemperature()");
-        preTarget.replace(PARAM_GRADE, "report.getTempRating()");
-        preTarget.replace(PARAM_WHEIGHTING, "report.getTempQuantifier()");
-        preTarget
-                .replace(PARAM_RATING,
-                        "String.valueOf(report.getTempRating().tofloat()*report.getQuantifier().tofloat())");
-        preTarget.replace(PARAM_COMMENT, "report.getTempComment");
+        // TODO no Integer!! ==> FLOAT! && what if none?!?
+        preTarget.replace(VALUE, "String.valueOf(inspection.getTemperature().orFloat())");
+        preTarget.replace(PARAM_GRADE, String.valueOf(inspection.getTemperatureRating().or(0)));
+        preTarget.replace(PARAM_WHEIGHTING,
+                String.valueOf(inspection.getTemperatureQuantifier().or(0)));
+        preTarget.replace(
+                PARAM_RATING,
+                String.valueOf(inspection.getTemperatureRating().or(0)
+                        * inspection.getTemperatureQuantifier().or(0)));
+        // TODO comment!?!
+        preTarget.replace(PARAM_COMMENT, "inspection.getTempComment");
         target.append(preTarget);
 
         preTarget = buffer.toString();
         preTarget.replace(PROPERTY, "relative Luftfeuchtigkeit");
-        preTarget.replace(VALUE, "report.getHumidity()");
-        preTarget.replace(PARAM_GRADE, "report.getHumidityRating()");
-        preTarget.replace(PARAM_WHEIGHTING, "report.getHumidityQuantifier()");
-        preTarget.replace(PARAM_RATING,
-                "String.valueOf(report.getHumidityRating()*report.getHumidityQuantifier())");
-        preTarget.replace(PARAM_COMMENT, "report.getHumidityComment");
+        // TODO no Integer!! ==> FLOAT! && what if none?!?
+        preTarget.replace(VALUE, "String.valueOf(inspection.getHumidity().orFloat())");
+        preTarget.replace(PARAM_GRADE, String.valueOf(inspection.getHumidityRating()));
+        preTarget.replace(PARAM_WHEIGHTING, String.valueOf(inspection.getHumidityQuantifier()));
+        preTarget.replace(
+                PARAM_RATING,
+                String.valueOf(inspection.getHumidityRating().or(0)
+                        * inspection.getHumidityQuantifier().or(0)));
+        // TODO comment!?!
+        preTarget.replace(PARAM_COMMENT, "inspection.getHumidityComment");
         target.append(preTarget);
 
         this.rows = target.toString();
@@ -127,8 +145,7 @@ public class PhysicalParameterParser {
     /*
      * returns the totalGrade, calculated from the components.
      */
-    public float getTotalGrade(Path path) throws IOException {
-        this.path = path;
+    public float getTotalGrade() throws IOException {
         this.parseRow();
         this.parseTable();
         return this.totalGrade;

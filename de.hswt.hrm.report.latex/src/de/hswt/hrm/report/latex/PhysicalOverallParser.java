@@ -28,18 +28,26 @@ public class PhysicalOverallParser {
 
     private String path;
 
+    private PhysicalInspectionParser inspectionParser;
+    PhysicalParameterParser paramParser;
+
     private Properties prop = new Properties();
 
     private StringBuffer bufferRow = new StringBuffer();
     private StringBuffer bufferTable = new StringBuffer();
 
-    public String parse(String path, PhysicalInspectionParser inspectionParser,
-            PhysicalParameterParser paramParser) throws IOException {
-
+    public PhysicalOverallParser(String path, PhysicalInspectionParser inspectionParser,
+            PhysicalParameterParser paramParser) {
         this.path = path;
+        this.inspectionParser = inspectionParser;
+        this.paramParser = paramParser;
+
+    }
+
+    public String parse() throws IOException {
 
         this.inspection_av = inspectionParser.getTotalGrade(this.path);
-        this.param_av = paramParser.getTotalGrade(this.path);
+        this.param_av = paramParser.getTotalGrade();
 
         prop.load(Files.newInputStream(Paths.get(path, FILE_DIR, FILE_NAME_PROP)));
 
@@ -66,7 +74,7 @@ public class PhysicalOverallParser {
         String target = bufferTable.toString();
         target.replace(ROWS, bufferRow.toString());
         target.replace(OVERALL_RATING,
-                String.valueOf(Math.round((this.inspection_av + this.param_av) / 2 * 10) * 10));
+                String.valueOf(Math.round((this.inspection_av + this.param_av) / 2 * 10F) / 10F));
 
         return target;
     }

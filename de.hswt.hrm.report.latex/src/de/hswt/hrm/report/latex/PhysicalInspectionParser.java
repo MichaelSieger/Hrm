@@ -42,9 +42,12 @@ public class PhysicalInspectionParser {
 
     private StringBuffer buffer = new StringBuffer();
 
-    public String parse(String path, Collection<PhysicalRating> ratings) throws IOException {
+    public PhysicalInspectionParser(String path, Collection<PhysicalRating> ratings) {
         this.ratings = ratings;
         this.path = path;
+    }
+
+    public String parse() throws IOException {
         this.parseRow();
         this.parseTable();
 
