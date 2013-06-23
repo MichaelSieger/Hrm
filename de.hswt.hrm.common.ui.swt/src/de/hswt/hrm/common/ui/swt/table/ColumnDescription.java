@@ -3,7 +3,6 @@ package de.hswt.hrm.common.ui.swt.table;
 import java.util.Comparator;
 
 import org.eclipse.jface.viewers.BaseLabelProvider;
-import org.eclipse.jface.viewers.ColumnLabelProvider;
 
 public class ColumnDescription<T> {
     private final String header;
