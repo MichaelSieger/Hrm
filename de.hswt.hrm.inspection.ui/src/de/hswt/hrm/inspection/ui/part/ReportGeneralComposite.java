@@ -68,9 +68,8 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 
 public class ReportGeneralComposite extends AbstractComponentRatingComposite {
-	
-	private final static Logger LOG = LoggerFactory
-			.getLogger(ReportGeneralComposite.class);
+
+    private final static Logger LOG = LoggerFactory.getLogger(ReportGeneralComposite.class);
 
     @Inject
     private InspectionService inspectionService;
@@ -124,7 +123,7 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
     Combo reportStyleCombo;
 
     java.util.List<Photo> photos = new LinkedList<Photo>();
-    
+
     private PlantSelectedListener plantListener;
 
     private Inspection inspection;
@@ -294,7 +293,7 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
                         context);
                 psd.create();
                 if (psd.open() == Window.OK) {
-                	plantSelected(psd.getPlant());
+                    plantSelected(psd.getPlant());
                 }
             }
         });
@@ -373,19 +372,19 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
         initAutoCompletion(overallCombo);
 
     }
-    
-    private void plantSelected(Plant plant){
+
+    private void plantSelected(Plant plant) {
         plantText.setText(plant.getDescription());
-        if(plantListener != null){
-        	plantListener.selected(plant);
+        if (plantListener != null) {
+            plantListener.selected(plant);
         }
     }
-    
-    public void setPlantListener(PlantSelectedListener l){
-    	if(this.plantListener != null){
-    		throw new RuntimeException("There is already a listener present");
-    	}
-    	this.plantListener = l;
+
+    public void setPlantListener(PlantSelectedListener l) {
+        if (this.plantListener != null) {
+            throw new RuntimeException("There is already a listener present");
+        }
+        this.plantListener = l;
     }
 
     private void initLayouts(Combo combo) {
@@ -934,7 +933,6 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
     public void setInspection(Inspection inspection) {
 
         this.inspection = inspection;
-        System.out.println("rgc: " + this.inspection);
 
     }
 
@@ -960,13 +958,13 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
 
     }
 
-    public void refreshGeneralInformation() {
+    public boolean refreshGeneralInformation() {
 
         if (inspection == null) {
             // TODO Übersetzen
             MessageDialog.openError(shellProvider.getShell(), "Selection Error",
                     "No Inspection Selected");
-            return;
+            return false;
         }
 
         titleText.setText(inspection.getTitle());
@@ -987,6 +985,8 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
         setlayout(inspection);
 
         fillOptionalFields(inspection);
+
+        return true;
 
     }
 
