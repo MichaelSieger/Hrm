@@ -1,7 +1,5 @@
 package de.hswt.hrm.misc.ui.PreferencesWizard;
 
-import javax.inject.Inject;
-
 import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.jface.wizard.Wizard;
@@ -10,11 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Optional;
 
-import de.hswt.hrm.common.database.exception.DatabaseException;
-import de.hswt.hrm.common.database.exception.SaveException;
 import de.hswt.hrm.misc.reportPreferences.model.ReportPreference;
-import de.hswt.hrm.summary.model.Summary;
-import de.hswt.hrm.summary.service.SummaryService;
 
 public class PreferencesWizard extends Wizard {
 

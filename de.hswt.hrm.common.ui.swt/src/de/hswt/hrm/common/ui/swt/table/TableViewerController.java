@@ -2,6 +2,7 @@ package de.hswt.hrm.common.ui.swt.table;
 
 import java.util.List;
 
+import org.eclipse.jface.viewers.CellLabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
@@ -30,7 +31,7 @@ public class TableViewerController<T> {
             ColumnDescription<T> desc = columnDescriptions.get(i);
             TableViewerColumn col = createTableViewerColumn(desc.getHeader(), desc.getWidth(),
                     viewer, i);
-            col.setLabelProvider(desc.getLabelProvider());
+            col.setLabelProvider((CellLabelProvider) desc.getLabelProvider());
         }
     }
     

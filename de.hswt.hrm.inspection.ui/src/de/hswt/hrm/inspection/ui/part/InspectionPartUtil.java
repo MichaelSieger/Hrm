@@ -8,7 +8,13 @@ import java.util.List;
 import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
+import org.eclipse.jface.viewers.StyledCellLabelProvider;
+import org.eclipse.jface.viewers.StyledString;
+import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.jface.wizard.WizardDialog;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.StyleRange;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
 import com.google.common.base.Optional;
@@ -108,11 +114,23 @@ public class InspectionPartUtil {
     }
 
     private static ColumnDescription<Inspection> getNextInspectionDateColumn() {
-        return new ColumnDescription<>("Next Inspection Date", new ColumnLabelProvider() {
+        return new ColumnDescription<>("Next Inspection Date", new StyledCellLabelProvider() {
             @Override
-            public String getText(Object element) {
-                Inspection i = (Inspection) element;
-                return dateFormat.format(i.getNextInspectionDate().getTime());
+            public void update(ViewerCell cell) {
+                Inspection i = (Inspection) cell.getElement();
+                StyledString text = new StyledString();
+
+                text.append(dateFormat.format(i.getNextInspectionDate().getTime()),
+                        StyledString.DECORATIONS_STYLER);
+                StyleRange myStyledRange = new StyleRange(0, text.length(), null, Display
+                        .getCurrent().getSystemColor(SWT.COLOR_RED));
+                cell.setText(text.toString());
+//                cell.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_RED));
+
+                StyleRange[] range = { myStyledRange };
+                cell.setStyleRanges(range);
+                super.update(cell);
+
             }
         }, new Comparator<Inspection>() {
             @Override

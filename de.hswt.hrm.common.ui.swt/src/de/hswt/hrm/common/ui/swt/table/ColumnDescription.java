@@ -2,20 +2,21 @@ package de.hswt.hrm.common.ui.swt.table;
 
 import java.util.Comparator;
 
+import org.eclipse.jface.viewers.BaseLabelProvider;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 
 public class ColumnDescription<T> {
     private final String header;
-    private final ColumnLabelProvider labelProvider;
+    private final BaseLabelProvider labelProvider;
     private final Comparator<T> comparator;
     private final int width;
     
-    public ColumnDescription(String header, ColumnLabelProvider labelProvider, 
+    public ColumnDescription(String header, BaseLabelProvider labelProvider, 
             Comparator<T> comparator) {
         this(header, labelProvider, comparator, 200);
     }
     
-    public ColumnDescription(String header, ColumnLabelProvider labelProvider, 
+    public ColumnDescription(String header, BaseLabelProvider labelProvider, 
             Comparator<T> comparator, int width) {
         
         this.header = header;
@@ -28,7 +29,7 @@ public class ColumnDescription<T> {
         return header;
     }
 
-    public ColumnLabelProvider getLabelProvider() {
+    public BaseLabelProvider getLabelProvider() {
         return labelProvider;
     }
 

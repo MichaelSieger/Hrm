@@ -2,9 +2,6 @@ package de.hswt.hrm.misc.ui.CommentWizard;
 
 import java.net.URL;
 import java.util.Collection;
-import java.util.LinkedList;
-
-import javax.inject.Inject;
 
 import org.eclipse.e4.xwt.IConstants;
 import org.eclipse.e4.xwt.XWT;
@@ -20,12 +17,9 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Optional;
 
-import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.common.ui.swt.layouts.PageContainerFillLayout;
 import de.hswt.hrm.misc.comment.model.Comment;
-import de.hswt.hrm.summary.model.Summary;
-import de.hswt.hrm.summary.service.SummaryService;
 
 public class CommentWizardPageOne extends WizardPage {
 
