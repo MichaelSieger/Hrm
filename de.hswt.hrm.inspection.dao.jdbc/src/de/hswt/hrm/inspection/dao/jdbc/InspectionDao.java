@@ -38,13 +38,14 @@ public class InspectionDao implements IInspectionDao {
 
     private final IContactDao contactDao;
     private final IPlantDao plantDao;
-    private final IPhotoDao photoDao;
+
+    // private final IPhotoDao photoDao;
 
     @Inject
-    public InspectionDao(IContactDao contactDao, IPlantDao plantDao, IPhotoDao photoDao) {
+    public InspectionDao(IContactDao contactDao, IPlantDao plantDao) {
         this.contactDao = contactDao;
         this.plantDao = plantDao;
-        this.photoDao = photoDao;
+        // this.photoDao = photoDao;
 
     }
 
@@ -316,14 +317,14 @@ public class InspectionDao implements IInspectionDao {
                 Contact checker = contactDao.findById(checkerId);
                 inserted.setChecker(checker);
             }
-            if (frontpictureId >= 0) {
-                Photo frontpicture = photoDao.findById(frontpictureId);
-                inserted.setFrontpicture(frontpicture);
-            }
-            if (plantpictureId >= 0) {
-                Photo plantpicture = photoDao.findById(plantpictureId);
-                inserted.setFrontpicture(plantpicture);
-            }
+            // if (frontpictureId >= 0) {
+            // Photo frontpicture = photoDao.findById(frontpictureId);
+            // inserted.setFrontpicture(frontpicture);
+            // }
+            // if (plantpictureId >= 0) {
+            // Photo plantpicture = photoDao.findById(plantpictureId);
+            // inserted.setFrontpicture(plantpicture);
+            // }
 
             // rest
             inserted.setTemperature(temperature);
