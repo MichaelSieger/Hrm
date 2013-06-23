@@ -401,8 +401,8 @@ public class SchemeGrid extends DoubleBufferedCanvas {
 	 * @param snapToGrid Snap to grid lines or move freely
 	 */
 	public void setColor(Color shadowColor, double x, double y, double w, double h, boolean fill, boolean snapToGrid) {
-		double gridX = getGridX(x);
-		double gridY = getGridY(y);
+		double gridX = x;
+		double gridY = y;
 		if(snapToGrid){
 			gridX = (int) gridX;
 			gridY = (int) gridY;
