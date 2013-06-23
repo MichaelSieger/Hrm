@@ -139,7 +139,9 @@ public class ReportPreferencesComposite extends Composite {
         
         Config cfg = Config.getInstance();
         String dir = cfg.getProperty(Config.Keys.REPORT_STYLE_FOLDER);
-        directoryText.setText(dir);
+        if(dir != null){        
+        	directoryText.setText(dir);
+        }
 
         // TODO if (prefService == null) {
         // LOG.error("EvaluationService not injected to EvaluationPart.");
