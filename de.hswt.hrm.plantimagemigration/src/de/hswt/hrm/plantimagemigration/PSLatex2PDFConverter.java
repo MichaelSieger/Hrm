@@ -4,8 +4,10 @@ import java.io.File;
 import java.io.IOException;
 
 import de.hswt.hrm.plantimagemigration.converter.Converter;
-import de.hswt.hrm.plantimagemigration.converter.DVIConverter;
-import de.hswt.hrm.plantimagemigration.converter.PdfConverter;
+import de.hswt.hrm.plantimagemigration.converter.CropPDFConverter;
+import de.hswt.hrm.plantimagemigration.converter.TEXtoDVIConverter;
+import de.hswt.hrm.plantimagemigration.converter.DVItoPdfConverter;
+import de.hswt.hrm.plantimagemigration.converter.TEXtoPDFConverter;
 import de.hswt.hrm.plantimagemigration.converter.TransPdfConverter;
 /**
  * This class handles the conversion process from the latex files to svg. It creates a number of
@@ -31,9 +33,10 @@ public class PSLatex2PDFConverter {
         createFolders();
         doDecontextStep();
 
-        doStep(new DVIConverter(getDVIFolder(), getDecontextFolder(), getTmpFolder()));
-        doStep(new PdfConverter(getPDFFolder(), getDVIFolder(), getTmpFolder()));
-        doStep(new TransPdfConverter(getTransPdfFolder(),getPDFFolder(), getTmpFolder()));
+        doStep(new TEXtoPDFConverter(getPDFFolder(), getDecontextFolder(), getTmpFolder()));
+//        doStep(new DVIConverter(getDVIFolder(), getDecontextFolder(), getTmpFolder()));
+//        doStep(new PdfConverter(getPDFFolder(), getDVIFolder(), getTmpFolder()));
+        doStep(new CropPDFConverter(getTransPdfFolder(), getPDFFolder(), getTmpFolder()));
         deleteDir(getTmpFolder());
     }
 

@@ -9,10 +9,10 @@ import java.io.IOException;
  * @author Michael Sieger
  * 
  */
-public class DVIConverter extends Converter{
+public class TEXtoDVIConverter extends Converter{
 
 
-    public DVIConverter(File resultDir, File srcDir, File tmpDir) {
+    public TEXtoDVIConverter(File resultDir, File srcDir, File tmpDir) {
         super(resultDir, srcDir, tmpDir);
     }
 
