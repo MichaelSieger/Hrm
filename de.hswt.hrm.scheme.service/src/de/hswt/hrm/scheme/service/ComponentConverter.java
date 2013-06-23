@@ -120,16 +120,13 @@ public class ComponentConverter {
 	 * @return
 	 */
 	private static ImageData getSWTData(final BufferedImage bufferedImage) {
-	    //ComponentColorModel colorModel = (ComponentColorModel)bufferedImage.getColorModel();
 	    ColorModel colorModel = bufferedImage.getColorModel();
-	    //ASSUMES: 3 BYTE BGR IMAGE TYPE
 
 	    PaletteData palette = new PaletteData(0x0000FF, 0x00FF00,0xFF0000);
-	    ImageData data = new ImageData(bufferedImage.getWidth(), bufferedImage.getHeight(), colorModel.getPixelSize(), palette);
-
-	    //This is valid because we are using a 3-byte Data model with no transparent pixels
-	    data.transparentPixel = -1;
-
+	    ImageData data = new ImageData(bufferedImage.getWidth(), bufferedImage.getHeight(), 
+	    		colorModel.getPixelSize(), palette);
+	    int whitepixel = palette.getPixel(new RGB(255, 255, 255));
+	    data.transparentPixel = whitepixel;
 	    WritableRaster raster = bufferedImage.getRaster();
 	    int[] pixelArray = new int[4];
 	    for (int y = 0; y < data.height; y++) {

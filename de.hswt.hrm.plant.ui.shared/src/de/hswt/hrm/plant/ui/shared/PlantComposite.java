@@ -36,6 +36,8 @@ import de.hswt.hrm.common.ui.swt.layouts.LayoutUtil;
 import de.hswt.hrm.common.ui.swt.table.ColumnComparator;
 import de.hswt.hrm.common.ui.swt.table.ColumnDescription;
 import de.hswt.hrm.common.ui.swt.table.TableViewerController;
+import de.hswt.hrm.i18n.I18n;
+import de.hswt.hrm.i18n.I18nFactory;
 import de.hswt.hrm.plant.model.Plant;
 import de.hswt.hrm.plant.service.PlantService;
 import de.hswt.hrm.plant.ui.shared.filter.PlantFilter;
@@ -46,6 +48,7 @@ public class PlantComposite extends Composite {
     public static final int TABLE_SELCTION_EVENT = SWT.Selection + 12341234;
 
     private final static Logger LOG = LoggerFactory.getLogger(PlantComposite.class);
+    private final static I18n I18N = I18nFactory.getI18n(PlantComposite.class);
 
     private Text searchText;
 
@@ -120,9 +123,8 @@ public class PlantComposite extends Composite {
     }
 
     private void showDBConnectionError() {
-        // TODO translate
-        MessageDialog.openError(shellProvider.getShell(), "Connection Error",
-                "Could not load places from Database.");
+        MessageDialog.openError(shellProvider.getShell(), I18N.tr("Connection Error"),
+                I18N.tr("Could not load plants from Database."));
     }
 
     private void updateTableFilter(String filterString) {
