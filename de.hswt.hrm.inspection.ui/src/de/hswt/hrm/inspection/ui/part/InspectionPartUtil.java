@@ -135,15 +135,27 @@ public class InspectionPartUtil {
 
                 cal.setTimeInMillis(i.getNextInspectionDate().getTimeInMillis());
                 int next = cal.get(Calendar.YEAR) - 1970;
+                int diff = next - current;
 
-                System.out.println(next - current);
+                if (diff < 0) {
+                    return;
+                }
+
+                if (diff == 1 || diff == 0) {
+                    c = Display.getCurrent().getSystemColor(SWT.COLOR_RED);
+                }
+                else if (diff == 2) {
+                    c = Display.getCurrent().getSystemColor(SWT.COLOR_YELLOW);
+                }
+                else {
+                    c = Display.getCurrent().getSystemColor(SWT.COLOR_GREEN);
+                }
 
                 StyledString text = new StyledString();
 
                 text.append(dateFormat.format(i.getNextInspectionDate().getTime()),
                         StyledString.DECORATIONS_STYLER);
-                StyleRange myStyledRange = new StyleRange(0, text.length(), null, Display
-                        .getCurrent().getSystemColor(SWT.COLOR_RED));
+                StyleRange myStyledRange = new StyleRange(0, text.length(), null, c);
                 cell.setText(text.toString());
                 // cell.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_RED));
 
