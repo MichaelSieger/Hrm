@@ -475,6 +475,18 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
+-- Table `Priority`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `Priority` (
+  `Priority_Id` INT NOT NULL AUTO_INCREMENT ,
+  `Priority_Name` VARCHAR(45) NULL ,
+  `Priority_Text` TEXT NULL ,
+  `Priority_Priority` INT NULL ,
+  PRIMARY KEY (`Priority_Id`) )
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
 -- Table `Component_Catalog`
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `Component_Catalog` (
@@ -484,12 +496,13 @@ CREATE  TABLE IF NOT EXISTS `Component_Catalog` (
   `Component_Catalog_Current_FK` INT NULL ,
   `Component_Catalog_Activity_FK` INT NULL ,
   `Component_Catalog_Picture_FK` INT NULL ,
-  `Component_Catalog_Priority` INT NULL ,
+  `Component_Catalog_Priority_FK` INT NULL ,
   PRIMARY KEY (`Component_Catalog_ID`) ,
   INDEX `Component_Catalog_Component_FK` (`Component_Catalog_Component_FK` ASC) ,
   INDEX `Component_Catalog_Target_FK` (`Component_Catalog_Target_FK` ASC) ,
   INDEX `Component_Catalog_Current_FK` (`Component_Catalog_Current_FK` ASC) ,
   INDEX `Component_Catalog_Activity_FK` (`Component_Catalog_Activity_FK` ASC) ,
+  INDEX `Component_Catalog_Priority_FK` (`Component_Catalog_Priority_FK` ASC) ,
   CONSTRAINT `Component_Catalog_Component_FK`
     FOREIGN KEY (`Component_Catalog_Component_FK` )
     REFERENCES `Component` (`Component_ID` )
@@ -508,6 +521,11 @@ CREATE  TABLE IF NOT EXISTS `Component_Catalog` (
   CONSTRAINT `Component_Catalog_Activity_FK`
     FOREIGN KEY (`Component_Catalog_Activity_FK` )
     REFERENCES `State_Activity` (`State_Activity_ID` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `Component_Catalog_Priority_FK`
+    FOREIGN KEY (`Component_Catalog_Priority_FK` )
+    REFERENCES `Priority` (`Priority_Id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -617,5 +635,4 @@ CREATE  TABLE IF NOT EXISTS `Note` (
   `Note_Text` TEXT NULL ,
   PRIMARY KEY (`Note_ID`) )
 ENGINE = InnoDB;
-
 

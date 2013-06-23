@@ -114,9 +114,9 @@ INSERT INTO `hrm`.`Scheme` (`Scheme_Plant_FK`) VALUES ('2');
 ------------------------------------------------------------
 -- Insert 3 different scheme components in the `Scheme_Components` Table
 ------------------------------------------------------------
-INSERT INTO `hrm`.`Scheme_Component` (`Scheme_Component_Scheme_FK`, `Scheme_Component_Component_FK`, `Scheme_Component_X_Position`, `Scheme_Component_Y_Position`, `Scheme_Component_Direction`) VALUES ('1', '1', '1', '1', '2');
-INSERT INTO `hrm`.`Scheme_Component` (`Scheme_Component_Scheme_FK`, `Scheme_Component_Component_FK`, `Scheme_Component_X_Position`, `Scheme_Component_Y_Position`, `Scheme_Component_Direction`) VALUES ('1', '2', '1', '4', '2');
-INSERT INTO `hrm`.`Scheme_Component` (`Scheme_Component_Scheme_FK`, `Scheme_Component_Component_FK`, `Scheme_Component_X_Position`, `Scheme_Component_Y_Position`, `Scheme_Component_Direction`) VALUES ('3', '3', '1', '1', '0');
+INSERT INTO `hrm`.`Scheme_Component` (`Scheme_Component_Scheme_FK`, `Scheme_Component_Component_FK`, `Scheme_Component_X_Position`, `Scheme_Component_Y_Position`, `Scheme_Component_Direction`) VALUES ('1', '1', '1', '1', '1');
+INSERT INTO `hrm`.`Scheme_Component` (`Scheme_Component_Scheme_FK`, `Scheme_Component_Component_FK`, `Scheme_Component_X_Position`, `Scheme_Component_Y_Position`, `Scheme_Component_Direction`) VALUES ('1', '2', '1', '4', '1');
+INSERT INTO `hrm`.`Scheme_Component` (`Scheme_Component_Scheme_FK`, `Scheme_Component_Component_FK`, `Scheme_Component_X_Position`, `Scheme_Component_Y_Position`, `Scheme_Component_Direction`) VALUES ('3', '3', '1', '1', '1');
 
 ------------------------------------------------------------
 -- Insert 3 different current states in the `State_Current` Table
@@ -178,12 +178,20 @@ INSERT INTO `hrm`.`Component_Physical_Rating` (`Component_Physical_Rating_Compon
 INSERT INTO `hrm`.`Component_Physical_Rating` (`Component_Physical_Rating_Component_FK`, `Component_Physical_Rating_Rating`, `Component_Physical_Rating_Note`, `Component_Physical_Rating_Report_FK`) VALUES ('2', '2.1', 'guad', '2');
 
 ------------------------------------------------------------
+-- Insert 3 different priorities in the `Priority` Table
+------------------------------------------------------------
+
+INSERT INTO `hrm`.`Priority` (`Priority_Name`, `Priority_Text`, `Priority_Priority`) VALUES ('high', 'highest priority', '1');
+INSERT INTO `hrm`.`Priority` (`Priority_Name`, `Priority_Text`, `Priority_Priority`) VALUES ('mid', 'middle priority', '2');
+INSERT INTO `hrm`.`Priority` (`Priority_Name`, `Priority_Text`, `Priority_Priority`) VALUES ('low', 'lowest priority', '3');
+
+------------------------------------------------------------
 -- Insert 3 different component catalogs in the `Component_Catalog` Table
 ------------------------------------------------------------
 
-INSERT INTO `hrm`.`Component_Catalog` (`Component_Catalog_Component_FK`, `Component_Catalog_Target_FK`, `Component_Catalog_Current_FK`, `Component_Catalog_Activity_FK`, `Component_Catalog_Picture_FK`, `Component_Catalog_Priority`) VALUES ('1', '2', '2', '2', '2', '1');
-INSERT INTO `hrm`.`Component_Catalog` (`Component_Catalog_Component_FK`, `Component_Catalog_Target_FK`, `Component_Catalog_Current_FK`, `Component_Catalog_Activity_FK`, `Component_Catalog_Picture_FK`, `Component_Catalog_Priority`) VALUES ('2', '3', '3', '3', '4', '2');
-INSERT INTO `hrm`.`Component_Catalog` (`Component_Catalog_Component_FK`, `Component_Catalog_Target_FK`, `Component_Catalog_Current_FK`, `Component_Catalog_Activity_FK`, `Component_Catalog_Picture_FK`, `Component_Catalog_Priority`) VALUES ('3', '1', '1', '1', '6', '1');
+INSERT INTO `hrm`.`Component_Catalog` (`Component_Catalog_Component_FK`, `Component_Catalog_Target_FK`, `Component_Catalog_Current_FK`, `Component_Catalog_Activity_FK`, `Component_Catalog_Picture_FK`, `Component_Catalog_Priority_FK`) VALUES ('1', '2', '2', '2', '2', '1');
+INSERT INTO `hrm`.`Component_Catalog` (`Component_Catalog_Component_FK`, `Component_Catalog_Target_FK`, `Component_Catalog_Current_FK`, `Component_Catalog_Activity_FK`, `Component_Catalog_Picture_FK`, `Component_Catalog_Priority_FK`) VALUES ('2', '3', '3', '3', '4', '2');
+INSERT INTO `hrm`.`Component_Catalog` (`Component_Catalog_Component_FK`, `Component_Catalog_Target_FK`, `Component_Catalog_Current_FK`, `Component_Catalog_Activity_FK`, `Component_Catalog_Picture_FK`, `Component_Catalog_Priority_FK`) VALUES ('3', '1', '1', '1', '6', '3');
 
 ------------------------------------------------------------
 -- Insert 4 different picture catalogs in the `Picture_Catalog` Table

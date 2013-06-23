@@ -36,7 +36,7 @@ import de.hswt.hrm.common.ui.swt.layouts.LayoutUtil;
 import de.hswt.hrm.common.ui.swt.table.ColumnDescription;
 import de.hswt.hrm.common.ui.swt.table.TableViewerController;
 import de.hswt.hrm.common.ui.swt.utils.SWTResourceManager;
-import de.hswt.hrm.misc.model.priorities.model.Priority;
+import de.hswt.hrm.misc.model.priority.model.Priority;
 
 public class PriorityComposite extends Composite {
 
@@ -90,7 +90,23 @@ public class PriorityComposite extends Composite {
 
         composite = new Composite(this, SWT.NONE);
         composite.setLayout(new GridLayout(2, false));
+                new Label(composite, SWT.NONE);
+                
+        Button plusButton = new Button(composite, SWT.NONE);
+        plusButton.setText("+");
+        plusButton.addSelectionListener(new SelectionListener() {			
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				movePriorityUp();				
+			}			
 
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+        
         tableViewer = new TableViewer(composite, SWT.BORDER | SWT.FULL_SELECTION);
         tableViewer.addDoubleClickListener(new IDoubleClickListener() {
             public void doubleClick(DoubleClickEvent event) {
@@ -193,6 +209,7 @@ public class PriorityComposite extends Composite {
                 throw new IllegalArgumentException("Not comparable: " + e1 + " " + e2);
             }
         });
+        
 
         // Enable sorting
         // ColumnComparator<Priority> comperator = new ColumnComparator<>(columns);
@@ -256,6 +273,32 @@ public class PriorityComposite extends Composite {
         // showDBConnectionError();
         // }
     }
+    
+	private void movePriorityUp() {		
+//	TODO    Priority selectedPrio = (Priority) tableViewer.getElementAt(tableViewer.getTable()
+//     														 .getSelectionIndex());
+//		if (selectedPrio == null) {
+//		  return;
+//		}
+//		Priority tempPrio = null;
+//
+//		if(selectedPrio.getPriority() > 1){	       
+//		  for(Priority prio : prioService.findAll()){
+//		  	if(prio.getPriority() == selectedPrio.getPriority()-1){
+//		  		tempPrio = prio;
+//		  		break;
+//		  	}        	
+//		  }
+//		  selectedPrio.setPriority(selectedPrio.getPriority()-1);
+//		  tempPrio.setPriority(tempPrio.getPriority() +1);
+//		  
+//		  prioService.update(selectedPrio);
+//		  prioService.update(tempPrio);
+//		}
+//		refreshTable();
+	}
+	
+	private void movePriorityDown() {
 
     private void movePriorityUp() {
         // TODO Priority selectedPrio = (Priority) tableViewer.getElementAt(tableViewer.getTable()
