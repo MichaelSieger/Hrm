@@ -6,7 +6,6 @@ import javax.inject.Inject;
 
 import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
-import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.ActionContributionItem;
 import org.eclipse.jface.action.IContributionItem;
@@ -30,8 +29,10 @@ public class CatalogPart {
 
     private FormToolkit toolkit = new FormToolkit(Display.getDefault());
 
-    private IContributionItem addContribution;
-    private IContributionItem editContribution;
+    private IContributionItem addCatalogItemContribution;
+    private IContributionItem editCatalogItemContribution;
+    private IContributionItem addCatalogContribution;
+    private IContributionItem editCatalogContribution;
 
     private TabFolder tabFolder;
     private TabItem itemsTab;
@@ -78,11 +79,25 @@ public class CatalogPart {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 if (tabFolder.getItem(tabFolder.getSelectionIndex()).equals(itemsTab)) {
-                    showCatalogItemsActions(true);
+                    showCatalogItemsAction();
                 }
                 else {
-                    showCatalogItemsActions(false);
+                    showCatalogActions();
                 }
+            }
+
+            private void showCatalogActions() {
+                hideAllItems();
+                editCatalogContribution.setVisible(true);
+                addCatalogContribution.setVisible(true);
+                form.getToolBarManager().update(true);
+            }
+
+            private void showCatalogItemsAction() {
+                hideAllItems();
+                editCatalogItemContribution.setVisible(true);
+                addCatalogItemContribution.setVisible(true);
+                form.getToolBarManager().update(true);
             }
         });
         tabFolder.setBackgroundMode(SWT.INHERIT_FORCE);
@@ -109,35 +124,58 @@ public class CatalogPart {
 
     private void createActions() {
         // TODO translate
-        Action editAction = new Action("Edit") {
+        Action editCatalogItemAction = new Action("Edit") {
             @Override
             public void run() {
                 super.run();
                 catalogItemsPart.editItem();
             }
         };
-        editAction.setDescription("Edit an exisitng catalog item.");
-        editContribution = new ActionContributionItem(editAction);
-        form.getToolBarManager().add(editContribution);
+        editCatalogItemAction.setDescription("Edit an exisitng catalog item.");
+        editCatalogItemContribution = new ActionContributionItem(editCatalogItemAction);
+        form.getToolBarManager().add(editCatalogItemContribution);
 
-        Action addAction = new Action("Add") {
+        Action editCatalogAction = new Action("Edit") {
+            @Override
+            public void run() {
+                super.run();
+                // TODO Edit a Catalog
+            }
+        };
+        editCatalogAction.setDescription("Edit an Existing Catalog");
+        editCatalogContribution = new ActionContributionItem(editCatalogAction);
+        form.getToolBarManager().add(editCatalogAction);
+
+        Action addCatalogItemAction = new Action("Add") {
             @Override
             public void run() {
                 super.run();
                 catalogItemsPart.addCatalogItem();
             }
         };
-        addAction.setDescription("Add's a new catalog item.");
-        addContribution = new ActionContributionItem(addAction);
-        form.getToolBarManager().add(addContribution);
+        addCatalogItemAction.setDescription("Add's a new catalog item.");
+        addCatalogItemContribution = new ActionContributionItem(addCatalogItemAction);
+        form.getToolBarManager().add(addCatalogItemContribution);
+
+        Action addCatalogAction = new Action("Add") {
+            @Override
+            public void run() {
+                super.run();
+                // TODO Add a new Catalog
+            }
+        };
+        addCatalogAction.setDescription("Add's a new catalog .");
+        addCatalogContribution = new ActionContributionItem(addCatalogAction);
+        form.getToolBarManager().add(addCatalogItemContribution);
 
         form.getToolBarManager().update(true);
     }
 
-    private void showCatalogItemsActions(boolean show) {
-        addContribution.setVisible(show);
-        editContribution.setVisible(show);
-        form.getToolBarManager().update(true);
+    private void hideAllItems() {
+        editCatalogContribution.setVisible(false);
+        addCatalogContribution.setVisible(false);
+        editCatalogItemContribution.setVisible(false);
+        addCatalogItemContribution.setVisible(false);
     }
 
     @PreDestroy
@@ -147,7 +185,4 @@ public class CatalogPart {
         }
     }
 
-    @Focus
-    public void setFocus() {
-    }
 }
