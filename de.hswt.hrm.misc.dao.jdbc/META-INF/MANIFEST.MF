@@ -7,3 +7,4 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Import-Package: de.hswt.hrm.common.database.exception,
  de.hswt.hrm.misc.priority.dao.core,
  de.hswt.hrm.misc.priority.model
+Require-Bundle: com.google.guava;bundle-version="10.0.1"
