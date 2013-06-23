@@ -79,8 +79,42 @@ public class PriorityDao implements IPriorityDao {
 
     @Override
     public Priority insert(Priority priority) throws SaveException {
-        // TODO Auto-generated method stub
-        return null;
+        SqlQueryBuilder builder = new SqlQueryBuilder();
+        builder.insert(TABLE_NAME, Fields.NAME, Fields.TEXT, Fields.PRIORITY);
+
+        final String query = builder.toString();
+
+        try (Connection con = DatabaseFactory.getConnection()) {
+            try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
+                stmt.setParameter(Fields.NAME, priority.getName());
+                stmt.setParameter(Fields.TEXT, priority.getText());
+                stmt.setParameter(Fields.PRIORITY, priority.getPriority());
+
+                int affectedRows = stmt.executeUpdate();
+                if (affectedRows != 1) {
+                    throw new SaveException();
+                }
+
+                try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        int id = generatedKeys.getInt(1);
+
+                        // Create new Priority with id
+                        Priority inserted = new Priority(id, priority.getName(),
+                                priority.getText(), priority.getPriority());
+
+                        return inserted;
+                    }
+                    else {
+                        throw new SaveException("Could not retrieve generated ID.");
+                    }
+                }
+            }
+
+        }
+        catch (SQLException | DatabaseException e) {
+            throw new SaveException(e);
+        }
     }
 
     @Override
