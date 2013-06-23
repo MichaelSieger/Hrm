@@ -297,7 +297,9 @@ public class PhotoWizardPageOne extends WizardPage {
 		if (!showDeleteConfirmation(item.getText(0))) {
 			return;
 		}
-		photos.remove(photosTable.getSelectionIndex());
+		if(photos != null){
+			photos.remove(photosTable.getSelectionIndex());
+		}
 		photosTable.remove(photosTable.getSelectionIndex());
 		photosTable.redraw();
 		
@@ -345,7 +347,8 @@ public class PhotoWizardPageOne extends WizardPage {
   				byte[] data = new byte[in.available()];
   				in.read(data);
   				Photo photo = new Photo(data, f.getName(), f.getName());
-  				addFileToTable(photo,photo.getLabel(),photo.getName());   
+  				addFileToTable(photo,photo.getLabel(),photo.getName());  
+  				photos.add(photo);
   	    		
   			} catch (FileNotFoundException e) {
   				e.printStackTrace();
