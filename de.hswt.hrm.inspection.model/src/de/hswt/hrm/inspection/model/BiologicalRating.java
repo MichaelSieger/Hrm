@@ -4,8 +4,6 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Strings.isNullOrEmpty;
 
-import com.google.common.base.Optional;
-
 import de.hswt.hrm.component.model.Component;
 
 public class BiologicalRating {
@@ -22,9 +20,11 @@ public class BiologicalRating {
     private static final String IS_MANDATORY = "Field is a mandatory.";
     private static final String INVALID_NUMBER = "%d is an invalid number.%n Must be greater 0";
 
-    public BiologicalRating(int id, int bacteriaCount, int rating, int quantifier, String comment,
-            String flag) {
+    public BiologicalRating(int id, Inspection inspection, Component component, int bacteriaCount,
+    		int rating, int quantifier, String comment, String flag) {
         this.id = id;
+        setInspection(inspection);
+        setComponent(component);
         setBacteriaCount(bacteriaCount);
         setRating(rating);
         setQuantifier(quantifier);
@@ -32,13 +32,13 @@ public class BiologicalRating {
         setFlag(flag);
     }
 
-    public BiologicalRating(int bacteriaCount, int rating, int quantifier, String comment,
-            String flag) {
-        this(-1, bacteriaCount, rating, quantifier, comment, flag);
+    public BiologicalRating(Inspection inspection, Component component, int bacteriaCount,
+    		int rating, int quantifier, String comment, String flag) {
+        this(-1, inspection, component, bacteriaCount, rating, quantifier, comment, flag);
     }
 
-    public Optional<Component> getComponent() {
-        return Optional.fromNullable(component);
+    public Component getComponent() {
+        return component;
     }
 
     public void setComponent(Component component) {
@@ -46,8 +46,8 @@ public class BiologicalRating {
         this.component = component;
     }
 
-    public Optional<Inspection> getInspection() {
-        return Optional.fromNullable(inspection);
+    public Inspection getInspection() {
+        return inspection;
     }
 
     public void setInspection(Inspection inspection) {

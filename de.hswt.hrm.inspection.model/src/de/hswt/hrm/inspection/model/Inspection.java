@@ -5,6 +5,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Strings.isNullOrEmpty;
 import de.hswt.hrm.plant.model.Plant;
 import de.hswt.hrm.contact.model.Contact;
+import de.hswt.hrm.photo.model.Photo;
 
 import java.util.Calendar;
 
@@ -28,6 +29,8 @@ public class Inspection {
     private int temperatureQuantifier;
     private int humidityRating;
     private int humidityQuantifier;
+    private Photo frontpicture;
+    private Photo plantpicture;
 
     private static final String IS_MANDATORY = "Field is a mandatory.";
     private static final String INVALID_NUMBER = "%d is an invalid number.%n Must be greater 0";
@@ -43,8 +46,8 @@ public class Inspection {
         setLayout(layout);
     }
 
-    public Inspection(Calendar reportDate, Calendar inspectionDate,
-            Calendar nextInspection, String title, Layout layout, Plant plant) {
+    public Inspection(Calendar reportDate, Calendar inspectionDate, Calendar nextInspection,
+            String title, Layout layout, Plant plant) {
         this(-1, reportDate, inspectionDate, nextInspection, title, layout, plant);
     }
 
@@ -189,13 +192,30 @@ public class Inspection {
         return id;
     }
 
+    public Optional<Photo> getFrontpicture() {
+        return Optional.fromNullable(frontpicture);
+    }
+
+    public void setFrontpicture(Photo frontpicture) {
+        this.frontpicture = frontpicture;
+    }
+
+    public Optional<Photo> getPlantpicture() {
+        return Optional.fromNullable(plantpicture);
+    }
+
+    public void setPlantpicture(Photo plantpicture) {
+        this.plantpicture = plantpicture;
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((checker == null) ? 0 : checker.hashCode());
         result = prime * result + ((contractor == null) ? 0 : contractor.hashCode());
-        result = prime * result + Integer.valueOf(Math.round(humidity));
+        result = prime * result + ((frontpicture == null) ? 0 : frontpicture.hashCode());
+        result = prime * result + Float.floatToIntBits(humidity);
         result = prime * result + humidityQuantifier;
         result = prime * result + humidityRating;
         result = prime * result + id;
@@ -204,10 +224,11 @@ public class Inspection {
         result = prime * result
                 + ((nextInspectionDate == null) ? 0 : nextInspectionDate.hashCode());
         result = prime * result + ((plant == null) ? 0 : plant.hashCode());
+        result = prime * result + ((plantpicture == null) ? 0 : plantpicture.hashCode());
         result = prime * result + ((reportDate == null) ? 0 : reportDate.hashCode());
         result = prime * result + ((requester == null) ? 0 : requester.hashCode());
         result = prime * result + ((summary == null) ? 0 : summary.hashCode());
-        result = prime * result + Integer.valueOf(Math.round(temperature));
+        result = prime * result + Float.floatToIntBits(temperature);
         result = prime * result + temperatureQuantifier;
         result = prime * result + temperatureRating;
         result = prime * result + ((title == null) ? 0 : title.hashCode());
@@ -242,7 +263,15 @@ public class Inspection {
         else if (!contractor.equals(other.contractor)) {
             return false;
         }
-        if (humidity != other.humidity) {
+        if (frontpicture == null) {
+            if (other.frontpicture != null) {
+                return false;
+            }
+        }
+        else if (!frontpicture.equals(other.frontpicture)) {
+            return false;
+        }
+        if (Float.floatToIntBits(humidity) != Float.floatToIntBits(other.humidity)) {
             return false;
         }
         if (humidityQuantifier != other.humidityQuantifier) {
@@ -286,6 +315,14 @@ public class Inspection {
         else if (!plant.equals(other.plant)) {
             return false;
         }
+        if (plantpicture == null) {
+            if (other.plantpicture != null) {
+                return false;
+            }
+        }
+        else if (!plantpicture.equals(other.plantpicture)) {
+            return false;
+        }
         if (reportDate == null) {
             if (other.reportDate != null) {
                 return false;
@@ -310,7 +347,7 @@ public class Inspection {
         else if (!summary.equals(other.summary)) {
             return false;
         }
-        if (temperature != other.temperature) {
+        if (Float.floatToIntBits(temperature) != Float.floatToIntBits(other.temperature)) {
             return false;
         }
         if (temperatureQuantifier != other.temperatureQuantifier) {

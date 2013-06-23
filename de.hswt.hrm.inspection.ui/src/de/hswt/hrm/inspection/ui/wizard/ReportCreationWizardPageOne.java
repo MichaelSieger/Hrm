@@ -66,6 +66,8 @@ public class ReportCreationWizardPageOne extends WizardPage {
     private GregorianCalendar nextInspectionDate;
     private Layout reportStyle;
 
+    private Combo reportStyleCombo;
+
     /**
      * Create the wizard.
      */
@@ -232,7 +234,7 @@ public class ReportCreationWizardPageOne extends WizardPage {
         formToolkit.adapt(reportStyleLabel, true, true);
         reportStyleLabel.setText("Report style");
 
-        Combo reportStyleCombo = new Combo(generalComposite, SWT.DROP_DOWN | SWT.READ_ONLY);
+        reportStyleCombo = new Combo(generalComposite, SWT.DROP_DOWN | SWT.READ_ONLY);
         reportStyleCombo.setLayoutData(LayoutUtil.createHorzCenteredFillData(4));
         formToolkit.adapt(reportStyleCombo);
         formToolkit.paintBordersFor(reportStyleCombo);
@@ -306,6 +308,12 @@ public class ReportCreationWizardPageOne extends WizardPage {
         setErrorMessage(null);
         if (ok && firstCheck) {
             setPageComplete(true);
+
+            reportStyle = (Layout) reportStyleCombo.getData(reportStyleCombo
+                    .getItem(reportStyleCombo.getSelectionIndex()));
+            if (nextInspectionDate == null) {
+                nextInspectionDate = getCalender(nextInspectionDateTime);
+            }
             inspection = new Inspection(reportDate, inspectionDate, nextInspectionDate, title,
                     reportStyle, plant);
         }

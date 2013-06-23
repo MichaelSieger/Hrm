@@ -109,6 +109,21 @@ public class InspectionPart {
 
         tabFolder = new TabFolder(form.getBody(), SWT.NONE);
         tabFolder.setBackgroundMode(SWT.INHERIT_FORCE);
+        tabFolder.addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                if (tabFolder.getItem(tabFolder.getSelectionIndex()).equals(generalTab)) {
+                    reportGeneralComposite.setInspection(reportsOverviewComposite
+                            .getSelectedInspection());
+                    if (reportGeneralComposite.refreshGeneralInformation()) {
+                        tabFolder.setSelection(generalTab);
+                    }
+                    else {
+                        tabFolder.setSelection(0);
+                    }
+                }
+            }
+        });
         formToolkit.adapt(tabFolder);
         formToolkit.paintBordersFor(tabFolder);
 
@@ -241,10 +256,13 @@ public class InspectionPart {
             @Override
             public void run() {
                 super.run();
-                tabFolder.setSelection(generalTab);
+
                 reportGeneralComposite.setInspection(reportsOverviewComposite
                         .getSelectedInspection());
-                reportGeneralComposite.refreshGeneralInformation();
+
+                if (reportGeneralComposite.refreshGeneralInformation()) {
+                    tabFolder.setSelection(generalTab);
+                }
 
             }
         };

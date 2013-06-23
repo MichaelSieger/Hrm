@@ -120,7 +120,7 @@ public class ReportsOverviewComposite extends Composite {
                 IStructuredSelection selection = (IStructuredSelection) tableViewer.getSelection();
                 Inspection firstElement = (Inspection) selection.getFirstElement();
                 selectedInspection = firstElement;
-                System.out.println(selectedInspection);
+
             }
 
         });
@@ -187,7 +187,6 @@ public class ReportsOverviewComposite extends Composite {
     public void addInspection() {
         Optional<Inspection> newInspection = InspectionPartUtil.showInspectionCreateWizard(context,
                 shellProvider.getShell());
-        System.out.println(newInspection.isPresent());
 
         if (newInspection.isPresent()) {
             @SuppressWarnings("unchecked")

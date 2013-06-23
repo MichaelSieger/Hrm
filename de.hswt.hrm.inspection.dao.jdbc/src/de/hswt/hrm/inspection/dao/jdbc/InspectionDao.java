@@ -29,6 +29,8 @@ import de.hswt.hrm.inspection.model.Layout;
 import de.hswt.hrm.plant.dao.core.IPlantDao;
 import de.hswt.hrm.plant.model.Plant;
 import de.hswt.hrm.contact.dao.core.IContactDao;
+import de.hswt.hrm.photo.model.Photo;
+import de.hswt.hrm.photo.dao.core.IPhotoDao;
 
 public class InspectionDao implements IInspectionDao {
     // FIXME Make dao injectable
@@ -37,10 +39,13 @@ public class InspectionDao implements IInspectionDao {
     private final IContactDao contactDao;
     private final IPlantDao plantDao;
 
+    // private final IPhotoDao photoDao;
+
     @Inject
     public InspectionDao(IContactDao contactDao, IPlantDao plantDao) {
         this.contactDao = contactDao;
         this.plantDao = plantDao;
+        // this.photoDao = photoDao;
 
     }
 
@@ -51,7 +56,8 @@ public class InspectionDao implements IInspectionDao {
                 Fields.REQUESTER_FK, Fields.CONTRACTOR_FK, Fields.CHECKER_FK,
                 Fields.INSPECTIONDATE, Fields.REPORTDATE, Fields.NEXTDATE, Fields.TEMPERATURE,
                 Fields.HUMIDITY, Fields.SUMMARY, Fields.TITEL, Fields.TEMPERATURERATING,
-                Fields.TEMPERATUREQUANTIFIER, Fields.HUMIDITYRATING, Fields.HUMIDITYQUANTIFIER);
+                Fields.TEMPERATUREQUANTIFIER, Fields.HUMIDITYRATING, Fields.HUMIDITYQUANTIFIER,
+                Fields.FRONTPICTURE_FK, Fields.PLANTPICTURE_FK);
 
         String query = builder.toString();
 
@@ -80,7 +86,8 @@ public class InspectionDao implements IInspectionDao {
                 Fields.REQUESTER_FK, Fields.CONTRACTOR_FK, Fields.CHECKER_FK,
                 Fields.INSPECTIONDATE, Fields.REPORTDATE, Fields.NEXTDATE, Fields.TEMPERATURE,
                 Fields.HUMIDITY, Fields.SUMMARY, Fields.TITEL, Fields.TEMPERATURERATING,
-                Fields.TEMPERATUREQUANTIFIER, Fields.HUMIDITYRATING, Fields.HUMIDITYQUANTIFIER);
+                Fields.TEMPERATUREQUANTIFIER, Fields.HUMIDITYRATING, Fields.HUMIDITYQUANTIFIER,
+                Fields.FRONTPICTURE_FK, Fields.PLANTPICTURE_FK);
         builder.where(Fields.ID);
 
         String query = builder.toString();
@@ -115,7 +122,7 @@ public class InspectionDao implements IInspectionDao {
                 Fields.CONTRACTOR_FK, Fields.CHECKER_FK, Fields.INSPECTIONDATE, Fields.REPORTDATE,
                 Fields.NEXTDATE, Fields.TEMPERATURE, Fields.HUMIDITY, Fields.SUMMARY, Fields.TITEL,
                 Fields.TEMPERATURERATING, Fields.TEMPERATUREQUANTIFIER, Fields.HUMIDITYRATING,
-                Fields.HUMIDITYQUANTIFIER);
+                Fields.HUMIDITYQUANTIFIER, Fields.FRONTPICTURE_FK, Fields.PLANTPICTURE_FK);
 
         final String query = builder.toString();
 
@@ -126,12 +133,12 @@ public class InspectionDao implements IInspectionDao {
                 stmt.setParameter(Fields.REQUESTER_FK, inspection.getRequester().get().getId());
                 stmt.setParameter(Fields.CONTRACTOR_FK, inspection.getContractor().get().getId());
                 stmt.setParameter(Fields.CHECKER_FK, inspection.getChecker().get().getId());
-                stmt.setParameter(Fields.INSPECTIONDATE, 
-                		JdbcUtil.timestampFromCalendar(inspection.getInspectionDate()));
-                stmt.setParameter(Fields.REPORTDATE, 
-                		JdbcUtil.timestampFromCalendar(inspection.getReportDate()));
-                stmt.setParameter(Fields.NEXTDATE, 
-                		JdbcUtil.timestampFromCalendar(inspection.getNextInspectionDate()));
+                stmt.setParameter(Fields.INSPECTIONDATE,
+                        JdbcUtil.timestampFromCalendar(inspection.getInspectionDate()));
+                stmt.setParameter(Fields.REPORTDATE,
+                        JdbcUtil.timestampFromCalendar(inspection.getReportDate()));
+                stmt.setParameter(Fields.NEXTDATE,
+                        JdbcUtil.timestampFromCalendar(inspection.getNextInspectionDate()));
                 stmt.setParameter(Fields.TEMPERATURE, inspection.getTemperature().orNull());
                 stmt.setParameter(Fields.HUMIDITY, inspection.getHumidity().orNull());
                 stmt.setParameter(Fields.SUMMARY, inspection.getSummary().orNull());
@@ -143,6 +150,10 @@ public class InspectionDao implements IInspectionDao {
                 stmt.setParameter(Fields.HUMIDITYRATING, inspection.getHumidityRating().orNull());
                 stmt.setParameter(Fields.HUMIDITYQUANTIFIER, inspection.getHumidityQuantifier()
                         .orNull());
+                stmt.setParameter(Fields.FRONTPICTURE_FK, inspection.getFrontpicture().get()
+                        .getId());
+                stmt.setParameter(Fields.PLANTPICTURE_FK, inspection.getPlantpicture().get()
+                        .getId());
 
                 int affectedRows = stmt.executeUpdate();
                 if (affectedRows != 1) {
@@ -170,6 +181,8 @@ public class InspectionDao implements IInspectionDao {
                                 .orNull());
                         inserted.setHumidityRating(inspection.getHumidityRating().orNull());
                         inserted.setHumidityQuantifier(inspection.getHumidityQuantifier().orNull());
+                        inserted.setFrontpicture(inspection.getFrontpicture().orNull());
+                        inserted.setPlantpicture(inspection.getPlantpicture().orNull());
                         return inserted;
                     }
                     else {
@@ -197,7 +210,7 @@ public class InspectionDao implements IInspectionDao {
                 Fields.CONTRACTOR_FK, Fields.CHECKER_FK, Fields.INSPECTIONDATE, Fields.REPORTDATE,
                 Fields.NEXTDATE, Fields.TEMPERATURE, Fields.HUMIDITY, Fields.SUMMARY, Fields.TITEL,
                 Fields.TEMPERATURERATING, Fields.TEMPERATUREQUANTIFIER, Fields.HUMIDITYRATING,
-                Fields.HUMIDITYQUANTIFIER);
+                Fields.HUMIDITYQUANTIFIER, Fields.FRONTPICTURE_FK, Fields.PLANTPICTURE_FK);
         builder.where(Fields.ID);
 
         final String query = builder.toString();
@@ -209,12 +222,12 @@ public class InspectionDao implements IInspectionDao {
                 stmt.setParameter(Fields.REQUESTER_FK, inspection.getRequester().get().getId());
                 stmt.setParameter(Fields.CONTRACTOR_FK, inspection.getContractor().get().getId());
                 stmt.setParameter(Fields.CHECKER_FK, inspection.getChecker().get().getId());
-                stmt.setParameter(Fields.INSPECTIONDATE, 
-                		JdbcUtil.timestampFromCalendar(inspection.getInspectionDate()));
-                stmt.setParameter(Fields.REPORTDATE, 
-                		JdbcUtil.timestampFromCalendar(inspection.getReportDate()));
-                stmt.setParameter(Fields.NEXTDATE, 
-                		JdbcUtil.timestampFromCalendar(inspection.getNextInspectionDate()));
+                stmt.setParameter(Fields.INSPECTIONDATE,
+                        JdbcUtil.timestampFromCalendar(inspection.getInspectionDate()));
+                stmt.setParameter(Fields.REPORTDATE,
+                        JdbcUtil.timestampFromCalendar(inspection.getReportDate()));
+                stmt.setParameter(Fields.NEXTDATE,
+                        JdbcUtil.timestampFromCalendar(inspection.getNextInspectionDate()));
                 stmt.setParameter(Fields.TEMPERATURE, inspection.getTemperature().orNull());
                 stmt.setParameter(Fields.HUMIDITY, inspection.getHumidity().orNull());
                 stmt.setParameter(Fields.SUMMARY, inspection.getSummary().orNull());
@@ -226,6 +239,10 @@ public class InspectionDao implements IInspectionDao {
                 stmt.setParameter(Fields.HUMIDITYRATING, inspection.getHumidityRating().orNull());
                 stmt.setParameter(Fields.HUMIDITYQUANTIFIER, inspection.getHumidityQuantifier()
                         .orNull());
+                stmt.setParameter(Fields.FRONTPICTURE_FK, inspection.getFrontpicture().get()
+                        .getId());
+                stmt.setParameter(Fields.PLANTPICTURE_FK, inspection.getPlantpicture().get()
+                        .getId());
 
                 int affectedRows = stmt.executeUpdate();
                 if (affectedRows != 1) {
@@ -245,7 +262,7 @@ public class InspectionDao implements IInspectionDao {
         Collection<Inspection> inspectionList = new ArrayList<>();
         while (rs.next()) {
             int id = rs.getInt(Fields.ID);
-            
+
             // mandatory fk's
             int layoutId = JdbcUtil.getId(rs, Fields.LAYOUT_FK);
             checkArgument(layoutId >= 0, "Invalid layout key from database.");
@@ -253,15 +270,17 @@ public class InspectionDao implements IInspectionDao {
             int plantId = JdbcUtil.getId(rs, Fields.PLANT_FK);
             checkArgument(plantId >= 0, "Invalid plant key from database.");
             Plant plant = plantDao.findById(plantId);
-            
+
             // optional fks's
             int requesterId = JdbcUtil.getId(rs, Fields.REQUESTER_FK);
             int contractorId = JdbcUtil.getId(rs, Fields.CONTRACTOR_FK);
             int checkerId = JdbcUtil.getId(rs, Fields.CHECKER_FK);
-            
+            int frontpictureId = JdbcUtil.getId(rs, Fields.FRONTPICTURE_FK);
+            int plantpictureId = JdbcUtil.getId(rs, Fields.PLANTPICTURE_FK);
+
             // rest
-            int temperature = rs.getInt(Fields.TEMPERATURE);
-            int humidity = rs.getInt(Fields.HUMIDITY);
+            float temperature = rs.getFloat(Fields.TEMPERATURE);
+            float humidity = rs.getFloat(Fields.HUMIDITY);
             String summary = rs.getString(Fields.SUMMARY);
             String title = rs.getString(Fields.TITEL);
             int temperatureRating = rs.getInt(Fields.TEMPERATURERATING);
@@ -273,15 +292,15 @@ public class InspectionDao implements IInspectionDao {
             Date date = rs.getDate(Fields.INSPECTIONDATE);
             checkNotNull(date, "Inspection date is mandatory.");
             Calendar inspectionDate = JdbcUtil.calendarFromDate(date);
-            
+
             date = rs.getDate(Fields.REPORTDATE);
             checkNotNull(date, "Report date is mandatory.");
             Calendar reportDate = JdbcUtil.calendarFromDate(date);
-            
+
             date = rs.getDate(Fields.NEXTDATE);
             checkNotNull(date, "Next date is mandatory.");
             Calendar nextInspectionDate = JdbcUtil.calendarFromDate(date);
-            
+
             Inspection inserted = new Inspection(id, reportDate, inspectionDate,
                     nextInspectionDate, title, layout, plant);
 
@@ -298,6 +317,14 @@ public class InspectionDao implements IInspectionDao {
                 Contact checker = contactDao.findById(checkerId);
                 inserted.setChecker(checker);
             }
+            // if (frontpictureId >= 0) {
+            // Photo frontpicture = photoDao.findById(frontpictureId);
+            // inserted.setFrontpicture(frontpicture);
+            // }
+            // if (plantpictureId >= 0) {
+            // Photo plantpicture = photoDao.findById(plantpictureId);
+            // inserted.setFrontpicture(plantpicture);
+            // }
 
             // rest
             inserted.setTemperature(temperature);
@@ -334,6 +361,9 @@ public class InspectionDao implements IInspectionDao {
         public static final String TEMPERATUREQUANTIFIER = "Report_Airtemperature_Quantifier";
         public static final String HUMIDITYRATING = "Report_Humidity_Rating";
         public static final String HUMIDITYQUANTIFIER = "Report_Humidity_Quantifier";
+        public static final String FRONTPICTURE_FK = "Report_Frontpicture_FK";
+        public static final String PLANTPICTURE_FK = "Report_Plantpicture_FK";
+
     }
 
 }
