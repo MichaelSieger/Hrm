@@ -60,6 +60,13 @@ import de.hswt.hrm.scheme.ui.SchemeGridItem;
 import de.hswt.hrm.summary.model.Summary;
 import de.hswt.hrm.summary.service.SummaryService;
 
+import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.ComboViewer;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
+
 public class ReportGeneralComposite extends AbstractComponentRatingComposite {
 	
 	private final static Logger LOG = LoggerFactory
@@ -93,9 +100,6 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
     private DateTime reportDateTime;
     private DateTime inspectionDateTime;
     private DateTime nextInspectionDateTime;
-
-    private Text titlePhotoText;
-    private Text plantPhotoText;
     private Combo overallCombo;
 
     private List photosList;
@@ -136,6 +140,14 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
     private Text controllerNameText;
     private Text controllerStreetText;
     private Text controllerCityText;
+
+	private ComboViewer titlePhotoComboViewer;
+
+	private ComboViewer plantPhotoComboViewer;
+	
+	private Photo selectedTitlePhoto;
+	
+	private Photo selectedPlantPhoto;
 
     /**
      * Do not use this constructor when instantiate this composite! It is only included to make the
@@ -612,44 +624,67 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
         });
 
         Label titlePhotoLabel = new Label(visualComposite, SWT.NONE);
+        titlePhotoLabel.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
         titlePhotoLabel.setLayoutData(LayoutUtil.createLeftCenteredGridData());
         formToolkit.adapt(titlePhotoLabel, true, true);
         titlePhotoLabel.setText("Title photo");
-
-        titlePhotoText = new Text(visualComposite, SWT.READ_ONLY);
-        titlePhotoText.setLayoutData(LayoutUtil.createHorzCenteredFillData());
-        formToolkit.adapt(titlePhotoText, true, true);
-
-        Button titlePhotoChooseButton = new Button(visualComposite, SWT.NONE);
-        formToolkit.adapt(titlePhotoChooseButton, true, true);
-        titlePhotoChooseButton.setText("Choose");
-        titlePhotoChooseButton.setLayoutData(LayoutUtil.createRightGridData());
-        titlePhotoChooseButton.addSelectionListener(new SelectionAdapter() {
+        
+        titlePhotoComboViewer = new ComboViewer(visualComposite, SWT.NONE);
+        Combo titlePhotoCombo = titlePhotoComboViewer.getCombo();
+        titlePhotoCombo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
+        formToolkit.paintBordersFor(titlePhotoCombo);
+        titlePhotoComboViewer.setContentProvider(ArrayContentProvider.getInstance());
+        titlePhotoComboViewer.setLabelProvider(new LabelProvider() {
             @Override
-            public void widgetSelected(SelectionEvent e) {
-                // TODO select a photo, write the name to titlePhotoText
+            public String getText(Object element) {
+                if (element instanceof Photo) {
+                    Photo current = (Photo) element;
+                    return current.getLabel();
+                }
+                return super.getText(element);
             }
         });
+        titlePhotoComboViewer.setInput(photos);
+        titlePhotoComboViewer.addSelectionChangedListener(new ISelectionChangedListener() {
+			@Override
+			public void selectionChanged(SelectionChangedEvent event) {
+				IStructuredSelection selection = (IStructuredSelection) event.getSelection();
+				selectedTitlePhoto = (Photo)selection.getFirstElement();
+				
+			}
+		});
 
         Label plantPhotoLabel = new Label(visualComposite, SWT.READ_ONLY);
+        plantPhotoLabel.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
         plantPhotoLabel.setLayoutData(LayoutUtil.createLeftCenteredGridData());
         formToolkit.adapt(plantPhotoLabel, true, true);
         plantPhotoLabel.setText("Plant photo");
+        
+        plantPhotoComboViewer = new ComboViewer(visualComposite, SWT.NONE);
+        Combo plantPhotoCombo = plantPhotoComboViewer.getCombo();
+        plantPhotoCombo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
+        formToolkit.paintBordersFor(plantPhotoCombo);
+        plantPhotoComboViewer.setContentProvider(ArrayContentProvider.getInstance());
 
-        plantPhotoText = new Text(visualComposite, SWT.READ_ONLY);
-        plantPhotoText.setLayoutData(LayoutUtil.createHorzCenteredFillData());
-        formToolkit.adapt(plantPhotoText, true, true);
-
-        Button plantPhotoChooseButton = new Button(visualComposite, SWT.NONE);
-        formToolkit.adapt(plantPhotoChooseButton, true, true);
-        plantPhotoChooseButton.setText("Choose");
-        plantPhotoChooseButton.setLayoutData(LayoutUtil.createRightGridData());
-        plantPhotoChooseButton.addSelectionListener(new SelectionAdapter() {
+        plantPhotoComboViewer.setLabelProvider(new LabelProvider() {
             @Override
-            public void widgetSelected(SelectionEvent e) {
-                // TODO select a photo, write the name to plantPhotoText
+            public String getText(Object element) {
+                if (element instanceof Photo) {
+                    Photo current = (Photo) element;
+                    return current.getLabel();
+                }
+                return super.getText(element);
             }
         });
+        plantPhotoComboViewer.setInput(photos);
+        plantPhotoComboViewer.addSelectionChangedListener(new ISelectionChangedListener() {
+			@Override
+			public void selectionChanged(SelectionChangedEvent event) {
+				IStructuredSelection selection = (IStructuredSelection) event.getSelection();
+				selectedPlantPhoto = (Photo)selection.getFirstElement();
+				
+			}
+		});
     }
 
     private void createBiologicalComponents() {
@@ -860,6 +895,9 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
             i++;
         }
         photosList.setItems(tableItems);
+        plantPhotoComboViewer.refresh();
+        titlePhotoComboViewer.refresh();
+        
     }
 
     @Override
