@@ -186,7 +186,7 @@ public class PlantDao implements IPlantDao {
                 + "Plant_Motor_Rpm = :motorRpm, "
                 + "Plant_Ventilatorperformance = :ventilatorPerformance, "
                 + "Plant_Current = :current, " + "Plant_Voltage = :voltage, "
-                + "Plant_Note = :note, " + "Plant_Description = :description "
+                + "Plant_Note = :note, " + "Plant_Description = :description, "
                 + "Plant_Area = :area, " + "Plant_Location = :location "
                 + "WHERE Plant_ID = :id;";
 
