@@ -39,13 +39,13 @@ public class InspectionDao implements IInspectionDao {
     private final IContactDao contactDao;
     private final IPlantDao plantDao;
 
-    // private final IPhotoDao photoDao;
+    private final IPhotoDao photoDao;
 
     @Inject
-    public InspectionDao(IContactDao contactDao, IPlantDao plantDao) {
+    public InspectionDao(IContactDao contactDao, IPlantDao plantDao, IPhotoDao photoDao) {
         this.contactDao = contactDao;
         this.plantDao = plantDao;
-        // this.photoDao = photoDao;
+        this.photoDao = photoDao;
 
     }
 
@@ -297,7 +297,7 @@ public class InspectionDao implements IInspectionDao {
             int germsRating = rs.getInt(Fields.GERMSRATING);
             int germsQuantifier = rs.getInt(Fields.GERMSQUANTIFIER);
             String germsComment = rs.getString(Fields.GERMSCOMMENT);
-            
+
             // calendars
             Date date = rs.getDate(Fields.INSPECTIONDATE);
             checkNotNull(date, "Inspection date is mandatory.");
@@ -327,14 +327,14 @@ public class InspectionDao implements IInspectionDao {
                 Contact checker = contactDao.findById(checkerId);
                 inserted.setChecker(checker);
             }
-            // if (frontpictureId >= 0) {
-            // Photo frontpicture = photoDao.findById(frontpictureId);
-            // inserted.setFrontpicture(frontpicture);
-            // }
-            // if (plantpictureId >= 0) {
-            // Photo plantpicture = photoDao.findById(plantpictureId);
-            // inserted.setFrontpicture(plantpicture);
-            // }
+            if (frontpictureId >= 0) {
+                Photo frontpicture = photoDao.findById(frontpictureId);
+                inserted.setFrontpicture(frontpicture);
+            }
+            if (plantpictureId >= 0) {
+                Photo plantpicture = photoDao.findById(plantpictureId);
+                inserted.setFrontpicture(plantpicture);
+            }
 
             // rest
             inserted.setTemperature(temperature);
@@ -385,15 +385,15 @@ public class InspectionDao implements IInspectionDao {
         public static final String PLANTPICTURE_FK = "Report_Plantpicture_FK";
         public static final String TEMPERATURECOMMENT = "Report_Airtemperature_Comment";
         public static final String HUMIDITYCOMMENT = "Report_Humidity_Comment";
-        public static final String LEGIONELLA= "Report_Legionella";
-        public static final String LEGIONELLARATING= "Report_Legionella_Rating";
-        public static final String LEGIONELLAQUANTIFIER= "Report_Legionella_Quantifier";
-        public static final String LEGIONELLACOMMENT= "Report_Legionella_Comment";
-        public static final String GERMS= "Report_Germs";
-        public static final String GERMSRATING= "Report_Germs_Rating";
-        public static final String GERMSQUANTIFIER= "Report_Germs_Quantifier";
-        public static final String GERMSCOMMENT= "Report_Germs_Comment";
-        
+        public static final String LEGIONELLA = "Report_Legionella";
+        public static final String LEGIONELLARATING = "Report_Legionella_Rating";
+        public static final String LEGIONELLAQUANTIFIER = "Report_Legionella_Quantifier";
+        public static final String LEGIONELLACOMMENT = "Report_Legionella_Comment";
+        public static final String GERMS = "Report_Germs";
+        public static final String GERMSRATING = "Report_Germs_Rating";
+        public static final String GERMSQUANTIFIER = "Report_Germs_Quantifier";
+        public static final String GERMSCOMMENT = "Report_Germs_Comment";
+
     }
 
 }
