@@ -124,11 +124,15 @@ public class InspectionDao implements IInspectionDao {
     @Override
     public Inspection insert(Inspection inspection) throws SaveException {
         SqlQueryBuilder builder = new SqlQueryBuilder();
-        builder.insert(TABLE_NAME, Fields.LAYOUT_FK, Fields.PLANT_FK, Fields.REQUESTER_FK,
-                Fields.CONTRACTOR_FK, Fields.CHECKER_FK, Fields.INSPECTIONDATE, Fields.REPORTDATE,
-                Fields.NEXTDATE, Fields.TEMPERATURE, Fields.HUMIDITY, Fields.SUMMARY, Fields.TITEL,
-                Fields.TEMPERATURERATING, Fields.TEMPERATUREQUANTIFIER, Fields.HUMIDITYRATING,
-                Fields.HUMIDITYQUANTIFIER, Fields.FRONTPICTURE_FK, Fields.PLANTPICTURE_FK);
+        builder.insert(TABLE_NAME, Fields.ID, Fields.LAYOUT_FK, Fields.PLANT_FK,
+                Fields.REQUESTER_FK, Fields.CONTRACTOR_FK, Fields.CHECKER_FK,
+                Fields.INSPECTIONDATE, Fields.REPORTDATE, Fields.NEXTDATE, Fields.TEMPERATURE,
+                Fields.HUMIDITY, Fields.SUMMARY, Fields.TITEL, Fields.TEMPERATURERATING,
+                Fields.TEMPERATUREQUANTIFIER, Fields.HUMIDITYRATING, Fields.HUMIDITYQUANTIFIER,
+                Fields.FRONTPICTURE_FK, Fields.PLANTPICTURE_FK, Fields.TEMPERATURECOMMENT,
+                Fields.HUMIDITYCOMMENT, Fields.LEGIONELLA, Fields.LEGIONELLARATING,
+                Fields.LEGIONELLAQUANTIFIER, Fields.LEGIONELLACOMMENT, Fields.GERMS,
+                Fields.GERMSRATING, Fields.GERMSQUANTIFIER, Fields.GERMSCOMMENT);
 
         final String query = builder.toString();
 
@@ -160,6 +164,20 @@ public class InspectionDao implements IInspectionDao {
                         .getId());
                 stmt.setParameter(Fields.PLANTPICTURE_FK, inspection.getPlantpicture().get()
                         .getId());
+                stmt.setParameter(Fields.TEMPERATURECOMMENT, inspection.getAirtemperatureComment()
+                        .orNull());
+                stmt.setParameter(Fields.HUMIDITYCOMMENT, inspection.getHumidityComment().orNull());
+                stmt.setParameter(Fields.LEGIONELLA, inspection.getLegionella().orNull());
+                stmt.setParameter(Fields.LEGIONELLARATING, inspection.getLegionellaRating()
+                        .orNull());
+                stmt.setParameter(Fields.LEGIONELLAQUANTIFIER, inspection.getLegionellaQuantifier()
+                        .orNull());
+                stmt.setParameter(Fields.LEGIONELLACOMMENT, inspection.getLegionellaComment()
+                        .orNull());
+                stmt.setParameter(Fields.GERMS, inspection.getGerms().orNull());
+                stmt.setParameter(Fields.GERMSRATING, inspection.getGermsRating().orNull());
+                stmt.setParameter(Fields.GERMSQUANTIFIER, inspection.getGermsQuantifier().orNull());
+                stmt.setParameter(Fields.GERMSCOMMENT, inspection.getGermsComment().orNull());
 
                 int affectedRows = stmt.executeUpdate();
                 if (affectedRows != 1) {
@@ -189,6 +207,17 @@ public class InspectionDao implements IInspectionDao {
                         inserted.setHumidityQuantifier(inspection.getHumidityQuantifier().orNull());
                         inserted.setFrontpicture(inspection.getFrontpicture().orNull());
                         inserted.setPlantpicture(inspection.getPlantpicture().orNull());
+                        inserted.setAirtemperatureComment(inspection.getAirtemperatureComment().orNull());
+                        inserted.setHumidityComment(inspection.getHumidityComment().orNull());
+                        inserted.setLegionella(inspection.getLegionella().orNull());
+                        inserted.setLegionellaRating(inspection.getLegionellaRating().orNull());
+                        inserted.setLegionellaQuantifier(inspection.getLegionellaQuantifier().orNull());
+                        inserted.setLegionellaComment(inspection.getLegionellaComment().orNull());
+                        inserted.setGerms(inspection.getGerms().orNull());
+                        inserted.setGermsRating(inspection.getGermsRating().orNull());
+                        inserted.setGermsQuantifier(inspection.getGermsQuantifier().orNull());
+                        inserted.setGermsComment(inspection.getGermsComment().orNull());
+
                         return inserted;
                     }
                     else {
