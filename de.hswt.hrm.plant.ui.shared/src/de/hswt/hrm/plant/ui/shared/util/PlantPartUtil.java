@@ -19,9 +19,8 @@ import de.hswt.hrm.i18n.I18nFactory;
 import de.hswt.hrm.plant.model.Plant;
 import de.hswt.hrm.plant.ui.shared.ui.wizzard.PlantWizard;
 
-
 public class PlantPartUtil {
-    
+
     private final static I18n I18N = I18nFactory.getI18n(PlantPartUtil.class);
 
     public static Optional<Plant> showWizard(IEclipseContext context, Shell activeShell,
@@ -39,8 +38,9 @@ public class PlantPartUtil {
 
         List<ColumnDescription<Plant>> columns = new ArrayList<>();
         columns.add(getDescription());
-        columns.add(getNumberOfElements());
         columns.add(getPlace());
+        columns.add(getArea());
+        columns.add(getLocation());
         columns.add(getConstructionYear());
         columns.add(getManufactor());
         columns.add(getType());
@@ -55,19 +55,37 @@ public class PlantPartUtil {
         return columns;
     }
 
-    private static ColumnDescription<Plant> getNumberOfElements() {
-        return new ColumnDescription<Plant>(I18N.tr("Number of Elements"), new ColumnLabelProvider() {
+    private static ColumnDescription<Plant> getArea() {
+        return new ColumnDescription<Plant>(I18N.tr("Area"), new ColumnLabelProvider() {
             @Override
             public String getText(Object element) {
                 Plant p = (Plant) element;
-                return String.valueOf(p.getNumberOfElements());
+                return p.getArea();
 
             }
         }, new Comparator<Plant>() {
 
             @Override
             public int compare(Plant o1, Plant o2) {
-                return o1.getNumberOfElements() - o2.getNumberOfElements();
+                return o1.getArea().compareToIgnoreCase(o2.getArea());
+            }
+
+        });
+    }
+
+    private static ColumnDescription<Plant> getLocation() {
+        return new ColumnDescription<Plant>(I18N.tr("Location"), new ColumnLabelProvider() {
+            @Override
+            public String getText(Object element) {
+                Plant p = (Plant) element;
+                return p.getLocation();
+
+            }
+        }, new Comparator<Plant>() {
+
+            @Override
+            public int compare(Plant o1, Plant o2) {
+                return o1.getLocation().compareToIgnoreCase(o2.getLocation());
             }
 
         });
@@ -113,21 +131,23 @@ public class PlantPartUtil {
     }
 
     private static ColumnDescription<Plant> getConstructionYear() {
-        return new ColumnDescription<Plant>(I18N.tr("Construction Year"), new ColumnLabelProvider() {
-            @Override
-            public String getText(Object element) {
-                Plant p = (Plant) element;
-                return p.getConstructionYear().get().toString();
+        return new ColumnDescription<Plant>(I18N.tr("Construction Year"),
+                new ColumnLabelProvider() {
+                    @Override
+                    public String getText(Object element) {
+                        Plant p = (Plant) element;
+                        return p.getConstructionYear().get().toString();
 
-            }
-        }, new Comparator<Plant>() {
+                    }
+                }, new Comparator<Plant>() {
 
-            @Override
-            public int compare(Plant o1, Plant o2) {
-                return o1.getConstructionYear().get().compareTo(o2.getConstructionYear().get());
-            }
+                    @Override
+                    public int compare(Plant o1, Plant o2) {
+                        return o1.getConstructionYear().get()
+                                .compareTo(o2.getConstructionYear().get());
+                    }
 
-        });
+                });
     }
 
     private static ColumnDescription<Plant> getManufactor() {
@@ -222,22 +242,23 @@ public class PlantPartUtil {
     }
 
     private static ColumnDescription<Plant> getVentilatorPerformance() {
-        return new ColumnDescription<Plant>(I18N.tr("Ventilator Performance"), new ColumnLabelProvider() {
-            @Override
-            public String getText(Object element) {
-                Plant p = (Plant) element;
-                return p.getVentilatorPerformance().orNull();
+        return new ColumnDescription<Plant>(I18N.tr("Ventilator Performance"),
+                new ColumnLabelProvider() {
+                    @Override
+                    public String getText(Object element) {
+                        Plant p = (Plant) element;
+                        return p.getVentilatorPerformance().orNull();
 
-            }
-        }, new Comparator<Plant>() {
+                    }
+                }, new Comparator<Plant>() {
 
-            @Override
-            public int compare(Plant o1, Plant o2) {
-                return o1.getVentilatorPerformance().get()
-                        .compareToIgnoreCase(o2.getVentilatorPerformance().get());
-            }
+                    @Override
+                    public int compare(Plant o1, Plant o2) {
+                        return o1.getVentilatorPerformance().get()
+                                .compareToIgnoreCase(o2.getVentilatorPerformance().get());
+                    }
 
-        });
+                });
     }
 
     private static ColumnDescription<Plant> getCurrent() {

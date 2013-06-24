@@ -26,10 +26,10 @@ import de.hswt.hrm.plant.service.PlantService;
 public class PlantWizard extends Wizard {
     private static final Logger LOG = LoggerFactory.getLogger(PlantWizard.class);
     private static final I18n I18N = I18nFactory.getI18n(PlantWizard.class);
-    
+
     @Inject
     private PlantService plantService;
-    
+
     private PlantWizardPageOne first;
     private PlantWizardPageTwo second;
     private Optional<Plant> plant;
@@ -39,12 +39,13 @@ public class PlantWizard extends Wizard {
         first = new PlantWizardPageOne("First page", plant);
         second = new PlantWizardPageTwo("Second page", plant);
         ContextInjectionFactory.inject(second, context);
-        
+
         if (plant.isPresent()) {
             setWindowTitle(I18N.tr("Edit plant"));
-        } else {
+        }
+        else {
             setWindowTitle(I18N.tr("Add plant"));
-        } 
+        }
     }
 
     @Override
@@ -52,21 +53,22 @@ public class PlantWizard extends Wizard {
         addPage(first);
         addPage(second);
     }
-    
+
     @Override
     public boolean canFinish() {
-    	return first.isPageComplete() && second.isPageComplete();
+        return first.isPageComplete() && second.isPageComplete();
     }
 
     @Override
     public boolean performFinish() {
         if (plant.isPresent()) {
             return editExistingPlant();
-        } else {
+        }
+        else {
             return insertNewPlant();
         }
     }
-    
+
     private boolean editExistingPlant() {
         Plant p = this.plant.get();
         try {
@@ -77,26 +79,30 @@ public class PlantWizard extends Wizard {
             // Update plant in DB
             plantService.update(p);
             plant = Optional.of(p);
-        } catch (DatabaseException e) {
+        }
+        catch (DatabaseException e) {
             LOG.error("An error occured", e);
         }
         return true;
     }
-    
+
     private boolean insertNewPlant() {
-        Plant p = setValues(Optional.<Plant>absent());
+        Plant p = setValues(Optional.<Plant> absent());
         try {
             plant = Optional.of(plantService.insert(p));
-        } catch (SaveException e) {
-            LOG.error("Could not save Element: "+ plant +"into Database", e);
+        }
+        catch (SaveException e) {
+            LOG.error("Could not save Element: " + plant + "into Database", e);
         }
         return true;
     }
-    
+
     private Plant setValues(Optional<Plant> p) {
         HashMap<String, Text> mandatoryWidgets = first.getMandatoryWidgets();
         String description = mandatoryWidgets.get("description").getText();
-        
+        String area = mandatoryWidgets.get("area").getText();
+        String location = mandatoryWidgets.get("location").getText();
+
         HashMap<String, Text> optionalWidgets = first.getOptionalWidgets();
         String manufactor = optionalWidgets.get("manufactor").getText();
         String type = optionalWidgets.get("type").getText();
@@ -107,22 +113,25 @@ public class PlantWizard extends Wizard {
         String current = optionalWidgets.get("current").getText();
         String voltage = optionalWidgets.get("voltage").getText();
         String note = optionalWidgets.get("note").getText();
-        
+
         HashMap<String, Combo> optionalCombos = first.getOptionalCombos();
         Combo constYear = optionalCombos.get("constructionYear");
         String constructionYear = constYear.getItem(constYear.getSelectionIndex());
-        
+
         Plant plant;
         if (p.isPresent()) {
             plant = p.get();
             plant.setDescription(description);
-        } else {
-            plant = new Plant(description);
+            plant.setArea(area);
+            plant.setLocation(location);
+        }
+        else {
+            plant = new Plant(description, area, location);
         }
         plant.setManufactor(manufactor);
         if (!constructionYear.equals("")) {
             plant.setConstructionYear(Integer.parseInt(constructionYear));
-        }        
+        }
         plant.setType(type);
         plant.setAirPerformance(airPerformance);
         plant.setMotorPower(motorPower);
@@ -131,12 +140,12 @@ public class PlantWizard extends Wizard {
         plant.setCurrent(current);
         plant.setVoltage(voltage);
         plant.setNote(note);
-        
+
         plant.setPlace(second.getPlace());
-        
+
         return plant;
     }
-    
+
     public Optional<Plant> getPlant() {
         return plant;
     }
