@@ -23,6 +23,26 @@
 						<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
 					</Combo.layoutData>
 				</Combo>
+				<Label text="Area:">
+					<Label.layoutData>
+						<GridData horizontalAlignment="RIGHT"/>
+					</Label.layoutData>
+				</Label>
+				<Text x:Style="BORDER" x:Name="area">
+					<Text.layoutData>
+						<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
+					</Text.layoutData>
+				</Text>
+				<Label text="Location:">
+					<Label.layoutData>
+						<GridData horizontalAlignment="RIGHT"/>
+					</Label.layoutData>
+				</Label>
+				<Text x:Style="BORDER" x:Name="location">
+					<Text.layoutData>
+						<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
+					</Text.layoutData>
+				</Text>
 			</Composite>
 		</Section.client>	
 	</Section>
