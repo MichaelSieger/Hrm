@@ -3,16 +3,12 @@ package de.hswt.hrm.catalog.model;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Strings.isNullOrEmpty;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 /**
  * Represents a catalog.
  */
 public final class Catalog {
     private int id;
     private String name;
-    private Collection<Target> targets;
 
     private static final String IS_MANDATORY = "Field is a mandatory.";
 
@@ -25,8 +21,7 @@ public final class Catalog {
 
         this.id = id;
         setName(name);
-        Collection<Target> targets = new ArrayList<>();
-        setTargets(targets);
+
     }
 
     public String getName() {
@@ -42,21 +37,12 @@ public final class Catalog {
         return id;
     }
 
-    public Collection<Target> getTargets() {
-        return targets;
-    }
-
-    public void setTargets(Collection<Target> targets) {
-        this.targets = targets;
-    }
-
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
         result = prime * result + id;
         result = prime * result + ((name == null) ? 0 : name.hashCode());
-        result = prime * result + ((targets == null) ? 0 : targets.hashCode());
         return result;
     }
 
@@ -83,14 +69,7 @@ public final class Catalog {
         else if (!name.equals(other.name)) {
             return false;
         }
-        if (targets == null) {
-            if (other.targets != null) {
-                return false;
-            }
-        }
-        else if (!targets.equals(other.targets)) {
-            return false;
-        }
+
         return true;
     }
 
