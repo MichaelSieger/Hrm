@@ -5,7 +5,8 @@ Bundle-SymbolicName: de.hswt.hrm.inspection.model
 Bundle-Version: 0.0.1.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: de.hswt.hrm.inspection.model
-Import-Package: de.hswt.hrm.component.model,
+Import-Package: de.hswt.hrm.common.observer,
+ de.hswt.hrm.component.model,
  de.hswt.hrm.contact.dao.core,
  de.hswt.hrm.contact.model,
  de.hswt.hrm.inspection.model,

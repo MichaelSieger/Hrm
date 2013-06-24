@@ -4,6 +4,8 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Strings.isNullOrEmpty;
 import de.hswt.hrm.plant.model.Plant;
+import de.hswt.hrm.common.observer.Observable;
+import de.hswt.hrm.common.observer.Observer;
 import de.hswt.hrm.contact.model.Contact;
 import de.hswt.hrm.photo.model.Photo;
 
@@ -14,7 +16,7 @@ import com.google.common.base.Optional;
 public class Inspection {
     private final int id;
     private Layout layout;
-    private Plant plant;
+    private final Observable<Plant> plant = new Observable<>();
     private Contact requester;
     private Contact contractor;
     private Contact checker;
@@ -61,12 +63,12 @@ public class Inspection {
     }
 
     public Plant getPlant() {
-        return plant;
+        return plant.get();
     }
 
     public void setPlant(Plant plant) {
         checkNotNull(plant);
-        this.plant = plant;
+        this.plant.set(plant);
     }
 
     public Optional<Contact> getRequester() {
@@ -365,6 +367,10 @@ public class Inspection {
             return false;
         }
         return true;
+    }
+    
+    public void addPlantObserver(Observer<Plant> o){
+        plant.addObserver(o);
     }
 
 }
