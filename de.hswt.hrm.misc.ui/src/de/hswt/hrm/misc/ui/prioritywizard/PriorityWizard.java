@@ -1,4 +1,4 @@
-package de.hswt.hrm.misc.ui.PriorityWizard;
+package de.hswt.hrm.misc.ui.prioritywizard;
 
 import javax.inject.Inject;
 

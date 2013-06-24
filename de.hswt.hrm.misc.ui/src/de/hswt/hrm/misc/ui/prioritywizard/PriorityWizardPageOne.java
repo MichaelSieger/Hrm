@@ -1,7 +1,10 @@
-package de.hswt.hrm.misc.ui.PreferencesWizard;
+package de.hswt.hrm.misc.ui.prioritywizard;
 
 import java.net.URL;
 import java.util.Collection;
+import java.util.LinkedList;
+
+import javax.inject.Inject;
 
 import org.eclipse.e4.xwt.IConstants;
 import org.eclipse.e4.xwt.XWT;
@@ -17,44 +20,48 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Optional;
 
+import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.common.ui.swt.layouts.PageContainerFillLayout;
-import de.hswt.hrm.misc.reportPreferences.model.ReportPreference;
+import de.hswt.hrm.misc.comment.model.Comment;
+import de.hswt.hrm.misc.priority.model.Priority;
+import de.hswt.hrm.summary.model.Summary;
+import de.hswt.hrm.summary.service.SummaryService;
 
-public class PreferencesWizardPageOne extends WizardPage {
+public class PriorityWizardPageOne extends WizardPage {
 
-    private Optional<ReportPreference> preference;
+    private Optional<Priority> priority;
     private Composite container;
     private Text nameText;
-    private Text fileText;
+    private Text descText;
 
-    private Collection<ReportPreference> preferences;
+    private Collection<Priority> priorities;
     private boolean first = true;
 
 //    @Inject
-//    private ReportPreferencesSerice prefService;
+//    private PriorityService prioService;
 
-    private static final Logger LOG = LoggerFactory.getLogger(PreferencesWizardPageOne.class);
+    private static final Logger LOG = LoggerFactory.getLogger(PriorityWizardPageOne.class);
 
-    public PreferencesWizardPageOne(String title, Optional<ReportPreference> preference) {
+    public PriorityWizardPageOne(String title, Optional<Priority> priority) {
         super(title);
-        this.preference = preference;
+        this.priority = priority;
         setDescription(createDescription());
-        setTitle("Style Wizard");
+        setTitle("Priority Wizard");
     }
 
     private String createDescription() {
-        if (preference.isPresent()) {
-            return "Change a Preference";
+        if (priority.isPresent()) {
+            return "Change a Priority";
         }
-        return "Add a new Preference";
+        return "Add a new Priority";
     }
 
     @Override
     public void createControl(Composite parent) {
         parent.setLayout(new PageContainerFillLayout());
-        URL url = PreferencesWizardPageOne.class.getClassLoader().getResource(
-                "de/hswt/hrm/misc/ui/PreferencesWizard/PreferencesWizardWindow"
+        URL url = PriorityWizardPageOne.class.getClassLoader().getResource(
+                "de/hswt/hrm/misc/ui/prioritywizard/PriorityWizardWindow"
                         + IConstants.XWT_EXTENSION_SUFFIX);
         try {
             container = (Composite) XWTForms.load(parent, url);
@@ -64,21 +71,23 @@ public class PreferencesWizardPageOne extends WizardPage {
         }
 
         nameText = (Text) XWT.findElementByName(container, "name");
-        fileText = (Text) XWT.findElementByName(container, "fileName");
+        descText = (Text) XWT.findElementByName(container, "desc");
+        
 
-        if (this.preference.isPresent()) {
+        if (this.priority.isPresent()) {
             updateFields();
         }
-//        try {
-//           TODO this.preferences = prefService.findAll();
+//  TODO      try {
+//            this.priorities = prioService.findAll();
 //        }
 //        catch (DatabaseException e) {
 //            LOG.error("An error occured", e);
 //        }
-
+       
+        
         FormUtil.initSectionColors((Section) XWT.findElementByName(container, "Mandatory"));
         addKeyListener(nameText);
-        addKeyListener(fileText);
+        addKeyListener(descText);
         setControl(container);
         setPageComplete(false);
 
@@ -99,9 +108,9 @@ public class PreferencesWizardPageOne extends WizardPage {
     }
 
     private void updateFields() {
-        ReportPreference e = preference.get();
+        Priority e = priority.get();
         nameText.setText(e.getName());
-        fileText.setText(e.getFileName());
+        descText.setText(e.getText());
     }
 
     private void checkPageComplete() {
@@ -114,8 +123,8 @@ public class PreferencesWizardPageOne extends WizardPage {
 
         setErrorMessage(null);
 
-        if (fileText.getText().isEmpty()) {
-            setErrorMessage("FileName must not be empty");
+        if (descText.getText().isEmpty()) {
+            setErrorMessage("Description must not be empty");
         }
 
         else if (nameText.getText().isEmpty()) {
@@ -123,7 +132,7 @@ public class PreferencesWizardPageOne extends WizardPage {
         }
 
         else if (isAlreadyPresent(nameText.getText())) {
-            setErrorMessage("A ReportPreference with name " + nameText.getText() + " is already present");
+            setErrorMessage("A Priority with name " + nameText.getText() + " is already present");
         }
 
     }
@@ -136,7 +145,7 @@ public class PreferencesWizardPageOne extends WizardPage {
             present = true;
         }
 
-        for (ReportPreference e : this.preferences) {
+        for (Priority e : this.priorities) {
             if (e.getName().equals(text)) {
                 present = true;
             }
@@ -161,8 +170,8 @@ public class PreferencesWizardPageOne extends WizardPage {
         return nameText.getText();
     }
 
-    public String getFileName() {
-        return fileText.getText();
+    public String getDesc() {
+        return descText.getText();
     }
 
 }

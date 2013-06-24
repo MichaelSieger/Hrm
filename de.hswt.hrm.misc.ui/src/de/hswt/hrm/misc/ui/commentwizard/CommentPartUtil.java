@@ -1,4 +1,4 @@
-package de.hswt.hrm.misc.ui.CommentWizard;
+package de.hswt.hrm.misc.ui.commentwizard;
 
 import java.util.ArrayList;
 import java.util.Comparator;

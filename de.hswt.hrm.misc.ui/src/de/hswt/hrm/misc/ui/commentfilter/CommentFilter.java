@@ -1,4 +1,4 @@
-package de.hswt.hrm.misc.ui.CommentFilter;
+package de.hswt.hrm.misc.ui.commentfilter;
 
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;

@@ -38,8 +38,8 @@ import de.hswt.hrm.common.ui.swt.table.ColumnComparator;
 import de.hswt.hrm.common.ui.swt.table.ColumnDescription;
 import de.hswt.hrm.common.ui.swt.table.TableViewerController;
 import de.hswt.hrm.misc.comment.model.Comment;
-import de.hswt.hrm.misc.ui.CommentFilter.CommentFilter;
-import de.hswt.hrm.misc.ui.CommentWizard.CommentPartUtil;
+import de.hswt.hrm.misc.ui.commentfilter.CommentFilter;
+import de.hswt.hrm.misc.ui.commentwizard.CommentPartUtil;
 import de.hswt.hrm.summary.model.Summary;
 import de.hswt.hrm.summary.ui.part.SummaryPartUtil;
 

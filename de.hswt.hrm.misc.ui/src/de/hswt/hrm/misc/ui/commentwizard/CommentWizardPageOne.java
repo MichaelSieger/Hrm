@@ -1,10 +1,7 @@
-package de.hswt.hrm.misc.ui.PriorityWizard;
+package de.hswt.hrm.misc.ui.commentwizard;
 
 import java.net.URL;
 import java.util.Collection;
-import java.util.LinkedList;
-
-import javax.inject.Inject;
 
 import org.eclipse.e4.xwt.IConstants;
 import org.eclipse.e4.xwt.XWT;
@@ -20,48 +17,44 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Optional;
 
-import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.common.ui.swt.layouts.PageContainerFillLayout;
 import de.hswt.hrm.misc.comment.model.Comment;
-import de.hswt.hrm.misc.priority.model.Priority;
-import de.hswt.hrm.summary.model.Summary;
-import de.hswt.hrm.summary.service.SummaryService;
 
-public class PriorityWizardPageOne extends WizardPage {
+public class CommentWizardPageOne extends WizardPage {
 
-    private Optional<Priority> priority;
+    private Optional<Comment> comment;
     private Composite container;
     private Text nameText;
     private Text descText;
 
-    private Collection<Priority> priorities;
+    private Collection<Comment> comments;
     private boolean first = true;
 
 //    @Inject
-//    private PriorityService prioService;
+//    private CommentService commentService;
 
-    private static final Logger LOG = LoggerFactory.getLogger(PriorityWizardPageOne.class);
+    private static final Logger LOG = LoggerFactory.getLogger(CommentWizardPageOne.class);
 
-    public PriorityWizardPageOne(String title, Optional<Priority> priority) {
+    public CommentWizardPageOne(String title, Optional<Comment> comment) {
         super(title);
-        this.priority = priority;
+        this.comment = comment;
         setDescription(createDescription());
-        setTitle("Priority Wizard");
+        setTitle("Comment Wizard");
     }
 
     private String createDescription() {
-        if (priority.isPresent()) {
-            return "Change a Priority";
+        if (comment.isPresent()) {
+            return "Change a Comment";
         }
-        return "Add a new Priority";
+        return "Add a new Comment";
     }
 
     @Override
     public void createControl(Composite parent) {
         parent.setLayout(new PageContainerFillLayout());
-        URL url = PriorityWizardPageOne.class.getClassLoader().getResource(
-                "de/hswt/hrm/misc/ui/PriorityWizard/PriorityWizardWindow"
+        URL url = CommentWizardPageOne.class.getClassLoader().getResource(
+                "de/hswt/hrm/misc/ui/commentwizardxwt/CommentWizardWindow"
                         + IConstants.XWT_EXTENSION_SUFFIX);
         try {
             container = (Composite) XWTForms.load(parent, url);
@@ -72,13 +65,12 @@ public class PriorityWizardPageOne extends WizardPage {
 
         nameText = (Text) XWT.findElementByName(container, "name");
         descText = (Text) XWT.findElementByName(container, "desc");
-        
 
-        if (this.priority.isPresent()) {
+        if (this.comment.isPresent()) {
             updateFields();
         }
-//  TODO      try {
-//            this.priorities = prioService.findAll();
+//        try {
+//            this.comments = commentService.findAll();
 //        }
 //        catch (DatabaseException e) {
 //            LOG.error("An error occured", e);
@@ -108,7 +100,7 @@ public class PriorityWizardPageOne extends WizardPage {
     }
 
     private void updateFields() {
-        Priority e = priority.get();
+        Comment e = comment.get();
         nameText.setText(e.getName());
         descText.setText(e.getText());
     }
@@ -132,7 +124,7 @@ public class PriorityWizardPageOne extends WizardPage {
         }
 
         else if (isAlreadyPresent(nameText.getText())) {
-            setErrorMessage("A Priority with name " + nameText.getText() + " is already present");
+            setErrorMessage("A Comment with name " + nameText.getText() + " is already present");
         }
 
     }
@@ -145,7 +137,7 @@ public class PriorityWizardPageOne extends WizardPage {
             present = true;
         }
 
-        for (Priority e : this.priorities) {
+        for (Comment e : this.comments) {
             if (e.getName().equals(text)) {
                 present = true;
             }

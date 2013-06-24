@@ -1,4 +1,4 @@
-package de.hswt.hrm.misc.ui.PreferencesWizard;
+package de.hswt.hrm.misc.ui.preferenceswizard;
 
 import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;

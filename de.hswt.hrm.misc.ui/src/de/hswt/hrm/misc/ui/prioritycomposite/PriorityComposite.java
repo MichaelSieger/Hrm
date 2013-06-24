@@ -1,4 +1,4 @@
-package de.hswt.hrm.misc.ui.PriorityComposite;
+package de.hswt.hrm.misc.ui.prioritycomposite;
 
 import java.util.Collection;
 import java.util.LinkedList;
@@ -212,8 +212,8 @@ public class PriorityComposite extends Composite {
         }
         // TODO try {
         // prioService.refresh(selectedPrio);
-        // Optional<Priority> updatedEval = PriorityPartUtil.showWizard(context,
-        // shellProvider.getShell(), Optional.of(selectedPrio));
+         Optional<Priority> updatedEval = PriorityPartUtil.showWizard(context,
+         shellProvider.getShell(), Optional.of(selectedPrio));
         //
         // if (updatedEval.isPresent()) {
         // tableViewer.refresh();

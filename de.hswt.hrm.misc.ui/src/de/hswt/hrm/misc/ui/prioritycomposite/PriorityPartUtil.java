@@ -1,4 +1,4 @@
-package de.hswt.hrm.misc.ui.PriorityComposite;
+package de.hswt.hrm.misc.ui.prioritycomposite;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -15,7 +15,7 @@ import com.google.common.base.Optional;
 import de.hswt.hrm.common.ui.swt.table.ColumnDescription;
 import de.hswt.hrm.common.ui.swt.wizards.WizardCreator;
 import de.hswt.hrm.misc.priority.model.Priority;
-import de.hswt.hrm.misc.ui.PriorityWizard.PriorityWizard;
+import de.hswt.hrm.misc.ui.prioritywizard.PriorityWizard;
 
 public class PriorityPartUtil {
 

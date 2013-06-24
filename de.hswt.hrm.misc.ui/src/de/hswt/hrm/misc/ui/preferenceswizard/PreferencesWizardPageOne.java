@@ -1,4 +1,4 @@
-package de.hswt.hrm.misc.ui.CommentWizard;
+package de.hswt.hrm.misc.ui.preferenceswizard;
 
 import java.net.URL;
 import java.util.Collection;
@@ -19,42 +19,42 @@ import com.google.common.base.Optional;
 
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.common.ui.swt.layouts.PageContainerFillLayout;
-import de.hswt.hrm.misc.comment.model.Comment;
+import de.hswt.hrm.misc.reportPreferences.model.ReportPreference;
 
-public class CommentWizardPageOne extends WizardPage {
+public class PreferencesWizardPageOne extends WizardPage {
 
-    private Optional<Comment> comment;
+    private Optional<ReportPreference> preference;
     private Composite container;
     private Text nameText;
-    private Text descText;
+    private Text fileText;
 
-    private Collection<Comment> comments;
+    private Collection<ReportPreference> preferences;
     private boolean first = true;
 
 //    @Inject
-//    private CommentService commentService;
+//    private ReportPreferencesSerice prefService;
 
-    private static final Logger LOG = LoggerFactory.getLogger(CommentWizardPageOne.class);
+    private static final Logger LOG = LoggerFactory.getLogger(PreferencesWizardPageOne.class);
 
-    public CommentWizardPageOne(String title, Optional<Comment> comment) {
+    public PreferencesWizardPageOne(String title, Optional<ReportPreference> preference) {
         super(title);
-        this.comment = comment;
+        this.preference = preference;
         setDescription(createDescription());
-        setTitle("Comment Wizard");
+        setTitle("Style Wizard");
     }
 
     private String createDescription() {
-        if (comment.isPresent()) {
-            return "Change a Comment";
+        if (preference.isPresent()) {
+            return "Change a Preference";
         }
-        return "Add a new Comment";
+        return "Add a new Preference";
     }
 
     @Override
     public void createControl(Composite parent) {
         parent.setLayout(new PageContainerFillLayout());
-        URL url = CommentWizardPageOne.class.getClassLoader().getResource(
-                "de/hswt/hrm/misc/ui/CommentWizardXWT/CommentWizardWindow"
+        URL url = PreferencesWizardPageOne.class.getClassLoader().getResource(
+                "de/hswt/hrm/misc/ui/preferenceswizard/PreferencesWizardWindow"
                         + IConstants.XWT_EXTENSION_SUFFIX);
         try {
             container = (Composite) XWTForms.load(parent, url);
@@ -64,22 +64,21 @@ public class CommentWizardPageOne extends WizardPage {
         }
 
         nameText = (Text) XWT.findElementByName(container, "name");
-        descText = (Text) XWT.findElementByName(container, "desc");
+        fileText = (Text) XWT.findElementByName(container, "fileName");
 
-        if (this.comment.isPresent()) {
+        if (this.preference.isPresent()) {
             updateFields();
         }
 //        try {
-//            this.comments = commentService.findAll();
+//           TODO this.preferences = prefService.findAll();
 //        }
 //        catch (DatabaseException e) {
 //            LOG.error("An error occured", e);
 //        }
-       
-        
+
         FormUtil.initSectionColors((Section) XWT.findElementByName(container, "Mandatory"));
         addKeyListener(nameText);
-        addKeyListener(descText);
+        addKeyListener(fileText);
         setControl(container);
         setPageComplete(false);
 
@@ -100,9 +99,9 @@ public class CommentWizardPageOne extends WizardPage {
     }
 
     private void updateFields() {
-        Comment e = comment.get();
+        ReportPreference e = preference.get();
         nameText.setText(e.getName());
-        descText.setText(e.getText());
+        fileText.setText(e.getFileName());
     }
 
     private void checkPageComplete() {
@@ -115,8 +114,8 @@ public class CommentWizardPageOne extends WizardPage {
 
         setErrorMessage(null);
 
-        if (descText.getText().isEmpty()) {
-            setErrorMessage("Description must not be empty");
+        if (fileText.getText().isEmpty()) {
+            setErrorMessage("FileName must not be empty");
         }
 
         else if (nameText.getText().isEmpty()) {
@@ -124,7 +123,7 @@ public class CommentWizardPageOne extends WizardPage {
         }
 
         else if (isAlreadyPresent(nameText.getText())) {
-            setErrorMessage("A Comment with name " + nameText.getText() + " is already present");
+            setErrorMessage("A ReportPreference with name " + nameText.getText() + " is already present");
         }
 
     }
@@ -137,7 +136,7 @@ public class CommentWizardPageOne extends WizardPage {
             present = true;
         }
 
-        for (Comment e : this.comments) {
+        for (ReportPreference e : this.preferences) {
             if (e.getName().equals(text)) {
                 present = true;
             }
@@ -162,8 +161,8 @@ public class CommentWizardPageOne extends WizardPage {
         return nameText.getText();
     }
 
-    public String getDesc() {
-        return descText.getText();
+    public String getFileName() {
+        return fileText.getText();
     }
 
 }

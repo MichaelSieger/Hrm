@@ -216,8 +216,8 @@ public class ReportPreferencesComposite extends Composite {
         }
         // TODO try {
         // prefService.refresh(selectedPreference);
-        // Optional<ReportPreference> updatedPreference = ReportPreferenceUtil.showWizard(context,
-        // shellProvider.getShell(), Optional.of(selectedPreference));
+         Optional<ReportPreference> updatedPreference = ReportPreferenceUtil.showWizard(context,
+         shellProvider.getShell(), Optional.of(selectedPreference));
         //
         // if (updatedPreference.isPresent()) {
         // tableViewer.refresh();

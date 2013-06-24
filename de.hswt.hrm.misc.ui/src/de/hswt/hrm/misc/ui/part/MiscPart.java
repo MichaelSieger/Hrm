@@ -23,7 +23,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
-import de.hswt.hrm.misc.ui.PriorityComposite.PriorityComposite;
+import de.hswt.hrm.misc.ui.prioritycomposite.PriorityComposite;
 import de.hswt.hrm.summary.ui.part.SummaryComposite;
 
 import org.eclipse.swt.widgets.TabFolder;
