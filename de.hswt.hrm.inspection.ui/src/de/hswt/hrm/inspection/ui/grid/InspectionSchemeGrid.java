@@ -18,73 +18,76 @@ import de.hswt.hrm.scheme.ui.SchemeGrid;
 import de.hswt.hrm.scheme.ui.SchemeGridItem;
 
 /**
- * A SchemeGrid where Components can be colored.
- * The Components can also be selected.
+ * A SchemeGrid where Components can be colored. The Components can also be selected.
  * 
  * @author Michael Sieger
- *
+ * 
  */
 public class InspectionSchemeGrid {
-	
-	private final static Logger LOG = LoggerFactory
-			.getLogger(InspectionSchemeGrid.class);
-	
-	private static final int PPG = 30;
-	
-	private final SchemeGrid grid;
-	private SchemeComponent selected;
-	private SchemeComponentSelectionListener listener;
-	
-	public InspectionSchemeGrid(final Composite parent, int style){
-		grid = new SchemeGrid(parent, style, 1, 1, PPG);
-		grid.setItemClickListener(new ItemClickListener() {
-			
-			@Override
-			public void itemClicked(MouseEvent e, SchemeGridItem item) {
-				setSelected(item.asSchemeComponent());
-			}
-		});
-	}
-	
-	/**
-	 * Sets the Listener that is notified if a component is selected.
-	 * @param listener
-	 */
-	public void setSelectionListener(SchemeComponentSelectionListener listener){
-		this.listener = listener;
-		if(listener != null){
-			listener.selected(selected);
-		}
-	}
-	
-	/**
-	 * Sets the selected item. A selection event is fired, if the 
-	 * component differs from the one before.
-	 * @param selected
-	 */
-	public void setSelected(SchemeComponent selected){
-		if(this.selected != selected){
-			this.selected = selected;
-			if(listener != null){
-				listener.selected(selected);
-			}
-			Optional<Category> c = selected.getComponent().getCategory();
-			if(!c.isPresent()) {
-				//Shouldnt be possible
-				throw new RuntimeException("Internal Error");
-			}
-			grid.clearColors();
-			grid.setColorGrid(getColor(), selected.getX(), selected.getY(), c.get().getWidth(), c.get().getHeight(), false, false);
-		}
-	}
-	
-	public void setItems(Collection<SchemeGridItem> items){
-		setSelected(null);
-		grid.setItems(items);
-	}
-	
-	private Color getColor(){
-		return grid.getDisplay().getSystemColor(SWT.COLOR_GREEN);
-	}
+
+    private final static Logger LOG = LoggerFactory.getLogger(InspectionSchemeGrid.class);
+
+    private static final int PPG = 30;
+
+    private final SchemeGrid grid;
+    private SchemeComponent selected;
+    private SchemeComponentSelectionListener listener;
+
+    public InspectionSchemeGrid(final Composite parent, int style) {
+        grid = new SchemeGrid(parent, style, 1, 1, PPG);
+        grid.setItemClickListener(new ItemClickListener() {
+
+            @Override
+            public void itemClicked(MouseEvent e, SchemeGridItem item) {
+                setSelected(item.asSchemeComponent());
+            }
+        });
+    }
+
+    /**
+     * Sets the Listener that is notified if a component is selected.
+     * 
+     * @param listener
+     */
+    public void setSelectionListener(SchemeComponentSelectionListener listener) {
+        this.listener = listener;
+        if (listener != null) {
+            listener.selected(selected);
+        }
+    }
+
+    /**
+     * Sets the selected item. A selection event is fired, if the component differs from the one
+     * before.
+     * 
+     * @param selected
+     */
+    public void setSelected(SchemeComponent selected) {
+        if (this.selected != selected) {
+            this.selected = selected;
+            if (listener != null) {
+                listener.selected(selected);
+            }
+            grid.clearColors();
+            if (selected != null) {
+                Optional<Category> c = selected.getComponent().getCategory();
+                if (!c.isPresent()) {
+                    // Shouldnt be possible
+                    throw new RuntimeException("Internal Error");
+                }
+                grid.setColorGrid(getColor(), selected.getX(), selected.getY(), c.get().getWidth(),
+                        c.get().getHeight(), false, false);
+            }
+        }
+    }
+
+    public void setItems(Collection<SchemeGridItem> items) {
+        setSelected(null);
+        grid.setItems(items);
+    }
+
+    private Color getColor() {
+        return grid.getDisplay().getSystemColor(SWT.COLOR_GREEN);
+    }
 
 }
