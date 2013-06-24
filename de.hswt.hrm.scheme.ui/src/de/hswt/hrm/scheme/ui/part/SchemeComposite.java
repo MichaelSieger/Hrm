@@ -452,12 +452,9 @@ public class SchemeComposite extends Composite {
                                 + " has no assigend Attributes");
                 return;
             }
-            for (Attribute a : col) {
-                System.out.println(a.getName());
-            }
 
             EditAtrributesDialog eda = new EditAtrributesDialog(shellProvider.getShell(), item
-                    .getRenderedComponent().getComponent());
+                    .getRenderedComponent().getComponent(), col);
             eda.open();
 
         }

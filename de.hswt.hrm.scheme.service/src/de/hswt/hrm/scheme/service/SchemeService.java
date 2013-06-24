@@ -181,7 +181,7 @@ public class SchemeService {
 	    return schemeComponentDao.findAllComponentByScheme(scheme);
 	}
 
-	Map<Attribute, String> findAttributesOfSchemeComponent(SchemeComponent component) 
+	public Map<Attribute, String> findAttributesOfSchemeComponent(SchemeComponent component) 
     		throws DatabaseException {
 
 		return schemeComponentDao.findAttributesOfSchemeComponent(component);
