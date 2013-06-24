@@ -51,6 +51,8 @@ public class PlantServiceTest extends AbstractDatabaseTest {
                 .getVentilatorPerformance().orNull(), expected.getVentilatorPerformance().orNull());
         assertEquals("Voltage not set correctly.", expected.getVoltage().orNull(), expected
                 .getVoltage().orNull());
+        assertEquals("Area not set correctly.", expected.getArea(), expected.getArea());
+        assertEquals("Location not set correctly.", expected.getLocation(), expected.getLocation());
     }
 
     @Test
@@ -59,9 +61,9 @@ public class PlantServiceTest extends AbstractDatabaseTest {
         IPlantDao plantDao = new PlantDao(placeDao);
         PlantService plantService = new PlantService(plantDao);
 
-        Plant plant1 = new Plant(6, "Test plant");
+        Plant plant1 = new Plant(6, "Test plant", "Test area", "Test location");
         plant1.setPlace(createPlace());
-        Plant plant2 = new Plant(12, "Another test plant");
+        Plant plant2 = new Plant(12, "Another test plant", "another area", "another location");
         plant2.setPlace(createPlace());
         plantService.insert(plant1);
         plantService.insert(plant2);
@@ -76,7 +78,7 @@ public class PlantServiceTest extends AbstractDatabaseTest {
         IPlantDao plantDao = new PlantDao(placeDao);
         PlantService plantService = new PlantService(plantDao);
 
-        Plant expected = new Plant(12, "Another test plant");
+        Plant expected = new Plant(12, "Another test plant", "another area", "another location");
         expected.setPlace(createPlace());
         Plant parsed = plantService.insert(expected);
 
@@ -92,7 +94,7 @@ public class PlantServiceTest extends AbstractDatabaseTest {
         PlantService plantService = new PlantService(plantDao);
 
         Place place = createPlace();
-        Plant expected = new Plant(12, "Another test plant");
+        Plant expected = new Plant(12, "Another test plant", "another area", "another location");
         expected.setAirPerformance("Best performance ever!");
         expected.setConstructionYear(2012);
         expected.setCurrent("12 A");
@@ -118,7 +120,7 @@ public class PlantServiceTest extends AbstractDatabaseTest {
         IPlantDao plantDao = new PlantDao(placeDao);
         PlantService plantService = new PlantService(plantDao);
 
-        Plant expected = new Plant(12, "Another test plant");
+        Plant expected = new Plant(12, "Another test plant", "another area", "another location");
         expected.setPlace(createPlace());
         Plant parsed = plantService.insert(expected);
 
