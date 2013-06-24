@@ -20,6 +20,7 @@ import com.google.common.base.Optional;
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.common.ui.swt.layouts.PageContainerFillLayout;
 import de.hswt.hrm.misc.reportPreferences.model.ReportPreference;
+import de.hswt.hrm.summary.model.Summary;
 
 public class PreferencesWizardPageOne extends WizardPage {
 
@@ -80,7 +81,8 @@ public class PreferencesWizardPageOne extends WizardPage {
         addKeyListener(nameText);
         addKeyListener(fileText);
         setControl(container);
-        setPageComplete(false);
+       // setPageComplete(false);
+        checkPageComplete();
 
     }
 
@@ -105,12 +107,12 @@ public class PreferencesWizardPageOne extends WizardPage {
     }
 
     private void checkPageComplete() {
-
-        if (first) {
-            first = false;
-            setPageComplete(false);
-            return;
-        }
+//
+//        if (first) {
+//            first = false;
+//            setPageComplete(false);
+//            return;
+//        }
 
         setErrorMessage(null);
 
@@ -136,12 +138,20 @@ public class PreferencesWizardPageOne extends WizardPage {
             present = true;
         }
 
-        for (ReportPreference e : this.preferences) {
-            if (e.getName().equals(text)) {
-                present = true;
-            }
+        if(!preference.isPresent()){
+	        for (ReportPreference e : this.preferences) {
+	            if (e.getName().equals(text)) {
+	                present = true;
+	            }
+	        }
+        }else{
+        	for (ReportPreference e : this.preferences) {
+	            if (e.getName().equals(text) && e.getId() != preference.get().getId()) {
+	                present = true;
+	            }
+	        }     	
+        	
         }
-
         return present;
 
     }
