@@ -83,7 +83,8 @@ public class SummaryWizzardPageOne extends WizardPage {
         addKeyListener(nameText);
         addKeyListener(descText);
         setControl(container);
-        setPageComplete(false);
+//        setPageComplete(false);
+        checkPageComplete();
 
     }
 
@@ -109,11 +110,11 @@ public class SummaryWizzardPageOne extends WizardPage {
 
     private void checkPageComplete() {
 
-        if (first) {
-            first = false;
-            setPageComplete(false);
-            return;
-        }
+//        if (first) {
+//            first = false;
+//            setPageComplete(false);
+//            return;
+//        }
 
         setErrorMessage(null);
 
@@ -138,13 +139,20 @@ public class SummaryWizzardPageOne extends WizardPage {
         if (text == null | text.isEmpty()) {
             present = true;
         }
-
-        for (Summary e : this.evaluations) {
-            if (e.getName().equals(text)) {
-                present = true;
-            }
+        if(!eval.isPresent()){
+	        for (Summary e : this.evaluations) {
+	            if (e.getName().equals(text)) {
+	                present = true;
+	            }
+	        }
+        }else{
+        	for (Summary e : this.evaluations) {
+	            if (e.getName().equals(text) && e.getId() != eval.get().getId()) {
+	                present = true;
+	            }
+	        }     	
+        	
         }
-
         return present;
 
     }
