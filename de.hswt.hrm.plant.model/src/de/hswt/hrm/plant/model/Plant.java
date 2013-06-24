@@ -18,6 +18,8 @@ public class Plant {
     // das gemeint?
     private int numberOfElements;
     private String description;
+    private String area;
+    private String location;
     
 
     // optional
@@ -35,16 +37,18 @@ public class Plant {
 
     private static final String IS_MANDATORY = "Field is a mandatory.";
 
-    public Plant( final String description) {
+    public Plant( final String description, String area, String location) {
 
-        this(-1,  description);
+        this(-1,  description, area, location);
 
     }
 
-    public Plant(int id, final String description) {
+    public Plant(int id, final String description, String area, String location) {
 
         this.id = id;
         setDescription(description);
+        setArea(area);
+        setLocation(location);
     }
 
     public int getId() {
@@ -159,15 +163,35 @@ public class Plant {
         this.note = note;
     }
 
+    public String getArea() {
+        return area;
+    }
+
+    public void setArea(String area) {
+        checkArgument(!isNullOrEmpty(area), IS_MANDATORY);
+        this.area = area;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        checkArgument(!isNullOrEmpty(location), IS_MANDATORY);
+        this.location = location;
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((airPerformance == null) ? 0 : airPerformance.hashCode());
+        result = prime * result + ((area == null) ? 0 : area.hashCode());
         result = prime * result + constructionYear;
         result = prime * result + ((current == null) ? 0 : current.hashCode());
         result = prime * result + ((description == null) ? 0 : description.hashCode());
         result = prime * result + id;
+        result = prime * result + ((location == null) ? 0 : location.hashCode());
         result = prime * result + ((manufactor == null) ? 0 : manufactor.hashCode());
         result = prime * result + ((motorPower == null) ? 0 : motorPower.hashCode());
         result = prime * result + ((motorRpm == null) ? 0 : motorRpm.hashCode());
@@ -201,6 +225,14 @@ public class Plant {
         else if (!airPerformance.equals(other.airPerformance)) {
             return false;
         }
+        if (area == null) {
+            if (other.area != null) {
+                return false;
+            }
+        }
+        else if (!area.equals(other.area)) {
+            return false;
+        }
         if (constructionYear != other.constructionYear) {
             return false;
         }
@@ -221,6 +253,14 @@ public class Plant {
             return false;
         }
         if (id != other.id) {
+            return false;
+        }
+        if (location == null) {
+            if (other.location != null) {
+                return false;
+            }
+        }
+        else if (!location.equals(other.location)) {
             return false;
         }
         if (manufactor == null) {
@@ -292,5 +332,7 @@ public class Plant {
         }
         return true;
     }
+
+    
 
 }
