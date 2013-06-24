@@ -105,38 +105,6 @@ public class PriorityComposite extends Composite {
         table.setLinesVisible(true);
         table.setHeaderVisible(true);
 
-        Button plusButton = new Button(composite, SWT.NONE);
-        plusButton.setImage(SWTResourceManager.getImage(PriorityComposite.class,
-                "/de/hswt/hrm/misc/ui/PriorityComposite/plus.jpg"));
-        plusButton.addSelectionListener(new SelectionListener() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                movePriorityUp();
-            }
-
-            @Override
-            public void widgetDefaultSelected(SelectionEvent e) {
-                // TODO Auto-generated method stub
-
-            }
-        });
-
-        minusButton = new Button(composite, SWT.NONE);
-        minusButton.setImage(SWTResourceManager.getImage(PriorityComposite.class,
-                "/de/hswt/hrm/misc/ui/PriorityComposite/minus.jpg"));
-        minusButton.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false, 1, 1));
-        minusButton.addSelectionListener(new SelectionListener() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                movePriorityDown();
-            }
-
-            @Override
-            public void widgetDefaultSelected(SelectionEvent e) {
-                // TODO Auto-generated method stub
-
-            }
-        });
 
         initializeTable();
         refreshTable();
@@ -257,7 +225,7 @@ public class PriorityComposite extends Composite {
         // }
     }
 
-    private void movePriorityUp() {
+    public void movePriorityUp() {
         // TODO Priority selectedPrio = (Priority) tableViewer.getElementAt(tableViewer.getTable()
         // .getSelectionIndex());
         // if (selectedPrio == null) {
@@ -281,23 +249,23 @@ public class PriorityComposite extends Composite {
         // refreshTable();
     }
 
-    private void movePriorityDown() {
+    public void movePriorityDown() {
 
         // JUST TESTING
-        // Priority a =
-        // (Priority)tableViewer.getElementAt(tableViewer.getTable().getSelectionIndex());
-        // Priority b = null;
-        // int temp = a.getPriority();
-        // for(Priority prio : prios){
-        // if(prio.getPriority() == a.getPriority()+1){
-        // b = prio;
-        // }
-        // }
-        // a.setPriority(a.getPriority()+1);
-        // b.setPriority(b.getPriority() -1);
-        //
-        //
-        // tableViewer.refresh();
+         Priority a =
+         (Priority)tableViewer.getElementAt(tableViewer.getTable().getSelectionIndex());
+         Priority b = null;
+         int temp = a.getPriority();
+         for(Priority prio : prios){
+         if(prio.getPriority() == a.getPriority()+1){
+         b = prio;
+         }
+         }
+         a.setPriority(a.getPriority()+1);
+         b.setPriority(b.getPriority() -1);
+        
+        
+         tableViewer.refresh();
 
         // TODO Priority selectedPrio = (Priority) tableViewer.getElementAt(tableViewer.getTable()
         // .getSelectionIndex());
