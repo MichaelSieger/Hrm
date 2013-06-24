@@ -420,7 +420,7 @@ public class SchemeComposite extends Composite {
 
                         @Override
                         public void widgetSelected(SelectionEvent e) {
-                            System.out.println("Selected attribute");
+                            editAttribute();
 
                         }
 
@@ -435,6 +435,10 @@ public class SchemeComposite extends Composite {
                 }
             }
         });
+
+    }
+
+    private void editAttribute() {
 
     }
 

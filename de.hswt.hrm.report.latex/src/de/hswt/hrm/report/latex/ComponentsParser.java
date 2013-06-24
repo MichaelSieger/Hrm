@@ -12,7 +12,6 @@ public class ComponentsParser {
 
     public void parse(Catalog catalog) {
         this.catalog = catalog;
-        collection = catalog.getTargets();
 
         for (Target t : collection) {
 
