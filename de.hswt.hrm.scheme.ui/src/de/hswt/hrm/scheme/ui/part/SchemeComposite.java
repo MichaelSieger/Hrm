@@ -61,6 +61,7 @@ import de.hswt.hrm.common.ui.swt.constants.SearchFieldConstants;
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.common.ui.swt.layouts.LayoutUtil;
 import de.hswt.hrm.common.ui.swt.utils.SWTResourceManager;
+import de.hswt.hrm.component.model.Attribute;
 import de.hswt.hrm.component.service.ComponentService;
 import de.hswt.hrm.plant.model.Plant;
 import de.hswt.hrm.scheme.model.RenderedComponent;
@@ -420,7 +421,7 @@ public class SchemeComposite extends Composite {
 
                         @Override
                         public void widgetSelected(SelectionEvent e) {
-                            editAttribute();
+                            editAttribute(item);
 
                         }
 
@@ -438,7 +439,25 @@ public class SchemeComposite extends Composite {
 
     }
 
-    private void editAttribute() {
+    private void editAttribute(SchemeGridItem item) {
+
+        try {
+            Collection<Attribute> col = componentsService.findAttributesByComponent(item
+                    .getRenderedComponent().getComponent());
+            if (col.isEmpty()) {
+                MessageDialog.openError(shellProvider.getShell(), "No Atrributes",
+                        "The selected Component "
+                                + item.getRenderedComponent().getComponent().getName()
+                                + " has no assigend Attributes");
+                return;
+            }
+            for (Attribute a : col) {
+                System.out.println(a.getName());
+            }
+        }
+        catch (DatabaseException e) {
+
+        }
 
     }
 
