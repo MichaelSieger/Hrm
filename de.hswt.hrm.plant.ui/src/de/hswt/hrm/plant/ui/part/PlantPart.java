@@ -71,7 +71,7 @@ public class PlantPart {
 
     @Inject
     private PlantService plantService;
-    
+
     @Inject
     private SchemeService schemeService;
 
@@ -102,7 +102,7 @@ public class PlantPart {
 
     private Form form;
 
-	private SchemeComposite schemeComposite;
+    private SchemeComposite schemeComposite;
 
     public PlantPart() {
         // toolkit can be created in PostConstruct, but then then
@@ -148,15 +148,17 @@ public class PlantPart {
             public void widgetSelected(SelectionEvent e) {
                 if (tabFolder.getItem(tabFolder.getSelectionIndex()).equals(plantsTab)) {
                     showPlantActions();
-                } else if (tabFolder.getItem(tabFolder.getSelectionIndex()).equals(schemeTab)) {
-                	initSchemeTabForSelection();
-                } else {
-                	hideAllActions();
-                	form.getToolBarManager().update(true);
+                }
+                else if (tabFolder.getItem(tabFolder.getSelectionIndex()).equals(schemeTab)) {
+                    initSchemeTabForSelection();
+                }
+                else {
+                    hideAllActions();
+                    form.getToolBarManager().update(true);
                 }
             }
         });
-        
+
         plantsHeaderSection = toolkit.createSection(tabFolder, Section.TITLE_BAR);
         plantsTab.setControl(plantsHeaderSection);
         toolkit.paintBordersFor(plantsHeaderSection);
@@ -199,8 +201,8 @@ public class PlantPart {
 
         schemeComposite = new SchemeComposite(tabFolder);
         ContextInjectionFactory.inject(schemeComposite, context);
-    	for (IContributionItem item : schemeComposite.getContributionItems()) {
-    		form.getToolBarManager().add(item);
+        for (IContributionItem item : schemeComposite.getContributionItems()) {
+            form.getToolBarManager().add(item);
         }
         schemeTab.setControl(schemeComposite);
 
@@ -212,12 +214,12 @@ public class PlantPart {
         }
     }
 
-	private void createActions() {
+    private void createActions() {
         // TODO translate
         Action schemeAction = new Action(I18N.tr("Edit Scheme")) {
             @Override
             public void run() {
-            	initSchemeTabForSelection();
+                initSchemeTabForSelection();
             }
         };
         schemeAction.setDescription(I18N.tr("Edit the scheme of the selected plant."));
@@ -250,15 +252,15 @@ public class PlantPart {
     }
 
     private void showSchemeActions() {
-    	hideAllActions();
-    	for (IContributionItem item : schemeComposite.getContributionItems()) {
-        	item.setVisible(true);
+        hideAllActions();
+        for (IContributionItem item : schemeComposite.getContributionItems()) {
+            item.setVisible(true);
         }
         form.getToolBarManager().update(true);
     }
-    
+
     private void showPlantActions() {
-    	hideAllActions();
+        hideAllActions();
         addContribution.setVisible(true);
         editContribution.setVisible(true);
         editSchemeContribution.setVisible(true);
@@ -270,11 +272,11 @@ public class PlantPart {
         editContribution.setVisible(false);
         editSchemeContribution.setVisible(false);
         for (IContributionItem item : schemeComposite.getContributionItems()) {
-        	item.setVisible(false);
+            item.setVisible(false);
         }
         form.getToolBarManager().update(true);
     }
-    
+
     @PreDestroy
     public void dispose() {
         if (toolkit != null) {
@@ -348,10 +350,10 @@ public class PlantPart {
      */
     private void editPlant() {
 
-    	Optional<Plant> plant = getSelectedPlant();
-    	if(!plant.isPresent()){
-    		return;
-    	}
+        Optional<Plant> plant = getSelectedPlant();
+        if (!plant.isPresent()) {
+            return;
+        }
         // Refresh the selected place with values from the database
         try {
             plantService.refresh(plant.get());
@@ -370,44 +372,46 @@ public class PlantPart {
 
     protected void initSchemeTabForSelection() {
         hideAllActions();
-    	tabFolder.setSelection(schemeTab);
-        
-    	Optional<Plant> plant = getSelectedPlant();
-    	if(!plant.isPresent()){
-    		schemeComposite.setVisible(false);
-    		return;
-    	}
-    	
-    	Scheme scheme = null;
-    	try {
-    		scheme = schemeService.findCurrentSchemeByPlant(plant.get());
-    	}
-    	catch (ElementNotFoundException e) {
-        	scheme = new Scheme(plant.get());
-    		LOG.info(String.format("No scheme found for plant '%d'", plant.get().getId()));
+        tabFolder.setSelection(schemeTab);
+
+        Optional<Plant> plant = getSelectedPlant();
+        if (!plant.isPresent()) {
+            schemeComposite.setVisible(false);
+            return;
+        }
+
+        Scheme scheme = null;
+        schemeComposite.getSchemeSection().setText("Scheme - " + plant.get().getDescription());
+        try {
+            scheme = schemeService.findCurrentSchemeByPlant(plant.get());
+
+        }
+        catch (ElementNotFoundException e) {
+            scheme = new Scheme(plant.get());
+            LOG.info(String.format("No scheme found for plant '%d'", plant.get().getId()));
         }
         catch (DatabaseException e) {
-        	LOG.error("Error loading scheme.", e);
-        	// FIXME: Add message box.
-        	return;
+            LOG.error("Error loading scheme.", e);
+            // FIXME: Add message box.
+            return;
         }
-    	
+
         try {
-			schemeComposite.modifyScheme(scheme);
-		} 
+            schemeComposite.modifyScheme(scheme);
+        }
         catch (IOException e) {
-			Throwables.propagate(e);
-		}
-        
-    	showSchemeActions();
+            Throwables.propagate(e);
+        }
+
+        showSchemeActions();
         schemeComposite.setVisible(true);
-	}
-    
-    private Optional<Plant> getSelectedPlant(){
+    }
+
+    private Optional<Plant> getSelectedPlant() {
         if (table.getSelectionIndex() < 0) {
             return Optional.absent();
         }
-    	return Optional.fromNullable((Plant) tableViewer.getElementAt(tableViewer.getTable()
+        return Optional.fromNullable((Plant) tableViewer.getElementAt(tableViewer.getTable()
                 .getSelectionIndex()));
     }
 

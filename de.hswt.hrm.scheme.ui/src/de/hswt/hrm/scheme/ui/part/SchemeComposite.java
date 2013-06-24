@@ -74,6 +74,7 @@ import de.hswt.hrm.scheme.ui.ItemClickListener;
 import de.hswt.hrm.scheme.ui.SchemeGrid;
 import de.hswt.hrm.scheme.ui.SchemeGridItem;
 import de.hswt.hrm.scheme.ui.SchemeTreePatternFilter;
+import de.hswt.hrm.scheme.ui.dialog.EditAtrributesDialog;
 import de.hswt.hrm.scheme.ui.dialog.SchemeCopySelectionDialog;
 import de.hswt.hrm.scheme.ui.dialog.SchemeImportSelectionDialog;
 import de.hswt.hrm.scheme.ui.dnd.DragData;
@@ -454,6 +455,10 @@ public class SchemeComposite extends Composite {
             for (Attribute a : col) {
                 System.out.println(a.getName());
             }
+
+            EditAtrributesDialog eda = new EditAtrributesDialog(shellProvider.getShell());
+            eda.open();
+
         }
         catch (DatabaseException e) {
 
@@ -719,6 +724,10 @@ public class SchemeComposite extends Composite {
 
     public Optional<Scheme> getCurrentScheme() {
         return Optional.fromNullable(currentScheme);
+    }
+
+    public Section getSchemeSection() {
+        return schemeSection;
     }
 
     @Override
