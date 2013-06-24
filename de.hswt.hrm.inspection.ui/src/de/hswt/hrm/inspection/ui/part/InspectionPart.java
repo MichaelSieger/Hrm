@@ -33,6 +33,7 @@ import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.ElementNotFoundException;
 import de.hswt.hrm.common.observer.Observer;
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
+import de.hswt.hrm.inspection.model.Inspection;
 import de.hswt.hrm.plant.model.Plant;
 import de.hswt.hrm.scheme.model.Scheme;
 import de.hswt.hrm.scheme.model.SchemeComponent;
@@ -77,6 +78,8 @@ public class InspectionPart {
     private ComponentSelectionComposite performanceComposite;
     private ComponentSelectionComposite physicalComposite;
     private ComponentSelectionComposite biologicalComposite;
+    
+    private Inspection selectedInspection;
 
     public InspectionPart() {
         // toolkit can be created in PostConstruct, but then then

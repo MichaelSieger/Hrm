@@ -203,6 +203,10 @@ public class ReportsOverviewComposite extends Composite {
         }
         super.dispose();
     }
+    
+    public void setInspection(Inspection inspection){
+    	this.selectedInspection = inspection;
+    }
 
     @Override
     protected void checkSubclass() {
