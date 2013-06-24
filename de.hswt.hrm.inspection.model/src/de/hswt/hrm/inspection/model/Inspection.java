@@ -33,6 +33,16 @@ public class Inspection {
     private int humidityQuantifier;
     private Photo frontpicture;
     private Photo plantpicture;
+    private String airtemperatureComment;
+    private String humidityComment;
+    private float legionella;
+    private int legionellaRating;
+    private int legionellaQuantifier;
+    private String legionellaComment;
+    private float germs;
+    private int germsRating;
+    private int germsQuantifier;
+    private String germsComment;
 
     private static final String IS_MANDATORY = "Field is a mandatory.";
     private static final String INVALID_NUMBER = "%d is an invalid number.%n Must be greater 0";
@@ -194,6 +204,86 @@ public class Inspection {
         return id;
     }
 
+    public Optional<String> getAirtemperatureComment() {
+        return Optional.fromNullable(airtemperatureComment);
+    }
+
+    public void setAirtemperatureComment(String airtemperatureComment) {
+        this.airtemperatureComment = airtemperatureComment;
+    }
+
+    public Optional<String> getHumidityComment() {
+        return Optional.fromNullable(humidityComment);
+    }
+
+    public void setHumidityComment(String humidityComment) {
+        this.humidityComment = humidityComment;
+    }
+
+    public Optional<Float> getLegionella() {
+        return Optional.fromNullable(legionella);
+    }
+
+    public void setLegionella(float legionella) {
+        this.legionella = legionella;
+    }
+
+    public Optional<Integer> getLegionellaRating() {
+        return Optional.fromNullable(legionellaRating);
+    }
+
+    public void setLegionellaRating(int legionellaRating) {
+        this.legionellaRating = legionellaRating;
+    }
+
+    public Optional<Integer> getLegionellaQuantifier() {
+        return Optional.fromNullable(legionellaQuantifier);
+    }
+
+    public void setLegionellaQuantifier(int legionellaQuantifier) {
+        this.legionellaQuantifier = legionellaQuantifier;
+    }
+
+    public Optional<String> getLegionellaComment() {
+        return Optional.fromNullable(legionellaComment);
+    }
+
+    public void setLegionellaComment(String legionellaComment) {
+        this.legionellaComment = legionellaComment;
+    }
+
+    public Optional<Float> getGerms() {
+        return Optional.fromNullable(germs);
+    }
+
+    public void setGerms(float germs) {
+        this.germs = germs;
+    }
+
+    public Optional<Integer> getGermsRating() {
+        return Optional.fromNullable(germsRating);
+    }
+
+    public void setGermsRating(int germsRating) {
+        this.germsRating = germsRating;
+    }
+
+    public Optional<Integer> getGermsQuantifier() {
+        return Optional.fromNullable(germsQuantifier);
+    }
+
+    public void setGermsQuantifier(int germsQuantifier) {
+        this.germsQuantifier = germsQuantifier;
+    }
+
+    public Optional<String> getGermsComment() {
+        return Optional.fromNullable(germsComment);
+    }
+
+    public void setGermsComment(String germsComment) {
+        this.germsComment = germsComment;
+    }
+
     public Optional<Photo> getFrontpicture() {
         return Optional.fromNullable(frontpicture);
     }
@@ -210,19 +300,34 @@ public class Inspection {
         this.plantpicture = plantpicture;
     }
 
+    public void addPlantObserver(Observer<Plant> o) {
+        plant.addObserver(o);
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
+        result = prime * result
+                + ((airtemperatureComment == null) ? 0 : airtemperatureComment.hashCode());
         result = prime * result + ((checker == null) ? 0 : checker.hashCode());
         result = prime * result + ((contractor == null) ? 0 : contractor.hashCode());
         result = prime * result + ((frontpicture == null) ? 0 : frontpicture.hashCode());
+        result = prime * result + Float.floatToIntBits(germs);
+        result = prime * result + ((germsComment == null) ? 0 : germsComment.hashCode());
+        result = prime * result + germsQuantifier;
+        result = prime * result + germsRating;
         result = prime * result + Float.floatToIntBits(humidity);
+        result = prime * result + ((humidityComment == null) ? 0 : humidityComment.hashCode());
         result = prime * result + humidityQuantifier;
         result = prime * result + humidityRating;
         result = prime * result + id;
         result = prime * result + ((inspectionDate == null) ? 0 : inspectionDate.hashCode());
         result = prime * result + ((layout == null) ? 0 : layout.hashCode());
+        result = prime * result + Float.floatToIntBits(legionella);
+        result = prime * result + ((legionellaComment == null) ? 0 : legionellaComment.hashCode());
+        result = prime * result + legionellaQuantifier;
+        result = prime * result + legionellaRating;
         result = prime * result
                 + ((nextInspectionDate == null) ? 0 : nextInspectionDate.hashCode());
         result = prime * result + ((plant == null) ? 0 : plant.hashCode());
@@ -249,6 +354,14 @@ public class Inspection {
             return false;
         }
         Inspection other = (Inspection) obj;
+        if (airtemperatureComment == null) {
+            if (other.airtemperatureComment != null) {
+                return false;
+            }
+        }
+        else if (!airtemperatureComment.equals(other.airtemperatureComment)) {
+            return false;
+        }
         if (checker == null) {
             if (other.checker != null) {
                 return false;
@@ -273,7 +386,32 @@ public class Inspection {
         else if (!frontpicture.equals(other.frontpicture)) {
             return false;
         }
+        if (Float.floatToIntBits(germs) != Float.floatToIntBits(other.germs)) {
+            return false;
+        }
+        if (germsComment == null) {
+            if (other.germsComment != null) {
+                return false;
+            }
+        }
+        else if (!germsComment.equals(other.germsComment)) {
+            return false;
+        }
+        if (germsQuantifier != other.germsQuantifier) {
+            return false;
+        }
+        if (germsRating != other.germsRating) {
+            return false;
+        }
         if (Float.floatToIntBits(humidity) != Float.floatToIntBits(other.humidity)) {
+            return false;
+        }
+        if (humidityComment == null) {
+            if (other.humidityComment != null) {
+                return false;
+            }
+        }
+        else if (!humidityComment.equals(other.humidityComment)) {
             return false;
         }
         if (humidityQuantifier != other.humidityQuantifier) {
@@ -299,6 +437,23 @@ public class Inspection {
             }
         }
         else if (!layout.equals(other.layout)) {
+            return false;
+        }
+        if (Float.floatToIntBits(legionella) != Float.floatToIntBits(other.legionella)) {
+            return false;
+        }
+        if (legionellaComment == null) {
+            if (other.legionellaComment != null) {
+                return false;
+            }
+        }
+        else if (!legionellaComment.equals(other.legionellaComment)) {
+            return false;
+        }
+        if (legionellaQuantifier != other.legionellaQuantifier) {
+            return false;
+        }
+        if (legionellaRating != other.legionellaRating) {
             return false;
         }
         if (nextInspectionDate == null) {
@@ -367,10 +522,6 @@ public class Inspection {
             return false;
         }
         return true;
-    }
-    
-    public void addPlantObserver(Observer<Plant> o){
-        plant.addObserver(o);
     }
 
 }
