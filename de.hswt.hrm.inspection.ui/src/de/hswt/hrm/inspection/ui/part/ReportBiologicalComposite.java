@@ -15,6 +15,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
 
@@ -49,6 +50,10 @@ public class ReportBiologicalComposite extends AbstractComponentRatingComposite 
     private List airGradeList;
     private List airWeightList;
     private Combo airCommentCombo;
+
+	private Text contactCultureConcentrationText;
+
+	private Text airGermsConcentrationText;
 
     // @TODO remove when example is no longer needed
     private static final String[] items = new String[] { "Alpha", "Beta", "gaama", "pie", "alge",
@@ -130,7 +135,7 @@ public class ReportBiologicalComposite extends AbstractComponentRatingComposite 
         formToolkit.adapt(contactCultureComposite);
         formToolkit.paintBordersFor(contactCultureComposite);
         gl = new GridLayout(4, false);
-        gl.marginWidth = 0;
+        gl.marginWidth = 1;
         contactCultureComposite.setLayout(gl);
         contactCultureSection.setClient(contactCultureComposite);
 
@@ -163,6 +168,15 @@ public class ReportBiologicalComposite extends AbstractComponentRatingComposite 
         // TODO set category weight or weight from db
         contactWeightList.select(0);
 
+        Label contactConcentrationLabel = new Label(contactCultureComposite, SWT.NONE);
+        contactConcentrationLabel.setLayoutData(LayoutUtil.createLeftGridData());
+        formToolkit.adapt(contactConcentrationLabel, true, true);
+        contactConcentrationLabel.setText("Concentration");
+
+        contactCultureConcentrationText = formToolkit.createText(contactCultureComposite, "", SWT.NONE);
+        contactCultureConcentrationText.setLayoutData(LayoutUtil.createHorzCenteredFillData(3));
+        // TODO init with value
+        
         Label contactCommentLabel = new Label(contactCultureComposite, SWT.NONE);
         contactCommentLabel.setLayoutData(LayoutUtil.createLeftGridData());
         formToolkit.adapt(contactCommentLabel, true, true);
@@ -191,7 +205,7 @@ public class ReportBiologicalComposite extends AbstractComponentRatingComposite 
         formToolkit.adapt(airGermsComposite);
         formToolkit.paintBordersFor(airGermsComposite);
         gl = new GridLayout(4, false);
-        gl.marginWidth = 0;
+        gl.marginWidth = 1;
         airGermsComposite.setLayout(gl);
         airSection.setClient(airGermsComposite);
 
@@ -224,6 +238,15 @@ public class ReportBiologicalComposite extends AbstractComponentRatingComposite 
         // TODO set category weight or weight from db
         airWeightList.select(0);
 
+        Label airGermsConcentrationLabel = new Label(airGermsComposite, SWT.NONE);
+        airGermsConcentrationLabel.setLayoutData(LayoutUtil.createLeftGridData());
+        formToolkit.adapt(airGermsConcentrationLabel, true, true);
+        airGermsConcentrationLabel.setText("Concentration");
+
+        airGermsConcentrationText = formToolkit.createText(airGermsComposite, "", SWT.NONE);
+        airGermsConcentrationText.setLayoutData(LayoutUtil.createHorzCenteredFillData(3));
+        // TODO init with value
+        
         Label airCommentLabel = new Label(airGermsComposite, SWT.NONE);
         airCommentLabel.setLayoutData(LayoutUtil.createLeftGridData());
         formToolkit.adapt(airCommentLabel, true, true);

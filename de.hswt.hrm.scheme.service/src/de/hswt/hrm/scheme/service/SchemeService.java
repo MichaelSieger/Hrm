@@ -95,7 +95,7 @@ public class SchemeService {
 			schemeComponentDao.insert(comp);
 		}
 		
-		return findById(scheme.getId());
+		return findById(schemeCopy.getId());
 	}
 	
 	public Scheme copy (final Scheme scheme, final Plant plant) 
