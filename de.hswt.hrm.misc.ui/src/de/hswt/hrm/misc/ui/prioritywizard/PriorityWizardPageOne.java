@@ -89,7 +89,8 @@ public class PriorityWizardPageOne extends WizardPage {
         addKeyListener(nameText);
         addKeyListener(descText);
         setControl(container);
-        setPageComplete(false);
+       // setPageComplete(false);
+        checkPageComplete();
 
     }
 
@@ -115,11 +116,11 @@ public class PriorityWizardPageOne extends WizardPage {
 
     private void checkPageComplete() {
 
-        if (first) {
-            first = false;
-            setPageComplete(false);
-            return;
-        }
+//        if (first) {
+//            first = false;
+//            setPageComplete(false);
+//            return;
+//        }
 
         setErrorMessage(null);
 
@@ -145,10 +146,19 @@ public class PriorityWizardPageOne extends WizardPage {
             present = true;
         }
 
-        for (Priority e : this.priorities) {
-            if (e.getName().equals(text)) {
-                present = true;
-            }
+        if(!priority.isPresent()){
+	        for (Priority e : this.priorities) {
+	            if (e.getName().equals(text)) {
+	                present = true;
+	            }
+	        }
+        }else{
+        	for (Priority e : this.priorities) {
+	            if (e.getName().equals(text) && e.getId() != priority.get().getId()) {
+	                present = true;
+	            }
+	        }     	
+        	
         }
 
         return present;
