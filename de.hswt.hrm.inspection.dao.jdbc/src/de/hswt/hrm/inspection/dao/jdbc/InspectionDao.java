@@ -382,14 +382,14 @@ public class InspectionDao implements IInspectionDao {
                 Contact checker = contactDao.findById(checkerId);
                 inserted.setChecker(checker);
             }
-            // if (frontpictureId >= 0) {
-            // Photo frontpicture = photoDao.findById(frontpictureId);
-            // inserted.setFrontpicture(frontpicture);
-            // }
-            // if (plantpictureId >= 0) {
-            // Photo plantpicture = photoDao.findById(plantpictureId);
-            // inserted.setFrontpicture(plantpicture);
-            // }
+            if (frontpictureId >= 0) {
+                Photo frontpicture = photoDao.findById(frontpictureId);
+                inserted.setFrontpicture(frontpicture);
+            }
+            if (plantpictureId >= 0) {
+                Photo plantpicture = photoDao.findById(plantpictureId);
+                inserted.setFrontpicture(plantpicture);
+            }
 
             // rest
             inserted.setTemperature(temperature);
