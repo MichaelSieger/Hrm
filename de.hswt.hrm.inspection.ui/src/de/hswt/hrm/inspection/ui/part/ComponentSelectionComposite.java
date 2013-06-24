@@ -8,6 +8,7 @@ import javax.inject.Inject;
 
 import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
+import org.eclipse.jface.viewers.ListViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.custom.ScrolledComposite;
@@ -32,7 +33,7 @@ public class ComponentSelectionComposite extends Composite {
 
 	private FormToolkit toolkit = new FormToolkit(Display.getDefault());
 
-	private List componentsList;
+	private ListViewer componentsList;
 
 	private AbstractComponentRatingComposite ratingComposite;
 	
@@ -83,9 +84,9 @@ public class ComponentSelectionComposite extends Composite {
 		FormUtil.initSectionColors(listSection);
 
 		// TODO use this list to show and select components
-		componentsList = new List(listSection, SWT.BORDER);
-		listSection.setClient(componentsList);
-		toolkit.adapt(componentsList, true, true);
+		componentsList = new ListViewer(listSection, SWT.BORDER);
+		listSection.setClient(componentsList.getList());
+		toolkit.adapt(componentsList.getList(), true, true);
 
 		SashForm verticalSash = new SashForm(horizontalSash, SWT.VERTICAL);
 		verticalSash.setBackgroundMode(SWT.INHERIT_FORCE);

@@ -63,7 +63,7 @@ public class ReportPreferencesComposite extends Composite {
     private Text directoryText;
     private Label lblNewLabel;
     private Button browseButton;
-    private Label lblStyles;
+    private Label stylesLabel;
 
     /**
      * Do not use this constructor when instantiate this composite! It is only included to make the
@@ -98,12 +98,12 @@ public class ReportPreferencesComposite extends Composite {
         composite.setLayout(new GridLayout(3, false));
 
         lblNewLabel = new Label(composite, SWT.NONE);
-        lblNewLabel.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-        lblNewLabel.setText("StandardDirectory");
+        lblNewLabel.setLayoutData(LayoutUtil.createLeftCenteredGridData());
+        lblNewLabel.setText("Standard directory");
 
         directoryText = new Text(composite, SWT.BORDER | SWT.READ_ONLY);
         directoryText.setToolTipText("A local directory where all the reports are created.");
-        directoryText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+        directoryText.setLayoutData(LayoutUtil.createHorzCenteredFillData());
 
         browseButton = new Button(composite, SWT.NONE);
         browseButton
@@ -116,9 +116,10 @@ public class ReportPreferencesComposite extends Composite {
             }
         });
 
-        lblStyles = new Label(composite, SWT.NONE);
-        lblStyles.setText("Layouts");
-
+        stylesLabel = new Label(composite, SWT.NONE);
+        stylesLabel.setText("Style");
+        stylesLabel.setLayoutData(LayoutUtil.createLeftGridData());
+        
         tableViewer = new TableViewer(composite, SWT.BORDER | SWT.FULL_SELECTION);
         tableViewer.addDoubleClickListener(new IDoubleClickListener() {
             public void doubleClick(DoubleClickEvent event) {
@@ -126,19 +127,15 @@ public class ReportPreferencesComposite extends Composite {
             }
         });
         table = tableViewer.getTable();
-        GridData gd_table = new GridData(SWT.CENTER, SWT.CENTER, false, false, 2, 1);
-        gd_table.widthHint = 401;
-        table.setLayoutData(gd_table);
         table.setLinesVisible(true);
         table.setHeaderVisible(true);
-        table.setLayoutData(LayoutUtil.createFillData());
-        new Label(composite, SWT.NONE);
+        table.setLayoutData(LayoutUtil.createFillData(2));
 
         initializeTable();
         refreshTable();
         
-        Config cfg = Config.getInstance();
-        String dir = cfg.getProperty(Config.Keys.REPORT_STYLE_FOLDER);
+        Config config = Config.getInstance();
+        String dir = config.getProperty(Config.Keys.REPORT_STYLE_FOLDER);
         if(dir != null){        
         	directoryText.setText(dir);
         }

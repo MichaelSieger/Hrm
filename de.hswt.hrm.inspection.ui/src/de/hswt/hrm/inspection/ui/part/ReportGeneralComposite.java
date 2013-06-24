@@ -415,7 +415,11 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
         Label customerLabel = new Label(personsComposite, SWT.NONE);
         formToolkit.adapt(customerLabel, true, true);
         customerLabel.setText("Customer");
-        customerLabel.setLayoutData(LayoutUtil.createLeftGridData(2));
+        customerLabel.setLayoutData(LayoutUtil.createLeftGridData());
+
+        Button customerClearButton = formToolkit.createButton(personsComposite,
+                "Clear customer", SWT.PUSH);
+        customerClearButton.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false));
 
         Button customerSelectionButton = formToolkit.createButton(personsComposite,
                 "Select customer", SWT.PUSH);
@@ -455,7 +459,11 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
         Label requestorLabel = new Label(personsComposite, SWT.NONE);
         formToolkit.adapt(requestorLabel, true, true);
         requestorLabel.setText("Requestor");
-        requestorLabel.setLayoutData(LayoutUtil.createLeftGridData(2));
+        requestorLabel.setLayoutData(LayoutUtil.createLeftGridData());
+
+        Button requestorClearButton = formToolkit.createButton(personsComposite,
+                "Clear requestor", SWT.PUSH);
+        requestorClearButton.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false));
 
         Button requestorSelectionButton = formToolkit.createButton(personsComposite,
                 "Select requestor", SWT.PUSH);
@@ -495,7 +503,11 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
         Label controllerLabel = new Label(personsComposite, SWT.NONE);
         formToolkit.adapt(controllerLabel, true, true);
         controllerLabel.setText("Controller");
-        controllerLabel.setLayoutData(LayoutUtil.createLeftGridData(2));
+        controllerLabel.setLayoutData(LayoutUtil.createLeftGridData());
+
+        Button controllerClearButton = formToolkit.createButton(personsComposite,
+                "Clear customer", SWT.PUSH);
+        controllerClearButton.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false));
 
         Button controllerSelectionButton = formToolkit.createButton(personsComposite,
                 "Select customer", SWT.PUSH);
@@ -528,6 +540,15 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
         controllerCityText.setLayoutData(LayoutUtil.createHorzCenteredFillData(2));
         formToolkit.adapt(controllerCityText, true, true);
 
+        customerClearButton.addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                    customerNameText.setText("");
+                    customerStreetText.setText("");
+                    customerCityText.setText("");
+            }
+        });
+
         customerSelectionButton.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
@@ -546,6 +567,15 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
             }
         });
 
+        controllerClearButton.addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+            	controllerNameText.setText("");
+                controllerStreetText.setText("");
+                controllerCityText.setText("");
+            }
+        });
+
         controllerSelectionButton.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
@@ -559,6 +589,15 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
                     controllerCityText.setText(csd.getContact().getCity() + " "
                             + csd.getContact().getPostCode());
                 }
+            }
+        });
+
+        requestorClearButton.addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                requestorNameText.setText("");
+                requestorStreetText.setText("");
+                requestorCityText.setText("");
             }
         });
 

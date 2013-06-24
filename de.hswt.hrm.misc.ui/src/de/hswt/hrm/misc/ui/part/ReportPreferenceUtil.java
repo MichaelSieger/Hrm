@@ -56,7 +56,7 @@ public class ReportPreferenceUtil {
 	}
 
 	private static ColumnDescription<ReportPreference> getTextColumn() {
-		return new ColumnDescription<>("FileName", new ColumnLabelProvider() {
+		return new ColumnDescription<>("File name", new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
 				ReportPreference e = (ReportPreference) element;
