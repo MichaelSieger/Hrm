@@ -287,7 +287,17 @@ public class InspectionDao implements IInspectionDao {
             int temperatureQuantifier = rs.getInt(Fields.TEMPERATUREQUANTIFIER);
             int humidityRating = rs.getInt(Fields.HUMIDITYRATING);
             int humidityQuantifier = rs.getInt(Fields.HUMIDITYQUANTIFIER);
-
+            String airtemperatureComment = rs.getString(Fields.TEMPERATURECOMMENT);
+            String humidityComment = rs.getString(Fields.HUMIDITYCOMMENT);
+            float legionella = rs.getFloat(Fields.LEGIONELLA);
+            int legionellaRating = rs.getInt(Fields.LEGIONELLARATING);
+            int legionellaQuantifier = rs.getInt(Fields.LEGIONELLAQUANTIFIER);
+            String legionellaComment = rs.getString(Fields.LEGIONELLACOMMENT);
+            float germs = rs.getFloat(Fields.GERMS);
+            int germsRating = rs.getInt(Fields.GERMSRATING);
+            int germsQuantifier = rs.getInt(Fields.GERMSQUANTIFIER);
+            String germsComment = rs.getString(Fields.GERMSCOMMENT);
+            
             // calendars
             Date date = rs.getDate(Fields.INSPECTIONDATE);
             checkNotNull(date, "Inspection date is mandatory.");
@@ -334,6 +344,16 @@ public class InspectionDao implements IInspectionDao {
             inserted.setTemperatureQuantifier(temperatureQuantifier);
             inserted.setHumidityRating(humidityRating);
             inserted.setHumidityQuantifier(humidityQuantifier);
+            inserted.setAirtemperatureComment(airtemperatureComment);
+            inserted.setHumidityComment(humidityComment);
+            inserted.setLegionella(legionella);
+            inserted.setLegionellaRating(legionellaRating);
+            inserted.setLegionellaQuantifier(legionellaQuantifier);
+            inserted.setLegionellaComment(legionellaComment);
+            inserted.setGerms(germs);
+            inserted.setGermsRating(germsRating);
+            inserted.setGermsQuantifier(germsQuantifier);
+            inserted.setGermsComment(germsComment);
 
             inspectionList.add(inserted);
         }
@@ -363,7 +383,17 @@ public class InspectionDao implements IInspectionDao {
         public static final String HUMIDITYQUANTIFIER = "Report_Humidity_Quantifier";
         public static final String FRONTPICTURE_FK = "Report_Frontpicture_FK";
         public static final String PLANTPICTURE_FK = "Report_Plantpicture_FK";
-
+        public static final String TEMPERATURECOMMENT = "Report_Airtemperature_Comment";
+        public static final String HUMIDITYCOMMENT = "Report_Humidity_Comment";
+        public static final String LEGIONELLA= "Report_Legionella";
+        public static final String LEGIONELLARATING= "Report_Legionella_Rating";
+        public static final String LEGIONELLAQUANTIFIER= "Report_Legionella_Quantifier";
+        public static final String LEGIONELLACOMMENT= "Report_Legionella_Comment";
+        public static final String GERMS= "Report_Germs";
+        public static final String GERMSRATING= "Report_Germs_Rating";
+        public static final String GERMSQUANTIFIER= "Report_Germs_Quantifier";
+        public static final String GERMSCOMMENT= "Report_Germs_Comment";
+        
     }
 
 }
