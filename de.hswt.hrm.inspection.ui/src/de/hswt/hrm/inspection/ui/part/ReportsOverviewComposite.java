@@ -36,6 +36,7 @@ import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.common.ui.swt.layouts.LayoutUtil;
 import de.hswt.hrm.common.ui.swt.table.ColumnComparator;
 import de.hswt.hrm.common.ui.swt.table.ColumnDescription;
+import de.hswt.hrm.common.ui.swt.table.Direction;
 import de.hswt.hrm.common.ui.swt.table.TableViewerController;
 import de.hswt.hrm.inspection.model.Inspection;
 import de.hswt.hrm.inspection.service.InspectionService;
@@ -175,6 +176,8 @@ public class ReportsOverviewComposite extends Composite {
 
         // Enable sorting
         ColumnComparator<Inspection> comparator = new ColumnComparator<>(columns);
+        comparator.setCurrentColumnIndex(0);
+        comparator.setDirection(Direction.ASCENDING);
         filler.enableSorting(comparator);
 
         // Add dataprovider that handles our collection
@@ -182,6 +185,8 @@ public class ReportsOverviewComposite extends Composite {
 
         // Enable filtering
         tableViewer.addFilter(searchFilter);
+        
+       
     }
 
     public void addInspection() {

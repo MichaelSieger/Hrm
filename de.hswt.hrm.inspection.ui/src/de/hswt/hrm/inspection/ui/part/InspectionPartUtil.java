@@ -4,31 +4,34 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 
 import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.OwnerDrawLabelProvider;
-import org.eclipse.jface.viewers.StyledCellLabelProvider;
-import org.eclipse.jface.viewers.StyledString;
-import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.StyleRange;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Shell;
 
 import com.google.common.base.Optional;
+
 import de.hswt.hrm.common.ui.swt.table.ColumnDescription;
 import de.hswt.hrm.common.ui.swt.wizards.WizardCreator;
 import de.hswt.hrm.inspection.model.Inspection;
 import de.hswt.hrm.inspection.ui.wizard.ReportCreationWizard;
 
 public class InspectionPartUtil {
+
+	private static final Color MORE_THEN_3 = Display.getCurrent()
+			.getSystemColor(SWT.COLOR_GREEN);
+	private static final Color LESS_THEN_3 = Display.getCurrent()
+			.getSystemColor(SWT.COLOR_YELLOW);
+	private static final Color EXPIRED = Display.getCurrent().getSystemColor(
+			SWT.COLOR_RED);
 
 	private static SimpleDateFormat dateFormat = new SimpleDateFormat(
 			"dd/MM/yyyy");
@@ -62,21 +65,41 @@ public class InspectionPartUtil {
 
 			@Override
 			protected void paint(Event event, Object element) {
-				Color color = Display.getCurrent()
-						.getSystemColor(SWT.COLOR_RED);
-				event.gc.setBackground(color);
+
+				Inspection inspection = (Inspection) element;
+
+				Calendar cal = Calendar.getInstance();
+				int current = cal.get(Calendar.MONTH);
+				int currentYear = cal.get(Calendar.YEAR);
+				int next = inspection.getNextInspectionDate().get(
+						Calendar.MONTH);
+				int nextYear = inspection.getNextInspectionDate().get(
+						Calendar.YEAR);
+
+				int diffYears = (nextYear - currentYear) * 12;
+				int diff = next - current + diffYears;
+
+				if (diff < 0) {
+					event.gc.setBackground(EXPIRED);
+				} else if (diff <= 3) {
+					event.gc.setBackground(LESS_THEN_3);
+				} else {
+					event.gc.setBackground(MORE_THEN_3);
+				}
+
 				event.gc.fillOval(event.x + 10, event.y + 10, 10, 10);
 
 			}
 
 			@Override
 			protected void measure(Event event, Object element) {
-				// TODO Auto-generated method stub
+
 			}
 		}, new Comparator<Inspection>() {
 			@Override
 			public int compare(Inspection i1, Inspection i2) {
-				return i1.getTitle().compareToIgnoreCase(i2.getTitle());
+				return i1.getNextInspectionDate().compareTo(
+						i2.getNextInspectionDate());
 			}
 		}, 30);
 	}
@@ -156,55 +179,12 @@ public class InspectionPartUtil {
 
 	private static ColumnDescription<Inspection> getNextInspectionDateColumn() {
 		return new ColumnDescription<>("Next Inspection Date",
-				new StyledCellLabelProvider() {
+				new ColumnLabelProvider() {
 					@Override
-					public void update(ViewerCell cell) {
-
-						// The Element of the cell
-						Inspection i = (Inspection) cell.getElement();
-						// Current Date
-						Date date = new Date();
-
-						Color c;
-
-						Calendar cal = Calendar.getInstance();
-
-						cal.setTimeInMillis(date.getTime());
-						int current = cal.get(Calendar.YEAR) - 1970;
-
-						cal.setTimeInMillis(i.getNextInspectionDate()
-								.getTimeInMillis());
-						int next = cal.get(Calendar.YEAR) - 1970;
-						int diff = next - current;
-
-						if (diff < 0) {
-							return;
-						}
-
-						if (diff == 1 || diff == 0) {
-							c = Display.getCurrent().getSystemColor(
-									SWT.COLOR_RED);
-						} else if (diff == 2) {
-							c = Display.getCurrent().getSystemColor(
-									SWT.COLOR_YELLOW);
-						} else {
-							c = Display.getCurrent().getSystemColor(
-									SWT.COLOR_GREEN);
-						}
-
-						StyledString text = new StyledString();
-
-						text.append(dateFormat.format(i.getNextInspectionDate()
-								.getTime()), StyledString.DECORATIONS_STYLER);
-						StyleRange myStyledRange = new StyleRange(0,
-								text.length(), null, c);
-						cell.setText(text.toString());
-						// cell.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_RED));
-
-						StyleRange[] range = { myStyledRange };
-						cell.setStyleRanges(range);
-						super.update(cell);
-
+					public String getText(Object element) {
+						Inspection i = (Inspection) element;
+						return dateFormat.format(i.getNextInspectionDate()
+								.getTime());
 					}
 				}, new Comparator<Inspection>() {
 					@Override
