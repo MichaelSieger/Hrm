@@ -31,6 +31,7 @@ import com.google.common.collect.Collections2;
 
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.ElementNotFoundException;
+import de.hswt.hrm.common.observer.Observer;
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.plant.model.Plant;
 import de.hswt.hrm.scheme.model.Scheme;
@@ -106,7 +107,7 @@ public class InspectionPart {
         fillLayout.marginWidth = 5;
         form.getBody().setLayout(fillLayout);
         formToolkit.decorateFormHeading(form);
-
+        
         tabFolder = new TabFolder(form.getBody(), SWT.NONE);
         tabFolder.setBackgroundMode(SWT.INHERIT_FORCE);
         tabFolder.addSelectionListener(new SelectionAdapter() {
@@ -124,6 +125,7 @@ public class InspectionPart {
                 }
             }
         });
+
         formToolkit.adapt(tabFolder);
         formToolkit.paintBordersFor(tabFolder);
 
@@ -138,42 +140,9 @@ public class InspectionPart {
         generalTab = new TabItem(tabFolder, SWT.NONE);
         generalTab.setText("General");
 
-        reportGeneralComposite = new ReportGeneralComposite(tabFolder);
-        reportGeneralComposite.setPlantListener(new PlantSelectedListener() {
 
-            @Override
-            public void selected(Plant plant) {
-                Scheme scheme;
-                try {
-                    scheme = schemeService.findCurrentSchemeByPlant(plant);
-                }
-                catch (ElementNotFoundException e) {
-                    // TODO what to do if there is no scheme?
-                    throw Throwables.propagate(e);
-                }
-                catch (DatabaseException e) {
-                    throw Throwables.propagate(e);
-                }
-                Collection<SchemeGridItem> schemeGridItems = Collections2.transform(
-                        scheme.getSchemeComponents(),
-                        new Function<SchemeComponent, SchemeGridItem>() {
-                            public SchemeGridItem apply(SchemeComponent c) {
-                                try {
-                                    return new SchemeGridItem(ComponentConverter.convert(
-                                            parent.getDisplay(), c.getComponent()), c
-                                            .getDirection(), c.getX(), c.getY());
-                                }
-                                catch (IOException e) {
-                                    LOG.error(RENDER_ERROR);
-                                    return null;
-                                }
-                            }
-                        });
-                physicalComposite.setSchemeGridItems(schemeGridItems);
-                biologicalComposite.setSchemeGridItems(schemeGridItems);
-                performanceComposite.setSchemeGridItems(schemeGridItems);
-            }
-        });
+        reportGeneralComposite = new ReportGeneralComposite(tabFolder, this);
+
         ContextInjectionFactory.inject(reportGeneralComposite, context);
         generalTab.setControl(reportGeneralComposite);
 
@@ -213,6 +182,38 @@ public class InspectionPart {
         });
 
         createActions();
+    }
+    
+    public void plantChanged(Plant plant){
+        Scheme scheme;
+        try {
+            scheme = schemeService.findCurrentSchemeByPlant(plant);
+        }
+        catch (ElementNotFoundException e) {
+            // TODO what to do if there is no scheme?
+            throw Throwables.propagate(e);
+        }
+        catch (DatabaseException e) {
+            throw Throwables.propagate(e);
+        }
+        Collection<SchemeGridItem> schemeGridItems = Collections2.transform(
+                scheme.getSchemeComponents(),
+                new Function<SchemeComponent, SchemeGridItem>() {
+                    public SchemeGridItem apply(SchemeComponent c) {
+                        try {
+                            return new SchemeGridItem(ComponentConverter.convert(
+                                    tabFolder.getDisplay(), c.getComponent()), c
+                                    .getDirection(), c.getX(), c.getY());
+                        }
+                        catch (IOException e) {
+                            LOG.error(RENDER_ERROR);
+                            return null;
+                        }
+                    }
+                });
+        physicalComposite.setSchemeGridItems(schemeGridItems);
+        biologicalComposite.setSchemeGridItems(schemeGridItems);
+        performanceComposite.setSchemeGridItems(schemeGridItems);
     }
 
     protected void showOverviewActions(boolean visible) {

@@ -42,6 +42,7 @@ import org.slf4j.LoggerFactory;
 import com.google.common.base.Optional;
 
 import de.hswt.hrm.common.database.exception.DatabaseException;
+import de.hswt.hrm.common.observer.Observer;
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.common.ui.swt.layouts.LayoutUtil;
 import de.hswt.hrm.common.ui.swt.utils.ContentProposalUtil;
@@ -114,10 +115,10 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
     private Combo humitiyCommentCombo;
 
     Combo reportStyleCombo;
+    
+    private InspectionPart inspectionPart;
 
     java.util.List<Photo> photos = new LinkedList<Photo>();
-
-    private PlantSelectedListener plantListener;
 
     private Inspection inspection;
 
@@ -158,8 +159,9 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
      * 
      * @param parent
      */
-    public ReportGeneralComposite(Composite parent) {
+    public ReportGeneralComposite(Composite parent, InspectionPart inspectionPart) {
         super(parent, SWT.NONE);
+        this.inspectionPart = inspectionPart;
         formToolkit.dispose();
         formToolkit = FormUtil.createToolkit();
     }
@@ -286,7 +288,9 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
                         context);
                 psd.create();
                 if (psd.open() == Window.OK) {
-                    plantSelected(psd.getPlant());
+                    if(inspection != null){
+                        inspection.setPlant(psd.getPlant());
+                    }
                 }
             }
         });
@@ -368,16 +372,7 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
 
     private void plantSelected(Plant plant) {
         plantText.setText(plant.getDescription());
-        if (plantListener != null) {
-            plantListener.selected(plant);
-        }
-    }
-
-    public void setPlantListener(PlantSelectedListener l) {
-        if (this.plantListener != null) {
-            throw new RuntimeException("There is already a listener present");
-        }
-        this.plantListener = l;
+        inspectionPart.plantChanged(plant);
     }
 
     private void initLayouts(Combo combo) {
@@ -963,9 +958,18 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
     }
 
     public void setInspection(Inspection inspection) {
-
-        this.inspection = inspection;
-
+        if(this.inspection != inspection){
+            this.inspection = inspection;
+            if(inspection != null){
+                inspection.addPlantObserver(new Observer<Plant>() {
+                    
+                    @Override
+                    public void changed(Plant item) {
+                        plantSelected(item);
+                    }
+                });
+            }
+        }
     }
 
     private void initAutoCompletion(Combo combo) {
@@ -1066,5 +1070,9 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
         }
         reportStyleCombo.select(i);
 
+    }
+    
+    protected Inspection getInspection(){
+        return inspection;
     }
 }

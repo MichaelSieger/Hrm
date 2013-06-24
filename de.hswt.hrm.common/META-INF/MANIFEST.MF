@@ -7,7 +7,8 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: de.hswt.hrm.common,
  de.hswt.hrm.common.database,
  de.hswt.hrm.common.database.exception,
- de.hswt.hrm.common.exception
+ de.hswt.hrm.common.exception,
+ de.hswt.hrm.common.observer
 Require-Bundle: de.hswt.hrm.jdbc.mariadb;bundle-version="0.0.1",
  ch.qos.logback.classic;bundle-version="1.0.0",
  ch.qos.logback.core;bundle-version="1.0.0",
