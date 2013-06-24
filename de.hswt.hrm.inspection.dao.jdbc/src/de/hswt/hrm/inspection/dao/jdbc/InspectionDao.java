@@ -90,7 +90,10 @@ public class InspectionDao implements IInspectionDao {
                 Fields.INSPECTIONDATE, Fields.REPORTDATE, Fields.NEXTDATE, Fields.TEMPERATURE,
                 Fields.HUMIDITY, Fields.SUMMARY, Fields.TITEL, Fields.TEMPERATURERATING,
                 Fields.TEMPERATUREQUANTIFIER, Fields.HUMIDITYRATING, Fields.HUMIDITYQUANTIFIER,
-                Fields.FRONTPICTURE_FK, Fields.PLANTPICTURE_FK);
+                Fields.FRONTPICTURE_FK, Fields.PLANTPICTURE_FK, Fields.TEMPERATURECOMMENT,
+                Fields.HUMIDITYCOMMENT, Fields.LEGIONELLA, Fields.LEGIONELLARATING,
+                Fields.LEGIONELLAQUANTIFIER, Fields.LEGIONELLACOMMENT, Fields.GERMS,
+                Fields.GERMSRATING, Fields.GERMSQUANTIFIER, Fields.GERMSCOMMENT);
         builder.where(Fields.ID);
 
         String query = builder.toString();
