@@ -52,6 +52,8 @@ public class MiscPart {
     private IContributionItem editCommentContribution;
     private IContributionItem addPriorityContribution;
     private IContributionItem editPriorityContribution;
+    private IContributionItem movePriorityUpContribution;
+    private IContributionItem movePriorityDownContribution;
     private IContributionItem addStyleContribution;
     private IContributionItem editStyleContribution;
 
@@ -232,16 +234,16 @@ public class MiscPart {
         editStyleAction.setDescription("Edit an exisitng Layout.");
         editStyleContribution = new ActionContributionItem(editStyleAction);
         
-        Action editPriorityAction = new Action("Edit Priority") {
+        Action editPriorityAction = new Action("Edit") {
             @Override
             public void run() {
             	priorityComposite.editPriority();
             }
         };
-        editPriorityAction.setDescription("Edit an exisitng Priority.");
+        editPriorityAction.setDescription("Edit an exisiting Priority.");
         editPriorityContribution = new ActionContributionItem(editPriorityAction);
         
-        Action addPriorityAction = new Action("Add Priority") {
+        Action addPriorityAction = new Action("Add") {
             @Override
             public void run() {
             	priorityComposite.addPriority();
@@ -250,14 +252,34 @@ public class MiscPart {
         addPriorityAction.setDescription("Add a new Priority");
         addPriorityContribution = new ActionContributionItem(addPriorityAction);
         
+        Action movePriorityUPAction = new Action("+") {
+            @Override
+            public void run() {
+            	priorityComposite.movePriorityUp();
+            }
+        };
+        movePriorityUPAction.setDescription("Move Priority Up");
+        movePriorityUpContribution = new ActionContributionItem(movePriorityUPAction);
+        Action movePriorityDownAction = new Action("-") {
+            @Override
+            public void run() {
+            	priorityComposite.movePriorityDown();
+            }
+        };
+        movePriorityDownAction.setDescription("Move Priority Down");
+        movePriorityDownContribution = new ActionContributionItem(movePriorityDownAction);
+        
         form.getToolBarManager().add(editSummaryContribution);
         form.getToolBarManager().add(addSummaryContribution);
         form.getToolBarManager().add(editCommentContribution);
         form.getToolBarManager().add(addCommentContribution);
         form.getToolBarManager().add(editStyleContribution);
         form.getToolBarManager().add(addStyleContribution);
+        form.getToolBarManager().add(movePriorityUpContribution);
+        form.getToolBarManager().add(movePriorityDownContribution);
         form.getToolBarManager().add(editPriorityContribution);
         form.getToolBarManager().add(addPriorityContribution);
+
 
         form.getToolBarManager().update(true);
     }
@@ -280,6 +302,8 @@ public class MiscPart {
     	hideAllActions();
     	addPriorityContribution.setVisible(true);
     	editPriorityContribution.setVisible(true);
+    	movePriorityUpContribution.setVisible(true);
+    	movePriorityDownContribution.setVisible(true);
     	form.getToolBarManager().update(true);
     }
 
@@ -299,6 +323,8 @@ public class MiscPart {
         editStyleContribution.setVisible(false);
         addPriorityContribution.setVisible(false);
         editPriorityContribution.setVisible(false);
+        movePriorityUpContribution.setVisible(false);
+        movePriorityDownContribution.setVisible(false);
     }    
     @PreDestroy
     public void dispose() {
