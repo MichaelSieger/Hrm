@@ -919,15 +919,18 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
     }
 
     public void setInspection(Inspection inspection) {
-
-        this.inspection = inspection;
-        inspection.addPlantObserver(new Observer<Plant>() {
-            
-            @Override
-            public void changed(Plant item) {
-                plantSelected(item);
+        if(this.inspection != inspection){
+            this.inspection = inspection;
+            if(inspection != null){
+                inspection.addPlantObserver(new Observer<Plant>() {
+                    
+                    @Override
+                    public void changed(Plant item) {
+                        plantSelected(item);
+                    }
+                });
             }
-        });
+        }
     }
 
     private void initAutoCompletion(Combo combo) {
