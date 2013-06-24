@@ -19,3 +19,4 @@ Require-Bundle: com.google.guava;bundle-version="10.0.1",
  org.eclipse.equinox.util;bundle-version="1.0.400",
  org.eclipse.e4.core.di;bundle-version="1.2.0"
 Service-Component: OSGI-INF/photo-component.xml
+Bundle-ActivationPolicy: lazy

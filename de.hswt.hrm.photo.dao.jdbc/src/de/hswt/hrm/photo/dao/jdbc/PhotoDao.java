@@ -22,15 +22,6 @@ import de.hswt.hrm.photo.model.Photo;
 
 public class PhotoDao implements IPhotoDao {
 
-    private final IPhotoDao photoDao;
-
-    // TODO: add LOG messages
-    public PhotoDao(final IPhotoDao photoDao) {
-        checkNotNull(photoDao, "ComponentDao not properly injected to PhotoDao.");
-
-        this.photoDao = photoDao;
-    }
-
     @Override
     public Collection<Photo> findAll() throws DatabaseException {
         SqlQueryBuilder builder = new SqlQueryBuilder();
