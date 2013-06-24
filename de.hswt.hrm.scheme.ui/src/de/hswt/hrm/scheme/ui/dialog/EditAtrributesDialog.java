@@ -12,12 +12,15 @@ import org.eclipse.ui.forms.widgets.Section;
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.common.ui.swt.layouts.LayoutUtil;
 import de.hswt.hrm.common.ui.swt.utils.SWTResourceManager;
+import de.hswt.hrm.component.model.Component;
 
 public class EditAtrributesDialog extends TitleAreaDialog {
 
-    public EditAtrributesDialog(Shell parentShell) {
-        super(parentShell);
+    private Component component;
 
+    public EditAtrributesDialog(Shell parentShell, Component component) {
+        super(parentShell);
+        this.component = component;
     }
 
     @Override
@@ -28,7 +31,7 @@ public class EditAtrributesDialog extends TitleAreaDialog {
         draw(composite);
 
         setMessage("Please select a scheme to copy.");
-        setTitle("Scheme selection");
+        setTitle("Edit Attributes for Component " + component.getName());
 
         return composite;
 

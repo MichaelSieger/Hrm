@@ -456,7 +456,8 @@ public class SchemeComposite extends Composite {
                 System.out.println(a.getName());
             }
 
-            EditAtrributesDialog eda = new EditAtrributesDialog(shellProvider.getShell());
+            EditAtrributesDialog eda = new EditAtrributesDialog(shellProvider.getShell(), item
+                    .getRenderedComponent().getComponent());
             eda.open();
 
         }
