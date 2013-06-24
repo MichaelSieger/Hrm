@@ -207,11 +207,13 @@ public class InspectionDao implements IInspectionDao {
                         inserted.setHumidityQuantifier(inspection.getHumidityQuantifier().orNull());
                         inserted.setFrontpicture(inspection.getFrontpicture().orNull());
                         inserted.setPlantpicture(inspection.getPlantpicture().orNull());
-                        inserted.setAirtemperatureComment(inspection.getAirtemperatureComment().orNull());
+                        inserted.setAirtemperatureComment(inspection.getAirtemperatureComment()
+                                .orNull());
                         inserted.setHumidityComment(inspection.getHumidityComment().orNull());
                         inserted.setLegionella(inspection.getLegionella().orNull());
                         inserted.setLegionellaRating(inspection.getLegionellaRating().orNull());
-                        inserted.setLegionellaQuantifier(inspection.getLegionellaQuantifier().orNull());
+                        inserted.setLegionellaQuantifier(inspection.getLegionellaQuantifier()
+                                .orNull());
                         inserted.setLegionellaComment(inspection.getLegionellaComment().orNull());
                         inserted.setGerms(inspection.getGerms().orNull());
                         inserted.setGermsRating(inspection.getGermsRating().orNull());
@@ -380,14 +382,14 @@ public class InspectionDao implements IInspectionDao {
                 Contact checker = contactDao.findById(checkerId);
                 inserted.setChecker(checker);
             }
-            if (frontpictureId >= 0) {
-                Photo frontpicture = photoDao.findById(frontpictureId);
-                inserted.setFrontpicture(frontpicture);
-            }
-            if (plantpictureId >= 0) {
-                Photo plantpicture = photoDao.findById(plantpictureId);
-                inserted.setFrontpicture(plantpicture);
-            }
+            // if (frontpictureId >= 0) {
+            // Photo frontpicture = photoDao.findById(frontpictureId);
+            // inserted.setFrontpicture(frontpicture);
+            // }
+            // if (plantpictureId >= 0) {
+            // Photo plantpicture = photoDao.findById(plantpictureId);
+            // inserted.setFrontpicture(plantpicture);
+            // }
 
             // rest
             inserted.setTemperature(temperature);
