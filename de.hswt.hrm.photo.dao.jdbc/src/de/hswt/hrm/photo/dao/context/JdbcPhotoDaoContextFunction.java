@@ -1,4 +1,4 @@
-package de.hswt.hrm.photo.dao.jdbc;
+package de.hswt.hrm.photo.dao.context;
 
 import org.eclipse.e4.core.contexts.ContextFunction;
 import org.eclipse.e4.core.contexts.ContextInjectionFactory;
@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.hswt.hrm.photo.dao.core.IPhotoDao;
+import de.hswt.hrm.photo.dao.jdbc.PhotoDao;
 
 public class JdbcPhotoDaoContextFunction extends ContextFunction {
     private final static Logger LOG = LoggerFactory.getLogger(JdbcPhotoDaoContextFunction.class);
