@@ -20,6 +20,7 @@ import com.google.common.base.Optional;
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.common.ui.swt.layouts.PageContainerFillLayout;
 import de.hswt.hrm.misc.comment.model.Comment;
+import de.hswt.hrm.summary.model.Summary;
 
 public class CommentWizardPageOne extends WizardPage {
 
@@ -81,7 +82,8 @@ public class CommentWizardPageOne extends WizardPage {
         addKeyListener(nameText);
         addKeyListener(descText);
         setControl(container);
-        setPageComplete(false);
+//        setPageComplete(false);
+        checkPageComplete();
 
     }
 
@@ -107,11 +109,11 @@ public class CommentWizardPageOne extends WizardPage {
 
     private void checkPageComplete() {
 
-        if (first) {
-            first = false;
-            setPageComplete(false);
-            return;
-        }
+//        if (first) {
+//            first = false;
+//            setPageComplete(false);
+//            return;
+//        }
 
         setErrorMessage(null);
 
@@ -137,12 +139,20 @@ public class CommentWizardPageOne extends WizardPage {
             present = true;
         }
 
-        for (Comment e : this.comments) {
-            if (e.getName().equals(text)) {
-                present = true;
-            }
+        if(!comment.isPresent()){
+	        for (Comment e : this.comments) {
+	            if (e.getName().equals(text)) {
+	                present = true;
+	            }
+	        }
+        }else{
+        	for (Comment e : this.comments) {
+	            if (e.getName().equals(text) && e.getId() != comment.get().getId()) {
+	                present = true;
+	            }
+	        }     	
+        	
         }
-
         return present;
 
     }
