@@ -44,7 +44,7 @@ public class PlantDao implements IPlantDao {
         final String query = "SELECT Plant_ID, Plant_Place_FK,"
                 + "Plant_Manufacturer, Plant_Year_Of_Construction, Plant_Type, "
                 + "Plant_Airperformance, Plant_Motorpower, Plant_Motor_Rpm, Plant_Ventilatorperformance, "
-                + "Plant_Current, Plant_Voltage, Plant_Note, Plant_Description FROM Plant ;";
+                + "Plant_Current, Plant_Voltage, Plant_Note, Plant_Description, Plant_Area, Plant_Location FROM Plant ;";
 
         try (Connection con = DatabaseFactory.getConnection()) {
             try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
@@ -67,7 +67,7 @@ public class PlantDao implements IPlantDao {
         final String query = "SELECT Plant_ID, Plant_Place_FK, "
                 + "Plant_Manufacturer, Plant_Year_Of_Construction, Plant_Type, "
                 + "Plant_Airperformance, Plant_Motorpower, Plant_Motor_Rpm, Plant_Ventilatorperformance, "
-                + "Plant_Current, Plant_Voltage, Plant_Note, Plant_Description FROM Plant "
+                + "Plant_Current, Plant_Voltage, Plant_Note, Plant_Description, Plant_Area, Plant_Location FROM Plant "
                 + "WHERE Plant_ID =:id;";
         ;
 
@@ -106,10 +106,10 @@ public class PlantDao implements IPlantDao {
         final String query = "INSERT INTO Plant (Plant_Place_FK, "
                 + "Plant_Manufacturer, Plant_Year_Of_Construction, Plant_Type, "
                 + "Plant_Airperformance, Plant_Motorpower, Plant_Motor_Rpm, Plant_Ventilatorperformance, "
-                + "Plant_Current, Plant_Voltage, Plant_Note, Plant_Description) "
+                + "Plant_Current, Plant_Voltage, Plant_Note, Plant_Description, Plant_Area, Plant_Location) "
                 + "VALUES (:plantPlaceFk, :manufactor, :constructionYear, :type, "
                 + ":airPerformance, :motorPower, :motorRpm, :ventilatorPerformance, :current, :voltage, "
-                + ":note, :description);";
+                + ":note, :description, :area, :location);";
 
         try (Connection con = DatabaseFactory.getConnection()) {
             try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
@@ -126,6 +126,8 @@ public class PlantDao implements IPlantDao {
                 stmt.setParameter("current", plant.getCurrent().orNull());
                 stmt.setParameter("voltage", plant.getVoltage().orNull());
                 stmt.setParameter("note", plant.getNote().orNull());
+                stmt.setParameter("area", plant.getArea());
+                stmt.setParameter("location", plant.getLocation());
 
                 int affectedRows = stmt.executeUpdate();
                 if (affectedRows != 1) {
@@ -137,7 +139,7 @@ public class PlantDao implements IPlantDao {
                         int id = generatedKeys.getInt(1);
 
                         // Create new plant with id
-                        Plant inserted = new Plant(id, plant.getDescription());
+                        Plant inserted = new Plant(id, plant.getDescription(), plant.getArea(), plant.getLocation());
 
                         inserted.setConstructionYear(plant.getConstructionYear().orNull());
                         inserted.setManufactor(plant.getManufactor().orNull());
@@ -185,6 +187,7 @@ public class PlantDao implements IPlantDao {
                 + "Plant_Ventilatorperformance = :ventilatorPerformance, "
                 + "Plant_Current = :current, " + "Plant_Voltage = :voltage, "
                 + "Plant_Note = :note, " + "Plant_Description = :description "
+                + "Plant_Area = :area, " + "Plant_Location = :location "
                 + "WHERE Plant_ID = :id;";
 
         try (Connection con = DatabaseFactory.getConnection()) {
@@ -203,6 +206,8 @@ public class PlantDao implements IPlantDao {
                 stmt.setParameter("current", plant.getCurrent().orNull());
                 stmt.setParameter("voltage", plant.getVoltage().orNull());
                 stmt.setParameter("note", plant.getNote().orNull());
+                stmt.setParameter("area", plant.getArea());
+                stmt.setParameter("location", plant.getLocation());
 
                 int affectedRows = stmt.executeUpdate();
                 if (affectedRows != 1) {
@@ -237,8 +242,10 @@ public class PlantDao implements IPlantDao {
 
             int id = rs.getInt("plant_ID");
             String description = rs.getString("Plant_Description");
+            String area = rs.getString("Plant_Area");
+            String location = rs.getString("Plant_Location");
 
-            Plant plant = new Plant(id, description);
+            Plant plant = new Plant(id, description, area, location);
             plant.setConstructionYear(rs.getInt("Plant_Year_Of_Construction"));
             plant.setManufactor(rs.getString("Plant_Manufacturer"));
             plant.setType(rs.getString("Plant_Type"));
