@@ -1,4 +1,4 @@
-package de.hswt.hrm.contact.dao.jdbc;
+package de.hswt.hrm.contact.dao.context;
 
 import org.eclipse.e4.core.contexts.ContextFunction;
 import org.eclipse.e4.core.contexts.ContextInjectionFactory;
@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.hswt.hrm.contact.dao.core.IContactDao;
+import de.hswt.hrm.contact.dao.jdbc.ContactDao;
 
 public class JdbcContactDaoContextFunction extends ContextFunction {
 

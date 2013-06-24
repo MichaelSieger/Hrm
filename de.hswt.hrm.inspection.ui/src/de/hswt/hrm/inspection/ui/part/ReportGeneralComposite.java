@@ -115,7 +115,7 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
     private Combo humitiyCommentCombo;
 
     Combo reportStyleCombo;
-    
+
     private InspectionPart inspectionPart;
 
     java.util.List<Photo> photos = new LinkedList<Photo>();
@@ -288,7 +288,7 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
                         context);
                 psd.create();
                 if (psd.open() == Window.OK) {
-                    if(inspection != null){
+                    if (inspection != null) {
                         inspection.setPlant(psd.getPlant());
                     }
                 }
@@ -366,7 +366,6 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
         overallCombo.setLayoutData(LayoutUtil.createHorzCenteredFillData(4));
         formToolkit.adapt(overallCombo);
         formToolkit.paintBordersFor(overallCombo);
-        initAutoCompletion(overallCombo);
 
     }
 
@@ -417,8 +416,8 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
         customerLabel.setText("Customer");
         customerLabel.setLayoutData(LayoutUtil.createLeftGridData());
 
-        Button customerClearButton = formToolkit.createButton(personsComposite,
-                "Clear customer", SWT.PUSH);
+        Button customerClearButton = formToolkit.createButton(personsComposite, "Clear customer",
+                SWT.PUSH);
         customerClearButton.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false));
 
         Button customerSelectionButton = formToolkit.createButton(personsComposite,
@@ -461,8 +460,8 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
         requestorLabel.setText("Requestor");
         requestorLabel.setLayoutData(LayoutUtil.createLeftGridData());
 
-        Button requestorClearButton = formToolkit.createButton(personsComposite,
-                "Clear requestor", SWT.PUSH);
+        Button requestorClearButton = formToolkit.createButton(personsComposite, "Clear requestor",
+                SWT.PUSH);
         requestorClearButton.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false));
 
         Button requestorSelectionButton = formToolkit.createButton(personsComposite,
@@ -505,8 +504,8 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
         controllerLabel.setText("Controller");
         controllerLabel.setLayoutData(LayoutUtil.createLeftGridData());
 
-        Button controllerClearButton = formToolkit.createButton(personsComposite,
-                "Clear customer", SWT.PUSH);
+        Button controllerClearButton = formToolkit.createButton(personsComposite, "Clear customer",
+                SWT.PUSH);
         controllerClearButton.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false));
 
         Button controllerSelectionButton = formToolkit.createButton(personsComposite,
@@ -543,9 +542,9 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
         customerClearButton.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                    customerNameText.setText("");
-                    customerStreetText.setText("");
-                    customerCityText.setText("");
+                customerNameText.setText("");
+                customerStreetText.setText("");
+                customerCityText.setText("");
             }
         });
 
@@ -570,7 +569,7 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
         controllerClearButton.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-            	controllerNameText.setText("");
+                controllerNameText.setText("");
                 controllerStreetText.setText("");
                 controllerCityText.setText("");
             }
@@ -958,11 +957,11 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
     }
 
     public void setInspection(Inspection inspection) {
-        if(this.inspection != inspection){
+        if (this.inspection != inspection) {
             this.inspection = inspection;
-            if(inspection != null){
+            if (inspection != null) {
                 inspection.addPlantObserver(new Observer<Plant>() {
-                    
+
                     @Override
                     public void changed(Plant item) {
                         plantSelected(item);
@@ -980,7 +979,7 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
             int i = 0;
 
             for (Summary e : summaries) {
-                s[i] = e.getName();
+                s[i] = e.getText();
                 i++;
             }
 
@@ -1059,6 +1058,15 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
             controllerStreetText.setText(c.getStreet() + " " + c.getStreetNo());
             controllerCityText.setText(c.getCity() + " " + c.getPostCode());
         }
+
+        if (!inspection.getSummary().isPresent()) {
+
+            initAutoCompletion(overallCombo);
+
+        }
+        else {
+            overallCombo.setText(inspection.getSummary().get());
+        }
     }
 
     private void setlayout(Inspection inspection) {
@@ -1071,8 +1079,8 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
         reportStyleCombo.select(i);
 
     }
-    
-    protected Inspection getInspection(){
+
+    protected Inspection getInspection() {
         return inspection;
     }
 }

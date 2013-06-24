@@ -1,4 +1,4 @@
-package de.hswt.hrm.summary.dao.jdbc;
+package de.hswt.hrm.summary.cao.context;
 
 import org.eclipse.e4.core.contexts.ContextFunction;
 import org.eclipse.e4.core.contexts.ContextInjectionFactory;
@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.hswt.hrm.summary.dao.core.ISummaryDao;
+import de.hswt.hrm.summary.dao.jdbc.SummaryDao;
 
 public class JdbcSummaryDaoContextFunction extends ContextFunction {
 

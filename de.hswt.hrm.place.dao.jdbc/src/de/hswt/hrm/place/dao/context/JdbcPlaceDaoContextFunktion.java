@@ -1,4 +1,4 @@
-package de.hswt.hrm.place.dao.jdbc;
+package de.hswt.hrm.place.dao.context;
 
 import org.eclipse.e4.core.contexts.ContextFunction;
 import org.eclipse.e4.core.contexts.ContextInjectionFactory;
@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.hswt.hrm.place.dao.core.IPlaceDao;
+import de.hswt.hrm.place.dao.jdbc.PlaceDao;
 
 public class JdbcPlaceDaoContextFunktion extends ContextFunction {
     private final static Logger LOG = LoggerFactory.getLogger(JdbcPlaceDaoContextFunktion.class);

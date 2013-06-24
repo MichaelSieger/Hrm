@@ -2,6 +2,7 @@ package de.hswt.hrm.scheme.ui.dialog;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -40,6 +41,7 @@ public class EditAtrributesDialog extends TitleAreaDialog {
         super(parentShell);
         this.component = component;
         this.attributes = attributes;
+
     }
 
     @Override

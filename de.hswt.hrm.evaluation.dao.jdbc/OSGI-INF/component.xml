@@ -3,7 +3,7 @@
 	name="de.hswt.hrm.summary.dao.jdbc.summarydao">
 
 	<implementation
-		class="de.hswt.hrm.summary.dao.jdbc.JdbcSummaryDaoContextFunction" />
+		class="de.hswt.hrm.summary.cao.context.JdbcSummaryDaoContextFunction" />
 	<service>
 		<provide interface="org.eclipse.e4.core.contexts.IContextFunction" />
 	</service>

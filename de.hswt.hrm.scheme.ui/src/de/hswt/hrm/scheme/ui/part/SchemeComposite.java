@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -443,23 +444,25 @@ public class SchemeComposite extends Composite {
     private void editAttribute(SchemeGridItem item) {
 
         try {
-            Collection<Attribute> col = componentsService.findAttributesByComponent(item
+            Collection<Attribute> attributes = componentsService.findAttributesByComponent(item
                     .getRenderedComponent().getComponent());
-            if (col.isEmpty()) {
+            if (attributes.isEmpty()) {
                 MessageDialog.openError(shellProvider.getShell(), "No Atrributes",
                         "The selected Component "
                                 + item.getRenderedComponent().getComponent().getName()
                                 + " has no assigend Attributes");
                 return;
             }
-
+            //
+            // Map<Attribute, String> assignedValues = schemeService
+            // .findAttributesOfSchemeComponent(item.asSchemeComponent());
             EditAtrributesDialog eda = new EditAtrributesDialog(shellProvider.getShell(), item
-                    .getRenderedComponent().getComponent(), col);
+                    .getRenderedComponent().getComponent(), attributes);
             eda.open();
 
         }
         catch (DatabaseException e) {
-
+            LOG.error("an error occured", e);
         }
 
     }

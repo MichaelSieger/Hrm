@@ -6,7 +6,6 @@ import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.hswt.hrm.inspection.dao.core.IBiologicalRatingDao;
 import de.hswt.hrm.inspection.dao.core.IPhysicalRatingDao;
 import de.hswt.hrm.inspection.dao.jdbc.PhysicalRatingDao;
 
