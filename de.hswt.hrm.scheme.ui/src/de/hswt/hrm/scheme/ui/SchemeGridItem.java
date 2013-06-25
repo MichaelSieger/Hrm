@@ -22,39 +22,31 @@ import de.hswt.hrm.scheme.model.ThumbnailImage;
 public class SchemeGridItem {
 	
 	private RenderedComponent renderedComponent;
-	private Direction direction;
-	private int x;
-	private int y;
+	private final SchemeComponent schemeComponent;
 	
-	public SchemeGridItem(RenderedComponent renderedComponent, Direction direction, 
-								int x, int y) {
+	public SchemeGridItem(RenderedComponent renderedComponent, SchemeComponent schemeComponent) {
 		super();
 		checkNotNull(renderedComponent);
-		checkNotNull(direction);
+		checkNotNull(schemeComponent);
 		this.renderedComponent = renderedComponent;
-		this.direction = direction;
-		this.x = x;
-		this.y = y;
+		this.schemeComponent = schemeComponent;
 	}
 	
 	public SchemeGridItem(SchemeGridItem item) {
 		this.renderedComponent = item.renderedComponent;
-		this.direction = item.direction;
-		this.x = item.x;
-		this.y = item.y;
+		this.schemeComponent = item.schemeComponent;
 	}
 
 	public SchemeComponent asSchemeComponent() {
-		Scheme scheme = null; // FIXME: set the correct scheme here!
-		return new SchemeComponent(scheme, x, y, direction, renderedComponent.getComponent());
+		return schemeComponent;
 	}
 
 	public ThumbnailImage getImage(){
-		return renderedComponent.getByDirection(direction);
+		return renderedComponent.getByDirection(schemeComponent.getDirection());
 	}
 
 	public Direction getDirection() {
-		return direction;
+		return schemeComponent.getDirection();
 	}
 
 	public RenderedComponent getRenderedComponent() {
@@ -62,23 +54,23 @@ public class SchemeGridItem {
 	}
 
 	public void setDirection(Direction direction) {
-		this.direction = direction;
+		schemeComponent.setDirection(direction);
 	}
 
 	public int getX() {
-		return x;
+		return schemeComponent.getX();
 	}
 
 	public void setX(int x) {
-		this.x = x;
+		schemeComponent.setX(x);
 	}
 
 	public int getY() {
-		return y;
+		return schemeComponent.getY();
 	}
 
 	public void setY(int y) {
-		this.y = y;
+		schemeComponent.setY(y);
 	}
 	
 	public int getWidth(){
@@ -108,7 +100,7 @@ public class SchemeGridItem {
 	}
 	
 	private boolean isHorizontal(){
-		switch(direction){
+		switch(schemeComponent.getDirection()){
 		case leftRight:
 		case rightLeft:
 			return true;
@@ -139,7 +131,7 @@ public class SchemeGridItem {
     	if(!op.isPresent()){
     		throw new IllegalArgumentException("The Category may not be absent here");
     	}
-        return new Rectangle(x, y, 
+        return new Rectangle(getX(), getY(), 
         		getWidth(),
         		getHeight());
     }
@@ -149,13 +141,13 @@ public class SchemeGridItem {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result
-				+ ((direction == null) ? 0 : direction.hashCode());
+				+ ((getDirection() == null) ? 0 : getDirection().hashCode());
 		result = prime
 				* result
 				+ ((renderedComponent == null) ? 0 : renderedComponent
 						.hashCode());
-		result = prime * result + x;
-		result = prime * result + y;
+		result = prime * result + getX();
+		result = prime * result + getY();
 		return result;
 	}
 
@@ -168,16 +160,16 @@ public class SchemeGridItem {
 		if (getClass() != obj.getClass())
 			return false;
 		SchemeGridItem other = (SchemeGridItem) obj;
-		if (direction != other.direction)
+		if (getDirection() != other.getDirection())
 			return false;
 		if (renderedComponent == null) {
 			if (other.renderedComponent != null)
 				return false;
 		} else if (!renderedComponent.equals(other.renderedComponent))
 			return false;
-		if (x != other.x)
+		if (getX() != other.getX())
 			return false;
-		if (y != other.y)
+		if (getY() != other.getY())
 			return false;
 		return true;
 	}
