@@ -10,7 +10,7 @@ import de.hswt.hrm.misc.reportPreference.model.ReportPreference;
 /**
  * Defines all the public methods to interact with the storage system for reportPreferences.
  */
-public interface IReportPreference {
+public interface IReportPreferenceDao {
 
     /**
      * @return All reportPreferences from storage.
