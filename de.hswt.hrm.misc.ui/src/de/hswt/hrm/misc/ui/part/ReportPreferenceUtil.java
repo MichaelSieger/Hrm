@@ -15,7 +15,6 @@ import com.google.common.base.Optional;
 import de.hswt.hrm.common.ui.swt.table.ColumnDescription;
 import de.hswt.hrm.common.ui.swt.wizards.WizardCreator;
 import de.hswt.hrm.inspection.model.Layout;
-import de.hswt.hrm.misc.reportPreference.model.ReportPreference;
 import de.hswt.hrm.misc.ui.preferenceswizard.PreferencesWizard;
 
 public class ReportPreferenceUtil {

@@ -42,7 +42,6 @@ import de.hswt.hrm.common.ui.swt.table.ColumnDescription;
 import de.hswt.hrm.common.ui.swt.table.TableViewerController;
 import de.hswt.hrm.inspection.model.Layout;
 import de.hswt.hrm.inspection.service.LayoutService;
-import de.hswt.hrm.misc.reportPreference.model.ReportPreference;
 
 public class ReportPreferencesComposite extends Composite {
 

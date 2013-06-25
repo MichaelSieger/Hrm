@@ -14,7 +14,6 @@ import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.SaveException;
 import de.hswt.hrm.inspection.model.Layout;
 import de.hswt.hrm.inspection.service.LayoutService;
-import de.hswt.hrm.misc.reportPreference.model.ReportPreference;
 
 public class PreferencesWizard extends Wizard {
 

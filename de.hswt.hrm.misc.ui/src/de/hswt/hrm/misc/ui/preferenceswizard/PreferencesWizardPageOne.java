@@ -24,7 +24,6 @@ import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.common.ui.swt.layouts.PageContainerFillLayout;
 import de.hswt.hrm.inspection.model.Layout;
 import de.hswt.hrm.inspection.service.LayoutService;
-import de.hswt.hrm.misc.reportPreference.model.ReportPreference;
 import de.hswt.hrm.summary.model.Summary;
 
 public class PreferencesWizardPageOne extends WizardPage {
