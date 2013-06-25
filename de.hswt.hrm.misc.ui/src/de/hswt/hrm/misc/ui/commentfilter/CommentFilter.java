@@ -3,6 +3,7 @@ package de.hswt.hrm.misc.ui.commentfilter;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 
+import de.hswt.hrm.misc.comment.model.Comment;
 import de.hswt.hrm.summary.model.Summary;
 
 public class CommentFilter extends ViewerFilter {
@@ -19,7 +20,7 @@ public class CommentFilter extends ViewerFilter {
             return true;
         }
 
-        Summary e = (Summary) element;
+        Comment e = (Comment) element;
 
         if (e.getName().toLowerCase().matches(searchString)) {
             return true;

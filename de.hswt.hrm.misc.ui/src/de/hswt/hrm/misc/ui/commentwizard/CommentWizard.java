@@ -57,14 +57,13 @@ public class CommentWizard extends Wizard {
     private boolean insertNewComment() {
 
         Comment c = new Comment(first.getName(), first.getDesc());
-        //FIXME Enable CommentService
-//        try {
-//            this.comment = Optional.of(commentService.insert(c));
-//        }
-//        catch (SaveException e2) {
-//            LOG.error("An eror occured", e2);
-//            return false;
-//        }
+        try {
+            this.comment = Optional.of(commentService.insert(c));
+        }
+        catch (SaveException e2) {
+            LOG.error("An eror occured", e2);
+            return false;
+        }
 
         return true;
 
@@ -72,16 +71,15 @@ public class CommentWizard extends Wizard {
 
     private boolean editExistingComment() {
         Comment e = this.comment.get();
-//FIXME enable CommmentService
-//        try {
-//            e = setValues(comment);
-//            commentService.update(e);
-//            comment = Optional.of(e);
-//        }
-//        catch (DatabaseException de) {
-//            LOG.error("An error occured: ", de);
-//            return false;
-//        }
+        try {
+            e = setValues(comment);
+            commentService.update(e);
+            comment = Optional.of(e);
+        }
+        catch (DatabaseException de) {
+            LOG.error("An error occured: ", de);
+            return false;
+        }
 
         return true;
     }

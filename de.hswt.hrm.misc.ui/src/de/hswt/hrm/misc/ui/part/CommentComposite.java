@@ -38,6 +38,7 @@ import de.hswt.hrm.common.ui.swt.table.ColumnComparator;
 import de.hswt.hrm.common.ui.swt.table.ColumnDescription;
 import de.hswt.hrm.common.ui.swt.table.TableViewerController;
 import de.hswt.hrm.misc.comment.model.Comment;
+import de.hswt.hrm.misc.comment.service.CommentService;
 import de.hswt.hrm.misc.ui.commentfilter.CommentFilter;
 import de.hswt.hrm.misc.ui.commentwizard.CommentPartUtil;
 import de.hswt.hrm.summary.model.Summary;
@@ -46,9 +47,8 @@ import de.hswt.hrm.summary.ui.part.SummaryPartUtil;
 public class CommentComposite extends Composite {
     private final static Logger LOG = LoggerFactory.getLogger(CommentComposite.class);
 
-	// FIXME adapt this to a Comment object and service if it is available
-//    @Inject
-//    private CommentService serviceService;
+    @Inject
+    private CommentService commentService;
 
     @Inject
     private IShellProvider shellProvider;
@@ -121,10 +121,9 @@ public class CommentComposite extends Composite {
         initializeTable();
         refreshTable();
 
-    	// FIXME adapt this to a Comment object and service if it is available
-//        if (commentSerice == null) {
-//            LOG.error("CommentService not injected to CommentPart.");
-//        }
+        if (commentService == null) {
+            LOG.error("CommentService not injected to CommentPart.");
+        }
     }
     
     
@@ -147,42 +146,32 @@ public class CommentComposite extends Composite {
         if (selectedComment == null) {
             return;
         }
-      Optional<Comment> updatedComment = CommentPartUtil.showWizard(context,
-      shellProvider.getShell(), Optional.of(selectedComment));
-//      FIXME enable Comment Service
-      //        try {
-//            commentService.refresh(selectedComment);
-//            Optional<Comment> updatedComment = CommentPartUtil.showWizard(context,
-//                    shellProvider.getShell(), Optional.of(selectedComment));
-//
-//            if (updatedComment.isPresent()) {
-//                tableViewer.refresh();
-//            }
-//        }
-//        catch (DatabaseException e) {
-//            LOG.error("Could not retrieve the comments from database.", e);
-//            showDBConnectionError();
-//        }
+//      Optional<Comment> updatedComment = CommentPartUtil.showWizard(context,
+//      shellProvider.getShell(), Optional.of(selectedComment));
+       try {
+            commentService.refresh(selectedComment);
+            Optional<Comment> updatedComment = CommentPartUtil.showWizard(context,
+                    shellProvider.getShell(), Optional.of(selectedComment));
+
+            if (updatedComment.isPresent()) {
+                tableViewer.refresh();
+            }
+        }
+        catch (DatabaseException e) {
+            LOG.error("Could not retrieve the comments from database.", e);
+            showDBConnectionError();
+        }
     }
 
     private void refreshTable() {
-    	// TODO adapt this to a Comment object and service if it is available
-//        try {
-//            this.evaluations = evalService.findAll();
-//            tableViewer.setInput(this.evaluations);
-//        }
-//        catch (DatabaseException e) {
-//            LOG.error("Unable to retrieve list of comments from database.", e);
-//            showDBConnectionError();
-//        }
-        this.comments = new LinkedList<Comment>();
-        Comment a = new Comment("asdasd","sadasd");
-        Comment b = new Comment("asasddasd","sadasd");
-        Comment c = new Comment("asdaasdasdasdsd","sadasd");
-        this.comments.add(a);
-        this.comments.add(b);
-        this.comments.add(c);
-        tableViewer.setInput(this.comments);
+        try {
+            this.comments = commentService.findAll();
+            tableViewer.setInput(this.comments);
+        }
+        catch (DatabaseException e) {
+            LOG.error("Unable to retrieve list of comments from database.", e);
+            showDBConnectionError();
+        }
     }
 
     private void initializeTable() {

@@ -3,6 +3,8 @@ package de.hswt.hrm.misc.ui.commentwizard;
 import java.net.URL;
 import java.util.Collection;
 
+import javax.inject.Inject;
+
 import org.eclipse.e4.xwt.IConstants;
 import org.eclipse.e4.xwt.XWT;
 import org.eclipse.e4.xwt.forms.XWTForms;
@@ -17,9 +19,11 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Optional;
 
+import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.common.ui.swt.layouts.PageContainerFillLayout;
 import de.hswt.hrm.misc.comment.model.Comment;
+import de.hswt.hrm.misc.comment.service.CommentService;
 import de.hswt.hrm.summary.model.Summary;
 
 public class CommentWizardPageOne extends WizardPage {
@@ -31,9 +35,8 @@ public class CommentWizardPageOne extends WizardPage {
 
     private Collection<Comment> comments;
     private boolean first = true;
-//FIXME CommentService
-//    @Inject
-//    private CommentService commentService;
+    @Inject
+    private CommentService commentService;
 
     private static final Logger LOG = LoggerFactory.getLogger(CommentWizardPageOne.class);
 
@@ -70,13 +73,12 @@ public class CommentWizardPageOne extends WizardPage {
         if (this.comment.isPresent()) {
             updateFields();
         }
-//        FIXME enable CommentService
-//        try {
-//            this.comments = commentService.findAll();
-//        }
-//        catch (DatabaseException e) {
-//            LOG.error("An error occured", e);
-//        }
+        try {
+            this.comments = commentService.findAll();
+        }
+        catch (DatabaseException e) {
+            LOG.error("An error occured", e);
+        }
        
         
         FormUtil.initSectionColors((Section) XWT.findElementByName(container, "Mandatory"));
