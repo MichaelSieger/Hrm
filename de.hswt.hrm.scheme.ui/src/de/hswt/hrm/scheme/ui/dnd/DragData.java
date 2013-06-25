@@ -5,11 +5,12 @@ import java.util.List;
 
 import de.hswt.hrm.scheme.model.Direction;
 import de.hswt.hrm.scheme.model.RenderedComponent;
+import de.hswt.hrm.scheme.model.SchemeComponent;
 import de.hswt.hrm.scheme.ui.SchemeGridItem;
 
 /**
  * This class represents a object, that is dragged in the SchemePart.
- * It is a Serializable version of DirectedRenderedComponent, which is not
+ * It is a Serializable version of SchemeGridItem which is not
  * Serialized by itself for Performance reasons.
  * 
  * @author Michael Sieger
@@ -23,59 +24,18 @@ public class DragData
     /**
      * The index in the RenderedComponent set.
      */
-    private final int id;
+    private final int renderedComponentIndex;
     
-    /**
-     * The x position in the grid, can be -1 for no Position
-     */
-    private final int x;
+    private final SchemeComponent schemeComponent;
     
-    /**
-     * The y position in the grid, can be -1 for no Position
-     */
-    private final int y;
-    
-    /**
-     * The direction
-     */
-    private final Direction direction;
-    
-    public DragData(int id, int x, int y, Direction direction) {
+    public DragData(int renderedComponentIndex, SchemeComponent schemeComponent) {
         super();
-        this.id = id;
-        this.x = x;
-        this.y = y;
-        this.direction = direction;
+        this.renderedComponentIndex = renderedComponentIndex;
+        this.schemeComponent = schemeComponent;
     }
     
-    public DragData(int id, Direction direction){
-    	this(id, -1, -1, direction);
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public int getX() {
-        return x;
-    }
-
-    public int getY() {
-        return y;
-    }
-    
-    /**
-     * Does this DragData have a position.
-     * This is false, if it is dragged from the Tree for example.
-     * 
-     * @return
-     */
     public boolean hasPosition(){
-    	return !(x == -1 && y == -1);
-    }
-
-    public Direction getDirection() {
-        return direction;
+    	return !(schemeComponent.getX() == -1 && schemeComponent.getY() == -1);
     }
     
     /**
@@ -85,7 +45,7 @@ public class DragData
      * @return
      */
     public SchemeGridItem toSchemeGridItem(List<RenderedComponent> comps){
-    	return new SchemeGridItem(comps.get(id), direction, x, y);
+    	return new SchemeGridItem(comps.get(renderedComponentIndex), schemeComponent);
     }
 
 }
