@@ -56,15 +56,14 @@ public class PriorityWizard extends Wizard {
     }
 
     private boolean insertNewPriority() {
-//FIXME enable PrioService
-//    Priority p = new Priority(first.getName(), first.getDesc(), prioService.findAll().size()+1);
-//        try {
-//            this.priority = Optional.of(prioService.insert(p));
-//        }
-//        catch (SaveException e2) {
-//            LOG.error("An eror occured", e2);
-//            return false;
-//        }
+    Priority p;
+	try {
+		p = new Priority(first.getName(), first.getDesc(), prioService.findAll().size()+1);
+		this.priority = Optional.of(prioService.insert(p));
+	} catch (DatabaseException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
 
         return true;
 
@@ -72,16 +71,15 @@ public class PriorityWizard extends Wizard {
 
     private boolean editExistingComment() {
     	Priority e = this.priority.get();
-//FIXME enable PrioService
-//        try {
-//            e = setValues(priority);
-//            prioService.update(e);
-//            priority = Optional.of(e);
-//        }
-//        catch (DatabaseException de) {
-//            LOG.error("An error occured: ", de);
-//            return false;
-//        }
+        try {
+            e = setValues(priority);
+            prioService.update(e);
+            priority = Optional.of(e);
+        }
+        catch (DatabaseException de) {
+            LOG.error("An error occured: ", de);
+            return false;
+        }
 
         return true;
     }

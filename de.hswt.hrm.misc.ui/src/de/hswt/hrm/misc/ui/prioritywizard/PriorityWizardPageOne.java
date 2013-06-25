@@ -25,6 +25,7 @@ import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.common.ui.swt.layouts.PageContainerFillLayout;
 import de.hswt.hrm.misc.comment.model.Comment;
 import de.hswt.hrm.misc.priority.model.Priority;
+import de.hswt.hrm.misc.priority.service.PriorityService;
 import de.hswt.hrm.summary.model.Summary;
 import de.hswt.hrm.summary.service.SummaryService;
 
@@ -38,8 +39,8 @@ public class PriorityWizardPageOne extends WizardPage {
     private Collection<Priority> priorities;
     private boolean first = true;
 // Enable PrioService
-//    @Inject
-//    private PriorityService prioService;
+    @Inject
+    private PriorityService prioService;
 
     private static final Logger LOG = LoggerFactory.getLogger(PriorityWizardPageOne.class);
 
@@ -77,13 +78,12 @@ public class PriorityWizardPageOne extends WizardPage {
         if (this.priority.isPresent()) {
             updateFields();
         }
-//FIXME enable PrioService
-        //    try {
-//            this.priorities = prioService.findAll();
-//        }
-//        catch (DatabaseException e) {
-//            LOG.error("An error occured", e);
-//        }
+        try {
+            this.priorities = prioService.findAll();
+        }
+        catch (DatabaseException e) {
+            LOG.error("An error occured", e);
+        }
        
         
         FormUtil.initSectionColors((Section) XWT.findElementByName(container, "Mandatory"));

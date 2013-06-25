@@ -32,17 +32,20 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Optional;
 
+import de.hswt.hrm.common.database.exception.DatabaseException;
+import de.hswt.hrm.common.database.exception.ElementNotFoundException;
+import de.hswt.hrm.common.database.exception.SaveException;
 import de.hswt.hrm.common.ui.swt.table.ColumnDescription;
 import de.hswt.hrm.common.ui.swt.table.TableViewerController;
 import de.hswt.hrm.common.ui.swt.utils.SWTResourceManager;
 import de.hswt.hrm.misc.priority.model.Priority;
+import de.hswt.hrm.misc.priority.service.PriorityService;
 
 public class PriorityComposite extends Composite {
 
     private final static Logger LOG = LoggerFactory.getLogger(PriorityComposite.class);
-// FIXME Priority Service
-    // @Inject
-    // private PriorityService prioService;
+     @Inject
+     private PriorityService prioService;
 
     @Inject
     private IShellProvider shellProvider;
@@ -108,36 +111,21 @@ public class PriorityComposite extends Composite {
 
         initializeTable();
         refreshTable();
-//FIXME Enable Priority Service
-//         if (prioService == null) {
-        // LOG.error("PriorityService not injected to PriorityPart.");
-        // }
+        if (prioService == null) {
+        	 LOG.error("PriorityService not injected to PriorityPart.");
+         }
     }
 
     private void refreshTable() {
-        if (prios == null) {
-            Priority a = new Priority("eins", "einsTExt", 3);
-
-            Priority b = new Priority("zwei", "einsTExt", 2);
-            Priority c = new Priority("drei", "einsTExt", 1);
-            Priority d = new Priority("vier", "einsTExt", 4);
-            prios = new LinkedList<Priority>();
-            prios.add(a);
-            prios.add(b);
-            prios.add(c);
-            prios.add(d);
-        }
-
-        tableViewer.setInput(this.prios);
-//FIXME Enable PrioService
-        //  try {
-        // this.prios = prioService.findAll();
-        // tableViewer.setInput(this.prios);
-        // }
-        // catch (DatabaseException e) {
-        // LOG.error("Unable to retrieve list of Evaluations.", e);
-        // showDBConnectionError();
-        // }
+ 
+          try {
+        	  this.prios = prioService.findAll();
+        	  tableViewer.setInput(this.prios);
+         }
+         catch (DatabaseException e) {
+        	 LOG.error("Unable to retrieve list of Priorities.", e);
+        	 showDBConnectionError();
+         }
     }
 
     private void initializeTable() {
@@ -210,85 +198,102 @@ public class PriorityComposite extends Composite {
         if (selectedPrio == null) {
             return;
         }
-       // FIXME enable PrioService
-        // try {
-        // prioService.refresh(selectedPrio);
-         Optional<Priority> updatedEval = PriorityPartUtil.showWizard(context,
-         shellProvider.getShell(), Optional.of(selectedPrio));
-        //
-        // if (updatedEval.isPresent()) {
-        // tableViewer.refresh();
-        // }
-        // }
-        // catch (DatabaseException e) {
-        // LOG.error("Could not retrieve the evaluations from database.", e);
-        // showDBConnectionError();
-        // }
+        try {
+        	prioService.refresh(selectedPrio);
+        	Optional<Priority> updatedEval = PriorityPartUtil.showWizard(context,
+        			shellProvider.getShell(), Optional.of(selectedPrio));
+        
+        	if (updatedEval.isPresent()) {
+        		tableViewer.refresh();
+        	}
+         }
+         catch (DatabaseException e) {
+        	 LOG.error("Could not retrieve the Priorities from database.", e);
+        	 showDBConnectionError();
+         }
     }
 
     public void movePriorityUp() {
-       //FIXME Enable PRioService 
-    	//  Priority selectedPrio = (Priority) tableViewer.getElementAt(tableViewer.getTable()
-        // .getSelectionIndex());
-        // if (selectedPrio == null) {
-        // return;
-        // }
-        // Priority tempPrio = null;
-        //
-        // if(selectedPrio.getPriority() > 1){
-        // for(Priority prio : prioService.findAll()){
-        // if(prio.getPriority() == selectedPrio.getPriority()-1){
-        // tempPrio = prio;
-        // break;
-        // }
-        // }
-        // selectedPrio.setPriority(selectedPrio.getPriority()-1);
-        // tempPrio.setPriority(tempPrio.getPriority() +1);
-        //
-        // prioService.update(selectedPrio);
-        // prioService.update(tempPrio);
-        // }
-        // refreshTable();
+    	  Priority selectedPrio = (Priority) tableViewer.getElementAt(tableViewer.getTable()
+         .getSelectionIndex());
+         if (selectedPrio == null) {
+         return;
+         }
+         Priority tempPrio = null;
+        
+         if(selectedPrio.getPriority() > 1){
+         try {
+			for(Priority prio : prioService.findAll()){
+			 if(prio.getPriority() == selectedPrio.getPriority()-1){
+			 tempPrio = prio;
+			 break;
+			 }
+			 }
+		} catch (DatabaseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+         selectedPrio.setPriority(selectedPrio.getPriority()-1);
+         tempPrio.setPriority(tempPrio.getPriority() +1);
+        
+         try {
+			prioService.update(selectedPrio);
+		} catch (ElementNotFoundException | SaveException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+         try {
+			prioService.update(tempPrio);
+		} catch (ElementNotFoundException | SaveException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+         }
+         refreshTable();
     }
 
     public void movePriorityDown() {
 
         // JUST TESTING
-         Priority a =
-         (Priority)tableViewer.getElementAt(tableViewer.getTable().getSelectionIndex());
-         Priority b = null;
-         int temp = a.getPriority();
-         for(Priority prio : prios){
-         if(prio.getPriority() == a.getPriority()+1){
-         b = prio;
-         }
-         }
-         a.setPriority(a.getPriority()+1);
-         b.setPriority(b.getPriority() -1);
+//         Priority a =
+//         (Priority)tableViewer.getElementAt(tableViewer.getTable().getSelectionIndex());
+//         Priority b = null;
+//         int temp = a.getPriority();
+//         for(Priority prio : prios){
+//         if(prio.getPriority() == a.getPriority()+1){
+//         b = prio;
+//         }
+//         }
+//         a.setPriority(a.getPriority()+1);
+//         b.setPriority(b.getPriority() -1);
         
         
-         tableViewer.refresh();
+//         tableViewer.refresh();
          // FIXME delete upper part and uncomment part under 
-        //Priority selectedPrio = (Priority) tableViewer.getElementAt(tableViewer.getTable()
-        // .getSelectionIndex());
-        // if (selectedPrio == null) {
-        // return;
-        // }
-        // Priority tempPrio = null;
-        //
-        // if(selectedPrio.getPriority() < prioService.findAll().size()){
-        // for(Priority prio : prioService.findAll()){
-        // if(prio.getPriority() == selectedPrio.getPriority()+1){
-        // tempPrio = prio;
-        // break;
-        // }
-        // }
-        // selectedPrio.setPriority(selectedPrio.getPriority()+1);
-        // tempPrio.setPriority(tempPrio.getPriority() -1);
-        //
-        // prioService.update(selectedPrio);
-        // prioService.update(tempPrio);
-        // }
-        // refreshTable();
+        Priority selectedPrio = (Priority) tableViewer.getElementAt(tableViewer.getTable()
+         .getSelectionIndex());
+         if (selectedPrio == null) {
+         return;
+         }
+         Priority tempPrio = null;
+        
+         try {
+			if(selectedPrio.getPriority() < prioService.findAll().size()){
+			 for(Priority prio : prioService.findAll()){
+			 if(prio.getPriority() == selectedPrio.getPriority()+1){
+			 tempPrio = prio;
+			 break;
+			 }
+			 }
+			 selectedPrio.setPriority(selectedPrio.getPriority()+1);
+			 tempPrio.setPriority(tempPrio.getPriority() -1);
+			
+			 prioService.update(selectedPrio);
+			 prioService.update(tempPrio);
+			 }
+		} catch (DatabaseException e) {
+			e.printStackTrace();
+		}
+         refreshTable();
     }
 }
