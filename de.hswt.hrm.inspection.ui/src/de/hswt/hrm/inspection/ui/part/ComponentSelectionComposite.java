@@ -114,6 +114,7 @@ public class ComponentSelectionComposite extends Composite {
 		horizontalSash.setWeights(new int[] {1, 5});
 
 		ScrolledComposite schemeScroll = new ScrolledComposite(schemeComposite, SWT.H_SCROLL | SWT.V_SCROLL);
+		schemeScroll.setBackground(getDisplay().getSystemColor(SWT.COLOR_WHITE));
 		schemeGrid = new InspectionSchemeGrid(schemeScroll, SWT.NONE);
 		// TODO set the component selection to the ratingCompiste
 	}
