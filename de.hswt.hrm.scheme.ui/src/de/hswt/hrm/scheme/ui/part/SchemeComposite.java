@@ -682,7 +682,7 @@ public class SchemeComposite extends Composite {
                 });
         Preconditions.checkNotNull(plant, "The Plant must be set before saving");
         try {
-            if (currentScheme.getPlant().isPresent()) {
+            if (currentScheme.getPlant().isPresent() && currentScheme.getId() > 0) {
                 schemeService.update(currentScheme, schemeComps);
                 System.out.println("after update");
             }
