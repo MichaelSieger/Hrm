@@ -35,18 +35,21 @@ import com.google.common.base.Optional;
 
 import de.hswt.hrm.common.Config;
 import de.hswt.hrm.common.Hrm;
+import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.ui.swt.layouts.LayoutUtil;
 import de.hswt.hrm.common.ui.swt.table.ColumnComparator;
 import de.hswt.hrm.common.ui.swt.table.ColumnDescription;
 import de.hswt.hrm.common.ui.swt.table.TableViewerController;
+import de.hswt.hrm.inspection.model.Layout;
+import de.hswt.hrm.inspection.service.LayoutService;
 import de.hswt.hrm.misc.reportPreference.model.ReportPreference;
 
 public class ReportPreferencesComposite extends Composite {
 
     private final static Logger LOG = LoggerFactory.getLogger(ReportPreferencesComposite.class);
 
-    // @Inject
-    // private ReportPreferencesService prefService;
+     @Inject
+     private LayoutService prefService;
 
     @Inject
     private IShellProvider shellProvider;
@@ -59,7 +62,7 @@ public class ReportPreferencesComposite extends Composite {
 
     private Composite composite;
 
-    private Collection<ReportPreference> preferences;
+    private Collection<Layout> preferences;
     private Text directoryText;
     private Label lblNewLabel;
     private Button browseButton;
@@ -140,34 +143,34 @@ public class ReportPreferencesComposite extends Composite {
         	directoryText.setText(dir);
         }
 
-        // TODO if (prefService == null) {
-        // LOG.error("EvaluationService not injected to EvaluationPart.");
-        // }
+        if (prefService == null) {
+        	 LOG.error("LayoutService not injected to LayoutPart.");
+         }
     }
 
     private void refreshTable() {
-        // TODO try {
-        // this.preferences = prefService.findAll();
-        // tableViewer.setInput(this.preferences);
-        // }
-        // catch (DatabaseException e) {
-        // LOG.error("Unable to retrieve list of Evaluations.", e);
-        // showDBConnectionError();
-        // }
+    	try {
+	         this.preferences = prefService.findAll();
+	         tableViewer.setInput(this.preferences);
+	         }
+	    catch (DatabaseException e) {
+	         LOG.error("Unable to retrieve list of Layouts.", e);
+	         showDBConnectionError();
+        }
     }
 
     private void initializeTable() {
-        List<ColumnDescription<ReportPreference>> columns = ReportPreferenceUtil.getColumns();
+        List<ColumnDescription<Layout>> columns = ReportPreferenceUtil.getColumns();
 
         // Create columns in tableviewer
-        TableViewerController<ReportPreference> filler = new TableViewerController<>(tableViewer);
+        TableViewerController<Layout> filler = new TableViewerController<>(tableViewer);
         filler.createColumns(columns);
 
         // Enable column selection
         filler.createColumnSelectionMenu();
 
         // Enable sorting
-        ColumnComparator<ReportPreference> comperator = new ColumnComparator<>(columns);
+        ColumnComparator<Layout> comperator = new ColumnComparator<>(columns);
         filler.enableSorting(comperator);
 
         // Add dataprovider that handles our collection
@@ -188,9 +191,9 @@ public class ReportPreferencesComposite extends Composite {
      */
 
     public void addPrefernence() {
-        ReportPreference preference = null;
+        Layout preference = null;
 
-        Optional<ReportPreference> newPreference = ReportPreferenceUtil.showWizard(context,
+        Optional<Layout> newPreference = ReportPreferenceUtil.showWizard(context,
                 shellProvider.getShell(), Optional.fromNullable(preference));
 
         if (newPreference.isPresent()) {
@@ -209,24 +212,24 @@ public class ReportPreferencesComposite extends Composite {
      */
     public void editPreference() {
         // obtain the contact in the column where the doubleClick happend
-        ReportPreference selectedPreference = (ReportPreference) tableViewer
+        Layout selectedPreference = (Layout) tableViewer
                 .getElementAt(tableViewer.getTable().getSelectionIndex());
         if (selectedPreference == null) {
             return;
         }
-        // TODO try {
-        // prefService.refresh(selectedPreference);
-         Optional<ReportPreference> updatedPreference = ReportPreferenceUtil.showWizard(context,
-         shellProvider.getShell(), Optional.of(selectedPreference));
-        //
-        // if (updatedPreference.isPresent()) {
-        // tableViewer.refresh();
-        // }
-        // }
-        // catch (DatabaseException e) {
-        // LOG.error("Could not retrieve the Preferences from database.", e);
-        // showDBConnectionError();
-        // }
+        try {
+		     prefService.refresh(selectedPreference);
+		     Optional<Layout> updatedPreference = ReportPreferenceUtil.showWizard(context,
+		     shellProvider.getShell(), Optional.of(selectedPreference));
+		    
+		     if (updatedPreference.isPresent()) {
+		    	 tableViewer.refresh();
+		     }
+		}
+        catch (DatabaseException e) {
+         LOG.error("Could not retrieve the Preferences from database.", e);
+         showDBConnectionError();
+        }
     }
 
     private void setStandardReportDirectory() {

@@ -3,6 +3,8 @@ package de.hswt.hrm.misc.ui.preferenceswizard;
 import java.net.URL;
 import java.util.Collection;
 
+import javax.inject.Inject;
+
 import org.eclipse.e4.xwt.IConstants;
 import org.eclipse.e4.xwt.XWT;
 import org.eclipse.e4.xwt.forms.XWTForms;
@@ -17,27 +19,30 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Optional;
 
+import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.common.ui.swt.layouts.PageContainerFillLayout;
+import de.hswt.hrm.inspection.model.Layout;
+import de.hswt.hrm.inspection.service.LayoutService;
 import de.hswt.hrm.misc.reportPreference.model.ReportPreference;
 import de.hswt.hrm.summary.model.Summary;
 
 public class PreferencesWizardPageOne extends WizardPage {
 
-    private Optional<ReportPreference> preference;
+    private Optional<Layout> preference;
     private Composite container;
     private Text nameText;
     private Text fileText;
 
-    private Collection<ReportPreference> preferences;
+    private Collection<Layout> preferences;
     private boolean first = true;
 
-//    @Inject
-//    private ReportPreferencesSerice prefService;
+    @Inject
+    private LayoutService prefService;
 
     private static final Logger LOG = LoggerFactory.getLogger(PreferencesWizardPageOne.class);
 
-    public PreferencesWizardPageOne(String title, Optional<ReportPreference> preference) {
+    public PreferencesWizardPageOne(String title, Optional<Layout> preference) {
         super(title);
         this.preference = preference;
         setDescription(createDescription());
@@ -70,12 +75,12 @@ public class PreferencesWizardPageOne extends WizardPage {
         if (this.preference.isPresent()) {
             updateFields();
         }
-//        try {
-//           TODO this.preferences = prefService.findAll();
-//        }
-//        catch (DatabaseException e) {
-//            LOG.error("An error occured", e);
-//        }
+        try {
+            this.preferences = prefService.findAll();
+        }
+        catch (DatabaseException e) {
+            LOG.error("An error occured", e);
+        }
 
         FormUtil.initSectionColors((Section) XWT.findElementByName(container, "Mandatory"));
         addKeyListener(nameText);
@@ -101,7 +106,7 @@ public class PreferencesWizardPageOne extends WizardPage {
     }
 
     private void updateFields() {
-        ReportPreference e = preference.get();
+    	Layout e = preference.get();
         nameText.setText(e.getName());
         fileText.setText(e.getFileName());
     }
@@ -139,13 +144,13 @@ public class PreferencesWizardPageOne extends WizardPage {
         }
 
         if(!preference.isPresent()){
-	        for (ReportPreference e : this.preferences) {
+	        for (Layout e : this.preferences) {
 	            if (e.getName().equals(text)) {
 	                present = true;
 	            }
 	        }
         }else{
-        	for (ReportPreference e : this.preferences) {
+        	for (Layout e : this.preferences) {
 	            if (e.getName().equals(text) && e.getId() != preference.get().getId()) {
 	                present = true;
 	            }

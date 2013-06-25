@@ -1,5 +1,7 @@
 package de.hswt.hrm.misc.ui.preferenceswizard;
 
+import javax.inject.Inject;
+
 import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.jface.wizard.Wizard;
@@ -8,19 +10,23 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Optional;
 
+import de.hswt.hrm.common.database.exception.DatabaseException;
+import de.hswt.hrm.common.database.exception.SaveException;
+import de.hswt.hrm.inspection.model.Layout;
+import de.hswt.hrm.inspection.service.LayoutService;
 import de.hswt.hrm.misc.reportPreference.model.ReportPreference;
 
 public class PreferencesWizard extends Wizard {
 
     private static final Logger LOG = LoggerFactory.getLogger(PreferencesWizard.class);
 
-//    @Inject
-//    private ReportPreferenceService prefService;
+    @Inject
+    private LayoutService prefService;
 
     private PreferencesWizardPageOne first;
-    private Optional<ReportPreference> preference;
+    private Optional<Layout> preference;
 
-    public PreferencesWizard(IEclipseContext context, Optional<ReportPreference> preference) {
+    public PreferencesWizard(IEclipseContext context, Optional<Layout> preference) {
         this.preference = preference;
         this.first = new PreferencesWizardPageOne("First Page", preference);
         ContextInjectionFactory.inject(first, context);
@@ -51,38 +57,38 @@ public class PreferencesWizard extends Wizard {
 
     private boolean insertNewPreference() {
 
-        ReportPreference e = new ReportPreference(first.getName(), first.getFileName());
-//   TODO     try {
-//            this.preference = Optional.of(prefService.insert(e));
-//        }
-//        catch (SaveException e2) {
-//            LOG.error("An erroor occured", e2);
-//            return false;
-//        }
+        Layout e = new Layout(first.getName(), first.getFileName());
+        	try {
+        		this.preference = Optional.of(prefService.insert(e));
+        	}
+        	catch (SaveException e2) {
+        		LOG.error("An erroor occured", e2);
+        		return false;
+        	}
 
         return true;
 
     }
 
     private boolean editExistingPreference() {
-        ReportPreference e = this.preference.get();
+        Layout e = this.preference.get();
 
-//  TODO      try {
-//            e = setValues(preference);
-//            prefService.update(e);
-//            preference = Optional.of(e);
-//        }
-//        catch (DatabaseException de) {
-//            LOG.error("An error occured: ", de);
-//            return false;
-//        }
+        try {
+            e = setValues(preference);
+            prefService.update(e);
+            preference = Optional.of(e);
+        }
+        catch (DatabaseException de) {
+            LOG.error("An error occured: ", de);
+            return false;
+        }
 
         return true;
     }
 
-    private ReportPreference setValues(Optional<ReportPreference> e) {
+    private Layout setValues(Optional<Layout> e) {
 
-        ReportPreference preference = null;
+        Layout preference = null;
 
         if (e.isPresent()) {
             preference = e.get();
@@ -93,7 +99,7 @@ public class PreferencesWizard extends Wizard {
         return preference;
     }
 
-    public Optional<ReportPreference> getPreference() {
+    public Optional<Layout> getPreference() {
         return preference;
     }
 

@@ -18,6 +18,8 @@ Import-Package: de.hswt.hrm.common,
  de.hswt.hrm.summary.model,
  de.hswt.hrm.summary.service,
  de.hswt.hrm.summary.ui.part,
+  de.hswt.hrm.inspection.service,
+    de.hswt.hrm.inspection.model,
  org.eclipse.e4.xwt,
  org.eclipse.e4.xwt.forms
 Require-Bundle: org.eclipse.jface;bundle-version="3.8.102",

@@ -14,13 +14,14 @@ import com.google.common.base.Optional;
 
 import de.hswt.hrm.common.ui.swt.table.ColumnDescription;
 import de.hswt.hrm.common.ui.swt.wizards.WizardCreator;
+import de.hswt.hrm.inspection.model.Layout;
 import de.hswt.hrm.misc.reportPreference.model.ReportPreference;
 import de.hswt.hrm.misc.ui.preferenceswizard.PreferencesWizard;
 
 public class ReportPreferenceUtil {
 
-	public static Optional<ReportPreference> showWizard(IEclipseContext context,
-			Shell shell, Optional<ReportPreference> pref) {
+	public static Optional<Layout> showWizard(IEclipseContext context,
+			Shell shell, Optional<Layout> pref) {
 
 		PreferencesWizard ew = new PreferencesWizard(context,pref);
 		ContextInjectionFactory.inject(ew, context);
@@ -31,8 +32,8 @@ public class ReportPreferenceUtil {
 
 	}
 
-	public static List<ColumnDescription<ReportPreference>> getColumns() {
-		List<ColumnDescription<ReportPreference>> columns = new ArrayList<>();
+	public static List<ColumnDescription<Layout>> getColumns() {
+		List<ColumnDescription<Layout>> columns = new ArrayList<>();
 
 		columns.add(getNameColumn());
 		columns.add(getTextColumn());
@@ -40,31 +41,31 @@ public class ReportPreferenceUtil {
 		return columns;
 	}
 
-	private static ColumnDescription<ReportPreference> getNameColumn() {
+	private static ColumnDescription<Layout> getNameColumn() {
 		return new ColumnDescription<>("Name", new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
-				ReportPreference e = (ReportPreference) element;
+				Layout e = (Layout) element;
 				return e.getName();
 			}
-		}, new Comparator<ReportPreference>() {
+		}, new Comparator<Layout>() {
 			@Override
-			public int compare(ReportPreference e1, ReportPreference e2) {
+			public int compare(Layout e1, Layout e2) {
 				return e1.getName().compareToIgnoreCase(e2.getName());
 			}
 		});
 	}
 
-	private static ColumnDescription<ReportPreference> getTextColumn() {
+	private static ColumnDescription<Layout> getTextColumn() {
 		return new ColumnDescription<>("File name", new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
-				ReportPreference e = (ReportPreference) element;
+				Layout e = (Layout) element;
 				return e.getFileName();
 			}
-		}, new Comparator<ReportPreference>() {
+		}, new Comparator<Layout>() {
 			@Override
-			public int compare(ReportPreference e1, ReportPreference e2) {
+			public int compare(Layout e1, Layout e2) {
 				return e1.getFileName().compareToIgnoreCase(e2.getFileName());
 			}
 		});
