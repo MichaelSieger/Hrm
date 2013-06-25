@@ -331,8 +331,9 @@ public class SchemeComposite extends Composite {
                 items = Collections2.transform(items,
                         new Function<SchemeGridItem, SchemeGridItem>() {
                             public SchemeGridItem apply(SchemeGridItem item) {
-                                item.setX(item.getX() + MOVE_AMOUNT);
-                                return item;
+                            	SchemeGridItem nItem = new SchemeGridItem(item);
+                            	nItem.setX(item.getX() + MOVE_AMOUNT);
+                                return nItem;
                             }
                         });
                 grid.setItems(items);
@@ -352,8 +353,9 @@ public class SchemeComposite extends Composite {
                 items = Collections2.transform(items,
                         new Function<SchemeGridItem, SchemeGridItem>() {
                             public SchemeGridItem apply(SchemeGridItem item) {
-                                item.setY(item.getY() + MOVE_AMOUNT);
-                                return item;
+                            	SchemeGridItem nItem = new SchemeGridItem(item);
+                            	nItem.setY(item.getY() + MOVE_AMOUNT);
+                                return nItem;
                             }
                         });
                 grid.setItems(items);
