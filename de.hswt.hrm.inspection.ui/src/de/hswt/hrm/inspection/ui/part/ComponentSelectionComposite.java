@@ -21,6 +21,7 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
 
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
+import de.hswt.hrm.common.ui.swt.layouts.LayoutUtil;
 import de.hswt.hrm.inspection.ui.grid.InspectionSchemeGrid;
 import de.hswt.hrm.scheme.ui.SchemeGridItem;
 
@@ -113,9 +114,14 @@ public class ComponentSelectionComposite extends Composite {
 		verticalSash.setWeights(new int[] {3, 1});
 		horizontalSash.setWeights(new int[] {1, 5});
 
-		ScrolledComposite schemeScroll = new ScrolledComposite(schemeComposite, SWT.H_SCROLL | SWT.V_SCROLL);
+		ScrolledComposite schemeScroll = new ScrolledComposite(schemeComposite, SWT.BORDER | SWT.H_SCROLL
+                | SWT.V_SCROLL);
+		schemeScroll.setBackgroundMode(SWT.INHERIT_DEFAULT);
+		schemeScroll.setExpandHorizontal(false);
+		schemeScroll.setExpandVertical(false);
 		schemeScroll.setBackground(getDisplay().getSystemColor(SWT.COLOR_WHITE));
 		schemeGrid = new InspectionSchemeGrid(schemeScroll, SWT.NONE);
+		schemeScroll.setContent(schemeGrid.getControl());
 		// TODO set the component selection to the ratingCompiste
 	}
 
