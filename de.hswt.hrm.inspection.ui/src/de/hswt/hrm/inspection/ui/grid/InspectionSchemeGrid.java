@@ -6,6 +6,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -89,5 +90,9 @@ public class InspectionSchemeGrid {
     private Color getColor() {
         return grid.getDisplay().getSystemColor(SWT.COLOR_GREEN);
     }
+
+	public Control getControl() {
+		return grid;
+	}
 
 }
