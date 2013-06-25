@@ -541,9 +541,7 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
         customerClearButton.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                customerNameText.setText("");
-                customerStreetText.setText("");
-                customerCityText.setText("");
+                clearCustomer();
             }
         });
 
@@ -568,10 +566,9 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
         controllerClearButton.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                controllerNameText.setText("");
-                controllerStreetText.setText("");
-                controllerCityText.setText("");
+                clearController();
             }
+
         });
 
         controllerSelectionButton.addSelectionListener(new SelectionAdapter() {
@@ -593,9 +590,7 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
         requestorClearButton.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                requestorNameText.setText("");
-                requestorStreetText.setText("");
-                requestorCityText.setText("");
+                clearRequestor();
             }
         });
 
@@ -1027,17 +1022,7 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
     private void fillOptionalFields(Inspection inspection) {
 
         Contact c = null;
-        customerNameText.setText("");
-        customerStreetText.setText("");
-        customerCityText.setText("");
-
-        requestorNameText.setText("");
-        requestorStreetText.setText("");
-        requestorCityText.setText("");
-
-        controllerNameText.setText("");
-        controllerStreetText.setText("");
-        controllerCityText.setText("");
+        clearFields();
 
         if (inspection.getContractor().isPresent()) {
             c = inspection.getContractor().get();
@@ -1081,5 +1066,31 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
 
     protected Inspection getInspection() {
         return inspection;
+    }
+
+    private void clearFields() {
+        clearCustomer();
+        clearRequestor();
+        clearController();
+
+    }
+
+    private void clearCustomer() {
+        customerNameText.setText("");
+        customerStreetText.setText("");
+        customerCityText.setText("");
+    }
+
+    private void clearRequestor() {
+        requestorNameText.setText("");
+        requestorStreetText.setText("");
+        requestorCityText.setText("");
+    }
+
+    private void clearController() {
+        controllerNameText.setText("");
+        controllerStreetText.setText("");
+        controllerCityText.setText("");
+
     }
 }
