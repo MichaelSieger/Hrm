@@ -997,8 +997,8 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
 
         if (inspection == null) {
             // TODO Übersetzen
-            MessageDialog.openError(shellProvider.getShell(), "Selection Error",
-                    "No Inspection Selected");
+            MessageDialog.openError(shellProvider.getShell(), "Selection error",
+                    "No inspection selected.");
             return false;
         }
 
