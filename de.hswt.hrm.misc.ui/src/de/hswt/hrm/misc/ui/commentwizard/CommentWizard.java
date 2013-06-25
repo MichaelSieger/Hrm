@@ -17,7 +17,7 @@ import de.hswt.hrm.misc.comment.model.Comment;
 public class CommentWizard extends Wizard {
 
     private static final Logger LOG = LoggerFactory.getLogger(CommentWizard.class);
-
+//FIXME Enable CommentService
 //    @Inject
 //    private CommentService commentService;
 
@@ -56,6 +56,7 @@ public class CommentWizard extends Wizard {
     private boolean insertNewComment() {
 
         Comment c = new Comment(first.getName(), first.getDesc());
+        //FIXME Enable CommentService
 //        try {
 //            this.comment = Optional.of(commentService.insert(c));
 //        }
@@ -70,7 +71,7 @@ public class CommentWizard extends Wizard {
 
     private boolean editExistingComment() {
         Comment e = this.comment.get();
-
+//FIXME enable CommmentService
 //        try {
 //            e = setValues(comment);
 //            commentService.update(e);

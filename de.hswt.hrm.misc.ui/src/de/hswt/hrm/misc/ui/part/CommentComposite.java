@@ -46,7 +46,7 @@ import de.hswt.hrm.summary.ui.part.SummaryPartUtil;
 public class CommentComposite extends Composite {
     private final static Logger LOG = LoggerFactory.getLogger(CommentComposite.class);
 
-	// TODO adapt this to a Comment object and service if it is available
+	// FIXME adapt this to a Comment object and service if it is available
 //    @Inject
 //    private CommentService serviceService;
 
@@ -121,9 +121,9 @@ public class CommentComposite extends Composite {
         initializeTable();
         refreshTable();
 
-    	// TODO adapt this to a Comment object and service if it is available
-//        if (evalService == null) {
-//            LOG.error("EvaluationService not injected to EvaluationPart.");
+    	// FIXME adapt this to a Comment object and service if it is available
+//        if (commentSerice == null) {
+//            LOG.error("CommentService not injected to CommentPart.");
 //        }
     }
     
@@ -149,7 +149,8 @@ public class CommentComposite extends Composite {
         }
       Optional<Comment> updatedComment = CommentPartUtil.showWizard(context,
       shellProvider.getShell(), Optional.of(selectedComment));
-//        try {
+//      FIXME enable Comment Service
+      //        try {
 //            commentService.refresh(selectedComment);
 //            Optional<Comment> updatedComment = CommentPartUtil.showWizard(context,
 //                    shellProvider.getShell(), Optional.of(selectedComment));
