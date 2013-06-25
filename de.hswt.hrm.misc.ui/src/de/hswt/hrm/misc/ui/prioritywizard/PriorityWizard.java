@@ -14,13 +14,14 @@ import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.SaveException;
 import de.hswt.hrm.misc.comment.model.Comment;
 import de.hswt.hrm.misc.priority.model.Priority;
+import de.hswt.hrm.misc.priority.service.PriorityService;
 
 public class PriorityWizard extends Wizard {
 
     private static final Logger LOG = LoggerFactory.getLogger(PriorityWizard.class);
 
-//    @Inject
-//    private PriorityService prioService;
+    @Inject
+    private PriorityService prioService;
 
     private PriorityWizardPageOne first;
     private Optional<Priority> priority;
@@ -56,31 +57,32 @@ public class PriorityWizard extends Wizard {
 
     private boolean insertNewPriority() {
 
-//    TODO    Priority p = new Priority(first.getName(), first.getDesc(), prioService.findAll().size()+1);
-//        try {
-//            this.priority = Optional.of(prioService.insert(p));
-//        }
-//        catch (SaveException e2) {
-//            LOG.error("An eror occured", e2);
-//            return false;
-//        }
+        // TODO Priority p = new Priority(first.getName(), first.getDesc(),
+        // prioService.findAll().size()+1);
+        // try {
+        // this.priority = Optional.of(prioService.insert(p));
+        // }
+        // catch (SaveException e2) {
+        // LOG.error("An eror occured", e2);
+        // return false;
+        // }
 
         return true;
 
     }
 
     private boolean editExistingComment() {
-    	Priority e = this.priority.get();
+        Priority e = this.priority.get();
 
-//        try {
-//            e = setValues(priority);
-//            prioService.update(e);
-//            priority = Optional.of(e);
-//        }
-//        catch (DatabaseException de) {
-//            LOG.error("An error occured: ", de);
-//            return false;
-//        }
+        // try {
+        // e = setValues(priority);
+        // prioService.update(e);
+        // priority = Optional.of(e);
+        // }
+        // catch (DatabaseException de) {
+        // LOG.error("An error occured: ", de);
+        // return false;
+        // }
 
         return true;
     }

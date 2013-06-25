@@ -19,6 +19,7 @@ Require-Bundle: com.google.guava;bundle-version="10.0.1",
  org.slf4j.api;bundle-version="1.6.4",
  ch.qos.logback.core;bundle-version="1.0.0",
  ch.qos.logback.classic;bundle-version="1.0.0"
-Service-Component: OSGI-INF/comment-component.xml
+Service-Component: OSGI-INF/comment-component.xml,
+ OSGI-INF/priority-component.xml
 Bundle-ActivationPolicy: lazy
 
