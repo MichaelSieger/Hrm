@@ -31,7 +31,7 @@ public class CommentWizardPageOne extends WizardPage {
 
     private Collection<Comment> comments;
     private boolean first = true;
-
+//FIXME CommentService
 //    @Inject
 //    private CommentService commentService;
 
@@ -70,6 +70,7 @@ public class CommentWizardPageOne extends WizardPage {
         if (this.comment.isPresent()) {
             updateFields();
         }
+//        FIXME enable CommentService
 //        try {
 //            this.comments = commentService.findAll();
 //        }

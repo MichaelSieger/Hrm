@@ -37,7 +37,7 @@ public class PriorityWizardPageOne extends WizardPage {
 
     private Collection<Priority> priorities;
     private boolean first = true;
-
+// Enable PrioService
 //    @Inject
 //    private PriorityService prioService;
 
@@ -77,7 +77,8 @@ public class PriorityWizardPageOne extends WizardPage {
         if (this.priority.isPresent()) {
             updateFields();
         }
-//  TODO      try {
+//FIXME enable PrioService
+        //    try {
 //            this.priorities = prioService.findAll();
 //        }
 //        catch (DatabaseException e) {

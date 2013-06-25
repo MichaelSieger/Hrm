@@ -22,7 +22,7 @@ import de.hswt.hrm.photo.model.Photo;
 
 public class PhotoWizard extends Wizard {
     private static final Logger LOG = LoggerFactory.getLogger(PhotoWizard.class);
-//
+// FIXME enable PhotoService
 //    @Inject
 //    private PhotoService photoService;
     
@@ -65,85 +65,26 @@ public class PhotoWizard extends Wizard {
 
     @Override
     public boolean performFinish() {
-//    	List<String> oldPhotoNames = new LinkedList<String>();
-//    	for(Photo photo : photos){
-//    		oldPhotoNames.add(photo.getName());    		
-//    	}    	
-//    	for(TableItem item : first.getTableItems()){    		
-//    		if(!oldPhotoNames.contains(((Photo)item.getData()).getName())){
-//    			this.photos.add((Photo)item.getData());
-//    			//photoService.insert((Photo)item.getData());
-//    		}
-//    	}
+
     	int i = 0;
     	for(TableItem item : first.getTableItems()){
     		item.getText();
     		this.photos.get(i).setLabel(item.getText());
     		i++;
     	}
-//    	for(Photo photo : photos){
-//    		//photoService.update(photo);
-//    		
-//    	}
-//    	oldPhotoNames.clear();
-    	
+//FIXME enable PHOTOservice
     	int x = 0;
     	for(Photo photo : photos){
     		if(photo.getId() == -1){
-//   TODO 			photos.set(x,photoService.insert(photo)); 
+// 			photos.set(x,photoService.insert(photo)); 
     		} else {
-//    TODO		photoService.update(photo);   			
+//  		photoService.update(photo);   			
     		}
     		x++;
     		
     	}
 		return true;
     
-//    	if (photos.isPresent()) {
-//        	for(TableItem item : first.getTableItems()){
-//        		this.photos.get().add((Photo)item.getData());    		
-//        	}
-//            return editExistingPhotos();
-//        } else {
-//        	for(TableItem item : first.getTableItems()){
-//        		this.photos.get().add((Photo)item.getData()); 		
-//        	}
-//            return importNewPhotos();
-//        }
-    }
-    
-    private boolean editExistingPhotos() {
-    	TableItem[] tableItems = first.getTableItems();
-    	for(TableItem item : tableItems){
-    		File f = (File)item.getData();
-			try {					
-				FileInputStream  in = new FileInputStream(f);
-				byte[] data = new byte[in.available()];
-				in.read(data);
-				Photo photo = new Photo(data, f.getName(), item.getText());
-				
-				//TODO Photoservice insert
-	    		
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			}    	
-			catch (IOException e) {
-				e.printStackTrace();
-			}			
-    	}  	
-    	
-    	return true;
-    }
-    
-    private boolean importNewPhotos() {
-    	TableItem[] tableItems = first.getTableItems();
-    	for(TableItem item : tableItems){
-    		Photo f = (Photo)item.getData();
-    		//photoService.insert(photo);
-    	
-    	
-    	}  	
-    	return true;
     }
     
     private void fillPhotoValues(Optional<List<Photo>> photos) {
