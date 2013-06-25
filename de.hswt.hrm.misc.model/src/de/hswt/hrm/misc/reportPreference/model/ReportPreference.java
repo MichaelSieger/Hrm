@@ -1,4 +1,4 @@
-package de.hswt.hrm.misc.reportPreferences.model;
+package de.hswt.hrm.misc.reportPreference.model;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Strings.isNullOrEmpty;

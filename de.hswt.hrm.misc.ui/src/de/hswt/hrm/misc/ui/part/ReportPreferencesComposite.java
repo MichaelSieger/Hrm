@@ -39,7 +39,7 @@ import de.hswt.hrm.common.ui.swt.layouts.LayoutUtil;
 import de.hswt.hrm.common.ui.swt.table.ColumnComparator;
 import de.hswt.hrm.common.ui.swt.table.ColumnDescription;
 import de.hswt.hrm.common.ui.swt.table.TableViewerController;
-import de.hswt.hrm.misc.reportPreferences.model.ReportPreference;
+import de.hswt.hrm.misc.reportPreference.model.ReportPreference;
 
 public class ReportPreferencesComposite extends Composite {
 
