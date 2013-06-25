@@ -139,7 +139,7 @@ public class CatalogPart {
             @Override
             public void run() {
                 super.run();
-                // TODO Edit a Catalog
+                assignmentComposite.editCatalog();
             }
         };
         editCatalogAction.setDescription("Edit an Existing Catalog");
@@ -161,7 +161,7 @@ public class CatalogPart {
             @Override
             public void run() {
                 super.run();
-                // TODO Add a new Catalog
+                assignmentComposite.addCatalog();
             }
         };
         addCatalogAction.setDescription("Add's a new catalog .");

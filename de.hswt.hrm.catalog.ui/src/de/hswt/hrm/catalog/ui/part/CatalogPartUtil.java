@@ -13,9 +13,11 @@ import org.eclipse.swt.widgets.Shell;
 import com.google.common.base.Optional;
 
 import de.hswt.hrm.catalog.model.Activity;
+import de.hswt.hrm.catalog.model.Catalog;
 import de.hswt.hrm.catalog.model.Current;
 import de.hswt.hrm.catalog.model.ICatalogItem;
 import de.hswt.hrm.catalog.model.Target;
+import de.hswt.hrm.catalog.ui.assignment.wizard.AssignmentCatalogWizard;
 import de.hswt.hrm.catalog.ui.wizzard.CatalogWizard;
 import de.hswt.hrm.common.ui.swt.table.ColumnDescription;
 import de.hswt.hrm.common.ui.swt.wizards.WizardCreator;
@@ -139,5 +141,17 @@ public final class CatalogPartUtil {
 
         });
     }
+    
+	public static Optional<Catalog> showWizardForAssignment(IEclipseContext context,
+			Shell shell, Optional<Catalog> cat) {
+
+		AssignmentCatalogWizard ew = new AssignmentCatalogWizard(context,cat);
+		ContextInjectionFactory.inject(ew, context);
+
+		WizardDialog wd = WizardCreator.createWizardDialog(shell, ew);
+		wd.open();
+		return ew.getCatalog();
+
+	}
 
 }
