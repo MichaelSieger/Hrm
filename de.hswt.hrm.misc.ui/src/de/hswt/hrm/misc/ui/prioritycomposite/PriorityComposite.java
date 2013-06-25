@@ -40,7 +40,7 @@ import de.hswt.hrm.misc.priority.model.Priority;
 public class PriorityComposite extends Composite {
 
     private final static Logger LOG = LoggerFactory.getLogger(PriorityComposite.class);
-
+// FIXME Priority Service
     // @Inject
     // private PriorityService prioService;
 
@@ -108,9 +108,9 @@ public class PriorityComposite extends Composite {
 
         initializeTable();
         refreshTable();
-
-        // TODO if (prioService == null) {
-        // LOG.error("EvaluationService not injected to EvaluationPart.");
+//FIXME Enable Priority Service
+//         if (prioService == null) {
+        // LOG.error("PriorityService not injected to PriorityPart.");
         // }
     }
 
@@ -129,8 +129,8 @@ public class PriorityComposite extends Composite {
         }
 
         tableViewer.setInput(this.prios);
-
-        // TODO try {
+//FIXME Enable PrioService
+        //  try {
         // this.prios = prioService.findAll();
         // tableViewer.setInput(this.prios);
         // }
@@ -210,7 +210,8 @@ public class PriorityComposite extends Composite {
         if (selectedPrio == null) {
             return;
         }
-        // TODO try {
+       // FIXME enable PrioService
+        // try {
         // prioService.refresh(selectedPrio);
          Optional<Priority> updatedEval = PriorityPartUtil.showWizard(context,
          shellProvider.getShell(), Optional.of(selectedPrio));
@@ -226,7 +227,8 @@ public class PriorityComposite extends Composite {
     }
 
     public void movePriorityUp() {
-        // TODO Priority selectedPrio = (Priority) tableViewer.getElementAt(tableViewer.getTable()
+       //FIXME Enable PRioService 
+    	//  Priority selectedPrio = (Priority) tableViewer.getElementAt(tableViewer.getTable()
         // .getSelectionIndex());
         // if (selectedPrio == null) {
         // return;
@@ -266,8 +268,8 @@ public class PriorityComposite extends Composite {
         
         
          tableViewer.refresh();
-
-        // TODO Priority selectedPrio = (Priority) tableViewer.getElementAt(tableViewer.getTable()
+         // FIXME delete upper part and uncomment part under 
+        //Priority selectedPrio = (Priority) tableViewer.getElementAt(tableViewer.getTable()
         // .getSelectionIndex());
         // if (selectedPrio == null) {
         // return;

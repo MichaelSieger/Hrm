@@ -18,7 +18,7 @@ import de.hswt.hrm.misc.priority.model.Priority;
 public class PriorityWizard extends Wizard {
 
     private static final Logger LOG = LoggerFactory.getLogger(PriorityWizard.class);
-
+//FIXME Enable PrioService
 //    @Inject
 //    private PriorityService prioService;
 
@@ -55,8 +55,8 @@ public class PriorityWizard extends Wizard {
     }
 
     private boolean insertNewPriority() {
-
-//    TODO    Priority p = new Priority(first.getName(), first.getDesc(), prioService.findAll().size()+1);
+//FIXME enable PrioService
+//    Priority p = new Priority(first.getName(), first.getDesc(), prioService.findAll().size()+1);
 //        try {
 //            this.priority = Optional.of(prioService.insert(p));
 //        }
@@ -71,7 +71,7 @@ public class PriorityWizard extends Wizard {
 
     private boolean editExistingComment() {
     	Priority e = this.priority.get();
-
+//FIXME enable PrioService
 //        try {
 //            e = setValues(priority);
 //            prioService.update(e);
