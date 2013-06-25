@@ -68,8 +68,8 @@ public class SchemeGrid extends DoubleBufferedCanvas {
 	public SchemeGrid(Composite parent, int style, int width, int height,
 			int pixelPerGrid) {
 		super(parent, style);
-		this.width = width;
-		this.height = height;
+		setWidth(width);
+		setHeight(height);
 		setPixelPerGrid(pixelPerGrid);
 		initMouseListener();
 	}
@@ -394,6 +394,16 @@ public class SchemeGrid extends DoubleBufferedCanvas {
 		this.redraw();
 	}
 	
+	private void setWidth(int w){
+		w = Math.max(w, MIN_WIDTH);
+		this.width = w;
+	}
+	
+	private void setHeight(int h){
+		h = Math.max(h, MIN_HEIGHT);
+		this.height = h;
+	}
+	
 	public void setColorGrid(Color shadowColor, double x, double y, double w, double h, boolean fill, boolean snapToGrid){
 		colors.add(new Colorbox(x, y, w, h, shadowColor, fill));
 		this.redraw();
@@ -491,8 +501,8 @@ public class SchemeGrid extends DoubleBufferedCanvas {
 			w = Math.max(w, item.getX() + item.getWidth());
 			h = Math.max(h, item.getY() + item.getHeight());
 		}
-		this.width = w;
-		this.height = h;
+		setWidth(w);
+		setHeight(h);
 		updateSize();
 	    for(SchemeGridItem item : c){
 	    	setImage(item);
