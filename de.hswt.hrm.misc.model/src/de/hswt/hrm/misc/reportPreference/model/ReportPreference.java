@@ -4,7 +4,7 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Strings.isNullOrEmpty;
 
 /**
- * Represents a common used report preferences * 
+ * Represents a common used report preferences *
  */
 public class ReportPreference {
 
@@ -37,7 +37,6 @@ public class ReportPreference {
 
     }
 
-
     public int getId() {
         return id;
     }
@@ -53,7 +52,6 @@ public class ReportPreference {
     public String getFileName() {
         return fileName;
     }
-
 
     @Override
     public int hashCode() {
