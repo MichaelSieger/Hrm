@@ -24,8 +24,24 @@ public class CommentDao implements ICommentDao {
 
     @Override
     public Collection<Comment> findAll() throws DatabaseException {
-        // TODO Auto-generated method stub
-        return null;
+        SqlQueryBuilder builder = new SqlQueryBuilder();
+        builder.select(TABLE_NAME, Fields.ID, Fields.NAME, Fields.TEXT);
+
+        final String query = builder.toString();
+
+        try (Connection con = DatabaseFactory.getConnection()) {
+            try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
+                ResultSet result = stmt.executeQuery();
+
+                Collection<Comment> evaluations = fromResultSet(result);
+                DbUtils.closeQuietly(result);
+
+                return evaluations;
+            }
+        }
+        catch (SQLException e) {
+            throw new DatabaseException(e);
+        }
     }
 
     @Override
