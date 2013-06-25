@@ -371,7 +371,6 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
 
     private void plantSelected(Plant plant) {
         plantText.setText(plant.getDescription());
-        inspectionPart.plantChanged(plant);
     }
 
     private void initLayouts(Combo combo) {

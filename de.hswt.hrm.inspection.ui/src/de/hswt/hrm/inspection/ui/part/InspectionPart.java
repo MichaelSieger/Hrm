@@ -26,6 +26,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Function;
+import com.google.common.base.Optional;
 import com.google.common.base.Throwables;
 import com.google.common.collect.Collections2;
 
@@ -33,6 +34,7 @@ import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.ElementNotFoundException;
 import de.hswt.hrm.common.observer.Observer;
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
+import de.hswt.hrm.inspection.model.BiologicalRating;
 import de.hswt.hrm.inspection.model.Inspection;
 import de.hswt.hrm.plant.model.Plant;
 import de.hswt.hrm.scheme.model.Scheme;
@@ -80,7 +82,6 @@ public class InspectionPart {
     private ComponentSelectionComposite biologicalComposite;
     
     private Inspection selectedInspection;
-
     public InspectionPart() {
         // toolkit can be created in PostConstruct, but then then
         // WindowBuilder is unable to parse the code
@@ -117,14 +118,7 @@ public class InspectionPart {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 if (tabFolder.getItem(tabFolder.getSelectionIndex()).equals(generalTab)) {
-                    reportGeneralComposite.setInspection(reportsOverviewComposite
-                            .getSelectedInspection());
-                    if (reportGeneralComposite.refreshGeneralInformation()) {
-                        tabFolder.setSelection(generalTab);
-                    }
-                    else {
-                        tabFolder.setSelection(0);
-                    }
+                	setInspection(reportsOverviewComposite.getSelectedInspection());
                 }
             }
         });
@@ -187,7 +181,29 @@ public class InspectionPart {
         createActions();
     }
     
-    public void plantChanged(Plant plant){
+    private void setInspection(Inspection inspection){
+    	if(selectedInspection != inspection){
+        	selectedInspection = inspection;
+            reportGeneralComposite.setInspection(selectedInspection);
+            if (reportGeneralComposite.refreshGeneralInformation()) {
+                tabFolder.setSelection(generalTab);
+            }
+            else {
+                tabFolder.setSelection(0);
+            }
+            if(inspection != null){
+            	inspection.addPlantObserver(new Observer<Plant>() {
+
+					@Override
+					public void changed(Plant item) {
+						plantChanged(item);
+					}
+				});
+            }
+    	}
+    }
+    
+    private void plantChanged(Plant plant){
         Scheme scheme;
         try {
             scheme = schemeService.findCurrentSchemeByPlant(plant);
