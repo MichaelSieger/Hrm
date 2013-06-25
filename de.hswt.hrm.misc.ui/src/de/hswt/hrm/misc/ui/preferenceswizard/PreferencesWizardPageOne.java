@@ -19,7 +19,7 @@ import com.google.common.base.Optional;
 
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.common.ui.swt.layouts.PageContainerFillLayout;
-import de.hswt.hrm.misc.reportPreferences.model.ReportPreference;
+import de.hswt.hrm.misc.reportPreference.model.ReportPreference;
 import de.hswt.hrm.summary.model.Summary;
 
 public class PreferencesWizardPageOne extends WizardPage {

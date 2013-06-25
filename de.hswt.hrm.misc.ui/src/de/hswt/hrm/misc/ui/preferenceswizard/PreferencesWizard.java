@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Optional;
 
-import de.hswt.hrm.misc.reportPreferences.model.ReportPreference;
+import de.hswt.hrm.misc.reportPreference.model.ReportPreference;
 
 public class PreferencesWizard extends Wizard {
 
