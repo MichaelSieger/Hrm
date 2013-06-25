@@ -42,7 +42,7 @@ public class Layout {
     }
     
     public String getFileName() {
-        return name;
+        return fileName;
     }
 
     public void setFileName(String fileName) {
