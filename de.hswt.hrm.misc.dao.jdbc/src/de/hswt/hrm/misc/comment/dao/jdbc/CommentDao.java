@@ -46,8 +46,36 @@ public class CommentDao implements ICommentDao {
 
     @Override
     public Comment findById(int id) throws DatabaseException, ElementNotFoundException {
-        // TODO Auto-generated method stub
-        return null;
+
+        checkArgument(id >= 0, "Id must not be negative.");
+
+        SqlQueryBuilder builder = new SqlQueryBuilder();
+        builder.select(TABLE_NAME, Fields.ID, Fields.NAME, Fields.TEXT);
+        builder.where(Fields.ID);
+
+        final String query = builder.toString();
+
+        try (Connection con = DatabaseFactory.getConnection()) {
+            try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
+                stmt.setParameter(Fields.ID, id);
+                ResultSet result = stmt.executeQuery();
+
+                Collection<Comment> comments = fromResultSet(result);
+                DbUtils.closeQuietly(result);
+
+                if (comments.size() < 1) {
+                    throw new ElementNotFoundException();
+                }
+                else if (comments.size() > 1) {
+                    throw new DatabaseException("ID '" + id + "' is not unique.");
+                }
+
+                return comments.iterator().next();
+            }
+        }
+        catch (SQLException e) {
+            throw new DatabaseException(e);
+        }
     }
 
     @Override
