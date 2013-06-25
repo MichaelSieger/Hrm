@@ -80,8 +80,39 @@ public class CommentDao implements ICommentDao {
 
     @Override
     public Comment insert(Comment comment) throws SaveException {
-        // TODO Auto-generated method stub
-        return null;
+        SqlQueryBuilder builder = new SqlQueryBuilder();
+        builder.insert(TABLE_NAME, Fields.NAME, Fields.TEXT);
+
+        final String query = builder.toString();
+
+        try (Connection con = DatabaseFactory.getConnection()) {
+            try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
+                stmt.setParameter(Fields.NAME, comment.getName());
+                stmt.setParameter(Fields.TEXT, comment.getText());
+
+                int affectedRows = stmt.executeUpdate();
+                if (affectedRows != 1) {
+                    throw new SaveException();
+                }
+
+                try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        int id = generatedKeys.getInt(1);
+
+                        // Create new Comment with id
+                        Comment inserted = new Comment(id, comment.getName(), comment.getText());
+                        return inserted;
+                    }
+                    else {
+                        throw new SaveException("Could not retrieve generated ID.");
+                    }
+                }
+            }
+
+        }
+        catch (SQLException | DatabaseException e) {
+            throw new SaveException(e);
+        }
     }
 
     @Override
