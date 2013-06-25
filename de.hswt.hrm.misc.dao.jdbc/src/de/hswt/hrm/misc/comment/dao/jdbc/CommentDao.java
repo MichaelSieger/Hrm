@@ -33,10 +33,10 @@ public class CommentDao implements ICommentDao {
             try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
                 ResultSet result = stmt.executeQuery();
 
-                Collection<Comment> evaluations = fromResultSet(result);
+                Collection<Comment> comments = fromResultSet(result);
                 DbUtils.closeQuietly(result);
 
-                return evaluations;
+                return comments;
             }
         }
         catch (SQLException e) {
@@ -117,8 +117,33 @@ public class CommentDao implements ICommentDao {
 
     @Override
     public void update(Comment comment) throws ElementNotFoundException, SaveException {
-        // TODO Auto-generated method stub
+        checkNotNull(comment, "Comment must not be null.");
 
+        if (comment.getId() < 0) {
+            throw new ElementNotFoundException("Element has no valid ID.");
+        }
+
+        SqlQueryBuilder builder = new SqlQueryBuilder();
+        builder.update(TABLE_NAME, Fields.NAME, Fields.TEXT);
+        builder.where(Fields.ID);
+
+        final String query = builder.toString();
+
+        try (Connection con = DatabaseFactory.getConnection()) {
+            try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
+                stmt.setParameter(Fields.ID, comment.getId());
+                stmt.setParameter(Fields.NAME, comment.getName());
+                stmt.setParameter(Fields.TEXT, comment.getText());
+
+                int affectedRows = stmt.executeUpdate();
+                if (affectedRows != 1) {
+                    throw new SaveException();
+                }
+            }
+        }
+        catch (SQLException | DatabaseException e) {
+            throw new SaveException(e);
+        }
     }
 
     private Collection<Comment> fromResultSet(ResultSet rs) throws SQLException {
