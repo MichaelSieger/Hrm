@@ -37,6 +37,8 @@ import org.eclipse.ui.forms.widgets.Section;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.base.Optional;
+
 import de.hswt.hrm.catalog.model.Activity;
 import de.hswt.hrm.catalog.model.Catalog;
 import de.hswt.hrm.catalog.model.Current;
@@ -100,6 +102,8 @@ public class CatalogAssignmentComposite extends Composite {
     private List<Current> tempCurrent;
 
     private List<Activity> tempActivity;
+    
+    private Collection<Catalog> catalogs;
 
     private Catalog selectedCatalog;
 
@@ -852,6 +856,36 @@ public class CatalogAssignmentComposite extends Composite {
     private void updateSearchTableFilter(ListViewer viewer, String filterString) {
         searchFilter.setSearchString(filterString);
         viewer.refresh();
+    }
+    
+    public void addCatalog() {
+        Catalog catalog = null;
+
+        Optional<Catalog> newCatalog = CatalogPartUtil.showWizardForAssignment(context,
+                shellProvider.getShell(), Optional.fromNullable(catalog));
+
+        if (newCatalog.isPresent()) {
+            catalogsFromDB.add(newCatalog.get());
+           this.catalog.refresh();
+        }
+    }
+    public void editCatalog() {
+    	IStructuredSelection selection = (IStructuredSelection) catalog.getSelection();
+        Catalog selectedCatalog = (Catalog)selection.getFirstElement();
+        if (selectedCatalog == null) {
+            return;
+        }
+//   FIXME   try{
+//    	  catalogService.refresh(selectedCatalog);
+//    	  Optional<Catalog> updatedCatalog = CatalogPartUtil.showWizardForAssignment(context,
+//    	  shellProvider.getShell(), Optional.of(selectedCatalog));
+//		
+//		 if (updatedCatalog.isPresent()) {
+//			 this.catalog.refresh();
+//		 }
+//      } catch (DatabaseException e) {
+//          LOG.error("Could not retrieve the Catalog from database.", e);
+//         }
     }
 
 }

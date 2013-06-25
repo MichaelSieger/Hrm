@@ -90,6 +90,8 @@ public class PhotoWizardPageOne extends WizardPage {
 	private Canvas canvas;
 	private final FormToolkit formToolkit = new FormToolkit(Display.getDefault());
 
+	private Text newEditor;
+	
 	private Label lblNewLabel;
 
 	/**
@@ -222,6 +224,8 @@ public class PhotoWizardPageOne extends WizardPage {
 		final int EDITABLECOLUMN = 0;
 		
 		photosTable.addSelectionListener(new SelectionAdapter() {
+
+
 			public void widgetSelected(SelectionEvent e) {
 				// Clean up any previous editor control
 				Control oldEditor = editor.getEditor();
@@ -232,7 +236,7 @@ public class PhotoWizardPageOne extends WizardPage {
 				if (item == null) return;
 		
 				// The control that will be the editor must be a child of the Table
-				Text newEditor = new Text(photosTable, SWT.NONE);
+				newEditor = new Text(photosTable, SWT.NONE);
 				newEditor.setText(item.getText(EDITABLECOLUMN));
 				newEditor.addModifyListener(new ModifyListener() {
 					public void modifyText(ModifyEvent me) {
@@ -301,7 +305,10 @@ public class PhotoWizardPageOne extends WizardPage {
 			photos.remove(photosTable.getSelectionIndex());
 		}
 		photosTable.remove(photosTable.getSelectionIndex());
+		photosTable.deselectAll();
 		photosTable.redraw();
+		
+		
 		
 		
 	}
