@@ -13,13 +13,14 @@ import com.google.common.base.Optional;
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.SaveException;
 import de.hswt.hrm.misc.comment.model.Comment;
+import de.hswt.hrm.misc.comment.service.CommentService;
 
 public class CommentWizard extends Wizard {
 
     private static final Logger LOG = LoggerFactory.getLogger(CommentWizard.class);
 
-//    @Inject
-//    private CommentService commentService;
+    @Inject
+    private CommentService commentService;
 
     private CommentWizardPageOne first;
     private Optional<Comment> comment;
@@ -56,13 +57,13 @@ public class CommentWizard extends Wizard {
     private boolean insertNewComment() {
 
         Comment c = new Comment(first.getName(), first.getDesc());
-//        try {
-//            this.comment = Optional.of(commentService.insert(c));
-//        }
-//        catch (SaveException e2) {
-//            LOG.error("An eror occured", e2);
-//            return false;
-//        }
+        // try {
+        // this.comment = Optional.of(commentService.insert(c));
+        // }
+        // catch (SaveException e2) {
+        // LOG.error("An eror occured", e2);
+        // return false;
+        // }
 
         return true;
 
@@ -71,15 +72,15 @@ public class CommentWizard extends Wizard {
     private boolean editExistingComment() {
         Comment e = this.comment.get();
 
-//        try {
-//            e = setValues(comment);
-//            commentService.update(e);
-//            comment = Optional.of(e);
-//        }
-//        catch (DatabaseException de) {
-//            LOG.error("An error occured: ", de);
-//            return false;
-//        }
+        // try {
+        // e = setValues(comment);
+        // commentService.update(e);
+        // comment = Optional.of(e);
+        // }
+        // catch (DatabaseException de) {
+        // LOG.error("An error occured: ", de);
+        // return false;
+        // }
 
         return true;
     }

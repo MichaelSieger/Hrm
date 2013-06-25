@@ -79,4 +79,5 @@
   <addons xmi:id="_EfRnAM-7EeKqm6O5b6d0Eg" elementId="de.hswt.hrm.evaluation.service.SummaryService" contributionURI="bundleclass://de.hswt.hrm.summary.service/de.hswt.hrm.summary.service.SummaryService"/>
   <addons xmi:id="_-NaqoNsvEeKBZrWNA35Tdw" elementId="de.hswt.hrm.inspection.service.InspectionService" contributionURI="bundleclass://de.hswt.hrm.inspection.service/de.hswt.hrm.inspection.service.InspectionService"/>
   <addons xmi:id="_-kkogNwCEeKU8riuEE1Xng" elementId="de.hswt.hrm.layout.service.LayoutService" contributionURI="bundleclass://de.hswt.hrm.inspection.service/de.hswt.hrm.inspection.service.LayoutService"/>
+  <addons xmi:id="_cWZsEN3QEeK0R4aT_ZH-QA" elementId="de.hswt.hrm.misc.comment.service.commentService" contributionURI="bundleclass://de.hswt.hrm.misc.service/de.hswt.hrm.misc.comment.service.CommentService"/>
 </application:Application>
