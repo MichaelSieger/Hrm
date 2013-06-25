@@ -33,6 +33,9 @@ import de.hswt.hrm.scheme.model.ThumbnailImage;
  */
 public class SchemeGrid extends DoubleBufferedCanvas {
 	
+	
+	private static final int MIN_WIDTH = 40;
+	private static final int MIN_HEIGHT = 20;
 	private static final int ENLARGE_TRESH = 5;
 	private static final int ENLARGE = 5;
 	private static final int OUTLINE_WIDTH = 5;
