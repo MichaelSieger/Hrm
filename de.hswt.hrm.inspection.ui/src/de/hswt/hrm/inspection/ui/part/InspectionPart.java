@@ -221,8 +221,7 @@ public class InspectionPart {
                     public SchemeGridItem apply(SchemeComponent c) {
                         try {
                             return new SchemeGridItem(ComponentConverter.convert(
-                                    tabFolder.getDisplay(), c.getComponent()), c
-                                    .getDirection(), c.getX(), c.getY());
+                                    tabFolder.getDisplay(), c.getComponent()), c);
                         }
                         catch (IOException e) {
                             LOG.error(RENDER_ERROR);
