@@ -2,6 +2,7 @@
 -- This script generates the HRM Database Scheme 
 -- -----------------------------------------------------
 
+
 -- -----------------------------------------------------
 -- Table `Contact`
 -- -----------------------------------------------------
@@ -393,18 +394,18 @@ ENGINE = InnoDB;
 -- Table `Catalog_Current`
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `Catalog_Current` (
-  `Category_Current_State_Target_FK` INT NOT NULL ,
-  `Category_Current_State_Current_FK` INT NOT NULL ,
-  INDEX `Category_Current_State_Current_IDx` (`Category_Current_State_Current_FK` ASC) ,
-  INDEX `Category_Current_Catalog_IDx` (`Category_Current_State_Target_FK` ASC) ,
-  PRIMARY KEY (`Category_Current_State_Target_FK`, `Category_Current_State_Current_FK`) ,
-  CONSTRAINT `Category_Current_State_Current_FK`
-    FOREIGN KEY (`Category_Current_State_Current_FK` )
+  `Catalog_Current_State_Target_FK` INT NOT NULL ,
+  `Catalog_Current_State_Current_FK` INT NOT NULL ,
+  INDEX `Category_Current_State_Current_IDx` (`Catalog_Current_State_Current_FK` ASC) ,
+  INDEX `Category_Current_Catalog_IDx` (`Catalog_Current_State_Target_FK` ASC) ,
+  PRIMARY KEY (`Catalog_Current_State_Target_FK`, `Catalog_Current_State_Current_FK`) ,
+  CONSTRAINT `Catalog_Current_State_Current_FK`
+    FOREIGN KEY (`Catalog_Current_State_Current_FK` )
     REFERENCES `State_Current` (`State_Current_ID` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `Category_Current_State_Target_FK`
-    FOREIGN KEY (`Category_Current_State_Target_FK` )
+  CONSTRAINT `Catalog_Current_State_Target_FK`
+    FOREIGN KEY (`Catalog_Current_State_Target_FK` )
     REFERENCES `State_Target` (`State_Target_ID` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
@@ -417,8 +418,8 @@ ENGINE = InnoDB;
 CREATE  TABLE IF NOT EXISTS `Catalog_Target` (
   `Catalog_Target_State_Target_FK` INT NOT NULL ,
   `Catalog_Target_Catalog_FK` INT NOT NULL ,
-  INDEX `Catalog_Target_State_Target_IDx` (`Catalog_Target_State_Target_FK` ASC) ,
-  INDEX `Catalog_Target_Catalog_IDx` (`Catalog_Target_Catalog_FK` ASC) ,
+  INDEX `Category_Target_State_Target_IDx` (`Catalog_Target_State_Target_FK` ASC) ,
+  INDEX `Category_Target_Catalog_IDx` (`Catalog_Target_Catalog_FK` ASC) ,
   PRIMARY KEY (`Catalog_Target_State_Target_FK`, `Catalog_Target_Catalog_FK`) ,
   CONSTRAINT `Catalog_Target_State_Target_FK`
     FOREIGN KEY (`Catalog_Target_State_Target_FK` )
@@ -437,18 +438,18 @@ ENGINE = InnoDB;
 -- Table `Catalog_Activity`
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `Catalog_Activity` (
-  `Category_Activity_State_Current_FK` INT NOT NULL ,
-  `Category_Activity_State_Activity_FK` INT NOT NULL ,
-  INDEX `Category_Activity_State_Activity_IDx` (`Category_Activity_State_Activity_FK` ASC) ,
-  INDEX `Category_Activity_Catalog_IDx` (`Category_Activity_State_Current_FK` ASC) ,
-  PRIMARY KEY (`Category_Activity_State_Current_FK`, `Category_Activity_State_Activity_FK`) ,
-  CONSTRAINT `Category_Activity_State_Activity_FK`
-    FOREIGN KEY (`Category_Activity_State_Activity_FK` )
+  `Catalog_Activity_State_Current_FK` INT NOT NULL ,
+  `Catalog_Activity_State_Activity_FK` INT NOT NULL ,
+  INDEX `Category_Activity_State_Activity_IDx` (`Catalog_Activity_State_Activity_FK` ASC) ,
+  INDEX `Category_Activity_Catalog_IDx` (`Catalog_Activity_State_Current_FK` ASC) ,
+  PRIMARY KEY (`Catalog_Activity_State_Current_FK`, `Catalog_Activity_State_Activity_FK`) ,
+  CONSTRAINT `Catalog_Activity_State_Activity_FK`
+    FOREIGN KEY (`Catalog_Activity_State_Activity_FK` )
     REFERENCES `State_Activity` (`State_Activity_ID` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `Category_Activity_State_Current_FK`
-    FOREIGN KEY (`Category_Activity_State_Current_FK` )
+  CONSTRAINT `Catalog_Activity_State_Current_FK`
+    FOREIGN KEY (`Catalog_Activity_State_Current_FK` )
     REFERENCES `State_Current` (`State_Current_ID` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
