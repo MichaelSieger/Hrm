@@ -1,6 +1,5 @@
 package de.hswt.hrm.scheme.ui.tree;
 
-import java.util.Collection;
 import java.util.List;
 
 import org.eclipse.swt.graphics.Image;
