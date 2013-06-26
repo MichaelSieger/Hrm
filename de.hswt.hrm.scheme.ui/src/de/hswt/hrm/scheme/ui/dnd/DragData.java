@@ -35,8 +35,8 @@ public class DragData
     private final int renderedComponentIndex;
     
     private final int id;
-    private int x = -1;
-    private int y = -1;
+    private final int x;
+    private final int y;
     private final int schemeId;
     private final int componentId;
     private final Direction direction;
@@ -45,10 +45,8 @@ public class DragData
         super();
         this.renderedComponentIndex = renderedComponentIndex;
         id = schemeComponent.getId();
-        if(schemeComponent.hasValidPosition()){
-            x = schemeComponent.getX();
-            y = schemeComponent.getY();
-        }
+        x = schemeComponent.getX();
+        y = schemeComponent.getY();
         schemeId = (schemeComponent.getScheme() != null ? schemeComponent.getScheme().getId() : -1);
         componentId = (schemeComponent.getComponent() != null ? schemeComponent.getComponent().getId() : -1);
         direction = schemeComponent.getDirection();
