@@ -167,6 +167,23 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
+-- Table `Scheme`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `Scheme` (
+  `Scheme_ID` INT NOT NULL AUTO_INCREMENT ,
+  `Scheme_Timestamp` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
+  `Scheme_Plant_FK` INT NULL ,
+  PRIMARY KEY (`Scheme_ID`) ,
+  INDEX `Scheme_Plant_IDx` (`Scheme_Plant_FK` ASC) ,
+  CONSTRAINT `Scheme_Plant_FK`
+    FOREIGN KEY (`Scheme_Plant_FK` )
+    REFERENCES `Plant` (`Plant_ID` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
 -- Table `Catalog`
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `Catalog` (
@@ -256,6 +273,32 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
+-- Table `Scheme_Component`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `Scheme_Component` (
+  `Scheme_Component_ID` INT NOT NULL AUTO_INCREMENT ,
+  `Scheme_Component_Scheme_FK` INT NULL ,
+  `Scheme_Component_Component_FK` INT NULL ,
+  `Scheme_Component_X_Position` INT NULL ,
+  `Scheme_Component_Y_Position` INT NULL ,
+  `Scheme_Component_Direction` INT NULL ,
+  PRIMARY KEY (`Scheme_Component_ID`) ,
+  INDEX `Scheme_Component_Scheme_FK` (`Scheme_Component_Scheme_FK` ASC) ,
+  INDEX `Scheme_Component_Component_FK` (`Scheme_Component_Component_FK` ASC) ,
+  CONSTRAINT `Scheme_Component_Scheme_FK`
+    FOREIGN KEY (`Scheme_Component_Scheme_FK` )
+    REFERENCES `Scheme` (`Scheme_ID` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `Scheme_Component_Component_FK`
+    FOREIGN KEY (`Scheme_Component_Component_FK` )
+    REFERENCES `Component` (`Component_ID` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
 -- Table `Biological_Flag`
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `Biological_Flag` (
@@ -284,7 +327,7 @@ CREATE  TABLE IF NOT EXISTS `Biological_Rating` (
   INDEX `Biological_Rating_Flag_FK` (`Biological_Rating_Flag_FK` ASC) ,
   CONSTRAINT `Biological_Rating_Component_FK`
     FOREIGN KEY (`Biological_Rating_Component_FK` )
-    REFERENCES `Component` (`Component_ID` )
+    REFERENCES `Scheme_Component` (`Scheme_Component_ID` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `Biological_Rating_Report_FK`
@@ -311,49 +354,6 @@ CREATE  TABLE IF NOT EXISTS `Session` (
   UNIQUE INDEX `Session_Uuid_UNIQUE` (`Session_Uuid` ASC) )
 ENGINE = InnoDB
 PACK_KEYS = DEFAULT;
-
-
--- -----------------------------------------------------
--- Table `Scheme`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `Scheme` (
-  `Scheme_ID` INT NOT NULL AUTO_INCREMENT ,
-  `Scheme_Timestamp` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
-  `Scheme_Plant_FK` INT NULL ,
-  PRIMARY KEY (`Scheme_ID`) ,
-  INDEX `Scheme_Plant_IDx` (`Scheme_Plant_FK` ASC) ,
-  CONSTRAINT `Scheme_Plant_FK`
-    FOREIGN KEY (`Scheme_Plant_FK` )
-    REFERENCES `Plant` (`Plant_ID` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `Scheme_Component`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `Scheme_Component` (
-  `Scheme_Component_ID` INT NOT NULL AUTO_INCREMENT ,
-  `Scheme_Component_Scheme_FK` INT NULL ,
-  `Scheme_Component_Component_FK` INT NULL ,
-  `Scheme_Component_X_Position` INT NULL ,
-  `Scheme_Component_Y_Position` INT NULL ,
-  `Scheme_Component_Direction` INT NULL ,
-  PRIMARY KEY (`Scheme_Component_ID`) ,
-  INDEX `Scheme_Component_Scheme_FK` (`Scheme_Component_Scheme_FK` ASC) ,
-  INDEX `Scheme_Component_Component_FK` (`Scheme_Component_Component_FK` ASC) ,
-  CONSTRAINT `Scheme_Component_Scheme_FK`
-    FOREIGN KEY (`Scheme_Component_Scheme_FK` )
-    REFERENCES `Scheme` (`Scheme_ID` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `Scheme_Component_Component_FK`
-    FOREIGN KEY (`Scheme_Component_Component_FK` )
-    REFERENCES `Component` (`Component_ID` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
@@ -415,18 +415,18 @@ ENGINE = InnoDB;
 -- Table `Catalog_Target`
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `Catalog_Target` (
-  `Category_Target_State_Target_FK` INT NOT NULL ,
-  `Category_Target_Catalog_FK` INT NOT NULL ,
-  INDEX `Category_Target_State_Target_IDx` (`Category_Target_State_Target_FK` ASC) ,
-  INDEX `Category_Target_Catalog_IDx` (`Category_Target_Catalog_FK` ASC) ,
-  PRIMARY KEY (`Category_Target_State_Target_FK`, `Category_Target_Catalog_FK`) ,
-  CONSTRAINT `Category_Target_State_Target_FK`
-    FOREIGN KEY (`Category_Target_State_Target_FK` )
+  `Catalog_Target_State_Target_FK` INT NOT NULL ,
+  `Catalog_Target_Catalog_FK` INT NOT NULL ,
+  INDEX `Catalog_Target_State_Target_IDx` (`Catalog_Target_State_Target_FK` ASC) ,
+  INDEX `Catalog_Target_Catalog_IDx` (`Catalog_Target_Catalog_FK` ASC) ,
+  PRIMARY KEY (`Catalog_Target_State_Target_FK`, `Catalog_Target_Catalog_FK`) ,
+  CONSTRAINT `Catalog_Target_State_Target_FK`
+    FOREIGN KEY (`Catalog_Target_State_Target_FK` )
     REFERENCES `State_Target` (`State_Target_ID` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `Category_Target_Catalog_FK`
-    FOREIGN KEY (`Category_Target_Catalog_FK` )
+  CONSTRAINT `Catalog_Target_Catalog_FK`
+    FOREIGN KEY (`Catalog_Target_Catalog_FK` )
     REFERENCES `Catalog` (`Catalog_ID` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
@@ -488,7 +488,7 @@ CREATE  TABLE IF NOT EXISTS `Component_Physical_Rating` (
   INDEX `Component_Physical_Rating_Report_FK` (`Component_Physical_Rating_Report_FK` ASC) ,
   CONSTRAINT `Component_Physical_Rating_Component_FK`
     FOREIGN KEY (`Component_Physical_Rating_Component_FK` )
-    REFERENCES `Component` (`Component_ID` )
+    REFERENCES `Scheme_Component` (`Scheme_Component_ID` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `Component_Physical_Rating_Report_FK`
@@ -530,7 +530,7 @@ CREATE  TABLE IF NOT EXISTS `Performance` (
   INDEX `Component_Catalog_Priority_FK` (`Performance_Priority_FK` ASC) ,
   CONSTRAINT `Component_Catalog_Component_FK`
     FOREIGN KEY (`Performance_Component_FK` )
-    REFERENCES `Component` (`Component_ID` )
+    REFERENCES `Scheme_Component` (`Scheme_Component_ID` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `Component_Catalog_Target_FK`
@@ -585,9 +585,9 @@ CREATE  TABLE IF NOT EXISTS `Target_Current` (
   `Target_Current_Report_FK` INT NOT NULL ,
   `Target_Current_Performance_FK` INT NOT NULL ,
   PRIMARY KEY (`Target_Current_Report_FK`, `Target_Current_Performance_FK`) ,
-  INDEX `Target_Current_Component_Catalog_FK` (`Target_Current_Performance_FK` ASC) ,
+  INDEX `Target_Current_Performance_FK` (`Target_Current_Performance_FK` ASC) ,
   INDEX `Target_Current_Report_FK` (`Target_Current_Report_FK` ASC) ,
-  CONSTRAINT `Target_Current_Performance_FK`
+  CONSTRAINT `Target_Current_Component_Catalog_FK`
     FOREIGN KEY (`Target_Current_Performance_FK` )
     REFERENCES `Performance` (`Performance_ID` )
     ON DELETE NO ACTION
