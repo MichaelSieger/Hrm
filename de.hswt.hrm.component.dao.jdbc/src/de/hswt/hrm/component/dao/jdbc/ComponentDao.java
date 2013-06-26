@@ -106,7 +106,11 @@ public class ComponentDao implements IComponentDao {
     	checkArgument(id >= 0, "ID must be valid.");
     	
     	SqlQueryBuilder builder = new SqlQueryBuilder();
-    	builder.select(ATTRIBUTE_TABLE_NAME, AttributeFields.ID, AttributeFields.NAME);
+    	builder.select(
+    			ATTRIBUTE_TABLE_NAME, 
+    			AttributeFields.ID, 
+    			AttributeFields.NAME, 
+    			AttributeFields.FK_COMPONENT);
     	builder.where(AttributeFields.ID);
     	
     	String query = builder.toString();
