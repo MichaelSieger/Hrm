@@ -17,12 +17,12 @@ import de.hswt.hrm.scheme.ui.dnd.DragData;
  * @author Michael Sieger
  *
  */
-public class RenderedComponentTreeItem extends SchemeTreeItem{
+public class SchemeComponentTreeItem extends SchemeTreeItem{
 	
 	private final RenderedComponent comp;
 	private final Direction dir;
 	
-	public RenderedComponentTreeItem(ComponentTreeItem parent, RenderedComponent comp, Direction dir){
+	public SchemeComponentTreeItem(ComponentTreeItem parent, RenderedComponent comp, Direction dir){
 		super(parent);
 		this.comp = comp;
 		this.dir = dir;

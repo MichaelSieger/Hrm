@@ -39,7 +39,7 @@ public class ComponentTreeItem extends SchemeTreeItem{
 	
 	private void addDirection(List<SchemeTreeItem> list, Direction d){
 		if(c.getByDirection(d) != null){
-			list.add(new RenderedComponentTreeItem(this, c, d));
+			list.add(new SchemeComponentTreeItem(this, c, d));
 		}
 	}
 
