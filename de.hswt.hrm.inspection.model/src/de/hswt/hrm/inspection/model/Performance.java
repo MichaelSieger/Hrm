@@ -1,49 +1,55 @@
 package de.hswt.hrm.inspection.model;
 
+import de.hswt.hrm.catalog.model.Activity;
+import de.hswt.hrm.catalog.model.Current;
+import de.hswt.hrm.catalog.model.Target;
+import de.hswt.hrm.misc.priority.model.Priority;
+import de.hswt.hrm.scheme.model.SchemeComponent;
+
 public final class Performance {
 	private final int id;
-	private final int schemeComponentId;
-	private final int targetId;
-	private final int currentId;
-	private final int activityId;
-	private final int priorityId;
+	private final SchemeComponent schemeComponent;
+	private final Target target;
+	private final Current current;
+	private final Activity activity;
+	private final Priority priority;
 	
-	public Performance(final int id, final int schemeComponentId, final int targetId,
-			final int currentId, final int activityId, final int priorityId) {
+	public Performance(final int id, final SchemeComponent schemeComponent, final Target target,
+			final Current current, final Activity activity, final Priority priority) {
 		this.id = id;
-		this.schemeComponentId = schemeComponentId;
-		this.targetId = targetId;
-		this.currentId = currentId;
-		this.activityId = activityId;
-		this.priorityId = priorityId;
+		this.schemeComponent = schemeComponent;
+		this.target = target;
+		this.current = current;
+		this.activity = activity;
+		this.priority = priority;
 	}
 	
-	public Performance(final int schemeComponentId, final int targetId,
-			final int currentId, final int activityId, final int priorityId) {
-		this(-1, schemeComponentId, targetId, currentId, activityId, priorityId);
+	public Performance(final SchemeComponent schemeComponent, final Target target,
+			final Current current, final Activity activity, final Priority priority) {
+		this(-1, schemeComponent, target, current, activity, priority);
 	}
 	
 	public int getId() {
 		return id;
 	}
 
-	public int getSchemeComponentId() {
-		return schemeComponentId;
+	public SchemeComponent getSchemeComponent() {
+		return schemeComponent;
 	}
 
-	public int getTargetId() {
-		return targetId;
+	public Target getTarget() {
+		return target;
 	}
 
-	public int getCurrentId() {
-		return currentId;
+	public Current getCurrent() {
+		return current;
 	}
 
-	public int getActivityId() {
-		return activityId;
+	public Activity getActivity() {
+		return activity;
 	}
 
-	public int getPriorityId() {
-		return priorityId;
+	public Priority getPriority() {
+		return priority;
 	}
 }

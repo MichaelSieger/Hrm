@@ -5,13 +5,16 @@ Bundle-SymbolicName: de.hswt.hrm.inspection.model
 Bundle-Version: 0.0.1.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: de.hswt.hrm.inspection.model
-Import-Package: de.hswt.hrm.common.observer,
+Import-Package: de.hswt.hrm.catalog.model,
+ de.hswt.hrm.common.observer,
  de.hswt.hrm.component.model,
  de.hswt.hrm.contact.dao.core,
  de.hswt.hrm.contact.model,
  de.hswt.hrm.inspection.model,
+ de.hswt.hrm.misc.priority.model,
  de.hswt.hrm.photo.model,
  de.hswt.hrm.plant.dao.core,
- de.hswt.hrm.plant.model
+ de.hswt.hrm.plant.model,
+ de.hswt.hrm.scheme.model
 Require-Bundle: com.google.guava;bundle-version="10.0.1",
  javax.inject;bundle-version="1.0.0"
