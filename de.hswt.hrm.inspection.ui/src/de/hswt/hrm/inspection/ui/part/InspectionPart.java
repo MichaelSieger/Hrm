@@ -37,6 +37,7 @@ import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.inspection.model.BiologicalRating;
 import de.hswt.hrm.inspection.model.Inspection;
 import de.hswt.hrm.plant.model.Plant;
+import de.hswt.hrm.report.latex.service.ReportService;
 import de.hswt.hrm.scheme.model.Scheme;
 import de.hswt.hrm.scheme.model.SchemeComponent;
 import de.hswt.hrm.scheme.service.ComponentConverter;
@@ -45,279 +46,283 @@ import de.hswt.hrm.scheme.ui.SchemeGridItem;
 
 public class InspectionPart {
 
-    private static final String RENDER_ERROR = "Error on rendering image";
+	private static final String RENDER_ERROR = "Error on rendering image";
 
-    private final static Logger LOG = LoggerFactory.getLogger(InspectionPart.class);
+	private final static Logger LOG = LoggerFactory
+			.getLogger(InspectionPart.class);
 
-    @Inject
-    private IEclipseContext context;
+	@Inject
+	private IEclipseContext context;
 
-    @Inject
-    private SchemeService schemeService;
+	@Inject
+	private SchemeService schemeService;
 
-    private FormToolkit formToolkit = new FormToolkit(Display.getDefault());
+	@Inject
+	private ReportService reportService;
 
-    private Form form;
+	private FormToolkit formToolkit = new FormToolkit(Display.getDefault());
 
-    private ReportsOverviewComposite reportsOverviewComposite;
+	private Form form;
 
-    private TabFolder tabFolder;
+	private ReportsOverviewComposite reportsOverviewComposite;
 
-    private TabItem overviewTab;
-    private TabItem generalTab;
-    private TabItem biolocicalRatingTab;
-    private TabItem physicalRatingTab;
-    private TabItem performanceTab;
+	private TabFolder tabFolder;
 
-    private ActionContributionItem saveContribution;
-    private ActionContributionItem addContribution;
-    private ActionContributionItem copyContribution;
-    private ActionContributionItem editContribution;
-    private ActionContributionItem evaluateContribution;
+	private TabItem overviewTab;
+	private TabItem generalTab;
+	private TabItem biolocicalRatingTab;
+	private TabItem physicalRatingTab;
+	private TabItem performanceTab;
 
-    private ReportGeneralComposite reportGeneralComposite;
+	private ActionContributionItem saveContribution;
+	private ActionContributionItem addContribution;
+	private ActionContributionItem copyContribution;
+	private ActionContributionItem editContribution;
+	private ActionContributionItem evaluateContribution;
 
-    private ComponentSelectionComposite performanceComposite;
-    private ComponentSelectionComposite physicalComposite;
-    private ComponentSelectionComposite biologicalComposite;
-    
-    private Inspection selectedInspection;
-    public InspectionPart() {
-        // toolkit can be created in PostConstruct, but then then
-        // WindowBuilder is unable to parse the code
-        formToolkit.dispose();
-        formToolkit = FormUtil.createToolkit();
-    }
+	private ReportGeneralComposite reportGeneralComposite;
 
-    /**
-     * Create contents of the view part.
-     */
-    @PostConstruct
-    public void createControls(final Composite parent) {
-        parent.setBackgroundMode(SWT.INHERIT_DEFAULT);
+	private ComponentSelectionComposite performanceComposite;
+	private ComponentSelectionComposite physicalComposite;
+	private ComponentSelectionComposite biologicalComposite;
 
-        Composite composite = new Composite(parent, SWT.NONE);
-        composite.setBackgroundMode(SWT.INHERIT_DEFAULT);
-        composite.setLayout(new FillLayout());
+	private Inspection selectedInspection;
 
-        form = formToolkit.createForm(composite);
-        form.getHead().setOrientation(SWT.RIGHT_TO_LEFT);
-        form.getBody().setBackgroundMode(SWT.INHERIT_FORCE);
-        form.setBackgroundMode(SWT.INHERIT_DEFAULT);
-        formToolkit.paintBordersFor(form);
-        form.setText("Inspection");
-        FillLayout fillLayout = new FillLayout(SWT.HORIZONTAL);
-        fillLayout.marginHeight = 5;
-        fillLayout.marginWidth = 5;
-        form.getBody().setLayout(fillLayout);
-        formToolkit.decorateFormHeading(form);
-        
-        tabFolder = new TabFolder(form.getBody(), SWT.NONE);
-        tabFolder.setBackgroundMode(SWT.INHERIT_FORCE);
-        tabFolder.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                if (tabFolder.getItem(tabFolder.getSelectionIndex()).equals(generalTab)) {
-                	setInspection(reportsOverviewComposite.getSelectedInspection());
-                }
-            }
-        });
+	public InspectionPart() {
+		// toolkit can be created in PostConstruct, but then then
+		// WindowBuilder is unable to parse the code
+		formToolkit.dispose();
+		formToolkit = FormUtil.createToolkit();
+		LOG.debug("Injected ReportService to InspectionPart");
+	}
 
-        formToolkit.adapt(tabFolder);
-        formToolkit.paintBordersFor(tabFolder);
+	/**
+	 * Create contents of the view part.
+	 */
+	@PostConstruct
+	public void createControls(final Composite parent) {
+		parent.setBackgroundMode(SWT.INHERIT_DEFAULT);
 
-        overviewTab = new TabItem(tabFolder, SWT.NONE);
-        overviewTab.setText("Overview");
+		Composite composite = new Composite(parent, SWT.NONE);
+		composite.setBackgroundMode(SWT.INHERIT_DEFAULT);
+		composite.setLayout(new FillLayout());
 
-        // reports overview composite
-        reportsOverviewComposite = new ReportsOverviewComposite(tabFolder);
-        ContextInjectionFactory.inject(reportsOverviewComposite, context);
-        overviewTab.setControl(reportsOverviewComposite);
+		form = formToolkit.createForm(composite);
+		form.getHead().setOrientation(SWT.RIGHT_TO_LEFT);
+		form.getBody().setBackgroundMode(SWT.INHERIT_FORCE);
+		form.setBackgroundMode(SWT.INHERIT_DEFAULT);
+		formToolkit.paintBordersFor(form);
+		form.setText("Inspection");
+		FillLayout fillLayout = new FillLayout(SWT.HORIZONTAL);
+		fillLayout.marginHeight = 5;
+		fillLayout.marginWidth = 5;
+		form.getBody().setLayout(fillLayout);
+		formToolkit.decorateFormHeading(form);
 
-        generalTab = new TabItem(tabFolder, SWT.NONE);
-        generalTab.setText("General");
+		tabFolder = new TabFolder(form.getBody(), SWT.NONE);
+		tabFolder.setBackgroundMode(SWT.INHERIT_FORCE);
+		tabFolder.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				if (tabFolder.getItem(tabFolder.getSelectionIndex()).equals(
+						generalTab)) {
+					setInspection(reportsOverviewComposite
+							.getSelectedInspection());
+				}
+			}
+		});
 
+		formToolkit.adapt(tabFolder);
+		formToolkit.paintBordersFor(tabFolder);
 
-        reportGeneralComposite = new ReportGeneralComposite(tabFolder, this);
+		overviewTab = new TabItem(tabFolder, SWT.NONE);
+		overviewTab.setText("Overview");
 
-        ContextInjectionFactory.inject(reportGeneralComposite, context);
-        generalTab.setControl(reportGeneralComposite);
+		// reports overview composite
+		reportsOverviewComposite = new ReportsOverviewComposite(tabFolder);
+		ContextInjectionFactory.inject(reportsOverviewComposite, context);
+		overviewTab.setControl(reportsOverviewComposite);
 
-        biolocicalRatingTab = new TabItem(tabFolder, SWT.NONE);
-        biolocicalRatingTab.setText("Biological rating");
+		generalTab = new TabItem(tabFolder, SWT.NONE);
+		generalTab.setText("General");
 
-        biologicalComposite = new ComponentSelectionComposite(tabFolder,
-                ReportBiologicalComposite.class);
-        ContextInjectionFactory.inject(biologicalComposite, context);
-        biolocicalRatingTab.setControl(biologicalComposite);
+		reportGeneralComposite = new ReportGeneralComposite(tabFolder, this);
 
-        physicalRatingTab = new TabItem(tabFolder, SWT.NONE);
-        physicalRatingTab.setText("Physical rating");
+		ContextInjectionFactory.inject(reportGeneralComposite, context);
+		generalTab.setControl(reportGeneralComposite);
 
-        physicalComposite = new ComponentSelectionComposite(tabFolder,
-                ReportPhysicalComposite.class);
-        ContextInjectionFactory.inject(physicalComposite, context);
-        physicalRatingTab.setControl(physicalComposite);
+		biolocicalRatingTab = new TabItem(tabFolder, SWT.NONE);
+		biolocicalRatingTab.setText("Biological rating");
 
-        performanceTab = new TabItem(tabFolder, SWT.NONE);
-        performanceTab.setText("Performance");
+		biologicalComposite = new ComponentSelectionComposite(tabFolder,
+				ReportBiologicalComposite.class);
+		ContextInjectionFactory.inject(biologicalComposite, context);
+		biolocicalRatingTab.setControl(biologicalComposite);
 
-        performanceComposite = new ComponentSelectionComposite(tabFolder,
-                ReportPerformanceComposite.class);
-        ContextInjectionFactory.inject(performanceComposite, context);
-        performanceTab.setControl(performanceComposite);
-        tabFolder.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                if (tabFolder.getItem(tabFolder.getSelectionIndex()).equals(overviewTab)) {
-                    showOverviewActions(true);
-                }
-                else {
-                    showOverviewActions(false);
-                }
-            }
-        });
+		physicalRatingTab = new TabItem(tabFolder, SWT.NONE);
+		physicalRatingTab.setText("Physical rating");
 
-        createActions();
-    }
-    
-    private void setInspection(Inspection inspection){
-    	if(selectedInspection != inspection){
-        	selectedInspection = inspection;
-            reportGeneralComposite.setInspection(selectedInspection);
-            if (reportGeneralComposite.refreshGeneralInformation()) {
-                tabFolder.setSelection(generalTab);
-            }
-            else {
-                tabFolder.setSelection(0);
-            }
-            if(inspection != null){
-            	inspection.addPlantObserver(new Observer<Plant>() {
+		physicalComposite = new ComponentSelectionComposite(tabFolder,
+				ReportPhysicalComposite.class);
+		ContextInjectionFactory.inject(physicalComposite, context);
+		physicalRatingTab.setControl(physicalComposite);
+
+		performanceTab = new TabItem(tabFolder, SWT.NONE);
+		performanceTab.setText("Performance");
+
+		performanceComposite = new ComponentSelectionComposite(tabFolder,
+				ReportPerformanceComposite.class);
+		ContextInjectionFactory.inject(performanceComposite, context);
+		performanceTab.setControl(performanceComposite);
+		tabFolder.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				if (tabFolder.getItem(tabFolder.getSelectionIndex()).equals(
+						overviewTab)) {
+					showOverviewActions(true);
+				} else {
+					showOverviewActions(false);
+				}
+			}
+		});
+
+		createActions();
+	}
+
+	private void setInspection(Inspection inspection) {
+		if (selectedInspection != inspection) {
+			selectedInspection = inspection;
+			reportGeneralComposite.setInspection(selectedInspection);
+			if (reportGeneralComposite.refreshGeneralInformation()) {
+				tabFolder.setSelection(generalTab);
+			} else {
+				tabFolder.setSelection(0);
+			}
+			if (inspection != null) {
+				inspection.addPlantObserver(new Observer<Plant>() {
 
 					@Override
 					public void changed(Plant item) {
 						plantChanged(item);
 					}
 				});
-            }
-    	}
-    }
-    
-    private void plantChanged(Plant plant){
-        Scheme scheme;
-        try {
-            scheme = schemeService.findCurrentSchemeByPlant(plant);
-        }
-        catch (ElementNotFoundException e) {
-            // TODO what to do if there is no scheme?
-            throw Throwables.propagate(e);
-        }
-        catch (DatabaseException e) {
-            throw Throwables.propagate(e);
-        }
-        Collection<SchemeGridItem> schemeGridItems = Collections2.transform(
-                scheme.getSchemeComponents(),
-                new Function<SchemeComponent, SchemeGridItem>() {
-                    public SchemeGridItem apply(SchemeComponent c) {
-                        try {
-                            return new SchemeGridItem(ComponentConverter.convert(
-                                    tabFolder.getDisplay(), c.getComponent()), c);
-                        }
-                        catch (IOException e) {
-                            LOG.error(RENDER_ERROR);
-                            return null;
-                        }
-                    }
-                });
-        physicalComposite.setSchemeGridItems(schemeGridItems);
-        biologicalComposite.setSchemeGridItems(schemeGridItems);
-        performanceComposite.setSchemeGridItems(schemeGridItems);
-    }
+			}
+		}
+	}
 
-    protected void showOverviewActions(boolean visible) {
-        addContribution.setVisible(visible);
-        copyContribution.setVisible(visible);
-        editContribution.setVisible(visible);
-        evaluateContribution.setVisible(visible);
-        form.getToolBarManager().update(true);
-    }
+	private void plantChanged(Plant plant) {
+		Scheme scheme;
+		try {
+			scheme = schemeService.findCurrentSchemeByPlant(plant);
+		} catch (ElementNotFoundException e) {
+			// TODO what to do if there is no scheme?
+			throw Throwables.propagate(e);
+		} catch (DatabaseException e) {
+			throw Throwables.propagate(e);
+		}
+		Collection<SchemeGridItem> schemeGridItems = Collections2.transform(
+				scheme.getSchemeComponents(),
+				new Function<SchemeComponent, SchemeGridItem>() {
+					public SchemeGridItem apply(SchemeComponent c) {
+						try {
+							return new SchemeGridItem(ComponentConverter
+									.convert(tabFolder.getDisplay(),
+											c.getComponent()), c);
+						} catch (IOException e) {
+							LOG.error(RENDER_ERROR);
+							return null;
+						}
+					}
+				});
+		physicalComposite.setSchemeGridItems(schemeGridItems);
+		biologicalComposite.setSchemeGridItems(schemeGridItems);
+		performanceComposite.setSchemeGridItems(schemeGridItems);
+	}
 
-    private void createActions() {
-        // TODO translate
-        Action evaluateAction = new Action("Report") {
-            @Override
-            public void run() {
-                super.run();
-                // TODO create latex report
-            }
-        };
-        evaluateAction.setDescription("Edit an exisitng report.");
-        evaluateContribution = new ActionContributionItem(evaluateAction);
-        form.getToolBarManager().add(evaluateContribution);
+	protected void showOverviewActions(boolean visible) {
+		addContribution.setVisible(visible);
+		copyContribution.setVisible(visible);
+		editContribution.setVisible(visible);
+		evaluateContribution.setVisible(visible);
+		form.getToolBarManager().update(true);
+	}
 
-        form.getToolBarManager().add(new Separator());
+	private void createActions() {
+		// TODO translate
+		Action evaluateAction = new Action("Report") {
+			@Override
+			public void run() {
+				super.run();
+				// TODO create latex report
+			}
+		};
+		evaluateAction.setDescription("Edit an exisitng report.");
+		evaluateContribution = new ActionContributionItem(evaluateAction);
+		form.getToolBarManager().add(evaluateContribution);
 
-        Action saveAction = new Action("Save") {
-            @Override
-            public void run() {
-                super.run();
-                reportsOverviewComposite.addInspection();
-            }
-        };
-        saveAction.setDescription("Save the current edited report.");
-        saveAction.setEnabled(false);
-        saveContribution = new ActionContributionItem(saveAction);
-        form.getToolBarManager().add(saveContribution);
+		form.getToolBarManager().add(new Separator());
 
-        form.getToolBarManager().add(new Separator());
+		Action saveAction = new Action("Save") {
+			@Override
+			public void run() {
+				super.run();
+				reportsOverviewComposite.addInspection();
+			}
+		};
+		saveAction.setDescription("Save the current edited report.");
+		saveAction.setEnabled(false);
+		saveContribution = new ActionContributionItem(saveAction);
+		form.getToolBarManager().add(saveContribution);
 
-        Action editAction = new Action("Edit") {
-            @Override
-            public void run() {
-                super.run();
+		form.getToolBarManager().add(new Separator());
 
-                reportGeneralComposite.setInspection(reportsOverviewComposite
-                        .getSelectedInspection());
+		Action editAction = new Action("Edit") {
+			@Override
+			public void run() {
+				super.run();
 
-                if (reportGeneralComposite.refreshGeneralInformation()) {
-                    tabFolder.setSelection(generalTab);
-                }
+				reportGeneralComposite.setInspection(reportsOverviewComposite
+						.getSelectedInspection());
 
-            }
-        };
-        editAction.setDescription("Edit an exisitng report.");
-        editContribution = new ActionContributionItem(editAction);
-        form.getToolBarManager().add(editContribution);
+				if (reportGeneralComposite.refreshGeneralInformation()) {
+					tabFolder.setSelection(generalTab);
+				}
 
-        Action copyAction = new Action("Copy") {
-            @Override
-            public void run() {
-                super.run();
-                // TODO copy a report
-            }
-        };
-        copyAction.setDescription("Add's a new report.");
-        copyAction.setEnabled(false);
-        copyContribution = new ActionContributionItem(copyAction);
-        form.getToolBarManager().add(copyContribution);
+			}
+		};
+		editAction.setDescription("Edit an exisitng report.");
+		editContribution = new ActionContributionItem(editAction);
+		form.getToolBarManager().add(editContribution);
 
-        Action addAction = new Action("Add") {
-            @Override
-            public void run() {
-                super.run();
-                reportsOverviewComposite.addInspection();
-            }
-        };
-        addAction.setDescription("Add's a new report.");
-        addContribution = new ActionContributionItem(addAction);
-        form.getToolBarManager().add(addContribution);
+		Action copyAction = new Action("Copy") {
+			@Override
+			public void run() {
+				super.run();
+				// TODO copy a report
+			}
+		};
+		copyAction.setDescription("Add's a new report.");
+		copyAction.setEnabled(false);
+		copyContribution = new ActionContributionItem(copyAction);
+		form.getToolBarManager().add(copyContribution);
 
-        form.getToolBarManager().update(true);
-    }
+		Action addAction = new Action("Add") {
+			@Override
+			public void run() {
+				super.run();
+				reportsOverviewComposite.addInspection();
+			}
+		};
+		addAction.setDescription("Add's a new report.");
+		addContribution = new ActionContributionItem(addAction);
+		form.getToolBarManager().add(addContribution);
 
-    @PreDestroy
-    public void dispose() {
-        formToolkit.dispose();
-    }
+		form.getToolBarManager().update(true);
+	}
+
+	@PreDestroy
+	public void dispose() {
+		formToolkit.dispose();
+	}
 
 }
