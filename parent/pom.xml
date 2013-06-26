@@ -190,5 +190,6 @@
 		<module>../de.hswt.hrm.misc.dao.core</module>
 		<module>../de.hswt.hrm.misc.dao.jdbc</module>
 		<module>../de.hswt.hrm.misc.service</module>
+		<module>../de.hswt.hrm.report.latex.service</module>
 	</modules>
 </project>
