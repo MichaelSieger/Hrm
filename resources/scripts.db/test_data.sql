@@ -187,29 +187,29 @@ INSERT INTO `hrm`.`Priority` (`Priority_Name`, `Priority_Text`, `Priority_Priori
 INSERT INTO `hrm`.`Priority` (`Priority_Name`, `Priority_Text`, `Priority_Priority`) VALUES ('low', 'lowest priority', '3');
 
 ------------------------------------------------------------
--- Insert 3 different component catalogs in the `Component_Catalog` Table
+-- Insert 3 different performances in the `Performance` Table
 ------------------------------------------------------------
 
-INSERT INTO `hrm`.`Component_Catalog` (`Component_Catalog_Component_FK`, `Component_Catalog_Target_FK`, `Component_Catalog_Current_FK`, `Component_Catalog_Activity_FK`, `Component_Catalog_Picture_FK`, `Component_Catalog_Priority_FK`) VALUES ('1', '2', '2', '2', '2', '1');
-INSERT INTO `hrm`.`Component_Catalog` (`Component_Catalog_Component_FK`, `Component_Catalog_Target_FK`, `Component_Catalog_Current_FK`, `Component_Catalog_Activity_FK`, `Component_Catalog_Picture_FK`, `Component_Catalog_Priority_FK`) VALUES ('2', '3', '3', '3', '4', '2');
-INSERT INTO `hrm`.`Component_Catalog` (`Component_Catalog_Component_FK`, `Component_Catalog_Target_FK`, `Component_Catalog_Current_FK`, `Component_Catalog_Activity_FK`, `Component_Catalog_Picture_FK`, `Component_Catalog_Priority_FK`) VALUES ('3', '1', '1', '1', '6', '3');
+INSERT INTO `hrm`.`Performance` (`Performance_Component_FK`, `Performance_Target_FK`, `Performance_Current_FK`, `Performance_Activity_FK`, `Performance_Picture_FK`, `Performance_Priority_FK`) VALUES ('1', '2', '2', '2', '2', '1');
+INSERT INTO `hrm`.`Performance` (`Performance_Component_FK`, `Performance_Target_FK`, `Performance_Current_FK`, `Performance_Activity_FK`, `Performance_Picture_FK`, `Performance_Priority_FK`) VALUES ('2', '3', '3', '3', '4', '2');
+INSERT INTO `hrm`.`Performance` (`Performance_Component_FK`, `Performance_Target_FK`, `Performance_Current_FK`, `Performance_Activity_FK`, `Performance_Picture_FK`, `Performance_Priority_FK`) VALUES ('3', '1', '1', '1', '6', '3');
 
 ------------------------------------------------------------
 -- Insert 4 different picture catalogs in the `Picture_Catalog` Table
 ------------------------------------------------------------
 
-INSERT INTO `hrm`.`Picture_Catalog` (`Picture_Catalog_Picture_FK`, `Picture_Catalog_Component_Catalog_FK`) VALUES ('1', '1' );
-INSERT INTO `hrm`.`Picture_Catalog` (`Picture_Catalog_Picture_FK`, `Picture_Catalog_Component_Catalog_FK`) VALUES ('2', '1' );
-INSERT INTO `hrm`.`Picture_Catalog` (`Picture_Catalog_Picture_FK`, `Picture_Catalog_Component_Catalog_FK`) VALUES ('1', '2' );
-INSERT INTO `hrm`.`Picture_Catalog` (`Picture_Catalog_Picture_FK`, `Picture_Catalog_Component_Catalog_FK`) VALUES ('2', '2' );
+INSERT INTO `hrm`.`Picture_Catalog` (`Picture_Catalog_Picture_FK`, `Picture_Catalog_Performance_FK`) VALUES ('1', '1' );
+INSERT INTO `hrm`.`Picture_Catalog` (`Picture_Catalog_Picture_FK`, `Picture_Catalog_Performance_FK`) VALUES ('2', '1' );
+INSERT INTO `hrm`.`Picture_Catalog` (`Picture_Catalog_Picture_FK`, `Picture_Catalog_Performance_FK`) VALUES ('1', '2' );
+INSERT INTO `hrm`.`Picture_Catalog` (`Picture_Catalog_Picture_FK`, `Picture_Catalog_Performance_FK`) VALUES ('2', '2' );
 
 ------------------------------------------------------------
 -- Insert 3 different target currents in the `Target_Current` Table
 ------------------------------------------------------------
 
-INSERT INTO `hrm`.`Target_Current` (`Target_Current_Report_FK`, `Target_Current_Component_Catalog_FK`) VALUES ('1', '1');
-INSERT INTO `hrm`.`Target_Current` (`Target_Current_Report_FK`, `Target_Current_Component_Catalog_FK`) VALUES ('1', '2');
-INSERT INTO `hrm`.`Target_Current` (`Target_Current_Report_FK`, `Target_Current_Component_Catalog_FK`) VALUES ('1', '3');
+INSERT INTO `hrm`.`Target_Current` (`Target_Current_Report_FK`, `Target_Current_Performance_FK`) VALUES ('1', '1');
+INSERT INTO `hrm`.`Target_Current` (`Target_Current_Report_FK`, `Target_Current_Performance_FK`) VALUES ('1', '2');
+INSERT INTO `hrm`.`Target_Current` (`Target_Current_Report_FK`, `Target_Current_Performance_FK`) VALUES ('1', '3');
 
 ------------------------------------------------------------
 -- Insert 1 scheme component attributes in the `Scheme_Component_Attribute` Table
