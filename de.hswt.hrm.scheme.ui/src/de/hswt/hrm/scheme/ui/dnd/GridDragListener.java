@@ -3,12 +3,18 @@ package de.hswt.hrm.scheme.ui.dnd;
 import java.util.Collections;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.dnd.DragSourceListener;
 
 import com.google.common.base.Throwables;
 
+import de.hswt.hrm.common.database.exception.DatabaseException;
+import de.hswt.hrm.common.database.exception.ElementNotFoundException;
+import de.hswt.hrm.component.service.ComponentService;
 import de.hswt.hrm.scheme.model.RenderedComponent;
+import de.hswt.hrm.scheme.service.SchemeService;
 import de.hswt.hrm.scheme.ui.PlaceOccupiedException;
 import de.hswt.hrm.scheme.ui.SchemeGrid;
 import de.hswt.hrm.scheme.ui.SchemeGridItem;
@@ -28,9 +34,15 @@ public class GridDragListener implements DragSourceListener {
     private int startX, startY;
 
     private DragData dragging;
+    
+    private final SchemeService schemeService;
 
-    public GridDragListener(SchemeGrid grid) {
+    private final ComponentService componentService;
+    
+    public GridDragListener(SchemeGrid grid, SchemeService schemeService, ComponentService componentService) {
         this.grid = grid;
+        this.schemeService = schemeService;
+        this.componentService = componentService;
     }
 
     @Override
@@ -43,7 +55,7 @@ public class GridDragListener implements DragSourceListener {
         SchemeGridItem item = grid.removeImagePixel(startX, startY);
         if (item != null) {
             RenderedComponent c = item.getRenderedComponent();
-            dragging = new DragData(comps.indexOf(c), item.getX(), item.getY(), item.getDirection());
+            dragging = new DragData(comps.indexOf(c), item.asSchemeComponent());
         }
         else {
             ev.doit = false;
@@ -58,13 +70,7 @@ public class GridDragListener implements DragSourceListener {
     @Override
     public void dragFinished(DragSourceEvent ev) {
         if (!ev.doit) {
-            try {
-                grid.setImage(dragging.toSchemeGridItem(comps));
-            }
-            catch (PlaceOccupiedException e) {
-                //Should not be possible
-                Throwables.propagate(e);
-            }
+        	grid.setImage(dragging.toSchemeGridItem(comps, schemeService, componentService));
         }
         startX = -1;
         startY = -1;
