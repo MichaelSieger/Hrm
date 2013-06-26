@@ -328,15 +328,13 @@ public class SchemeComposite extends Composite {
             public void run() {
                 super.run();
                 Collection<SchemeGridItem> items = grid.getItems();
-                items = Collections2.transform(items,
-                        new Function<SchemeGridItem, SchemeGridItem>() {
-                            public SchemeGridItem apply(SchemeGridItem item) {
-                            	SchemeGridItem nItem = new SchemeGridItem(item);
-                            	nItem.setX(item.getX() + MOVE_AMOUNT);
-                                return nItem;
-                            }
-                        });
-                grid.setItems(items);
+                List<SchemeGridItem> r = new ArrayList<>();
+                for(SchemeGridItem item : items){
+                	SchemeGridItem nItem = new SchemeGridItem(item);
+                	nItem.setX(nItem.getX() + MOVE_AMOUNT);
+                	r.add(nItem);
+                }
+                grid.setItems(r);
             }
         };
         moveXAction.setDescription("Move's the grid elements in x direction.");
@@ -350,15 +348,13 @@ public class SchemeComposite extends Composite {
             public void run() {
                 super.run();
                 Collection<SchemeGridItem> items = grid.getItems();
-                items = Collections2.transform(items,
-                        new Function<SchemeGridItem, SchemeGridItem>() {
-                            public SchemeGridItem apply(SchemeGridItem item) {
-                            	SchemeGridItem nItem = new SchemeGridItem(item);
-                            	nItem.setY(item.getY() + MOVE_AMOUNT);
-                                return nItem;
-                            }
-                        });
-                grid.setItems(items);
+                List<SchemeGridItem> r = new ArrayList<>();
+                for(SchemeGridItem item : items){
+                	SchemeGridItem nItem = new SchemeGridItem(item);
+                	nItem.setY(nItem.getY() + MOVE_AMOUNT);
+                	r.add(nItem);
+                }
+                grid.setItems(r);
             }
         };
         moveYAction.setDescription("Move's the grid elements in y direction.");
