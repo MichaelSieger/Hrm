@@ -4,3 +4,11 @@ Bundle-Name: Service
 Bundle-SymbolicName: de.hswt.hrm.photo.service
 Bundle-Version: 0.0.1.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Import-Package: de.hswt.hrm.common.database.exception,
+ de.hswt.hrm.photo.dao.core,
+ de.hswt.hrm.photo.model
+Require-Bundle: javax.inject;bundle-version="1.0.0",
+ org.sat4j.core;bundle-version="2.3.0",
+ org.slf4j.api;bundle-version="1.6.4",
+ org.eclipse.e4.core.di;bundle-version="1.2.0",
+ com.google.guava;bundle-version="10.0.1"
