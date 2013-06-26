@@ -469,6 +469,8 @@ public class SchemeComposite extends Composite {
 			Map<Attribute, String> assignedValues = schemeService
 					.findAttributesOfSchemeComponent(item.asSchemeComponent());
 
+			System.out.println(assignedValues.values());
+
 			EditAtrributesDialog eda = new EditAtrributesDialog(
 					shellProvider.getShell(), item.getRenderedComponent()
 							.getComponent(), attributes);

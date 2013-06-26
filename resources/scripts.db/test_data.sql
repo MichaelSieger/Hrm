@@ -212,11 +212,10 @@ INSERT INTO `hrm`.`Target_Current` (`Target_Current_Report_FK`, `Target_Current_
 INSERT INTO `hrm`.`Target_Current` (`Target_Current_Report_FK`, `Target_Current_Component_Catalog_FK`) VALUES ('1', '3');
 
 ------------------------------------------------------------
--- Insert 2 different scheme component attributes in the `Scheme_Component_Attribute` Table
+-- Insert 1 scheme component attributes in the `Scheme_Component_Attribute` Table
 ------------------------------------------------------------
 
 INSERT INTO `hrm`.`Scheme_Component_Attribute` (`Scheme_Component_Attribute_Component_FK`, `Scheme_Component_Attribute_Attribute_FK`, `Scheme_Component_Attribute_Value`) VALUES ('1', '1', '100');
-INSERT INTO `hrm`.`Scheme_Component_Attribute` (`Scheme_Component_Attribute_Component_FK`, `Scheme_Component_Attribute_Attribute_FK`, `Scheme_Component_Attribute_Value`) VALUES ('1', '2', '0.10');
 
 ------------------------------------------------------------
 -- Insert 2 different summarys in the `Summary` Table
