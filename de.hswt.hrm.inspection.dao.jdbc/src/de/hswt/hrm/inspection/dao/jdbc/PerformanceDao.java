@@ -51,6 +51,7 @@ public class PerformanceDao implements IPerformanceDao {
 		this.priorityDao = priorityDao;
 	}
 	
+	@Override
 	public Collection<Performance> findAll() throws DatabaseException {
         SqlQueryBuilder builder = new SqlQueryBuilder();
         builder.insert(TABLE_NAME,
@@ -78,6 +79,7 @@ public class PerformanceDao implements IPerformanceDao {
         }
     }
 	
+	@Override
 	public Performance insert(final Performance performance) 
 			throws SaveException, DatabaseException {
 		
