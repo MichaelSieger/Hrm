@@ -74,42 +74,11 @@ public class SchemeGridItem {
 	}
 	
 	public int getWidth(){
-		checkCategoryPresent();
-		Category c = renderedComponent.getComponent().getCategory().get();
-		if(isHorizontal()){
-			return c.getHeight();
-		}else{
-			return c.getWidth();
-		}
+		return schemeComponent.getWidth();
 	}
 	
 	public int getHeight(){
-		checkCategoryPresent();
-		Category c = renderedComponent.getComponent().getCategory().get();
-		if(isHorizontal()){
-			return c.getWidth();
-		}else{
-			return c.getHeight();
-		}
-	}
-	
-	private void checkCategoryPresent(){
-		if(!renderedComponent.getComponent().getCategory().isPresent()){
-			throw new IllegalArgumentException("Component category must be present for this");
-		}
-	}
-	
-	private boolean isHorizontal(){
-		switch(schemeComponent.getDirection()){
-		case leftRight:
-		case rightLeft:
-			return true;
-		case upDown:
-		case downUp:
-			return false;
-		default:
-			throw new RuntimeException("More than 4 directions?");
-		}
+		return schemeComponent.getHeight();
 	}
 	
     /**
