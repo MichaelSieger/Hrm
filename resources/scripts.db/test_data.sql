@@ -53,6 +53,13 @@ INSERT INTO `hrm`.`Report` (`Report_Layout_FK`, `Report_Plant_FK`, `Report_Reque
 INSERT INTO `hrm`.`Report` (`Report_Layout_FK`, `Report_Plant_FK`, `Report_Requester_FK`, `Report_Contractor_FK`, `Report_Checker_FK`, `Report_Jobdate`, `Report_Reportdate`, `Report_Nextdate`, `Report_Airtemperature`, `Report_Humidity`, `Report_Summary`, `Report_Titel`, `Report_Humidity_Rating`, `Report_Humidity_Quantifier`, `Report_Airtemperature_Rating`, `Report_Airtemperature_Quantifier`, `Report_Frontpicture_FK`, `Report_Plantpicture_FK`, `Report_Airtemperature_Comment`, `Report_Humidity_Comment`, `Report_Legionella`, `Report_Legionella_Rating`, `Report_Legionella_Quantifier`, `Report_Legionella_Comment`, `Report_Germs`, `Report_Germs_Rating`, `Report_Germs_Quantifier`, `Report_Germs_Comment`) VALUES ('3', '2', '2', '4', '5', '2012-01-08', '2012-01-11', '2013-01-11', '22', '40','Copy Paste', 'SchmuckiAlle','2','3','1','1','3','4','schlecht','sehr schlecht','1','3','1','urghs','10','4','2','mist!');
 
 ------------------------------------------------------------
+-- Insert 3 different schemes in the `Scheme` Table
+------------------------------------------------------------
+INSERT INTO `hrm`.`Scheme` (`Scheme_Plant_FK`) VALUES ('1');
+INSERT INTO `hrm`.`Scheme` (`Scheme_Plant_FK`) VALUES ('2');
+INSERT INTO `hrm`.`Scheme` (`Scheme_Plant_FK`) VALUES ('2');
+
+------------------------------------------------------------
 -- Insert 4 different cataloges in the `Catalog` Table
 ------------------------------------------------------------
 INSERT INTO `hrm`.`Catalog` (`Catalog_Name`) VALUES ('Katalog_Filter');
@@ -93,11 +100,11 @@ INSERT INTO `hrm`.`Component` (`Component_Name`, `Component_Symbol_LR_FK`, `Comp
 INSERT INTO `hrm`.`Component` (`Component_Name`, `Component_Symbol_LR_FK`, `Component_Symbol_RL_FK`, `Component_Symbol_UD_FK`, `Component_Symbol_DU_FK`, `Component_Quantifier`, `Component_Category_FK`, `Component_Bool_Rating`) VALUES ('Schacht', '11', NULL, '11', NULL, '2', '4', '3');
 
 ------------------------------------------------------------
--- Insert 2 different attributes in the `Attribute` Table
+-- Insert 3 different scheme components in the `Scheme_Components` Table
 ------------------------------------------------------------
-
-INSERT INTO `hrm`.`Attribute` (`Attribute_Name`, `Attribute_Component_FK`) VALUES ('Attribute 1','1');
-INSERT INTO `hrm`.`Attribute` (`Attribute_Name`, `Attribute_Component_FK`) VALUES ('Attribute 2','1');
+INSERT INTO `hrm`.`Scheme_Component` (`Scheme_Component_Scheme_FK`, `Scheme_Component_Component_FK`, `Scheme_Component_X_Position`, `Scheme_Component_Y_Position`, `Scheme_Component_Direction`) VALUES ('1', '1', '1', '1', '1');
+INSERT INTO `hrm`.`Scheme_Component` (`Scheme_Component_Scheme_FK`, `Scheme_Component_Component_FK`, `Scheme_Component_X_Position`, `Scheme_Component_Y_Position`, `Scheme_Component_Direction`) VALUES ('1', '2', '1', '4', '1');
+INSERT INTO `hrm`.`Scheme_Component` (`Scheme_Component_Scheme_FK`, `Scheme_Component_Component_FK`, `Scheme_Component_X_Position`, `Scheme_Component_Y_Position`, `Scheme_Component_Direction`) VALUES ('3', '3', '1', '1', '1');
 
 ------------------------------------------------------------
 -- Insert 3 different biological flags in the `Biological_Flag` Table
@@ -112,20 +119,6 @@ INSERT INTO `hrm`.`Biological_Flag` (`Flag_Name`) VALUES ('Befeuchterwasser');
 
 INSERT INTO `hrm`.`Biological_Rating` (`Biological_Rating_Component_FK`, `Biological_Rating_Report_FK`, `Biological_Rating_Bacteria_Count`, `Biological_Rating_Rating`, `Biological_Rating_Quantifier`, `Biological_Rating_Comment`, `Biological_Rating_Flag_FK`) VALUES ('1', '1', '100', '2', 3, 'schlecht','1');
 INSERT INTO `hrm`.`Biological_Rating` (`Biological_Rating_Component_FK`, `Biological_Rating_Report_FK`, `Biological_Rating_Bacteria_Count`, `Biological_Rating_Rating`, `Biological_Rating_Quantifier`, `Biological_Rating_Comment`, `Biological_Rating_Flag_FK`) VALUES ('2', '1', '1', '1', NULL, 'gut','2');
-
-------------------------------------------------------------
--- Insert 3 different schemes in the `Scheme` Table
-------------------------------------------------------------
-INSERT INTO `hrm`.`Scheme` (`Scheme_Plant_FK`) VALUES ('1');
-INSERT INTO `hrm`.`Scheme` (`Scheme_Plant_FK`) VALUES ('2');
-INSERT INTO `hrm`.`Scheme` (`Scheme_Plant_FK`) VALUES ('2');
-
-------------------------------------------------------------
--- Insert 3 different scheme components in the `Scheme_Components` Table
-------------------------------------------------------------
-INSERT INTO `hrm`.`Scheme_Component` (`Scheme_Component_Scheme_FK`, `Scheme_Component_Component_FK`, `Scheme_Component_X_Position`, `Scheme_Component_Y_Position`, `Scheme_Component_Direction`) VALUES ('1', '1', '1', '1', '1');
-INSERT INTO `hrm`.`Scheme_Component` (`Scheme_Component_Scheme_FK`, `Scheme_Component_Component_FK`, `Scheme_Component_X_Position`, `Scheme_Component_Y_Position`, `Scheme_Component_Direction`) VALUES ('1', '2', '1', '4', '1');
-INSERT INTO `hrm`.`Scheme_Component` (`Scheme_Component_Scheme_FK`, `Scheme_Component_Component_FK`, `Scheme_Component_X_Position`, `Scheme_Component_Y_Position`, `Scheme_Component_Direction`) VALUES ('3', '3', '1', '1', '1');
 
 ------------------------------------------------------------
 -- Insert 3 different current states in the `State_Current` Table
@@ -151,25 +144,23 @@ INSERT INTO `hrm`.`State_Activity` (`State_Activity_Name`, `State_Activity_Text`
 ------------------------------------------------------------
 -- Connect 3 different catalog with currents in the `Catalog_Current` Table
 ------------------------------------------------------------
-INSERT INTO `hrm`.`Catalog_Current` (`Category_Current_State_Target_FK`, `Category_Current_State_Current_FK`) VALUES ('1', '2');
-INSERT INTO `hrm`.`Catalog_Current` (`Category_Current_State_Target_FK`, `Category_Current_State_Current_FK`) VALUES ('2', '1');
-INSERT INTO `hrm`.`Catalog_Current` (`Category_Current_State_Target_FK`, `Category_Current_State_Current_FK`) VALUES ('2', '3');
+INSERT INTO `hrm`.`Catalog_Current` (`Catalog_Current_State_Target_FK`, `Catalog_Current_State_Current_FK`) VALUES ('1', '2');
+INSERT INTO `hrm`.`Catalog_Current` (`Catalog_Current_State_Target_FK`, `Catalog_Current_State_Current_FK`) VALUES ('2', '1');
+INSERT INTO `hrm`.`Catalog_Current` (`Catalog_Current_State_Target_FK`, `Catalog_Current_State_Current_FK`) VALUES ('2', '3');
 
 ------------------------------------------------------------
--- Connect 3 different catalog with targets in the `Catalog_Target` Table
+-- Insert 3 different catalog_targets in the `Catalog_Target` Table
 ------------------------------------------------------------
-INSERT INTO `hrm`.`Catalog_Target` (`Category_Target_State_Target_FK`, `Category_Target_Catalog_FK`) VALUES ('1', '2');
-INSERT INTO `hrm`.`Catalog_Target` (`Category_Target_State_Target_FK`, `Category_Target_Catalog_FK`) VALUES ('3', '2');
-INSERT INTO `hrm`.`Catalog_Target` (`Category_Target_State_Target_FK`, `Category_Target_Catalog_FK`) VALUES ('2', '1');
-INSERT INTO `hrm`.`Catalog_Target` (`Category_Target_State_Target_FK`, `Category_Target_Catalog_FK`) VALUES ('1', '1');
-INSERT INTO `hrm`.`Catalog_Target` (`Category_Target_State_Target_FK`, `Category_Target_Catalog_FK`) VALUES ('2', '3');
+INSERT INTO `hrm`.`Catalog_Target` (`Catalog_Target_State_Target_FK`, `Catalog_Target_Catalog_FK`) VALUES ('1', '2');
+INSERT INTO `hrm`.`Catalog_Target` (`Catalog_Target_State_Target_FK`, `Catalog_Target_Catalog_FK`) VALUES ('2', '1');
+INSERT INTO `hrm`.`Catalog_Target` (`Catalog_Target_State_Target_FK`, `Catalog_Target_Catalog_FK`) VALUES ('2', '3');
 
 ------------------------------------------------------------
 -- Connect 3 different catalog with activities the `Catalog_Activity` Table
 ------------------------------------------------------------
-INSERT INTO `hrm`.`Catalog_Activity` (`Category_Activity_State_Current_FK`, `Category_Activity_State_Activity_FK`) VALUES ('1', '2');
-INSERT INTO `hrm`.`Catalog_Activity` (`Category_Activity_State_Current_FK`, `Category_Activity_State_Activity_FK`) VALUES ('2', '1');
-INSERT INTO `hrm`.`Catalog_Activity` (`Category_Activity_State_Current_FK`, `Category_Activity_State_Activity_FK`) VALUES ('2', '3');
+INSERT INTO `hrm`.`Catalog_Activity` (`Catalog_Activity_State_Current_FK`, `Catalog_Activity_State_Activity_FK`) VALUES ('1', '2');
+INSERT INTO `hrm`.`Catalog_Activity` (`Catalog_Activity_State_Current_FK`, `Catalog_Activity_State_Activity_FK`) VALUES ('2', '1');
+INSERT INTO `hrm`.`Catalog_Activity` (`Catalog_Activity_State_Current_FK`, `Catalog_Activity_State_Activity_FK`) VALUES ('2', '3');
 
 ------------------------------------------------------------
 -- Insert 2 different component physical ratings in the `Component_Physical_Rating` Table
@@ -210,6 +201,13 @@ INSERT INTO `hrm`.`Picture_Catalog` (`Picture_Catalog_Picture_FK`, `Picture_Cata
 INSERT INTO `hrm`.`Target_Current` (`Target_Current_Report_FK`, `Target_Current_Performance_FK`) VALUES ('1', '1');
 INSERT INTO `hrm`.`Target_Current` (`Target_Current_Report_FK`, `Target_Current_Performance_FK`) VALUES ('1', '2');
 INSERT INTO `hrm`.`Target_Current` (`Target_Current_Report_FK`, `Target_Current_Performance_FK`) VALUES ('1', '3');
+
+------------------------------------------------------------
+-- Insert 2 different attributes in the `Attribute` Table
+------------------------------------------------------------
+
+INSERT INTO `hrm`.`Attribute` (`Attribute_Name`, `Attribute_Component_FK`) VALUES ('Attribute 1','1');
+INSERT INTO `hrm`.`Attribute` (`Attribute_Name`, `Attribute_Component_FK`) VALUES ('Attribute 2','1');
 
 ------------------------------------------------------------
 -- Insert 1 scheme component attributes in the `Scheme_Component_Attribute` Table
