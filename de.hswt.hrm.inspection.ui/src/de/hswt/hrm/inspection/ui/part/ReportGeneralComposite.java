@@ -16,6 +16,7 @@ import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.window.IShellProvider;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardDialog;
@@ -366,10 +367,31 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
         overallCombo.setLayoutData(LayoutUtil.createHorzCenteredFillData(4));
         formToolkit.adapt(overallCombo);
         formToolkit.paintBordersFor(overallCombo);
+        initializePhotosList();
+        
+        initializePhotoCombos();
 
     }
 
-    private void plantSelected(Plant plant) {
+    private void initializePhotosList() {
+		// FIXME Fill List with the Photos belonging to the Inscpection
+    	//photos = service.findAllPhotosBelonging to the Insepction
+		
+	}
+
+	private void initializePhotoCombos() {
+    	if(inspection.getPlantpicture().isPresent()){
+    		selectedPlantPhoto = inspection.getPlantpicture().get();
+    		titlePhotoComboViewer.setSelection(new StructuredSelection(selectedPlantPhoto));
+    		
+    	}
+    	if(inspection.getFrontpicture().isPresent()){
+    		selectedTitlePhoto = inspection.getFrontpicture().get(); 
+    		plantPhotoComboViewer.setSelection(new StructuredSelection(selectedPlantPhoto));
+    	}
+	}
+
+	private void plantSelected(Plant plant) {
         plantText.setText(plant.getDescription());
     }
 
