@@ -306,11 +306,8 @@ public class PhotoWizardPageOne extends WizardPage {
 		}
 		photosTable.remove(photosTable.getSelectionIndex());
 		photosTable.deselectAll();
-		photosTable.redraw();
-		
-		
-		
-		
+		newEditor.dispose();
+		photosTable.redraw();	
 	}
 	
 	private void checkPageComplete(){
