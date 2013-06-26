@@ -192,5 +192,6 @@
 		<module>../de.hswt.hrm.misc.service</module>
 		<module>../de.hswt.hrm.report.latex.service</module>
 		<module>../de.hswt.hrm.report.latex.feature</module>
+		<module>../de.hswt.hrm.report.latex.resoruce</module>
 	</modules>
 </project>
