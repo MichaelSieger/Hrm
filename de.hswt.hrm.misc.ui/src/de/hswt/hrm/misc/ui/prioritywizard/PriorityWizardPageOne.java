@@ -38,7 +38,6 @@ public class PriorityWizardPageOne extends WizardPage {
 
     private Collection<Priority> priorities;
     private boolean first = true;
-// Enable PrioService
     @Inject
     private PriorityService prioService;
 
@@ -117,12 +116,12 @@ public class PriorityWizardPageOne extends WizardPage {
 
     private void checkPageComplete() {
 
-//        if (first) {
-//            first = false;
-//            setPageComplete(false);
-//            return;
-//        }
-
+        if (first && descText.getText().isEmpty() && nameText.getText().isEmpty()) {
+            first = false;
+            setPageComplete(false);
+            return;
+        }
+        
         setErrorMessage(null);
 
         if (descText.getText().isEmpty()) {
