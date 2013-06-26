@@ -252,7 +252,7 @@ public class MiscPart {
         addPriorityAction.setDescription("Add a new Priority");
         addPriorityContribution = new ActionContributionItem(addPriorityAction);
         
-        Action movePriorityUPAction = new Action("+") {
+        Action movePriorityUPAction = new Action("Move Up") {
             @Override
             public void run() {
             	priorityComposite.movePriorityUp();
@@ -260,7 +260,7 @@ public class MiscPart {
         };
         movePriorityUPAction.setDescription("Move Priority Up");
         movePriorityUpContribution = new ActionContributionItem(movePriorityUPAction);
-        Action movePriorityDownAction = new Action("-") {
+        Action movePriorityDownAction = new Action("Move Down") {
             @Override
             public void run() {
             	priorityComposite.movePriorityDown();
