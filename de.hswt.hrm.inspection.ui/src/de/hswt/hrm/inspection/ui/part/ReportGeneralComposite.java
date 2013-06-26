@@ -380,14 +380,16 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
 	}
 
 	private void initializePhotoCombos() {
-    	if(inspection.getPlantpicture().isPresent()){
-    		selectedPlantPhoto = inspection.getPlantpicture().get();
-    		titlePhotoComboViewer.setSelection(new StructuredSelection(selectedPlantPhoto));
-    		
-    	}
-    	if(inspection.getFrontpicture().isPresent()){
-    		selectedTitlePhoto = inspection.getFrontpicture().get(); 
-    		plantPhotoComboViewer.setSelection(new StructuredSelection(selectedPlantPhoto));
+    	if(inspection != null){
+			if(inspection.getPlantpicture().isPresent()){
+	    		selectedPlantPhoto = inspection.getPlantpicture().get();
+	    		titlePhotoComboViewer.setSelection(new StructuredSelection(selectedPlantPhoto));
+	    		
+	    	}
+	    	if(inspection.getFrontpicture().isPresent()){
+	    		selectedTitlePhoto = inspection.getFrontpicture().get(); 
+	    		plantPhotoComboViewer.setSelection(new StructuredSelection(selectedPlantPhoto));
+	    	}
     	}
 	}
 
