@@ -291,6 +291,7 @@ public class ComponentDao implements IComponentDao {
     @Override
     public void update(Component component) throws ElementNotFoundException, SaveException {
         checkNotNull(component, "Component must not be null.");
+        checkState(component.getId() >= 0, "Component has an invalid ID.");
 
         if (component.getId() < 0) {
             throw new ElementNotFoundException("Element has no valid ID.");
@@ -306,6 +307,7 @@ public class ComponentDao implements IComponentDao {
 
         try (Connection con = DatabaseFactory.getConnection()) {
             try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
+            	stmt.setParameter(Fields.ID, component.getId());
                 stmt.setParameter(Fields.NAME, component.getName());
                 stmt.setParameter(Fields.SYMBOL_LR, component.getLeftRightImage());
                 stmt.setParameter(Fields.SYMBOL_RL, component.getRightLeftImage());
