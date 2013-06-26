@@ -19,5 +19,6 @@ Import-Package: de.hswt.hrm.common.database.exception,
  de.hswt.hrm.common.ui.swt.forms,
  de.hswt.hrm.common.ui.swt.layouts,
  de.hswt.hrm.common.ui.swt.utils,
- de.hswt.hrm.photo.model
+ de.hswt.hrm.photo.model,
+ de.hswt.hrm.photo.service
 Export-Package: de.hswt.hrm.photo.ui.wizard

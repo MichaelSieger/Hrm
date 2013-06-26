@@ -18,13 +18,15 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Optional;
 
+import de.hswt.hrm.common.database.exception.ElementNotFoundException;
+import de.hswt.hrm.common.database.exception.SaveException;
 import de.hswt.hrm.photo.model.Photo;
+import de.hswt.hrm.photo.service.PhotoService;
 
 public class PhotoWizard extends Wizard {
     private static final Logger LOG = LoggerFactory.getLogger(PhotoWizard.class);
-// FIXME enable PhotoService
-//    @Inject
-//    private PhotoService photoService;
+    @Inject
+    private PhotoService photoService;
     
     private PhotoWizardPageOne first;
     
@@ -44,13 +46,8 @@ public class PhotoWizard extends Wizard {
     public PhotoWizard(List<Photo> photos) {
         this.photos = photos;
         first = new PhotoWizardPageOne(photos);
-        ContextInjectionFactory.inject(first, context);
-        
-//        if (photos.isPresent()) {
-//        	setWindowTitle("Edit photos");
-//        } else {
+        ContextInjectionFactory.inject(first, context);        
             setWindowTitle("Import photos");
-//        } 
     }
 
     @Override
@@ -76,9 +73,17 @@ public class PhotoWizard extends Wizard {
     	int x = 0;
     	for(Photo photo : photos){
     		if(photo.getId() == -1){
-// 			photos.set(x,photoService.insert(photo)); 
+    			try {
+					photos.set(x,photoService.insert(photo));
+				} catch (SaveException e) {
+					e.printStackTrace();
+				} 
     		} else {
-//  		photoService.update(photo);   			
+    			try {
+					photoService.update(photo);
+				} catch (ElementNotFoundException | SaveException e) {
+					e.printStackTrace();
+				}	
     		}
     		x++;
     		
