@@ -20,7 +20,6 @@ import de.hswt.hrm.component.model.Attribute;
 import de.hswt.hrm.plant.model.Plant;
 import de.hswt.hrm.scheme.dao.core.ISchemeComponentDao;
 import de.hswt.hrm.scheme.dao.core.ISchemeDao;
-import de.hswt.hrm.scheme.dao.jdbc.SchemeDao;
 import de.hswt.hrm.scheme.model.Scheme;
 import de.hswt.hrm.scheme.model.SchemeComponent;
 
@@ -119,7 +118,15 @@ public class SchemeService {
 		// Add new componentslist
 		for (SchemeComponent comp : components) {
 			comp.setScheme(scheme);
-			schemeComponentDao.insert(comp);
+			SchemeComponent targetComp = schemeComponentDao.insert(comp);
+			
+			// Reassign attributes to new component
+			Map<Attribute, String> attributes = 
+					schemeComponentDao.findAttributesOfSchemeComponent(comp);
+			
+			for (Attribute attr : attributes.keySet()) {
+				schemeComponentDao.reassignAttributeValue(attr, comp, targetComp);
+			}
 		}
 		
 		// Delete old scheme components

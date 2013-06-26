@@ -314,6 +314,57 @@ public class SchemeComponentDao implements ISchemeComponentDao {
     }
     
     @Override
+    public void reassignAttributeValue(Attribute attribute, SchemeComponent sourceComp,
+    		SchemeComponent targetComp) throws SaveException, DatabaseException {
+    	
+    	checkState(attribute.getId() >= 0, "Attribute must have a valid ID.");
+    	checkState(sourceComp.getId() >= 0, "Source SchemeComponent must have a valid ID.");
+    	checkState(targetComp.getId() >= 0, "Target SchemeComponent must have a valid ID.");
+    	checkState(attribute.getComponent().getId() == targetComp.getComponent().getId(), 
+    			"Target SchemeComponent does not match the attributes component.");
+    	
+    	final String sourceParam = "sourceSchemeComponent";
+    	final String targetParam = "targetSchemeComponent";
+    	
+    	StringBuilder builder = new StringBuilder();
+    	builder.append("UPDATE ").append(ATTR_CROSS_TABLE_NAME);
+    	builder.append(" SET ").append(AttrCrossFields.FK_COMPONENT);
+    	builder.append(" = :").append(targetParam);
+    	builder.append(" WHERE ");
+    	builder.append(AttrCrossFields.FK_ATTRIBUTE);
+    	builder.append(" = :").append(AttrCrossFields.FK_ATTRIBUTE);
+    	builder.append(" AND ");
+    	builder.append(AttrCrossFields.FK_COMPONENT);
+    	builder.append(" = :").append(sourceParam).append(";");
+
+    	String query = builder.toString();
+    	
+    	try (Connection con = DatabaseFactory.getConnection()) {
+    		con.setAutoCommit(false);
+    		
+    		try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
+    			stmt.setParameter(AttrCrossFields.FK_ATTRIBUTE, attribute.getId());
+    			stmt.setParameter(sourceParam, sourceComp.getId());
+    			stmt.setParameter(targetParam, targetComp.getId());
+    			
+    			int affected = stmt.executeUpdate();
+    			if (affected > 1) {
+    				con.rollback();
+    				throw new DatabaseException("Statement would accidently affect more than one row.");
+    			}
+    			else if (affected < 1) {
+    				throw new SaveException("No rows affected.");
+    			}
+    			
+    			con.commit();
+    		}
+    	}
+    	catch (SQLException e) {
+    		throw new DatabaseException("Unexpected error.", e);
+    	}
+    }
+    
+    @Override
     public void setAttributeValue(SchemeComponent comp, Attribute attribute, String value)
     		throws DatabaseException {
     	

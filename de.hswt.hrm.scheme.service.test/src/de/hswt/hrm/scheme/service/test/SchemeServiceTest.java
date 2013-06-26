@@ -176,6 +176,7 @@ public class SchemeServiceTest extends AbstractDatabaseTest {
 
         Scheme copy = service.copy(scheme);
         assertEquals(2, copy.getSchemeComponents().size());
+        assertTrue("Scheme not copied to new scheme.", copy.getId() != scheme.getId());
     }
 
     @Test

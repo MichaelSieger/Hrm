@@ -78,4 +78,17 @@ public interface ISchemeComponentDao {
      */
 	void delete(SchemeComponent component) throws ElementNotFoundException,
 			DatabaseException;
+
+	/**
+	 * Reassignes an attribute with its value to another scheme component.
+	 * 
+	 * @param attribute The attribute that should be reassigned.
+	 * @param sourceComp Source component where the attribute is currently assigned.
+	 * @param targetComp Target component where the attribute should be assigned.
+	 * @throws SaveException
+	 * @throws DatabaseException
+	 */
+	void reassignAttributeValue(Attribute attribute,
+			SchemeComponent sourceComp, SchemeComponent targetComp)
+					throws SaveException, DatabaseException;
 }
