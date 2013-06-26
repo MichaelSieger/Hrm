@@ -82,4 +82,5 @@
   <addons xmi:id="_cWZsEN3QEeK0R4aT_ZH-QA" elementId="de.hswt.hrm.misc.comment.service.commentService" contributionURI="bundleclass://de.hswt.hrm.misc.service/de.hswt.hrm.misc.comment.service.CommentService"/>
   <addons xmi:id="_J1424N3TEeK0R4aT_ZH-QA" elementId="de.hswt.hrm.misc.priority.service.priorityService" contributionURI="bundleclass://de.hswt.hrm.misc.service/de.hswt.hrm.misc.priority.service.PriorityService"/>
   <addons xmi:id="_Dn3KwN5JEeKj08lPBz36kA" elementId="de.hswt.hrm.report.latex.service.reportService" contributionURI="bundleclass://de.hswt.hrm.report.latex.service/de.hswt.hrm.report.latex.service.ReportService"/>
+  <addons xmi:id="_FB5c0N5qEeKmcou9YmVUig" elementId="de.hswt.hrm.photo.service.photoService" contributionURI="bundleclass://de.hswt.hrm.photo.service/de.hswt.hrm.photo.service.PhotoService"/>
 </application:Application>
