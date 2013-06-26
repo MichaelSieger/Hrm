@@ -368,32 +368,32 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
         formToolkit.adapt(overallCombo);
         formToolkit.paintBordersFor(overallCombo);
         initializePhotosList();
-        
+
         initializePhotoCombos();
 
     }
 
     private void initializePhotosList() {
-		// FIXME Fill List with the Photos belonging to the Inscpection
-    	//photos = service.findAllPhotosBelonging to the Insepction
-		
-	}
+        // FIXME Fill List with the Photos belonging to the Inscpection
+        // photos = service.findAllPhotosBelonging to the Insepction
 
-	private void initializePhotoCombos() {
-    	if(inspection != null){
-			if(inspection.getPlantpicture().isPresent()){
-	    		selectedPlantPhoto = inspection.getPlantpicture().get();
-	    		titlePhotoComboViewer.setSelection(new StructuredSelection(selectedPlantPhoto));
-	    		
-	    	}
-	    	if(inspection.getFrontpicture().isPresent()){
-	    		selectedTitlePhoto = inspection.getFrontpicture().get(); 
-	    		plantPhotoComboViewer.setSelection(new StructuredSelection(selectedPlantPhoto));
-	    	}
-    	}
-	}
+    }
 
-	private void plantSelected(Plant plant) {
+    private void initializePhotoCombos() {
+        if (inspection != null) {
+            if (inspection.getPlantpicture().isPresent()) {
+                selectedPlantPhoto = inspection.getPlantpicture().get();
+                titlePhotoComboViewer.setSelection(new StructuredSelection(selectedPlantPhoto));
+
+            }
+            if (inspection.getFrontpicture().isPresent()) {
+                selectedTitlePhoto = inspection.getFrontpicture().get();
+                plantPhotoComboViewer.setSelection(new StructuredSelection(selectedPlantPhoto));
+            }
+        }
+    }
+
+    private void plantSelected(Plant plant) {
         plantText.setText(plant.getDescription());
     }
 

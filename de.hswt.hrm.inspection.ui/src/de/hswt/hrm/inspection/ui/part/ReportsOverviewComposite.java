@@ -65,10 +65,6 @@ public class ReportsOverviewComposite extends Composite {
 
     private Inspection selectedInspection;
 
-    public Inspection getSelectedInspection() {
-        return selectedInspection;
-    }
-
     private static final Logger LOG = LoggerFactory.getLogger(ReportsOverviewComposite.class);
 
     /**
@@ -185,8 +181,7 @@ public class ReportsOverviewComposite extends Composite {
 
         // Enable filtering
         tableViewer.addFilter(searchFilter);
-        
-       
+
     }
 
     public void addInspection() {
@@ -208,9 +203,13 @@ public class ReportsOverviewComposite extends Composite {
         }
         super.dispose();
     }
-    
-    public void setInspection(Inspection inspection){
-    	this.selectedInspection = inspection;
+
+    public void setInspection(Inspection inspection) {
+        this.selectedInspection = inspection;
+    }
+
+    public Inspection getSelectedInspection() {
+        return selectedInspection;
     }
 
     @Override
