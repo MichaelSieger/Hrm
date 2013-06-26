@@ -284,20 +284,22 @@ public class SchemeComposite extends Composite {
      *             If a pdf file could not be read
      */
     public void modifyScheme(Scheme scheme) throws IOException {
-        if (scheme == null || !scheme.getPlant().isPresent()) {
-            throw new IllegalArgumentException(
-                    "The scheme must not be null and plant must be present here");
-        }
+    	if(currentScheme != scheme){
+            if (scheme == null || !scheme.getPlant().isPresent()) {
+                throw new IllegalArgumentException(
+                        "The scheme must not be null and plant must be present here");
+            }
 
-        if (!checkToSave(scheme)) {
-            return;
-        }
+            if (!checkToSave(scheme)) {
+                return;
+            }
 
-        currentScheme = scheme;
-        treeDragListener.setScheme(currentScheme);
-        plant = scheme.getPlant().get();
-        grid.setItems(toSchemeGridItems(scheme.getSchemeComponents()));
-        clearDirty();
+            currentScheme = scheme;
+            treeDragListener.setScheme(currentScheme);
+            plant = scheme.getPlant().get();
+            grid.setItems(toSchemeGridItems(scheme.getSchemeComponents()));
+            clearDirty();
+    	}
     }
 
     /**
