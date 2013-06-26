@@ -583,12 +583,12 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `Target_Current` (
   `Target_Current_Report_FK` INT NOT NULL ,
-  `Target_Current_Component_Catalog_FK` INT NOT NULL ,
-  PRIMARY KEY (`Target_Current_Report_FK`, `Target_Current_Component_Catalog_FK`) ,
-  INDEX `Target_Current_Component_Catalog_FK` (`Target_Current_Component_Catalog_FK` ASC) ,
+  `Target_Current_Performance_FK` INT NOT NULL ,
+  PRIMARY KEY (`Target_Current_Report_FK`, `Target_Current_Performance_FK`) ,
+  INDEX `Target_Current_Component_Catalog_FK` (`Target_Current_Performance_FK` ASC) ,
   INDEX `Target_Current_Report_FK` (`Target_Current_Report_FK` ASC) ,
-  CONSTRAINT `Target_Current_Component_Catalog_FK`
-    FOREIGN KEY (`Target_Current_Component_Catalog_FK` )
+  CONSTRAINT `Target_Current_Performance_FK`
+    FOREIGN KEY (`Target_Current_Performance_FK` )
     REFERENCES `Performance` (`Performance_ID` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
