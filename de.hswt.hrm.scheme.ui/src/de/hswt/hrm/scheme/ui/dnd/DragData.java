@@ -37,6 +37,8 @@ public class DragData
     private final int id;
     private final int x;
     private final int y;
+    private final int width;
+    private final int height;
     private final int schemeId;
     private final int componentId;
     private final Direction direction;
@@ -47,6 +49,8 @@ public class DragData
         id = schemeComponent.getId();
         x = schemeComponent.getX();
         y = schemeComponent.getY();
+        width = schemeComponent.getWidth();
+        height = schemeComponent.getHeight();
         schemeId = (schemeComponent.getScheme() != null ? schemeComponent.getScheme().getId() : -1);
         componentId = (schemeComponent.getComponent() != null ? schemeComponent.getComponent().getId() : -1);
         direction = schemeComponent.getDirection();
@@ -84,5 +88,13 @@ public class DragData
 			throw Throwables.propagate(e);
 		}
     }
+
+	public double getWidth() {
+		return width;
+	}
+
+	public double getHeight() {
+		return height;
+	}
 
 }
