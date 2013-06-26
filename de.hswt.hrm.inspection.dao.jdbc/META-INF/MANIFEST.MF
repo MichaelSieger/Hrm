@@ -5,7 +5,9 @@ Bundle-SymbolicName: de.hswt.hrm.inspection.dao.jdbc
 Bundle-Version: 0.0.1.qualifier
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Import-Package: de.hswt.hrm.common,
+Import-Package: de.hswt.hrm.catalog.dao.core,
+ de.hswt.hrm.catalog.model,
+ de.hswt.hrm.common,
  de.hswt.hrm.common.database,
  de.hswt.hrm.common.database.exception,
  de.hswt.hrm.common.exception,
@@ -15,10 +17,13 @@ Import-Package: de.hswt.hrm.common,
  de.hswt.hrm.contact.model,
  de.hswt.hrm.inspection.dao.core,
  de.hswt.hrm.inspection.model,
+ de.hswt.hrm.misc.priority.dao.core,
+ de.hswt.hrm.misc.priority.model,
  de.hswt.hrm.photo.dao.core,
  de.hswt.hrm.photo.model,
  de.hswt.hrm.plant.dao.core,
  de.hswt.hrm.plant.model,
+ de.hswt.hrm.scheme.dao.core,
  de.hswt.hrm.scheme.model,
  org.apache.commons.dbutils
 Require-Bundle: com.google.guava;bundle-version="10.0.1",
