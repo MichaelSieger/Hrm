@@ -1,8 +1,13 @@
 package de.hswt.hrm.scheme.ui.tree;
 
+import java.util.List;
+
 import org.eclipse.swt.graphics.Image;
 
-import de.hswt.hrm.scheme.ui.DirectedRenderedComponent;
+import de.hswt.hrm.scheme.model.RenderedComponent;
+import de.hswt.hrm.scheme.model.Scheme;
+import de.hswt.hrm.scheme.model.SchemeComponent;
+import de.hswt.hrm.scheme.ui.dnd.DragData;
 
 /**
  * Represents a item in the SchemeTree.
@@ -54,5 +59,13 @@ public abstract class SchemeTreeItem {
 	 * 
 	 * @return
 	 */
-	public abstract DirectedRenderedComponent getDragItem();
+	public abstract DragData getDragItem(Scheme scheme, List<RenderedComponent> renderedComponents);
+
+	public RenderedComponent getRenderedComponent() {
+		return null;
+	}
+
+	public SchemeComponent getSchemeComponent() {
+		return null;
+	}
 }

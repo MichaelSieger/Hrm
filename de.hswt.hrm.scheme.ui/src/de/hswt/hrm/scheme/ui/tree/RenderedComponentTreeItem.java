@@ -1,10 +1,15 @@
 package de.hswt.hrm.scheme.ui.tree;
 
+import java.util.Collection;
+import java.util.List;
+
 import org.eclipse.swt.graphics.Image;
 
 import de.hswt.hrm.scheme.model.Direction;
 import de.hswt.hrm.scheme.model.RenderedComponent;
-import de.hswt.hrm.scheme.ui.DirectedRenderedComponent;
+import de.hswt.hrm.scheme.model.Scheme;
+import de.hswt.hrm.scheme.model.SchemeComponent;
+import de.hswt.hrm.scheme.ui.dnd.DragData;
 
 /**
  * This class represents a direction in the SchemeTreeViewer
@@ -44,8 +49,11 @@ public class RenderedComponentTreeItem extends SchemeTreeItem{
 	}
 
 	@Override
-	public DirectedRenderedComponent getDragItem() {
-		return new DirectedRenderedComponent(comp, dir);
+	public DragData getDragItem(Scheme scheme, List<RenderedComponent> renderedComponents) {
+		//Creates a new SchemeComponent
+		return new DragData(renderedComponents.indexOf(comp), new SchemeComponent(scheme, 0, 0, dir, comp.getComponent()));
 	}
+	
+	
 
 }

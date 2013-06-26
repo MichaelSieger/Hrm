@@ -2,12 +2,14 @@ package de.hswt.hrm.scheme.ui.tree;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 
 import org.eclipse.swt.graphics.Image;
 
 import de.hswt.hrm.component.model.Category;
 import de.hswt.hrm.scheme.model.RenderedComponent;
-import de.hswt.hrm.scheme.ui.DirectedRenderedComponent;
+import de.hswt.hrm.scheme.model.Scheme;
+import de.hswt.hrm.scheme.ui.dnd.DragData;
 
 /**
  * This class represents a Category in the SchemeTreeViewer
@@ -61,7 +63,7 @@ public class CategoryTreeItem extends SchemeTreeItem{
 	}
 
 	@Override
-	public DirectedRenderedComponent getDragItem() {
+	public DragData getDragItem(Scheme scheme, List<RenderedComponent> renderedComponents) {
 		return null;
 	}
 	

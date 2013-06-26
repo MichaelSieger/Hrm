@@ -7,7 +7,8 @@ import org.eclipse.swt.graphics.Image;
 
 import de.hswt.hrm.scheme.model.Direction;
 import de.hswt.hrm.scheme.model.RenderedComponent;
-import de.hswt.hrm.scheme.ui.DirectedRenderedComponent;
+import de.hswt.hrm.scheme.model.Scheme;
+import de.hswt.hrm.scheme.ui.dnd.DragData;
 
 /**
  * This class represents a Component in the SchemeTreeViewer
@@ -58,7 +59,7 @@ public class ComponentTreeItem extends SchemeTreeItem{
 	}
 
 	@Override
-	public DirectedRenderedComponent getDragItem() {
+	public DragData getDragItem(Scheme scheme, List<RenderedComponent> renderedComponents) {
 		return null;
 	}
 
