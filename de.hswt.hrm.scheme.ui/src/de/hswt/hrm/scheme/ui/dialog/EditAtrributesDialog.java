@@ -1,6 +1,7 @@
 package de.hswt.hrm.scheme.ui.dialog;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -26,6 +27,8 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.widgets.Section;
 
+import com.google.common.base.Joiner;
+
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.common.ui.swt.layouts.LayoutUtil;
 import de.hswt.hrm.common.ui.swt.table.ColumnDescription;
@@ -45,7 +48,10 @@ public class EditAtrributesDialog extends TitleAreaDialog {
     private Text newEditor;
 
     private Collection<Attribute> attributes;
+
     private Map<Attribute, String> assignedValues;
+
+    private Map<Attribute, String> newValues;
 
     public EditAtrributesDialog(Shell parentShell, Component component,
             Collection<Attribute> attributes, Map<Attribute, String> assignedValues) {
@@ -53,6 +59,7 @@ public class EditAtrributesDialog extends TitleAreaDialog {
         this.component = component;
         this.attributes = attributes;
         this.assignedValues = assignedValues;
+        this.newValues = new HashMap<>();
 
     }
 
@@ -136,9 +143,14 @@ public class EditAtrributesDialog extends TitleAreaDialog {
                     oldEditor.dispose();
 
                 // Identify the selected row
-                TableItem item = (TableItem) e.item;
+                final TableItem item = (TableItem) e.item;
                 if (item == null)
                     return;
+
+                final Attribute temp = (Attribute) item.getData();
+                System.out.println("map before change");
+                System.out.println(Joiner.on('\n').withKeyValueSeparator(" -> ")
+                        .join(assignedValues));
 
                 // The control that will be the editor must be a child of the Table
                 newEditor = new Text(table, SWT.NONE);
@@ -147,13 +159,29 @@ public class EditAtrributesDialog extends TitleAreaDialog {
                     public void modifyText(ModifyEvent me) {
                         Text text = (Text) editor.getEditor();
                         editor.getItem().setText(EDITABLECOLUMN, text.getText());
+                        for (Attribute a : assignedValues.keySet()) {
+                            if (a.getName().equalsIgnoreCase(temp.getName())) {
+                                newValues.put(a, text.getText());
+                                break;
+                            }
+                            else if (!text.getText().isEmpty()) {
+                                newValues.put(temp, text.getText());
+                            }
+                        }
+
                     }
                 });
+
                 newEditor.selectAll();
                 newEditor.setFocus();
                 editor.setEditor(newEditor, item, EDITABLECOLUMN);
+
             }
         });
 
+    }
+
+    public Map<Attribute, String> getNewValues() {
+        return newValues;
     }
 }
