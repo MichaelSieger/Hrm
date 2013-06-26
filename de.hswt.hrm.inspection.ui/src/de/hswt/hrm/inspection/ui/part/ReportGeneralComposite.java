@@ -669,7 +669,7 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
             public void selectionChanged(SelectionChangedEvent event) {
                 IStructuredSelection selection = (IStructuredSelection) event.getSelection();
                 selectedTitlePhoto = (Photo) selection.getFirstElement();
-
+                inspection.setFrontpicture(selectedTitlePhoto);
             }
         });
 
@@ -701,7 +701,7 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
             public void selectionChanged(SelectionChangedEvent event) {
                 IStructuredSelection selection = (IStructuredSelection) event.getSelection();
                 selectedPlantPhoto = (Photo) selection.getFirstElement();
-
+                inspection.setPlantpicture(selectedPlantPhoto);
             }
         });
     }
