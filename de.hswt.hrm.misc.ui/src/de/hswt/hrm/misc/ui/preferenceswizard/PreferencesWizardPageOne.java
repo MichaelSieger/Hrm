@@ -111,12 +111,12 @@ public class PreferencesWizardPageOne extends WizardPage {
     }
 
     private void checkPageComplete() {
-//
-//        if (first) {
-//            first = false;
-//            setPageComplete(false);
-//            return;
-//        }
+
+        if (first && fileText.getText().isEmpty() && nameText.getText().isEmpty()) {
+            first = false;
+            setPageComplete(false);
+            return;
+        }
 
         setErrorMessage(null);
 
