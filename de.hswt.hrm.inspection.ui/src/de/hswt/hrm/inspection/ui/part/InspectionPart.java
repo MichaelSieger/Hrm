@@ -205,16 +205,20 @@ public class InspectionPart {
             reportGeneralComposite.setInspection(selectedInspection);
             reportGeneralComposite.refreshGeneralInformation();
             if (inspection != null) {
-                inspection.addPlantObserver(new Observer<Plant>() {
-
-                    @Override
-                    public void changed(Plant item) {
-                        plantChanged(item);
-                    }
-                });
+            	initInspectionObservers();
             }
         }
 
+    }
+    
+    private void initInspectionObservers(){
+        selectedInspection.addPlantObserver(new Observer<Plant>() {
+
+            @Override
+            public void changed(Plant item) {
+                plantChanged(item);
+            }
+        });
     }
 
     private void plantChanged(Plant plant) {
