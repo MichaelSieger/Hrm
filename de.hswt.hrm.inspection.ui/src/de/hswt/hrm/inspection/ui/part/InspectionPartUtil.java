@@ -13,7 +13,6 @@ import org.eclipse.jface.viewers.OwnerDrawLabelProvider;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.internal.win32.ICONINFO;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Shell;
@@ -86,12 +85,13 @@ public class InspectionPartUtil {
 				} else {
 					event.gc.setBackground(MORE_THEN_3);
 				}
-//				event.gc.fillOval(event.x + 10, event.y + 10, 10, 10);
+				// event.gc.fillOval(event.x + 10, event.y + 10, 10, 10);
 				int a = event.getBounds().height;
 				int b = event.getBounds().width;
-			
-//				event.gc.fillOval(event.x, event.y, event.y/2, event.y/2);
-				event.gc.fillOval(event.x + b/2, event.y + b/2, a/2,a/2);
+
+				// event.gc.fillOval(event.x, event.y, event.y/2, event.y/2);
+				event.gc.fillOval(event.x + b / 2, event.y + b / 2, a / 2,
+						a / 2);
 			}
 
 			@Override
