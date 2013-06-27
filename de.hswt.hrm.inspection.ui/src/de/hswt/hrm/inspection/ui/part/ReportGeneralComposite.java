@@ -1106,32 +1106,96 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
 
 	private void fillOptionalFields(Inspection inspection) {
 
-		Contact c = null;
 		clearFields();
+		fillContractor();
+		fillRequester();
+		fillChecker();
+		fillSummary();
+		fillLegionella();
+		fillGerms();
+		fillTemperature();
+		fillHumidity();
 
-		if (inspection.getContractor().isPresent()) {
-			c = inspection.getContractor().get();
-			customerNameText.setText(c.getName());
-			customerStreetText.setText(c.getStreet() + " " + c.getStreetNo());
-			customerCityText.setText(c.getCity() + " " + c.getPostCode());
+	}
+
+	private void fillSummary() {
+		if (inspection.getSummary().isPresent()) {
+			overallCombo.setText(inspection.getSummary().get());
 		}
-		if (inspection.getRequester().isPresent()) {
-			c = inspection.getRequester().get();
-			requestorNameText.setText(c.getName());
-			requestorStreetText.setText(c.getStreet() + " " + c.getStreetNo());
-			requestorCityText.setText(c.getCity() + " " + c.getPostCode());
-		}
+
+	}
+
+	private void fillChecker() {
 		if (inspection.getChecker().isPresent()) {
-			c = inspection.getChecker().get();
+			Contact c = inspection.getChecker().get();
 			controllerNameText.setText(c.getName());
 			controllerStreetText.setText(c.getStreet() + " " + c.getStreetNo());
 			controllerCityText.setText(c.getCity() + " " + c.getPostCode());
 		}
 
-		if (inspection.getSummary().isPresent()) {
-			overallCombo.setText(inspection.getSummary().get());
+	}
 
+	private void fillRequester() {
+		if (inspection.getRequester().isPresent()) {
+			Contact c = inspection.getRequester().get();
+			requestorNameText.setText(c.getName());
+			requestorStreetText.setText(c.getStreet() + " " + c.getStreetNo());
+			requestorCityText.setText(c.getCity() + " " + c.getPostCode());
 		}
+
+	}
+
+	private void fillContractor() {
+		if (inspection.getContractor().isPresent()) {
+			Contact c = inspection.getContractor().get();
+			customerNameText.setText(c.getName());
+			customerStreetText.setText(c.getStreet() + " " + c.getStreetNo());
+			customerCityText.setText(c.getCity() + " " + c.getPostCode());
+		}
+
+	}
+
+	private void fillHumidity() {
+		if (inspection.getHumidity().isPresent()) {
+			humidityText.setText(inspection.getTemperature().get().toString());
+		}
+		if (inspection.getHumidityRating().isPresent()) {
+			humidityGradeCombo.select(inspection.getHumidityRating().get());
+		}
+		if (inspection.getHumidityQuantifier().isPresent()) {
+			humidityWeightCombo.select(inspection.getHumidityQuantifier().get());
+		}
+		if (inspection.getHumidityComment().isPresent()) {
+			humidityText.setText(inspection.getHumidityComment().get());
+		}
+
+	}
+
+	private void fillTemperature() {
+		if (inspection.getTemperature().isPresent()) {
+			temperatureText.setText(inspection.getTemperature().get()
+					.toString());
+		}
+
+	}
+
+	private void fillGerms() {
+		if (inspection.getGerms().isPresent()) {
+			sumGermsText.setText(inspection.getGerms().get().toString());
+		}
+		if (inspection.getGermsRating().isPresent()) {
+			sumGermsGradeCombo.select(inspection.getGermsRating().get());
+		}
+		if (inspection.getGermsQuantifier().isPresent()) {
+			sumGermsWeightCombo.select(inspection.getGermsQuantifier().get());
+		}
+		if (inspection.getGermsComment().isPresent()) {
+			sumGermsCommentCombo.setText(inspection.getGermsComment().get());
+		}
+
+	}
+
+	private void fillLegionella() {
 		if (inspection.getLegionella().isPresent()) {
 			legionellaText.setText(inspection.getLegionella().get().toString());
 		}
@@ -1147,20 +1211,6 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
 		if (inspection.getLegionellaComment().isPresent()) {
 			legionellaCommentCombo.setText(inspection.getLegionellaComment()
 					.get());
-
-			if (inspection.getGerms().isPresent()) {
-				sumGermsText.setText(inspection.getGerms().get().toString());
-			}
-
-			if (inspection.getTemperature().isPresent()) {
-				temperatureText.setText(inspection.getTemperature().get()
-						.toString());
-			}
-
-			if (inspection.getHumidity().isPresent()) {
-				humidityText.setText(inspection.getTemperature().get()
-						.toString());
-			}
 		}
 
 	}
