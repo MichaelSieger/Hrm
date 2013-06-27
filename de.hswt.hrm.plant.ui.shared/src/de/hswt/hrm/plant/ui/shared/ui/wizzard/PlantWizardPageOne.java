@@ -123,6 +123,8 @@ public class PlantWizardPageOne extends WizardPage {
     public HashMap<String, Text> getMandatoryWidgets() {
         HashMap<String, Text> widgets = new HashMap<String, Text>();
         widgets.put("description", (Text) XWT.findElementByName(container, "description"));
+        widgets.put("area", (Text) XWT.findElementByName(container, "area"));
+        widgets.put("location", (Text) XWT.findElementByName(container, "location"));
         return widgets;
     }
 

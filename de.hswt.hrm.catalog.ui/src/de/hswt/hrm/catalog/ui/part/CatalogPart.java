@@ -12,6 +12,7 @@ import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
@@ -119,6 +120,16 @@ public class CatalogPart {
         assignmentComposite = new CatalogAssignmentComposite(tabFolder);
         ContextInjectionFactory.inject(assignmentComposite, context);
         assignmentTab.setControl(assignmentComposite);
+        tabFolder.addSelectionListener(
+
+        new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                if (tabFolder.getItem(tabFolder.getSelectionIndex()).equals(assignmentTab)) {
+                    assignmentComposite.refresh();
+                }
+            }
+        });
 
     }
 

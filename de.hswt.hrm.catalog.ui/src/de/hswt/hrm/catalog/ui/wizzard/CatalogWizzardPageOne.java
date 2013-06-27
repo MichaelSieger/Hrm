@@ -40,6 +40,10 @@ public class CatalogWizzardPageOne extends WizardPage {
     private HashMap<String, Button> buttons;
     private Optional<ICatalogItem> item;
 
+    private Button activity;
+    private Button current;
+    private Button target;
+
     public CatalogWizzardPageOne(String pageName, Optional<ICatalogItem> item) {
         super(pageName);
         this.item = item;
@@ -65,6 +69,11 @@ public class CatalogWizzardPageOne extends WizardPage {
             updateFields(item.get());
         }
         FormUtil.initSectionColors((Section) XWT.findElementByName(container, "Mandatory"));
+
+        activity = (Button) XWT.findElementByName(container, Fields.ACTIVITY);
+        current = (Button) XWT.findElementByName(container, Fields.CURRENT);
+        target = (Button) XWT.findElementByName(container, Fields.TARGET);
+
         setKeyListener();
         setControl(container);
         setPageComplete(false);
@@ -154,7 +163,7 @@ public class CatalogWizzardPageOne extends WizardPage {
         ICatalogItem ic = null;
 
         for (Button bu : b.values()) {
-            if (bu.getSelection() && bu.getText().equalsIgnoreCase("Activity")) {
+            if (bu.getSelection() && bu.equals(activity)) {
                 if (item.isPresent()) {
                     ic = item.get();
                     Activity a = (Activity) ic;
@@ -167,7 +176,7 @@ public class CatalogWizzardPageOne extends WizardPage {
 
                 }
             }
-            else if (bu.getSelection() && bu.getText().equalsIgnoreCase("target")) {
+            else if (bu.getSelection() && bu.equals(target)) {
                 if (item.isPresent()) {
                     ic = item.get();
                     Target t = (Target) ic;
@@ -180,7 +189,7 @@ public class CatalogWizzardPageOne extends WizardPage {
 
                 }
             }
-            else if (bu.getSelection() && bu.getText().equalsIgnoreCase("current")) {
+            else if (bu.getSelection() && bu.equals(current)) {
                 if (item.isPresent()) {
                     ic = item.get();
                     Current c = (Current) ic;
@@ -216,10 +225,12 @@ public class CatalogWizzardPageOne extends WizardPage {
         }
 
         else if (oneButtonisSelected) {
-            Text[] manArray = {getTextWidgets().get(Fields.NAME), getTextWidgets().get(Fields.DESCRIPTION)}; 
-            for (int i=0; i<manArray.length; i++) {
+            Text[] manArray = { getTextWidgets().get(Fields.NAME),
+                    getTextWidgets().get(Fields.DESCRIPTION) };
+            for (int i = 0; i < manArray.length; i++) {
                 if (manArray[i].getText().length() == 0) {
-                    setErrorMessage(I18N.tr("Field is mandatory")+ ": " + I18N.tr(XWT.getElementName((Object) manArray[i])));
+                    setErrorMessage(I18N.tr("Field is mandatory") + ": "
+                            + I18N.tr(XWT.getElementName((Object) manArray[i])));
                     return false;
                 }
             }
@@ -253,7 +264,7 @@ public class CatalogWizzardPageOne extends WizardPage {
         }
 
     }
-    
+
     private void translate(Composite container) {
         // Section
         setSectionText(container, "Mandatory", I18N.tr("Catalog Item"));
@@ -262,10 +273,10 @@ public class CatalogWizzardPageOne extends WizardPage {
         setButtonText(container, "current", I18N.tr("Current"));
         setButtonText(container, "activity", I18N.tr("Activity"));
         // Labels
-        setLabelText(container, "lblName", I18N.tr("Name")+":");
-        setLabelText(container, "lblDescription", I18N.tr("Description")+":");
+        setLabelText(container, "lblName", I18N.tr("Name") + ":");
+        setLabelText(container, "lblDescription", I18N.tr("Description") + ":");
     }
-    
+
     private void setSectionText(Composite container, String sectionName, String text) {
         Section s = (Section) XWT.findElementByName(container, sectionName);
         if (s == null) {
@@ -274,7 +285,7 @@ public class CatalogWizzardPageOne extends WizardPage {
         }
         s.setText(text);
     }
-    
+
     private void setButtonText(Composite container, String buttonName, String text) {
         Button b = (Button) XWT.findElementByName(container, buttonName);
         if (b == null) {
@@ -283,7 +294,7 @@ public class CatalogWizzardPageOne extends WizardPage {
         }
         b.setText(text);
     }
-    
+
     private void setLabelText(Composite container, String labelName, String text) {
         Label l = (Label) XWT.findElementByName(container, labelName);
         if (l == null) {
