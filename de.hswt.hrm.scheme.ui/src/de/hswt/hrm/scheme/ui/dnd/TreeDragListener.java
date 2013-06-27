@@ -47,23 +47,13 @@ public class TreeDragListener implements DragSourceListener {
 				if (data != null) {
 					dragging = data;
 					ev.image = null;
+				}else{
+					ev.doit = false;
 				}
 			}
 		} else {
 			ev.doit = false;
 		}
-	}
-
-	private int getItemIndex(RenderedComponent dc) {
-		if (components == null) {
-			return -1;
-		}
-		for (int i = 0; i < components.size(); i++) {
-			if (components.get(i).getComponent().equals(dc.getComponent())) {
-				return i;
-			}
-		}
-		throw new RuntimeException("Internal Error");
 	}
 
 	@Override
