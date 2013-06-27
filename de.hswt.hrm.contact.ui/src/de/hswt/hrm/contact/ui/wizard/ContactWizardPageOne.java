@@ -129,7 +129,7 @@ public class ContactWizardPageOne extends WizardPage {
     private boolean checkValidity(Text textField) {
         String textFieldName = XWT.getElementName((Object) textField);
 
-        boolean isInvalidText = (textFieldName.equals("name") || textFieldName.equals("city"))
+        boolean isInvalidText = (textFieldName.equals("city"))
                 && (!textOnlyVal.isValid(textField.getText()));
         boolean isInvalidStreetNumber = (textFieldName.equals("streetNumber"))
                 && (!streetNoVal.isValid(textField.getText()));
