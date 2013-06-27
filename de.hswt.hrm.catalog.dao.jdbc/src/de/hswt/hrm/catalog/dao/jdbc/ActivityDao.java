@@ -306,8 +306,8 @@ public class ActivityDao implements IActivityDao {
         public static final String ID = "State_Activity_ID";
         public static final String NAME = "State_Activity_Name";
         public static final String TEXT = "State_Activity_Text";
-        public static final String CROSS_CURRENT_FK = "Category_Activity_State_Current_FK";
-        public static final String CROSS_ACTIVITY_FK = "Category_Activity_State_Activity_FK";
+        public static final String CROSS_CURRENT_FK = "Catalog_Activity_State_Current_FK";
+        public static final String CROSS_ACTIVITY_FK = "Catalog_Activity_State_Activity_FK";
         
     }
 }
