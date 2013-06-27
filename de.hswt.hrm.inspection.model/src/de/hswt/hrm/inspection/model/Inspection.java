@@ -306,10 +306,22 @@ public class Inspection {
     public void setPlantpicture(Photo plantpicture) {
         this.plantpicture = plantpicture;
     }
+    
+    //Observers
 
     public void addPlantObserver(Observer<Plant> o) {
         plant.addObserver(o);
     }
+    
+    public void addPhysicalRatingObserver(Observer<Collection<PhysicalRating>> o){
+    	physicalRatings.addObserver(o);
+    }
+    
+    public void addBiologicalRatingObserver(Observer<Collection<BiologicalRating>> o){
+    	biologicalRatings.addObserver(o);
+    }
+    
+    //HashCode, equals
 
     @Override
     public int hashCode() {
