@@ -6,3 +6,4 @@ Bundle-Version: 0.0.1.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Require-Bundle: org.eclipse.e4.core.di;bundle-version="1.2.0"
 Export-Package: de.hswt.hrm.report.latex.service
+Import-Package: de.hswt.hrm.inspection.model
