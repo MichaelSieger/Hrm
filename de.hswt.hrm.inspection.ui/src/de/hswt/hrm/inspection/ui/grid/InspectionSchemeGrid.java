@@ -95,4 +95,12 @@ public class InspectionSchemeGrid {
 		return grid;
 	}
 
+	public void setColor(SchemeComponent c, Color color){
+		grid.setColorGrid(color, c.getX(), c.getY(), c.getWidth(), c.getHeight(), true, true);
+	}
+	
+	public void clearColors(){
+		grid.clearColors();
+	}
+
 }
