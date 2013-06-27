@@ -29,13 +29,13 @@ import de.hswt.hrm.component.model.Attribute;
 import de.hswt.hrm.component.model.Component;
 
 public class ComponentDao implements IComponentDao {
-	private final static Logger LOG = LoggerFactory.getLogger(ComponentDao.class);    
+    private final static Logger LOG = LoggerFactory.getLogger(ComponentDao.class);
     private final ICategoryDao categoryDao;
-    
+
     @Inject
-    public ComponentDao(ICategoryDao categoryDao){
-    	checkNotNull(categoryDao, "CategoryDao not properly injected to ComponentDao.");
-    	
+    public ComponentDao(ICategoryDao categoryDao) {
+        checkNotNull(categoryDao, "CategoryDao not properly injected to ComponentDao.");
+
         this.categoryDao = categoryDao;
         LOG.debug("CategoryDao injected into ComponentDao.");
     }
@@ -53,7 +53,7 @@ public class ComponentDao implements IComponentDao {
             try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
                 ResultSet result = stmt.executeQuery();
                 Collection<Component> components = fromResultSet(result);
-                
+
                 DbUtils.closeQuietly(result);
 
                 return components;
@@ -98,62 +98,60 @@ public class ComponentDao implements IComponentDao {
             throw new DatabaseException(e);
         }
     }
-    
+
     @Override
-    public Attribute findAttributeById(final int id) 
-    		throws ElementNotFoundException, DatabaseException {
-    	
-    	checkArgument(id >= 0, "ID must be valid.");
-    	
-    	SqlQueryBuilder builder = new SqlQueryBuilder();
-    	builder.select(
-    			ATTRIBUTE_TABLE_NAME, 
-    			AttributeFields.ID, 
-    			AttributeFields.NAME, 
-    			AttributeFields.FK_COMPONENT);
-    	builder.where(AttributeFields.ID);
-    	
-    	String query = builder.toString();
-    	
-    	try (Connection con = DatabaseFactory.getConnection()) {
-    		try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
-    			stmt.setParameter(AttributeFields.ID, id);
-    			
-    			ResultSet rs = stmt.executeQuery();
-    			rs.next();
-	            String name = rs.getString(AttributeFields.NAME);
-	            int componentId = rs.getInt(AttributeFields.FK_COMPONENT);
-	            
-	            Component component = null;
-	            try {
-	            	component = findById(componentId);
-	            }
-	            catch (ElementNotFoundException e) {
-	            	String msg = String.format("Attribute '%d' has an invalid component ID (%d) as FK.",
-        					id, componentId);
-	            	LOG.error(msg, e);
-	            	throw new DatabaseException("Invalid component retrieved in attribute row!");
-	            }
-	            
-	            if (rs.next()) {
-	            	throw new DatabaseException("ID not unique.");
-	            }
-    			
-    			DbUtils.closeQuietly(rs);
-    			
-    			return new Attribute(id, name, component);
-    		}
-    	}
-    	catch (SQLException e) {
-    		throw new DatabaseException("Unknown error.", e);
-    	}
+    public Attribute findAttributeById(final int id) throws ElementNotFoundException,
+            DatabaseException {
+
+        checkArgument(id >= 0, "ID must be valid.");
+
+        SqlQueryBuilder builder = new SqlQueryBuilder();
+        builder.select(ATTRIBUTE_TABLE_NAME, AttributeFields.ID, AttributeFields.NAME,
+                AttributeFields.FK_COMPONENT);
+        builder.where(AttributeFields.ID);
+
+        String query = builder.toString();
+
+        try (Connection con = DatabaseFactory.getConnection()) {
+            try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
+                stmt.setParameter(AttributeFields.ID, id);
+
+                ResultSet rs = stmt.executeQuery();
+                rs.next();
+                String name = rs.getString(AttributeFields.NAME);
+                int componentId = rs.getInt(AttributeFields.FK_COMPONENT);
+
+                Component component = null;
+                try {
+                    component = findById(componentId);
+                }
+                catch (ElementNotFoundException e) {
+                    String msg = String.format(
+                            "Attribute '%d' has an invalid component ID (%d) as FK.", id,
+                            componentId);
+                    LOG.error(msg, e);
+                    throw new DatabaseException("Invalid component retrieved in attribute row!");
+                }
+
+                if (rs.next()) {
+                    throw new DatabaseException("ID not unique.");
+                }
+
+                DbUtils.closeQuietly(rs);
+
+                return new Attribute(id, name, component);
+            }
+        }
+        catch (SQLException e) {
+            throw new DatabaseException("Unknown error.", e);
+        }
     }
-    
+
     @Override
-    public Collection<Attribute> findAttributesByComponent(Component component) 
-    		throws DatabaseException {
-    	
-    	checkNotNull(component, "Component must not be null.");
+    public Collection<Attribute> findAttributesByComponent(Component component)
+            throws DatabaseException {
+
+        checkNotNull(component, "Component must not be null.");
         checkArgument(component.getId() >= 0, "Component must have a valid ID.");
 
         SqlQueryBuilder builder = new SqlQueryBuilder();
@@ -180,16 +178,16 @@ public class ComponentDao implements IComponentDao {
 
     @Override
     public Collection<String> findAttributeNames() throws DatabaseException {
-    	StringBuilder builder = new StringBuilder();
-    	builder.append("SELECT DISTINCT ");
-    	builder.append(AttributeFields.NAME);
-    	builder.append(" FROM ").append(ATTRIBUTE_TABLE_NAME).append(";");
-    	
+        StringBuilder builder = new StringBuilder();
+        builder.append("SELECT DISTINCT ");
+        builder.append(AttributeFields.NAME);
+        builder.append(" FROM ").append(ATTRIBUTE_TABLE_NAME).append(";");
+
         final String query = builder.toString();
 
         try (Connection con = DatabaseFactory.getConnection()) {
             try (PreparedStatement stmt = con.prepareStatement(query)) {
-            	
+
                 ResultSet rs = stmt.executeQuery();
 
                 Collection<String> names = new ArrayList<>();
@@ -207,43 +205,44 @@ public class ComponentDao implements IComponentDao {
             throw new DatabaseException(e);
         }
     }
-    
+
     /**
      * @see {@link IComponentDao#insert(Component)}
      */
     @Override
     public Component insert(Component component) throws SaveException {
-    	checkNotNull(component, "Component must not be null.");
-    	checkState(component.getCategory().isPresent(), "Component must have a valid category set.");
-    	checkState(component.getCategory().get().getId() >= 0, "Component must have a valid category set.");
-    	
+        checkNotNull(component, "Component must not be null.");
+        checkState(component.getCategory().isPresent(), "Component must have a valid category set.");
+        checkState(component.getCategory().get().getId() >= 0,
+                "Component must have a valid category set.");
+
         SqlQueryBuilder builder = new SqlQueryBuilder();
-        builder.insert(TABLE_NAME,Fields.NAME, Fields.SYMBOL_LR, Fields.SYMBOL_RL,
+        builder.insert(TABLE_NAME, Fields.NAME, Fields.SYMBOL_LR, Fields.SYMBOL_RL,
                 Fields.SYMBOL_UD, Fields.SYMBOL_DU, Fields.QUANTIFIER, Fields.BOOL_RATING,
                 Fields.CATEGORY);
 
         final String query = builder.toString();
-        
+
         try (Connection con = DatabaseFactory.getConnection()) {
-        	con.setAutoCommit(false);
-        	
+            con.setAutoCommit(false);
+
             int downUpImageId;
             int leftRightImageId;
             int rightLeftImageId;
             int upDownImageId;
             try {
-    	        // Insert the blobs
-    	    	downUpImageId = insertComponentImage(con, component.getDownUpImage());
-    	    	leftRightImageId = insertComponentImage(con, component.getLeftRightImage());
-    	    	rightLeftImageId = insertComponentImage(con, component.getRightLeftImage());
-    	    	upDownImageId = insertComponentImage(con, component.getUpDownImage());
+                // Insert the blobs
+                downUpImageId = insertComponentImage(con, component.getDownUpImage());
+                leftRightImageId = insertComponentImage(con, component.getLeftRightImage());
+                rightLeftImageId = insertComponentImage(con, component.getRightLeftImage());
+                upDownImageId = insertComponentImage(con, component.getUpDownImage());
             }
-        	catch (Exception e) {
-        		LOG.error("Unable to insert one or more component images.", e);
-        		con.rollback();
-        		throw new SaveException("Unable to insert one or more component images.", e);
-        	}
-        	
+            catch (Exception e) {
+                LOG.error("Unable to insert one or more component images.", e);
+                con.rollback();
+                throw new SaveException("Unable to insert one or more component images.", e);
+            }
+
             try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
                 stmt.setParameter(Fields.NAME, component.getName());
                 stmt.setParameter(Fields.SYMBOL_LR, leftRightImageId);
@@ -252,14 +251,13 @@ public class ComponentDao implements IComponentDao {
                 stmt.setParameter(Fields.SYMBOL_DU, downUpImageId);
                 stmt.setParameter(Fields.BOOL_RATING, component.getBoolRating());
                 stmt.setParameter(Fields.CATEGORY, component.getCategory().get().getId());
-                
-            	stmt.setParameter(Fields.QUANTIFIER, component.getQuantifier().or(-1));
-                	
+
+                stmt.setParameter(Fields.QUANTIFIER, component.getQuantifier().or(-1));
 
                 int affectedRows = stmt.executeUpdate();
                 if (affectedRows != 1) {
-                	con.rollback();
-                	throw new SaveException();
+                    con.rollback();
+                    throw new SaveException();
                 }
 
                 try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
@@ -269,22 +267,22 @@ public class ComponentDao implements IComponentDao {
                         // Create new Component with id
                         Component inserted = new Component(id, component.getName(),
                                 component.getLeftRightImage(), component.getRightLeftImage(),
-                                component.getUpDownImage(), component.getDownUpImage(),
-                                component.getQuantifier().or(-1), component.getBoolRating());
+                                component.getUpDownImage(), component.getDownUpImage(), component
+                                        .getQuantifier().or(-1), component.getBoolRating());
 
                         inserted.setCategory(component.getCategory().orNull());
                         con.commit();
                         return inserted;
                     }
                     else {
-                    	con.rollback();
-                    	throw new SaveException("Could not retrieve generated ID.");
+                        con.rollback();
+                        throw new SaveException("Could not retrieve generated ID.");
                     }
                 }
             }
         }
-        catch (SQLException|DatabaseException e) {
-        	throw new SaveException(e);
+        catch (SQLException | DatabaseException e) {
+            throw new SaveException(e);
         }
     }
 
@@ -307,7 +305,7 @@ public class ComponentDao implements IComponentDao {
 
         try (Connection con = DatabaseFactory.getConnection()) {
             try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
-            	stmt.setParameter(Fields.ID, component.getId());
+                stmt.setParameter(Fields.ID, component.getId());
                 stmt.setParameter(Fields.NAME, component.getName());
                 stmt.setParameter(Fields.SYMBOL_LR, component.getLeftRightImage());
                 stmt.setParameter(Fields.SYMBOL_RL, component.getRightLeftImage());
@@ -327,15 +325,15 @@ public class ComponentDao implements IComponentDao {
             throw new SaveException(e);
         }
     }
-    
+
     @Override
     public Attribute addAttribute(final Component component, final String attributeName)
-    		throws SaveException {
-    		
-    	checkNotNull(component, "Component must not be null.");
+            throws SaveException {
+
+        checkNotNull(component, "Component must not be null.");
         checkArgument(component.getId() >= 0, "Component must have a valid ID.");
-    	
-    	SqlQueryBuilder builder = new SqlQueryBuilder();
+
+        SqlQueryBuilder builder = new SqlQueryBuilder();
         builder.insert(ATTRIBUTE_TABLE_NAME, AttributeFields.NAME, AttributeFields.FK_COMPONENT);
 
         final String query = builder.toString();
@@ -369,57 +367,58 @@ public class ComponentDao implements IComponentDao {
             throw new SaveException(e);
         }
     }
-    
+
     @Override
     public void deleteAttribute(final Attribute attribute) throws DatabaseException {
-    	checkNotNull(attribute, "Attribute must not be null.");
-    	checkArgument(attribute.getId() >= 0, "Attribute must have a valid ID.");
-    	
-    	StringBuilder builder = new StringBuilder();
-    	builder.append("DELETE FROM ").append(ATTRIBUTE_TABLE_NAME);
-    	builder.append(" WHERE ").append(AttributeFields.ID);
-    	builder.append(" = ?;");
-    	
-    	String query = builder.toString();
-    	
-    	try (Connection con = DatabaseFactory.getConnection()) {
-    		try (PreparedStatement stmt = con.prepareStatement(query)) {
-    			stmt.setInt(1, attribute.getId());
-    			
-    			con.setAutoCommit(false);
-    			int affected = stmt.executeUpdate();
-    			
-    			if (affected > 1) {
-    				con.rollback();
-    				throw new DatabaseException("Accidently more than one row affected.");
-    			}
-    			else if (affected < 1) {
-    				con.rollback();
-    				throw new ElementNotFoundException();
-    			}
-    			
-    			con.commit();
-    		}
-    	}
-    	catch (SQLException | DatabaseException e) {
+        checkNotNull(attribute, "Attribute must not be null.");
+        checkArgument(attribute.getId() >= 0, "Attribute must have a valid ID.");
+
+        StringBuilder builder = new StringBuilder();
+        builder.append("DELETE FROM ").append(ATTRIBUTE_TABLE_NAME);
+        builder.append(" WHERE ").append(AttributeFields.ID);
+        builder.append(" = ?;");
+
+        String query = builder.toString();
+
+        try (Connection con = DatabaseFactory.getConnection()) {
+            try (PreparedStatement stmt = con.prepareStatement(query)) {
+                stmt.setInt(1, attribute.getId());
+
+                con.setAutoCommit(false);
+                int affected = stmt.executeUpdate();
+
+                if (affected > 1) {
+                    con.rollback();
+                    throw new DatabaseException("Accidently more than one row affected.");
+                }
+                else if (affected < 1) {
+                    con.rollback();
+                    throw new ElementNotFoundException();
+                }
+
+                con.commit();
+            }
+        }
+        catch (SQLException | DatabaseException e) {
             throw new DatabaseException("Unknown error.", e);
         }
     }
 
-    private Collection<Component> fromResultSet(ResultSet rs) throws SQLException, DatabaseException {
+    private Collection<Component> fromResultSet(ResultSet rs) throws SQLException,
+            DatabaseException {
         checkNotNull(rs, "Result must not be null.");
         Collection<Component> componentList = new ArrayList<>();
 
         while (rs.next()) {
             int id = rs.getInt(Fields.ID);
             String name = rs.getString(Fields.NAME);
-long start = System.nanoTime();            
+            long start = System.nanoTime();
             byte[] leftRightImage = findBlob(rs.getInt(Fields.SYMBOL_LR));
             byte[] rightLeftImage = findBlob(rs.getInt(Fields.SYMBOL_RL));
             byte[] upDownImage = findBlob(rs.getInt(Fields.SYMBOL_UD));
             byte[] downUpImage = findBlob(rs.getInt(Fields.SYMBOL_DU));
-long stop = System.nanoTime();
-LOG.debug(String.format("Blobs retrieved in %d ms.", (stop - start)/1000000));
+            long stop = System.nanoTime();
+            LOG.debug(String.format("Blobs retrieved in %d ms.", (stop - start) / 1000000));
             int quantifier = rs.getInt(Fields.QUANTIFIER);
             boolean boolRating = rs.getBoolean(Fields.BOOL_RATING);
             Component component = new Component(id, name, leftRightImage, rightLeftImage,
@@ -430,26 +429,26 @@ LOG.debug(String.format("Blobs retrieved in %d ms.", (stop - start)/1000000));
 
         return componentList;
     }
-    
+
     private Collection<Attribute> fromAttributeResultSet(final ResultSet rs,
-    		final Component component) throws SQLException, DatabaseException {
-    	
+            final Component component) throws SQLException, DatabaseException {
+
         checkNotNull(rs, "ResultSet must not be null.");
         Collection<Attribute> attributeList = new ArrayList<>();
 
         while (rs.next()) {
             int id = rs.getInt(AttributeFields.ID);
             String name = rs.getString(AttributeFields.NAME);
-            
+
             Attribute attribute = new Attribute(id, name, component);
             attributeList.add(attribute);
         }
 
         return attributeList;
     }
-    
-    public byte[] findBlob(int id) throws DatabaseException{
-        if(id <= 0){
+
+    public byte[] findBlob(int id) throws DatabaseException {
+        if (id <= 0) {
             return null;
         }
         SqlQueryBuilder builder = new SqlQueryBuilder();
@@ -461,7 +460,7 @@ LOG.debug(String.format("Blobs retrieved in %d ms.", (stop - start)/1000000));
             try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
                 stmt.setParameter(BlobFields.ID, id);
                 ResultSet result = stmt.executeQuery();
-                if(!result.next()){
+                if (!result.next()) {
                     throw new ElementNotFoundException();
                 }
                 byte[] bytes = result.getBytes(BlobFields.BLOB);
@@ -473,37 +472,39 @@ LOG.debug(String.format("Blobs retrieved in %d ms.", (stop - start)/1000000));
             throw new DatabaseException(e);
         }
     }
-    
+
     /**
      * Inserts the blob as component image and returns its ID.
+     * 
      * @param blob
      * @return
      * @throws DatabaseException
      */
     private int insertComponentImage(final Connection con, final byte[] blob)
-    		throws DatabaseException {
-    	
-    	try {
-    		checkState(!con.getAutoCommit(), "AutoCommit must be disabled as we should run in a transaction.");
-    	}
-    	catch (SQLException e) {
-    		throw new SaveException("Unknown error.", e);
-    	}
-    	
-    	StringBuilder builder = new StringBuilder();
-    	builder.append("INSERT INTO ").append(BLOB_TABLE_NAME);
-    	builder.append(" (").append(BlobFields.BLOB).append(")");
-    	builder.append(" VALUES (?);");
-    	
-		try (PreparedStatement stmt = con.prepareStatement(builder.toString())) {
-			stmt.setBytes(1, blob);
-			
-			int affected = stmt.executeUpdate();
-			if (affected != 1) {
-				throw new SaveException();
-			}
-			
-			try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+            throws DatabaseException {
+
+        try {
+            checkState(!con.getAutoCommit(),
+                    "AutoCommit must be disabled as we should run in a transaction.");
+        }
+        catch (SQLException e) {
+            throw new SaveException("Unknown error.", e);
+        }
+
+        StringBuilder builder = new StringBuilder();
+        builder.append("INSERT INTO ").append(BLOB_TABLE_NAME);
+        builder.append(" (").append(BlobFields.BLOB).append(")");
+        builder.append(" VALUES (?);");
+
+        try (PreparedStatement stmt = con.prepareStatement(builder.toString())) {
+            stmt.setBytes(1, blob);
+
+            int affected = stmt.executeUpdate();
+            if (affected != 1) {
+                throw new SaveException();
+            }
+
+            try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
                     int id = generatedKeys.getInt(1);
 
@@ -514,10 +515,10 @@ LOG.debug(String.format("Blobs retrieved in %d ms.", (stop - start)/1000000));
                     throw new SaveException("Could not retrieve generated ID.");
                 }
             }
-		}
-    	catch (SQLException e) {
-    		throw new DatabaseException("Unknown error.", e);
-    	}
+        }
+        catch (SQLException e) {
+            throw new DatabaseException("Unknown error.", e);
+        }
     }
 
     private static final String TABLE_NAME = "Component";
@@ -535,16 +536,15 @@ LOG.debug(String.format("Blobs retrieved in %d ms.", (stop - start)/1000000));
         public static final String BOOL_RATING = "Component_Bool_Rating";
         public static final String CATEGORY = "Component_Category_FK";
     }
-    
+
     private static class BlobFields {
         public static final String ID = "Component_Picture_ID";
-        public static final String FILENAME = "Component_Picture_Filename";
         public static final String BLOB = "Component_Picture_Blob";
     }
-    
+
     private static class AttributeFields {
-    	public static final String ID = "Attribute_ID";
-    	public static final String NAME = "Attribute_Name";
-    	public static final String FK_COMPONENT = "Attribute_Component_FK";
+        public static final String ID = "Attribute_ID";
+        public static final String NAME = "Attribute_Name";
+        public static final String FK_COMPONENT = "Attribute_Component_FK";
     }
 }

@@ -1,23 +1,17 @@
 package de.hswt.hrm.component.ui.event;
 
-import java.awt.Toolkit;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.Collection;
 
-import javax.imageio.ImageIO;
 import javax.inject.Inject;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.xwt.XWT;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
@@ -29,7 +23,6 @@ import com.google.common.base.Optional;
 import com.sun.pdfview.PDFFile;
 import com.sun.pdfview.PDFPage;
 
-import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.component.model.Component;
 import de.hswt.hrm.component.service.CategoryService;
 import de.hswt.hrm.component.service.ComponentService;
