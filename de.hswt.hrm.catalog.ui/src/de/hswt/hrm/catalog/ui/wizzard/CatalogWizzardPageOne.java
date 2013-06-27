@@ -275,6 +275,7 @@ public class CatalogWizzardPageOne extends WizardPage {
         // Labels
         setLabelText(container, "lblName", I18N.tr("Name") + ":");
         setLabelText(container, "lblDescription", I18N.tr("Description") + ":");
+        
     }
 
     private void setSectionText(Composite container, String sectionName, String text) {
@@ -293,6 +294,7 @@ public class CatalogWizzardPageOne extends WizardPage {
             return;
         }
         b.setText(text);
+        b.pack();
     }
 
     private void setLabelText(Composite container, String labelName, String text) {
