@@ -219,6 +219,14 @@ public class InspectionPart {
                 plantChanged(item);
             }
         });
+        selectedInspection.addBiologicalRatingObserver(new Observer<Collection<BiologicalRating>>() {
+			
+			@Override
+			public void changed(Collection<BiologicalRating> item) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
     }
 
     private void plantChanged(Plant plant) {
