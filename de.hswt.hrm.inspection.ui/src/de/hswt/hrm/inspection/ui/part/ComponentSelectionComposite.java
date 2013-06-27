@@ -1,6 +1,7 @@
 package de.hswt.hrm.inspection.ui.part;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.annotation.PostConstruct;
@@ -8,11 +9,14 @@ import javax.inject.Inject;
 
 import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
-import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.ListViewer;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.custom.ScrolledComposite;
@@ -20,7 +24,6 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.List;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
 
@@ -29,7 +32,7 @@ import com.google.common.base.Preconditions;
 import de.hswt.hrm.common.observer.Observable;
 import de.hswt.hrm.common.observer.Observer;
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
-import de.hswt.hrm.common.ui.swt.layouts.LayoutUtil;
+import de.hswt.hrm.component.model.Component;
 import de.hswt.hrm.inspection.ui.grid.InspectionSchemeGrid;
 import de.hswt.hrm.inspection.ui.grid.SchemeComponentSelectionListener;
 import de.hswt.hrm.scheme.model.SchemeComponent;
@@ -39,7 +42,7 @@ public class ComponentSelectionComposite extends Composite {
 
 	@Inject
 	private IEclipseContext context;
-	
+
 	private Class<? extends AbstractComponentRatingComposite> ratingCompositeClass;
 
 	private FormToolkit toolkit = new FormToolkit(Display.getDefault());
@@ -47,9 +50,9 @@ public class ComponentSelectionComposite extends Composite {
 	private ListViewer componentsList;
 
 	private AbstractComponentRatingComposite ratingComposite;
-	
+
 	private InspectionSchemeGrid schemeGrid;
-	
+
 	private Observable<SchemeComponent> selectedComponent = new Observable<>();
 
 	/**
@@ -70,7 +73,8 @@ public class ComponentSelectionComposite extends Composite {
 	 * @param parent
 	 * @param ratingCompositeClass
 	 */
-	public ComponentSelectionComposite(Composite parent,
+	public ComponentSelectionComposite(
+			Composite parent,
 			Class<? extends AbstractComponentRatingComposite> ratingCompositeClass) {
 		super(parent, SWT.NONE);
 		this.ratingCompositeClass = ratingCompositeClass;
@@ -99,19 +103,22 @@ public class ComponentSelectionComposite extends Composite {
 		componentsList = new ListViewer(listSection, SWT.BORDER);
 		listSection.setClient(componentsList.getList());
 		toolkit.adapt(componentsList.getList(), true, true);
-		componentsList.addSelectionChangedListener(new ISelectionChangedListener() {
-			
-			@Override
-			public void selectionChanged(SelectionChangedEvent event) {
-				IStructuredSelection sel = (IStructuredSelection) componentsList.getSelection();
-				Preconditions.checkArgument(sel.size() < 2);
-				if(sel.isEmpty()){
-					selectedComponent.set(null);
-				}else{
-					selectedComponent.set((SchemeComponent) sel.getFirstElement());
-				}
-			}
-		});
+		componentsList
+				.addSelectionChangedListener(new ISelectionChangedListener() {
+
+					@Override
+					public void selectionChanged(SelectionChangedEvent event) {
+						IStructuredSelection sel = (IStructuredSelection) componentsList
+								.getSelection();
+						Preconditions.checkArgument(sel.size() < 2);
+						if (sel.isEmpty()) {
+							selectedComponent.set(null);
+						} else {
+							selectedComponent.set((SchemeComponent) sel
+									.getFirstElement());
+						}
+					}
+				});
 
 		SashForm verticalSash = new SashForm(horizontalSash, SWT.VERTICAL);
 		verticalSash.setBackgroundMode(SWT.INHERIT_FORCE);
@@ -135,32 +142,62 @@ public class ComponentSelectionComposite extends Composite {
 		FillLayout fl_schemeComposite = new FillLayout(SWT.HORIZONTAL);
 		fl_schemeComposite.marginHeight = 5;
 		schemeComposite.setLayout(fl_schemeComposite);
-		verticalSash.setWeights(new int[] {3, 1});
-		horizontalSash.setWeights(new int[] {1, 5});
+		verticalSash.setWeights(new int[] { 3, 1 });
+		horizontalSash.setWeights(new int[] { 1, 5 });
 
-		ScrolledComposite schemeScroll = new ScrolledComposite(schemeComposite, SWT.BORDER | SWT.H_SCROLL
-                | SWT.V_SCROLL);
+		ScrolledComposite schemeScroll = new ScrolledComposite(schemeComposite,
+				SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
 		schemeScroll.setBackgroundMode(SWT.INHERIT_DEFAULT);
 		schemeScroll.setExpandHorizontal(false);
 		schemeScroll.setExpandVertical(false);
-		schemeScroll.setBackground(getDisplay().getSystemColor(SWT.COLOR_WHITE));
+		schemeScroll
+				.setBackground(getDisplay().getSystemColor(SWT.COLOR_WHITE));
 		schemeGrid = new InspectionSchemeGrid(schemeScroll, SWT.NONE);
 		schemeScroll.setContent(schemeGrid.getControl());
 		schemeGrid.setSelectionListener(new SchemeComponentSelectionListener() {
-			
+
 			@Override
 			public void selected(SchemeComponent selected) {
 				selectedComponent.set(selected);
 			}
 		});
 		selectedComponent.addObserver(new Observer<SchemeComponent>() {
-			
+
 			@Override
 			public void changed(SchemeComponent item) {
 				schemeGrid.setSelected(item);
-				//TODO set componentsList selection
+				// TODO set componentsList selection
 			}
 		});
+
+		initListViewer();
+	}
+
+	private void initListViewer() {
+		componentsList.setContentProvider(ArrayContentProvider.getInstance());
+		componentsList.setLabelProvider(new LabelProvider() {
+			@Override
+			public String getText(Object element) {
+				Component component = (Component) element;
+				return component.getName();
+			}
+		});
+		componentsList.setComparator(new ViewerComparator() {
+			@Override
+			public int compare(Viewer viewer, Object e1, Object e2) {
+
+				Component component1 = (Component) e1;
+				Component component2 = (Component) e2;
+				return component1.getName().compareToIgnoreCase(
+						component2.getName());
+
+			}
+
+		});
+
+		// Dummy data
+		// componentsList.setInput();
+
 	}
 
 	private AbstractComponentRatingComposite getRatingInstance(Control control) {
@@ -188,8 +225,8 @@ public class ComponentSelectionComposite extends Composite {
 		}
 		return composite;
 	}
-	
-	public void setSchemeGridItems(Collection<SchemeGridItem> items){
+
+	public void setSchemeGridItems(Collection<SchemeGridItem> items) {
 		schemeGrid.setItems(items);
 	}
 
@@ -198,11 +235,11 @@ public class ComponentSelectionComposite extends Composite {
 		toolkit.dispose();
 		super.dispose();
 	}
-	
-	public void addSchemeComponentSelectionObserver(Observer<SchemeComponent> o){
+
+	public void addSchemeComponentSelectionObserver(Observer<SchemeComponent> o) {
 		selectedComponent.addObserver(o);
 	}
-	
+
 	@Override
 	protected void checkSubclass() {
 		// Disable the check that prevents subclassing of SWT components
