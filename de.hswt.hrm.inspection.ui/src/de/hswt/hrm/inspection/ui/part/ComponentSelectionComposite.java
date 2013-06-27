@@ -8,7 +8,11 @@ import javax.inject.Inject;
 
 import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ListViewer;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.custom.ScrolledComposite;
@@ -20,9 +24,15 @@ import org.eclipse.swt.widgets.List;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
 
+import com.google.common.base.Preconditions;
+
+import de.hswt.hrm.common.observer.Observable;
+import de.hswt.hrm.common.observer.Observer;
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.common.ui.swt.layouts.LayoutUtil;
 import de.hswt.hrm.inspection.ui.grid.InspectionSchemeGrid;
+import de.hswt.hrm.inspection.ui.grid.SchemeComponentSelectionListener;
+import de.hswt.hrm.scheme.model.SchemeComponent;
 import de.hswt.hrm.scheme.ui.SchemeGridItem;
 
 public class ComponentSelectionComposite extends Composite {
@@ -39,6 +49,8 @@ public class ComponentSelectionComposite extends Composite {
 	private AbstractComponentRatingComposite ratingComposite;
 	
 	private InspectionSchemeGrid schemeGrid;
+	
+	private Observable<SchemeComponent> selectedComponent = new Observable<>();
 
 	/**
 	 * Do not use this constructor when instantiate this composite! It is only
@@ -84,10 +96,22 @@ public class ComponentSelectionComposite extends Composite {
 		listSection.setText("Components");
 		FormUtil.initSectionColors(listSection);
 
-		// TODO use this list to show and select components
 		componentsList = new ListViewer(listSection, SWT.BORDER);
 		listSection.setClient(componentsList.getList());
 		toolkit.adapt(componentsList.getList(), true, true);
+		componentsList.addSelectionChangedListener(new ISelectionChangedListener() {
+			
+			@Override
+			public void selectionChanged(SelectionChangedEvent event) {
+				IStructuredSelection sel = (IStructuredSelection) componentsList.getSelection();
+				Preconditions.checkArgument(sel.size() < 2);
+				if(sel.isEmpty()){
+					selectedComponent.set(null);
+				}else{
+					selectedComponent.set((SchemeComponent) sel.getFirstElement());
+				}
+			}
+		});
 
 		SashForm verticalSash = new SashForm(horizontalSash, SWT.VERTICAL);
 		verticalSash.setBackgroundMode(SWT.INHERIT_FORCE);
@@ -122,7 +146,21 @@ public class ComponentSelectionComposite extends Composite {
 		schemeScroll.setBackground(getDisplay().getSystemColor(SWT.COLOR_WHITE));
 		schemeGrid = new InspectionSchemeGrid(schemeScroll, SWT.NONE);
 		schemeScroll.setContent(schemeGrid.getControl());
-		// TODO set the component selection to the ratingCompiste
+		schemeGrid.setSelectionListener(new SchemeComponentSelectionListener() {
+			
+			@Override
+			public void selected(SchemeComponent selected) {
+				selectedComponent.set(selected);
+			}
+		});
+		selectedComponent.addObserver(new Observer<SchemeComponent>() {
+			
+			@Override
+			public void changed(SchemeComponent item) {
+				schemeGrid.setSelected(item);
+				//TODO set componentsList selection
+			}
+		});
 	}
 
 	private AbstractComponentRatingComposite getRatingInstance(Control control) {
@@ -159,6 +197,10 @@ public class ComponentSelectionComposite extends Composite {
 	public void dispose() {
 		toolkit.dispose();
 		super.dispose();
+	}
+	
+	public void addSchemeComponentSelectionObserver(Observer<SchemeComponent> o){
+		selectedComponent.addObserver(o);
 	}
 	
 	@Override
