@@ -178,25 +178,28 @@ public class ComponentSelectionComposite extends Composite {
 		componentsList.setLabelProvider(new LabelProvider() {
 			@Override
 			public String getText(Object element) {
-				Component component = (Component) element;
-				return component.getName();
+				SchemeGridItem schemeGridItem = (SchemeGridItem) element;
+				return schemeGridItem.getRenderedComponent().getComponent()
+						.getName();
 			}
 		});
 		componentsList.setComparator(new ViewerComparator() {
 			@Override
 			public int compare(Viewer viewer, Object e1, Object e2) {
 
-				Component component1 = (Component) e1;
-				Component component2 = (Component) e2;
-				return component1.getName().compareToIgnoreCase(
-						component2.getName());
+				SchemeGridItem item1 = (SchemeGridItem) e1;
+				SchemeGridItem item2 = (SchemeGridItem) e2;
+				return item1
+						.getRenderedComponent()
+						.getComponent()
+						.getName()
+						.compareToIgnoreCase(
+								item2.getRenderedComponent().getComponent()
+										.getName());
 
 			}
 
 		});
-
-		// Dummy data
-		// componentsList.setInput();
 
 	}
 
@@ -224,6 +227,10 @@ public class ComponentSelectionComposite extends Composite {
 			}
 		}
 		return composite;
+	}
+
+	public ListViewer getComponentsList() {
+		return componentsList;
 	}
 
 	public void setSchemeGridItems(Collection<SchemeGridItem> items) {
