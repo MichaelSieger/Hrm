@@ -25,7 +25,6 @@ public class BiologicalDisplay {
 					new Color(device, 255, 0, 0),
 					new Color(device, 255, 255, 0),
 					new Color(device, 255, 255, 0),
-					new Color(device, 0, 255, 0),
 					new Color(device, 0, 255, 0)
 				};
 	}
