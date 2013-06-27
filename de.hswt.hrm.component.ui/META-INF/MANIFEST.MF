@@ -29,6 +29,7 @@ Require-Bundle: org.eclipse.swt;bundle-version="3.100.1",
  org.eclipse.ui.forms;bundle-version="3.5.200",
  de.hswt.hrm.commons.validator;bundle-version="0.0.1"
 Import-Package: com.sun.pdfview,
+ de.hswt.hrm.catalog.model,
  de.hswt.hrm.catalog.service,
  de.hswt.hrm.common.database.exception,
  de.hswt.hrm.common.ui.swt.constants,

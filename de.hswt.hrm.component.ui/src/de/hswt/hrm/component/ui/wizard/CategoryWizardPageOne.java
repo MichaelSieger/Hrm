@@ -1,10 +1,16 @@
 package de.hswt.hrm.component.ui.wizard;
 
 import java.net.URL;
+import java.util.Collection;
+
+import javax.inject.Inject;
 
 import org.eclipse.e4.xwt.IConstants;
 import org.eclipse.e4.xwt.XWT;
 import org.eclipse.e4.xwt.forms.XWTForms;
+import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.ComboViewer;
+import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
@@ -23,6 +29,9 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Optional;
 
+import de.hswt.hrm.catalog.model.Catalog;
+import de.hswt.hrm.catalog.service.CatalogService;
+import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.common.ui.swt.layouts.PageContainerFillLayout;
 import de.hswt.hrm.component.model.Category;
@@ -35,11 +44,16 @@ public class CategoryWizardPageOne extends WizardPage {
     private Composite container;
     private Optional<Category> category;
 
+    @Inject
+    CatalogService catalogService;
+
     private int[] validGridSizeValue = { 1, 2, 4, 6 };
 
     private Text nameText;
 
     private Combo weightCombo;
+
+    private ComboViewer catalogCombo;
 
     private List widthList;
 
@@ -90,6 +104,7 @@ public class CategoryWizardPageOne extends WizardPage {
         widthList = (List) XWT.findElementByName(container, "width");
         heightList = (List) XWT.findElementByName(container, "height");
         ratingCheckButton = (Button) XWT.findElementByName(container, "defaultBoolRating");
+        catalogCombo = (ComboViewer) XWT.findElementByName(container, "catalogCombo");
 
         initItems();
 
@@ -110,11 +125,36 @@ public class CategoryWizardPageOne extends WizardPage {
         addSelectionListener(weightCombo);
         addSelectionListener(heightList);
         addSelectionListener(ratingCheckButton);
-        
+
         FormUtil.initSectionColors((Section) XWT.findElementByName(container, "General"));
 
         setControl(container);
+        initializeCategoryCombo();
         checkPageComplete();
+    }
+
+    private void initializeCategoryCombo() {
+
+        try {
+            Collection<Catalog> catalogs = catalogService.findAllCatalog();
+
+            catalogCombo.setLabelProvider(new LabelProvider() {
+
+                @Override
+                public String getText(Object element) {
+                    Catalog c = (Catalog) element;
+                    return c.getName();
+                }
+
+            });
+            catalogCombo.setContentProvider(ArrayContentProvider.getInstance());
+            catalogCombo.setInput(catalogs);
+        }
+        catch (DatabaseException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
     }
 
     private void initItems() {
