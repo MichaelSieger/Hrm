@@ -136,7 +136,12 @@ public class PlantPartUtil {
                     @Override
                     public String getText(Object element) {
                         Plant p = (Plant) element;
-                        return p.getConstructionYear().get().toString();
+                        int i = p.getConstructionYear().get();
+                        if (i < 1900) {
+                            return "";
+                        }
+                        else
+                            return p.getConstructionYear().get().toString();
 
                     }
                 }, new Comparator<Plant>() {

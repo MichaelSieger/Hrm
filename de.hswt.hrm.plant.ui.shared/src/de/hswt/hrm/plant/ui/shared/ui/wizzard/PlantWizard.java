@@ -116,7 +116,14 @@ public class PlantWizard extends Wizard {
 
         HashMap<String, Combo> optionalCombos = first.getOptionalCombos();
         Combo constYear = optionalCombos.get("constructionYear");
-        String constructionYear = constYear.getItem(constYear.getSelectionIndex());
+        String constructionYear;
+        int index = constYear.getSelectionIndex();
+        if (index >= 0) {
+            constructionYear = constYear.getItem(constYear.getSelectionIndex());
+        }
+        else {
+            constructionYear = "";
+        }
 
         Plant plant;
         if (p.isPresent()) {
@@ -132,6 +139,7 @@ public class PlantWizard extends Wizard {
         if (!constructionYear.equals("")) {
             plant.setConstructionYear(Integer.parseInt(constructionYear));
         }
+
         plant.setType(type);
         plant.setAirPerformance(airPerformance);
         plant.setMotorPower(motorPower);
