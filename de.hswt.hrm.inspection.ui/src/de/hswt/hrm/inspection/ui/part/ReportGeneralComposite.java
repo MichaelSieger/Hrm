@@ -1163,7 +1163,8 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
 			humidityGradeCombo.select(inspection.getHumidityRating().get());
 		}
 		if (inspection.getHumidityQuantifier().isPresent()) {
-			humidityWeightCombo.select(inspection.getHumidityQuantifier().get());
+			humidityWeightCombo
+					.select(inspection.getHumidityQuantifier().get());
 		}
 		if (inspection.getHumidityComment().isPresent()) {
 			humidityText.setText(inspection.getHumidityComment().get());
