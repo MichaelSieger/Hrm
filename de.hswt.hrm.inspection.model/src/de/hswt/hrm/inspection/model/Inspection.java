@@ -9,7 +9,9 @@ import de.hswt.hrm.common.observer.Observer;
 import de.hswt.hrm.contact.model.Contact;
 import de.hswt.hrm.photo.model.Photo;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 
 import com.google.common.base.Optional;
 
@@ -43,6 +45,8 @@ public class Inspection {
     private int germsRating;
     private int germsQuantifier;
     private String germsComment;
+    private final Observable<Collection<BiologicalRating>> biologicalRatings = new Observable<>();
+    private final Observable<Collection<PhysicalRating>> physicalRatings = new Observable<>();
 
     private static final String IS_MANDATORY = "Field is a mandatory.";
     private static final String INVALID_NUMBER = "%d is an invalid number.%n Must be greater 0";
@@ -50,6 +54,9 @@ public class Inspection {
     public Inspection(int id, Calendar reportDate, Calendar inspectionDate,
             Calendar nextInspection, String title, Layout layout, Plant plant) {
         this.id = id;
+        //TODO pass in constructor
+        physicalRatings.set(new ArrayList<PhysicalRating>());
+        biologicalRatings.set(new ArrayList<BiologicalRating>());
         setReportDate(reportDate);
         setInspectionDate(inspectionDate);
         setNextInspectionDate(nextInspection);
