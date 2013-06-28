@@ -52,6 +52,8 @@ import de.hswt.hrm.common.ui.swt.utils.ContentProposalUtil;
 import de.hswt.hrm.common.ui.swt.wizards.WizardCreator;
 import de.hswt.hrm.component.model.Component;
 import de.hswt.hrm.contact.model.Contact;
+import de.hswt.hrm.i18n.I18n;
+import de.hswt.hrm.i18n.I18nFactory;
 import de.hswt.hrm.inspection.model.Inspection;
 import de.hswt.hrm.inspection.model.Layout;
 import de.hswt.hrm.inspection.service.InspectionService;
@@ -69,6 +71,8 @@ import de.hswt.hrm.summary.service.SummaryService;
 public class ReportGeneralComposite extends AbstractComponentRatingComposite {
 
     private final static Logger LOG = LoggerFactory.getLogger(ReportGeneralComposite.class);
+    
+    private static final I18n I18N = I18nFactory.getI18n(ReportGeneralComposite.class);
 
     @Inject
     private InspectionService inspectionService;
@@ -198,31 +202,31 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
 
         generalSection = formToolkit.createSection(composite, Section.TITLE_BAR);
         formToolkit.paintBordersFor(generalSection);
-        generalSection.setText("General");
+        generalSection.setText(I18N.tr("General"));
         generalSection.setLayoutData(LayoutUtil.createHorzFillData());
         FormUtil.initSectionColors(generalSection);
 
         personsSection = formToolkit.createSection(composite, Section.TITLE_BAR);
         formToolkit.paintBordersFor(personsSection);
-        personsSection.setText("Persons");
+        personsSection.setText(I18N.tr("Persons"));
         personsSection.setLayoutData(LayoutUtil.createHorzFillData(1, 2));
         FormUtil.initSectionColors(personsSection);
 
         visualSection = formToolkit.createSection(composite, Section.TITLE_BAR);
         formToolkit.paintBordersFor(visualSection);
-        visualSection.setText("Visual");
+        visualSection.setText(I18N.tr("Visual"));
         visualSection.setLayoutData(LayoutUtil.createHorzFillData());
         FormUtil.initSectionColors(visualSection);
 
         biologicalSection = formToolkit.createSection(composite, Section.TITLE_BAR);
         formToolkit.paintBordersFor(biologicalSection);
-        biologicalSection.setText("Saturator water");
+        biologicalSection.setText(I18N.tr("Saturator water"));
         biologicalSection.setLayoutData(LayoutUtil.createHorzFillData());
         FormUtil.initSectionColors(biologicalSection);
 
         physicalSection = formToolkit.createSection(composite, Section.TITLE_BAR);
         formToolkit.paintBordersFor(physicalSection);
-        physicalSection.setText("Physical parameter");
+        physicalSection.setText(I18N.tr("Physical parameter"));
         physicalSection.setLayoutData(LayoutUtil.createHorzFillData());
         FormUtil.initSectionColors(physicalSection);
 
@@ -273,7 +277,7 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
         Label titleLabel = new Label(generalComposite, SWT.NONE);
         titleLabel.setLayoutData(LayoutUtil.createLeftCenteredGridData());
         formToolkit.adapt(titleLabel, true, true);
-        titleLabel.setText("Title");
+        titleLabel.setText(I18N.tr("Title"));
 
         titleText = new Text(generalComposite, SWT.NONE);
         titleText.setTextLimit(50);
@@ -283,13 +287,13 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
         Label plantLabel = new Label(generalComposite, SWT.NONE);
         plantLabel.setLayoutData(LayoutUtil.createLeftCenteredGridData());
         formToolkit.adapt(plantLabel, true, true);
-        plantLabel.setText("Plant");
+        plantLabel.setText(I18N.tr("Plant"));
 
         plantText = new Text(generalComposite, SWT.READ_ONLY);
         plantText.setLayoutData(LayoutUtil.createHorzCenteredFillData(2, 1));
         formToolkit.adapt(plantText, true, true);
 
-        Button plantSelectionButton = formToolkit.createButton(generalComposite, "Select plant",
+        Button plantSelectionButton = formToolkit.createButton(generalComposite, I18N.tr("Select")+" "+I18N.tr("Plant"),
                 SWT.PUSH);
         plantSelectionButton.setLayoutData(LayoutUtil.createRightGridData(2));
         plantSelectionButton.addSelectionListener(new SelectionAdapter() {
@@ -309,7 +313,7 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
         Label reportDateLabel = new Label(generalComposite, SWT.NONE);
         reportDateLabel.setLayoutData(LayoutUtil.createLeftCenteredGridData());
         formToolkit.adapt(reportDateLabel, true, true);
-        reportDateLabel.setText("Report date");
+        reportDateLabel.setText(I18N.tr("Report Date"));
 
         reportDateTime = new DateTime(generalComposite, SWT.BORDER | SWT.DATE | SWT.DROP_DOWN);
         formToolkit.adapt(reportDateTime);
@@ -319,7 +323,7 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
         Label inspectionDateLabel = new Label(generalComposite, SWT.NONE);
         inspectionDateLabel.setLayoutData(LayoutUtil.createLeftCenteredGridData());
         formToolkit.adapt(inspectionDateLabel, true, true);
-        inspectionDateLabel.setText("Inspection data");
+        inspectionDateLabel.setText(I18N.tr("Inspection Date"));
 
         inspectionDateTime = new DateTime(generalComposite, SWT.BORDER | SWT.DATE | SWT.DROP_DOWN);
         formToolkit.adapt(inspectionDateTime);
@@ -329,7 +333,7 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
         Label nextInspectionLabel = new Label(generalComposite, SWT.NONE);
         nextInspectionLabel.setLayoutData(LayoutUtil.createLeftCenteredGridData());
         formToolkit.adapt(nextInspectionLabel, true, true);
-        nextInspectionLabel.setText("Next inspection");
+        nextInspectionLabel.setText(I18N.tr("Next Inspection"));
 
         nextInspectionDateTime = new DateTime(generalComposite, SWT.BORDER | SWT.DATE
                 | SWT.DROP_DOWN);
@@ -338,7 +342,7 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
         nextInspectionDateTime.setLayoutData(LayoutUtil.createHorzFillData());
         nextInspectionDateTime.setYear(inspectionDateTime.getYear() + 2);
 
-        Button twoYearsButton = formToolkit.createButton(generalComposite, "2 years", SWT.PUSH);
+        Button twoYearsButton = formToolkit.createButton(generalComposite, "2 "+I18N.tr("years"), SWT.PUSH);
         twoYearsButton.setLayoutData(LayoutUtil.createRightGridData(2));
         twoYearsButton.addSelectionListener(new SelectionAdapter() {
             @Override
@@ -347,7 +351,7 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
             }
         });
 
-        Button threeYearsButton = formToolkit.createButton(generalComposite, "3 years", SWT.PUSH);
+        Button threeYearsButton = formToolkit.createButton(generalComposite, "3 "+I18N.tr("years"), SWT.PUSH);
         threeYearsButton.setLayoutData(LayoutUtil.createRightGridData());
         threeYearsButton.addSelectionListener(new SelectionAdapter() {
             @Override
@@ -359,7 +363,7 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
         Label reportStyleLabel = new Label(generalComposite, SWT.NONE);
         reportStyleLabel.setLayoutData(LayoutUtil.createLeftCenteredGridData());
         formToolkit.adapt(reportStyleLabel, true, true);
-        reportStyleLabel.setText("Report Layout");
+        reportStyleLabel.setText(I18N.tr("Layout"));
 
         reportStyleCombo = new Combo(generalComposite, SWT.DROP_DOWN | SWT.READ_ONLY);
         initLayouts(reportStyleCombo);
@@ -371,7 +375,7 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
         Label overallLabel = new Label(generalComposite, SWT.NONE);
         overallLabel.setLayoutData(LayoutUtil.createLeftCenteredGridData());
         formToolkit.adapt(overallLabel, true, true);
-        overallLabel.setText("Overall comment");
+        overallLabel.setText(I18N.tr("Overall comment"));
 
         overallCombo = new Combo(generalComposite, SWT.NONE);
         overallCombo.setLayoutData(LayoutUtil.createHorzCenteredFillData(4));
@@ -447,21 +451,21 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
 
         Label customerLabel = new Label(personsComposite, SWT.NONE);
         formToolkit.adapt(customerLabel, true, true);
-        customerLabel.setText("Customer");
+        customerLabel.setText(I18N.tr("Customer"));
         customerLabel.setLayoutData(LayoutUtil.createLeftGridData());
 
-        Button customerClearButton = formToolkit.createButton(personsComposite, "Clear customer",
+        Button customerClearButton = formToolkit.createButton(personsComposite, I18N.tr("Clear")+" "+I18N.tr("Customer"),
                 SWT.PUSH);
         customerClearButton.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false));
 
         Button customerSelectionButton = formToolkit.createButton(personsComposite,
-                "Select customer", SWT.PUSH);
+                I18N.tr("Select")+" "+I18N.tr("Customer"), SWT.PUSH);
         customerSelectionButton.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
 
         Label customerNameLabel = new Label(personsComposite, SWT.NONE);
         customerNameLabel.setLayoutData(LayoutUtil.createLeftCenteredGridData());
         formToolkit.adapt(customerNameLabel, true, true);
-        customerNameLabel.setText("Name");
+        customerNameLabel.setText(I18N.tr("Name"));
 
         customerNameText = new Text(personsComposite, SWT.READ_ONLY);
         customerNameText.setLayoutData(LayoutUtil.createHorzCenteredFillData(2));
@@ -470,7 +474,7 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
         Label customerStreetLabel = new Label(personsComposite, SWT.NONE);
         customerStreetLabel.setLayoutData(LayoutUtil.createLeftCenteredGridData());
         formToolkit.adapt(customerStreetLabel, true, true);
-        customerStreetLabel.setText("Street");
+        customerStreetLabel.setText(I18N.tr("Street"));
 
         customerStreetText = new Text(personsComposite, SWT.READ_ONLY);
         customerStreetText.setLayoutData(LayoutUtil.createHorzCenteredFillData(2));
@@ -479,7 +483,7 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
         Label customerCityLabel = new Label(personsComposite, SWT.NONE);
         customerCityLabel.setLayoutData(LayoutUtil.createLeftCenteredGridData());
         formToolkit.adapt(customerCityLabel, true, true);
-        customerCityLabel.setText("City");
+        customerCityLabel.setText(I18N.tr("City"));
 
         customerCityText = new Text(personsComposite, SWT.READ_ONLY);
         customerCityText.setLayoutData(LayoutUtil.createHorzCenteredFillData(2));
@@ -491,21 +495,21 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
 
         Label requestorLabel = new Label(personsComposite, SWT.NONE);
         formToolkit.adapt(requestorLabel, true, true);
-        requestorLabel.setText("Requestor");
+        requestorLabel.setText(I18N.tr("Requestor"));
         requestorLabel.setLayoutData(LayoutUtil.createLeftGridData());
 
-        Button requestorClearButton = formToolkit.createButton(personsComposite, "Clear requestor",
+        Button requestorClearButton = formToolkit.createButton(personsComposite, I18N.tr("Clear")+" "+I18N.tr("Requestor"),
                 SWT.PUSH);
         requestorClearButton.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false));
 
         Button requestorSelectionButton = formToolkit.createButton(personsComposite,
-                "Select requestor", SWT.PUSH);
+                I18N.tr("Select")+" "+I18N.tr("Requestor"), SWT.PUSH);
         requestorSelectionButton.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
 
         Label requestorNameLabel = new Label(personsComposite, SWT.NONE);
         requestorNameLabel.setLayoutData(LayoutUtil.createLeftCenteredGridData());
         formToolkit.adapt(requestorNameLabel, true, true);
-        requestorNameLabel.setText("Name");
+        requestorNameLabel.setText(I18N.tr("Name"));
 
         requestorNameText = new Text(personsComposite, SWT.READ_ONLY);
         requestorNameText.setLayoutData(LayoutUtil.createHorzCenteredFillData(2));
@@ -514,7 +518,7 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
         Label requestorStreetLabel = new Label(personsComposite, SWT.NONE);
         requestorStreetLabel.setLayoutData(LayoutUtil.createLeftCenteredGridData());
         formToolkit.adapt(requestorStreetLabel, true, true);
-        requestorStreetLabel.setText("Street");
+        requestorStreetLabel.setText(I18N.tr("Street"));
 
         requestorStreetText = new Text(personsComposite, SWT.READ_ONLY);
         requestorStreetText.setLayoutData(LayoutUtil.createHorzCenteredFillData(2));
@@ -523,7 +527,7 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
         Label requestorCityLabel = new Label(personsComposite, SWT.NONE);
         requestorCityLabel.setLayoutData(LayoutUtil.createLeftCenteredGridData());
         formToolkit.adapt(requestorCityLabel, true, true);
-        requestorCityLabel.setText("City");
+        requestorCityLabel.setText(I18N.tr("City"));
 
         requestorCityText = new Text(personsComposite, SWT.READ_ONLY);
         requestorCityText.setLayoutData(LayoutUtil.createHorzCenteredFillData(2));
@@ -535,21 +539,21 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
 
         Label controllerLabel = new Label(personsComposite, SWT.NONE);
         formToolkit.adapt(controllerLabel, true, true);
-        controllerLabel.setText("Controller");
+        controllerLabel.setText(I18N.tr("Controller"));
         controllerLabel.setLayoutData(LayoutUtil.createLeftGridData());
 
-        Button controllerClearButton = formToolkit.createButton(personsComposite, "Clear customer",
+        Button controllerClearButton = formToolkit.createButton(personsComposite, I18N.tr("Clear")+" "+I18N.tr("Controller"),
                 SWT.PUSH);
         controllerClearButton.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false));
 
         Button controllerSelectionButton = formToolkit.createButton(personsComposite,
-                "Select customer", SWT.PUSH);
+                I18N.tr("Select")+" "+I18N.tr("Controller"), SWT.PUSH);
         controllerSelectionButton.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
 
         Label controllerNameLabel = new Label(personsComposite, SWT.NONE);
         controllerNameLabel.setLayoutData(LayoutUtil.createLeftCenteredGridData());
         formToolkit.adapt(controllerNameLabel, true, true);
-        controllerNameLabel.setText("Name");
+        controllerNameLabel.setText(I18N.tr("Name"));
 
         controllerNameText = new Text(personsComposite, SWT.READ_ONLY);
         controllerNameText.setLayoutData(LayoutUtil.createHorzCenteredFillData(2));
@@ -558,7 +562,7 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
         Label controllerStreetLabel = new Label(personsComposite, SWT.NONE);
         controllerStreetLabel.setLayoutData(LayoutUtil.createLeftCenteredGridData());
         formToolkit.adapt(controllerStreetLabel, true, true);
-        controllerStreetLabel.setText("Street");
+        controllerStreetLabel.setText(I18N.tr("Street"));
 
         controllerStreetText = new Text(personsComposite, SWT.READ_ONLY);
         controllerStreetText.setLayoutData(LayoutUtil.createHorzCenteredFillData(2));
@@ -567,7 +571,7 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
         Label controllerCityLabel = new Label(personsComposite, SWT.NONE);
         controllerCityLabel.setLayoutData(LayoutUtil.createLeftCenteredGridData());
         formToolkit.adapt(controllerCityLabel, true, true);
-        controllerCityLabel.setText("City");
+        controllerCityLabel.setText(I18N.tr("City"));
 
         controllerCityText = new Text(personsComposite, SWT.READ_ONLY);
         controllerCityText.setLayoutData(LayoutUtil.createHorzCenteredFillData(2));
@@ -660,7 +664,7 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
         Label photosLabel = new Label(visualComposite, SWT.NONE);
         photosLabel.setLayoutData(LayoutUtil.createLeftGridData());
         formToolkit.adapt(photosLabel, true, true);
-        photosLabel.setText("Photos");
+        photosLabel.setText(I18N.tr("Photos"));
 
         photosList = new List(visualComposite, SWT.BORDER);
         formToolkit.adapt(photosList, true, true);
@@ -668,7 +672,7 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
 
         Button photoEditButton = new Button(visualComposite, SWT.NONE);
         formToolkit.adapt(photoEditButton, true, true);
-        photoEditButton.setText("Edit / Import");
+        photoEditButton.setText(I18N.tr("Edit / Import"));
         photoEditButton.setLayoutData(LayoutUtil.createRightGridData());
         photoEditButton.addSelectionListener(new SelectionAdapter() {
             @Override
@@ -681,7 +685,7 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
         titlePhotoLabel.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
         titlePhotoLabel.setLayoutData(LayoutUtil.createLeftCenteredGridData());
         formToolkit.adapt(titlePhotoLabel, true, true);
-        titlePhotoLabel.setText("Title photo");
+        titlePhotoLabel.setText(I18N.tr("Title photo"));
 
         titlePhotoComboViewer = new ComboViewer(visualComposite, SWT.NONE);
         Combo titlePhotoCombo = titlePhotoComboViewer.getCombo();
@@ -712,7 +716,7 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
         plantPhotoLabel.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
         plantPhotoLabel.setLayoutData(LayoutUtil.createLeftCenteredGridData());
         formToolkit.adapt(plantPhotoLabel, true, true);
-        plantPhotoLabel.setText("Plant photo");
+        plantPhotoLabel.setText(I18N.tr("Plant photo"));
 
         plantPhotoComboViewer = new ComboViewer(visualComposite, SWT.NONE);
         Combo plantPhotoCombo = plantPhotoComboViewer.getCombo();
@@ -755,28 +759,28 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
 
         Label germsLabel = new Label(biologicalComposite, SWT.NONE);
         formToolkit.adapt(germsLabel, true, true);
-        germsLabel.setText("Germs / ml");
+        germsLabel.setText(I18N.tr("Germs / ml"));
         germsLabel.setLayoutData(LayoutUtil.createHorzFillData());
 
         Label gradeLabel = new Label(biologicalComposite, SWT.NONE);
         formToolkit.adapt(gradeLabel, true, true);
-        gradeLabel.setText("Grade");
+        gradeLabel.setText(I18N.tr("Grade"));
         gradeLabel.setLayoutData(LayoutUtil.createHorzFillData());
 
         Label weightLabel = new Label(biologicalComposite, SWT.NONE);
         formToolkit.adapt(weightLabel, true, true);
-        weightLabel.setText("Weight");
+        weightLabel.setText(I18N.tr("Weight"));
         weightLabel.setLayoutData(LayoutUtil.createHorzFillData());
 
         Label commentLabel = new Label(biologicalComposite, SWT.NONE);
         formToolkit.adapt(commentLabel, true, true);
-        commentLabel.setText("Comment");
+        commentLabel.setText(I18N.tr("Comment"));
         commentLabel.setLayoutData(LayoutUtil.createHorzFillData());
 
         Label legionellaLabel = new Label(biologicalComposite, SWT.NONE);
         legionellaLabel.setLayoutData(LayoutUtil.createLeftCenteredGridData());
         formToolkit.adapt(legionellaLabel, true, true);
-        legionellaLabel.setText("Legionella");
+        legionellaLabel.setText(I18N.tr("Legionella"));
 
         legionellaText = new Text(biologicalComposite, SWT.NONE);
         legionellaText.setLayoutData(LayoutUtil.createHorzCenteredFillData());
@@ -821,7 +825,7 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
         Label sumGermsLabel = new Label(biologicalComposite, SWT.NONE);
         sumGermsLabel.setLayoutData(LayoutUtil.createLeftCenteredGridData());
         formToolkit.adapt(sumGermsLabel, true, true);
-        sumGermsLabel.setText("Sum germs");
+        sumGermsLabel.setText(I18N.tr("Sum germs"));
 
         sumGermsText = new Text(biologicalComposite, SWT.NONE);
         sumGermsText.setLayoutData(LayoutUtil.createHorzCenteredFillData());
@@ -879,28 +883,28 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
 
         Label meassurementLabel = new Label(physicalComposite, SWT.NONE);
         formToolkit.adapt(meassurementLabel, true, true);
-        meassurementLabel.setText("Meassurement");
+        meassurementLabel.setText(I18N.tr("Meassurement"));
         meassurementLabel.setLayoutData(LayoutUtil.createHorzFillData());
 
         Label gradeLabel = new Label(physicalComposite, SWT.NONE);
         formToolkit.adapt(gradeLabel, true, true);
-        gradeLabel.setText("Grade");
+        gradeLabel.setText(I18N.tr("Grade"));
         gradeLabel.setLayoutData(LayoutUtil.createHorzFillData());
 
         Label weightLabel = new Label(physicalComposite, SWT.NONE);
         formToolkit.adapt(weightLabel, true, true);
-        weightLabel.setText("Weight");
+        weightLabel.setText(I18N.tr("Weight"));
         weightLabel.setLayoutData(LayoutUtil.createHorzFillData());
 
         Label commentLabel = new Label(physicalComposite, SWT.NONE);
         formToolkit.adapt(commentLabel, true, true);
-        commentLabel.setText("Comment");
+        commentLabel.setText(I18N.tr("Comment"));
         commentLabel.setLayoutData(LayoutUtil.createHorzFillData());
 
         Label temperatureLabel = new Label(physicalComposite, SWT.NONE);
         temperatureLabel.setLayoutData(LayoutUtil.createLeftCenteredGridData());
         formToolkit.adapt(temperatureLabel, true, true);
-        temperatureLabel.setText("Temperature");
+        temperatureLabel.setText(I18N.tr("Temperature"));
 
         temperatureText = new Text(physicalComposite, SWT.NONE);
         temperatureText.setLayoutData(LayoutUtil.createHorzCenteredFillData());
@@ -945,7 +949,7 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
         Label humidityLabel = new Label(physicalComposite, SWT.NONE);
         humidityLabel.setLayoutData(LayoutUtil.createLeftCenteredGridData());
         formToolkit.adapt(humidityLabel, true, true);
-        humidityLabel.setText("Relative humidity");
+        humidityLabel.setText(I18N.tr("Relative humidity"));
 
         humidityText = new Text(physicalComposite, SWT.NONE);
         humidityText.setLayoutData(LayoutUtil.createHorzCenteredFillData());
@@ -1059,9 +1063,8 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
     public boolean refreshGeneralInformation() {
 
         if (inspection == null) {
-            // TODO Übersetzen
-            MessageDialog.openError(shellProvider.getShell(), "Selection error",
-                    "No inspection selected.");
+            MessageDialog.openError(shellProvider.getShell(), I18N.tr("Selection Error"),
+                    I18N.tr("No inspection selected."));
             return false;
         }
 
