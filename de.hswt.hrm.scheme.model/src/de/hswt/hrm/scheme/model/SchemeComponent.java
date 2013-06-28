@@ -2,8 +2,6 @@ package de.hswt.hrm.scheme.model;
 
 import static com.google.common.base.Preconditions.*;
 
-import java.io.Serializable;
-
 import de.hswt.hrm.component.model.Category;
 import de.hswt.hrm.component.model.Component;
 
@@ -124,5 +122,50 @@ public class SchemeComponent{
 			throw new IllegalArgumentException("Component category must be present for this");
 		}
 	}
-    
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((component == null) ? 0 : component.hashCode());
+		result = prime * result
+				+ ((direction == null) ? 0 : direction.hashCode());
+		result = prime * result + id;
+		result = prime * result + ((scheme == null) ? 0 : scheme.hashCode());
+		result = prime * result + x;
+		result = prime * result + y;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		SchemeComponent other = (SchemeComponent) obj;
+		if (component == null) {
+			if (other.component != null)
+				return false;
+		} else if (!component.equals(other.component))
+			return false;
+		if (direction != other.direction)
+			return false;
+		if (id != other.id)
+			return false;
+		if (scheme == null) {
+			if (other.scheme != null)
+				return false;
+		} else if (!scheme.equals(other.scheme))
+			return false;
+		if (x != other.x)
+			return false;
+		if (y != other.y)
+			return false;
+		return true;
+	}
+	
 }
