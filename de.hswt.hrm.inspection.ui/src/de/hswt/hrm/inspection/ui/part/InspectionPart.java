@@ -41,6 +41,7 @@ import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.component.model.Component;
 import de.hswt.hrm.inspection.model.BiologicalRating;
 import de.hswt.hrm.inspection.model.Inspection;
+import de.hswt.hrm.inspection.ui.grid.BiologicalDisplay;
 import de.hswt.hrm.plant.model.Plant;
 import de.hswt.hrm.report.latex.service.ReportService;
 import de.hswt.hrm.scheme.model.Scheme;
@@ -222,13 +223,13 @@ public class InspectionPart {
                 plantChanged(item);
             }
         });
+        final BiologicalDisplay bDisplay = new BiologicalDisplay(physicalComposite.getInspectionSchemeGrid());
         selectedInspection
                 .addBiologicalRatingObserver(new Observer<Collection<BiologicalRating>>() {
 
                     @Override
                     public void changed(Collection<BiologicalRating> item) {
-                        // TODO Auto-generated method stub
-
+                    	bDisplay.update(item);
                     }
                 });
     }
