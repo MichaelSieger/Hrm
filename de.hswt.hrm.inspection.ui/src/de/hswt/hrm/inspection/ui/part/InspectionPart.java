@@ -46,6 +46,7 @@ import de.hswt.hrm.inspection.ui.wizard.ReportExportWizard;
 import de.hswt.hrm.inspection.ui.grid.BiologicalDisplay;
 import de.hswt.hrm.inspection.ui.grid.CombinedDisplay;
 import de.hswt.hrm.inspection.ui.grid.PhysicalDisplay;
+import de.hswt.hrm.inspection.ui.grid.SamplingPoints;
 import de.hswt.hrm.plant.model.Plant;
 import de.hswt.hrm.report.latex.service.ReportService;
 import de.hswt.hrm.scheme.model.Scheme;
@@ -252,8 +253,9 @@ public class InspectionPart {
                 plantChanged(item);
             }
         });
-        final CombinedDisplay combinedDisplay = new CombinedDisplay(performanceComposite.getInspectionSchemeGrid());
-        final BiologicalDisplay bDisplay = new BiologicalDisplay(biologicalComposite.getInspectionSchemeGrid());
+        SamplingPoints points = new SamplingPoints(biolocicalRatingTab.getDisplay());
+        final CombinedDisplay combinedDisplay = new CombinedDisplay(performanceComposite.getInspectionSchemeGrid(), points);
+        final BiologicalDisplay bDisplay = new BiologicalDisplay(biologicalComposite.getInspectionSchemeGrid(), points);
         selectedInspection
                 .addBiologicalRatingObserver(new Observer<Collection<BiologicalRating>>() {
 
@@ -263,7 +265,7 @@ public class InspectionPart {
                     	combinedDisplay.updateBiological(item);
                     }
                 });
-        final PhysicalDisplay pDisplay = new PhysicalDisplay(physicalComposite.getInspectionSchemeGrid());
+        final PhysicalDisplay pDisplay = new PhysicalDisplay(physicalComposite.getInspectionSchemeGrid(), points);
         selectedInspection.addPhysicalRatingObserver(new Observer<Collection<PhysicalRating>>() {
 			
 			@Override
