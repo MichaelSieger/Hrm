@@ -12,8 +12,8 @@ import de.hswt.hrm.inspection.model.PhysicalRating;
 
 public class PhysicalDisplay extends RatingDisplay{
 
-	public PhysicalDisplay(InspectionSchemeGrid grid) {
-		super(grid);
+	public PhysicalDisplay(InspectionSchemeGrid grid, SamplingPoints samplingPoints) {
+		super(grid, samplingPoints);
 	}
 	
 	public void update(Collection<PhysicalRating> ratings){

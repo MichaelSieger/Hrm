@@ -10,8 +10,12 @@ import org.eclipse.jface.viewers.ColumnLabelProvider;
 
 import de.hswt.hrm.common.ui.swt.table.ColumnDescription;
 import de.hswt.hrm.component.model.Attribute;
+import de.hswt.hrm.i18n.I18n;
+import de.hswt.hrm.i18n.I18nFactory;
 
 public final class SchemeDialogUtil {
+    
+    private static final I18n I18N = I18nFactory.getI18n(SchemeDialogUtil.class);
 
 	private SchemeDialogUtil() {
 
@@ -26,7 +30,7 @@ public final class SchemeDialogUtil {
 	}
 
 	private static ColumnDescription<Attribute> getNameColumn() {
-		return new ColumnDescription<Attribute>("Name",
+		return new ColumnDescription<Attribute>(I18N.tr("Name"),
 				new ColumnLabelProvider() {
 					@Override
 					public String getText(Object element) {
@@ -46,7 +50,7 @@ public final class SchemeDialogUtil {
 
 	private static ColumnDescription<Attribute> getValueColumn(
 			final Map<Attribute, String> assignedValues) {
-		return new ColumnDescription<Attribute>("Value",
+		return new ColumnDescription<Attribute>(I18N.tr("Value"),
 				new ColumnLabelProvider() {
 					@Override
 					public String getText(Object element) {

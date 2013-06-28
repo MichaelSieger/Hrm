@@ -15,6 +15,7 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.ActionContributionItem;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.window.IShellProvider;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
@@ -38,12 +39,17 @@ import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.ElementNotFoundException;
 import de.hswt.hrm.common.observer.Observer;
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
+import de.hswt.hrm.i18n.I18n;
+import de.hswt.hrm.i18n.I18nFactory;
 import de.hswt.hrm.inspection.model.BiologicalRating;
 import de.hswt.hrm.inspection.model.Inspection;
 import de.hswt.hrm.inspection.model.PhysicalRating;
+import de.hswt.hrm.inspection.model.SamplingPointType;
 import de.hswt.hrm.inspection.ui.wizard.ReportExportWizard;
 import de.hswt.hrm.inspection.ui.grid.BiologicalDisplay;
+import de.hswt.hrm.inspection.ui.grid.CombinedDisplay;
 import de.hswt.hrm.inspection.ui.grid.PhysicalDisplay;
+import de.hswt.hrm.inspection.ui.grid.SamplingPoints;
 import de.hswt.hrm.plant.model.Plant;
 import de.hswt.hrm.report.latex.service.ReportService;
 import de.hswt.hrm.scheme.model.Scheme;
@@ -53,7 +59,9 @@ import de.hswt.hrm.scheme.service.SchemeService;
 import de.hswt.hrm.scheme.ui.SchemeGridItem;
 
 public class InspectionPart {
-
+    
+    private static final I18n I18N = I18nFactory.getI18n(InspectionPart.class);
+    
     private static final String RENDER_ERROR = "Error on rendering image";
 
     private final static Logger LOG = LoggerFactory.getLogger(InspectionPart.class);
@@ -122,7 +130,7 @@ public class InspectionPart {
         form.getBody().setBackgroundMode(SWT.INHERIT_FORCE);
         form.setBackgroundMode(SWT.INHERIT_DEFAULT);
         formToolkit.paintBordersFor(form);
-        form.setText("Inspection");
+        form.setText(I18N.tr("Inspection"));
         FillLayout fillLayout = new FillLayout(SWT.HORIZONTAL);
         fillLayout.marginHeight = 5;
         fillLayout.marginWidth = 5;
@@ -144,7 +152,7 @@ public class InspectionPart {
         formToolkit.paintBordersFor(tabFolder);
 
         overviewTab = new TabItem(tabFolder, SWT.NONE);
-        overviewTab.setText("Overview");
+        overviewTab.setText(I18N.tr("Overview"));
 
         // reports overview composite
         reportsOverviewComposite = new ReportsOverviewComposite(tabFolder);
@@ -152,7 +160,7 @@ public class InspectionPart {
         overviewTab.setControl(reportsOverviewComposite);
 
         generalTab = new TabItem(tabFolder, SWT.NONE);
-        generalTab.setText("General");
+        generalTab.setText(I18N.tr("General"));
 
         reportGeneralComposite = new ReportGeneralComposite(tabFolder, this);
 
@@ -160,7 +168,7 @@ public class InspectionPart {
         generalTab.setControl(reportGeneralComposite);
 
         biolocicalRatingTab = new TabItem(tabFolder, SWT.NONE);
-        biolocicalRatingTab.setText("Biological rating");
+        biolocicalRatingTab.setText(I18N.tr("Biological rating"));
 
         biologicalComposite = new ComponentSelectionComposite(tabFolder,
                 ReportBiologicalComposite.class);
@@ -168,7 +176,7 @@ public class InspectionPart {
         biolocicalRatingTab.setControl(biologicalComposite);
 
         physicalRatingTab = new TabItem(tabFolder, SWT.NONE);
-        physicalRatingTab.setText("Physical rating");
+        physicalRatingTab.setText(I18N.tr("Physical rating"));
 
         physicalComposite = new ComponentSelectionComposite(tabFolder,
                 ReportPhysicalComposite.class);
@@ -176,10 +184,11 @@ public class InspectionPart {
         physicalRatingTab.setControl(physicalComposite);
 
         performanceTab = new TabItem(tabFolder, SWT.NONE);
-        performanceTab.setText("Performance");
+        performanceTab.setText(I18N.tr("Performance"));
 
         performanceComposite = new ComponentSelectionComposite(tabFolder,
                 ReportPerformanceComposite.class);
+      
         ContextInjectionFactory.inject(performanceComposite, context);
         performanceTab.setControl(performanceComposite);
         tabFolder.addSelectionListener(new SelectionAdapter() {
@@ -193,20 +202,54 @@ public class InspectionPart {
                 }
             }
         });
+        ReportBiologicalComposite reportBio = ((ReportBiologicalComposite) biologicalComposite.getRatingComposite());
+        reportBio.addGradeSelectionObserver(new Observer<Integer>() {
+			
+			@Override
+			public void changed(Integer item) {
+				SchemeComponent c = biologicalComposite.getSelectedSchemeComponent();
+				if(c != null){
+					selectedInspection.setBiologicalRatingRating(c, item);
+				}
+			}
+		});
+        reportBio.addSamplePointObserver(new Observer<SamplingPointType>() {
+			
+			@Override
+			public void changed(SamplingPointType item) {
+				SchemeComponent c = biologicalComposite.getSelectedSchemeComponent();
+				if(c != null){
+					selectedInspection.setBiologicalRatingSamplingPoint(c, item);
+				}
+			}
+		});
+        ((ReportPhysicalComposite)physicalComposite.getRatingComposite())
+        		.addGradeSelectionObserver(new Observer<Integer>() {
 
+					@Override
+					public void changed(Integer item) {
+						SchemeComponent c = physicalComposite.getSelectedSchemeComponent();
+						if(c != null){
+							selectedInspection.setPhysicalRatingRating(c, item);
+						}
+					}
+				});
         createActions();
     }
 
     private void setInspection(Inspection inspection) {
 
         if (inspection == null) {
-            MessageDialog.openError(shellProvider.getShell(), "Selection error",
-                    "No inspection selected.");
+            MessageDialog.openError(shellProvider.getShell(), I18N.tr("Selection Error"),
+                    I18N.tr("No inspection selected."));
             tabFolder.setSelection(0);
             return;
         }
 
         if (selectedInspection != inspection) {
+        	if(selectedInspection != null){
+        		selectedInspection.clearObservers();
+        	}
             selectedInspection = inspection;
             reportGeneralComposite.setInspection(selectedInspection);
             reportGeneralComposite.refreshGeneralInformation();
@@ -225,23 +268,45 @@ public class InspectionPart {
                 plantChanged(item);
             }
         });
-        final BiologicalDisplay bDisplay = new BiologicalDisplay(biologicalComposite.getInspectionSchemeGrid());
+        SamplingPoints points = new SamplingPoints(biolocicalRatingTab.getDisplay());
+        final CombinedDisplay combinedDisplay = new CombinedDisplay(performanceComposite.getInspectionSchemeGrid(), points);
+        final BiologicalDisplay bDisplay = new BiologicalDisplay(biologicalComposite.getInspectionSchemeGrid(), points);
         selectedInspection
                 .addBiologicalRatingObserver(new Observer<Collection<BiologicalRating>>() {
 
                     @Override
                     public void changed(Collection<BiologicalRating> item) {
-                    	bDisplay.update(item);
+                    	bDisplay.update(item, selectedInspection.getScheme());
+                    	combinedDisplay.updateBiological(item);
                     }
                 });
-        final PhysicalDisplay pDisplay = new PhysicalDisplay(physicalComposite.getInspectionSchemeGrid());
+        final PhysicalDisplay pDisplay = new PhysicalDisplay(physicalComposite.getInspectionSchemeGrid(), points);
         selectedInspection.addPhysicalRatingObserver(new Observer<Collection<PhysicalRating>>() {
 			
 			@Override
 			public void changed(Collection<PhysicalRating> item) {
 				pDisplay.update(item);
+				combinedDisplay.updatePhysical(item);
 			}
 		});
+		final ReportPerformanceComposite rpc = (ReportPerformanceComposite) performanceComposite
+				.getRatingComposite();
+		rpc.setComponentsList(performanceComposite.getComponentsList());
+		rpc.getComponentsList().getList()
+				.addSelectionListener(new SelectionAdapter() {
+					@Override
+					public void widgetSelected(SelectionEvent e) {
+						IStructuredSelection selection = (IStructuredSelection) rpc
+								.getComponentsList().getSelection();
+						if (selection == null) {
+							return;
+						}
+						SchemeComponent sc = (SchemeComponent) selection
+								.getFirstElement();
+						System.out.println(sc.getComponent().getCategory()
+								.get().getCatalog());
+					}
+				});
     }
 
     private void plantChanged(Plant plant) {
@@ -281,6 +346,7 @@ public class InspectionPart {
         physicalComposite.setSchemeGridItems(schemeGridItems);
         biologicalComposite.setSchemeGridItems(schemeGridItems);
         performanceComposite.setSchemeGridItems(schemeGridItems);
+		
     }
 
     protected void showOverviewActions(boolean visible) {
@@ -293,33 +359,33 @@ public class InspectionPart {
 
     private void createActions() {
         // TODO translate
-        Action evaluateAction = new Action("Report") {
+        Action evaluateAction = new Action(I18N.tr("Report")) {
             @Override
             public void run() {
             	createReport();
             }
         };
-        evaluateAction.setDescription("Edit an exisitng report.");
+        evaluateAction.setDescription("Create a report.");
         evaluateContribution = new ActionContributionItem(evaluateAction);
         form.getToolBarManager().add(evaluateContribution);
 
         form.getToolBarManager().add(new Separator());
 
-        Action saveAction = new Action("Save") {
+        Action saveAction = new Action(I18N.tr("Save")) {
             @Override
             public void run() {
                 super.run();
                 reportsOverviewComposite.addInspection();
             }
         };
-        saveAction.setDescription("Save the current edited report.");
+        saveAction.setDescription(I18N.tr("Save the current edited report."));
         saveAction.setEnabled(false);
         saveContribution = new ActionContributionItem(saveAction);
         form.getToolBarManager().add(saveContribution);
 
         form.getToolBarManager().add(new Separator());
 
-        Action editAction = new Action("Edit") {
+        Action editAction = new Action(I18N.tr("Edit")) {
             @Override
             public void run() {
                 super.run();
@@ -333,30 +399,30 @@ public class InspectionPart {
 
             }
         };
-        editAction.setDescription("Edit an exisitng report.");
+        editAction.setDescription(I18N.tr("Edit an existing report."));
         editContribution = new ActionContributionItem(editAction);
         form.getToolBarManager().add(editContribution);
 
-        Action copyAction = new Action("Copy") {
+        Action copyAction = new Action(I18N.tr("Copy")) {
             @Override
             public void run() {
                 super.run();
                 // TODO copy a report
             }
         };
-        copyAction.setDescription("Add's a new report.");
+        copyAction.setDescription(I18N.tr("Copy a report."));
         copyAction.setEnabled(false);
         copyContribution = new ActionContributionItem(copyAction);
         form.getToolBarManager().add(copyContribution);
 
-        Action addAction = new Action("Add") {
+        Action addAction = new Action(I18N.tr("Add")) {
             @Override
             public void run() {
                 super.run();
                 reportsOverviewComposite.addInspection();
             }
         };
-        addAction.setDescription("Add's a new report.");
+        addAction.setDescription(I18N.tr("Add a new report."));
         addContribution = new ActionContributionItem(addAction);
         form.getToolBarManager().add(addContribution);
 

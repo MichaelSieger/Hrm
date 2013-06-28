@@ -10,6 +10,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import javax.inject.Inject;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,19 +27,22 @@ import de.hswt.hrm.inspection.dao.core.IBiologicalRatingDao;
 import de.hswt.hrm.inspection.dao.core.IInspectionDao;
 import de.hswt.hrm.inspection.model.BiologicalRating;
 import de.hswt.hrm.inspection.model.Inspection;
+import de.hswt.hrm.inspection.model.SamplingPointType;
 import de.hswt.hrm.scheme.dao.core.ISchemeComponentDao;
 import de.hswt.hrm.scheme.model.SchemeComponent;
 
 public class BiologicalRatingDao implements IBiologicalRatingDao {
-	private final static Logger LOG = LoggerFactory.getLogger(BiologicalRatingDao.class);
-	private final IInspectionDao inspectionDao;
-	private final ISchemeComponentDao schemeComponentDao;
+    private final static Logger LOG = LoggerFactory.getLogger(BiologicalRatingDao.class);
+    private final IInspectionDao inspectionDao;
+    private final ISchemeComponentDao schemeComponentDao;
 
-    public BiologicalRatingDao(final IInspectionDao inspectionDao, 
-    		final ISchemeComponentDao schemeComponentDao) {
-    	
-    	checkNotNull(inspectionDao, "InspectionDao not properly injected to BiologicalRatingDao");
-        checkNotNull(schemeComponentDao, "SchemeComponentDao not properly injected to BiologicalRatingDao");
+    @Inject
+    public BiologicalRatingDao(final IInspectionDao inspectionDao,
+            final ISchemeComponentDao schemeComponentDao) {
+
+        checkNotNull(inspectionDao, "InspectionDao not properly injected to BiologicalRatingDao");
+        checkNotNull(schemeComponentDao,
+                "SchemeComponentDao not properly injected to BiologicalRatingDao");
 
         this.inspectionDao = inspectionDao;
         LOG.debug("InspectionDao injected into BiologicalRatingDao.");
@@ -48,12 +53,9 @@ public class BiologicalRatingDao implements IBiologicalRatingDao {
     @Override
     public Collection<BiologicalRating> findAll() throws DatabaseException {
         SqlQueryBuilder builder = new SqlQueryBuilder();
-        builder.select(TABLE_NAME, TABLE_NAME + "." + Fields.ID,
-                TABLE_NAME + "." + Fields.BACTERIA, TABLE_NAME + "." + Fields.RATING, TABLE_NAME
-                        + "." + Fields.QUANTIFIER, TABLE_NAME + "." + Fields.COMMENT, TABLE_NAME
-                        + "." + Fields.FK_COMPONENT, TABLE_NAME + "." + Fields.FK_REPORT,
-                TABLE_NAME + "." + Fields.FK_FLAG, FLAG_TABLE_NAME + "." + FlagFields.NAME);
-        builder.join(FLAG_TABLE_NAME, Fields.FK_FLAG, FlagFields.ID);
+        builder.select(TABLE_NAME, Fields.ID, Fields.BACTERIA, Fields.RATING, Fields.QUANTIFIER,
+                Fields.COMMENT, Fields.FK_COMPONENT, Fields.FK_REPORT, Fields.FLAG,
+                Fields.SAMPLINGPOINTTYPE);
 
         String query = builder.toString();
 
@@ -79,13 +81,9 @@ public class BiologicalRatingDao implements IBiologicalRatingDao {
         checkArgument(id >= 0, "ID must be non negative.");
 
         SqlQueryBuilder builder = new SqlQueryBuilder();
-        builder.select(TABLE_NAME, TABLE_NAME + "." + Fields.ID,
-                TABLE_NAME + "." + Fields.BACTERIA, TABLE_NAME + "." + Fields.RATING, TABLE_NAME
-                        + "." + Fields.QUANTIFIER, TABLE_NAME + "." + Fields.COMMENT, TABLE_NAME
-                        + "." + Fields.FK_COMPONENT, TABLE_NAME + "." + Fields.FK_REPORT,
-                TABLE_NAME + "." + Fields.FK_FLAG, FLAG_TABLE_NAME + "." + FlagFields.NAME);
-        builder.join(FLAG_TABLE_NAME, Fields.FK_FLAG, FlagFields.ID);
-        builder.where(Fields.ID);
+        builder.select(TABLE_NAME, Fields.ID, Fields.BACTERIA, Fields.RATING, Fields.QUANTIFIER,
+                Fields.COMMENT, Fields.FK_COMPONENT, Fields.FK_REPORT, Fields.FLAG,
+                Fields.SAMPLINGPOINTTYPE);
 
         String query = builder.toString();
 
@@ -120,12 +118,9 @@ public class BiologicalRatingDao implements IBiologicalRatingDao {
         checkArgument(inspection.getId() >= 0, "Inspection must have a valid ID.");
 
         SqlQueryBuilder builder = new SqlQueryBuilder();
-        builder.select(TABLE_NAME, TABLE_NAME + "." + Fields.ID,
-                TABLE_NAME + "." + Fields.BACTERIA, TABLE_NAME + "." + Fields.RATING, TABLE_NAME
-                        + "." + Fields.QUANTIFIER, TABLE_NAME + "." + Fields.COMMENT, TABLE_NAME
-                        + "." + Fields.FK_COMPONENT, TABLE_NAME + "." + Fields.FK_REPORT,
-                TABLE_NAME + "." + Fields.FK_FLAG, FLAG_TABLE_NAME + "." + FlagFields.NAME);
-        builder.join(FLAG_TABLE_NAME, Fields.FK_FLAG, FlagFields.ID);
+        builder.select(TABLE_NAME, Fields.ID, Fields.BACTERIA, Fields.RATING, Fields.QUANTIFIER,
+                Fields.COMMENT, Fields.FK_COMPONENT, Fields.FK_REPORT, Fields.FLAG,
+                Fields.SAMPLINGPOINTTYPE);
         builder.where(Fields.FK_REPORT);
 
         String query = builder.toString();
@@ -147,35 +142,37 @@ public class BiologicalRatingDao implements IBiologicalRatingDao {
 
     @Override
     public BiologicalRating insert(BiologicalRating biological) throws DatabaseException {
-    	checkNotNull(biological, "BiologicalRating must not be null.");
-    	checkState(biological.getComponent().getId() >= 0, "Component must have a valid ID.");
-    	checkState(biological.getInspection().getId() >= 0, "Inspection must have a valid ID.");
-    	
+        checkNotNull(biological, "BiologicalRating must not be null.");
+        checkState(biological.isValid(), "Biological Rating is invalid");
+        checkState(biological.getComponent().getId() >= 0, "Component must have a valid ID.");
+        checkState(biological.getInspection().getId() >= 0, "Inspection must have a valid ID.");
+
         SqlQueryBuilder builder = new SqlQueryBuilder();
-        builder.insert(
-        		TABLE_NAME, 
-		        Fields.BACTERIA, 
-		        Fields.RATING, 
-		        Fields.QUANTIFIER, 
-		        Fields.COMMENT, 
-		        Fields.FK_COMPONENT,
-		        Fields.FK_REPORT,
-		        Fields.FK_FLAG);
+        builder.insert(TABLE_NAME, Fields.BACTERIA, Fields.RATING, Fields.QUANTIFIER,
+                Fields.COMMENT, Fields.FK_COMPONENT, Fields.FK_REPORT, Fields.FLAG,
+                Fields.SAMPLINGPOINTTYPE);
 
         String query = builder.toString();
-        
+
         try (Connection con = DatabaseFactory.getConnection()) {
-        	try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
-        		
-        		stmt.setParameter(Fields.BACTERIA, biological.getBacteriaCount());
-        		stmt.setParameter(Fields.RATING, biological.getRating());
-        		stmt.setParameter(Fields.QUANTIFIER, biological.getQuantifier());
-        		stmt.setParameter(Fields.COMMENT, biological.getComment());
-        		stmt.setParameter(Fields.FK_COMPONENT, biological.getComponent().getId());
-        		stmt.setParameter(Fields.FK_REPORT, biological.getInspection().getId());
-        		stmt.setParameter(Fields.FK_FLAG, getFlagId(con, biological.getFlag()));
-        	
-        		int affectedRows = stmt.executeUpdate();
+            try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
+
+                stmt.setParameter(Fields.BACTERIA, biological.getBacteriaCount());
+                stmt.setParameter(Fields.RATING, biological.getRating());
+                stmt.setParameter(Fields.QUANTIFIER, biological.getQuantifier());
+                stmt.setParameter(Fields.COMMENT, biological.getComment());
+                stmt.setParameter(Fields.FK_COMPONENT, biological.getComponent().getId());
+                stmt.setParameter(Fields.FK_REPORT, biological.getInspection().getId());
+                stmt.setParameter(Fields.FLAG, biological.getFlag());
+                if (biological.getSamplingPointType().isPresent()) {
+                    stmt.setParameter(Fields.SAMPLINGPOINTTYPE, biological.getSamplingPointType()
+                            .get().ordinal());
+                }
+                else {
+                    stmt.setParameterNull(Fields.SAMPLINGPOINTTYPE);
+                }
+
+                int affectedRows = stmt.executeUpdate();
                 if (affectedRows != 1) {
                     throw new SaveException();
                 }
@@ -185,48 +182,46 @@ public class BiologicalRatingDao implements IBiologicalRatingDao {
                         int id = generatedKeys.getInt(1);
 
                         // Create new biological rating with id
-                        BiologicalRating inserted = new BiologicalRating(
-                        		id,
-                        		biological.getInspection(), 
-                        		biological.getComponent(), 
-                        		biological.getBacteriaCount(),
-                        		biological.getRating(),
-                        		biological.getQuantifier(),
-                        		biological.getComment(),
-                        		biological.getFlag());
-
+                        BiologicalRating inserted = new BiologicalRating(id,
+                                biological.getInspection(), biological.getComponent(),
+                                biological.getBacteriaCount(), biological.getRating(),
+                                biological.getQuantifier(), biological.getComment(),
+                                biological.getFlag());
+                        inserted.setSamplingPointType(biological.getSamplingPointType().orNull());
                         return inserted;
                     }
                     else {
                         throw new SaveException("Could not retrieve generated ID.");
                     }
                 }
-        	}
+            }
         }
         catch (SQLException e) {
-        	throw new DatabaseException("Unexpected error.", e);
+            throw new DatabaseException("Unexpected error.", e);
         }
     }
 
     @Override
     public void update(BiologicalRating biological) throws ElementNotFoundException, SaveException {
+        checkState(biological.isValid(), "Biological Rating is invalid");
+
         throw new NotImplementedException();
     }
 
     /**
-     * All statements should join the flag table to be able to parse it
-     * correctly here...
+     * All statements should join the flag table to be able to parse it correctly here...
+     * 
      * @param rs
      * @return
-     * @throws SQLException 
-     * @throws DatabaseException 
-     * @throws ElementNotFoundException 
+     * @throws SQLException
+     * @throws DatabaseException
+     * @throws ElementNotFoundException
      */
-    private Collection<BiologicalRating> fromResultSet(final ResultSet rs) 
-    		throws SQLException, ElementNotFoundException, DatabaseException {
-    	
+    private Collection<BiologicalRating> fromResultSet(final ResultSet rs) throws SQLException,
+            ElementNotFoundException, DatabaseException {
+
         checkNotNull(rs, "ResultSet must not be null.");
-        
+
         Collection<BiologicalRating> ratingList = new ArrayList<>();
 
         while (rs.next()) {
@@ -241,45 +236,17 @@ public class BiologicalRatingDao implements IBiologicalRatingDao {
             int inspectionId = JdbcUtil.getId(rs, Fields.FK_REPORT);
             checkState(inspectionId >= 0, "Invalid report ID returned from database.");
             Inspection inspection = inspectionDao.findById(inspectionId);
-            // Should be added through a join
-            String flag = rs.getString(FlagFields.NAME);
-            
-            BiologicalRating biological = new BiologicalRating(
-            		id,
-            		inspection,
-            		component,
-            		bacteria,
-            		rating,
-            		quantifier,
-            		comment,
-            		flag);
-            
+            String flag = rs.getString(Fields.FLAG);
+            SamplingPointType samplingPointType = SamplingPointType.values()[rs
+                    .getInt(Fields.SAMPLINGPOINTTYPE)];
+
+            BiologicalRating biological = new BiologicalRating(id, inspection, component, bacteria,
+                    rating, quantifier, comment, flag);
+            biological.setSamplingPointType(samplingPointType);
             ratingList.add(biological);
         }
 
         return ratingList;
-    }
-    
-    private int getFlagId(final Connection con, final String name) throws SQLException {
-    	SqlQueryBuilder builder = new SqlQueryBuilder();
-    	builder.select(FLAG_TABLE_NAME, FlagFields.ID);
-    	builder.where(FlagFields.NAME);
-
-    	try (NamedParameterStatement stmt = 
-    			NamedParameterStatement.fromConnection(con, builder.toString())) {
-    		
-    		stmt.setParameter(FlagFields.NAME, name);
-    		
-    		ResultSet rs = stmt.executeQuery();
-    		if (!rs.next()) {
-    			throw new IllegalStateException("Could not find flag '" + name + "' in database.");
-    		}
-    		
-    		int id = rs.getInt(FlagFields.ID);
-    		rs.close();
-    		
-    		return id;
-    	}
     }
 
     private static final String TABLE_NAME = "Biological_Rating";
@@ -292,13 +259,7 @@ public class BiologicalRatingDao implements IBiologicalRatingDao {
         public static final String COMMENT = "Biological_Rating_Comment";
         public static final String FK_COMPONENT = "Biological_Rating_Component_FK";
         public static final String FK_REPORT = "Biological_Rating_Report_FK";
-        public static final String FK_FLAG = "Biological_Rating_Flag_FK";
-    }
-
-    private static final String FLAG_TABLE_NAME = "Biological_Flag";
-
-    private static final class FlagFields {
-        public static final String ID = "Flag_ID";
-        public static final String NAME = "Flag_Name";
+        public static final String FLAG = "Biological_Rating_Flag";
+        public static final String SAMPLINGPOINTTYPE = "Biological_Rating_Sampling_Point_Type";
     }
 }

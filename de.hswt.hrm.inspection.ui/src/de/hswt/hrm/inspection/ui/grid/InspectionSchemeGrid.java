@@ -1,6 +1,7 @@
 package de.hswt.hrm.inspection.ui.grid;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
@@ -14,6 +15,7 @@ import com.google.common.base.Optional;
 
 import de.hswt.hrm.component.model.Category;
 import de.hswt.hrm.scheme.model.SchemeComponent;
+import de.hswt.hrm.scheme.ui.Colorbox;
 import de.hswt.hrm.scheme.ui.ItemClickListener;
 import de.hswt.hrm.scheme.ui.SchemeGrid;
 import de.hswt.hrm.scheme.ui.SchemeGridItem;
@@ -32,6 +34,7 @@ public class InspectionSchemeGrid {
 
     private final SchemeGrid grid;
     private SchemeComponent selected;
+    private Colorbox selectionBox;
     private SchemeComponentSelectionListener listener;
 
     public InspectionSchemeGrid(final Composite parent, int style) {
@@ -69,15 +72,17 @@ public class InspectionSchemeGrid {
             if (listener != null) {
                 listener.selected(selected);
             }
-            grid.clearColors();
+            grid.removeColorbox(selectionBox);
             if (selected != null) {
                 Optional<Category> c = selected.getComponent().getCategory();
                 if (!c.isPresent()) {
                     // Shouldnt be possible
                     throw new RuntimeException("Internal Error");
                 }
-                grid.setColorGrid(getColor(), selected.getX(), selected.getY(), c.get().getWidth(),
+                selectionBox = grid.setColorGrid(getColor(), selected.getX(), selected.getY(), c.get().getWidth(),
                         c.get().getHeight(), false, false);
+            }else{
+            	selectionBox = null;
             }
         }
     }
@@ -90,6 +95,13 @@ public class InspectionSchemeGrid {
     private Color getColor() {
         return grid.getDisplay().getSystemColor(SWT.COLOR_GREEN);
     }
+    
+    public void clearColors(){
+    	grid.clearColors();
+    	if(selectionBox != null){
+    		grid.addColorbox(selectionBox);
+    	}
+    }
 
 	public Control getControl() {
 		return grid;
@@ -98,9 +110,17 @@ public class InspectionSchemeGrid {
 	public void setColor(SchemeComponent c, Color color){
 		grid.setColorGrid(color, c.getX(), c.getY(), c.getWidth(), c.getHeight(), true, true);
 	}
-	
-	public void clearColors(){
-		grid.clearColors();
+
+	public void addColorbox(Colorbox b) {
+		grid.addColorbox(b);
+	}
+
+	public void removeAll(Collection<SchemeGridItem> c) {
+		grid.removeAll(c);
+	}
+
+	public void addAll(Collection<SchemeGridItem> c) {
+		grid.addAll(c);
 	}
 
 }

@@ -25,7 +25,6 @@ import de.hswt.hrm.catalog.model.Target;
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.ElementNotFoundException;
 import de.hswt.hrm.common.database.exception.SaveException;
-import de.hswt.hrm.common.exception.NotImplementedException;
 
 @Creatable
 public class CatalogService {
@@ -70,7 +69,7 @@ public class CatalogService {
 
 		return items;
 	}
-
+	
 	public Collection<Activity> findAllActivity() throws DatabaseException {
 		return activityDao.findAll();
 	}
@@ -232,8 +231,10 @@ public class CatalogService {
 		target.setText(fromDb.getText());
 	}
 
-	public void refresh(Catalog catalog) {
-
-		throw new NotImplementedException();
+	public void refresh(Catalog catalog) throws ElementNotFoundException, DatabaseException {
+		checkState(catalog.getId() >= 0, NO_ID_ERROR);
+		
+		Catalog fromDb = findCatalogById(catalog.getId());
+		catalog.setName(fromDb.getName());
 	}
 }

@@ -19,9 +19,12 @@ import de.hswt.hrm.component.model.Attribute;
 import de.hswt.hrm.component.model.Component;
 import de.hswt.hrm.component.service.CategoryService;
 import de.hswt.hrm.component.service.ComponentService;
+import de.hswt.hrm.i18n.I18n;
+import de.hswt.hrm.i18n.I18nFactory;
 
 public class ComponentWizard extends Wizard {
     private static final Logger LOG = LoggerFactory.getLogger(ComponentWizard.class);
+    private static final I18n I18N = I18nFactory.getI18n(ComponentWizard.class);
 
     @Inject
     private CategoryService catService;
@@ -40,10 +43,10 @@ public class ComponentWizard extends Wizard {
         this.component = component;
 
         if (component.isPresent()) {
-            setWindowTitle("Edit Component : " + component.get().getName());
+            setWindowTitle(I18N.tr("Edit Component"));
         }
         else {
-            setWindowTitle("Add new Component");
+            setWindowTitle(I18N.tr("Add Component"));
         }
     }
 

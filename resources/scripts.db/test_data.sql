@@ -45,19 +45,19 @@ INSERT INTO `hrm`.`Picture` (`Picture_Blob`, `Picture_Name`, `Picture_Label`) VA
 INSERT INTO `hrm`.`Picture` (`Picture_Blob`, `Picture_Name`, `Picture_Label`) VALUES (x'255044462d312e350a25b5edaefb0a332030206f626a0a3c3c202f4c656e6774682034203020520a2020202f46696c746572202f466c6174654465636f64650a3e3e0a73747265616d0a789c458d410ac2400c45f739c5bf80f1672675e80904c14575292e44b120eda2baf0fa6674404202f92fbc2c42d47a8e585f88f115bb6b4e19334c3bcf5851c9840959d937363596b4eb2bba37cb610b6ae90bcdf08e6c17fd90d33952e22646ecb1c0beb7755a09f7c692e33acb4fc9ff637375f3d01f31c8201f9fb022170a656e6473747265616d0a656e646f626a0a342030206f626a0a2020203132370a656e646f626a0a322030206f626a0a3c3c0a2020202f457874475374617465203c3c0a2020202020202f6130203c3c202f43412031202f63612031203e3e0a2020203e3e0a3e3e0a656e646f626a0a352030206f626a0a3c3c202f54797065202f506167650a2020202f506172656e742031203020520a2020202f4d65646961426f78205b2030203020332e3038382031372e303036313234205d0a2020202f436f6e74656e74732033203020520a2020202f47726f7570203c3c0a2020202020202f54797065202f47726f75700a2020202020202f53202f5472616e73706172656e63790a2020202020202f4353202f4465766963655247420a2020203e3e0a2020202f5265736f75726365732032203020520a3e3e0a656e646f626a0a312030206f626a0a3c3c202f54797065202f50616765730a2020202f4b696473205b203520302052205d0a2020202f436f756e7420310a3e3e0a656e646f626a0a362030206f626a0a3c3c202f43726561746f722028636169726f20312e31302e322028687474703a2f2f636169726f67726170686963732e6f726729290a2020202f50726f64756365722028636169726f20312e31302e322028687474703a2f2f636169726f67726170686963732e6f726729290a3e3e0a656e646f626a0a372030206f626a0a3c3c202f54797065202f436174616c6f670a2020202f50616765732031203020520a3e3e0a656e646f626a0a787265660a3020380a303030303030303030302036353533352066200a30303030303030353231203030303030206e200a30303030303030323431203030303030206e200a30303030303030303135203030303030206e200a30303030303030323139203030303030206e200a30303030303030333133203030303030206e200a30303030303030353836203030303030206e200a30303030303030373133203030303030206e200a747261696c65720a3c3c202f53697a6520380a2020202f526f6f742037203020520a2020202f496e666f2036203020520a3e3e0a7374617274787265660a3736350a2525454f460a', 'Plantbild', 'Bild zeigt eine Anlage');
 
 ------------------------------------------------------------
--- Insert 3 different reports in the `Report` Table
-------------------------------------------------------------
-
-INSERT INTO `hrm`.`Report` (`Report_Layout_FK`, `Report_Plant_FK`, `Report_Requester_FK`, `Report_Contractor_FK`, `Report_Checker_FK`, `Report_Jobdate`, `Report_Reportdate`, `Report_Nextdate`, `Report_Airtemperature`, `Report_Humidity`, `Report_Summary`, `Report_Titel`, `Report_Humidity_Rating`, `Report_Humidity_Quantifier`, `Report_Airtemperature_Rating`, `Report_Airtemperature_Quantifier`, `Report_Frontpicture_FK`, `Report_Plantpicture_FK`, `Report_Airtemperature_Comment`, `Report_Humidity_Comment`, `Report_Legionella`, `Report_Legionella_Rating`, `Report_Legionella_Quantifier`, `Report_Legionella_Comment`, `Report_Germs`, `Report_Germs_Rating`, `Report_Germs_Quantifier`, `Report_Germs_Comment`) VALUES ('1', '1', '1', '3', '5', '2012-12-31', '2013-01-07', '2016-01-07', '20', '37', 'Mei is des a guade Anlage, da muassd nix mocha', 'Schnaxlwirt','1','3','2','2','3','4','passt','passt auch','13','1','1','blub','22','1','2','guade');
-INSERT INTO `hrm`.`Report` (`Report_Layout_FK`, `Report_Plant_FK`, `Report_Requester_FK`, `Report_Contractor_FK`, `Report_Checker_FK`, `Report_Jobdate`, `Report_Reportdate`, `Report_Nextdate`, `Report_Airtemperature`, `Report_Humidity`, `Report_Summary`, `Report_Titel`, `Report_Humidity_Rating`, `Report_Humidity_Quantifier`, `Report_Airtemperature_Rating`, `Report_Airtemperature_Quantifier`, `Report_Frontpicture_FK`, `Report_Plantpicture_FK`, `Report_Airtemperature_Comment`, `Report_Humidity_Comment`, `Report_Legionella`, `Report_Legionella_Rating`, `Report_Legionella_Quantifier`, `Report_Legionella_Comment`, `Report_Germs`, `Report_Germs_Rating`, `Report_Germs_Quantifier`, `Report_Germs_Comment`) VALUES ('2', '2', '2', '4', '5', '2012-01-08', '2012-01-11', '2013-01-11', '22', '40','A so a glumb, schmeiss besser weg und moch was neiss', 'Hubertusstüberl','2','3','1','1','3','4','au weh','naja','14','2','1','moep','20','2','2','so lala');
-INSERT INTO `hrm`.`Report` (`Report_Layout_FK`, `Report_Plant_FK`, `Report_Requester_FK`, `Report_Contractor_FK`, `Report_Checker_FK`, `Report_Jobdate`, `Report_Reportdate`, `Report_Nextdate`, `Report_Airtemperature`, `Report_Humidity`, `Report_Summary`, `Report_Titel`, `Report_Humidity_Rating`, `Report_Humidity_Quantifier`, `Report_Airtemperature_Rating`, `Report_Airtemperature_Quantifier`, `Report_Frontpicture_FK`, `Report_Plantpicture_FK`, `Report_Airtemperature_Comment`, `Report_Humidity_Comment`, `Report_Legionella`, `Report_Legionella_Rating`, `Report_Legionella_Quantifier`, `Report_Legionella_Comment`, `Report_Germs`, `Report_Germs_Rating`, `Report_Germs_Quantifier`, `Report_Germs_Comment`) VALUES ('3', '2', '2', '4', '5', '2012-01-08', '2012-01-11', '2013-01-11', '22', '40','Copy Paste', 'SchmuckiAlle','2','3','1','1','3','4','schlecht','sehr schlecht','1','3','1','urghs','10','4','2','mist!');
-
-------------------------------------------------------------
 -- Insert 3 different schemes in the `Scheme` Table
 ------------------------------------------------------------
 INSERT INTO `hrm`.`Scheme` (`Scheme_Plant_FK`) VALUES ('1');
 INSERT INTO `hrm`.`Scheme` (`Scheme_Plant_FK`) VALUES ('2');
 INSERT INTO `hrm`.`Scheme` (`Scheme_Plant_FK`) VALUES ('2');
+
+------------------------------------------------------------
+-- Insert 3 different reports in the `Report` Table
+------------------------------------------------------------
+
+INSERT INTO `hrm`.`Report` (`Report_Layout_FK`, `Report_Plant_FK`, `Report_Requester_FK`, `Report_Contractor_FK`, `Report_Checker_FK`, `Report_Jobdate`, `Report_Reportdate`, `Report_Nextdate`, `Report_Airtemperature`, `Report_Humidity`, `Report_Summary`, `Report_Titel`, `Report_Humidity_Rating`, `Report_Humidity_Quantifier`, `Report_Airtemperature_Rating`, `Report_Airtemperature_Quantifier`, `Report_Frontpicture_FK`, `Report_Plantpicture_FK`, `Report_Airtemperature_Comment`, `Report_Humidity_Comment`, `Report_Legionella`, `Report_Legionella_Rating`, `Report_Legionella_Quantifier`, `Report_Legionella_Comment`, `Report_Germs`, `Report_Germs_Rating`, `Report_Germs_Quantifier`, `Report_Germs_Comment`, `Report_Scheme_FK`) VALUES ('1', '1', '1', '3', '5', '2012-12-31', '2013-01-07', '2016-01-07', '20', '37', 'Mei is des a guade Anlage, da muassd nix mocha', 'Schnaxlwirt','1','3','2','2','3','4','passt','passt auch','13','1','1','blub','22','1','2','guade','1');
+INSERT INTO `hrm`.`Report` (`Report_Layout_FK`, `Report_Plant_FK`, `Report_Requester_FK`, `Report_Contractor_FK`, `Report_Checker_FK`, `Report_Jobdate`, `Report_Reportdate`, `Report_Nextdate`, `Report_Airtemperature`, `Report_Humidity`, `Report_Summary`, `Report_Titel`, `Report_Humidity_Rating`, `Report_Humidity_Quantifier`, `Report_Airtemperature_Rating`, `Report_Airtemperature_Quantifier`, `Report_Frontpicture_FK`, `Report_Plantpicture_FK`, `Report_Airtemperature_Comment`, `Report_Humidity_Comment`, `Report_Legionella`, `Report_Legionella_Rating`, `Report_Legionella_Quantifier`, `Report_Legionella_Comment`, `Report_Germs`, `Report_Germs_Rating`, `Report_Germs_Quantifier`, `Report_Germs_Comment`, `Report_Scheme_FK`) VALUES ('2', '2', '2', '4', '5', '2012-01-08', '2012-01-11', '2013-01-11', '22', '40','A so a glumb, schmeiss besser weg und moch was neiss', 'Hubertusstüberl','2','3','1','1','3','4','au weh','naja','14','2','1','moep','20','2','2','so lala','2');
+INSERT INTO `hrm`.`Report` (`Report_Layout_FK`, `Report_Plant_FK`, `Report_Requester_FK`, `Report_Contractor_FK`, `Report_Checker_FK`, `Report_Jobdate`, `Report_Reportdate`, `Report_Nextdate`, `Report_Airtemperature`, `Report_Humidity`, `Report_Summary`, `Report_Titel`, `Report_Humidity_Rating`, `Report_Humidity_Quantifier`, `Report_Airtemperature_Rating`, `Report_Airtemperature_Quantifier`, `Report_Frontpicture_FK`, `Report_Plantpicture_FK`, `Report_Airtemperature_Comment`, `Report_Humidity_Comment`, `Report_Legionella`, `Report_Legionella_Rating`, `Report_Legionella_Quantifier`, `Report_Legionella_Comment`, `Report_Germs`, `Report_Germs_Rating`, `Report_Germs_Quantifier`, `Report_Germs_Comment`, `Report_Scheme_FK`) VALUES ('3', '2', '2', '4', '5', '2012-01-08', '2012-01-11', '2013-01-11', '22', '40','Copy Paste', 'SchmuckiAlle','2','3','1','1','3','4','schlecht','sehr schlecht','1','3','1','urghs','10','4','2','mist!','2');
 
 ------------------------------------------------------------
 -- Insert 4 different cataloges in the `Catalog` Table
@@ -107,18 +107,11 @@ INSERT INTO `hrm`.`Scheme_Component` (`Scheme_Component_Scheme_FK`, `Scheme_Comp
 INSERT INTO `hrm`.`Scheme_Component` (`Scheme_Component_Scheme_FK`, `Scheme_Component_Component_FK`, `Scheme_Component_X_Position`, `Scheme_Component_Y_Position`, `Scheme_Component_Direction`) VALUES ('3', '3', '1', '1', '1');
 
 ------------------------------------------------------------
--- Insert 3 different biological flags in the `Biological_Flag` Table
-------------------------------------------------------------
-INSERT INTO `hrm`.`Biological_Flag` (`Flag_Name`) VALUES ('Luftkeimzahl');
-INSERT INTO `hrm`.`Biological_Flag` (`Flag_Name`) VALUES ('Kontaktkeime');
-INSERT INTO `hrm`.`Biological_Flag` (`Flag_Name`) VALUES ('Befeuchterwasser');
-
-------------------------------------------------------------
 -- Insert 2 different biological ratings in the `Biological_Rating` Table
 ------------------------------------------------------------
 
-INSERT INTO `hrm`.`Biological_Rating` (`Biological_Rating_Component_FK`, `Biological_Rating_Report_FK`, `Biological_Rating_Bacteria_Count`, `Biological_Rating_Rating`, `Biological_Rating_Quantifier`, `Biological_Rating_Comment`, `Biological_Rating_Flag_FK`) VALUES ('1', '1', '100', '2', 3, 'schlecht','1');
-INSERT INTO `hrm`.`Biological_Rating` (`Biological_Rating_Component_FK`, `Biological_Rating_Report_FK`, `Biological_Rating_Bacteria_Count`, `Biological_Rating_Rating`, `Biological_Rating_Quantifier`, `Biological_Rating_Comment`, `Biological_Rating_Flag_FK`) VALUES ('2', '1', '1', '1', NULL, 'gut','2');
+INSERT INTO `hrm`.`Biological_Rating` (`Biological_Rating_Component_FK`, `Biological_Rating_Report_FK`, `Biological_Rating_Bacteria_Count`, `Biological_Rating_Rating`, `Biological_Rating_Quantifier`, `Biological_Rating_Comment`, `Biological_Rating_Flag`) VALUES ('1', '1', '100', '2', 3, 'schlecht','FlagA');
+INSERT INTO `hrm`.`Biological_Rating` (`Biological_Rating_Component_FK`, `Biological_Rating_Report_FK`, `Biological_Rating_Bacteria_Count`, `Biological_Rating_Rating`, `Biological_Rating_Quantifier`, `Biological_Rating_Comment`, `Biological_Rating_Flag`) VALUES ('2', '1', '1', '1', NULL, 'gut','FlagB');
 
 ------------------------------------------------------------
 -- Insert 3 different current states in the `State_Current` Table
@@ -181,9 +174,9 @@ INSERT INTO `hrm`.`Priority` (`Priority_Name`, `Priority_Text`, `Priority_Priori
 -- Insert 3 different performances in the `Performance` Table
 ------------------------------------------------------------
 
-INSERT INTO `hrm`.`Performance` (`Performance_Component_FK`, `Performance_Target_FK`, `Performance_Current_FK`, `Performance_Activity_FK`, `Performance_Picture_FK`, `Performance_Priority_FK`) VALUES ('1', '2', '2', '2', '2', '1');
-INSERT INTO `hrm`.`Performance` (`Performance_Component_FK`, `Performance_Target_FK`, `Performance_Current_FK`, `Performance_Activity_FK`, `Performance_Picture_FK`, `Performance_Priority_FK`) VALUES ('2', '3', '3', '3', '4', '2');
-INSERT INTO `hrm`.`Performance` (`Performance_Component_FK`, `Performance_Target_FK`, `Performance_Current_FK`, `Performance_Activity_FK`, `Performance_Picture_FK`, `Performance_Priority_FK`) VALUES ('3', '1', '1', '1', '6', '3');
+INSERT INTO `hrm`.`Performance` (`Performance_Component_FK`, `Performance_Target_FK`, `Performance_Current_FK`, `Performance_Activity_FK`, `Performance_Picture_FK`, `Performance_Priority_FK`, `Performance_Report_FK`) VALUES ('1', '2', '2', '2', '2', '1', '1');
+INSERT INTO `hrm`.`Performance` (`Performance_Component_FK`, `Performance_Target_FK`, `Performance_Current_FK`, `Performance_Activity_FK`, `Performance_Picture_FK`, `Performance_Priority_FK`, `Performance_Report_FK`) VALUES ('2', '3', '3', '3', '4', '2', '2');
+INSERT INTO `hrm`.`Performance` (`Performance_Component_FK`, `Performance_Target_FK`, `Performance_Current_FK`, `Performance_Activity_FK`, `Performance_Picture_FK`, `Performance_Priority_FK`, `Performance_Report_FK`) VALUES ('3', '1', '1', '1', '6', '3', '3');
 
 ------------------------------------------------------------
 -- Insert 4 different picture catalogs in the `Picture_Catalog` Table
@@ -193,14 +186,6 @@ INSERT INTO `hrm`.`Picture_Catalog` (`Picture_Catalog_Picture_FK`, `Picture_Cata
 INSERT INTO `hrm`.`Picture_Catalog` (`Picture_Catalog_Picture_FK`, `Picture_Catalog_Performance_FK`) VALUES ('2', '1' );
 INSERT INTO `hrm`.`Picture_Catalog` (`Picture_Catalog_Picture_FK`, `Picture_Catalog_Performance_FK`) VALUES ('1', '2' );
 INSERT INTO `hrm`.`Picture_Catalog` (`Picture_Catalog_Picture_FK`, `Picture_Catalog_Performance_FK`) VALUES ('2', '2' );
-
-------------------------------------------------------------
--- Insert 3 different target currents in the `Target_Current` Table
-------------------------------------------------------------
-
-INSERT INTO `hrm`.`Target_Current` (`Target_Current_Report_FK`, `Target_Current_Performance_FK`) VALUES ('1', '1');
-INSERT INTO `hrm`.`Target_Current` (`Target_Current_Report_FK`, `Target_Current_Performance_FK`) VALUES ('1', '2');
-INSERT INTO `hrm`.`Target_Current` (`Target_Current_Report_FK`, `Target_Current_Performance_FK`) VALUES ('1', '3');
 
 ------------------------------------------------------------
 -- Insert 2 different attributes in the `Attribute` Table

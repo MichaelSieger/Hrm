@@ -24,6 +24,7 @@ import de.hswt.hrm.inspection.dao.core.IInspectionDao;
 import de.hswt.hrm.inspection.dao.core.IPhysicalRatingDao;
 import de.hswt.hrm.inspection.model.Inspection;
 import de.hswt.hrm.inspection.model.PhysicalRating;
+import de.hswt.hrm.inspection.model.SamplingPointType;
 import de.hswt.hrm.scheme.dao.core.ISchemeComponentDao;
 import de.hswt.hrm.scheme.model.SchemeComponent;
 
@@ -48,7 +49,7 @@ public class PhysicalRatingDao implements IPhysicalRatingDao {
     public Collection<PhysicalRating> findAll() throws DatabaseException {
         SqlQueryBuilder builder = new SqlQueryBuilder();
         builder.select(TABLE_NAME, Fields.ID, Fields.RATING, Fields.NOTE, Fields.COMPONENT_FK,
-                Fields.REPORT_FK, Fields.QUANTIFIER);
+                Fields.REPORT_FK, Fields.QUANTIFIER, Fields.SAMPLINGPOINTTYPE);
 
         String query = builder.toString();
 
@@ -75,7 +76,7 @@ public class PhysicalRatingDao implements IPhysicalRatingDao {
 
         SqlQueryBuilder builder = new SqlQueryBuilder();
         builder.select(TABLE_NAME, Fields.ID, Fields.RATING, Fields.NOTE, Fields.COMPONENT_FK,
-                Fields.REPORT_FK, Fields.QUANTIFIER);
+                Fields.REPORT_FK, Fields.QUANTIFIER, Fields.SAMPLINGPOINTTYPE);
         builder.where(Fields.ID);
 
         String query = builder.toString();
@@ -106,9 +107,12 @@ public class PhysicalRatingDao implements IPhysicalRatingDao {
 
     @Override
     public PhysicalRating insert(PhysicalRating physicalRating) throws SaveException {
+        checkNotNull(physicalRating, "Physical Rating must not be null.");
+        checkState(physicalRating.isValid(), "Physical Rating is invalid");
+
         SqlQueryBuilder builder = new SqlQueryBuilder();
         builder.insert(TABLE_NAME, Fields.RATING, Fields.NOTE, Fields.COMPONENT_FK,
-                Fields.REPORT_FK, Fields.QUANTIFIER);
+                Fields.REPORT_FK, Fields.QUANTIFIER, Fields.SAMPLINGPOINTTYPE);
 
         final String query = builder.toString();
 
@@ -119,6 +123,13 @@ public class PhysicalRatingDao implements IPhysicalRatingDao {
                 stmt.setParameter(Fields.COMPONENT_FK, physicalRating.getComponent().getId());
                 stmt.setParameter(Fields.REPORT_FK, physicalRating.getInspection().getId());
                 stmt.setParameter(Fields.QUANTIFIER, physicalRating.getQuantifier());
+                if (physicalRating.getSamplingPointType().isPresent()) {
+                    stmt.setParameter(Fields.SAMPLINGPOINTTYPE, physicalRating
+                            .getSamplingPointType().get().ordinal());
+                }
+                else {
+                    stmt.setParameterNull(Fields.SAMPLINGPOINTTYPE);
+                }
 
                 int affectedRows = stmt.executeUpdate();
                 if (affectedRows != 1) {
@@ -135,6 +146,7 @@ public class PhysicalRatingDao implements IPhysicalRatingDao {
                                 physicalRating.getRating(), physicalRating.getQuantifier());
 
                         inserted.setNote(physicalRating.getNote().orNull());
+                        inserted.setSamplingPointType(physicalRating.getSamplingPointType().orNull());
                         return inserted;
                     }
                     else {
@@ -147,12 +159,14 @@ public class PhysicalRatingDao implements IPhysicalRatingDao {
         catch (SQLException | DatabaseException e) {
             throw new SaveException(e);
         }
+
     }
 
     @Override
     public void update(PhysicalRating physicalRating) throws ElementNotFoundException,
             SaveException {
         checkNotNull(physicalRating, "Physical Rating must not be null.");
+        checkState(physicalRating.isValid(), "Physical Rating is invalid");
 
         if (physicalRating.getId() < 0) {
             throw new ElementNotFoundException("Element has no valid ID.");
@@ -160,7 +174,7 @@ public class PhysicalRatingDao implements IPhysicalRatingDao {
 
         SqlQueryBuilder builder = new SqlQueryBuilder();
         builder.update(TABLE_NAME, Fields.RATING, Fields.NOTE, Fields.COMPONENT_FK,
-                Fields.REPORT_FK, Fields.QUANTIFIER);
+                Fields.REPORT_FK, Fields.QUANTIFIER, Fields.SAMPLINGPOINTTYPE);
         builder.where(Fields.ID);
 
         final String query = builder.toString();
@@ -172,6 +186,13 @@ public class PhysicalRatingDao implements IPhysicalRatingDao {
                 stmt.setParameter(Fields.COMPONENT_FK, physicalRating.getComponent().getId());
                 stmt.setParameter(Fields.REPORT_FK, physicalRating.getInspection().getId());
                 stmt.setParameter(Fields.QUANTIFIER, physicalRating.getQuantifier());
+                if (physicalRating.getSamplingPointType().isPresent()) {
+                    stmt.setParameter(Fields.SAMPLINGPOINTTYPE, physicalRating
+                            .getSamplingPointType().get().ordinal());
+                }
+                else {
+                    stmt.setParameterNull(Fields.SAMPLINGPOINTTYPE);
+                }
 
                 int affectedRows = stmt.executeUpdate();
                 if (affectedRows != 1) {
@@ -182,6 +203,7 @@ public class PhysicalRatingDao implements IPhysicalRatingDao {
         catch (SQLException | DatabaseException e) {
             throw new SaveException(e);
         }
+
     }
 
     @Override
@@ -193,7 +215,7 @@ public class PhysicalRatingDao implements IPhysicalRatingDao {
 
         SqlQueryBuilder builder = new SqlQueryBuilder();
         builder.select(TABLE_NAME, Fields.ID, Fields.RATING, Fields.NOTE, Fields.COMPONENT_FK,
-                Fields.REPORT_FK, Fields.QUANTIFIER);
+                Fields.REPORT_FK, Fields.QUANTIFIER, Fields.SAMPLINGPOINTTYPE);
         builder.where(Fields.REPORT_FK);
 
         String query = builder.toString();
@@ -240,13 +262,17 @@ public class PhysicalRatingDao implements IPhysicalRatingDao {
                 inspection = Optional.of(inspectionDao.findById(inspectionId));
             }
             int componentId = rs.getInt(Fields.COMPONENT_FK);
+            SamplingPointType samplingPointType = SamplingPointType.values()[rs
+                    .getInt(Fields.SAMPLINGPOINTTYPE)];
             checkState(componentId >= 0, "Invalid component ID retrieved from database.");
             SchemeComponent component = schemeComponentDao.findById(componentId);
 
             PhysicalRating physicalRating = new PhysicalRating(id, inspection.get(), component,
                     rating, quantifier);
             physicalRating.setNote(note);
+            physicalRating.setSamplingPointType(samplingPointType);
             physicalRatingList.add(physicalRating);
+
         }
 
         return physicalRatingList;
@@ -261,5 +287,6 @@ public class PhysicalRatingDao implements IPhysicalRatingDao {
         private static final String COMPONENT_FK = "Component_Physical_Rating_Component_FK";
         private static final String REPORT_FK = "Component_Physical_Rating_Report_FK";
         private static final String QUANTIFIER = "Component_Physical_Rating_Quantifier";
+        private static final String SAMPLINGPOINTTYPE = "Component_Physical_Rating_Sampling_Point_Type";
     }
 }

@@ -269,6 +269,11 @@ public class SchemeGrid extends DoubleBufferedCanvas {
 	 *             If the space is occupied already
 	 */
 	public void setImage(SchemeGridItem item) throws PlaceOccupiedException {
+		setImageWithoutRedraw(item);
+		this.redraw();
+	}
+	
+	private void setImageWithoutRedraw(SchemeGridItem item){
 		Preconditions.checkNotNull(item);
 		Rectangle r = item.getBoundingBox();
 		checkArgument(r.x >= 0 && r.x + r.width <= width);
@@ -282,7 +287,6 @@ public class SchemeGrid extends DoubleBufferedCanvas {
 		images.add(item);
 		setDirty();
 		enlarge(r.x + r.width, r.y + r.height);
-		this.redraw();
 	}
 	
 	/**
@@ -405,13 +409,19 @@ public class SchemeGrid extends DoubleBufferedCanvas {
 		this.height = h;
 	}
 	
-	public void setColorGrid(Color shadowColor, double x, double y, double w, double h, boolean fill, boolean snapToGrid){
-		colors.add(new Colorbox(x, y, w, h, shadowColor, fill));
+	public Colorbox setColorGrid(Color shadowColor, double x, double y, double w, double h, boolean fill, boolean snapToGrid){
+		Colorbox c = new Colorbox(x, y, w, h, shadowColor, fill);
+		colors.add(c);
 		this.redraw();
+		return c;
 	}
 	
 	public void setColorPixel(Color shadowColor, double x, double y, double w, double h){
 		setColorPixel(shadowColor, x, y, w, h, true, true);
+	}
+	
+	public void removeColorbox(Colorbox c){
+		colors.remove(c);
 	}
 
 	/**
@@ -444,6 +454,11 @@ public class SchemeGrid extends DoubleBufferedCanvas {
 			setDirty();
 			this.redraw();
 		}
+	}
+	
+	public void removeAll(Collection<SchemeGridItem> c) {
+		images.removeAll(c);
+		this.redraw();
 	}
 	
 	/**
@@ -521,4 +536,19 @@ public class SchemeGrid extends DoubleBufferedCanvas {
 	public void removeModifyListener(ModifyListener listener) {
 		modifyListeners.remove(listener);
 	}
+
+
+	public void addColorbox(Colorbox c) {
+		colors.add(c);
+		this.redraw();
+	}
+
+
+	public void addAll(Collection<SchemeGridItem> c) {
+		for(SchemeGridItem item : c){
+			setImageWithoutRedraw(item);
+		}
+		this.redraw();
+	}
+
 }

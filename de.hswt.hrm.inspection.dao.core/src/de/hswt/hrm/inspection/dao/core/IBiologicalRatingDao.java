@@ -40,6 +40,8 @@ public interface IBiologicalRatingDao {
      * @return Newly generated biological (also holding the correct id).
      * @throws SaveException If the biological could not be inserted.
      * @throws DatabaseException 
+     * @throws IllegalStateException If physical rating is invalid.
+
      */
     BiologicalRating insert(BiologicalRating biological) throws SaveException, DatabaseException;
 
@@ -49,6 +51,8 @@ public interface IBiologicalRatingDao {
      * @param biological Biological that should be updated.
      * @throws ElementNotFoundException If the given Biological is not present in the database.
      * @throws SaveException If the biological could not be updated.
+     * @throws IllegalStateException If physical rating is invalid.
+
      */
     void update(BiologicalRating biological) throws ElementNotFoundException, SaveException;
 }
