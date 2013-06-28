@@ -21,7 +21,6 @@ import de.hswt.hrm.inspection.model.BiologicalRating;
 import de.hswt.hrm.inspection.model.Inspection;
 import de.hswt.hrm.inspection.model.Performance;
 import de.hswt.hrm.inspection.model.PhysicalRating;
-import de.hswt.hrm.scheme.dao.core.ISchemeDao;
 import de.hswt.hrm.scheme.model.Scheme;
 
 @Creatable
@@ -32,23 +31,19 @@ public class InspectionService {
     private final IPhysicalRatingDao physicalDao;
     private final IBiologicalRatingDao biologicalDao;
     private final IPerformanceDao performanceDao;
-    private final ISchemeDao schemeDao;
 
     @Inject
     public InspectionService(IInspectionDao inspectionDao, IPhysicalRatingDao physicalDao,
-    		IBiologicalRatingDao biologicalDao, IPerformanceDao performanceDao,
-    		ISchemeDao schemeDao) {
+    		IBiologicalRatingDao biologicalDao, IPerformanceDao performanceDao) {
         checkNotNull(inspectionDao, "InspectionDao not properly injected.");
         checkNotNull(physicalDao, "PhysicalRatingDao not properly injected.");
         checkNotNull(biologicalDao, "BiologicalRatingDao not properly injected.");
         checkNotNull(performanceDao, "PerformanceDao not properly injected.");
-        checkNotNull(schemeDao, "SchemeDAo not properly injected.");
     	
     	this.inspectionDao = inspectionDao;
     	this.physicalDao = physicalDao;
     	this.biologicalDao = biologicalDao;
     	this.performanceDao = performanceDao;
-    	this.schemeDao = schemeDao;
 
     	// TODO Add log outputs
         if (inspectionDao == null) {
