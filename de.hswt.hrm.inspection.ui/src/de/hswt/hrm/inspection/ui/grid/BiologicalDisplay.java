@@ -12,15 +12,12 @@ import de.hswt.hrm.scheme.model.SchemeComponent;
 
 public class BiologicalDisplay extends RatingDisplay{
 	
-	private final InspectionSchemeGrid schemeGrid;
-	
-	
-	public BiologicalDisplay(InspectionSchemeGrid schemeGrid){
-		super(schemeGrid.getControl().getDisplay());
-		this.schemeGrid = schemeGrid;
+	public BiologicalDisplay(InspectionSchemeGrid grid){
+		super(grid);
 	}
 
 	public void update(Collection<BiologicalRating> ratings){
+		InspectionSchemeGrid schemeGrid = getSchemeGrid();
 		schemeGrid.clearColors();
 		Color[] colors = getColors();
 		for(BiologicalRating rating : ratings){
