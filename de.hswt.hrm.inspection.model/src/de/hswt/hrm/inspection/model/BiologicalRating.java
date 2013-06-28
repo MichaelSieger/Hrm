@@ -29,6 +29,7 @@ public class BiologicalRating {
     public BiologicalRating(int id, Inspection inspection, SchemeComponent component,
             int bacteriaCount, int rating, int quantifier, String comment, String flag) {
         this.id = id;
+        samplingPointType = Optional.absent();
         setInspection(inspection);
         setComponent(component);
         setBacteriaCount(bacteriaCount);
