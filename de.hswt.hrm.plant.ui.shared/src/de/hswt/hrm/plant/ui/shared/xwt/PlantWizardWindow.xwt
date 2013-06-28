@@ -23,7 +23,7 @@
 						<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
 					</Combo.layoutData>
 				</Combo>
-				<Label text="Area:">
+				<Label text="Area:" x:Name="lblArea">
 					<Label.layoutData>
 						<GridData horizontalAlignment="RIGHT"/>
 					</Label.layoutData>
@@ -33,7 +33,7 @@
 						<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
 					</Text.layoutData>
 				</Text>
-				<Label text="Location:">
+				<Label text="Location:" x:Name="lblLocation">
 					<Label.layoutData>
 						<GridData horizontalAlignment="RIGHT"/>
 					</Label.layoutData>

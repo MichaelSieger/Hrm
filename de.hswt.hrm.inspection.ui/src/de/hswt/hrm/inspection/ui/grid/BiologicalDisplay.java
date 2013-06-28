@@ -10,27 +10,16 @@ import com.google.common.base.Preconditions;
 import de.hswt.hrm.inspection.model.BiologicalRating;
 import de.hswt.hrm.scheme.model.SchemeComponent;
 
-public class BiologicalDisplay {
+public class BiologicalDisplay extends RatingDisplay{
 	
-	private final InspectionSchemeGrid schemeGrid;
-	private final Color[] colors;
-	
-	public BiologicalDisplay(InspectionSchemeGrid schemeGrid){
-		this.schemeGrid = schemeGrid;
-		Device device = schemeGrid.getControl().getDisplay();
-		colors = new Color[]
-				{
-					new Color(device, 0, 0, 0),
-					new Color(device, 255, 0, 0),
-					new Color(device, 255, 0, 0),
-					new Color(device, 255, 255, 0),
-					new Color(device, 255, 255, 0),
-					new Color(device, 0, 255, 0)
-				};
+	public BiologicalDisplay(InspectionSchemeGrid grid){
+		super(grid);
 	}
 
 	public void update(Collection<BiologicalRating> ratings){
+		InspectionSchemeGrid schemeGrid = getSchemeGrid();
 		schemeGrid.clearColors();
+		Color[] colors = getColors();
 		for(BiologicalRating rating : ratings){
 			//TODO
 			SchemeComponent c = null;
