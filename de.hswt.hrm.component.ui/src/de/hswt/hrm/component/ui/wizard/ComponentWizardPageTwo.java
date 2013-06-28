@@ -33,9 +33,13 @@ import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.common.ui.swt.layouts.LayoutUtil;
 import de.hswt.hrm.common.ui.swt.utils.SWTResourceManager;
 import de.hswt.hrm.component.model.Component;
+import de.hswt.hrm.i18n.I18n;
+import de.hswt.hrm.i18n.I18nFactory;
 import de.hswt.hrm.scheme.service.ComponentConverter;
 
 public class ComponentWizardPageTwo extends WizardPage {
+    
+    private static final I18n I18N = I18nFactory.getI18n(ComponentWizardPageTwo.class);
 	private final FormToolkit formToolkit = new FormToolkit(Display.getDefault());
 
 	@Inject
@@ -60,10 +64,10 @@ public class ComponentWizardPageTwo extends WizardPage {
 	 * Create the wizard.
 	 */
 	public ComponentWizardPageTwo(Optional<Component> component) {
-		super("Components wizard");
-		setTitle("Components wizard");
+		super(I18N.tr("Component Wizard"));
+		setTitle(I18N.tr("Component Wizard"));
         this.component = component;
-        setDescription("Select the files for the component.");
+        setDescription(I18N.tr("Select files for the component."));
 	}
 
 	/**
@@ -79,7 +83,7 @@ public class ComponentWizardPageTwo extends WizardPage {
 		
 		Section lrSection = formToolkit.createSection(container, Section.TITLE_BAR);
 		formToolkit.paintBordersFor(lrSection);
-		lrSection.setText("Left to right");
+		lrSection.setText(I18N.tr("Left")+" "+I18N.tr("to")+" "+I18N.tr("right"));
 		lrSection.setExpanded(true);
 		lrSection.setLayoutData(LayoutUtil.createFillData());
 		FormUtil.initSectionColors(lrSection);
@@ -99,7 +103,7 @@ public class ComponentWizardPageTwo extends WizardPage {
 		Button lrButton = new Button(lrComposite, SWT.NONE);
 		lrButton.setLayoutData(LayoutUtil.createRightGridData());
 		formToolkit.adapt(lrButton, true, true);
-		lrButton.setText("Browse ...");
+		lrButton.setText(I18N.tr("Browse ..."));
 
 
 		lrLabel = new Label(lrComposite, SWT.BORDER);
@@ -111,7 +115,7 @@ public class ComponentWizardPageTwo extends WizardPage {
 
 		Section rlSection = formToolkit.createSection(container, Section.TITLE_BAR);
 		formToolkit.paintBordersFor(rlSection);
-		rlSection.setText("Right to left");
+		rlSection.setText(I18N.tr("Right")+" "+I18N.tr("to")+" "+I18N.tr("left"));
 		rlSection.setExpanded(true);
 		rlSection.setLayoutData(LayoutUtil.createFillData());
 		FormUtil.initSectionColors(rlSection);
@@ -131,7 +135,7 @@ public class ComponentWizardPageTwo extends WizardPage {
 		Button rlButton = new Button(rlComposite, SWT.NONE);
 		rlButton.setLayoutData(LayoutUtil.createRightGridData());
 		formToolkit.adapt(rlButton, true, true);
-		rlButton.setText("Browse ...");
+		rlButton.setText(I18N.tr("Browse ..."));
 
 
 		rlLabel = new Label(rlComposite, SWT.BORDER);
@@ -143,7 +147,7 @@ public class ComponentWizardPageTwo extends WizardPage {
 
 		Section udSection = formToolkit.createSection(container, Section.TITLE_BAR);
 		formToolkit.paintBordersFor(udSection);
-		udSection.setText("Up to down");
+		udSection.setText(I18N.tr("Up")+" "+I18N.tr("to")+" "+I18N.tr("down"));
 		udSection.setExpanded(true);
 		udSection.setLayoutData(LayoutUtil.createFillData());
 		FormUtil.initSectionColors(udSection);
@@ -163,7 +167,7 @@ public class ComponentWizardPageTwo extends WizardPage {
 		Button udButton = new Button(udComposite, SWT.NONE);
 		udButton.setLayoutData(LayoutUtil.createRightGridData());
 		formToolkit.adapt(udButton, true, true);
-		udButton.setText("Browse ...");
+		udButton.setText(I18N.tr("Browse ..."));
 
 
 		udLabel = new Label(udComposite, SWT.BORDER);
@@ -175,7 +179,7 @@ public class ComponentWizardPageTwo extends WizardPage {
 
 		Section duSection = formToolkit.createSection(container, Section.TITLE_BAR);
 		formToolkit.paintBordersFor(duSection);
-		duSection.setText("Down to up");
+		duSection.setText(I18N.tr("Down")+" "+I18N.tr("to")+" "+I18N.tr("up"));
 		duSection.setExpanded(true);
 		duSection.setLayoutData(LayoutUtil.createFillData());
 		FormUtil.initSectionColors(duSection);
@@ -196,7 +200,7 @@ public class ComponentWizardPageTwo extends WizardPage {
 		duButton.setLayoutData(LayoutUtil.createRightGridData());
 		formToolkit.adapt(duButton, true, true);
 		
-		duButton.setText("Browse ...");
+		duButton.setText(I18N.tr("Browse ..."));
 		
 		duLabel = new Label(duComposite, SWT.BORDER);
 		gd = new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1);
@@ -248,7 +252,7 @@ public class ComponentWizardPageTwo extends WizardPage {
 			@Override
 			public void handleEvent(Event event) {
 				FileDialog fileDialog = new FileDialog(shellProvider.getShell(), SWT.OPEN);
-		        fileDialog.setText("Open");
+		        fileDialog.setText(I18N.tr("Open"));
 		        String[] filterExt = { "*.pdf"};
 		        fileDialog.setFilterExtensions(filterExt);
 		        String selected = fileDialog.open();				
