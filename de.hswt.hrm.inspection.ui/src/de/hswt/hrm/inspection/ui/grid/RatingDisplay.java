@@ -13,12 +13,12 @@ public class RatingDisplay {
 		Display device = grid.getControl().getDisplay();
 		colors = new Color[]
 				{
-					new Color(device, 0, 0, 0),
-					new Color(device, 255, 0, 0),
-					new Color(device, 255, 0, 0),
-					new Color(device, 255, 255, 0),
-					new Color(device, 255, 255, 0),
-					new Color(device, 0, 255, 0)
+					new Color(device, 255, 255, 255),
+					new Color(device, 151, 248, 71),
+					new Color(device, 206, 255, 166),
+					new Color(device, 255, 244, 143),
+					new Color(device, 244, 146, 238),
+					new Color(device, 248, 84, 57)
 				};
 	}
 	
