@@ -27,6 +27,7 @@ import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.common.ui.swt.layouts.LayoutUtil;
 import de.hswt.hrm.common.ui.swt.utils.ContentProposalUtil;
 import de.hswt.hrm.component.model.Component;
+import de.hswt.hrm.inspection.model.SamplingPointType;
 import de.hswt.hrm.inspection.service.InspectionService;
 
 public class ReportBiologicalComposite extends AbstractComponentRatingComposite {
@@ -59,7 +60,8 @@ public class ReportBiologicalComposite extends AbstractComponentRatingComposite 
 
 	private Text airGermsConcentrationText;
 	
-	private Observable<Integer> selectedGrade = new Observable<>();
+	private final Observable<Integer> selectedGrade = new Observable<>();
+	private final Observable<SamplingPointType> samplePointType = new Observable<>();
 
     // @TODO remove when example is no longer needed
     private static final String[] items = new String[] { "Alpha", "Beta", "gaama", "pie", "alge",
@@ -304,23 +306,67 @@ public class ReportBiologicalComposite extends AbstractComponentRatingComposite 
         nothingRadioButton.setLayoutData(LayoutUtil.createHorzFillData());
         nothingRadioButton.setText("Nothing");
         nothingRadioButton.setSelection(true);
+        nothingRadioButton.addSelectionListener(new SelectionListener() {
+			
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				samplePointType.set(SamplingPointType.none);
+			}
+			
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {}
+		});
 
         airGermsRadioButton = new Button(tagsComposite, SWT.RADIO);
         formToolkit.adapt(airGermsRadioButton, true, true);
         airGermsRadioButton.setLayoutData(LayoutUtil.createHorzFillData());
         airGermsRadioButton.setText("Air germs meassurement");
+        airGermsRadioButton.addSelectionListener(new SelectionListener() {
+			
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				samplePointType.set(SamplingPointType.airMeasurement);
+			}
+			
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {}
+		});
 
         waterAnalysisRadioButton = new Button(tagsComposite, SWT.RADIO);
         formToolkit.adapt(waterAnalysisRadioButton, true, true);
         waterAnalysisRadioButton.setLayoutData(LayoutUtil.createHorzFillData());
         waterAnalysisRadioButton.setText("Water analysis / Legionella");
+        waterAnalysisRadioButton.addSelectionListener(new SelectionListener() {
+			
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				samplePointType.set(SamplingPointType.waterAnalysis);
+			}
+			
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {}
+		});
 
         contactCultureRadioButton = new Button(tagsComposite, SWT.RADIO);
         formToolkit.adapt(contactCultureRadioButton, true, true);
         contactCultureRadioButton.setLayoutData(LayoutUtil.createHorzFillData());
         contactCultureRadioButton.setText("Contact culture");
-
+        contactCultureRadioButton.addSelectionListener(new SelectionListener() {
+			
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				samplePointType.set(SamplingPointType.contactCulture);
+			}
+			
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {}
+		});
+        
         sc.setMinSize(composite.computeSize(SWT.DEFAULT, SWT.DEFAULT));
+    }
+    
+    public void addSamplePointObserver(Observer<SamplingPointType> o){
+    	samplePointType.addObserver(o);
     }
     
     public void addGradeSelectionObserver(Observer<Integer> o){

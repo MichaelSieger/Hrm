@@ -25,6 +25,8 @@ import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.common.ui.swt.layouts.LayoutUtil;
 import de.hswt.hrm.common.ui.swt.utils.SWTResourceManager;
+import de.hswt.hrm.i18n.I18n;
+import de.hswt.hrm.i18n.I18nFactory;
 import de.hswt.hrm.plant.model.Plant;
 import de.hswt.hrm.scheme.model.Scheme;
 import de.hswt.hrm.scheme.service.SchemeService;
@@ -33,6 +35,8 @@ public class SchemeCopySelectionDialog extends TitleAreaDialog {
 
 	@Inject
 	private SchemeService schemeService;
+	
+	private static final I18n I18N = I18nFactory.getI18n(SchemeCopySelectionDialog.class);
 	
     private Scheme scheme;
     private Button okButton;
@@ -52,17 +56,25 @@ public class SchemeCopySelectionDialog extends TitleAreaDialog {
 
         draw(composite); // Contents of Dialog
 
-        setMessage("Please select a scheme to copy.");
-        setTitle("Scheme selection");
+        setMessage(I18N.tr("Select a scheme to copy."));
+        setTitle(I18N.tr("Copy scheme"));
 
         return composite;
 
     }
 
+    @Override
+    protected Control createButtonBar(Composite parent) {
+        Control c = super.createButtonBar(parent);
+        getButton(OK).setText(I18N.tr("OK"));
+        getButton(CANCEL).setText(I18N.tr("Cancel"));
+        return c;
+    }
+
     private void draw(Composite parent) {
 		Section headerSection = new Section(parent, Section.TITLE_BAR);
 		headerSection.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
-		headerSection.setText("Scheme selection");
+		headerSection.setText(I18N.tr("Select scheme"));
 		headerSection.setExpanded(true);
 		headerSection.setLayoutData(LayoutUtil.createFillData());
 		FormUtil.initSectionColors(headerSection);
@@ -77,7 +89,7 @@ public class SchemeCopySelectionDialog extends TitleAreaDialog {
 		headerComposite.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		
         Label schemeLabel = new Label(headerComposite, SWT.NONE);
-        schemeLabel.setText("Scheme");
+        schemeLabel.setText(I18N.tr("Scheme")+":");
         schemeLabel.setLayoutData(LayoutUtil.createLeftCenteredGridData());
         
         schemeCombo = new Combo(headerComposite, SWT.READ_ONLY | SWT.DROP_DOWN);

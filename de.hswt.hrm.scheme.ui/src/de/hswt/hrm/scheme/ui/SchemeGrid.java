@@ -269,6 +269,11 @@ public class SchemeGrid extends DoubleBufferedCanvas {
 	 *             If the space is occupied already
 	 */
 	public void setImage(SchemeGridItem item) throws PlaceOccupiedException {
+		setImageWithoutRedraw(item);
+		this.redraw();
+	}
+	
+	private void setImageWithoutRedraw(SchemeGridItem item){
 		Preconditions.checkNotNull(item);
 		Rectangle r = item.getBoundingBox();
 		checkArgument(r.x >= 0 && r.x + r.width <= width);
@@ -282,7 +287,6 @@ public class SchemeGrid extends DoubleBufferedCanvas {
 		images.add(item);
 		setDirty();
 		enlarge(r.x + r.width, r.y + r.height);
-		this.redraw();
 	}
 	
 	/**
@@ -452,6 +456,11 @@ public class SchemeGrid extends DoubleBufferedCanvas {
 		}
 	}
 	
+	public void removeAll(Collection<SchemeGridItem> c) {
+		images.removeAll(c);
+		this.redraw();
+	}
+	
 	/**
 	 * Was the grid changed since last clear
 	 * 
@@ -533,4 +542,13 @@ public class SchemeGrid extends DoubleBufferedCanvas {
 		colors.add(c);
 		this.redraw();
 	}
+
+
+	public void addAll(Collection<SchemeGridItem> c) {
+		for(SchemeGridItem item : c){
+			setImageWithoutRedraw(item);
+		}
+		this.redraw();
+	}
+
 }

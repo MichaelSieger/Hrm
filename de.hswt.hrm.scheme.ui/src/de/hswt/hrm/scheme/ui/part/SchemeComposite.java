@@ -65,6 +65,8 @@ import de.hswt.hrm.common.ui.swt.layouts.LayoutUtil;
 import de.hswt.hrm.common.ui.swt.utils.SWTResourceManager;
 import de.hswt.hrm.component.model.Attribute;
 import de.hswt.hrm.component.service.ComponentService;
+import de.hswt.hrm.i18n.I18n;
+import de.hswt.hrm.i18n.I18nFactory;
 import de.hswt.hrm.plant.model.Plant;
 import de.hswt.hrm.scheme.model.RenderedComponent;
 import de.hswt.hrm.scheme.model.Scheme;
@@ -115,6 +117,7 @@ public class SchemeComposite extends Composite {
     private static final Transfer[] TRANSFER = new Transfer[] { DragDataTransfer.getInstance() };
 
     private final static Logger LOG = LoggerFactory.getLogger(SchemeComposite.class);
+    private final static I18n I18N = I18nFactory.getI18n(SchemeComposite.class);
     private static final String DELETE = "Löschen";
     private static final String EDIT = "Edit Attributes";
 
@@ -207,7 +210,7 @@ public class SchemeComposite extends Composite {
         schemeSection = formToolkit.createSection(this, Section.TITLE_BAR);
         schemeSection.setBackgroundMode(SWT.INHERIT_NONE);
         formToolkit.paintBordersFor(schemeSection);
-        schemeSection.setText("Scheme");
+        schemeSection.setText(I18N.tr("Scheme"));
         schemeSection.setExpanded(true);
         FormUtil.initSectionColors(schemeSection);
 
@@ -326,7 +329,7 @@ public class SchemeComposite extends Composite {
 
     private void initMoveXContribution() {
         // TODO translate
-        Action moveXAction = new Action("Move X") {
+        Action moveXAction = new Action(I18N.tr("Move X")) {
             @Override
             public void run() {
                 super.run();
@@ -340,13 +343,13 @@ public class SchemeComposite extends Composite {
                 grid.setItems(r);
             }
         };
-        moveXAction.setDescription("Move's the grid elements in x direction.");
+        moveXAction.setDescription(I18N.tr("Move the grid elements in x direction."));
         moveXContribution = new ActionContributionItem(moveXAction);
     }
 
     private void initMoveYContribution() {
         // TODO translate
-        Action moveYAction = new Action("Move Y") {
+        Action moveYAction = new Action(I18N.tr("Move Y")) {
             @Override
             public void run() {
                 super.run();
@@ -360,42 +363,42 @@ public class SchemeComposite extends Composite {
                 grid.setItems(r);
             }
         };
-        moveYAction.setDescription("Move's the grid elements in y direction.");
+        moveYAction.setDescription(I18N.tr("Move the grid elements in y direction."));
         moveYContribution = new ActionContributionItem(moveYAction);
     }
 
     private void initCopyContribution() {
-        Action copyAction = new Action("Copy") {
+        Action copyAction = new Action(I18N.tr("Copy")) {
             @Override
             public void run() {
                 copyScheme();
             }
         };
-        copyAction.setDescription("Copy an existing scheme and set it as current.");
+        copyAction.setDescription(I18N.tr("Copy an existing scheme and set it as current."));
         copyContribution = new ActionContributionItem(copyAction);
     }
 
     private void initImportContribution() {
-        Action importAction = new Action("Import") {
+        Action importAction = new Action(I18N.tr("Import")) {
             @Override
             public void run() {
                 importScheme();
             }
         };
-        importAction.setDescription("Import an existing scheme from "
-                + "another plant and set it as current.");
+        importAction.setDescription(I18N.tr("Import an existing scheme from another " +
+        		"plant and set it as current."));
         importContribution = new ActionContributionItem(importAction);
     }
 
     private void initSaveContribution() {
         // TODO translate
-        Action saveAction = new Action("Save") {
+        Action saveAction = new Action(I18N.tr("Save")) {
             @Override
             public void run() {
                 saveScheme();
             }
         };
-        saveAction.setDescription("Save the current scheme.");
+        saveAction.setDescription(I18N.tr("Save the current scheme."));
         saveAction.setEnabled(false);
         saveContribution = new ActionContributionItem(saveAction);
     }
@@ -448,10 +451,10 @@ public class SchemeComposite extends Composite {
             Collection<Attribute> attributes = componentsService.findAttributesByComponent(item
                     .getRenderedComponent().getComponent());
             if (attributes.isEmpty()) {
-                MessageDialog.openError(shellProvider.getShell(), "No Atrributes",
-                        "The selected Component "
+                MessageDialog.openError(shellProvider.getShell(), I18N.tr("No Atrributes"),
+                        I18N.tr("The selected component") + " '"
                                 + item.getRenderedComponent().getComponent().getName()
-                                + " has no assigend Attributes");
+                                + "'  " + I18N.tr("has no assigend attributes."));
                 return;
             }
 
@@ -584,9 +587,9 @@ public class SchemeComposite extends Composite {
 
         MessageBox md = new MessageBox(shellProvider.getShell(), SWT.ICON_QUESTION | SWT.YES
                 | SWT.NO | SWT.CANCEL);
-        md.setText("Save changes?");
-        md.setMessage("The current scheme has unsaved changes. Would you save them now?"
-                + "\n\nOtherwise your unsaved changes are lost.");
+        md.setText(I18N.tr("Save changes?"));
+        md.setMessage(I18N.tr("The current scheme has unsaved changes. Would you save them now?")
+                + "\n\n" + I18N.tr("Otherwise your unsaved changes are lost."));
         int res = md.open();
 
         if (res == SWT.YES) {
@@ -638,13 +641,13 @@ public class SchemeComposite extends Composite {
         }
         catch (DatabaseException e) {
             LOG.error("Error during scheme copy.", e);
-            MessageDialog.openError(shellProvider.getShell(), "Copy Error",
-                    "Could not copy the requested scheme.");
+            MessageDialog.openError(shellProvider.getShell(), I18N.tr("Copy Error"),
+                    I18N.tr("Could not copy the requested scheme."));
         }
         catch (IOException e) {
             LOG.error("Error during scheme copy.", e);
-            MessageDialog.openError(shellProvider.getShell(), "Copy Error",
-                    "Could not copy the requested scheme.");
+            MessageDialog.openError(shellProvider.getShell(), I18N.tr("Copy Error"),
+                    I18N.tr("Could not copy the requested scheme."));
         }
     }
 
@@ -662,14 +665,14 @@ public class SchemeComposite extends Composite {
             modifyScheme(scheme);
         }
         catch (DatabaseException e) {
-            LOG.error("Error during scheme copy.", e);
-            MessageDialog.openError(shellProvider.getShell(), "Import Error",
-                    "Could not import the requested scheme.");
+            LOG.error("Error during scheme import.", e);
+            MessageDialog.openError(shellProvider.getShell(), I18N.tr("Import Error"),
+                    I18N.tr("Could not import the requested scheme."));
         }
         catch (IOException e) {
             LOG.error("Error during scheme import.", e);
-            MessageDialog.openError(shellProvider.getShell(), "Copy Error",
-                    "Could not copy the requested scheme.");
+            MessageDialog.openError(shellProvider.getShell(), I18N.tr("Import Error"),
+                    I18N.tr("Could not import the requested scheme."));
         }
     }
 
@@ -702,8 +705,8 @@ public class SchemeComposite extends Composite {
         }
         catch (DatabaseException e) {
             LOG.error("Error during scheme saving.", e);
-            MessageDialog.openError(shellProvider.getShell(), "Fehler beim Speichern",
-                    "Das Schema konnte nicht gespeichert werden");
+            MessageDialog.openError(shellProvider.getShell(), I18N.tr("Save Error"),
+                    I18N.tr("Could not save the requested scheme."));
         }
     }
 

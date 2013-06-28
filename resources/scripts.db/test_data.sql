@@ -174,9 +174,9 @@ INSERT INTO `hrm`.`Priority` (`Priority_Name`, `Priority_Text`, `Priority_Priori
 -- Insert 3 different performances in the `Performance` Table
 ------------------------------------------------------------
 
-INSERT INTO `hrm`.`Performance` (`Performance_Component_FK`, `Performance_Target_FK`, `Performance_Current_FK`, `Performance_Activity_FK`, `Performance_Picture_FK`, `Performance_Priority_FK`) VALUES ('1', '2', '2', '2', '2', '1');
-INSERT INTO `hrm`.`Performance` (`Performance_Component_FK`, `Performance_Target_FK`, `Performance_Current_FK`, `Performance_Activity_FK`, `Performance_Picture_FK`, `Performance_Priority_FK`) VALUES ('2', '3', '3', '3', '4', '2');
-INSERT INTO `hrm`.`Performance` (`Performance_Component_FK`, `Performance_Target_FK`, `Performance_Current_FK`, `Performance_Activity_FK`, `Performance_Picture_FK`, `Performance_Priority_FK`) VALUES ('3', '1', '1', '1', '6', '3');
+INSERT INTO `hrm`.`Performance` (`Performance_Component_FK`, `Performance_Target_FK`, `Performance_Current_FK`, `Performance_Activity_FK`, `Performance_Picture_FK`, `Performance_Priority_FK`, `Performance_Report_FK`) VALUES ('1', '2', '2', '2', '2', '1', '1');
+INSERT INTO `hrm`.`Performance` (`Performance_Component_FK`, `Performance_Target_FK`, `Performance_Current_FK`, `Performance_Activity_FK`, `Performance_Picture_FK`, `Performance_Priority_FK`, `Performance_Report_FK`) VALUES ('2', '3', '3', '3', '4', '2', '2');
+INSERT INTO `hrm`.`Performance` (`Performance_Component_FK`, `Performance_Target_FK`, `Performance_Current_FK`, `Performance_Activity_FK`, `Performance_Picture_FK`, `Performance_Priority_FK`, `Performance_Report_FK`) VALUES ('3', '1', '1', '1', '6', '3', '3');
 
 ------------------------------------------------------------
 -- Insert 4 different picture catalogs in the `Picture_Catalog` Table
@@ -186,14 +186,6 @@ INSERT INTO `hrm`.`Picture_Catalog` (`Picture_Catalog_Picture_FK`, `Picture_Cata
 INSERT INTO `hrm`.`Picture_Catalog` (`Picture_Catalog_Picture_FK`, `Picture_Catalog_Performance_FK`) VALUES ('2', '1' );
 INSERT INTO `hrm`.`Picture_Catalog` (`Picture_Catalog_Picture_FK`, `Picture_Catalog_Performance_FK`) VALUES ('1', '2' );
 INSERT INTO `hrm`.`Picture_Catalog` (`Picture_Catalog_Picture_FK`, `Picture_Catalog_Performance_FK`) VALUES ('2', '2' );
-
-------------------------------------------------------------
--- Insert 3 different target currents in the `Target_Current` Table
-------------------------------------------------------------
-
-INSERT INTO `hrm`.`Target_Current` (`Target_Current_Report_FK`, `Target_Current_Performance_FK`) VALUES ('1', '1');
-INSERT INTO `hrm`.`Target_Current` (`Target_Current_Report_FK`, `Target_Current_Performance_FK`) VALUES ('1', '2');
-INSERT INTO `hrm`.`Target_Current` (`Target_Current_Report_FK`, `Target_Current_Performance_FK`) VALUES ('1', '3');
 
 ------------------------------------------------------------
 -- Insert 2 different attributes in the `Attribute` Table

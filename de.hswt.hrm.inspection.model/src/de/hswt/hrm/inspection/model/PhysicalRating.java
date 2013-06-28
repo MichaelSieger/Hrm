@@ -15,6 +15,7 @@ public class PhysicalRating {
     private Optional<String> note;
     private SchemeComponent component;
     private Inspection inspection;
+    private Optional<SamplingPointType> samplingPointType;
 
     // private static final String INVALID_NUMBER = "%d is an invalid number.%n Must be greater 0";
     // private static final String INVALID_LENGTH = "Empty String is not allowed !";
@@ -84,6 +85,14 @@ public class PhysicalRating {
         this.quantifier = Optional.of(quantifier);
     }
 
+    public Optional<SamplingPointType> getSamplingPointType() {
+        return samplingPointType;
+    }
+
+    public void setSamplingPointType(SamplingPointType samplingPointType) {
+        this.samplingPointType = Optional.fromNullable(samplingPointType);
+    }
+
     public boolean isValid() {
         return rating.isPresent() && note.isPresent() && quantifier.isPresent()
                 && quantifier.get() > 0 && note.get().length() > 0 && rating.get() > 0;
@@ -96,8 +105,10 @@ public class PhysicalRating {
         result = prime * result + ((component == null) ? 0 : component.hashCode());
         result = prime * result + id;
         result = prime * result + ((inspection == null) ? 0 : inspection.hashCode());
-        result = prime * result + ((!note.isPresent()) ? 0 : note.get().hashCode());
-        result = prime * result + rating.get();
+        result = prime * result + ((note == null) ? 0 : note.hashCode());
+        result = prime * result + ((quantifier == null) ? 0 : quantifier.hashCode());
+        result = prime * result + ((rating == null) ? 0 : rating.hashCode());
+        result = prime * result + ((samplingPointType == null) ? 0 : samplingPointType.hashCode());
         return result;
     }
 
@@ -132,15 +143,36 @@ public class PhysicalRating {
         else if (!inspection.equals(other.inspection)) {
             return false;
         }
-        if (!note.isPresent()) {
-            if (other.note.isPresent()) {
+        if (note == null) {
+            if (other.note != null) {
                 return false;
             }
         }
-        else if (!note.get().equals(other.note.get())) {
+        else if (!note.equals(other.note)) {
             return false;
         }
-        if (rating.get() != other.rating.get()) {
+        if (quantifier == null) {
+            if (other.quantifier != null) {
+                return false;
+            }
+        }
+        else if (!quantifier.equals(other.quantifier)) {
+            return false;
+        }
+        if (rating == null) {
+            if (other.rating != null) {
+                return false;
+            }
+        }
+        else if (!rating.equals(other.rating)) {
+            return false;
+        }
+        if (samplingPointType == null) {
+            if (other.samplingPointType != null) {
+                return false;
+            }
+        }
+        else if (!samplingPointType.equals(other.samplingPointType)) {
             return false;
         }
         return true;

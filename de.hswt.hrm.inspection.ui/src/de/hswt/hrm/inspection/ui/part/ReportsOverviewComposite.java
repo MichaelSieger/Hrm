@@ -38,6 +38,8 @@ import de.hswt.hrm.common.ui.swt.table.ColumnComparator;
 import de.hswt.hrm.common.ui.swt.table.ColumnDescription;
 import de.hswt.hrm.common.ui.swt.table.Direction;
 import de.hswt.hrm.common.ui.swt.table.TableViewerController;
+import de.hswt.hrm.i18n.I18n;
+import de.hswt.hrm.i18n.I18nFactory;
 import de.hswt.hrm.inspection.model.Inspection;
 import de.hswt.hrm.inspection.service.InspectionService;
 import de.hswt.hrm.inspection.ui.filter.InspectionFilter;
@@ -66,6 +68,8 @@ public class ReportsOverviewComposite extends Composite {
     private Inspection selectedInspection;
 
     private static final Logger LOG = LoggerFactory.getLogger(ReportsOverviewComposite.class);
+    
+    private static final I18n I18N = I18nFactory.getI18n(ReportsOverviewComposite.class);
 
     /**
      * Create the composite.
@@ -85,7 +89,7 @@ public class ReportsOverviewComposite extends Composite {
 
         Section overviewSection = toolkit.createSection(this, Section.TITLE_BAR);
         toolkit.paintBordersFor(overviewSection);
-        overviewSection.setText("Reports overview");
+        overviewSection.setText(I18N.tr("Reports overview"));
         FormUtil.initSectionColors(overviewSection);
 
         Composite overviewComposite = new Composite(overviewSection, SWT.NONE);
@@ -149,8 +153,8 @@ public class ReportsOverviewComposite extends Composite {
 
     private void showDBConnectionError() {
         // TODO translate
-        MessageDialog.openError(shellProvider.getShell(), "Connection Error",
-                "Could not load inspections from Database.");
+        MessageDialog.openError(shellProvider.getShell(), I18N.tr("Connection Error"),
+                I18N.tr("Could not load inspections from Database."));
     }
 
     private void updateSearchTableFilter(String filterString) {

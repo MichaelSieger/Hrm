@@ -30,4 +30,8 @@ public class Observable<T> {
         }
     }
 
+	public void clearObservers() {
+		observers.clear();
+	}
+
 }

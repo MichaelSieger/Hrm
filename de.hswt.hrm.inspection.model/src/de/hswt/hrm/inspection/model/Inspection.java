@@ -18,7 +18,6 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import com.google.common.base.Optional;
-import com.google.common.base.Preconditions;
 
 public class Inspection {
     private final int id;
@@ -364,6 +363,18 @@ public class Inspection {
         }
         biologicalRatings.notifyDataChanged();
     }
+    
+    public void setBiologicalRatingSamplingPoint(SchemeComponent schemeComponent, SamplingPointType type){
+    	Optional<BiologicalRating> bRating = getBiologicalRating(schemeComponent);
+    	if(bRating.isPresent()){
+    		bRating.get().setSamplingPointType(type);
+    	}else{
+            BiologicalRating nRating = new BiologicalRating(this, schemeComponent);
+            nRating.setSamplingPointType(type);
+            biologicalRatings.get().add(nRating);
+    	}
+    	biologicalRatings.notifyDataChanged();
+    }
 
     private Optional<BiologicalRating> getBiologicalRating(SchemeComponent schemeComponent) {
         Iterator<BiologicalRating> it = biologicalRatings.get().iterator();
@@ -388,6 +399,12 @@ public class Inspection {
 
     public void addBiologicalRatingObserver(Observer<Collection<BiologicalRating>> o) {
         biologicalRatings.addObserver(o);
+    }
+    
+    public void clearObservers(){
+    	plant.clearObservers();
+    	physicalRatings.clearObservers();
+    	biologicalRatings.clearObservers();
     }
 
     @Override
