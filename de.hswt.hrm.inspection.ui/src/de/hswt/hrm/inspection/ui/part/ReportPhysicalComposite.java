@@ -4,11 +4,13 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.window.IShellProvider;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 
 import de.hswt.hrm.common.observer.Observable;
+import de.hswt.hrm.common.observer.Observer;
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.common.ui.swt.layouts.LayoutUtil;
 import de.hswt.hrm.common.ui.swt.utils.ContentProposalUtil;
@@ -168,8 +170,11 @@ public class ReportPhysicalComposite extends AbstractComponentRatingComposite {
 			
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				//TODO ads
-				
+				int sel = gradeList.getSelectionIndex();
+				if(sel == -1){
+					sel = 0;
+				}
+				grade.set(sel);
 			}
 			
 			@Override
@@ -281,6 +286,10 @@ public class ReportPhysicalComposite extends AbstractComponentRatingComposite {
 		sc.setMinSize(composite.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 	}
 
+	public void addGradeSelectionObserver(Observer<Integer> o){
+		grade.addObserver(o);
+	}
+	
 	@Override
 	public void setSelectedComponent(Component component) {
 		// TODO Auto-generated method stub
