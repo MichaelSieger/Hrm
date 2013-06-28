@@ -61,7 +61,7 @@ public class InspectionPart {
     
     private static final I18n I18N = I18nFactory.getI18n(InspectionPart.class);
     
-    private static final String RENDER_ERROR = I18N.tr("Error on rendering image");
+    private static final String RENDER_ERROR = "Error on rendering image";
 
     private final static Logger LOG = LoggerFactory.getLogger(InspectionPart.class);
 
