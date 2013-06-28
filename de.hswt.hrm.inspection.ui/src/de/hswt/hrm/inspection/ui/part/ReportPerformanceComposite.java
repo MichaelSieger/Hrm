@@ -1,44 +1,43 @@
 package de.hswt.hrm.inspection.ui.part;
 
 import java.util.ArrayList;
-import java.util.Collection;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
+import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.viewers.ListViewer;
+import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.window.IShellProvider;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.ui.forms.widgets.FormToolkit;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.forms.widgets.Section;
-import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
-import org.eclipse.swt.widgets.Tree;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
+import org.eclipse.swt.widgets.Tree;
+import org.eclipse.ui.forms.widgets.FormToolkit;
+import org.eclipse.ui.forms.widgets.Section;
 
+import de.hswt.hrm.catalog.model.ICatalogItem;
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.common.ui.swt.layouts.LayoutUtil;
 import de.hswt.hrm.component.model.Component;
+import de.hswt.hrm.inspection.service.InspectionService;
 import de.hswt.hrm.inspection.ui.performance.tree.PerformanceTreeContentProvider;
 import de.hswt.hrm.inspection.ui.performance.tree.PerformanceTreeLabelProvider;
-import de.hswt.hrm.scheme.model.SchemeComponent;
-
-import org.eclipse.swt.layout.FillLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.jface.viewers.ListViewer;
-import org.eclipse.jface.viewers.TreeViewer;
-import org.eclipse.swt.layout.GridData;
 
 public class ReportPerformanceComposite extends
 		AbstractComponentRatingComposite {
 
-	// TODO remove unused injections, add others as needed
-	// TODO use this if it is implemented
-	// @Inject
-	// private InspectionService inspectionService;
+	@Inject
+	private InspectionService inspectionService;
 
 	@Inject
 	private IEclipseContext context;
@@ -46,8 +45,6 @@ public class ReportPerformanceComposite extends
 	@Inject
 	private IShellProvider shellProvider;
 	private FormToolkit formToolkit = new FormToolkit(Display.getDefault());
-
-	private Collection<SchemeComponent> schemeComponents;
 
 	/**
 	 * Do not use this constructor when instantiate this composite! It is only
@@ -151,7 +148,7 @@ public class ReportPerformanceComposite extends
 		Tree tree = treeViewer.getTree();
 		treeViewer.setContentProvider(new PerformanceTreeContentProvider());
 		treeViewer.setLabelProvider(new PerformanceTreeLabelProvider());
-		treeViewer.setInput(getMockData());
+		// treeViewer.setInput(getMockData());
 		GridData gd_tree = new GridData(SWT.FILL, SWT.FILL, true, true, 2, 8);
 		gd_tree.heightHint = 241;
 		tree.setLayoutData(gd_tree);
@@ -165,12 +162,22 @@ public class ReportPerformanceComposite extends
 		combo.setLayoutData(LayoutUtil.createHorzFillData());
 		formToolkit.adapt(combo);
 		formToolkit.paintBordersFor(combo);
+
+		initalizeListViewer(targetListViewer);
+		initalizeListViewer(activityListViewer);
+		initalizeListViewer(currentListViewer);
+
 	}
 
-	private Object getMockData() {
-		java.util.List<Component> root = new ArrayList<>();
+	private void initalizeListViewer(ListViewer viewer) {
+		viewer.setContentProvider(ArrayContentProvider.getInstance());
+		viewer.setLabelProvider(new LabelProvider() {
+			@Override
+			public String getText(Object element) {
+				return ((ICatalogItem) element).getName();
 
-		return root;
+			}
+		});
 	}
 
 	@Override
