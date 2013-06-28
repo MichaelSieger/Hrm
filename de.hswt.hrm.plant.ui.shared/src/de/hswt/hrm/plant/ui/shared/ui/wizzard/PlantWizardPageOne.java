@@ -217,6 +217,8 @@ public class PlantWizardPageOne extends WizardPage {
         // Labels
         setLabelText(container, "lblDescription", I18N.tr("Description") + ":");
         setLabelText(container, "lblScheme", I18N.tr("Scheme") + ":");
+        setLabelText(container, "lblArea", I18N.tr("Area") + ":");
+        setLabelText(container, "lblLocation", I18N.tr("Location") + ":");
         setLabelText(container, "lblManufactor", I18N.tr("Manufactor") + ":");
         setLabelText(container, "lblConstructionYear", I18N.tr("Construction Year") + ":");
         setLabelText(container, "lblType", I18N.tr("Type") + ":");
