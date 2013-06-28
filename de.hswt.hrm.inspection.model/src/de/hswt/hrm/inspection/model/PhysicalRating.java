@@ -1,6 +1,5 @@
 package de.hswt.hrm.inspection.model;
 
-import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.google.common.base.Optional;
@@ -11,14 +10,14 @@ public class PhysicalRating {
 
     private final int id;
 
-    private int rating;
-    private int quantifier;
-    private String note;
+    private Optional<Integer> rating;
+    private Optional<Integer> quantifier;
+    private Optional<String> note;
     private SchemeComponent component;
     private Inspection inspection;
 
-    private static final String INVALID_NUMBER = "%d is an invalid number.%n Must be greater 0";
-    private static final String INVALID_LENGTH = "Empty String is not allowed !";
+    //private static final String INVALID_NUMBER = "%d is an invalid number.%n Must be greater 0";
+    //private static final String INVALID_LENGTH = "Empty String is not allowed !";
 
     public PhysicalRating(int id, Inspection inspection, SchemeComponent component, int rating,
             int quantifier) {
@@ -29,6 +28,10 @@ public class PhysicalRating {
         setRating(rating);
         setQuantifier(quantifier);
     }
+    
+    public PhysicalRating(Inspection inspection, SchemeComponent schemeComponent){
+    	this(inspection, schemeComponent, -1, -1);
+    }
 
     public PhysicalRating(Inspection inspection, SchemeComponent component, int rating,
             int quantifier) {
@@ -36,23 +39,19 @@ public class PhysicalRating {
     }
 
     public int getRating() {
-        return rating;
+        return rating.get();
     }
 
     public void setRating(int rating) {
-        checkArgument(rating > 0, INVALID_NUMBER, rating);
-        this.rating = rating;
+        this.rating = Optional.of(rating);
     }
 
     public Optional<String> getNote() {
-        return Optional.fromNullable(note);
+        return note;
     }
 
     public void setNote(String note) {
-        if (note != null) {
-            checkArgument(note.length() > 0, INVALID_LENGTH);
-        }
-        this.note = note;
+        this.note = Optional.fromNullable(note);
     }
 
     public SchemeComponent getComponent() {
@@ -78,12 +77,20 @@ public class PhysicalRating {
     }
 
     public int getQuantifier() {
-        return quantifier;
+        return quantifier.get();
     }
 
     public void setQuantifier(int quantifier) {
-        checkArgument(quantifier > 0, INVALID_NUMBER, quantifier);
-        this.quantifier = quantifier;
+        this.quantifier = Optional.of(quantifier);
+    }
+    
+    public boolean isValid(){
+    	return rating.isPresent() &&
+    		   note.isPresent() &&
+    		   quantifier.isPresent() &&
+    		   quantifier.get() > 0 &&
+    		   note.get().length() > 0 &&
+    		   rating.get() > 0;
     }
 
     @Override
@@ -93,8 +100,8 @@ public class PhysicalRating {
         result = prime * result + ((component == null) ? 0 : component.hashCode());
         result = prime * result + id;
         result = prime * result + ((inspection == null) ? 0 : inspection.hashCode());
-        result = prime * result + ((note == null) ? 0 : note.hashCode());
-        result = prime * result + rating;
+        result = prime * result + ((!note.isPresent()) ? 0 : note.get().hashCode());
+        result = prime * result + rating.get();
         return result;
     }
 
@@ -129,15 +136,15 @@ public class PhysicalRating {
         else if (!inspection.equals(other.inspection)) {
             return false;
         }
-        if (note == null) {
-            if (other.note != null) {
+        if (!note.isPresent()) {
+            if (other.note.isPresent()) {
                 return false;
             }
         }
-        else if (!note.equals(other.note)) {
+        else if (!note.get().equals(other.note.get())) {
             return false;
         }
-        if (rating != other.rating) {
+        if (rating.get() != other.rating.get()) {
             return false;
         }
         return true;
