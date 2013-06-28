@@ -1,0 +1,128 @@
+\documentclass[   
+	a4paper,%             Wir verwenden A4 Papier.
+	oneside,%             Einseitiger Druck.
+	10pt,%                Grosse Schrift, besser geeignet f¸r A4.
+	halfparskip,%         Halbe Zeile Abstand zwischen Abs?tzen.
+	headexclude,
+	footexclude,
+	autooneside,
+	idxtotoc%             Index ins Inhaltsverzeichnis einf¸gen. 
+	]{scrartcl}
+
+
+\input{staticinputs/usepackages}
+
+% macroas and initialization
+\input{staticinputs/macros}
+\input{staticinputs/init}
+
+\makeatletter
+
+\newcommand\nobreakhline{%
+\multispan\LT@cols
+\textcolor{darkgray}{\unskip\leaders\hrule\@height\arrayrulewidth\hfill}\\*}
+\setlength{\fboxsep}{0pt}
+\setlength{\fboxrule}{0pt}
+
+\input{\mpathtostyles standardstyle}  % Protokoll-Style festlegen (Logos und Farben)
+
+\begin{document}
+        % created with values out of ./templates/reportdata.properties, macros are defined in ./staticinputs/init.tex
+        \input{inputs/reportdata}
+
+        % add title page, macro values are set in ./staticinputs/init.tex and ./inputs/reportdata
+        \input{\mpathtotitlepages \mtitlepagefile}
+
+        % add content page, macro values are set in ./staticinputs/init.tex and ./inputs/reportdata
+        \input{\mpathtocontentpages \mcontentspagefile}
+
+        % created with data from ./inputs/reportdata (macro values set in that file)
+        % nothing todo
+        \input{inputs/reportoverview}
+
+        \section{Gesamtbewertung}
+        \input{inputs/overallevaluation}
+
+	\newpage
+
+        % created with data from ./inputs/reportdata (macro values set in that file)
+        % nothing todo
+        \input{inputs/plantdata}
+
+%         % created from ./temyplates/componentstable and ./templates/componentsrow
+%         \input{inputs/components}
+% 
+%         \section{Mikrobiologische Untersuchung}
+%         % created from ./templates/microbiologyoverview.tex
+%         \input(inputs/microbiologyoverview)
+% 
+%         \vspace{0.5cm}
+%         \subsection{Messpunkte biologischer Parameter}
+%         % created from ./templates/gridframe.tex and /templates/gridcomponent.tex
+%         \input(inputs/microbiologygrid)
+%         % static input with no changes
+%         % nothing todo
+%         \input{staticinputs/grids/bioparametercaption}
+% 
+%         \newpage
+%         \subsection{Ermittlung der Gesamtnote der biologischen Untersuchung}
+%         % created out of the following files:
+%         % templates/mircrobiologycontactculturetable.tex
+%         % templates/mircrobiologycontactculturerow.tex
+%         % templates/microbiologyairgermsconcentrationtable.tex
+%         % templates/microbiologyairgermsconcentrationrow.tex
+%         % templates/microbiologysaturatorwatertable.tex
+%         % templates/microbiologysaturatorwaterrow.tex
+%         % templates/microbiologyoverallgradetable.tex
+%         % templates/microbiologyoverallgraderow.tex
+%         \input{inputs/microbiologyevaluation}
+% 
+% 
+%         \section{Physikalisch-visuelle Untersuchung}
+%         % created from ./templates/microbiologyoverview.tex
+%         \input(inputs/physicaloverview)
+% 
+%         \vspace{0.5cm}
+%         \subsection{Messpunkte physikalischer Parameter / Begehung}
+%         % created from ./templates/gridframe.tex and /templates/gridcomponent.tex
+%         \input(inputs/physicalgrid)
+%         % static input with no changes
+%         % nothing todo
+%         \input{staticinputs/grids/physicalparametercaption}
+%         
+%         \newpage
+%         \subsection{Ermittlung der Gesamtnote der physikalischen Untersuchung}
+%         % created out of the following files:
+%         % templates/physicalinspectiontable.tex
+%         % templates/physicalinspectionrow.tex
+%         % templates/physicalparametertable.tex
+%         % templates/physicalparameterrow.tex
+%         % templates/physicaloverallgradetable.tex
+%         % templates/physicaloverallgraderow.tex
+%         \input{inputs/physicalvaluation}
+% 
+%         \section{Zustände}
+%         \subsection{Maßnahmenübersicht nach Priorität}
+%         % created out of the following files:
+%         % templates/tasksheader.tex
+%         % templates/taskstable.tex
+%         % templates/tasksrow.tex
+%         \input{inputs/tasks}
+%         \newpage
+%         \subsection{Soll-Ist-Zustände}
+%         % created out of the following files:
+%         % templates/targetperformancecomparisontable.tex
+%         % templates/targetperformancecomparisonrow.tex
+%         % templates/targetperformancecomparisonimageheader.tex
+%         % templates/targetperformancecomparisonimagerow.properties
+%         \input{inputs/targetperformancecomparison}
+% 
+%         % checklist
+%         % nothing todo
+%         \newpage
+%         \section{Checkliste für Hygienekontrollen}
+        {\Large Allgemeine Empfehlungen nach VDI 6022}
+        \input{staticinputs/checklistehygienekontrollen}
+
+        \section{Anhang: Laborberichte}
+\end{document}

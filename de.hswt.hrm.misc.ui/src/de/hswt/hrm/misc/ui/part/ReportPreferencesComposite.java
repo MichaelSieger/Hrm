@@ -19,7 +19,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.FillLayout;
-import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
@@ -140,6 +139,10 @@ public class ReportPreferencesComposite extends Composite {
         String dir = config.getProperty(Config.Keys.REPORT_STYLE_FOLDER);
         if(dir != null){        
         	directoryText.setText(dir);
+        } else {
+        	dir = System.getProperty("user.dir");
+        	directoryText.setText(dir);
+        	writeFolderToPropertiesFile(dir);
         }
 
         if (prefService == null) {
@@ -232,23 +235,29 @@ public class ReportPreferencesComposite extends Composite {
     }
 
     private void setStandardReportDirectory() {
-        DirectoryDialog dialog = new DirectoryDialog(this.getShell());
+        Config config = Config.getInstance();
+    	
+    	DirectoryDialog dialog = new DirectoryDialog(this.getShell());
         dialog.setText("Report standard directory selection");
         dialog.setMessage("Select a directory as root of all created reports.");
+        dialog.setFilterPath(config.getProperty(Config.Keys.REPORT_STYLE_FOLDER, ""));
         String dir = dialog.open();
         if (dir != null) {
             directoryText.setText(dir);
-        
-	        Config cfg = Config.getInstance();
-	        cfg.setProperty(Config.Keys.REPORT_STYLE_FOLDER, dir);
-	
-	        Path configPath = Hrm.getConfigPath();
-	        try {
-	            cfg.store(configPath, true, true);
-	        }
-	        catch (IOException e) {
-	            e.printStackTrace();
-	        }
+            writeFolderToPropertiesFile(dir);
+        }
+    }
+    
+    private void writeFolderToPropertiesFile(String dir) {
+        Config cfg = Config.getInstance();
+        cfg.setProperty(Config.Keys.REPORT_STYLE_FOLDER, dir);
+
+        Path configPath = Hrm.getConfigPath();
+        try {
+            cfg.store(configPath, true, true);
+        }
+        catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

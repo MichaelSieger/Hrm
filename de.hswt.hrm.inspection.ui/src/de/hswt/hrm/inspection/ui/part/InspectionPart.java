@@ -1,6 +1,8 @@
 package de.hswt.hrm.inspection.ui.part;
 
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Collection;
 
 import javax.annotation.PostConstruct;
@@ -14,12 +16,15 @@ import org.eclipse.jface.action.ActionContributionItem;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.window.IShellProvider;
+import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.ui.forms.widgets.Form;
@@ -32,12 +37,16 @@ import com.google.common.base.Optional;
 import com.google.common.base.Throwables;
 import com.google.common.collect.Collections2;
 
+import de.hswt.hrm.common.Config;
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.ElementNotFoundException;
 import de.hswt.hrm.common.observer.Observer;
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
+import de.hswt.hrm.common.ui.swt.wizards.WizardCreator;
 import de.hswt.hrm.inspection.model.BiologicalRating;
 import de.hswt.hrm.inspection.model.Inspection;
+import de.hswt.hrm.inspection.ui.wizard.ReportCreationWizard;
+import de.hswt.hrm.inspection.ui.wizard.ReportExportWizard;
 import de.hswt.hrm.plant.model.Plant;
 import de.hswt.hrm.report.latex.service.ReportService;
 import de.hswt.hrm.scheme.model.Scheme;
@@ -260,9 +269,7 @@ public class InspectionPart {
         Action evaluateAction = new Action("Report") {
             @Override
             public void run() {
-                super.run();
-                reportService.setInspection(reportsOverviewComposite.getSelectedInspection());
-                reportService.superAwesomeParsingMethod();
+            	createReport();
             }
         };
         evaluateAction.setDescription("Edit an exisitng report.");
@@ -329,6 +336,17 @@ public class InspectionPart {
         form.getToolBarManager().update(true);
     }
 
+    protected void createReport() {
+    	// Create wizard with injection support
+    	ReportExportWizard wizard = new ReportExportWizard(
+    			reportsOverviewComposite.getSelectedInspection());
+    	ContextInjectionFactory.inject(wizard, context);
+
+    	// Show wizard
+    	WizardDialog wd = new WizardDialog(shellProvider.getShell(), wizard);
+    	wd.open();
+	}
+    
     @PreDestroy
     public void dispose() {
         formToolkit.dispose();

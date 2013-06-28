@@ -1,0 +1,21 @@
+% rows: the rows from template mircrobiologyairgermsconcentrationrow.tex
+% airGermsConcentrationGradeSum: the sum of all air germs concentration grades
+% airGermsConcentrationWheightingSum: the sum of all weights
+% airGermsConcentrationRatingAverage: the air germs concentration avarage rating
+    \\ \hline
+    \multicolumn{7}{c}{
+            \cellcolor{\mtabellenzweitekopfhintergrundfarbe}
+            \textcolor{\mtabellenkopfschriftfarbe}{\textbf{Luftkeimkonzentration}}
+    } \\ \hline
+        \multicolumn{2}{l}{\cellcolor{\mtabellenhintergrund}Entnahmestelle} & 
+        \multicolumn{1}{c}{\cellcolor{\mtabellenhintergrund}Keimzahl / m\textsuperscript{3}} & 
+        \multicolumn{1}{c}{\cellcolor{\mtabellenhintergrund}Note} & 
+        \multicolumn{1}{c}{\cellcolor{\mtabellenhintergrund}Gewichtung} & 
+        \multicolumn{1}{c}{\cellcolor{\mtabellenhintergrund}Bewertung} & 
+        \multicolumn{1}{l}{\cellcolor{\mtabellenhintergrund}Bemerkung} \\ \hline        
+    :rows:                                                                                                                 % to replace
+    \\ \hline
+    & \multicolumn{3}{c}{\cellcolor{\mtabellenhintergrund} Teilnote $ = \sum{}$Bewertung$ \div \sum{}$Gewichtung} & 
+        \multicolumn{1}{c}{\cellcolor{\mtabellenhintergrund} :airGermsConcentrationGradeSum:} &                            % to replace
+        \multicolumn{1}{c}{\cellcolor{\mtabellenhintergrund} :airGermsConcentrationWheightingSum:} &                       % to replace
+        \multicolumn{1}{c}{\cellcolor{\mtabellenhintergrund} :airGermsConcentrationRatingAverage:} \\ \hline               % to replace

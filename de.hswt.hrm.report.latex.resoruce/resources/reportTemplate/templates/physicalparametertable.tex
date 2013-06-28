@@ -1,0 +1,21 @@
+% rows: the rows from template physicalparameterrow.tex
+% physicalParameterGradeSum: the sum of all physical parameter grades
+% physicalParameterWheightingSum: the sum of all weights
+% physicalParameterRatingAverage: the physical parameter avarage rating
+    \\ \hline
+    \multicolumn{7}{c}{
+            \cellcolor{\mtabellenzweitekopfhintergrundfarbe}
+            \textcolor{\mtabellenkopfschriftfarbe}{\textbf{Physikalische Parameter}}
+    } \\ \hline
+        \multicolumn{2}{l}{\cellcolor{\mtabellenhintergrund}Messung} & 
+        \multicolumn{1}{c}{\cellcolor{\mtabellenhintergrund}Messwert} & 
+        \multicolumn{1}{c}{\cellcolor{\mtabellenhintergrund}Note} & 
+        \multicolumn{1}{c}{\cellcolor{\mtabellenhintergrund}Gewichtung} & 
+        \multicolumn{1}{c}{\cellcolor{\mtabellenhintergrund}Bewertung} & 
+        \multicolumn{1}{l}{\cellcolor{\mtabellenhintergrund}Bemerkung} \\ \hline        
+    :rows:                                                                                                              % to replace
+    \\ \hline
+    & \multicolumn{3}{c}{\cellcolor{\mtabellenhintergrund} Teilnote $ = \sum{}$Bewertung$ \div \sum{}$Gewichtung} & 
+        \multicolumn{1}{c}{\cellcolor{\mtabellenhintergrund} :physicalParameterGradeSum:} &                             % to replace
+        \multicolumn{1}{c}{\cellcolor{\mtabellenhintergrund} :physicalParameterWheightingSum:} &                        % to replace
+        \multicolumn{1}{c}{\cellcolor{\mtabellenhintergrund} :physicalParameterRatingAverage:} \\ \hline                % to replace

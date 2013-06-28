@@ -1,0 +1,45 @@
+% biologyOverallColor: 
+% grade > 4 = E
+% grade > 3 = D
+% grade > 2 = C
+% grade > 1 = B
+% grade > 1 = A
+% physicalOverallRating: overall rating of biology
+% actionNeeded: action needed (`Maßnahmen erforderlich`) or (`keine Maßnahmen erforderlich`)
+\newcommand{\PhysNotenBalkenDiagramm}{
+                \centering
+                \psset{unit=0.4cm}
+                \psset{dimen=middle}
+                \begin{pspicture}(-2,-1)(7,7.5)
+                \psaxes[labels=y,axesstyle=axes,Ox=0,Oy=0,Dx=6,Dy=1]{-}(6,5)
+                \listplot[linecolor=black,plotstyle=bar,barwidth=1.5cm,fillcolor=\msymbolfarbe:biologyOverallColor: ,fillstyle=solid]{3 :physicalOverallRating:}        % to replace
+                \uput{5pt}[90](3,5){:physicalOverallRating:}                                                                                                            % to replace
+                \end{pspicture} 
+}
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{p{\tabellephysparameterA} 
+                p{\tabellephysparameterB} 
+                p{\tabellephysparameterC} 
+                m{\tabellephysparameterD}
+        }
+        \multicolumn{3}{c}{
+                \cellcolor{\mtabellenkopfhintergrundfarbe}
+                \textcolor{\mtabellenkopfschriftfarbe}{\textbf{Physikalische Parameter / Begehung}}
+        } & \multicolumn{1}{c}{
+                        \cellcolor{\mtabellenkopfhintergrundfarbe} 
+                        \textcolor{\mtabellenkopfschriftfarbe}{\textbf{Gesamtnote}}
+        } \\ \hline
+        \multicolumn{1}{c}{\cellcolor{\mtabellenhintergrund} Note} & 
+                \multicolumn{1}{c}{\cellcolor{\mtabellenhintergrund} Bewertung} & 
+                \multicolumn{1}{c}{\cellcolor{\mtabellenhintergrund} Definition nach VDMA Einheitsblatt 24176} & 
+                \multirow{5}{*}{\parbox[b]{4.2cm}{\vspace{0.15cm} \PhysNotenBalkenDiagramm}}\\ \cline{1-3}
+        \multicolumn{1}{c}{1} & Sehr gut & Praktisch wie im Neuzustand & \\ \cline{1-3}
+        \multicolumn{1}{c}{2} & Gut & Zustand der Nutzungszeit entsprechend & \\ \cline{1-3}
+        \multicolumn{1}{c}{3} & Ausreichend & Zustand noch akzeptabel & \\ \cline{1-3}
+        \multicolumn{1}{c}{4} & Mangelhaft & Zustand unzureichend & \\ \cline{1-3}
+        \multicolumn{1}{c}{5} & Ungenügend & Zustand völlig unzureichend & \\ \cline{1-3}
+        \multicolumn{3}{c}{\cellcolor{\mtabellenhintergrund}:actionNeeded:} & \\ \hline                                                                                 % to replace
+\end{tabular}
+\end{center}
+\end{table}
