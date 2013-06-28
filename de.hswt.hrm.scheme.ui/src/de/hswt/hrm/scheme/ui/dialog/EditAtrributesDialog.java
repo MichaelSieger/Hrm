@@ -36,11 +36,15 @@ import de.hswt.hrm.common.ui.swt.table.TableViewerController;
 import de.hswt.hrm.common.ui.swt.utils.SWTResourceManager;
 import de.hswt.hrm.component.model.Attribute;
 import de.hswt.hrm.component.model.Component;
+import de.hswt.hrm.i18n.I18n;
+import de.hswt.hrm.i18n.I18nFactory;
 import de.hswt.hrm.scheme.ui.util.SchemeDialogUtil;
 
 public class EditAtrributesDialog extends TitleAreaDialog {
 
     private Component component;
+    
+    private static final I18n I18N = I18nFactory.getI18n(EditAtrributesDialog.class);
 
     private Table table;
     private TableViewer tableViewer;
@@ -70,18 +74,26 @@ public class EditAtrributesDialog extends TitleAreaDialog {
         // Contents of Dialog
         draw(composite);
 
-        setMessage("Edit Attributes for Component: " + component.getName());
-        setTitle("Attributes ");
-
+        setMessage(I18N.tr("Edit attributes for component")+ ": " + component.getName());
+        setTitle(I18N.tr("Attributes"));
+        
         composite.forceFocus();
         return composite;
 
     }
 
+    @Override
+    protected Control createButtonBar(Composite parent) {
+        Control c = super.createButtonBar(parent);
+        getButton(OK).setText(I18N.tr("OK"));
+        getButton(CANCEL).setText(I18N.tr("Cancel"));
+        return c;
+    }
+
     private void draw(Composite parent) {
         Section headerSection = new Section(parent, Section.TITLE_BAR);
         headerSection.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
-        headerSection.setText("Available Attributes");
+        headerSection.setText(I18N.tr("Available attributes"));
         headerSection.setLayoutData(LayoutUtil.createFillData());
         FormUtil.initSectionColors(headerSection);
         headerSection.setLayout(new FillLayout());
