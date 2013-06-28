@@ -25,6 +25,7 @@ import de.hswt.hrm.inspection.dao.core.IBiologicalRatingDao;
 import de.hswt.hrm.inspection.dao.core.IInspectionDao;
 import de.hswt.hrm.inspection.model.BiologicalRating;
 import de.hswt.hrm.inspection.model.Inspection;
+import de.hswt.hrm.inspection.model.SamplingPointType;
 import de.hswt.hrm.scheme.dao.core.ISchemeComponentDao;
 import de.hswt.hrm.scheme.model.SchemeComponent;
 
@@ -49,14 +50,9 @@ public class BiologicalRatingDao implements IBiologicalRatingDao {
     @Override
     public Collection<BiologicalRating> findAll() throws DatabaseException {
         SqlQueryBuilder builder = new SqlQueryBuilder();
-        builder.select(TABLE_NAME, Fields.ID,
-                Fields.BACTERIA, 
-                Fields.RATING,
-                Fields.QUANTIFIER, 
-                Fields.COMMENT,
-                Fields.FK_COMPONENT, 
-                Fields.FK_REPORT,
-                Fields.FLAG);
+        builder.select(TABLE_NAME, Fields.ID, Fields.BACTERIA, Fields.RATING, Fields.QUANTIFIER,
+                Fields.COMMENT, Fields.FK_COMPONENT, Fields.FK_REPORT, Fields.FLAG,
+                Fields.SAMPLINGPOINTTYPE);
 
         String query = builder.toString();
 
@@ -82,14 +78,9 @@ public class BiologicalRatingDao implements IBiologicalRatingDao {
         checkArgument(id >= 0, "ID must be non negative.");
 
         SqlQueryBuilder builder = new SqlQueryBuilder();
-        builder.select(TABLE_NAME, Fields.ID,
-                Fields.BACTERIA, 
-                Fields.RATING,
-                Fields.QUANTIFIER, 
-                Fields.COMMENT,
-                Fields.FK_COMPONENT, 
-                Fields.FK_REPORT,
-                Fields.FLAG);
+        builder.select(TABLE_NAME, Fields.ID, Fields.BACTERIA, Fields.RATING, Fields.QUANTIFIER,
+                Fields.COMMENT, Fields.FK_COMPONENT, Fields.FK_REPORT, Fields.FLAG,
+                Fields.SAMPLINGPOINTTYPE);
 
         String query = builder.toString();
 
@@ -124,14 +115,9 @@ public class BiologicalRatingDao implements IBiologicalRatingDao {
         checkArgument(inspection.getId() >= 0, "Inspection must have a valid ID.");
 
         SqlQueryBuilder builder = new SqlQueryBuilder();
-        builder.select(TABLE_NAME, Fields.ID,
-                Fields.BACTERIA, 
-                Fields.RATING,
-                Fields.QUANTIFIER, 
-                Fields.COMMENT,
-                Fields.FK_COMPONENT, 
-                Fields.FK_REPORT,
-                Fields.FLAG);
+        builder.select(TABLE_NAME, Fields.ID, Fields.BACTERIA, Fields.RATING, Fields.QUANTIFIER,
+                Fields.COMMENT, Fields.FK_COMPONENT, Fields.FK_REPORT, Fields.FLAG,
+                Fields.SAMPLINGPOINTTYPE);
         builder.where(Fields.FK_REPORT);
 
         String query = builder.toString();
@@ -160,7 +146,8 @@ public class BiologicalRatingDao implements IBiologicalRatingDao {
 
         SqlQueryBuilder builder = new SqlQueryBuilder();
         builder.insert(TABLE_NAME, Fields.BACTERIA, Fields.RATING, Fields.QUANTIFIER,
-                Fields.COMMENT, Fields.FK_COMPONENT, Fields.FK_REPORT, Fields.FLAG);
+                Fields.COMMENT, Fields.FK_COMPONENT, Fields.FK_REPORT, Fields.FLAG,
+                Fields.SAMPLINGPOINTTYPE);
 
         String query = builder.toString();
 
@@ -174,6 +161,13 @@ public class BiologicalRatingDao implements IBiologicalRatingDao {
                 stmt.setParameter(Fields.FK_COMPONENT, biological.getComponent().getId());
                 stmt.setParameter(Fields.FK_REPORT, biological.getInspection().getId());
                 stmt.setParameter(Fields.FLAG, biological.getFlag());
+                if (biological.getSamplingPointType().isPresent()) {
+                    stmt.setParameter(Fields.SAMPLINGPOINTTYPE, biological.getSamplingPointType()
+                            .get().ordinal());
+                }
+                else {
+                    stmt.setParameterNull(Fields.SAMPLINGPOINTTYPE);
+                }
 
                 int affectedRows = stmt.executeUpdate();
                 if (affectedRows != 1) {
@@ -190,7 +184,7 @@ public class BiologicalRatingDao implements IBiologicalRatingDao {
                                 biological.getBacteriaCount(), biological.getRating(),
                                 biological.getQuantifier(), biological.getComment(),
                                 biological.getFlag());
-
+                        inserted.setSamplingPointType(biological.getSamplingPointType().orNull());
                         return inserted;
                     }
                     else {
@@ -240,10 +234,12 @@ public class BiologicalRatingDao implements IBiologicalRatingDao {
             checkState(inspectionId >= 0, "Invalid report ID returned from database.");
             Inspection inspection = inspectionDao.findById(inspectionId);
             String flag = rs.getString(Fields.FLAG);
+            SamplingPointType samplingPointType = SamplingPointType.values()[rs
+                    .getInt(Fields.SAMPLINGPOINTTYPE)];
 
             BiologicalRating biological = new BiologicalRating(id, inspection, component, bacteria,
                     rating, quantifier, comment, flag);
-
+            biological.setSamplingPointType(samplingPointType);
             ratingList.add(biological);
         }
 
@@ -261,5 +257,6 @@ public class BiologicalRatingDao implements IBiologicalRatingDao {
         public static final String FK_COMPONENT = "Biological_Rating_Component_FK";
         public static final String FK_REPORT = "Biological_Rating_Report_FK";
         public static final String FLAG = "Biological_Rating_Flag";
+        public static final String SAMPLINGPOINTTYPE = "Biological_Rating_Sampling_Point_Type";
     }
 }
