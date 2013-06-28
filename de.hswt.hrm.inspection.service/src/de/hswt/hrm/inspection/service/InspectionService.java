@@ -9,8 +9,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.hswt.hrm.common.database.exception.DatabaseException;
+import de.hswt.hrm.common.exception.NotImplementedException;
 import de.hswt.hrm.inspection.dao.core.IInspectionDao;
+import de.hswt.hrm.inspection.model.BiologicalRating;
 import de.hswt.hrm.inspection.model.Inspection;
+import de.hswt.hrm.inspection.model.Performance;
+import de.hswt.hrm.inspection.model.PhysicalRating;
 
 @Creatable
 public class InspectionService {
@@ -30,5 +34,21 @@ public class InspectionService {
     
     public Collection<Inspection> findAll() throws DatabaseException{
         return dao.findAll();
+    }
+    
+    public Inspection findById(int id) {
+    	throw new NotImplementedException();
+    }
+    
+    public Collection<BiologicalRating> findBiologicalRating(Inspection inspection) {
+    	throw new NotImplementedException();
+    }
+    
+    public Collection<PhysicalRating> findPhysicalRating(Inspection inspection) {
+    	throw new NotImplementedException();
+    }
+    
+    public Collection<Performance> findPerformance(Inspection inspection) {
+    	throw new NotImplementedException();
     }
 }

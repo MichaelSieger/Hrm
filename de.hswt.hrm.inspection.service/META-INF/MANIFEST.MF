@@ -12,5 +12,6 @@ Require-Bundle: org.eclipse.e4.core.di;bundle-version="1.2.0",
  javax.inject;bundle-version="1.0.0",
  com.google.guava;bundle-version="10.0.1"
 Import-Package: de.hswt.hrm.common.database.exception,
+ de.hswt.hrm.common.exception,
  de.hswt.hrm.inspection.dao.core,
  de.hswt.hrm.inspection.model
