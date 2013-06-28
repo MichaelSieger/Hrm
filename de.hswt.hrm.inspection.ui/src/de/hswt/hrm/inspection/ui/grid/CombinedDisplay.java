@@ -39,8 +39,16 @@ public class CombinedDisplay extends RatingDisplay{
 			int rating = r.getRating();
 			Preconditions.checkArgument(rating >= 0 && rating <= colors.length);
 			SchemeComponent c = r.getComponent();
-			double m = ((double)r.getComponent().getWidth())/2;
+			double m = ((double)r.getComponent().getWidth())/2 + 1;
 			Colorbox b = new Colorbox(c.getX(), c.getY(), m, c.getHeight(), colors[rating]);
+			grid.addColorbox(b);
+		}
+		for(PhysicalRating r : physicalRatings){
+			int rating = r.getRating();
+			Preconditions.checkArgument(rating >= 0 && rating <= colors.length);
+			SchemeComponent c = r.getComponent();
+			double m = ((double)r.getComponent().getWidth())/2;
+			Colorbox b = new Colorbox(m + c.getX(), c.getY(), c.getWidth() - m, c.getHeight(), colors[rating]);
 			grid.addColorbox(b);
 		}
 	}
