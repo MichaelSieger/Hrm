@@ -84,10 +84,10 @@ public class SamplingPointPosition {
 		int ym = c.getY() + c.getHeight() / 2;
 		return new Placement[]
 				{
+					new Placement(xm, c.getY() + c.getHeight(), 2, 1, Direction.downUp),	//top
+					new Placement(xm, c.getY() - 1, 2, 1, Direction.upDown),				//bot
 					new Placement(c.getX() - 1, ym, 1, 2, Direction.leftRight),				//left
-					new Placement(c.getX() + c.getWidth(), ym, 1, 2, Direction.rightLeft),	//right
-					new Placement(xm, c.getY() - 1, 2, 1, Direction.downUp),				//bot
-					new Placement(xm, c.getY() + c.getHeight(), 2, 1, Direction.upDown)		//top
+					new Placement(c.getX() + c.getWidth(), ym, 1, 2, Direction.rightLeft)	//right
 				};
 	}
 
