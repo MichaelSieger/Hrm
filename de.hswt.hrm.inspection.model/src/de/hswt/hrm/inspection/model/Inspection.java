@@ -18,7 +18,6 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import com.google.common.base.Optional;
-import com.google.common.base.Preconditions;
 
 public class Inspection {
     private final int id;
