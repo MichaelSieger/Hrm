@@ -7,7 +7,6 @@ import de.hswt.hrm.common.database.exception.ElementNotFoundException;
 import de.hswt.hrm.common.database.exception.SaveException;
 import de.hswt.hrm.inspection.model.Inspection;
 import de.hswt.hrm.inspection.model.PhysicalRating;
-import de.hswt.hrm.scheme.model.Scheme;
 
 /**
  * Defines all the public methods to interact with the storage system for activitys.

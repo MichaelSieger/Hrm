@@ -23,8 +23,12 @@ import org.eclipse.ui.forms.widgets.Section;
 
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.component.service.CategoryService;
+import de.hswt.hrm.i18n.I18n;
+import de.hswt.hrm.i18n.I18nFactory;
 
 public class ComponentPart {
+    
+    private static final I18n I18N = I18nFactory.getI18n(ComponentPart.class);
 
     @Inject
     private CategoryService categoryService;
@@ -73,7 +77,7 @@ public class ComponentPart {
         form.setSeparatorVisible(true);
         form.getBody().setBackgroundMode(SWT.INHERIT_FORCE);
         toolkit.paintBordersFor(form);
-        form.setText("Components");
+        form.setText(I18N.tr("Components"));
         toolkit.decorateFormHeading(form);
 
         FillLayout fillLayout = new FillLayout(SWT.HORIZONTAL);
@@ -96,13 +100,13 @@ public class ComponentPart {
         });
 
         categoriesTab = new TabItem(tabFolder, SWT.NONE);
-        categoriesTab.setText("Categories");
+        categoriesTab.setText(I18N.tr("Categories"));
 
         componentsTab = new TabItem(tabFolder, SWT.NONE);
-        componentsTab.setText("Components");
+        componentsTab.setText(I18N.tr("Components"));
 
         Section categoriesSection = toolkit.createSection(tabFolder, Section.TITLE_BAR);
-        categoriesSection.setText("Component categories");
+        categoriesSection.setText(I18N.tr("Component categories"));
         categoriesTab.setControl(categoriesSection);
 
         categoriesComposite = new CategoryComposite(categoriesSection);
@@ -110,7 +114,7 @@ public class ComponentPart {
         categoriesSection.setClient(categoriesComposite);
 
         Section componentsSection = toolkit.createSection(tabFolder, Section.TITLE_BAR);
-        componentsSection.setText("Components");
+        componentsSection.setText(I18N.tr("Components"));
         componentsTab.setControl(componentsSection);
 
         createActions();
@@ -142,40 +146,40 @@ public class ComponentPart {
     }
 
     private void createActions() {
-        Action editCategoryAction = new Action("Edit") {
+        Action editCategoryAction = new Action(I18N.tr("Edit")) {
             @Override
             public void run() {
                 categoriesComposite.editCategory();
             }
         };
-        editCategoryAction.setDescription("Edit an exisitng category.");
+        editCategoryAction.setDescription(I18N.tr("Edit an existing category."));
         editCategoryContribution = new ActionContributionItem(editCategoryAction);
 
-        Action addCategoryAction = new Action("Add") {
+        Action addCategoryAction = new Action(I18N.tr("Add")) {
             @Override
             public void run() {
                 categoriesComposite.addCategory();
             }
         };
-        addCategoryAction.setDescription("Add's a new category.");
+        addCategoryAction.setDescription(I18N.tr("Add a new category."));
         addCategoryContribution = new ActionContributionItem(addCategoryAction);
 
-        Action editComponentAction = new Action("Edit") {
+        Action editComponentAction = new Action(I18N.tr("Edit")) {
             @Override
             public void run() {
                 componentComposite.editComponent();
             }
         };
-        editComponentAction.setDescription("Edit an exisitng component.");
+        editComponentAction.setDescription(I18N.tr("Edit an existing component."));
         editComponentContribution = new ActionContributionItem(editComponentAction);
 
-        Action addComponentAction = new Action("Add") {
+        Action addComponentAction = new Action(I18N.tr("Add")) {
             @Override
             public void run() {
                 componentComposite.addComponent();
             }
         };
-        addComponentAction.setDescription("Add's a new component.");
+        addComponentAction.setDescription(I18N.tr("Add a new component."));
         addComponentContribution = new ActionContributionItem(addComponentAction);
 
         form.getToolBarManager().add(editCategoryContribution);

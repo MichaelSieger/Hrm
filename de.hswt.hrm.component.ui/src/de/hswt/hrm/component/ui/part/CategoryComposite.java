@@ -37,10 +37,13 @@ import de.hswt.hrm.common.ui.swt.table.TableViewerController;
 import de.hswt.hrm.component.model.Category;
 import de.hswt.hrm.component.service.CategoryService;
 import de.hswt.hrm.component.ui.filter.CategoryFilter;
+import de.hswt.hrm.i18n.I18n;
+import de.hswt.hrm.i18n.I18nFactory;
 
 public class CategoryComposite extends Composite {
 
     private final static Logger LOG = LoggerFactory.getLogger(CategoryComposite.class);
+    private static final I18n I18N = I18nFactory.getI18n(CategoryComposite.class);
 
     @Inject
     private CategoryService categoryService;
@@ -125,11 +128,8 @@ public class CategoryComposite extends Composite {
     }
 
     private void showDBConnectionError() {
-        // TODO translate
-        MessageDialog.openError(shellProvider.getShell(), "Connection Error",
-                "Could not load categories from Database.");
-        // MessageDialog.openError(event.display.getActiveShell(), "Connection Error",
-        // "Gewählte Kategorie kann nicht aus der Datenbank aktualisiert werden.");
+        MessageDialog.openError(shellProvider.getShell(), I18N.tr("Connection Error"),
+                I18N.tr("Could not load categories from Database."));
     }
 
     private void updateTableFilter(String filterString) {

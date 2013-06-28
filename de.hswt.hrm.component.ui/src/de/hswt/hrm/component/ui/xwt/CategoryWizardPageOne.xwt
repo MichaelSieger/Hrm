@@ -19,19 +19,19 @@
 						<GridData grabExcessHorizontalSpace="true" 
 							horizontalAlignment="FILL" horizontalSpan="2" heightHint="100"/>
 					</Composite.layoutData>
-					<Label text="Name"/>
+					<Label text="Name" x:Name="lblName"/>
 					<Text x:Style="BORDER" textLimit="30" x:Name="name">
 						<Text.layoutData>
 							<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
 						</Text.layoutData>
 					</Text>
-					<Label text="Weight"/>
+					<Label text="Weight" x:Name="lblWeight"/>
 					<Combo x:Style="BORDER" x:Name="defaultQuantifier">
 						<Combo.layoutData>
 							<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
 						</Combo.layoutData>
 					</Combo>
-					<Label text="Catalog" x:Name="catalog">
+					<Label text="Catalog" x:Name="lblCatalog">
 						<Label.layoutData>
 							<GridData horizontalAlignment="RIGHT"/>
 						</Label.layoutData>
@@ -52,7 +52,7 @@
 						<GridData grabExcessHorizontalSpace="true" 
 							horizontalAlignment="FILL"/>
 					</Composite.layoutData>
-					<Label text="Width in grid">
+					<Label text="Width in grid" x:Name="lblWidth">
 						<Label.layoutData>
 							<GridData verticalAlignment="TOP"/>
 						</Label.layoutData>
@@ -71,7 +71,7 @@
 						<GridData grabExcessHorizontalSpace="true" 
 							horizontalAlignment="FILL" verticalAlignment="TOP"/>
 					</Composite.layoutData>
-					<Label text="Height in grid">
+					<Label text="Height in grid" x:Name="lblHeight">
 						<Label.layoutData>
 							<GridData verticalAlignment="TOP"/>
 						</Label.layoutData>

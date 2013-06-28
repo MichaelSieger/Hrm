@@ -6,6 +6,7 @@ import static com.google.common.base.Preconditions.checkState;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Locale.Category;
 
 import javax.inject.Inject;
 
@@ -69,6 +70,10 @@ public class CatalogService {
 		items.addAll(targets);
 
 		return items;
+	}
+	
+	public Collection<Catalog> findCatalog(final Category category) {
+		throw new NotImplementedException();
 	}
 
 	public Collection<Activity> findAllActivity() throws DatabaseException {
@@ -232,8 +237,10 @@ public class CatalogService {
 		target.setText(fromDb.getText());
 	}
 
-	public void refresh(Catalog catalog) {
-
-		throw new NotImplementedException();
+	public void refresh(Catalog catalog) throws ElementNotFoundException, DatabaseException {
+		checkState(catalog.getId() >= 0, NO_ID_ERROR);
+		
+		Catalog fromDb = findCatalogById(catalog.getId());
+		catalog.setName(fromDb.getName());
 	}
 }
