@@ -193,8 +193,8 @@ public class InspectionPart {
                 }
             }
         });
-        ReportBiologicalComposite c = (ReportBiologicalComposite) biologicalComposite.getRatingComposite();
-        c.addGradeSelectionObserver(new Observer<Integer>() {
+        ((ReportBiologicalComposite) biologicalComposite.getRatingComposite())
+        			.addGradeSelectionObserver(new Observer<Integer>() {
 			
 			@Override
 			public void changed(Integer item) {
@@ -204,6 +204,7 @@ public class InspectionPart {
 				}
 			}
 		});
+        
         createActions();
     }
 
