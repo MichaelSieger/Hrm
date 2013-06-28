@@ -42,6 +42,7 @@ import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.inspection.model.BiologicalRating;
 import de.hswt.hrm.inspection.model.Inspection;
 import de.hswt.hrm.inspection.model.PhysicalRating;
+import de.hswt.hrm.inspection.model.SamplingPointType;
 import de.hswt.hrm.inspection.ui.wizard.ReportExportWizard;
 import de.hswt.hrm.inspection.ui.grid.BiologicalDisplay;
 import de.hswt.hrm.inspection.ui.grid.CombinedDisplay;
@@ -197,14 +198,24 @@ public class InspectionPart {
                 }
             }
         });
-        ((ReportBiologicalComposite) biologicalComposite.getRatingComposite())
-        			.addGradeSelectionObserver(new Observer<Integer>() {
+        ReportBiologicalComposite reportBio = ((ReportBiologicalComposite) biologicalComposite.getRatingComposite());
+        reportBio.addGradeSelectionObserver(new Observer<Integer>() {
 			
 			@Override
 			public void changed(Integer item) {
 				SchemeComponent c = biologicalComposite.getSelectedSchemeComponent();
 				if(c != null){
 					selectedInspection.setBiologicalRatingRating(c, item);
+				}
+			}
+		});
+        reportBio.addSamplePointObserver(new Observer<SamplingPointType>() {
+			
+			@Override
+			public void changed(SamplingPointType item) {
+				SchemeComponent c = biologicalComposite.getSelectedSchemeComponent();
+				if(c != null){
+					selectedInspection.setBiologicalRatingSamplingPoint(c, item);
 				}
 			}
 		});
@@ -261,7 +272,7 @@ public class InspectionPart {
 
                     @Override
                     public void changed(Collection<BiologicalRating> item) {
-                    	bDisplay.update(item);
+                    	bDisplay.update(item, selectedInspection.getScheme());
                     	combinedDisplay.updateBiological(item);
                     }
                 });

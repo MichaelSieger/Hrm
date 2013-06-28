@@ -363,6 +363,18 @@ public class Inspection {
         }
         biologicalRatings.notifyDataChanged();
     }
+    
+    public void setBiologicalRatingSamplingPoint(SchemeComponent schemeComponent, SamplingPointType type){
+    	Optional<BiologicalRating> bRating = getBiologicalRating(schemeComponent);
+    	if(bRating.isPresent()){
+    		bRating.get().setSamplingPointType(type);
+    	}else{
+            BiologicalRating nRating = new BiologicalRating(this, schemeComponent);
+            nRating.setSamplingPointType(type);
+            biologicalRatings.get().add(nRating);
+    	}
+    	biologicalRatings.notifyDataChanged();
+    }
 
     private Optional<BiologicalRating> getBiologicalRating(SchemeComponent schemeComponent) {
         Iterator<BiologicalRating> it = biologicalRatings.get().iterator();

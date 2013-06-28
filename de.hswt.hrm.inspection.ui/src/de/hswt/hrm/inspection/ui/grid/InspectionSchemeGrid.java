@@ -119,4 +119,8 @@ public class InspectionSchemeGrid {
 		grid.removeAll(c);
 	}
 
+	public void addAll(Collection<SchemeGridItem> c) {
+		grid.addAll(c);
+	}
+
 }
