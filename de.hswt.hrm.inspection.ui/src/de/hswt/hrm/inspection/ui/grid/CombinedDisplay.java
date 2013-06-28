@@ -17,8 +17,8 @@ public class CombinedDisplay extends RatingDisplay{
 	private Collection<BiologicalRating> biologicalRatings = new ArrayList<>();
 	private Collection<PhysicalRating> physicalRatings = new ArrayList<>();
 	
-	public CombinedDisplay(InspectionSchemeGrid grid) {
-		super(grid);
+	public CombinedDisplay(InspectionSchemeGrid grid, SamplingPoints samplingPoints) {
+		super(grid, samplingPoints);
 	}
 	
 	public void updateBiological(Collection<BiologicalRating> biologicalRatings){
