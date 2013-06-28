@@ -110,12 +110,10 @@ public class PhysicalParameterParser {
         this.sumQuantifier += inspection.getTemperatureQuantifier().or(0);
         this.sumQuantifier += inspection.getHumidityQuantifier().or(0);
 
-        // - un-String the calls below..
         preTarget = buffer.toString();
         preTarget = preTarget.replace(PROPERTY, "Temperatur");
         // TODO no Integer!! ==> FLOAT! && what if none?!?
-        preTarget = preTarget.replace(VALUE,
-                "String.valueOf(inspection.getTemperature().orFloat())");
+        preTarget = preTarget.replace(VALUE, String.valueOf(inspection.getTemperature().or(0F)));
         preTarget = preTarget.replace(PARAM_GRADE,
                 String.valueOf(inspection.getTemperatureRating().or(0)));
         preTarget = preTarget.replace(PARAM_WHEIGHTING,
@@ -125,13 +123,11 @@ public class PhysicalParameterParser {
                 String.valueOf(inspection.getTemperatureRating().or(0)
                         * inspection.getTemperatureQuantifier().or(0)));
         // TODO comment!?!
-        preTarget = preTarget.replace(PARAM_COMMENT, "inspection.getTempComment");
+        preTarget = preTarget.replace(PARAM_COMMENT, inspection.getAirtemperatureComment().or("-"));
         target.append(preTarget);
 
         preTarget = buffer.toString();
         preTarget = preTarget.replace(PROPERTY, "relative Luftfeuchtigkeit");
-        // TODO no Integer!! ==> FLOAT! && what if none?!?
-        preTarget = preTarget.replace(VALUE, "String.valueOf(inspection.getHumidity().orFloat())");
         preTarget = preTarget.replace(VALUE, String.valueOf(inspection.getHumidity().or(-1F)));
         preTarget = preTarget.replace(PARAM_GRADE, String.valueOf(inspection.getHumidityRating()));
         preTarget = preTarget.replace(PARAM_WHEIGHTING,
@@ -140,8 +136,7 @@ public class PhysicalParameterParser {
                 PARAM_RATING,
                 String.valueOf(inspection.getHumidityRating().or(0)
                         * inspection.getHumidityQuantifier().or(0)));
-        // TODO comment!?!
-        preTarget = preTarget.replace(PARAM_COMMENT, "inspection.getHumidityComment");
+        preTarget = preTarget.replace(PARAM_COMMENT, inspection.getHumidityComment().or("-"));
         target.append(preTarget);
 
         this.rows = target.toString();
