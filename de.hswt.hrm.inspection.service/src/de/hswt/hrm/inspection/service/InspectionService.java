@@ -12,7 +12,6 @@ import org.slf4j.LoggerFactory;
 
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.ElementNotFoundException;
-import de.hswt.hrm.common.exception.NotImplementedException;
 import de.hswt.hrm.inspection.dao.core.IBiologicalRatingDao;
 import de.hswt.hrm.inspection.dao.core.IInspectionDao;
 import de.hswt.hrm.inspection.dao.core.IPerformanceDao;
@@ -77,7 +76,7 @@ public class InspectionService {
     	return performanceDao.findByInspection(inspection);
     }
     
-    public Scheme findScheme(Inspection inspection) {
-    	throw new NotImplementedException();
+    public Scheme findScheme(Inspection inspection) throws DatabaseException {
+    	return inspectionDao.findScheme(inspection);
     }
 }

@@ -6,6 +6,7 @@ import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.ElementNotFoundException;
 import de.hswt.hrm.common.database.exception.SaveException;
 import de.hswt.hrm.inspection.model.Inspection;
+import de.hswt.hrm.scheme.model.Scheme;
 
 /**
  * Defines all the public methods to interact with the storage system for activitys.
@@ -41,5 +42,12 @@ public interface IInspectionDao {
      * @throws SaveException If the inspection could not be updated.
      */
     void update(Inspection inspection) throws ElementNotFoundException, SaveException;
+
+    /**
+     * @param inspection
+     * @return Scheme for the given inspection.
+     * @throws DatabaseException
+     */
+	Scheme findScheme(Inspection inspection) throws DatabaseException;
 }
 

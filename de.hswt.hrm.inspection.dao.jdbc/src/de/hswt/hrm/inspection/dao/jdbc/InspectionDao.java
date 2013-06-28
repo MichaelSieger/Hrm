@@ -2,6 +2,7 @@ package de.hswt.hrm.inspection.dao.jdbc;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkState;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.ResultSet;
@@ -11,6 +12,8 @@ import java.util.Calendar;
 import java.util.Collection;
 
 import javax.inject.Inject;
+
+import org.apache.commons.dbutils.DbUtils;
 
 import com.google.common.base.Optional;
 
@@ -80,6 +83,35 @@ public class InspectionDao implements IInspectionDao {
         }
         catch (SQLException e) {
             throw new DatabaseException("Unexpected error.", e);
+        }
+    }
+    
+    @Override
+    public Scheme findScheme(Inspection inspection) throws DatabaseException {
+    	checkNotNull(inspection, "Inspection must not be null.");
+    	checkState(inspection.getId() >= 0, "ID must be non negative.");
+
+        SqlQueryBuilder builder = new SqlQueryBuilder();
+        builder.select(TABLE_NAME, Fields.SCHEME);
+        builder.where(Fields.ID);
+        
+        String query = builder.toString();
+
+        try (Connection con = DatabaseFactory.getConnection()) {
+            try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
+                stmt.setParameter(Fields.ID, inspection.getId());
+
+                ResultSet rs = stmt.executeQuery();
+                rs.next();
+                int schemeId = JdbcUtil.getId(rs, Fields.SCHEME);
+                checkState(schemeId >= 0, "Invalid scheme ID returned from database.");
+                DbUtils.closeQuietly(rs);
+                
+                return schemeDao.findById(schemeId);
+            }
+        }
+        catch (SQLException e) {
+            throw new DatabaseException("Unknown error.", e);
         }
     }
 

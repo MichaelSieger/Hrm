@@ -210,7 +210,7 @@ public class PerformanceDao implements IPerformanceDao {
 	
 	private static class Fields {
 		private static final String ID = "Performance_ID";
-		private static final String INSPECTION_FK = "Performance_Inspection_FK";
+		private static final String INSPECTION_FK = "Performance_Report_FK";
 		private static final String COMPONENT_FK = "Performance_Component_FK";
 		private static final String TARGET_FK = "Performance_Target_FK";
 		private static final String CURRENT_FK = "Performance_Current_FK";
