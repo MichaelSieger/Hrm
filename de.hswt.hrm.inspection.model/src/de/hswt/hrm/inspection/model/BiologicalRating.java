@@ -123,9 +123,9 @@ public class BiologicalRating {
         final int prime = 31;
         int result = 1;
         result = prime * result + bacteriaCount.get();
-        result = prime * result + ((comment == null) ? 0 : comment.get().hashCode());
+        result = prime * result + ((!comment.isPresent()) ? 0 : comment.get().hashCode());
         result = prime * result + ((component == null) ? 0 : component.hashCode());
-        result = prime * result + ((flag == null) ? 0 : flag.get().hashCode());
+        result = prime * result + ((!flag.isPresent()) ? 0 : flag.get().hashCode());
         result = prime * result + id;
         result = prime * result + ((inspection == null) ? 0 : inspection.hashCode());
         result = prime * result + quantifier.get();
