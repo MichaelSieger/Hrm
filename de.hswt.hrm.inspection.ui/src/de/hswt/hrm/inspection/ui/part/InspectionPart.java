@@ -205,7 +205,17 @@ public class InspectionPart {
 				}
 			}
 		});
-        
+        ((ReportPhysicalComposite)physicalComposite.getRatingComposite())
+        		.addGradeSelectionObserver(new Observer<Integer>() {
+
+					@Override
+					public void changed(Integer item) {
+						SchemeComponent c = physicalComposite.getSelectedSchemeComponent();
+						if(c != null){
+							selectedInspection.setPhysicalRatingRating(c, item);
+						}
+					}
+				});
         createActions();
     }
 
