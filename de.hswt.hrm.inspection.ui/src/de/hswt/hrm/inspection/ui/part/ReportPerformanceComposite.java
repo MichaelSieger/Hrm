@@ -77,8 +77,8 @@ public class ReportPerformanceComposite extends AbstractComponentRatingComposite
 		FormUtil.initSectionColors(targetSection);
 		targetSection.setText("Targets");
 		
-		ListViewer listViewer = new ListViewer(targetSection, SWT.BORDER | SWT.V_SCROLL);
-		List targetList = listViewer.getList();
+		ListViewer targetListViewer = new ListViewer(targetSection, SWT.BORDER | SWT.V_SCROLL);
+		List targetList = targetListViewer.getList();
 		targetSection.setClient(targetList);
 		
 		Section currentSection = formToolkit.createSection(this, Section.TITLE_BAR);
@@ -87,8 +87,8 @@ public class ReportPerformanceComposite extends AbstractComponentRatingComposite
 		FormUtil.initSectionColors(currentSection);
 		currentSection.setText("Current");
 		
-		ListViewer listViewer_1 = new ListViewer(currentSection, SWT.BORDER | SWT.V_SCROLL);
-		List currentList = listViewer_1.getList();
+		ListViewer currentListViewer = new ListViewer(currentSection, SWT.BORDER | SWT.V_SCROLL);
+		List currentList = currentListViewer.getList();
 		currentSection.setClient(currentList);
 		
 		Section activitySection = formToolkit.createSection(this, Section.TITLE_BAR);
@@ -97,8 +97,8 @@ public class ReportPerformanceComposite extends AbstractComponentRatingComposite
 		FormUtil.initSectionColors(activitySection);
 		activitySection.setText("Activities");
 		
-		ListViewer listViewer_2 = new ListViewer(activitySection, SWT.BORDER | SWT.V_SCROLL);
-		List activityList = listViewer_2.getList();
+		ListViewer activityListViewer = new ListViewer(activitySection, SWT.BORDER | SWT.V_SCROLL);
+		List activityList = activityListViewer.getList();
 		activitySection.setClient(activityList);
 		
 		Composite buttonComposite = new Composite(this, SWT.NONE);
