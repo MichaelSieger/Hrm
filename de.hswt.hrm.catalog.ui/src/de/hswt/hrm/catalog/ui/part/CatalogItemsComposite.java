@@ -173,7 +173,6 @@ public class CatalogItemsComposite extends Composite {
 	}
 
 	private void showDBConnectionError() {
-		// TODO translate
 		MessageDialog.openError(shellProvider.getShell(), I18N.tr("Connection Error"),
 				I18N.tr("Could not load catalog items from Database."));
 	}
