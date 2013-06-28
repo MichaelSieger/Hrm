@@ -180,6 +180,7 @@ public class InspectionPart {
 
         performanceComposite = new ComponentSelectionComposite(tabFolder,
                 ReportPerformanceComposite.class);
+      
         ContextInjectionFactory.inject(performanceComposite, context);
         performanceTab.setControl(performanceComposite);
         tabFolder.addSelectionListener(new SelectionAdapter() {
