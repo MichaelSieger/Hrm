@@ -37,8 +37,8 @@ public class SamplingPoints {
 	
 	public SamplingPoints(Display display){
 		this.display = display;
-		c1 = getSamplePointCategory(1);
-		c2 = getSamplePointCategory(2);
+		c1 = getSamplePointCategory(2);
+		c2 = getSamplePointCategory(1);
 		try{
 			airMeasurement = getComponents("pl");
 			waterAnalysis = getComponents("pw");
