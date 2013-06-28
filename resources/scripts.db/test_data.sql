@@ -107,18 +107,11 @@ INSERT INTO `hrm`.`Scheme_Component` (`Scheme_Component_Scheme_FK`, `Scheme_Comp
 INSERT INTO `hrm`.`Scheme_Component` (`Scheme_Component_Scheme_FK`, `Scheme_Component_Component_FK`, `Scheme_Component_X_Position`, `Scheme_Component_Y_Position`, `Scheme_Component_Direction`) VALUES ('3', '3', '1', '1', '1');
 
 ------------------------------------------------------------
--- Insert 3 different biological flags in the `Biological_Flag` Table
-------------------------------------------------------------
-INSERT INTO `hrm`.`Biological_Flag` (`Flag_Name`) VALUES ('Luftkeimzahl');
-INSERT INTO `hrm`.`Biological_Flag` (`Flag_Name`) VALUES ('Kontaktkeime');
-INSERT INTO `hrm`.`Biological_Flag` (`Flag_Name`) VALUES ('Befeuchterwasser');
-
-------------------------------------------------------------
 -- Insert 2 different biological ratings in the `Biological_Rating` Table
 ------------------------------------------------------------
 
-INSERT INTO `hrm`.`Biological_Rating` (`Biological_Rating_Component_FK`, `Biological_Rating_Report_FK`, `Biological_Rating_Bacteria_Count`, `Biological_Rating_Rating`, `Biological_Rating_Quantifier`, `Biological_Rating_Comment`, `Biological_Rating_Flag_FK`) VALUES ('1', '1', '100', '2', 3, 'schlecht','1');
-INSERT INTO `hrm`.`Biological_Rating` (`Biological_Rating_Component_FK`, `Biological_Rating_Report_FK`, `Biological_Rating_Bacteria_Count`, `Biological_Rating_Rating`, `Biological_Rating_Quantifier`, `Biological_Rating_Comment`, `Biological_Rating_Flag_FK`) VALUES ('2', '1', '1', '1', NULL, 'gut','2');
+INSERT INTO `hrm`.`Biological_Rating` (`Biological_Rating_Component_FK`, `Biological_Rating_Report_FK`, `Biological_Rating_Bacteria_Count`, `Biological_Rating_Rating`, `Biological_Rating_Quantifier`, `Biological_Rating_Comment`, `Biological_Rating_Flag`) VALUES ('1', '1', '100', '2', 3, 'schlecht','FlagA');
+INSERT INTO `hrm`.`Biological_Rating` (`Biological_Rating_Component_FK`, `Biological_Rating_Report_FK`, `Biological_Rating_Bacteria_Count`, `Biological_Rating_Rating`, `Biological_Rating_Quantifier`, `Biological_Rating_Comment`, `Biological_Rating_Flag`) VALUES ('2', '1', '1', '1', NULL, 'gut','FlagB');
 
 ------------------------------------------------------------
 -- Insert 3 different current states in the `State_Current` Table
