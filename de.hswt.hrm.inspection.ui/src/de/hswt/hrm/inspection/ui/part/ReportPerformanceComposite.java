@@ -21,6 +21,9 @@ import de.hswt.hrm.common.ui.swt.layouts.LayoutUtil;
 import de.hswt.hrm.component.model.Component;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.jface.viewers.ListViewer;
+import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.swt.layout.GridData;
 
 public class ReportPerformanceComposite extends AbstractComponentRatingComposite {
 
@@ -74,10 +77,9 @@ public class ReportPerformanceComposite extends AbstractComponentRatingComposite
 		FormUtil.initSectionColors(targetSection);
 		targetSection.setText("Targets");
 		
-		// TODO add this list to show and select the target states
-		List targetsList = new List(targetSection, SWT.BORDER);
-		formToolkit.adapt(targetsList, true, true);
-		targetSection.setClient(targetsList);
+		ListViewer listViewer = new ListViewer(targetSection, SWT.BORDER | SWT.V_SCROLL);
+		List targetList = listViewer.getList();
+		targetSection.setClient(targetList);
 		
 		Section currentSection = formToolkit.createSection(this, Section.TITLE_BAR);
 		currentSection.setLayoutData(LayoutUtil.createFillData());
@@ -85,9 +87,8 @@ public class ReportPerformanceComposite extends AbstractComponentRatingComposite
 		FormUtil.initSectionColors(currentSection);
 		currentSection.setText("Current");
 		
-		// TODO add this list to show and select the current items
-		List currentList = new List(currentSection, SWT.BORDER);
-		formToolkit.adapt(currentList, true, true);
+		ListViewer listViewer_1 = new ListViewer(currentSection, SWT.BORDER | SWT.V_SCROLL);
+		List currentList = listViewer_1.getList();
 		currentSection.setClient(currentList);
 		
 		Section activitySection = formToolkit.createSection(this, Section.TITLE_BAR);
@@ -95,11 +96,10 @@ public class ReportPerformanceComposite extends AbstractComponentRatingComposite
 		formToolkit.paintBordersFor(activitySection);
 		FormUtil.initSectionColors(activitySection);
 		activitySection.setText("Activities");
-
-		// TODO use this list to show and select the activities
-		List activitiesList = new List(activitySection, SWT.BORDER);
-		formToolkit.adapt(activitiesList, true, true);
-		activitySection.setClient(activitiesList);
+		
+		ListViewer listViewer_2 = new ListViewer(activitySection, SWT.BORDER | SWT.V_SCROLL);
+		List activityList = listViewer_2.getList();
+		activitySection.setClient(activityList);
 		
 		Composite buttonComposite = new Composite(this, SWT.NONE);
 		formToolkit.adapt(buttonComposite);
@@ -129,15 +129,16 @@ public class ReportPerformanceComposite extends AbstractComponentRatingComposite
 		gl_composite.marginHeight = 0;
 		composite.setLayout(gl_composite);
 		
-		// TODO use this tree to display the added items
-		Tree tree = new Tree(composite, SWT.BORDER);
-		tree.setLayoutData(LayoutUtil.createFillData(2));
-		formToolkit.adapt(tree);
+		TreeViewer treeViewer = new TreeViewer(composite, SWT.BORDER);
+		Tree tree = treeViewer.getTree();
+		GridData gd_tree = new GridData(SWT.FILL, SWT.FILL, true, true, 2, 8);
+		gd_tree.heightHint = 241;
+		tree.setLayoutData(gd_tree);
 		formToolkit.paintBordersFor(tree);
-
-		// TODO translate
-		Label label = new Label(composite, SWT.NONE);
-		label.setText("Priority");
+		
+				// TODO translate
+				Label label = new Label(composite, SWT.NONE);
+				label.setText("Priority");
 		
 		Combo combo = new Combo(composite, SWT.DROP_DOWN | SWT.READ_ONLY);
 		combo.setLayoutData(LayoutUtil.createHorzFillData());
