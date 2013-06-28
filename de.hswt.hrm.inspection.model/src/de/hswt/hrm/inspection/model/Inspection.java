@@ -388,6 +388,12 @@ public class Inspection {
     public void addBiologicalRatingObserver(Observer<Collection<BiologicalRating>> o) {
         biologicalRatings.addObserver(o);
     }
+    
+    public void clearObservers(){
+    	plant.clearObservers();
+    	physicalRatings.clearObservers();
+    	biologicalRatings.clearObservers();
+    }
 
     @Override
     public int hashCode() {
