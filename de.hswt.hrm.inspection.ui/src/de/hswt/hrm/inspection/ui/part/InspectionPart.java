@@ -40,8 +40,10 @@ import de.hswt.hrm.common.observer.Observer;
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.inspection.model.BiologicalRating;
 import de.hswt.hrm.inspection.model.Inspection;
+import de.hswt.hrm.inspection.model.PhysicalRating;
 import de.hswt.hrm.inspection.ui.wizard.ReportExportWizard;
 import de.hswt.hrm.inspection.ui.grid.BiologicalDisplay;
+import de.hswt.hrm.inspection.ui.grid.PhysicalDisplay;
 import de.hswt.hrm.plant.model.Plant;
 import de.hswt.hrm.report.latex.service.ReportService;
 import de.hswt.hrm.scheme.model.Scheme;
@@ -223,7 +225,7 @@ public class InspectionPart {
                 plantChanged(item);
             }
         });
-        final BiologicalDisplay bDisplay = new BiologicalDisplay(physicalComposite.getInspectionSchemeGrid());
+        final BiologicalDisplay bDisplay = new BiologicalDisplay(biologicalComposite.getInspectionSchemeGrid());
         selectedInspection
                 .addBiologicalRatingObserver(new Observer<Collection<BiologicalRating>>() {
 
@@ -232,6 +234,14 @@ public class InspectionPart {
                     	bDisplay.update(item);
                     }
                 });
+        final PhysicalDisplay pDisplay = new PhysicalDisplay(physicalComposite.getInspectionSchemeGrid());
+        selectedInspection.addPhysicalRatingObserver(new Observer<Collection<PhysicalRating>>() {
+			
+			@Override
+			public void changed(Collection<PhysicalRating> item) {
+				pDisplay.update(item);
+			}
+		});
     }
 
     private void plantChanged(Plant plant) {

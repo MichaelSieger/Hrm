@@ -13,5 +13,4 @@ Require-Bundle: org.eclipse.e4.core.di;bundle-version="1.2.0",
 Export-Package: de.hswt.hrm.report.latex.service
 Import-Package: de.hswt.hrm.inspection.model,
  de.hswt.hrm.photo.model,
- de.hswt.hrm.report.latex.service,
- de.hswt.hrm.report.parser
+ de.hswt.hrm.report.latex.service

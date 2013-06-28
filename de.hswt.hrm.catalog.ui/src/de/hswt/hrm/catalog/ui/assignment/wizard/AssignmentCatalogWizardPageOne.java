@@ -12,6 +12,7 @@ import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.widgets.Section;
 import org.slf4j.Logger;
@@ -24,9 +25,11 @@ import de.hswt.hrm.catalog.service.CatalogService;
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.common.ui.swt.layouts.PageContainerFillLayout;
+import de.hswt.hrm.i18n.I18n;
+import de.hswt.hrm.i18n.I18nFactory;
 
 public class AssignmentCatalogWizardPageOne extends WizardPage {
-
+  
     private Optional<Catalog> catalog;
     private Composite container;
     private Text nameText;
@@ -38,19 +41,20 @@ public class AssignmentCatalogWizardPageOne extends WizardPage {
     private CatalogService catService;
 
     private static final Logger LOG = LoggerFactory.getLogger(AssignmentCatalogWizardPageOne.class);
+    private static final I18n I18N = I18nFactory.getI18n(AssignmentCatalogWizardPageOne.class);
 
     public AssignmentCatalogWizardPageOne(String title, Optional<Catalog> catalog) {
         super(title);
         this.catalog = catalog;
         setDescription(createDescription());
-        setTitle("Catalog Wizard");
+        setTitle(I18N.tr("Catalog Wizard"));
     }
 
     private String createDescription() {
         if (catalog.isPresent()) {
-            return "Change a Catalog";
+            return I18N.tr("Edit a catalog");
         }
-        return "Add a new Catalog";
+        return I18N.tr("Add a new catalog");
     }
 
     @Override
@@ -67,6 +71,7 @@ public class AssignmentCatalogWizardPageOne extends WizardPage {
         }
 
         nameText = (Text) XWT.findElementByName(container, "name");
+        translateLabel();
 
         if (this.catalog.isPresent()) {
             updateFields();
@@ -116,11 +121,11 @@ public class AssignmentCatalogWizardPageOne extends WizardPage {
         setErrorMessage(null);
 
         if (nameText.getText().isEmpty()) {
-            setErrorMessage("Name must not be empty...");
+            setErrorMessage(I18N.tr("Field is mandatory") + ": " + I18N.tr("Name"));
         }
 
         else if (isAlreadyPresent(nameText.getText())) {
-            setErrorMessage("A Catalog with name " + nameText.getText() + " is already present");
+            setErrorMessage(I18N.tr("Catalog is already present")+ ": " + nameText.getText());
         }
 
     }
@@ -166,5 +171,14 @@ public class AssignmentCatalogWizardPageOne extends WizardPage {
 
     public String getName() {
         return nameText.getText();
+    }
+    
+    private void translateLabel() {
+        Label nameLabel = (Label) XWT.findElementByName(container, "lblName");
+        if (nameLabel == null) {
+            LOG.error("Label 'lblName' not found.");
+            return;
+        }
+        nameLabel.setText(I18N.tr("Name") + ":");
     }
 }

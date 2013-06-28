@@ -14,10 +14,13 @@ import de.hswt.hrm.catalog.model.Catalog;
 import de.hswt.hrm.catalog.service.CatalogService;
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.SaveException;
+import de.hswt.hrm.i18n.I18n;
+import de.hswt.hrm.i18n.I18nFactory;
 
 public class AssignmentCatalogWizard extends Wizard {
 
     private static final Logger LOG = LoggerFactory.getLogger(AssignmentCatalogWizard.class);
+    private static final I18n I18N = I18nFactory.getI18n(AssignmentCatalogWizard.class);
 
     @Inject
     private CatalogService catService;
@@ -31,10 +34,10 @@ public class AssignmentCatalogWizard extends Wizard {
         ContextInjectionFactory.inject(first, context);
 
         if (cat.isPresent()) {
-            setWindowTitle("Edit Catalog: " + cat.get().getName());
+            setWindowTitle(I18N.tr("Edit Catalog"));
         }
         else {
-            setWindowTitle("Create new Catalog");
+            setWindowTitle(I18N.tr("Create Catalog"));
         }
     }
 

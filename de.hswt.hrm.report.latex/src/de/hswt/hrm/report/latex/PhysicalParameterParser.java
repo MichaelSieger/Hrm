@@ -38,7 +38,6 @@ public class PhysicalParameterParser {
     private final String FILE_NAME_TABLE = "physicalparametertable.tex";
     private final String FILE_NAME_ROW = "physicalparameterrow.tex";
 
-    // TODO unccoment follwing line when model ready
     private Inspection inspection;
     private String path;
 
@@ -57,6 +56,9 @@ public class PhysicalParameterParser {
     }
 
     public String parse() throws IOException {
+        if (!(inspection.getTemperature().isPresent() && inspection.getHumidity().isPresent())) {
+            return "";
+        }
         this.parseRow();
         this.parseTable();
         return this.endTarget;
@@ -108,12 +110,10 @@ public class PhysicalParameterParser {
         this.sumQuantifier += inspection.getTemperatureQuantifier().or(0);
         this.sumQuantifier += inspection.getHumidityQuantifier().or(0);
 
-        // - un-String the calls below..
         preTarget = buffer.toString();
         preTarget = preTarget.replace(PROPERTY, "Temperatur");
         // TODO no Integer!! ==> FLOAT! && what if none?!?
-        preTarget = preTarget.replace(VALUE,
-                "String.valueOf(inspection.getTemperature().orFloat())");
+        preTarget = preTarget.replace(VALUE, String.valueOf(inspection.getTemperature().or(0F)));
         preTarget = preTarget.replace(PARAM_GRADE,
                 String.valueOf(inspection.getTemperatureRating().or(0)));
         preTarget = preTarget.replace(PARAM_WHEIGHTING,
@@ -123,13 +123,12 @@ public class PhysicalParameterParser {
                 String.valueOf(inspection.getTemperatureRating().or(0)
                         * inspection.getTemperatureQuantifier().or(0)));
         // TODO comment!?!
-        preTarget = preTarget.replace(PARAM_COMMENT, "inspection.getTempComment");
+        preTarget = preTarget.replace(PARAM_COMMENT, inspection.getAirtemperatureComment().or("-"));
         target.append(preTarget);
 
-        preTarget = preTarget = buffer.toString();
+        preTarget = buffer.toString();
         preTarget = preTarget.replace(PROPERTY, "relative Luftfeuchtigkeit");
-        // TODO no Integer!! ==> FLOAT! && what if none?!?
-        preTarget = preTarget.replace(VALUE, "String.valueOf(inspection.getHumidity().orFloat())");
+        preTarget = preTarget.replace(VALUE, String.valueOf(inspection.getHumidity().or(-1F)));
         preTarget = preTarget.replace(PARAM_GRADE, String.valueOf(inspection.getHumidityRating()));
         preTarget = preTarget.replace(PARAM_WHEIGHTING,
                 String.valueOf(inspection.getHumidityQuantifier()));
@@ -137,8 +136,7 @@ public class PhysicalParameterParser {
                 PARAM_RATING,
                 String.valueOf(inspection.getHumidityRating().or(0)
                         * inspection.getHumidityQuantifier().or(0)));
-        // TODO comment!?!
-        preTarget = preTarget.replace(PARAM_COMMENT, "inspection.getHumidityComment");
+        preTarget = preTarget.replace(PARAM_COMMENT, inspection.getHumidityComment().or("-"));
         target.append(preTarget);
 
         this.rows = target.toString();
@@ -149,6 +147,9 @@ public class PhysicalParameterParser {
      * returns the totalGrade, calculated from the components.
      */
     public float getTotalGrade() throws IOException {
+        if (!(inspection.getTemperature().isPresent() && inspection.getHumidity().isPresent())) {
+            return -1F;
+        }
         this.parseRow();
         this.parseTable();
         return this.totalGrade;
