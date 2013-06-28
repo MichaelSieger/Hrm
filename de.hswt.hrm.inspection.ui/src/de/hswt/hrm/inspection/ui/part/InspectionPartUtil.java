@@ -21,6 +21,8 @@ import com.google.common.base.Optional;
 
 import de.hswt.hrm.common.ui.swt.table.ColumnDescription;
 import de.hswt.hrm.common.ui.swt.wizards.WizardCreator;
+import de.hswt.hrm.i18n.I18n;
+import de.hswt.hrm.i18n.I18nFactory;
 import de.hswt.hrm.inspection.model.Inspection;
 import de.hswt.hrm.inspection.ui.wizard.ReportCreationWizard;
 
@@ -35,6 +37,8 @@ public class InspectionPartUtil {
 
 	private static SimpleDateFormat dateFormat = new SimpleDateFormat(
 			"dd/MM/yyyy");
+	
+	private static final I18n I18N = I18nFactory.getI18n(InspectionPartUtil.class);
 
 	public static Optional<Inspection> showInspectionCreateWizard(
 			IEclipseContext context, Shell shell) {
@@ -108,7 +112,7 @@ public class InspectionPartUtil {
 	}
 
 	private static ColumnDescription<Inspection> getTitleColumn() {
-		return new ColumnDescription<>("Title", new ColumnLabelProvider() {
+		return new ColumnDescription<>(I18N.tr("Title"), new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
 				Inspection i = (Inspection) element;
@@ -123,7 +127,7 @@ public class InspectionPartUtil {
 	}
 
 	private static ColumnDescription<Inspection> getPlantClumn() {
-		return new ColumnDescription<>("Plant Description",
+		return new ColumnDescription<>(I18N.tr("Plant Description"),
 				new ColumnLabelProvider() {
 					@Override
 					public String getText(Object element) {
@@ -143,7 +147,7 @@ public class InspectionPartUtil {
 	}
 
 	private static ColumnDescription<Inspection> getReportDateColumn() {
-		return new ColumnDescription<>("Report Date",
+		return new ColumnDescription<>(I18N.tr("Report Date"),
 				new ColumnLabelProvider() {
 					@Override
 					public String getText(Object element) {
@@ -162,7 +166,7 @@ public class InspectionPartUtil {
 	}
 
 	private static ColumnDescription<Inspection> getInspectionDateColumn() {
-		return new ColumnDescription<>("Inspection Date",
+		return new ColumnDescription<>(I18N.tr("Inspection Date"),
 				new ColumnLabelProvider() {
 					@Override
 					public String getText(Object element) {
@@ -181,7 +185,7 @@ public class InspectionPartUtil {
 	}
 
 	private static ColumnDescription<Inspection> getNextInspectionDateColumn() {
-		return new ColumnDescription<>("Next Inspection Date",
+		return new ColumnDescription<>(I18N.tr("Next Inspection"),
 				new ColumnLabelProvider() {
 					@Override
 					public String getText(Object element) {
@@ -203,7 +207,7 @@ public class InspectionPartUtil {
 	}
 
 	private static ColumnDescription<Inspection> getStyleColumn() {
-		return new ColumnDescription<>("Layout", new ColumnLabelProvider() {
+		return new ColumnDescription<>(I18N.tr("Layout"), new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
 				Inspection i = (Inspection) element;
