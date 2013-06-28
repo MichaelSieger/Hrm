@@ -39,6 +39,7 @@ public interface IPhysicalRatingDao {
      * @param physical Physical that should be stored.
      * @return Newly generated physical (also holding the correct id).
      * @throws SaveException If the physical could not be inserted.
+     * @throws IllegalStateException If physical rating is invalid.
      */
     PhysicalRating insert(PhysicalRating physical) throws SaveException;
 
@@ -48,6 +49,7 @@ public interface IPhysicalRatingDao {
      * @param physical Physical that should be updated.
      * @throws ElementNotFoundException If the given Physical is not present in the database.
      * @throws SaveException If the physical could not be updated.
+     * @throws IllegalStateException If physical rating is invalid.
      */
     void update(PhysicalRating physical) throws ElementNotFoundException, SaveException;
 }
