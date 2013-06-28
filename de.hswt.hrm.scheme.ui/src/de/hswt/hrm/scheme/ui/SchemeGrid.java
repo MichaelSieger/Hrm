@@ -452,6 +452,11 @@ public class SchemeGrid extends DoubleBufferedCanvas {
 		}
 	}
 	
+	public void removeAll(Collection<SchemeGridItem> c) {
+		images.removeAll(c);
+		this.redraw();
+	}
+	
 	/**
 	 * Was the grid changed since last clear
 	 * 
@@ -533,4 +538,5 @@ public class SchemeGrid extends DoubleBufferedCanvas {
 		colors.add(c);
 		this.redraw();
 	}
+
 }
