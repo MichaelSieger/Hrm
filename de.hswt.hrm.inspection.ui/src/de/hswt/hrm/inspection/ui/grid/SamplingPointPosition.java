@@ -82,13 +82,20 @@ public class SamplingPointPosition {
 	private static Placement[] getPlacements(SchemeComponent c){
 		int xm = c.getX() + c.getWidth() / 2;
 		int ym = c.getY() + c.getHeight() / 2;
+		Placement top = new Placement(xm, c.getY() + c.getHeight(), 2, 1, Direction.downUp);
+		Placement bot = new Placement(xm, c.getY() - 1, 2, 1, Direction.upDown);
+		Placement left = new Placement(c.getX() - 1, ym, 1, 2, Direction.leftRight);
+		Placement right = new Placement(c.getX() + c.getWidth(), ym, 1, 2, Direction.rightLeft);
+		if(c.getWidth() % 2 == 0){
+			top.x--;
+			bot.x--;
+		}
+		if(c.getHeight() % 2 == 0){
+			left.y--;
+			right.y--;
+		}
 		return new Placement[]
-				{
-					new Placement(xm, c.getY() + c.getHeight(), 2, 1, Direction.downUp),	//top
-					new Placement(xm, c.getY() - 1, 2, 1, Direction.upDown),				//bot
-					new Placement(c.getX() - 1, ym, 1, 2, Direction.leftRight),				//left
-					new Placement(c.getX() + c.getWidth(), ym, 1, 2, Direction.rightLeft)	//right
-				};
+				{top, bot, left, right};
 	}
 
 }
