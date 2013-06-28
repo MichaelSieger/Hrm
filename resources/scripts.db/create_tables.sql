@@ -514,35 +514,42 @@ CREATE  TABLE IF NOT EXISTS `Performance` (
   `Performance_Activity_FK` INT NULL ,
   `Performance_Picture_FK` INT NULL ,
   `Performance_Priority_FK` INT NULL ,
+  `Performance_Report_FK` INT NULL ,
   PRIMARY KEY (`Performance_ID`) ,
-  INDEX `Component_Catalog_Component_FK` (`Performance_Component_FK` ASC) ,
-  INDEX `Component_Catalog_Target_FK` (`Performance_Target_FK` ASC) ,
-  INDEX `Component_Catalog_Current_FK` (`Performance_Current_FK` ASC) ,
-  INDEX `Component_Catalog_Activity_FK` (`Performance_Activity_FK` ASC) ,
-  INDEX `Component_Catalog_Priority_FK` (`Performance_Priority_FK` ASC) ,
-  CONSTRAINT `Component_Catalog_Component_FK`
+  INDEX `Performance_Component_FK` (`Performance_Component_FK` ASC) ,
+  INDEX `Performance_Target_FK` (`Performance_Target_FK` ASC) ,
+  INDEX `Performance_Current_FK` (`Performance_Current_FK` ASC) ,
+  INDEX `Performance_Activity_FK` (`Performance_Activity_FK` ASC) ,
+  INDEX `Performance_Priority_FK` (`Performance_Priority_FK` ASC) ,
+  INDEX `Performance_Report_FK` (`Performance_Report_FK` ASC) ,
+  CONSTRAINT `Performance_Component_FK`
     FOREIGN KEY (`Performance_Component_FK` )
     REFERENCES `Scheme_Component` (`Scheme_Component_ID` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `Component_Catalog_Target_FK`
+  CONSTRAINT `Performance_Target_FK`
     FOREIGN KEY (`Performance_Target_FK` )
     REFERENCES `State_Target` (`State_Target_ID` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `Component_Catalog_Current_FK`
+  CONSTRAINT `Performance_Current_FK`
     FOREIGN KEY (`Performance_Current_FK` )
     REFERENCES `State_Current` (`State_Current_ID` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `Component_Catalog_Activity_FK`
+  CONSTRAINT `Performance_Activity_FK`
     FOREIGN KEY (`Performance_Activity_FK` )
     REFERENCES `State_Activity` (`State_Activity_ID` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `Component_Catalog_Priority_FK`
+  CONSTRAINT `Performance_Priority_FK`
     FOREIGN KEY (`Performance_Priority_FK` )
     REFERENCES `Priority` (`Priority_Id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `Performance_Report_FK`
+    FOREIGN KEY (`Performance_Report_FK` )
+    REFERENCES `Report` (`Report_ID` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -565,28 +572,6 @@ CREATE  TABLE IF NOT EXISTS `Picture_Catalog` (
   CONSTRAINT `Picture_Catalog_Component_Catalog_FK`
     FOREIGN KEY (`Picture_Catalog_Performance_FK` )
     REFERENCES `Performance` (`Performance_ID` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `Target_Current`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `Target_Current` (
-  `Target_Current_Report_FK` INT NOT NULL ,
-  `Target_Current_Performance_FK` INT NOT NULL ,
-  PRIMARY KEY (`Target_Current_Report_FK`, `Target_Current_Performance_FK`) ,
-  INDEX `Target_Current_Performance_FK` (`Target_Current_Performance_FK` ASC) ,
-  INDEX `Target_Current_Report_FK` (`Target_Current_Report_FK` ASC) ,
-  CONSTRAINT `Target_Current_Component_Catalog_FK`
-    FOREIGN KEY (`Target_Current_Performance_FK` )
-    REFERENCES `Performance` (`Performance_ID` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `Target_Current_Report_FK`
-    FOREIGN KEY (`Target_Current_Report_FK` )
-    REFERENCES `Report` (`Report_ID` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
