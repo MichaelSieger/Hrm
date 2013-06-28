@@ -247,6 +247,10 @@ public class ComponentSelectionComposite extends Composite {
     public InspectionSchemeGrid getInspectionSchemeGrid(){
     	return schemeGrid;
     }
+    
+    public AbstractComponentRatingComposite getRatingComposite(){
+    	return ratingComposite;
+    }
 
     @Override
     public void dispose() {
@@ -262,5 +266,9 @@ public class ComponentSelectionComposite extends Composite {
     protected void checkSubclass() {
         // Disable the check that prevents subclassing of SWT components
     }
+
+	public SchemeComponent getSelectedSchemeComponent() {
+		return selectedComponent.get();
+	}
 
 }
