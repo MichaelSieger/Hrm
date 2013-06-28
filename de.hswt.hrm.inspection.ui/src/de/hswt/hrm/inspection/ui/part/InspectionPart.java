@@ -194,8 +194,8 @@ public class InspectionPart {
                 }
             }
         });
-        ReportBiologicalComposite c = (ReportBiologicalComposite) biologicalComposite.getRatingComposite();
-        c.addGradeSelectionObserver(new Observer<Integer>() {
+        ((ReportBiologicalComposite) biologicalComposite.getRatingComposite())
+        			.addGradeSelectionObserver(new Observer<Integer>() {
 			
 			@Override
 			public void changed(Integer item) {
@@ -205,6 +205,17 @@ public class InspectionPart {
 				}
 			}
 		});
+        ((ReportPhysicalComposite)physicalComposite.getRatingComposite())
+        		.addGradeSelectionObserver(new Observer<Integer>() {
+
+					@Override
+					public void changed(Integer item) {
+						SchemeComponent c = physicalComposite.getSelectedSchemeComponent();
+						if(c != null){
+							selectedInspection.setPhysicalRatingRating(c, item);
+						}
+					}
+				});
         createActions();
     }
 
