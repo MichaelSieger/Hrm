@@ -25,6 +25,7 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
 
 import de.hswt.hrm.common.database.exception.DatabaseException;
+import de.hswt.hrm.common.database.exception.ElementNotFoundException;
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.common.ui.swt.layouts.LayoutUtil;
 import de.hswt.hrm.common.ui.swt.layouts.PageContainerFillLayout;
@@ -34,302 +35,324 @@ import de.hswt.hrm.inspection.model.Layout;
 import de.hswt.hrm.inspection.service.LayoutService;
 import de.hswt.hrm.inspection.ui.dialog.PlantSelectionDialog;
 import de.hswt.hrm.plant.model.Plant;
+import de.hswt.hrm.scheme.model.Scheme;
+import de.hswt.hrm.scheme.service.SchemeService;
 
 public class ReportCreationWizardPageOne extends WizardPage {
 
-    @Inject
-    private IEclipseContext context;
+	@Inject
+	private IEclipseContext context;
 
-    @Inject
-    private IShellProvider shellProvider;
+	@Inject
+	private IShellProvider shellProvider;
 
-    @Inject
-    private LayoutService layoutService;
+	@Inject
+	private LayoutService layoutService;
 
-    private FormToolkit formToolkit;
-    private Text titleText;
-    private Text plantText;
-    private DateTime reportDateTime;
-    private DateTime inspectionDateTime;
-    private DateTime nextInspectionDateTime;
+	@Inject
+	private SchemeService schemeService;
 
-    private Inspection inspection;
+	private FormToolkit formToolkit;
+	private Text titleText;
+	private Text plantText;
+	private DateTime reportDateTime;
+	private DateTime inspectionDateTime;
+	private DateTime nextInspectionDateTime;
 
-    private boolean titleFirst = true;
+	private Inspection inspection;
 
-    private boolean plantFirst = true;
+	private boolean titleFirst = true;
 
-    private String title;
-    private Plant plant;
-    private GregorianCalendar reportDate;
-    private GregorianCalendar inspectionDate;
-    private GregorianCalendar nextInspectionDate;
-    private Layout reportStyle;
+	private boolean plantFirst = true;
 
-    private Combo reportStyleCombo;
+	private String title;
+	private Plant plant;
+	private GregorianCalendar reportDate;
+	private GregorianCalendar inspectionDate;
+	private GregorianCalendar nextInspectionDate;
+	private Layout reportStyle;
 
-    /**
-     * Create the wizard.
-     */
-    public ReportCreationWizardPageOne() {
-        super("wizardPage");
-        setTitle("Create report");
-        setDescription("Please provide the basic report informations.");
-    }
+	private Combo reportStyleCombo;
 
-    /**
-     * Create contents of the wizard.
-     * 
-     * @param parent
-     */
-    public void createControl(Composite parent) {
-        parent.setLayout(new PageContainerFillLayout());
-        parent.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+	/**
+	 * Create the wizard.
+	 */
+	public ReportCreationWizardPageOne() {
+		super("wizardPage");
+		setTitle("Create report");
+		setDescription("Please provide the basic report informations.");
+	}
 
-        formToolkit = FormUtil.createToolkit();
+	/**
+	 * Create contents of the wizard.
+	 * 
+	 * @param parent
+	 */
+	public void createControl(Composite parent) {
+		parent.setLayout(new PageContainerFillLayout());
+		parent.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 
-        Section generalSection = formToolkit.createSection(parent, Section.TITLE_BAR);
-        formToolkit.paintBordersFor(generalSection);
-        generalSection.setText("Report informations");
-        generalSection.setLayoutData(LayoutUtil.createHorzFillData());
-        FormUtil.initSectionColors(generalSection);
+		formToolkit = FormUtil.createToolkit();
 
-        Composite generalComposite = new Composite(generalSection, SWT.NONE);
-        generalComposite.setBackgroundMode(SWT.INHERIT_DEFAULT);
-        formToolkit.adapt(generalComposite);
-        formToolkit.paintBordersFor(generalComposite);
-        GridLayout gl = new GridLayout(5, false);
-        gl.marginWidth = 1;
-        generalComposite.setLayout(gl);
-        generalSection.setClient(generalComposite);
+		Section generalSection = formToolkit.createSection(parent,
+				Section.TITLE_BAR);
+		formToolkit.paintBordersFor(generalSection);
+		generalSection.setText("Report informations");
+		generalSection.setLayoutData(LayoutUtil.createHorzFillData());
+		FormUtil.initSectionColors(generalSection);
 
-        Label titleLabel = new Label(generalComposite, SWT.NONE);
-        titleLabel.setLayoutData(LayoutUtil.createLeftCenteredGridData());
-        formToolkit.adapt(titleLabel, true, true);
-        titleLabel.setText("Title");
+		Composite generalComposite = new Composite(generalSection, SWT.NONE);
+		generalComposite.setBackgroundMode(SWT.INHERIT_DEFAULT);
+		formToolkit.adapt(generalComposite);
+		formToolkit.paintBordersFor(generalComposite);
+		GridLayout gl = new GridLayout(5, false);
+		gl.marginWidth = 1;
+		generalComposite.setLayout(gl);
+		generalSection.setClient(generalComposite);
 
-        titleText = new Text(generalComposite, SWT.NONE);
-        titleText.setTextLimit(50);
-        titleText.setLayoutData(LayoutUtil.createHorzCenteredFillData(4, 1));
-        titleText.addModifyListener(new ModifyListener() {
-            @Override
-            public void modifyText(ModifyEvent e) {
-                if (titleFirst) {
-                    titleFirst = false;
-                }
-                checkPage();
-            }
-        });
-        formToolkit.adapt(titleText, true, true);
+		Label titleLabel = new Label(generalComposite, SWT.NONE);
+		titleLabel.setLayoutData(LayoutUtil.createLeftCenteredGridData());
+		formToolkit.adapt(titleLabel, true, true);
+		titleLabel.setText("Title");
 
-        Label plantLabel = new Label(generalComposite, SWT.NONE);
-        plantLabel.setLayoutData(LayoutUtil.createLeftCenteredGridData());
-        formToolkit.adapt(plantLabel, true, true);
-        plantLabel.setText("Plant");
+		titleText = new Text(generalComposite, SWT.NONE);
+		titleText.setTextLimit(50);
+		titleText.setLayoutData(LayoutUtil.createHorzCenteredFillData(4, 1));
+		titleText.addModifyListener(new ModifyListener() {
+			@Override
+			public void modifyText(ModifyEvent e) {
+				if (titleFirst) {
+					titleFirst = false;
+				}
+				checkPage();
+			}
+		});
+		formToolkit.adapt(titleText, true, true);
 
-        plantText = new Text(generalComposite, SWT.READ_ONLY);
-        plantText.setLayoutData(LayoutUtil.createHorzCenteredFillData(2, 1));
-        formToolkit.adapt(plantText, true, true);
+		Label plantLabel = new Label(generalComposite, SWT.NONE);
+		plantLabel.setLayoutData(LayoutUtil.createLeftCenteredGridData());
+		formToolkit.adapt(plantLabel, true, true);
+		plantLabel.setText("Plant");
 
-        Button plantSelectionButton = formToolkit.createButton(generalComposite, "Select plant",
-                SWT.PUSH);
-        plantSelectionButton.setLayoutData(LayoutUtil.createRightGridData(2));
-        plantSelectionButton.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                PlantSelectionDialog psd = new PlantSelectionDialog(shellProvider.getShell(),
-                        context);
-                psd.create();
+		plantText = new Text(generalComposite, SWT.READ_ONLY);
+		plantText.setLayoutData(LayoutUtil.createHorzCenteredFillData(2, 1));
+		formToolkit.adapt(plantText, true, true);
 
-                if (plantFirst) {
-                    plantFirst = false;
-                }
+		Button plantSelectionButton = formToolkit.createButton(
+				generalComposite, "Select plant", SWT.PUSH);
+		plantSelectionButton.setLayoutData(LayoutUtil.createRightGridData(2));
+		plantSelectionButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				PlantSelectionDialog psd = new PlantSelectionDialog(
+						shellProvider.getShell(), context);
+				psd.create();
 
-                if (psd.open() == Window.OK) {
-                    plant = psd.getPlant();
-                    plantText.setText(plant.getDescription());
-                }
-                else {
-                    plant = null;
-                }
-                checkPage();
-            }
-        });
+				if (plantFirst) {
+					plantFirst = false;
+				}
 
-        Label reportDateLabel = new Label(generalComposite, SWT.NONE);
-        reportDateLabel.setLayoutData(LayoutUtil.createLeftCenteredGridData());
-        formToolkit.adapt(reportDateLabel, true, true);
-        reportDateLabel.setText("Report date");
+				if (psd.open() == Window.OK) {
+					plant = psd.getPlant();
+					plantText.setText(plant.getDescription());
+				} else {
+					plant = null;
+				}
+				checkPage();
+			}
+		});
 
-        reportDateTime = new DateTime(generalComposite, SWT.BORDER | SWT.DATE | SWT.DROP_DOWN);
-        formToolkit.adapt(reportDateTime);
-        formToolkit.paintBordersFor(reportDateTime);
-        reportDateTime.setLayoutData(LayoutUtil.createHorzFillData(4));
-        reportDateTime.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                reportDate = getCalender(reportDateTime);
-                checkPage();
-            }
-        });
-        reportDate = getCalender(reportDateTime);
+		Label reportDateLabel = new Label(generalComposite, SWT.NONE);
+		reportDateLabel.setLayoutData(LayoutUtil.createLeftCenteredGridData());
+		formToolkit.adapt(reportDateLabel, true, true);
+		reportDateLabel.setText("Report date");
 
-        Label inspectionDateLabel = new Label(generalComposite, SWT.NONE);
-        inspectionDateLabel.setLayoutData(LayoutUtil.createLeftCenteredGridData());
-        formToolkit.adapt(inspectionDateLabel, true, true);
-        inspectionDateLabel.setText("Inspection data");
+		reportDateTime = new DateTime(generalComposite, SWT.BORDER | SWT.DATE
+				| SWT.DROP_DOWN);
+		formToolkit.adapt(reportDateTime);
+		formToolkit.paintBordersFor(reportDateTime);
+		reportDateTime.setLayoutData(LayoutUtil.createHorzFillData(4));
+		reportDateTime.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				reportDate = getCalender(reportDateTime);
+				checkPage();
+			}
+		});
+		reportDate = getCalender(reportDateTime);
 
-        inspectionDateTime = new DateTime(generalComposite, SWT.BORDER | SWT.DATE | SWT.DROP_DOWN);
-        formToolkit.adapt(inspectionDateTime);
-        formToolkit.paintBordersFor(inspectionDateTime);
-        inspectionDateTime.setLayoutData(LayoutUtil.createHorzFillData(4));
-        inspectionDateTime.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                inspectionDate = getCalender(inspectionDateTime);
-                checkPage();
-            }
-        });
-        inspectionDate = getCalender(inspectionDateTime);
+		Label inspectionDateLabel = new Label(generalComposite, SWT.NONE);
+		inspectionDateLabel.setLayoutData(LayoutUtil
+				.createLeftCenteredGridData());
+		formToolkit.adapt(inspectionDateLabel, true, true);
+		inspectionDateLabel.setText("Inspection data");
 
-        Label nextInspectionLabel = new Label(generalComposite, SWT.NONE);
-        nextInspectionLabel.setLayoutData(LayoutUtil.createLeftCenteredGridData());
-        formToolkit.adapt(nextInspectionLabel, true, true);
-        nextInspectionLabel.setText("Next inspection");
+		inspectionDateTime = new DateTime(generalComposite, SWT.BORDER
+				| SWT.DATE | SWT.DROP_DOWN);
+		formToolkit.adapt(inspectionDateTime);
+		formToolkit.paintBordersFor(inspectionDateTime);
+		inspectionDateTime.setLayoutData(LayoutUtil.createHorzFillData(4));
+		inspectionDateTime.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				inspectionDate = getCalender(inspectionDateTime);
+				checkPage();
+			}
+		});
+		inspectionDate = getCalender(inspectionDateTime);
 
-        nextInspectionDateTime = new DateTime(generalComposite, SWT.BORDER | SWT.DATE
-                | SWT.DROP_DOWN);
-        formToolkit.adapt(nextInspectionDateTime);
-        formToolkit.paintBordersFor(nextInspectionDateTime);
-        nextInspectionDateTime.setLayoutData(LayoutUtil.createHorzFillData());
-        nextInspectionDateTime.setYear(inspectionDateTime.getYear() + 2);
-        nextInspectionDateTime.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                nextInspectionDate = getCalender(nextInspectionDateTime);
-                checkPage();
-            }
-        });
+		Label nextInspectionLabel = new Label(generalComposite, SWT.NONE);
+		nextInspectionLabel.setLayoutData(LayoutUtil
+				.createLeftCenteredGridData());
+		formToolkit.adapt(nextInspectionLabel, true, true);
+		nextInspectionLabel.setText("Next inspection");
 
-        Button twoYearsButton = formToolkit.createButton(generalComposite, "2 years", SWT.PUSH);
-        twoYearsButton.setLayoutData(LayoutUtil.createRightGridData(2));
-        twoYearsButton.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                nextInspectionDateTime.setYear(inspectionDateTime.getYear() + 2);
-            }
-        });
+		nextInspectionDateTime = new DateTime(generalComposite, SWT.BORDER
+				| SWT.DATE | SWT.DROP_DOWN);
+		formToolkit.adapt(nextInspectionDateTime);
+		formToolkit.paintBordersFor(nextInspectionDateTime);
+		nextInspectionDateTime.setLayoutData(LayoutUtil.createHorzFillData());
+		nextInspectionDateTime.setYear(inspectionDateTime.getYear() + 2);
+		nextInspectionDateTime.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				nextInspectionDate = getCalender(nextInspectionDateTime);
+				checkPage();
+			}
+		});
 
-        Button threeYearsButton = formToolkit.createButton(generalComposite, "3 years", SWT.PUSH);
-        threeYearsButton.setLayoutData(LayoutUtil.createRightGridData());
-        threeYearsButton.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                nextInspectionDateTime.setYear(inspectionDateTime.getYear() + 3);
-            }
-        });
+		Button twoYearsButton = formToolkit.createButton(generalComposite,
+				"2 years", SWT.PUSH);
+		twoYearsButton.setLayoutData(LayoutUtil.createRightGridData(2));
+		twoYearsButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				nextInspectionDateTime.setYear(inspectionDateTime.getYear() + 2);
+			}
+		});
 
-        Label reportStyleLabel = new Label(generalComposite, SWT.NONE);
-        reportStyleLabel.setLayoutData(LayoutUtil.createLeftCenteredGridData());
-        formToolkit.adapt(reportStyleLabel, true, true);
-        reportStyleLabel.setText("Report style");
+		Button threeYearsButton = formToolkit.createButton(generalComposite,
+				"3 years", SWT.PUSH);
+		threeYearsButton.setLayoutData(LayoutUtil.createRightGridData());
+		threeYearsButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				nextInspectionDateTime.setYear(inspectionDateTime.getYear() + 3);
+			}
+		});
 
-        reportStyleCombo = new Combo(generalComposite, SWT.DROP_DOWN | SWT.READ_ONLY);
-        reportStyleCombo.setLayoutData(LayoutUtil.createHorzCenteredFillData(4));
-        formToolkit.adapt(reportStyleCombo);
-        formToolkit.paintBordersFor(reportStyleCombo);
+		Label reportStyleLabel = new Label(generalComposite, SWT.NONE);
+		reportStyleLabel.setLayoutData(LayoutUtil.createLeftCenteredGridData());
+		formToolkit.adapt(reportStyleLabel, true, true);
+		reportStyleLabel.setText("Report style");
 
-        initLayouts(reportStyleCombo);
-        setControl(generalSection);
+		reportStyleCombo = new Combo(generalComposite, SWT.DROP_DOWN
+				| SWT.READ_ONLY);
+		reportStyleCombo
+				.setLayoutData(LayoutUtil.createHorzCenteredFillData(4));
+		formToolkit.adapt(reportStyleCombo);
+		formToolkit.paintBordersFor(reportStyleCombo);
 
-        checkPage();
-    }
+		initLayouts(reportStyleCombo);
+		setControl(generalSection);
 
-    private void initLayouts(Combo combo) {
+		checkPage();
+	}
 
-        try {
-            // Obtain all layouts form the DB
-            List<Layout> layouts = (List<Layout>) layoutService.findAll();
+	private void initLayouts(Combo combo) {
 
-            String[] items = new String[layouts.size()];
-            int index = 0;
-            for (Layout l : layouts) {
-                items[index] = l.getName();
-                index++;
+		try {
+			// Obtain all layouts form the DB
+			List<Layout> layouts = (List<Layout>) layoutService.findAll();
 
-            }
-            combo.setItems(items);
-            index = 0;
-            for (String s : items) {
-                combo.setData(s, layouts.get(index));
-                index++;
-            }
-            combo.select(0);
-        }
+			String[] items = new String[layouts.size()];
+			int index = 0;
+			for (Layout l : layouts) {
+				items[index] = l.getName();
+				index++;
 
-        catch (DatabaseException e) {
-            e.printStackTrace();
-        }
+			}
+			combo.setItems(items);
+			index = 0;
+			for (String s : items) {
+				combo.setData(s, layouts.get(index));
+				index++;
+			}
+			combo.select(0);
+		}
 
-    }
+		catch (DatabaseException e) {
+			e.printStackTrace();
+		}
 
-    private void checkPage() {
-        setPageComplete(false);
+	}
 
-        boolean ok = false, firstCheck = true;
+	private void checkPage() {
+		setPageComplete(false);
 
-        if (!titleFirst) {
-            if (titleText.getText().isEmpty()) {
-                setErrorMessage("Pleade provide a title for the report.");
-                return;
-            }
-            else {
-                title = titleText.getText();
-                ok = true;
-            }
-        }
-        else {
-            firstCheck = false;
-        }
+		boolean ok = false, firstCheck = true;
 
-        if (!plantFirst) {
-            if (plant == null) {
-                setErrorMessage("Pleade select the plant of the report.");
-                return;
-            }
-            else {
-                ok = true;
-            }
-        }
-        else {
-            firstCheck = false;
-        }
+		if (!titleFirst) {
+			if (titleText.getText().isEmpty()) {
+				setErrorMessage("Pleade provide a title for the report.");
+				return;
+			} else {
+				title = titleText.getText();
+				ok = true;
+			}
+		} else {
+			firstCheck = false;
+		}
 
-        setErrorMessage(null);
-        if (ok && firstCheck) {
-            setPageComplete(true);
+		if (!plantFirst) {
+			if (plant == null) {
+				setErrorMessage("Pleade select the plant of the report.");
+				return;
+			} else {
+				ok = true;
+			}
+		} else {
+			firstCheck = false;
+		}
 
-            reportStyle = (Layout) reportStyleCombo.getData(reportStyleCombo
-                    .getItem(reportStyleCombo.getSelectionIndex()));
-            if (nextInspectionDate == null) {
-                nextInspectionDate = getCalender(nextInspectionDateTime);
-            }
-            inspection = new Inspection(reportDate, inspectionDate, nextInspectionDate, title,
-                    reportStyle, plant);
-        }
-    }
+		setErrorMessage(null);
+		if (ok && firstCheck) {
+			setPageComplete(true);
 
-    @Override
-    public void dispose() {
-        formToolkit.dispose();
-        super.dispose();
-    }
+			reportStyle = (Layout) reportStyleCombo.getData(reportStyleCombo
+					.getItem(reportStyleCombo.getSelectionIndex()));
+			if (nextInspectionDate == null) {
+				nextInspectionDate = getCalender(nextInspectionDateTime);
+			}
 
-    protected Inspection getInspection() {
-        return inspection;
-    }
+			try {
+				Scheme currentScheme = schemeService
+						.findCurrentSchemeByPlant(plant);
+				inspection = new Inspection(reportDate, inspectionDate,
+						nextInspectionDate, title, reportStyle, plant,
+						currentScheme);
+			} catch (ElementNotFoundException e) {
+				e.printStackTrace();
+			} catch (DatabaseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
-    private GregorianCalendar getCalender(DateTime date) {
-        return new GregorianCalendar(date.getYear(), date.getMonth(), date.getDay());
-    }
+		}
+	}
+
+	@Override
+	public void dispose() {
+		formToolkit.dispose();
+		super.dispose();
+	}
+
+	protected Inspection getInspection() {
+		return inspection;
+	}
+
+	private GregorianCalendar getCalender(DateTime date) {
+		return new GregorianCalendar(date.getYear(), date.getMonth(),
+				date.getDay());
+	}
 }
