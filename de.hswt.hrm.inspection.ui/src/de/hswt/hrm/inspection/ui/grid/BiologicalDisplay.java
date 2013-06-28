@@ -21,11 +21,9 @@ public class BiologicalDisplay extends RatingDisplay{
 		schemeGrid.clearColors();
 		Color[] colors = getColors();
 		for(BiologicalRating rating : ratings){
-			//TODO
-			SchemeComponent c = null;
 			int r = rating.getRating();
 			Preconditions.checkArgument(r >= 0 && r < colors.length);
-			schemeGrid.setColor(c, colors[r]);
+			schemeGrid.setColor(rating.getComponent(), colors[r]);
 		}
 	}
 	

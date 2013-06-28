@@ -21,9 +21,8 @@ public class PhysicalRating extends RatingDisplay{
 		Color[] colors = getColors();
 		for(BiologicalRating r : ratings){
 			int grade = r.getRating();
-			SchemeComponent comp = null;
 			Preconditions.checkArgument(grade >= 0 && grade < colors.length);
-			grid.setColor(comp, colors[grade]);
+			grid.setColor(r.getComponent(), colors[grade]);
 		}
 	}
 
