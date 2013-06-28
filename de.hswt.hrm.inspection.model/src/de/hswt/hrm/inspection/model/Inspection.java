@@ -571,4 +571,9 @@ public class Inspection {
         return true;
     }
 
+	public void setPhysicalRatingRating(SchemeComponent c, Integer item) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
