@@ -9,6 +9,7 @@ import com.google.common.base.Throwables;
 
 import de.hswt.hrm.common.BundleUtil;
 import de.hswt.hrm.component.model.Component;
+import de.hswt.hrm.inspection.model.SamplingPointType;
 import de.hswt.hrm.scheme.model.RenderedComponent;
 import de.hswt.hrm.scheme.service.ComponentConverter;
 
@@ -43,6 +44,34 @@ public class SamplingPoints {
 			throw Throwables.propagate(e);
 		}
 		
+	}
+	
+	public RenderedComponent getRenderedComponent(SamplingPointType type, boolean isEven){
+		RenderedComponent comp;
+		int index = (isEven ? 1 : 0);
+		switch(type){
+		case airMeasurement:
+			comp = airMeasurement[index];
+			break;
+		case waterAnalysis:
+			comp = waterAnalysis[index];
+			break;
+		case contactCulture:
+			comp = contactCulture[index];
+			break;
+		case photo:
+			comp = photo[index];
+			break;
+		case climateParameter:
+			comp = climateParameter[index];
+			break;
+		case dustConcentration:
+			comp = dustConcentration[index];
+			break;
+		default:
+			throw new RuntimeException("Unknown SamplingPointType");
+		}
+		return comp;
 	}
 	
 	private byte[] getBytes(String fname) throws IOException{
