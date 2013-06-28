@@ -35,6 +35,8 @@ import com.google.common.base.Function;
 import com.google.common.base.Throwables;
 import com.google.common.collect.Collections2;
 
+import de.hswt.hrm.catalog.model.Catalog;
+import de.hswt.hrm.catalog.service.CatalogService;
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.ElementNotFoundException;
 import de.hswt.hrm.common.observer.Observer;
@@ -71,7 +73,7 @@ public class InspectionPart {
 
     @Inject
     private ReportService reportService;
-
+    
     private FormToolkit formToolkit = new FormToolkit(Display.getDefault());
 
     private Form form;
@@ -313,22 +315,6 @@ public class InspectionPart {
 		final ReportPerformanceComposite rpc = (ReportPerformanceComposite) performanceComposite
 				.getRatingComposite();
 		rpc.setComponentsList(performanceComposite.getComponentsList());
-		rpc.getComponentsList().getList()
-				.addSelectionListener(new SelectionAdapter() {
-					@Override
-					public void widgetSelected(SelectionEvent e) {
-						IStructuredSelection selection = (IStructuredSelection) rpc
-								.getComponentsList().getSelection();
-						if (selection == null) {
-							return;
-						}
-						SchemeComponent sc = (SchemeComponent) selection
-								.getFirstElement();
-						System.out.println(sc.getComponent().getCategory()
-								.get().getCatalog());
-					}
-				});
-		
 		
     }
 

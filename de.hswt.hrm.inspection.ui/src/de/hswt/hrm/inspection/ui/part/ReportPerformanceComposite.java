@@ -30,6 +30,8 @@ import de.hswt.hrm.catalog.model.Catalog;
 import de.hswt.hrm.catalog.model.Current;
 import de.hswt.hrm.catalog.model.ICatalogItem;
 import de.hswt.hrm.catalog.model.Target;
+import de.hswt.hrm.catalog.service.CatalogService;
+import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.common.ui.swt.layouts.LayoutUtil;
 import de.hswt.hrm.component.model.Component;
@@ -48,9 +50,13 @@ public class ReportPerformanceComposite extends
 	private IEclipseContext context;
 
 	@Inject
+	private CatalogService catalogService;
+
+	@Inject
 	private IShellProvider shellProvider;
 
 	private ListViewer componentsList;
+	private ListViewer targetListViewer;
 
 	private FormToolkit formToolkit = new FormToolkit(Display.getDefault());
 
@@ -94,7 +100,7 @@ public class ReportPerformanceComposite extends
 		FormUtil.initSectionColors(targetSection);
 		targetSection.setText("Targets");
 
-		ListViewer targetListViewer = new ListViewer(targetSection, SWT.BORDER
+		targetListViewer = new ListViewer(targetSection, SWT.BORDER
 				| SWT.V_SCROLL);
 		List targetList = targetListViewer.getList();
 		targetSection.setClient(targetList);
@@ -174,7 +180,6 @@ public class ReportPerformanceComposite extends
 		initalizeListViewer(targetListViewer);
 		initalizeListViewer(activityListViewer);
 		initalizeListViewer(currentListViewer);
-
 	}
 
 	private void initalizeListViewer(ListViewer viewer) {
@@ -207,6 +212,32 @@ public class ReportPerformanceComposite extends
 
 	public void setComponentsList(ListViewer componentsList) {
 		this.componentsList = componentsList;
+		initalize();
+	}
+
+	public void initalize() {
+		componentsList.getList().addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				IStructuredSelection selection = (IStructuredSelection) componentsList
+						.getSelection();
+				if (selection == null) {
+					return;
+				}
+				SchemeComponent sc = (SchemeComponent) selection
+						.getFirstElement();
+				Catalog c = sc.getComponent().getCategory().get().getCatalog()
+						.get();
+				try {
+					System.out.println(c.getName());
+					targetListViewer.setInput(catalogService
+							.findTargetByCatalog(c));
+				} catch (DatabaseException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
 	}
 
 	public ListViewer getComponentsList() {
