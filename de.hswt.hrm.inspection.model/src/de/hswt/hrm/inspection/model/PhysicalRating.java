@@ -21,19 +21,18 @@ public class PhysicalRating {
     private static final String INVALID_LENGTH = "Empty String is not allowed !";
 
     public PhysicalRating(int id, Inspection inspection, SchemeComponent component, int rating,
-            String note, int quantifier) {
+            int quantifier) {
 
         this.id = id;
         setInspection(inspection);
         setComponent(component);
         setRating(rating);
-        setNote(note);
         setQuantifier(quantifier);
     }
 
     public PhysicalRating(Inspection inspection, SchemeComponent component, int rating,
-            String note, int quantifier) {
-        this(-1, inspection, component, rating, note, quantifier);
+            int quantifier) {
+        this(-1, inspection, component, rating, quantifier);
     }
 
     public int getRating() {
