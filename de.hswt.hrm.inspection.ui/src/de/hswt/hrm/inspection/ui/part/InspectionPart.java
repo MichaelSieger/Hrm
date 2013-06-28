@@ -180,6 +180,7 @@ public class InspectionPart {
 
         performanceComposite = new ComponentSelectionComposite(tabFolder,
                 ReportPerformanceComposite.class);
+      
         ContextInjectionFactory.inject(performanceComposite, context);
         performanceTab.setControl(performanceComposite);
         tabFolder.addSelectionListener(new SelectionAdapter() {
@@ -193,7 +194,17 @@ public class InspectionPart {
                 }
             }
         });
-
+        ReportBiologicalComposite c = (ReportBiologicalComposite) biologicalComposite.getRatingComposite();
+        c.addGradeSelectionObserver(new Observer<Integer>() {
+			
+			@Override
+			public void changed(Integer item) {
+				SchemeComponent c = biologicalComposite.getSelectedSchemeComponent();
+				if(c != null){
+					selectedInspection.setBiologicalRatingRating(c, item);
+				}
+			}
+		});
         createActions();
     }
 

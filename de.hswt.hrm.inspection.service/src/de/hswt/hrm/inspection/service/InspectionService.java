@@ -15,6 +15,7 @@ import de.hswt.hrm.inspection.model.BiologicalRating;
 import de.hswt.hrm.inspection.model.Inspection;
 import de.hswt.hrm.inspection.model.Performance;
 import de.hswt.hrm.inspection.model.PhysicalRating;
+import de.hswt.hrm.scheme.model.Scheme;
 
 @Creatable
 public class InspectionService {
@@ -49,6 +50,10 @@ public class InspectionService {
     }
     
     public Collection<Performance> findPerformance(Inspection inspection) {
+    	throw new NotImplementedException();
+    }
+    
+    public Scheme findScheme(Inspection inspection) {
     	throw new NotImplementedException();
     }
 }

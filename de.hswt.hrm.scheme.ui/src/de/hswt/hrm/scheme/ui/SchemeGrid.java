@@ -405,13 +405,19 @@ public class SchemeGrid extends DoubleBufferedCanvas {
 		this.height = h;
 	}
 	
-	public void setColorGrid(Color shadowColor, double x, double y, double w, double h, boolean fill, boolean snapToGrid){
-		colors.add(new Colorbox(x, y, w, h, shadowColor, fill));
+	public Colorbox setColorGrid(Color shadowColor, double x, double y, double w, double h, boolean fill, boolean snapToGrid){
+		Colorbox c = new Colorbox(x, y, w, h, shadowColor, fill);
+		colors.add(c);
 		this.redraw();
+		return c;
 	}
 	
 	public void setColorPixel(Color shadowColor, double x, double y, double w, double h){
 		setColorPixel(shadowColor, x, y, w, h, true, true);
+	}
+	
+	public void removeColorbox(Colorbox c){
+		colors.remove(c);
 	}
 
 	/**
@@ -520,5 +526,11 @@ public class SchemeGrid extends DoubleBufferedCanvas {
 	
 	public void removeModifyListener(ModifyListener listener) {
 		modifyListeners.remove(listener);
+	}
+
+
+	public void addColorbox(Colorbox c) {
+		colors.add(c);
+		this.redraw();
 	}
 }
