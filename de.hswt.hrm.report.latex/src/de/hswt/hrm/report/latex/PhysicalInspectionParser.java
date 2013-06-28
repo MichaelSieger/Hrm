@@ -104,8 +104,8 @@ public class PhysicalInspectionParser {
             preTarget = preTarget.replace(
                     RATING,
                     String.valueOf(Math.round(10F * Float.valueOf(rating.getRating())
-                            * Float.valueOf(rating.getQuantifier())) % 10F));
-            preTarget = preTarget.replace(PHYS_COMMENT, rating.getNote());
+                            * Float.valueOf(rating.getQuantifier())) / 10F));
+            preTarget = preTarget.replace(PHYS_COMMENT, rating.getNote().or("-");
             targetRow.append(preTarget);
 
         }

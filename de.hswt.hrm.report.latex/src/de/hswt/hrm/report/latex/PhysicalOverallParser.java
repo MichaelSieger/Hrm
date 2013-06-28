@@ -25,6 +25,7 @@ public class PhysicalOverallParser {
 
     private float inspection_av;
     private float param_av;
+    private float overall_av;
 
     private String path;
 
@@ -48,7 +49,12 @@ public class PhysicalOverallParser {
 
         this.inspection_av = inspectionParser.getTotalGrade(this.path);
         this.param_av = paramParser.getTotalGrade();
-
+        if (!(param_av == -1)) {
+            this.overall_av = Math.round((this.inspection_av + this.param_av) / 2 * 10F) / 10F;
+        }
+        else {
+            this.overall_av = Math.round(this.inspection_av * 10F) / 10F;
+        }
         prop.load(Files.newInputStream(Paths.get(path, FILE_DIR, FILE_NAME_PROP)));
 
         bufferRow.setLength(0);
@@ -56,8 +62,10 @@ public class PhysicalOverallParser {
         bufferRow.append(prop.getProperty("physical.overall.inspection").replace(
                 INSPECTION_RATING_AV, String.valueOf(this.inspection_av)));
         bufferRow.append("\n");
-        bufferRow.append(prop.getProperty("physical.overall.parameter").replace(PARAM_RATING_AV,
-                String.valueOf(this.param_av)));
+        if (!(this.param_av == -1)) {
+            bufferRow.append(prop.getProperty("physical.overall.parameter").replace(
+                    PARAM_RATING_AV, String.valueOf(this.param_av)));
+        }
 
         bufferTable.setLength(0);
         Path pathTable = FileSystems.getDefault().getPath(this.path, FILE_DIR, FILE_NAME_TABLE);
@@ -73,8 +81,7 @@ public class PhysicalOverallParser {
 
         String target = bufferTable.toString();
         target = target.replace(ROWS, bufferRow.toString());
-        target = target.replace(OVERALL_RATING,
-                String.valueOf(Math.round((this.inspection_av + this.param_av) / 2 * 10F) / 10F));
+        target = target.replace(OVERALL_RATING, String.valueOf(this.overall_av));
 
         return target;
     }
