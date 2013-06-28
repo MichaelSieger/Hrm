@@ -29,7 +29,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.hswt.hrm.catalog.model.Catalog;
+import de.hswt.hrm.catalog.model.Current;
 import de.hswt.hrm.catalog.model.ICatalogItem;
+import de.hswt.hrm.catalog.model.Target;
 import de.hswt.hrm.catalog.service.CatalogService;
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
@@ -60,7 +62,7 @@ public class ReportPerformanceComposite extends AbstractComponentRatingComposite
     private ListViewer activityListViewer;
 
     private FormToolkit formToolkit = new FormToolkit(Display.getDefault());
-    
+
     private static final Logger LOG = LoggerFactory.getLogger(ReportPerformanceComposite.class);
 
     /**
@@ -176,7 +178,7 @@ public class ReportPerformanceComposite extends AbstractComponentRatingComposite
         initalizeListViewer(targetListViewer);
         initalizeListViewer(activityListViewer);
         initalizeListViewer(currentListViewer);
-        targetList.setEnabled(false);
+        currentList.setEnabled(false);
         activityList.setEnabled(false);
     }
 
@@ -194,7 +196,6 @@ public class ReportPerformanceComposite extends AbstractComponentRatingComposite
 
     @Override
     protected void checkSubclass() {
-        // Disable the check that prevents subclassing of SWT components
     }
 
     @Override
@@ -205,7 +206,6 @@ public class ReportPerformanceComposite extends AbstractComponentRatingComposite
 
     @Override
     public void setSelectedComponent(Component component) {
-        // TODO Auto-generated method stub
     }
 
     public void setComponentsList(ListViewer componentsList) {
@@ -227,7 +227,51 @@ public class ReportPerformanceComposite extends AbstractComponentRatingComposite
                 try {
 
                     targetListViewer.setInput(catalogService.findTargetByCatalog(c));
+                    currentListViewer.getList().removeAll();
+                    activityListViewer.getList().removeAll();
+                    currentListViewer.getList().setEnabled(false);
+                    activityListViewer.getList().setEnabled(false);
 
+                }
+                catch (DatabaseException e1) {
+                    LOG.debug("An error occured", e);
+                }
+            }
+        });
+        targetListViewer.getList().addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                IStructuredSelection selection = (IStructuredSelection) targetListViewer
+                        .getSelection();
+                if (selection == null) {
+                    return;
+                }
+                Target t = (Target) selection.getFirstElement();
+
+                try {
+
+                    currentListViewer.setInput(catalogService.findCurrentByTarget(t));
+                    currentListViewer.getList().setEnabled(true);
+                }
+                catch (DatabaseException e1) {
+                    LOG.debug("An error occured", e);
+                }
+            }
+        });
+        currentListViewer.getList().addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                IStructuredSelection selection = (IStructuredSelection) currentListViewer
+                        .getSelection();
+                if (selection == null) {
+                    return;
+                }
+                Current c = (Current) selection.getFirstElement();
+
+                try {
+
+                    activityListViewer.setInput(catalogService.findActivityByCurrent(c));
+                    activityListViewer.getList().setEnabled(true);
                 }
                 catch (DatabaseException e1) {
                     LOG.debug("An error occured", e);
