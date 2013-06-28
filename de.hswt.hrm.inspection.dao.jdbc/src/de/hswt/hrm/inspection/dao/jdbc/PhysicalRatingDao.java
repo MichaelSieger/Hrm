@@ -106,6 +106,7 @@ public class PhysicalRatingDao implements IPhysicalRatingDao {
 
     @Override
     public PhysicalRating insert(PhysicalRating physicalRating) throws SaveException {
+        checkNotNull(physicalRating, "BiologicalRating must not be null.");
         checkState(physicalRating.isValid(), "Physical Rating is invalid");
 
         SqlQueryBuilder builder = new SqlQueryBuilder();
