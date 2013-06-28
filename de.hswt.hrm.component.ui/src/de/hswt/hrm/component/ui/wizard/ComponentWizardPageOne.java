@@ -330,6 +330,7 @@ public class ComponentWizardPageOne extends WizardPage {
 			return;
 		}
 		setPageComplete(true);
+		setErrorMessage(null);
 	}
 
 	public String getName() {
