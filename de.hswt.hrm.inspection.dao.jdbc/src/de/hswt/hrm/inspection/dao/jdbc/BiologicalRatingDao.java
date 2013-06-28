@@ -21,28 +21,28 @@ import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.ElementNotFoundException;
 import de.hswt.hrm.common.database.exception.SaveException;
 import de.hswt.hrm.common.exception.NotImplementedException;
-import de.hswt.hrm.component.dao.core.IComponentDao;
-import de.hswt.hrm.component.model.Component;
 import de.hswt.hrm.inspection.dao.core.IBiologicalRatingDao;
 import de.hswt.hrm.inspection.dao.core.IInspectionDao;
 import de.hswt.hrm.inspection.model.BiologicalRating;
 import de.hswt.hrm.inspection.model.Inspection;
+import de.hswt.hrm.scheme.dao.core.ISchemeComponentDao;
+import de.hswt.hrm.scheme.model.SchemeComponent;
 
 public class BiologicalRatingDao implements IBiologicalRatingDao {
 	private final static Logger LOG = LoggerFactory.getLogger(BiologicalRatingDao.class);
 	private final IInspectionDao inspectionDao;
-	private final IComponentDao componentDao;
+	private final ISchemeComponentDao schemeComponentDao;
 
     public BiologicalRatingDao(final IInspectionDao inspectionDao, 
-    		final IComponentDao componentDao) {
+    		final ISchemeComponentDao schemeComponentDao) {
     	
     	checkNotNull(inspectionDao, "InspectionDao not properly injected to BiologicalRatingDao");
-        checkNotNull(componentDao, "ComponentDao not properly injected to BiologicalRatingDao");
+        checkNotNull(schemeComponentDao, "SchemeComponentDao not properly injected to BiologicalRatingDao");
 
         this.inspectionDao = inspectionDao;
         LOG.debug("InspectionDao injected into BiologicalRatingDao.");
-        this.componentDao = componentDao;
-        LOG.debug("ComponentDao injected into BiologicalRatingDao.");
+        this.schemeComponentDao = schemeComponentDao;
+        LOG.debug("SchemeComponentDao injected into BiologicalRatingDao.");
     }
 
     @Override
@@ -237,7 +237,7 @@ public class BiologicalRatingDao implements IBiologicalRatingDao {
             String comment = rs.getString(Fields.COMMENT);
             int componentId = JdbcUtil.getId(rs, Fields.FK_COMPONENT);
             checkState(componentId >= 0, "Invalid component ID returned from database");
-            Component component = componentDao.findById(componentId);
+            SchemeComponent component = schemeComponentDao.findById(componentId);
             int inspectionId = JdbcUtil.getId(rs, Fields.FK_REPORT);
             checkState(inspectionId >= 0, "Invalid report ID returned from database.");
             Inspection inspection = inspectionDao.findById(inspectionId);

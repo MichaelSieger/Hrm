@@ -97,14 +97,15 @@ public class PhysicalInspectionParser {
             this.sumRatings += rating.getRating();
             this.sumQuantifier += rating.getQuantifier();
             preTarget = buffer.toString();
-            preTarget.replace(INSPECTOIN_SAMPLE_POINT, rating.getComponent().getName());
-            preTarget.replace(GRADE, String.valueOf(rating.getRating()));
-            preTarget.replace(WHEIGHTING, String.valueOf(rating.getQuantifier()));
-            preTarget.replace(
+            preTarget = preTarget.replace(INSPECTOIN_SAMPLE_POINT, 
+            		rating.getComponent().getComponent().getName());
+            preTarget = preTarget.replace(GRADE, String.valueOf(rating.getRating()));
+            preTarget = preTarget.replace(WHEIGHTING, String.valueOf(rating.getQuantifier()));
+            preTarget = preTarget.replace(
                     RATING,
                     String.valueOf(Math.round(10F * Float.valueOf(rating.getRating())
                             * Float.valueOf(rating.getQuantifier())) % 10F));
-            preTarget.replace(PHYS_COMMENT, rating.getNote());
+            preTarget = preTarget.replace(PHYS_COMMENT, rating.getNote());
             targetRow.append(preTarget);
 
         }

@@ -289,7 +289,7 @@ public class TargetDao implements ITargetDao {
         public static final String ID = "State_Target_ID";
         public static final String NAME = "State_Target_Name";
         public static final String TEXT = "State_Target_Text";
-        public static final String CROSS_CATALOG_FK = "Category_Target_Catalog_FK";
-        public static final String CROSS_TARGET_FK = "Category_Target_State_Target_FK";
+        public static final String CROSS_CATALOG_FK = "Catalog_Target_Catalog_FK";
+        public static final String CROSS_TARGET_FK = "Catalog_Target_State_Target_FK";
     }
 }

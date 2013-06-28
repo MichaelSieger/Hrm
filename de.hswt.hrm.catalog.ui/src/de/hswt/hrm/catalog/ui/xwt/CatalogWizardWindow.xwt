@@ -12,9 +12,9 @@
 					<GridLayout numColumns="4"/>
 				</Composite.layout>
 				<Label/>
-				<Button x:Style="RADIO" text="Target______" x:Name="target"/>
-				<Button x:Style="RADIO" text="Current_____" x:Name="current"/>
-				<Button x:Style="RADIO" text="Activity____" x:Name="activity"/>
+				<Button x:Style="RADIO" text="Target" x:Name="target"/>
+				<Button x:Style="RADIO" text="Current" x:Name="current"/>
+				<Button x:Style="RADIO" text="Activity_______" x:Name="activity"/>
 				<Label text="Name__" x:Name="lblName"/>
 				<Text x:Style="BORDER" x:Name="name">
 					<Text.layoutData>

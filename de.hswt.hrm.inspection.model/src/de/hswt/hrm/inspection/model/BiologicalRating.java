@@ -4,12 +4,12 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Strings.isNullOrEmpty;
 
-import de.hswt.hrm.component.model.Component;
+import de.hswt.hrm.scheme.model.SchemeComponent;
 
 public class BiologicalRating {
 
     private final int id;
-    private Component component;
+    private SchemeComponent component;
     private Inspection inspection;
     private int bacteriaCount;
     private int rating;
@@ -20,7 +20,7 @@ public class BiologicalRating {
     private static final String IS_MANDATORY = "Field is a mandatory.";
     private static final String INVALID_NUMBER = "%d is an invalid number.%n Must be greater 0";
 
-    public BiologicalRating(int id, Inspection inspection, Component component, int bacteriaCount,
+    public BiologicalRating(int id, Inspection inspection, SchemeComponent component, int bacteriaCount,
     		int rating, int quantifier, String comment, String flag) {
         this.id = id;
         setInspection(inspection);
@@ -32,16 +32,16 @@ public class BiologicalRating {
         setFlag(flag);
     }
 
-    public BiologicalRating(Inspection inspection, Component component, int bacteriaCount,
+    public BiologicalRating(Inspection inspection, SchemeComponent component, int bacteriaCount,
     		int rating, int quantifier, String comment, String flag) {
         this(-1, inspection, component, bacteriaCount, rating, quantifier, comment, flag);
     }
 
-    public Component getComponent() {
+    public SchemeComponent getComponent() {
         return component;
     }
 
-    public void setComponent(Component component) {
+    public void setComponent(SchemeComponent component) {
         checkNotNull(component);
         this.component = component;
     }

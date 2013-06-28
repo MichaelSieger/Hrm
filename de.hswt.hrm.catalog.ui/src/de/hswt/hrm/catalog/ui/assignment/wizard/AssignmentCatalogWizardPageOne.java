@@ -2,7 +2,6 @@ package de.hswt.hrm.catalog.ui.assignment.wizard;
 
 import java.net.URL;
 import java.util.Collection;
-import java.util.LinkedList;
 
 import javax.inject.Inject;
 
@@ -68,7 +67,6 @@ public class AssignmentCatalogWizardPageOne extends WizardPage {
         }
 
         nameText = (Text) XWT.findElementByName(container, "name");
-        
 
         if (this.catalog.isPresent()) {
             updateFields();
@@ -79,12 +77,11 @@ public class AssignmentCatalogWizardPageOne extends WizardPage {
         catch (DatabaseException e) {
             LOG.error("An error occured", e);
         }
-       
-        
+
         FormUtil.initSectionColors((Section) XWT.findElementByName(container, "Mandatory"));
         addKeyListener(nameText);
         setControl(container);
-       // setPageComplete(false);
+        setPageComplete(false);
         checkPageComplete();
 
     }
@@ -110,11 +107,11 @@ public class AssignmentCatalogWizardPageOne extends WizardPage {
 
     private void checkPageComplete() {
 
-//        if (first) {
-//            first = false;
-//            setPageComplete(false);
-//            return;
-//        }
+        if (first) {
+            first = false;
+            setPageComplete(false);
+            return;
+        }
 
         setErrorMessage(null);
 
@@ -136,19 +133,20 @@ public class AssignmentCatalogWizardPageOne extends WizardPage {
             present = true;
         }
 
-        if(!catalog.isPresent()){
-	        for (Catalog e : this.catalogs) {
-	            if (e.getName().equals(text)) {
-	                present = true;
-	            }
-	        }
-        }else{
-        	for (Catalog e : this.catalogs) {
-	            if (e.getName().equals(text) && e.getId() != catalog.get().getId()) {
-	                present = true;
-	            }
-	        }     	
-        	
+        if (!catalog.isPresent()) {
+            for (Catalog e : this.catalogs) {
+                if (e.getName().equals(text)) {
+                    present = true;
+                }
+            }
+        }
+        else {
+            for (Catalog e : this.catalogs) {
+                if (e.getName().equals(text) && e.getId() != catalog.get().getId()) {
+                    present = true;
+                }
+            }
+
         }
 
         return present;

@@ -102,8 +102,6 @@ public class CatalogAssignmentComposite extends Composite {
     private List<Current> tempCurrent;
 
     private List<Activity> tempActivity;
-    
-    private Collection<Catalog> catalogs;
 
     private Catalog selectedCatalog;
 
@@ -502,6 +500,10 @@ public class CatalogAssignmentComposite extends Composite {
                     return;
                 }
                 obtainTargets(selectedCatalog);
+                assignedCurrent.getList().removeAll();
+                availableCurrent.getList().removeAll();
+                availableActivity.getList().removeAll();
+                assignedActivity.getList().removeAll();
 
             }
 
@@ -529,12 +531,13 @@ public class CatalogAssignmentComposite extends Composite {
             }
         });
 
-        obtainData();
-        initListViewers();
+        refresh();
 
     }
 
-    private void initListViewers() {
+    public void refresh() {
+
+        obtainData();
         initializeCatalogViewer(catalog);
         initalize(availableActivity);
         initalize(availableCurrent);
@@ -749,7 +752,7 @@ public class CatalogAssignmentComposite extends Composite {
         catch (DatabaseException e) {
             LOG.error("An error occured", e);
         }
-        moveItem(item, assignedCurrent, availableCurrent);
+        moveItem(item, assignedActivity, availableActivity);
     }
 
     private void moveItem(ICatalogItem item, ListViewer source, ListViewer destination) {
@@ -857,7 +860,7 @@ public class CatalogAssignmentComposite extends Composite {
         searchFilter.setSearchString(filterString);
         viewer.refresh();
     }
-    
+
     public void addCatalog() {
         Catalog catalog = null;
 
@@ -866,26 +869,27 @@ public class CatalogAssignmentComposite extends Composite {
 
         if (newCatalog.isPresent()) {
             catalogsFromDB.add(newCatalog.get());
-           this.catalog.refresh();
+            this.catalog.refresh();
         }
     }
+
     public void editCatalog() {
-    	IStructuredSelection selection = (IStructuredSelection) catalog.getSelection();
-        Catalog selectedCatalog = (Catalog)selection.getFirstElement();
+        IStructuredSelection selection = (IStructuredSelection) catalog.getSelection();
+        Catalog selectedCatalog = (Catalog) selection.getFirstElement();
         if (selectedCatalog == null) {
             return;
         }
-//   FIXME   try{
-//    	  catalogService.refresh(selectedCatalog);
-//    	  Optional<Catalog> updatedCatalog = CatalogPartUtil.showWizardForAssignment(context,
-//    	  shellProvider.getShell(), Optional.of(selectedCatalog));
-//		
-//		 if (updatedCatalog.isPresent()) {
-//			 this.catalog.refresh();
-//		 }
-//      } catch (DatabaseException e) {
-//          LOG.error("Could not retrieve the Catalog from database.", e);
-//         }
+        // FIXME try{
+        // catalogService.refresh(selectedCatalog);
+        // Optional<Catalog> updatedCatalog = CatalogPartUtil.showWizardForAssignment(context,
+        // shellProvider.getShell(), Optional.of(selectedCatalog));
+        //
+        // if (updatedCatalog.isPresent()) {
+        // this.catalog.refresh();
+        // }
+        // } catch (DatabaseException e) {
+        // LOG.error("Could not retrieve the Catalog from database.", e);
+        // }
     }
 
 }

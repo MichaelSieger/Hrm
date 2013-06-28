@@ -1,15 +1,8 @@
 package de.hswt.hrm.component.ui.part;
 
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.sql.Blob;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-
-import javax.imageio.ImageIO;
-import javax.inject.Inject;
-import javax.sql.rowset.serial.SerialBlob;
 
 import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
@@ -37,7 +30,7 @@ public final class ComponentCompositeUtil {
     public static Optional<Component> showWizard(ComponentService compSer, CategoryService catSer, IEclipseContext context, Shell shell,
             Optional<Component> component) {
     	
-        ComponentWizard cw = new ComponentWizard(component, compSer);
+        ComponentWizard cw = new ComponentWizard(component);
         ContextInjectionFactory.inject(cw, context);
 
         WizardDialog wd = WizardCreator.createWizardDialog(shell, cw);

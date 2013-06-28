@@ -24,6 +24,8 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.VerifyEvent;
+import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -56,6 +58,8 @@ import de.hswt.hrm.inspection.service.InspectionService;
 import de.hswt.hrm.inspection.service.LayoutService;
 import de.hswt.hrm.inspection.ui.dialog.ContactSelectionDialog;
 import de.hswt.hrm.inspection.ui.dialog.PlantSelectionDialog;
+import de.hswt.hrm.misc.comment.model.Comment;
+import de.hswt.hrm.misc.comment.service.CommentService;
 import de.hswt.hrm.photo.model.Photo;
 import de.hswt.hrm.photo.ui.wizard.PhotoWizard;
 import de.hswt.hrm.plant.model.Plant;
@@ -71,6 +75,9 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
 
     @Inject
     private SummaryService evaluationService;
+
+    @Inject
+    private CommentService commentService;
 
     @Inject
     private LayoutService layoutService;
@@ -236,9 +243,12 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
         // => see pictures in Redmine
 
         // PERSONS
-        // Button select customer => opens wizard with contacts to select contact
-        // Button select requester => opens wizard with contacts to select contact
-        // Button select controller => opens wizard with contacts to select contact
+        // Button select customer => opens wizard with contacts to select
+        // contact
+        // Button select requester => opens wizard with contacts to select
+        // contact
+        // Button select controller => opens wizard with contacts to select
+        // contact
 
         // VISUAL
         // combo to select report style
@@ -365,6 +375,7 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
 
         overallCombo = new Combo(generalComposite, SWT.NONE);
         overallCombo.setLayoutData(LayoutUtil.createHorzCenteredFillData(4));
+        initSummaryAutoCompletion(overallCombo);
         formToolkit.adapt(overallCombo);
         formToolkit.paintBordersFor(overallCombo);
         initializePhotosList();
@@ -770,28 +781,42 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
         legionellaText = new Text(biologicalComposite, SWT.NONE);
         legionellaText.setLayoutData(LayoutUtil.createHorzCenteredFillData());
         formToolkit.adapt(legionellaText, true, true);
-        // TODO only numbers (double), fill with value if exists
+        legionellaText.addVerifyListener(new VerifyListener() {
+            public void verifyText(VerifyEvent e) {
+
+                // Get the character typed
+                char enteredChar = e.character;
+
+                // Allow 0-9
+                if (Character.isDigit(enteredChar) || enteredChar == '.'
+                        || Character.isISOControl(enteredChar)) {
+                    e.doit = true;
+                }
+                else {
+                    e.doit = false;
+                }
+
+            }
+        });
 
         legionellaGradeCombo = new Combo(biologicalComposite, SWT.DROP_DOWN | SWT.READ_ONLY);
         legionellaGradeCombo.setLayoutData(LayoutUtil.createHorzFillData());
         formToolkit.adapt(legionellaGradeCombo);
         formToolkit.paintBordersFor(legionellaGradeCombo);
         fillGrades(legionellaGradeCombo);
-        // TODO select grade if exists
 
         legionellaWeightCombo = new Combo(biologicalComposite, SWT.DROP_DOWN | SWT.READ_ONLY);
         legionellaWeightCombo.setLayoutData(LayoutUtil.createHorzFillData());
         formToolkit.adapt(legionellaWeightCombo);
         formToolkit.paintBordersFor(legionellaWeightCombo);
         fillWeights(legionellaWeightCombo);
-        // TODO select weight if exists
 
         legionellaCommentCombo = new Combo(biologicalComposite, SWT.NONE);
         legionellaCommentCombo.setLayoutData(LayoutUtil.createHorzFillData());
+        initCommentAutoCompletion(legionellaCommentCombo);
         formToolkit.adapt(legionellaCommentCombo);
         formToolkit.paintBordersFor(legionellaCommentCombo);
         ContentProposalUtil.enableContentProposal(legionellaCommentCombo);
-        // TODO set comment if exists
 
         Label sumGermsLabel = new Label(biologicalComposite, SWT.NONE);
         sumGermsLabel.setLayoutData(LayoutUtil.createLeftCenteredGridData());
@@ -801,28 +826,43 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
         sumGermsText = new Text(biologicalComposite, SWT.NONE);
         sumGermsText.setLayoutData(LayoutUtil.createHorzCenteredFillData());
         formToolkit.adapt(sumGermsText, true, true);
-        // TODO only numbers (double), fill with value if exists
+        sumGermsText.addVerifyListener(new VerifyListener() {
+            public void verifyText(VerifyEvent e) {
+
+                // Get the character typed
+                char enteredChar = e.character;
+
+                // Allow 0-9
+                if (Character.isDigit(enteredChar) || enteredChar == '.'
+                        || Character.isISOControl(enteredChar)) {
+                    e.doit = true;
+                }
+                else {
+                    e.doit = false;
+                }
+
+            }
+        });
 
         sumGermsGradeCombo = new Combo(biologicalComposite, SWT.DROP_DOWN | SWT.READ_ONLY);
         sumGermsGradeCombo.setLayoutData(LayoutUtil.createHorzFillData());
         formToolkit.adapt(sumGermsGradeCombo);
         formToolkit.paintBordersFor(sumGermsGradeCombo);
         fillGrades(sumGermsGradeCombo);
-        // TODO select grade if exists
 
         sumGermsWeightCombo = new Combo(biologicalComposite, SWT.DROP_DOWN | SWT.READ_ONLY);
         sumGermsWeightCombo.setLayoutData(LayoutUtil.createHorzFillData());
         formToolkit.adapt(sumGermsWeightCombo);
         formToolkit.paintBordersFor(sumGermsWeightCombo);
         fillWeights(sumGermsWeightCombo);
-        // TODO select weight if exists
 
         sumGermsCommentCombo = new Combo(biologicalComposite, SWT.NONE);
         sumGermsCommentCombo.setLayoutData(LayoutUtil.createHorzFillData());
+        initCommentAutoCompletion(sumGermsCommentCombo);
         formToolkit.adapt(sumGermsCommentCombo);
         formToolkit.paintBordersFor(sumGermsCommentCombo);
         ContentProposalUtil.enableContentProposal(sumGermsCommentCombo);
-        // TODO set comment if exist
+
     }
 
     private void createPhysicalComponents() {
@@ -865,28 +905,42 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
         temperatureText = new Text(physicalComposite, SWT.NONE);
         temperatureText.setLayoutData(LayoutUtil.createHorzCenteredFillData());
         formToolkit.adapt(temperatureText, true, true);
-        // TODO only numbers (double), fill with value if exists
+        temperatureText.addVerifyListener(new VerifyListener() {
+            public void verifyText(VerifyEvent e) {
+
+                // Get the character typed
+                char enteredChar = e.character;
+
+                // Allow 0-9
+                if (Character.isDigit(enteredChar) || enteredChar == '.'
+                        || Character.isISOControl(enteredChar)) {
+                    e.doit = true;
+                }
+                else {
+                    e.doit = false;
+                }
+
+            }
+        });
 
         temperatureGradeCombo = new Combo(physicalComposite, SWT.DROP_DOWN | SWT.READ_ONLY);
         temperatureGradeCombo.setLayoutData(LayoutUtil.createHorzFillData());
         formToolkit.adapt(temperatureGradeCombo);
         formToolkit.paintBordersFor(temperatureGradeCombo);
         fillGrades(temperatureGradeCombo);
-        // TODO select grade if exists
 
         temperatureWeightCombo = new Combo(physicalComposite, SWT.DROP_DOWN | SWT.READ_ONLY);
         temperatureWeightCombo.setLayoutData(LayoutUtil.createHorzFillData());
         formToolkit.adapt(temperatureWeightCombo);
         formToolkit.paintBordersFor(temperatureWeightCombo);
         fillWeights(temperatureWeightCombo);
-        // TODO select weight if exists
 
         temperatureCommentCombo = new Combo(physicalComposite, SWT.NONE);
         temperatureCommentCombo.setLayoutData(LayoutUtil.createHorzFillData());
+        initCommentAutoCompletion(temperatureCommentCombo);
         formToolkit.adapt(temperatureCommentCombo);
         formToolkit.paintBordersFor(temperatureCommentCombo);
         ContentProposalUtil.enableContentProposal(temperatureCommentCombo);
-        // TODO set comment if exists
 
         Label humidityLabel = new Label(physicalComposite, SWT.NONE);
         humidityLabel.setLayoutData(LayoutUtil.createLeftCenteredGridData());
@@ -896,28 +950,42 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
         humidityText = new Text(physicalComposite, SWT.NONE);
         humidityText.setLayoutData(LayoutUtil.createHorzCenteredFillData());
         formToolkit.adapt(humidityText, true, true);
-        // TODO only numbers (double), fill with value if exists
+        humidityText.addVerifyListener(new VerifyListener() {
+            public void verifyText(VerifyEvent e) {
+
+                // Get the character typed
+                char enteredChar = e.character;
+
+                // Allow 0-9
+                if (Character.isDigit(enteredChar) || enteredChar == '.'
+                        || Character.isISOControl(enteredChar)) {
+                    e.doit = true;
+                }
+                else {
+                    e.doit = false;
+                }
+
+            }
+        });
 
         humidityGradeCombo = new Combo(physicalComposite, SWT.DROP_DOWN | SWT.READ_ONLY);
         humidityGradeCombo.setLayoutData(LayoutUtil.createHorzFillData());
         formToolkit.adapt(humidityGradeCombo);
         formToolkit.paintBordersFor(humidityGradeCombo);
         fillGrades(humidityGradeCombo);
-        // TODO select grade if exists
 
         humidityWeightCombo = new Combo(physicalComposite, SWT.DROP_DOWN | SWT.READ_ONLY);
         humidityWeightCombo.setLayoutData(LayoutUtil.createHorzFillData());
         formToolkit.adapt(humidityWeightCombo);
         formToolkit.paintBordersFor(humidityWeightCombo);
         fillWeights(humidityWeightCombo);
-        // TODO select weight if exists
 
         humitiyCommentCombo = new Combo(physicalComposite, SWT.NONE);
         humitiyCommentCombo.setLayoutData(LayoutUtil.createHorzFillData());
+        initCommentAutoCompletion(humitiyCommentCombo);
         formToolkit.adapt(humitiyCommentCombo);
         formToolkit.paintBordersFor(humitiyCommentCombo);
         ContentProposalUtil.enableContentProposal(humitiyCommentCombo);
-        // TODO set comment if exist
 
     }
 
@@ -945,7 +1013,6 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
 
     @Override
     public void setSelectedComponent(Component component) {
-        // TODO Auto-generated method stub
 
     }
 
@@ -989,28 +1056,6 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
         }
     }
 
-    private void initAutoCompletion(Combo combo) {
-
-        try {
-            Collection<Summary> summaries = evaluationService.findAll();
-            String[] s = new String[summaries.size()];
-            int i = 0;
-
-            for (Summary e : summaries) {
-                s[i] = e.getText();
-                i++;
-            }
-
-            combo.setItems(s);
-            ContentProposalUtil.enableContentProposal(combo);
-        }
-
-        catch (DatabaseException e) {
-
-        }
-
-    }
-
     public boolean refreshGeneralInformation() {
 
         if (inspection == null) {
@@ -1045,36 +1090,119 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
 
     private void fillOptionalFields(Inspection inspection) {
 
-        Contact c = null;
         clearFields();
+        fillContractor();
+        fillRequester();
+        fillChecker();
+        fillSummary();
+        fillLegionella();
+        fillGerms();
+        fillTemperature();
+        fillHumidity();
 
-        if (inspection.getContractor().isPresent()) {
-            c = inspection.getContractor().get();
-            customerNameText.setText(c.getName());
-            customerStreetText.setText(c.getStreet() + " " + c.getStreetNo());
-            customerCityText.setText(c.getCity() + " " + c.getPostCode());
+    }
+
+    private void fillSummary() {
+        if (inspection.getSummary().isPresent()) {
+            overallCombo.setText(inspection.getSummary().get());
         }
-        if (inspection.getRequester().isPresent()) {
-            c = inspection.getRequester().get();
-            requestorNameText.setText(c.getName());
-            requestorStreetText.setText(c.getStreet() + " " + c.getStreetNo());
-            requestorCityText.setText(c.getCity() + " " + c.getPostCode());
-        }
+
+    }
+
+    private void fillChecker() {
         if (inspection.getChecker().isPresent()) {
-            c = inspection.getChecker().get();
+            Contact c = inspection.getChecker().get();
             controllerNameText.setText(c.getName());
             controllerStreetText.setText(c.getStreet() + " " + c.getStreetNo());
             controllerCityText.setText(c.getCity() + " " + c.getPostCode());
         }
 
-        if (!inspection.getSummary().isPresent()) {
+    }
 
-            initAutoCompletion(overallCombo);
+    private void fillRequester() {
+        if (inspection.getRequester().isPresent()) {
+            Contact c = inspection.getRequester().get();
+            requestorNameText.setText(c.getName());
+            requestorStreetText.setText(c.getStreet() + " " + c.getStreetNo());
+            requestorCityText.setText(c.getCity() + " " + c.getPostCode());
+        }
 
+    }
+
+    private void fillContractor() {
+        if (inspection.getContractor().isPresent()) {
+            Contact c = inspection.getContractor().get();
+            customerNameText.setText(c.getName());
+            customerStreetText.setText(c.getStreet() + " " + c.getStreetNo());
+            customerCityText.setText(c.getCity() + " " + c.getPostCode());
         }
-        else {
-            overallCombo.setText(inspection.getSummary().get());
+
+    }
+
+    private void fillHumidity() {
+        if (inspection.getHumidity().isPresent()) {
+            humidityText.setText(inspection.getHumidity().get().toString());
         }
+        if (inspection.getHumidityRating().isPresent()) {
+            humidityGradeCombo.select(inspection.getHumidityRating().get());
+        }
+        if (inspection.getHumidityQuantifier().isPresent()) {
+            humidityWeightCombo.select(inspection.getHumidityQuantifier().get());
+        }
+        if (inspection.getHumidityComment().isPresent()) {
+            humitiyCommentCombo.setText(inspection.getHumidityComment().get());
+        }
+
+    }
+
+    private void fillTemperature() {
+        if (inspection.getTemperature().isPresent()) {
+            temperatureText.setText(inspection.getTemperature().get().toString());
+        }
+        if (inspection.getTemperatureRating().isPresent()) {
+            temperatureGradeCombo.select(inspection.getTemperatureRating().get());
+        }
+        if (inspection.getTemperatureQuantifier().isPresent()) {
+            temperatureWeightCombo.select(inspection.getTemperatureQuantifier().get());
+        }
+        if (inspection.getAirtemperatureComment().isPresent()) {
+            temperatureCommentCombo.setText(inspection.getAirtemperatureComment().get());
+        }
+
+    }
+
+    private void fillGerms() {
+        if (inspection.getGerms().isPresent()) {
+            sumGermsText.setText(inspection.getGerms().get().toString());
+        }
+        if (inspection.getGermsRating().isPresent()) {
+            sumGermsGradeCombo.select(inspection.getGermsRating().get());
+        }
+        if (inspection.getGermsQuantifier().isPresent()) {
+            sumGermsWeightCombo.select(inspection.getGermsQuantifier().get());
+        }
+        if (inspection.getGermsComment().isPresent()) {
+            sumGermsCommentCombo.setText(inspection.getGermsComment().get());
+        }
+
+    }
+
+    private void fillLegionella() {
+        if (inspection.getLegionella().isPresent()) {
+            legionellaText.setText(inspection.getLegionella().get().toString());
+        }
+
+        if (inspection.getLegionellaRating().isPresent()) {
+            legionellaGradeCombo.select(inspection.getLegionellaRating().get());
+        }
+
+        if (inspection.getLegionellaQuantifier().isPresent()) {
+            legionellaGradeCombo.select(inspection.getLegionellaQuantifier().get());
+        }
+        if (inspection.getLegionellaComment().isPresent()) {
+            legionellaCommentCombo.setText(inspection.getLegionellaComment().get());
+        }
+
     }
 
     private void setlayout(Inspection inspection) {
@@ -1085,6 +1213,49 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
             i++;
         }
         reportStyleCombo.select(i);
+
+    }
+
+    private void initCommentAutoCompletion(Combo combo) {
+
+        Collection<Comment> comments;
+        try {
+            comments = commentService.findAll();
+            String[] s = new String[comments.size()];
+            int i = 0;
+
+            for (Comment c : comments) {
+                s[i] = c.getText();
+                i++;
+            }
+            combo.setItems(s);
+            ContentProposalUtil.enableContentProposal(combo);
+        }
+        catch (DatabaseException e) {
+            LOG.debug("An error occured", e);
+        }
+
+    }
+
+    private void initSummaryAutoCompletion(Combo combo) {
+
+        try {
+            Collection<Summary> summaries = evaluationService.findAll();
+            String[] s = new String[summaries.size()];
+            int i = 0;
+
+            for (Summary e : summaries) {
+                s[i] = e.getText();
+                i++;
+            }
+
+            combo.setItems(s);
+            ContentProposalUtil.enableContentProposal(combo);
+        }
+
+        catch (DatabaseException e) {
+
+        }
 
     }
 

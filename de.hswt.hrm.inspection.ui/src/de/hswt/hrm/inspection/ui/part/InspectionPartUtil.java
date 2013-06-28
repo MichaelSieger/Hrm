@@ -65,7 +65,6 @@ public class InspectionPartUtil {
 
 			@Override
 			protected void paint(Event event, Object element) {
-
 				Inspection inspection = (Inspection) element;
 
 				Calendar cal = Calendar.getInstance();
@@ -86,9 +85,13 @@ public class InspectionPartUtil {
 				} else {
 					event.gc.setBackground(MORE_THEN_3);
 				}
+				// event.gc.fillOval(event.x + 10, event.y + 10, 10, 10);
+				int a = event.getBounds().height;
+				int b = event.getBounds().width;
 
-				event.gc.fillOval(event.x + 10, event.y + 10, 10, 10);
-
+				// event.gc.fillOval(event.x, event.y, event.y/2, event.y/2);
+				event.gc.fillOval(event.x + b / 2, event.y + b / 2, a / 2,
+						a / 2);
 			}
 
 			@Override

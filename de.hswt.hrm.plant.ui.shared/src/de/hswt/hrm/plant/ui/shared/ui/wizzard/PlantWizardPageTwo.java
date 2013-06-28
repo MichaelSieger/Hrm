@@ -29,103 +29,97 @@ import de.hswt.hrm.plant.model.Plant;
 public class PlantWizardPageTwo extends WizardPage {
 
     private final static I18n I18N = I18nFactory.getI18n(PlantWizardPageTwo.class);
-    
-	private Place selectedPlace;
-	private Optional<Plant> plant;
 
-	private PlaceComposite placeComposite;
+    private Place selectedPlace;
+    private Optional<Plant> plant;
 
-	@Inject
-	private IEclipseContext context;
+    private PlaceComposite placeComposite;
 
-	private FormToolkit toolkit;
-	
+    @Inject
+    private IEclipseContext context;
+
+    private FormToolkit toolkit;
+
     public PlantWizardPageTwo(String title, Optional<Plant> plant) {
         super(title);
         this.plant = plant;
         if (plant.isPresent()) {
             if (plant.get().getPlace().isPresent()) {
-            	selectedPlace = plant.get().getPlace().get();
+                selectedPlace = plant.get().getPlace().get();
             }
         }
         setTitle(I18N.tr("Plant Wizard"));
         setDescription(createDescription());
     }
-    
+
     private String createDescription() {
         if (plant.isPresent()) {
             return I18N.tr("Select place for existing plant.");
         }
         return I18N.tr("Select place for new plant.");
     }
-    
+
     @Override
     public void createControl(Composite parent) {
-    	parent.setBackgroundMode(SWT.INHERIT_FORCE);
+        parent.setBackgroundMode(SWT.INHERIT_FORCE);
 
-    	toolkit = FormUtil.createToolkit();
-    	
-//		Composite temp = new Composite(parent, SWT.NONE);
-//    	temp.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_WHITE));
-//		temp.setLayout(new FillLayout());
-//    	temp.setBackgroundMode(SWT.INHERIT_FORCE);
-//		temp.setBackgroundMode(SWT.INHERIT_FORCE);
-    	
-    	Section headerSection = toolkit.createSection(parent, Section.TITLE_BAR);
-		toolkit.paintBordersFor(headerSection);
-    	headerSection.setBackgroundMode(SWT.INHERIT_FORCE);
-    	headerSection.setExpanded(true);
-    	FormUtil.initSectionColors(headerSection);
+        toolkit = FormUtil.createToolkit();
 
+        Section headerSection = toolkit.createSection(parent, Section.TITLE_BAR);
+        toolkit.paintBordersFor(headerSection);
+        headerSection.setBackgroundMode(SWT.INHERIT_FORCE);
+        headerSection.setExpanded(true);
+        FormUtil.initSectionColors(headerSection);
 
-		
+        Composite composite = toolkit.createComposite(headerSection);
 
-    	Composite composite = toolkit.createComposite(headerSection);
-//		composite.setBackgroundMode(SWT.INHERIT_FORCE);
-    	composite.setLayout(LayoutUtil.createGridLayout(2, false, true, true));
-		toolkit.paintBordersFor(composite);
-    	
-    	placeComposite = new PlaceComposite(composite, SWT.NONE);
+        composite.setLayout(LayoutUtil.createGridLayout(2, false, true, true));
+        toolkit.paintBordersFor(composite);
+
+        placeComposite = new PlaceComposite(composite, SWT.NONE);
         ContextInjectionFactory.inject(placeComposite, context);
-    	placeComposite.setAllowEditing(false);
-    	placeComposite.setLayoutData(LayoutUtil.createFillData());
-    	placeComposite.addSelectionChangedListener(new ISelectionChangedListener() {
-			@Override
-			public void selectionChanged(SelectionChangedEvent event) {
-				selectedPlace = (Place)((IStructuredSelection)event.getSelection()).getFirstElement();
-			}
-		});
+        placeComposite.setAllowEditing(false);
+        placeComposite.setLayoutData(LayoutUtil.createFillData());
+        placeComposite.addSelectionChangedListener(new ISelectionChangedListener() {
+            @Override
+            public void selectionChanged(SelectionChangedEvent event) {
 
-    	Button addButton = toolkit.createButton(composite, I18N.tr("Add"), SWT.NONE);
-    	addButton.setLayoutData(LayoutUtil.createRightGridData());
-    	addButton.addSelectionListener(new SelectionAdapter() {
-    		@Override
-    		public void widgetSelected(SelectionEvent e) {
-        		placeComposite.addPlace();
-    		}
-    	});
+                selectedPlace = (Place) ((IStructuredSelection) event.getSelection())
+                        .getFirstElement();
+                getWizard().getContainer().updateButtons();
+            }
+        });
 
-    	headerSection.setClient(composite);
-    	setControl(headerSection);
+        Button addButton = toolkit.createButton(composite, I18N.tr("Add"), SWT.NONE);
+        addButton.setLayoutData(LayoutUtil.createRightGridData());
+        addButton.addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                placeComposite.addPlace();
+            }
+        });
 
-    	if (selectedPlace != null) {
-    		placeComposite.setSelection(selectedPlace);
-    	}
+        headerSection.setClient(composite);
+        setControl(headerSection);
+
+        if (selectedPlace != null) {
+            placeComposite.setSelection(selectedPlace);
+        }
     }
 
     public Place getPlace() {
-    	return selectedPlace;
+        return selectedPlace;
     }
-    
+
     @Override
     public boolean isPageComplete() {
-    	selectedPlace = placeComposite.getSelectedPlace();
-    	return selectedPlace != null;
+
+        return selectedPlace != null;
     }
-    
+
     @Override
     public void dispose() {
-    	toolkit.dispose();
-    	super.dispose();
+        toolkit.dispose();
+        super.dispose();
     }
 }

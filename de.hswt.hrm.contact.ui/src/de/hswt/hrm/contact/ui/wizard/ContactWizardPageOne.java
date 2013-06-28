@@ -35,7 +35,7 @@ public class ContactWizardPageOne extends WizardPage {
 
     private RegexValidator plzVal = new RegexValidator("[0-9]{5}");
     private RegexValidator textOnlyVal = new RegexValidator("([A-ZÄÖÜ]{1}[a-zäöü]+[\\s]?[\\-]?)*");
-    private RegexValidator streetNoVal = new RegexValidator("[0-9]+[A-Za-z]?");
+    private RegexValidator streetNoVal = new RegexValidator("[1-9]+[a-zA-Z0-9-]*");
 
     public ContactWizardPageOne(String pageName, Optional<Contact> contact) {
         super(pageName);
@@ -129,7 +129,7 @@ public class ContactWizardPageOne extends WizardPage {
     private boolean checkValidity(Text textField) {
         String textFieldName = XWT.getElementName((Object) textField);
 
-        boolean isInvalidText = (textFieldName.equals("name") || textFieldName.equals("city"))
+        boolean isInvalidText = (textFieldName.equals("city"))
                 && (!textOnlyVal.isValid(textField.getText()));
         boolean isInvalidStreetNumber = (textFieldName.equals("streetNumber"))
                 && (!streetNoVal.isValid(textField.getText()));

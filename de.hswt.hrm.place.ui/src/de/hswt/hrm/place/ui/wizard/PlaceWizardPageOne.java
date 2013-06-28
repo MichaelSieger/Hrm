@@ -35,7 +35,7 @@ public class PlaceWizardPageOne extends WizardPage {
 	
 	private RegexValidator plzVal = new RegexValidator("[0-9]{5}");
     private RegexValidator cityVal = new RegexValidator("([A-ZÄÖÜ]{1}[a-zäöü]+[\\s]?[\\-]?)*");
-    private RegexValidator streetNoVal = new RegexValidator("[0-9]+[a-z]?");
+    private RegexValidator streetNoVal = new RegexValidator("[1-9]+[a-zA-Z0-9-]*");
 
 
     protected PlaceWizardPageOne(String pageName, Optional<Place> place) {

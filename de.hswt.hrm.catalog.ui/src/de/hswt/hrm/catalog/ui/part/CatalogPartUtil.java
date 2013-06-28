@@ -21,12 +21,16 @@ import de.hswt.hrm.catalog.ui.assignment.wizard.AssignmentCatalogWizard;
 import de.hswt.hrm.catalog.ui.wizzard.CatalogWizard;
 import de.hswt.hrm.common.ui.swt.table.ColumnDescription;
 import de.hswt.hrm.common.ui.swt.wizards.WizardCreator;
+import de.hswt.hrm.i18n.I18n;
+import de.hswt.hrm.i18n.I18nFactory;
 
 public final class CatalogPartUtil {
 
     private final static String TARGET = "Target";
     private final static String CURRENT = "Current";
     private final static String ACTIVITY = "Activity";
+    
+    private static final I18n I18N = I18nFactory.getI18n(CatalogPartUtil.class);
 
     public CatalogPartUtil() {
 
@@ -56,7 +60,7 @@ public final class CatalogPartUtil {
     }
 
     private static ColumnDescription<ICatalogItem> getPlaceColumn() {
-        return new ColumnDescription<ICatalogItem>("Type", new ColumnLabelProvider() {
+        return new ColumnDescription<ICatalogItem>(I18N.tr("Type"), new ColumnLabelProvider() {
             @Override
             public String getText(Object element) {
                 ICatalogItem p = (ICatalogItem) element;
@@ -108,7 +112,7 @@ public final class CatalogPartUtil {
     }
 
     private static ColumnDescription<ICatalogItem> getNameColumn() {
-        return new ColumnDescription<ICatalogItem>("Name", new ColumnLabelProvider() {
+        return new ColumnDescription<ICatalogItem>(I18N.tr("Name"), new ColumnLabelProvider() {
             @Override
             public String getText(Object element) {
                 ICatalogItem i = (ICatalogItem) element;
@@ -125,7 +129,7 @@ public final class CatalogPartUtil {
     }
 
     private static ColumnDescription<ICatalogItem> getDescColumn() {
-        return new ColumnDescription<ICatalogItem>("Description", new ColumnLabelProvider() {
+        return new ColumnDescription<ICatalogItem>(I18N.tr("Description"), new ColumnLabelProvider() {
             @Override
             public String getText(Object element) {
                 ICatalogItem i = (ICatalogItem) element;

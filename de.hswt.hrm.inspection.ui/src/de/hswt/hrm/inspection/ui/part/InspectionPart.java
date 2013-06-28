@@ -1,9 +1,9 @@
 package de.hswt.hrm.inspection.ui.part;
 
 import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -43,6 +43,7 @@ import de.hswt.hrm.common.database.exception.ElementNotFoundException;
 import de.hswt.hrm.common.observer.Observer;
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.common.ui.swt.wizards.WizardCreator;
+import de.hswt.hrm.component.model.Component;
 import de.hswt.hrm.inspection.model.BiologicalRating;
 import de.hswt.hrm.inspection.model.Inspection;
 import de.hswt.hrm.inspection.ui.wizard.ReportCreationWizard;
@@ -214,16 +215,29 @@ public class InspectionPart {
             reportGeneralComposite.setInspection(selectedInspection);
             reportGeneralComposite.refreshGeneralInformation();
             if (inspection != null) {
-                inspection.addPlantObserver(new Observer<Plant>() {
-
-                    @Override
-                    public void changed(Plant item) {
-                        plantChanged(item);
-                    }
-                });
+                initInspectionObservers();
             }
         }
 
+    }
+
+    private void initInspectionObservers() {
+        selectedInspection.addPlantObserver(new Observer<Plant>() {
+
+            @Override
+            public void changed(Plant item) {
+                plantChanged(item);
+            }
+        });
+        selectedInspection
+                .addBiologicalRatingObserver(new Observer<Collection<BiologicalRating>>() {
+
+                    @Override
+                    public void changed(Collection<BiologicalRating> item) {
+                        // TODO Auto-generated method stub
+
+                    }
+                });
     }
 
     private void plantChanged(Plant plant) {
@@ -251,6 +265,15 @@ public class InspectionPart {
                         }
                     }
                 });
+
+        List<SchemeComponent> input = new ArrayList<>();
+        for (SchemeGridItem item : schemeGridItems) {
+            input.add(item.asSchemeComponent());
+        }
+        performanceComposite.getComponentsList().setInput(input);
+        biologicalComposite.getComponentsList().setInput(input);
+        physicalComposite.getComponentsList().setInput(input);
+
         physicalComposite.setSchemeGridItems(schemeGridItems);
         biologicalComposite.setSchemeGridItems(schemeGridItems);
         performanceComposite.setSchemeGridItems(schemeGridItems);

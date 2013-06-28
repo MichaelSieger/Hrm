@@ -17,7 +17,7 @@
 					</Composite.layout>
 					<Composite.layoutData>
 						<GridData grabExcessHorizontalSpace="true" 
-							horizontalAlignment="FILL" horizontalSpan="2"/>
+							horizontalAlignment="FILL" horizontalSpan="2" heightHint="100"/>
 					</Composite.layoutData>
 					<Label text="Name"/>
 					<Text x:Style="BORDER" textLimit="30" x:Name="name">
@@ -31,6 +31,18 @@
 							<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
 						</Combo.layoutData>
 					</Combo>
+					<Label text="Catalog" x:Name="catalog">
+						<Label.layoutData>
+							<GridData horizontalAlignment="RIGHT"/>
+						</Label.layoutData>
+					</Label>
+					<ComboViewer x:Name="catalogCombo">
+						<ComboViewer.combo x:Name="">
+							<ComboViewer.combo.layoutData>
+								<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
+							</ComboViewer.combo.layoutData>
+						</ComboViewer.combo>
+					</ComboViewer>
 				</Composite>
 				<Composite>
 					<Composite.layout>

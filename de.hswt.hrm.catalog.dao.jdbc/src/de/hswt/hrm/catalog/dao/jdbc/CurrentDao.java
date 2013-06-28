@@ -303,8 +303,8 @@ public class CurrentDao implements ICurrentDao {
         public static final String ID = "State_Current_ID";
         public static final String NAME = "State_Current_Name";
         public static final String TEXT = "State_Current_Text";
-        public static final String CROSS_TARGET_FK = "Category_Current_State_Target_FK";
-        public static final String CROSS_CURRENT_FK = "Category_Current_State_Current_FK";
+        public static final String CROSS_TARGET_FK = "Catalog_Current_State_Target_FK";
+        public static final String CROSS_CURRENT_FK = "Catalog_Current_State_Current_FK";
     }
 
 }

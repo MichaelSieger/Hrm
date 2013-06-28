@@ -20,25 +20,27 @@ import de.hswt.hrm.common.database.SqlQueryBuilder;
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.ElementNotFoundException;
 import de.hswt.hrm.common.database.exception.SaveException;
-import de.hswt.hrm.component.dao.core.IComponentDao;
-import de.hswt.hrm.component.model.Component;
 import de.hswt.hrm.inspection.dao.core.IInspectionDao;
 import de.hswt.hrm.inspection.dao.core.IPhysicalRatingDao;
 import de.hswt.hrm.inspection.model.Inspection;
 import de.hswt.hrm.inspection.model.PhysicalRating;
+import de.hswt.hrm.scheme.dao.core.ISchemeComponentDao;
+import de.hswt.hrm.scheme.model.SchemeComponent;
 
 public class PhysicalRatingDao implements IPhysicalRatingDao {
 	private final IInspectionDao inspectionDao;
-    private final IComponentDao componentDao;
+    private final ISchemeComponentDao schemeComponentDao;
 
     // TODO: add LOG messages
     @Inject
-    public PhysicalRatingDao(final IInspectionDao inspectionDao, final IComponentDao componentDao) {
+    public PhysicalRatingDao(final IInspectionDao inspectionDao, 
+    		final ISchemeComponentDao schemeComponentDao) {
+    	
     	checkNotNull(inspectionDao, "Inspectiondao not properly injected to PhysicalRatingDao");
-    	checkNotNull(componentDao, "ComponentDao not properly injected to PhysicalRatingDao.");
+    	checkNotNull(schemeComponentDao, "SchemeComponentDao not properly injected to PhysicalRatingDao.");
 
         this.inspectionDao = inspectionDao;
-        this.componentDao = componentDao;
+        this.schemeComponentDao = schemeComponentDao;
     }
 
     @Override
@@ -241,7 +243,7 @@ public class PhysicalRatingDao implements IPhysicalRatingDao {
             }
             int componentId = rs.getInt(Fields.COMPONENT_FK);
             checkState(componentId >= 0, "Invalid component ID retrieved from database.");
-            Component component = componentDao.findById(componentId);
+            SchemeComponent component = schemeComponentDao.findById(componentId);
             
             PhysicalRating physicalRating = new PhysicalRating(
             		id,
