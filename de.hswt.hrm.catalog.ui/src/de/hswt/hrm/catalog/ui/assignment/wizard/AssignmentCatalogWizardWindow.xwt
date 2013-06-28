@@ -8,8 +8,8 @@
 				<Composite.layout>
 					<GridLayout numColumns="4"/>
 				</Composite.layout>
-				<Label text="Name"/>
-				<Text x:Style="BORDER" x:Name="name" x:TooltipText="Name">
+				<Label text="Name" x:Name="lblName"/>
+				<Text x:Style="BORDER" x:Name="name">
 					<Text.layoutData>
 						<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL" horizontalSpan="3"/>
 					</Text.layoutData>
