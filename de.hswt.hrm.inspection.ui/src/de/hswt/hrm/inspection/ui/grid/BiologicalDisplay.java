@@ -3,12 +3,10 @@ package de.hswt.hrm.inspection.ui.grid;
 import java.util.Collection;
 
 import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.Device;
 
 import com.google.common.base.Preconditions;
 
 import de.hswt.hrm.inspection.model.BiologicalRating;
-import de.hswt.hrm.scheme.model.SchemeComponent;
 
 public class BiologicalDisplay extends RatingDisplay{
 	

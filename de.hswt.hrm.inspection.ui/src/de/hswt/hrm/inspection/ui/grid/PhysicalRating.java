@@ -7,7 +7,6 @@ import org.eclipse.swt.graphics.Color;
 import com.google.common.base.Preconditions;
 
 import de.hswt.hrm.inspection.model.BiologicalRating;
-import de.hswt.hrm.scheme.model.SchemeComponent;
 
 
 public class PhysicalRating extends RatingDisplay{
