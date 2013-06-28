@@ -41,10 +41,15 @@ import de.hswt.hrm.component.model.Category;
 import de.hswt.hrm.component.model.Component;
 import de.hswt.hrm.component.service.CategoryService;
 import de.hswt.hrm.component.service.ComponentService;
+import de.hswt.hrm.i18n.I18n;
+import de.hswt.hrm.i18n.I18nFactory;
+
 import org.eclipse.swt.layout.GridData;
 
 public class ComponentWizardPageOne extends WizardPage {
 
+    private static final I18n I18N = I18nFactory.getI18n(ComponentWizardPageOne.class);
+    
 	@Inject
 	private CategoryService categoryService;
 	
@@ -81,10 +86,10 @@ public class ComponentWizardPageOne extends WizardPage {
 	 * Create the wizard.
 	 */
 	public ComponentWizardPageOne(Optional<Component> component) {
-		super("Component wizard");
+		super(I18N.tr("Component Wizard"));
 		this.component = component;
 
-		setTitle("Component wizard");
+		setTitle(I18N.tr("Component Wizard"));
 		setDescription(createDescription());
 	}
 
@@ -108,7 +113,7 @@ public class ComponentWizardPageOne extends WizardPage {
 				Section.TITLE_BAR);
 		definitionSection.setLayoutData(LayoutUtil.createHorzFillData());
 		formToolkit.paintBordersFor(definitionSection);
-		definitionSection.setText("Component definition");
+		definitionSection.setText(I18N.tr("Component definition"));
 		definitionSection.setExpanded(true);
 		FormUtil.initSectionColors(definitionSection);
 		
@@ -122,7 +127,7 @@ public class ComponentWizardPageOne extends WizardPage {
 		Label nameLabel = new Label(definitioncomposite, SWT.NONE);
 		nameLabel.setLayoutData(LayoutUtil.createLeftCenteredGridData());
 		formToolkit.adapt(nameLabel, true, true);
-		nameLabel.setText("Name");
+		nameLabel.setText(I18N.tr("Name")+":");
 
 		nameText = new Text(definitioncomposite, SWT.BORDER);
 		nameText.setLayoutData(LayoutUtil.createHorzCenteredFillData());
@@ -137,7 +142,7 @@ public class ComponentWizardPageOne extends WizardPage {
 		Label categoryLabel = new Label(definitioncomposite, SWT.NONE);
 		categoryLabel.setLayoutData(LayoutUtil.createLeftCenteredGridData());
 		formToolkit.adapt(categoryLabel, true, true);
-		categoryLabel.setText("Category");
+		categoryLabel.setText(I18N.tr("Category")+":");
 
 		categoryComboViewer = new ComboViewer(definitioncomposite, SWT.NONE);
 		categoryComboViewer.getCombo().setLayoutData(
@@ -155,7 +160,7 @@ public class ComponentWizardPageOne extends WizardPage {
 		Label weightLabel = new Label(definitioncomposite, SWT.NONE);
 		weightLabel.setLayoutData(LayoutUtil.createLeftCenteredGridData());
 		formToolkit.adapt(weightLabel, true, true);
-		weightLabel.setText("Weight");
+		weightLabel.setText(I18N.tr("Weight")+":");
 
 		weightCombo = new Combo(definitioncomposite, SWT.NONE);
 		weightCombo.setLayoutData(LayoutUtil.createHorzCenteredFillData());
@@ -172,13 +177,13 @@ public class ComponentWizardPageOne extends WizardPage {
 		ratingCheckButton.setLayoutData(LayoutUtil.createLeftCenteredGridData(
 				2, 1));
 		formToolkit.adapt(ratingCheckButton, true, true);
-		ratingCheckButton.setText("with rating");
+		ratingCheckButton.setText(I18N.tr("with rating"));
 
 		Section attributesSection = formToolkit.createSection(container,
 				Section.TITLE_BAR);
 		attributesSection.setLayoutData(LayoutUtil.createFillData());
 		formToolkit.paintBordersFor(attributesSection);
-		attributesSection.setText("Attributes");
+		attributesSection.setText(I18N.tr("Attributes"));
 		attributesSection.setExpanded(true);
 		FormUtil.initSectionColors(attributesSection);
 
@@ -196,7 +201,7 @@ public class ComponentWizardPageOne extends WizardPage {
 		
 		Button addAttributeButton = new Button(attributesComposite, SWT.NONE);
 		formToolkit.adapt(addAttributeButton, true, true);
-		addAttributeButton.setText("Add");
+		addAttributeButton.setText(I18N.tr("Add"));
 		addAttributeButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -222,7 +227,7 @@ public class ComponentWizardPageOne extends WizardPage {
 		Button deleteButton = new Button(attributesComposite, SWT.NONE);
 		deleteButton.setAlignment(SWT.RIGHT);
 		formToolkit.adapt(deleteButton, true, true);
-		deleteButton.setText("Delete");
+		deleteButton.setText(I18N.tr("Delete"));
 		new Label(attributesComposite, SWT.NONE);
 		new Label(attributesComposite, SWT.NONE);
 		deleteButton.addSelectionListener(new SelectionAdapter() {
@@ -245,9 +250,9 @@ public class ComponentWizardPageOne extends WizardPage {
 
 	private String createDescription() {
 		if (component.isPresent()) {
-			return "Change a category.";
+			return I18N.tr("Edit a component");
 		}
-		return "Define a new category";
+		return I18N.tr("Add a new component");
 	}
 
 	private void initializeCombos() {
@@ -316,12 +321,12 @@ public class ComponentWizardPageOne extends WizardPage {
 
 		if (nameText.getText().isEmpty()) {
 			setPageComplete(false);
-			setErrorMessage("Please provide a name.");
+			setErrorMessage(I18N.tr("Field is mandatory") + ": " + I18N.tr("Name"));
 			return;
 		}
 		if (category == null) {
 			setPageComplete(false);
-			setErrorMessage("Please select a category.");
+			setErrorMessage(I18N.tr("Please select a category."));
 			return;
 		}
 		setPageComplete(true);
