@@ -1,10 +1,14 @@
 package de.hswt.hrm.inspection.ui.part;
 
+import java.util.ArrayList;
+
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.DoubleClickEvent;
+import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.ListViewer;
@@ -13,6 +17,7 @@ import org.eclipse.jface.window.IShellProvider;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -38,6 +43,8 @@ import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.common.ui.swt.layouts.LayoutUtil;
 import de.hswt.hrm.component.model.Component;
 import de.hswt.hrm.inspection.service.InspectionService;
+import de.hswt.hrm.inspection.treeviewer.model.MockModel;
+import de.hswt.hrm.inspection.treeviewer.model.TreeTarget;
 import de.hswt.hrm.inspection.ui.performance.tree.PerformanceTreeContentProvider;
 import de.hswt.hrm.inspection.ui.performance.tree.PerformanceTreeLabelProvider;
 import de.hswt.hrm.scheme.model.SchemeComponent;
@@ -60,7 +67,7 @@ public class ReportPerformanceComposite extends AbstractComponentRatingComposite
     private ListViewer targetListViewer;
     private ListViewer currentListViewer;
     private ListViewer activityListViewer;
-
+    private TreeViewer treeViewer;
     private FormToolkit formToolkit = new FormToolkit(Display.getDefault());
 
     private static final Logger LOG = LoggerFactory.getLogger(ReportPerformanceComposite.class);
@@ -156,10 +163,12 @@ public class ReportPerformanceComposite extends AbstractComponentRatingComposite
         gl_composite.marginHeight = 0;
         composite.setLayout(gl_composite);
 
-        TreeViewer treeViewer = new TreeViewer(composite, SWT.BORDER);
+        treeViewer = new TreeViewer(composite, SWT.BORDER);
         Tree tree = treeViewer.getTree();
         treeViewer.setContentProvider(new PerformanceTreeContentProvider());
         treeViewer.setLabelProvider(new PerformanceTreeLabelProvider());
+        // TODO replace with data from DB is present
+        treeViewer.setInput(new MockModel().getAssignedItems());
 
         GridData gd_tree = new GridData(SWT.FILL, SWT.FILL, true, true, 2, 8);
         gd_tree.heightHint = 241;
@@ -258,6 +267,24 @@ public class ReportPerformanceComposite extends AbstractComponentRatingComposite
                 }
             }
         });
+
+        targetListViewer.addDoubleClickListener(new IDoubleClickListener() {
+
+            @Override
+            public void doubleClick(DoubleClickEvent event) {
+                IStructuredSelection selection = (IStructuredSelection) targetListViewer
+                        .getSelection();
+                if (selection == null) {
+                    return;
+                }
+                Target t = (Target) selection.getFirstElement();
+                TreeTarget tt = new TreeTarget();
+                tt.setName(t.getName());
+                treeViewer.add(treeViewer.getInput(), tt);
+
+            }
+        });
+
         currentListViewer.getList().addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
@@ -278,6 +305,7 @@ public class ReportPerformanceComposite extends AbstractComponentRatingComposite
                 }
             }
         });
+
     }
 
     public ListViewer getComponentsList() {
