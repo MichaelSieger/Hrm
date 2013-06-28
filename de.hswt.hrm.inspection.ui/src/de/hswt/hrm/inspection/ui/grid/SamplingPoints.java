@@ -9,6 +9,8 @@ import com.google.common.base.Throwables;
 
 import de.hswt.hrm.common.BundleUtil;
 import de.hswt.hrm.component.model.Component;
+import de.hswt.hrm.scheme.model.RenderedComponent;
+import de.hswt.hrm.scheme.service.ComponentConverter;
 
 public class SamplingPoints {
 	
@@ -19,14 +21,17 @@ public class SamplingPoints {
 				"d",
 				"u"
 			};
-	private final Component[] airMeasurement;
-	private final Component[] waterAnalysis;
-	private final Component[] contactCulture;
-	private final Component[] photo;
-	private final Component[] climateParameter;
-	private final Component[] dustConcentration;
+	private final RenderedComponent[] airMeasurement;
+	private final RenderedComponent[] waterAnalysis;
+	private final RenderedComponent[] contactCulture;
+	private final RenderedComponent[] photo;
+	private final RenderedComponent[] climateParameter;
+	private final RenderedComponent[] dustConcentration;
+	
+	private final Display display;
 	
 	public SamplingPoints(Display display){
+		this.display = display;
 		try{
 			airMeasurement = getComponents("pl");
 			waterAnalysis = getComponents("pw");
@@ -48,9 +53,9 @@ public class SamplingPoints {
 		}
 	}
 	
-	private Component[] getComponents(String name) throws IOException{
-		return new Component[] {getComponent(name + "1"), 
-								getComponent(name + "2")};
+	private RenderedComponent[] getComponents(String name) throws IOException{
+		return new RenderedComponent[] {ComponentConverter.convert(display, getComponent(name + "1")), 
+										ComponentConverter.convert(display, getComponent(name + "2"))};
 	}
 	
 	private Component getComponent(String name) throws IOException{
