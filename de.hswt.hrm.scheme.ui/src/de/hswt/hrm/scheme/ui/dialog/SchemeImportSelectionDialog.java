@@ -28,6 +28,8 @@ import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.common.ui.swt.layouts.LayoutUtil;
 import de.hswt.hrm.common.ui.swt.utils.SWTResourceManager;
+import de.hswt.hrm.i18n.I18n;
+import de.hswt.hrm.i18n.I18nFactory;
 import de.hswt.hrm.plant.model.Plant;
 import de.hswt.hrm.plant.ui.shared.PlantComposite;
 import de.hswt.hrm.scheme.model.Scheme;
@@ -37,6 +39,8 @@ public class SchemeImportSelectionDialog extends TitleAreaDialog {
 
 	@Inject
 	private SchemeService schemeService;
+	
+	private static final I18n I18N = I18nFactory.getI18n(SchemeImportSelectionDialog.class);
 	
     private PlantComposite plantComposite;
     private IEclipseContext context;
@@ -55,17 +59,25 @@ public class SchemeImportSelectionDialog extends TitleAreaDialog {
 
         draw(composite); // Contents of Dialog
 
-        setMessage("Please select a plant and a scheme to import.");
-        setTitle("SCheme selection");
+        setMessage(I18N.tr("Select a scheme to import."));
+        setTitle(I18N.tr("Import scheme"));
 
         return composite;
 
+    }
+    
+    @Override
+    protected Control createButtonBar(Composite parent) {
+        Control c = super.createButtonBar(parent);
+        getButton(OK).setText(I18N.tr("OK"));
+        getButton(CANCEL).setText(I18N.tr("Cancel"));
+        return c;
     }
 
     private void draw(Composite parent) {
 		Section headerSection = new Section(parent, Section.TITLE_BAR);
 		headerSection.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
-		headerSection.setText("Scheme selection");
+		headerSection.setText(I18N.tr("Select scheme"));
 		headerSection.setExpanded(true);
 		headerSection.setLayoutData(LayoutUtil.createFillData());
 		FormUtil.initSectionColors(headerSection);
@@ -92,7 +104,7 @@ public class SchemeImportSelectionDialog extends TitleAreaDialog {
         });
 
         Label schemeLabel = new Label(headerComposite, SWT.NONE);
-        schemeLabel.setText("Scheme");
+        schemeLabel.setText(I18N.tr("Scheme")+":");
         schemeLabel.setLayoutData(LayoutUtil.createLeftCenteredGridData());
         
         schemeCombo = new Combo(headerComposite, SWT.READ_ONLY | SWT.DROP_DOWN);
