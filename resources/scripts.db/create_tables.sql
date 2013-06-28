@@ -88,6 +88,23 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
+-- Table `Scheme`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `Scheme` (
+  `Scheme_ID` INT NOT NULL AUTO_INCREMENT ,
+  `Scheme_Timestamp` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
+  `Scheme_Plant_FK` INT NULL ,
+  PRIMARY KEY (`Scheme_ID`) ,
+  INDEX `Scheme_Plant_IDx` (`Scheme_Plant_FK` ASC) ,
+  CONSTRAINT `Scheme_Plant_FK`
+    FOREIGN KEY (`Scheme_Plant_FK` )
+    REFERENCES `Plant` (`Plant_ID` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
 -- Table `Report`
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `Report` (
@@ -120,6 +137,7 @@ CREATE  TABLE IF NOT EXISTS `Report` (
   `Report_Germs_Rating` INT NULL ,
   `Report_Germs_Quantifier` INT NULL ,
   `Report_Germs_Comment` TEXT NULL ,
+  `Report_Scheme_FK` INT NULL ,
   PRIMARY KEY (`Report_ID`) ,
   INDEX `Report_Layout_IDx` (`Report_Layout_FK` ASC) ,
   INDEX `Report_Plant_IDx` (`Report_Plant_FK` ASC) ,
@@ -128,6 +146,7 @@ CREATE  TABLE IF NOT EXISTS `Report` (
   INDEX `Report_Contact_Che_IDx` (`Report_Checker_FK` ASC) ,
   INDEX `Report_Frontpicture_FK` (`Report_Frontpicture_FK` ASC) ,
   INDEX `Report_Plantpicture_FK` (`Report_Plantpicture_FK` ASC) ,
+  INDEX `Report_Scheme_FK` (`Report_Scheme_FK` ASC) ,
   CONSTRAINT `Report_Layout_FK`
     FOREIGN KEY (`Report_Layout_FK` )
     REFERENCES `Layout` (`Layout_ID` )
@@ -162,22 +181,10 @@ CREATE  TABLE IF NOT EXISTS `Report` (
     FOREIGN KEY (`Report_Plantpicture_FK` )
     REFERENCES `Picture` (`Picture_ID` )
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `Scheme`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `Scheme` (
-  `Scheme_ID` INT NOT NULL AUTO_INCREMENT ,
-  `Scheme_Timestamp` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
-  `Scheme_Plant_FK` INT NULL ,
-  PRIMARY KEY (`Scheme_ID`) ,
-  INDEX `Scheme_Plant_IDx` (`Scheme_Plant_FK` ASC) ,
-  CONSTRAINT `Scheme_Plant_FK`
-    FOREIGN KEY (`Scheme_Plant_FK` )
-    REFERENCES `Plant` (`Plant_ID` )
+    ON UPDATE NO ACTION,
+  CONSTRAINT `Report_Scheme_FK`
+    FOREIGN KEY (`Report_Scheme_FK` )
+    REFERENCES `Scheme` (`Scheme_ID` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
