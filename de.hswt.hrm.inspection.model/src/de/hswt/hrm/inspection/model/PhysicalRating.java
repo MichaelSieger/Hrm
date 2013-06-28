@@ -2,7 +2,8 @@ package de.hswt.hrm.inspection.model;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.base.Strings.isNullOrEmpty;
+
+import com.google.common.base.Optional;
 
 import de.hswt.hrm.scheme.model.SchemeComponent;
 
@@ -16,22 +17,22 @@ public class PhysicalRating {
     private SchemeComponent component;
     private Inspection inspection;
 
-    private static final String IS_MANDATORY = "Field is a mandatory.";
     private static final String INVALID_NUMBER = "%d is an invalid number.%n Must be greater 0";
+    private static final String INVALID_LENGTH = "Empty String is not allowed !";
 
-    public PhysicalRating(int id, Inspection inspection, SchemeComponent component, int rating, 
-    		String note, int quantifier) {
-    	
+    public PhysicalRating(int id, Inspection inspection, SchemeComponent component, int rating,
+            int quantifier) {
+
         this.id = id;
         setInspection(inspection);
         setComponent(component);
         setRating(rating);
-        setNote(note);
         setQuantifier(quantifier);
     }
 
-    public PhysicalRating(Inspection inspection, SchemeComponent component, int rating, String note, int quantifier) {
-        this(-1, inspection, component, rating, note, quantifier);
+    public PhysicalRating(Inspection inspection, SchemeComponent component, int rating,
+            int quantifier) {
+        this(-1, inspection, component, rating, quantifier);
     }
 
     public int getRating() {
@@ -43,12 +44,14 @@ public class PhysicalRating {
         this.rating = rating;
     }
 
-    public String getNote() {
-        return note;
+    public Optional<String> getNote() {
+        return Optional.fromNullable(note);
     }
 
     public void setNote(String note) {
-        checkArgument(!isNullOrEmpty(note), IS_MANDATORY);
+        if (note != null) {
+            checkArgument(note.length() > 0, INVALID_LENGTH);
+        }
         this.note = note;
     }
 

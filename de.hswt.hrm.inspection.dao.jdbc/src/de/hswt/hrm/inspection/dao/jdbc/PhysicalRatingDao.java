@@ -28,16 +28,17 @@ import de.hswt.hrm.scheme.dao.core.ISchemeComponentDao;
 import de.hswt.hrm.scheme.model.SchemeComponent;
 
 public class PhysicalRatingDao implements IPhysicalRatingDao {
-	private final IInspectionDao inspectionDao;
+    private final IInspectionDao inspectionDao;
     private final ISchemeComponentDao schemeComponentDao;
 
     // TODO: add LOG messages
     @Inject
-    public PhysicalRatingDao(final IInspectionDao inspectionDao, 
-    		final ISchemeComponentDao schemeComponentDao) {
-    	
-    	checkNotNull(inspectionDao, "Inspectiondao not properly injected to PhysicalRatingDao");
-    	checkNotNull(schemeComponentDao, "SchemeComponentDao not properly injected to PhysicalRatingDao.");
+    public PhysicalRatingDao(final IInspectionDao inspectionDao,
+            final ISchemeComponentDao schemeComponentDao) {
+
+        checkNotNull(inspectionDao, "Inspectiondao not properly injected to PhysicalRatingDao");
+        checkNotNull(schemeComponentDao,
+                "SchemeComponentDao not properly injected to PhysicalRatingDao.");
 
         this.inspectionDao = inspectionDao;
         this.schemeComponentDao = schemeComponentDao;
@@ -114,7 +115,7 @@ public class PhysicalRatingDao implements IPhysicalRatingDao {
         try (Connection con = DatabaseFactory.getConnection()) {
             try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
                 stmt.setParameter(Fields.RATING, physicalRating.getRating());
-                stmt.setParameter(Fields.NOTE, physicalRating.getNote());
+                stmt.setParameter(Fields.NOTE, physicalRating.getNote().orNull());
                 stmt.setParameter(Fields.COMPONENT_FK, physicalRating.getComponent().getId());
                 stmt.setParameter(Fields.REPORT_FK, physicalRating.getInspection().getId());
                 stmt.setParameter(Fields.QUANTIFIER, physicalRating.getQuantifier());
@@ -129,14 +130,11 @@ public class PhysicalRatingDao implements IPhysicalRatingDao {
                         int id = generatedKeys.getInt(1);
 
                         // Create new Physical Rating with id
-                        PhysicalRating inserted = new PhysicalRating(
-                        		id,
-                        		physicalRating.getInspection(),
-                        		physicalRating.getComponent(),
-                                physicalRating.getRating(), 
-                                physicalRating.getNote(),
-                                physicalRating.getQuantifier());
+                        PhysicalRating inserted = new PhysicalRating(id,
+                                physicalRating.getInspection(), physicalRating.getComponent(),
+                                physicalRating.getRating(), physicalRating.getQuantifier());
 
+                        inserted.setNote(physicalRating.getNote().orNull());
                         return inserted;
                     }
                     else {
@@ -170,7 +168,7 @@ public class PhysicalRatingDao implements IPhysicalRatingDao {
         try (Connection con = DatabaseFactory.getConnection()) {
             try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
                 stmt.setParameter(Fields.RATING, physicalRating.getRating());
-                stmt.setParameter(Fields.NOTE, physicalRating.getNote());
+                stmt.setParameter(Fields.NOTE, physicalRating.getNote().orNull());
                 stmt.setParameter(Fields.COMPONENT_FK, physicalRating.getComponent().getId());
                 stmt.setParameter(Fields.REPORT_FK, physicalRating.getInspection().getId());
                 stmt.setParameter(Fields.QUANTIFIER, physicalRating.getQuantifier());
@@ -239,19 +237,15 @@ public class PhysicalRatingDao implements IPhysicalRatingDao {
             int quantifier = rs.getInt(Fields.QUANTIFIER);
             int inspectionId = rs.getInt(Fields.REPORT_FK);
             if (!(inspection.isPresent()) || inspection.get().getId() != inspectionId) {
-            	inspection = Optional.of(inspectionDao.findById(inspectionId));
+                inspection = Optional.of(inspectionDao.findById(inspectionId));
             }
             int componentId = rs.getInt(Fields.COMPONENT_FK);
             checkState(componentId >= 0, "Invalid component ID retrieved from database.");
             SchemeComponent component = schemeComponentDao.findById(componentId);
-            
-            PhysicalRating physicalRating = new PhysicalRating(
-            		id,
-            		inspection.get(),
-            		component,
-            		rating, 
-            		note,
-                    quantifier);
+
+            PhysicalRating physicalRating = new PhysicalRating(id, inspection.get(), component,
+                    rating, quantifier);
+            physicalRating.setNote(note);
             physicalRatingList.add(physicalRating);
         }
 
