@@ -1,0 +1,20 @@
+% Hier werden die Kopf- und Fuﬂzeilen festgelegt. Der erste Abschnitt wirkt sich nur auf die Erscheinung aus. Der zweite Abschnitt enth‰llt die Angaben.
+
+% 1. Abschnitt, Erscheingsbild
+\pagestyle{scrheadings}
+\clearscrheadings
+\setkomafont{pagehead}{\normalfont}
+%\setheadsepline{1pt}
+%\setfootsepline{1pt}
+\setlength{\footskip}{0.3cm}
+
+% 2. Abschnitt, Angaben bzw. Daten
+\ihead{}																				% Kopzeile Mitte
+\chead{}																				% Kopzeile Mitte
+\ohead{\mfusszeilenlogogroesse}															% Kopzeile rechts
+
+\ifoot{\tiny{\textcolor{HartmannGreen}{
+Dr. O. Hartmann GmbH $\cdot$ Wassertechnischer Service $\cdot$ Uhlandstraﬂe 30 $\cdot$ 71665 Vaihingen/Enz		% Fuﬂzeile links
+}}}												
+\cfoot{}																				% Fuﬂzeile Mitte
+\ofoot{\textcolor{HartmannGreen}{\thepage{} von \pageref{LastPage}}}					% Fuﬂzeile rechts

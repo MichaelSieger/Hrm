@@ -1,0 +1,35 @@
+% component: the name of the plant component
+% microbiologyOverallRanking: the microbiology overall ranking of the component
+% physicalOverallRanking: the physical overall ranking of the component
+% rows: the rows from templates/targetperformancecomparisonrow.tex
+% imagesHeader: the header of the optional images from templates/
+%               the placeholder must be removed if no images are available
+% imageRows: the rows of the optional images from templates/targetperformancecomparisonimagerow.properties
+%            the placeholder must be removed if no images are available
+\begin{longtable}{
+        @{}p{0pt}@{} p{\tabellephyssollistA} p{\tabellephyssollistB}
+        p{\tabellephyssollistC} p{\tabellephyssollistD} @{}p{0pt}@{} p{\tabellephyssollistE} 
+        p{\tabellephyssollistF} p{\tabellephyssollistG} p{\tabellephyssollistH}}
+    \multicolumn{2}{c}{\cellcolor{\mtabellenkopfhintergrundfarbe}} & 
+    \multicolumn{7}{c}{
+            \cellcolor{\mtabellenkopfhintergrundfarbe}
+            \textcolor{\mtabellenkopfschriftfarbe}{\textbf{:component:}}                                                                                        % to replace
+    } & 
+    \multicolumn{1}{r}{
+            \cellcolor{\mtabellenkopfhintergrundfarbe}
+            \textcolor{\mtabellenkopfschriftfarbe}{\textbf{Note\hspace{0.35cm}B: :microbiologyOverallRanking:\hspace{0.35cm}P: :physicalOverallRanking:}}       % to replace
+    } \\ *\nobreakhline 
+    \kill "" & "" & "" & "" & "" & "" & "" & "" & "" & ""
+    \\ *\nobreakhline \endhead              
+    \multicolumn{10}{c}{
+            \cellcolor{\mtabellenzweitekopfhintergrundfarbe}
+            \textcolor{\mtabellenkopfschriftfarbe}{\textbf{Soll-Ist}}
+    } \\ \hline     
+    \rowcolor{\mtabellenhintergrund} 
+    \multicolumn{4}{c}{\cellcolor{\mtabellenhintergrund}Soll-Zustand} &
+    \multicolumn{5}{c}{\cellcolor{\mtabellenhintergrund}Ist-Zustand} &
+    \multicolumn{1}{c}{\cellcolor{\mtabellenhintergrund}Maßnahme} \\*\nobreakhline
+    :rows:                                                                                                                                                      % to replace
+    :imagesHeader:                                                                                                                                              % to replace or remove
+    :imageRows:                                                                                                                                                 % to replace or remove
+\end{longtable}\vspace{10pt}

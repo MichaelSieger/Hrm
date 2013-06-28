@@ -1,0 +1,36 @@
+\begin{figure}[H]
+	\centering
+	\psset{unit=0.8cm}
+	\psset{dimen=middle}
+	
+	% Bild beginnen
+	\begin{pspicture}(0, 0)(21,4)
+
+	% Rahmen um die Legende
+	\psframe[fillstyle=solid, fillcolor=white](0,0)(21,4)							
+
+	% Bewertunssymbole mit Beschriftung
+	\psframe[fillstyle=solid, fillcolor=\msymbolfarbeA](1.25,2.75)(1.75,3.25)	
+	\uput{20pt}[0](1.25,3){Sehr gut}
+	\psframe[fillstyle=solid, fillcolor=\msymbolfarbeB](1.25,1.75)(1.75,2.25)	
+	\uput{20pt}[0](1.25,2){Gut}
+	\psframe[fillstyle=solid, fillcolor=\msymbolfarbeC](1.25,0.75)(1.75,1.25)	
+	\uput{20pt}[0](1.25,1){Ausreichend}
+
+	\psframe[fillstyle=solid, fillcolor=\msymbolfarbeD](6.25,2.75)(6.75,3.25)	
+	\uput{20pt}[0](6.25,3){Mangelhaft}
+	\psframe[fillstyle=solid, fillcolor=\msymbolfarbeE](6.25,1.75)(6.75,2.25)	
+	\uput{20pt}[0](6.25,2){Ungenügend}
+	\psframe[fillstyle=solid, fillcolor=\msymbolfarbeX](6.25,0.75)(6.75,1.25)	
+	\uput{20pt}[0](6.25,1){Unbenotet}
+
+        % Pfeilsymbole mit Beschriftung
+	\rput(12,2.5){\input{staticinputs/grids/pl1r}}       	
+	\uput{30pt}[0](12,3){Luftkeimmessung}
+	\rput(12,1.5){\input{staticinputs/grids/pw1r}}       	
+	\uput{30pt}[0](12,2){Wasseranalyse KBE/Legionellen}
+	\rput(12,0.5){\input{staticinputs/grids/pkk1r}}       	
+	\uput{30pt}[0](12,1){Kontaktkulturen}
+       	
+    \end{pspicture}
+\end{figure}

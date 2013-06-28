@@ -46,11 +46,14 @@ import de.hswt.hrm.common.ui.swt.layouts.LayoutUtil;
 import de.hswt.hrm.common.ui.swt.table.ColumnComparator;
 import de.hswt.hrm.common.ui.swt.table.ColumnDescription;
 import de.hswt.hrm.common.ui.swt.table.TableViewerController;
+import de.hswt.hrm.i18n.I18n;
+import de.hswt.hrm.i18n.I18nFactory;
 
 public class CatalogItemsComposite extends Composite {
 
 	private final static Logger LOG = LoggerFactory
 			.getLogger(CatalogItemsComposite.class);
+	private static final I18n I18N = I18nFactory.getI18n(CatalogItemsComposite.class);
 
 	@Inject
 	private CatalogService catalogService;
@@ -120,10 +123,10 @@ public class CatalogItemsComposite extends Composite {
 		toolkit.adapt(searchText, true, true);
 
 		final Combo filterCombo = new Combo(composite, SWT.SIMPLE | SWT.DROP_DOWN | SWT.READ_ONLY);
-		filterCombo.add("Show all");
-		filterCombo.add("Targets");
-		filterCombo.add("Currents");
-		filterCombo.add("Activities");
+		filterCombo.add(I18N.tr("Show all"));
+		filterCombo.add(I18N.tr("Targets"));
+		filterCombo.add(I18N.tr("Currents"));
+		filterCombo.add(I18N.tr("Activities"));
 		filterCombo.select(0);
 		filterCombo.addSelectionListener(new SelectionListener() {
 			@Override
@@ -170,9 +173,8 @@ public class CatalogItemsComposite extends Composite {
 	}
 
 	private void showDBConnectionError() {
-		// TODO translate
-		MessageDialog.openError(shellProvider.getShell(), "Connection Error",
-				"Could not load catalog items from Database.");
+		MessageDialog.openError(shellProvider.getShell(), I18N.tr("Connection Error"),
+				I18N.tr("Could not load catalog items from Database."));
 	}
 
 	private void updateSearchTableFilter(String filterString) {

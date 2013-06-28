@@ -1,0 +1,13 @@
+% taskComponent: the component of the plant
+% taskPerformance: the performance of the component
+% task: the task to do
+    & \beginmyitemize
+        \item \expandafter\csname :taskComponent:\endcsname 
+    \end{itemize}
+    & \beginmyitemize
+        \item \expandafter\csname :taskPerformance:\endcsname 
+    \end{itemize}
+    & \beginmyitemize
+        \item \expandafter\csname :task:\endcsname
+    \end{itemize} 
+    \\ \hline

@@ -91,4 +91,14 @@ public interface ISchemeComponentDao {
 	void reassignAttributeValue(Attribute attribute,
 			SchemeComponent sourceComp, SchemeComponent targetComp)
 					throws SaveException, DatabaseException;
+
+	/**
+	 * Deletes an attribute value from scheme component.
+	 * 
+	 * @param component
+	 * @param attribute
+	 * @throws DatabaseException
+	 */
+	void delete(SchemeComponent component, Attribute attribute)
+			throws DatabaseException;
 }

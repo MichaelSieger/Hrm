@@ -16,6 +16,7 @@ import org.eclipse.jface.action.ActionContributionItem;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.window.IShellProvider;
+import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -30,7 +31,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Function;
-import com.google.common.base.Optional;
 import com.google.common.base.Throwables;
 import com.google.common.collect.Collections2;
 
@@ -38,9 +38,12 @@ import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.ElementNotFoundException;
 import de.hswt.hrm.common.observer.Observer;
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
-import de.hswt.hrm.component.model.Component;
 import de.hswt.hrm.inspection.model.BiologicalRating;
 import de.hswt.hrm.inspection.model.Inspection;
+import de.hswt.hrm.inspection.model.PhysicalRating;
+import de.hswt.hrm.inspection.ui.wizard.ReportExportWizard;
+import de.hswt.hrm.inspection.ui.grid.BiologicalDisplay;
+import de.hswt.hrm.inspection.ui.grid.PhysicalDisplay;
 import de.hswt.hrm.plant.model.Plant;
 import de.hswt.hrm.report.latex.service.ReportService;
 import de.hswt.hrm.scheme.model.Scheme;
@@ -222,15 +225,23 @@ public class InspectionPart {
                 plantChanged(item);
             }
         });
+        final BiologicalDisplay bDisplay = new BiologicalDisplay(biologicalComposite.getInspectionSchemeGrid());
         selectedInspection
                 .addBiologicalRatingObserver(new Observer<Collection<BiologicalRating>>() {
 
                     @Override
                     public void changed(Collection<BiologicalRating> item) {
-                        // TODO Auto-generated method stub
-
+                    	bDisplay.update(item);
                     }
                 });
+        final PhysicalDisplay pDisplay = new PhysicalDisplay(physicalComposite.getInspectionSchemeGrid());
+        selectedInspection.addPhysicalRatingObserver(new Observer<Collection<PhysicalRating>>() {
+			
+			@Override
+			public void changed(Collection<PhysicalRating> item) {
+				pDisplay.update(item);
+			}
+		});
     }
 
     private void plantChanged(Plant plant) {
@@ -285,9 +296,7 @@ public class InspectionPart {
         Action evaluateAction = new Action("Report") {
             @Override
             public void run() {
-                super.run();
-                reportService.setInspection(reportsOverviewComposite.getSelectedInspection());
-                reportService.superAwesomeParsingMethod();
+            	createReport();
             }
         };
         evaluateAction.setDescription("Edit an exisitng report.");
@@ -354,6 +363,17 @@ public class InspectionPart {
         form.getToolBarManager().update(true);
     }
 
+    protected void createReport() {
+    	// Create wizard with injection support
+    	ReportExportWizard wizard = new ReportExportWizard(
+    			reportsOverviewComposite.getSelectedInspection());
+    	ContextInjectionFactory.inject(wizard, context);
+
+    	// Show wizard
+    	WizardDialog wd = new WizardDialog(shellProvider.getShell(), wizard);
+    	wd.open();
+	}
+    
     @PreDestroy
     public void dispose() {
         formToolkit.dispose();

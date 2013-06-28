@@ -1,0 +1,22 @@
+% rows: the rows from template mircrobiologysaturatorwaterrow.tex
+% saturatorWaterGradeSum: the sum of all saturator water grades
+% saturatorWaterWheightingSum: the sum of all weights
+% saturatorWaterRatingAverage: the saturator water avarage rating
+    \\ \hline       
+    \multicolumn{7}{c}{
+            \cellcolor{\mtabellenzweitekopfhintergrundfarbe}
+            \textcolor{\mtabellenkopfschriftfarbe}{\textbf{Befeuchterwasser}}
+    } 
+    \\ \hline
+    \multicolumn{2}{l}{\cellcolor{\mtabellenhintergrund}Wert} & 
+        \multicolumn{1}{c}{\cellcolor{\mtabellenhintergrund}Keimzahl / ml} & 
+        \multicolumn{1}{c}{\cellcolor{\mtabellenhintergrund}Note} & 
+        \multicolumn{1}{c}{\cellcolor{\mtabellenhintergrund}Gewichtung} & 
+        \multicolumn{1}{c}{\cellcolor{\mtabellenhintergrund}Bewertung} & 
+        \cellcolor{\mtabellenhintergrund}Bemerkung \\ \hline
+    :rows:                                                                                                              % to replace
+    \\ \hline
+    \multicolumn{4}{c}{\cellcolor{\mtabellenhintergrund} Teilnote $ = \sum{}$Bewertung$ \div \sum{}$Gewichtung} &
+        \multicolumn{1}{c}{\cellcolor{\mtabellenhintergrund} :saturatorWaterGradeSum:} &                                % to replace
+        \multicolumn{1}{c}{\cellcolor{\mtabellenhintergrund} :saturatorWaterWheightingSum:} &                           % to replace
+        \multicolumn{1}{c}{\cellcolor{\mtabellenhintergrund} :saturatorWaterRatingAverage:} \\ \hline                   % to replace

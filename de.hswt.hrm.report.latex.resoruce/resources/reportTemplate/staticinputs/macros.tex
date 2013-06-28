@@ -1,0 +1,141 @@
+% macro definitions
+
+\newcommand{\TitlePageFile}[1]{\newcommand{\mtitlepagefile}{#1}}              % header und footer file
+\newcommand{\ContentsPageFile}[1]{\newcommand{\mcontentspagefile}{#1}}        % header und footer file
+\newcommand{\HeaderFooterFile}[1]{\newcommand{\mheaderfooterfile}{#1}}        % header und footer file
+
+\newcommand{\TabellenKopfHintergrundfarbe}[1]{\newcommand{\mtabellenkopfhintergrundfarbe}{#1}}                  % Tabellenkopfhintergrundfarbe
+\newcommand{\TabellenZweiteKopfHintergrundfarbe}[1]{\newcommand{\mtabellenzweitekopfhintergrundfarbe}{#1}}      % Tabellenkopfhintergrundfarbe
+\newcommand{\TabellenKopfSchriftfarbe}[1]{\newcommand{\mtabellenkopfschriftfarbe}{#1}}                          % Tabellenkopfschriftfarbe
+\newcommand{\TabellenHintergrund}[1]{\newcommand{\mtabellenhintergrund}{#1}}                                    % Tabellenhintergrund
+
+\newcommand{\TitelseiteLogo}[1]{\newcommand{\mtitelseitelogo}{#1}}
+\newcommand{\FusszeilenLogo}[1]{\newcommand{\mfusszeilenlogo}{#1}}
+\newcommand{\FusszeilenLogoGroesse}[1]{\newcommand{\mfusszeilenlogogroesse}{#1}}
+
+\newcommand{\BioGridGroesse}[1]{\newcommand{\mbiogridgroesse}{#1}}                                              % Die Ausdehnung bzw der Maßstab des Biogrids 
+\newcommand{\BioGridBreite}[1]{\newcommand{\mbiogridbreite}{#1}}                                                % Breite des Biogrids (Anzahl Teilflächen)
+\newcommand{\BioGridHoehe}[1]{\newcommand{\mbiogridhoehe}{#1}}                                                  % Höhe des Biogrids (Anzahl Teilflächen)
+\newcommand{\PhysGridGroesse}[1]{\newcommand{\mphysgridgroesse}{#1}}                                            % Die Ausdehnung bzw der Maßstab des Physgrids 
+\newcommand{\PhysGridBreite}[1]{\newcommand{\mphysgridbreite}{#1}}                                              % Breite des Physgrids (Anzahl Teilflächen)
+\newcommand{\PhysGridHohe}[1]{\newcommand{\mphysgridhoehe}{#1}}                                                 % Höhe des Physgrids (Anzahl Teilflächen)
+
+\newcommand{\SymbolFarbeX}[1]{\newcommand{\msymbolfarbeX}{#1}}
+\newcommand{\SymbolFarbeA}[1]{\newcommand{\msymbolfarbeA}{#1}}
+\newcommand{\SymbolFarbeB}[1]{\newcommand{\msymbolfarbeB}{#1}}
+\newcommand{\SymbolFarbeC}[1]{\newcommand{\msymbolfarbeC}{#1}}
+\newcommand{\SymbolFarbeD}[1]{\newcommand{\msymbolfarbeD}{#1}}
+\newcommand{\SymbolFarbeE}[1]{\newcommand{\msymbolfarbeE}{#1}}
+
+\newcommand{\SymbolBackground}[1]{\newcommand{\msymbolbackground}{#1}}                                                                  % temporäre variable für die Hintergrundfarbe der Symbole
+\SymbolBackground{white}
+
+\newcommand{\PathToIncludes}[1]{\newcommand{\mpathtoincludes}{#1}}                                                                                      % relativer Pfad zu den Includedateien
+\newcommand{\PathToSymbols}[1]{\newcommand{\mpathtosymbols}{#1}}                                                                                        % relativer Pfad zu den Parameter Symbolen
+\newcommand{\PathToGrids}[1]{\newcommand{\mpathtogrids}{#1}}                                                                                            % relativer Pfad zu den Parameter Gridfiles
+\newcommand{\PathToTitlePages}[1]{\newcommand{\mpathtotitlepages}{#1}}                                                                          % relativer Pfad zu den Kopf und Titelseiten
+\newcommand{\PathToContentPages}[1]{\newcommand{\mpathtocontentpages}{#1}}                                                                      % relativer Pfad zu den Kopf und Inahltsverzeichnissen
+\newcommand{\PathToStyles}[1]{\newcommand{\mpathtostyles}{#1}}                                                                      % relativer Pfad zu den Kopf und Inahltsverzeichnissen
+\newcommand{\PathToHeads}[1]{\newcommand{\mpathtoheads}{#1}}                                                                                            % relativer Pfad zu den Kopf und Fusszeilendateien
+\newcommand{\PathToImages}[1]{\newcommand{\mpathtoimages}{#1}}                                                                                          % relativer Pfad zu den Bildateien
+\newcommand{\PathToLogos}[1]{\newcommand{\mpathtologos}{#1}}                                                                                            % relativer Pfad zu den Logos
+
+% Titelseite Makros
+\newcommand{\TitelseiteObjektName}[1]{\newcommand{\mtitelseiteobjektname}{#1}}                  % Titelseite Objekt Name
+\newcommand{\TitelseiteObjektFoto}[1]{\newcommand{\mtitelseiteobjektfoto}{#1}}                  % Titelseite Objekt Foto
+
+% Auftraggeber Makros
+\newcommand{\Auftraggeber}[1]{\newcommand{\mauftraggeber}{#1}}                                  % AuftraggeberName
+\newcommand{\AuftraggeberStrasse}[1]{\newcommand{\mauftraggeberstrasse}{#1}}                    % AuftraggeberStraße
+\newcommand{\AuftraggeberStadt}[1]{\newcommand{\mauftraggeberstadt}{#1}}                        % AuftraggeberStadt
+
+% Auftragnehmer Makros
+\newcommand{\Auftragnehmer}[1]{\newcommand{\mauftragnehmer}{#1}}                                % AuftragnehmerName
+\newcommand{\AuftragnehmerStrasse}[1]{\newcommand{\mauftragnehmerstrasse}{#1}}                  % AuftragnehmerStraße
+\newcommand{\AuftragnehmerStadt}[1]{\newcommand{\mauftragnehmerstadt}{#1}}                      % AuftragnehmerStadt
+
+% Auftragnehmer Makros
+\newcommand{\Pruefer}[1]{\newcommand{\mpruefer}{#1}}                                            % PrüferName
+\newcommand{\PrueferStrasse}[1]{\newcommand{\mprueferstrasse}{#1}}                              % PrüferStraße
+\newcommand{\PrueferStadt}[1]{\newcommand{\mprueferstadt}{#1}}                                  % PrüferStadt
+
+% Objekt (Gebäude) Makros 
+\newcommand{\Objekt}[1]{\newcommand{\mobjekt}{#1}}                                              % ObjektName
+\newcommand{\ObjektStrasse}[1]{\newcommand{\mobjektstrasse}{#1}}                                % ObjektStraße
+\newcommand{\ObjektStadt}[1]{\newcommand{\mobjektstadt}{#1}}                                    % ObjektStadt
+
+% Datums Makros
+\newcommand{\DatumInspektion}[1]{\newcommand{\mdatuminspektion}{#1}}                            % Datum der Inspektion
+\newcommand{\DatumBericht}[1]{\newcommand{\mdatumbericht}{#1}}                                  % Datum des Berichts
+
+% Anlagendaten Makros
+\newcommand{\Anlage}[1]{\newcommand{\manlage}{#1}}                                                                              % Anlage
+\newcommand{\AnlagenStandort}[1]{\newcommand{\manlagenstandort}{#1}}                                    % Anlagenstandort
+\newcommand{\AnlagenBereich}[1]{\newcommand{\manlagenbereich}{#1}}                                              % Analagenbereich bzw. versorgter Bereich
+
+\newcommand{\AnlagenFoto}[1]{\newcommand{\manlagenfoto}{#1}}                                                    % Anlagenfoto
+\newcommand{\AnlagenHersteller}[1]{\newcommand{\manlagenhersteller}{#1}}                                % Anlagenhersteller
+\newcommand{\AnlagenTyp}[1]{\newcommand{\manlagentyp}{#1}}                                                              % Anlagentyp
+\newcommand{\AnlagenBaujahr}[1]{\newcommand{\manlagenbaujahr}{#1}}                                              % Anlagenbaujahr
+\newcommand{\AnlagenLuftleistung}[1]{\newcommand{\manlagenluftleistung}{#1}}                    % Anlagenluftleistung
+\newcommand{\AnlagenMotorleistung}[1]{\newcommand{\manlagenmotorleistung}{#1}}                  % Anlganemotorleistung
+\newcommand{\AnlagenMotordrehzahl}[1]{\newcommand{\manlagenmotordrehzahl}{#1}}                  % Anlagendrehzahl
+\newcommand{\AnlagenNennstrom}[1]{\newcommand{\manlagennennstrom}{#1}}                                  % Anlagennennstrom
+\newcommand{\AnlagenSpannung}[1]{\newcommand{\manlagenspannung}{#1}}                                    % Anlagenspannung
+
+
+% Makros für die Breite der zweispaltigen Tabellenspalten
+\newcommand{\TabellenZweiSpaltenBreiteErste}[1]{                                % Spaltenbreite der ersten Spalte bei zweispaltigen Tabellen
+        \newlength{\tabellenzweispaltenbreiteerste}
+        \setlength{\tabellenzweispaltenbreiteerste}{#1}
+}                       
+\newcommand{\TabellenZweiSpaltenBreiteZweite}[1]{                               % Spaltenbreite der zweiten Spalte bei zweispaltigen Tabellen
+        \newlength{\tabellenzweispaltenbreitezweite}
+        \setlength{\tabellenzweispaltenbreitezweite}{#1}
+}               
+
+% Makros für die Breite der biologischen Parameter Tabellenspalten
+\newcommand{\TabelleBioParameterA}[1]{\newlength{\tabellebioparameterA}\setlength{\tabellebioparameterA}{#1}}
+\newcommand{\TabelleBioParameterB}[1]{\newlength{\tabellebioparameterB}\setlength{\tabellebioparameterB}{#1}}
+\newcommand{\TabelleBioParameterC}[1]{\newlength{\tabellebioparameterC}\setlength{\tabellebioparameterC}{#1}}
+\newcommand{\TabelleBioParameterD}[1]{\newlength{\tabellebioparameterD}\setlength{\tabellebioparameterD}{#1}}
+\newcommand{\TabelleBioParameterE}[1]{\newlength{\tabellebioparameterE}\setlength{\tabellebioparameterE}{#1}}
+
+% Makros für die Breite der biologischen Notenberechnung Tabellenspalten
+\newcommand{\TabelleBioNotenA}[1]{\newlength{\tabellebionotenA}\setlength{\tabellebionotenA}{#1}}
+\newcommand{\TabelleBioNotenB}[1]{\newlength{\tabellebionotenB}\setlength{\tabellebionotenB}{#1}}
+\newcommand{\TabelleBioNotenC}[1]{\newlength{\tabellebionotenC}\setlength{\tabellebionotenC}{#1}}
+\newcommand{\TabelleBioNotenD}[1]{\newlength{\tabellebionotenD}\setlength{\tabellebionotenD}{#1}}
+\newcommand{\TabelleBioNotenE}[1]{\newlength{\tabellebionotenE}\setlength{\tabellebionotenE}{#1}}
+\newcommand{\TabelleBioNotenF}[1]{\newlength{\tabellebionotenF}\setlength{\tabellebionotenF}{#1}}
+
+% Makros für die Breite der physikalischen Parameter Tabellenspalten
+\newcommand{\TabellePhysParameterA}[1]{\newlength{\tabellephysparameterA}\setlength{\tabellephysparameterA}{#1}}
+\newcommand{\TabellePhysParameterB}[1]{\newlength{\tabellephysparameterB}\setlength{\tabellephysparameterB}{#1}}
+\newcommand{\TabellePhysParameterC}[1]{\newlength{\tabellephysparameterC}\setlength{\tabellephysparameterC}{#1}}
+\newcommand{\TabellePhysParameterD}[1]{\newlength{\tabellephysparameterD}\setlength{\tabellephysparameterD}{#1}}
+
+% Makros für die Breite der physikalischen Notenberechnung Tabellenspalten
+\newcommand{\TabellePhysNotenA}[1]{\newlength{\tabellephysnotenA}\setlength{\tabellephysnotenA}{#1}}
+\newcommand{\TabellePhysNotenB}[1]{\newlength{\tabellephysnotenB}\setlength{\tabellephysnotenB}{#1}}
+\newcommand{\TabellePhysNotenC}[1]{\newlength{\tabellephysnotenC}\setlength{\tabellephysnotenC}{#1}}
+\newcommand{\TabellePhysNotenD}[1]{\newlength{\tabellephysnotenD}\setlength{\tabellephysnotenD}{#1}}
+\newcommand{\TabellePhysNotenE}[1]{\newlength{\tabellephysnotenE}\setlength{\tabellephysnotenE}{#1}}
+\newcommand{\TabellePhysNotenF}[1]{\newlength{\tabellephysnotenF}\setlength{\tabellephysnotenF}{#1}}
+
+% Makros für die Breite der physikalischen Soll-Ist-Maßnahmen-Übersichttabellenspalten
+\newcommand{\TabellePhysSollIstMnA}[1]{\newlength{\tabellephyssollistmnA}\setlength{\tabellephyssollistmnA}{#1}}
+\newcommand{\TabellePhysSollIstMnB}[1]{\newlength{\tabellephyssollistmnB}\setlength{\tabellephyssollistmnB}{#1}}
+\newcommand{\TabellePhysSollIstMnC}[1]{\newlength{\tabellephyssollistmnC}\setlength{\tabellephyssollistmnC}{#1}}
+
+% Makros für die Breite der physikalischen Soll-Ist Tabellenspalten
+\newcommand{\TabellePhysSollIstA}[1]{\newlength{\tabellephyssollistA}\setlength{\tabellephyssollistA}{#1}}
+\newcommand{\TabellePhysSollIstB}[1]{\newlength{\tabellephyssollistB}\setlength{\tabellephyssollistB}{#1}}
+\newcommand{\TabellePhysSollIstC}[1]{\newlength{\tabellephyssollistC}\setlength{\tabellephyssollistC}{#1}}
+\newcommand{\TabellePhysSollIstD}[1]{\newlength{\tabellephyssollistD}\setlength{\tabellephyssollistD}{#1}}
+\newcommand{\TabellePhysSollIstE}[1]{\newlength{\tabellephyssollistE}\setlength{\tabellephyssollistE}{#1}}
+\newcommand{\TabellePhysSollIstF}[1]{\newlength{\tabellephyssollistF}\setlength{\tabellephyssollistF}{#1}}
+\newcommand{\TabellePhysSollIstG}[1]{\newlength{\tabellephyssollistG}\setlength{\tabellephyssollistG}{#1}}
+\newcommand{\TabellePhysSollIstH}[1]{\newlength{\tabellephyssollistH}\setlength{\tabellephyssollistH}{#1}}
+
+\newcommand{\beginmyitemize}{\begin{itemize}[noitemsep, nolistsep, fullwidth, leftmargin=0pt, rightmargin=0pt, topsep=-1cm]}

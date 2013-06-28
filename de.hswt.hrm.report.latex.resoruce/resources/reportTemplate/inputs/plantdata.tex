@@ -1,0 +1,48 @@
+\section{Anlagendaten}
+
+\ifthenelse{\isnamedefined{manlagenfoto}}{
+        \begin{figure}[h]
+        \fbox{
+                \includegraphics[width=8cm, height=7.5cm]{\manlagenfoto}
+        }       
+        \caption{Anlagenfoto}
+        \end{figure}
+}{}
+
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{p{\tabellenzweispaltenbreiteerste} p{\tabellenzweispaltenbreitezweite}}
+        \multicolumn{2}{c}{
+                \cellcolor{\mtabellenkopfhintergrundfarbe}
+                \textcolor{\mtabellenkopfschriftfarbe}{\textbf{Anlagenübersicht}}
+        } \\ \hline
+        \ifthenelse{\isnamedefined{manlagenhersteller}}{
+                \cellcolor{\mtabellenhintergrund} Hersteller & \manlagenhersteller \\ \hline
+        }{}
+        \ifthenelse{\isnamedefined{manlagentyp}}{
+                \cellcolor{\mtabellenhintergrund} Typ & \manlagentyp \\ \hline
+        }{}
+        \ifthenelse{\isnamedefined{manlagenbaujahr}}{
+                \cellcolor{\mtabellenhintergrund} Baujahr & \manlagenbaujahr \\ \hline
+        }{}
+        \ifthenelse{\isnamedefined{manlagenluftleistung}}{
+                \cellcolor{\mtabellenhintergrund} Luftleistung & \manlagenluftleistung \\ \hline
+        }{}
+        \ifthenelse{\isnamedefined{manlagenmotorleistung}}{
+                \cellcolor{\mtabellenhintergrund} Motorleistung & \manlagenmotorleistung \\ \hline
+        }{}
+        \ifthenelse{\isnamedefined{manlagenmotordrehzahl}}{
+                \cellcolor{\mtabellenhintergrund} Motordrehzahl & \manlagenmotordrehzahl \\ \hline
+        }{}
+        \ifthenelse{\isnamedefined{manlagennennstrom}}{
+                \cellcolor{\mtabellenhintergrund} Nennstrom & \manlagennennstrom \\ \hline
+        }{}
+        \ifthenelse{\isnamedefined{manlagenspannung}}{
+                \cellcolor{\mtabellenhintergrund} Spannung & \manlagenspannung \\ \hline
+        }{}
+        \ifthenelse{\isnamedefined{manlagenbereich}}{
+                \cellcolor{\mtabellenhintergrund} Versorgter Bereich & \manlagenbereich \\ \hline
+        }{}
+\end{tabular}
+\end{center}
+\end{table}

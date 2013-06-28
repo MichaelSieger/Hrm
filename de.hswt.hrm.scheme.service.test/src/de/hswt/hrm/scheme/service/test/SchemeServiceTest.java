@@ -121,8 +121,6 @@ public class SchemeServiceTest extends AbstractDatabaseTest {
         SchemeComponent schemeComp = new SchemeComponent(scheme, 0, 0, Direction.leftRight,
                 attributes.get(0).getComponent());
 
-        // FIXME: again wrong usage of the API possible -> scheme should be mandatory
-        schemeComp.setScheme(scheme);
         schemeComp = schemeComponentDao.insert(schemeComp);
 
         Attribute attr = attributes.get(0);
@@ -181,6 +179,7 @@ public class SchemeServiceTest extends AbstractDatabaseTest {
 
     @Test
     public void testUpdateScheme() throws ElementNotFoundException, DatabaseException {
+    	List<Attribute> attributes = createTestAttributes();
         Component component = createTestComponent();
         ISchemeDao schemeDao = createSchemeDao();
         SchemeService service = createSchemeService();
@@ -188,11 +187,11 @@ public class SchemeServiceTest extends AbstractDatabaseTest {
         Scheme scheme = new Scheme(createTestPlant());
         scheme = schemeDao.insert(scheme);
         SchemeComponent schemeComp = new SchemeComponent(scheme, 0, 0, Direction.leftRight,
-                component);
-        schemeComp.setScheme(scheme);
+                attributes.get(0).getComponent());
         schemeComp = schemeComponentDao.insert(schemeComp);
+        Attribute attr = attributes.get(0);
+        schemeComponentDao.setAttributeValue(schemeComp, attr, "Some value");
         SchemeComponent comp2 = new SchemeComponent(scheme, 10, 10, Direction.leftRight, component);
-        comp2.setScheme(scheme);
         schemeComponentDao.insert(comp2);
 
         Collection<SchemeComponent> comps = service.findSchemeComponents(scheme);

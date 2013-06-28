@@ -7,23 +7,22 @@ import org.eclipse.swt.graphics.Color;
 import com.google.common.base.Preconditions;
 
 import de.hswt.hrm.inspection.model.BiologicalRating;
-import de.hswt.hrm.scheme.model.SchemeComponent;
+import de.hswt.hrm.inspection.model.PhysicalRating;
 
 
-public class PhysicalRating extends RatingDisplay{
+public class PhysicalDisplay extends RatingDisplay{
 
-	public PhysicalRating(InspectionSchemeGrid grid) {
+	public PhysicalDisplay(InspectionSchemeGrid grid) {
 		super(grid);
 	}
 	
-	public void update(Collection<BiologicalRating> ratings){
+	public void update(Collection<PhysicalRating> ratings){
 		InspectionSchemeGrid grid = getSchemeGrid();
 		Color[] colors = getColors();
-		for(BiologicalRating r : ratings){
+		for(PhysicalRating r : ratings){
 			int grade = r.getRating();
-			SchemeComponent comp = null;
 			Preconditions.checkArgument(grade >= 0 && grade < colors.length);
-			grid.setColor(comp, colors[grade]);
+			grid.setColor(r.getComponent(), colors[grade]);
 		}
 	}
 

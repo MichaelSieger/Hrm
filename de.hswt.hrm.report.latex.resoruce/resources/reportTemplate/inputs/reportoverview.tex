@@ -1,0 +1,37 @@
+\begin{tabular}{p{\tabellenzweispaltenbreiteerste} p{\tabellenzweispaltenbreitezweite}}
+        \multicolumn{2}{c}{
+                \cellcolor{\mtabellenkopfhintergrundfarbe}
+                \textcolor{\mtabellenkopfschriftfarbe}{\textbf{Auftragsübersicht}}
+        } \\ \hline
+        \cellcolor{\mtabellenhintergrund} Auftraggeber & \mauftraggeber \\
+        \cellcolor{\mtabellenhintergrund} & \mauftraggeberstrasse \\
+        \cellcolor{\mtabellenhintergrund} & \mauftraggeberstadt \\ \hline
+        \cellcolor{\mtabellenhintergrund} Objekt & \mobjekt \\
+        \cellcolor{\mtabellenhintergrund} & \mobjektstrasse \\
+        \cellcolor{\mtabellenhintergrund} & \mobjektstadt \\ \hline
+        \ifthenelse{\equal{\mauftragnehmer}{}}{}{
+                \cellcolor{\mtabellenhintergrund} Auftragnehmer & \mauftragnehmer
+                \ifthenelse{\equal{\mauftragnehmerstrasse}{}}{}{
+                        \\ \cellcolor{\mtabellenhintergrund} & \mauftragnehmerstrasse
+                }
+                \ifthenelse{\equal{\mauftragnehmerstadt}{}}{}{
+                        \\ \cellcolor{\mtabellenhintergrund} & \mauftragnehmerstadt
+                }
+                \\ \hline
+        }
+        \ifthenelse{\equal{\mpruefer}{}}{}{
+                \cellcolor{\mtabellenhintergrund} Prüfer & \mpruefer
+                \ifthenelse{\equal{\mprueferstrasse}{}}{}{
+                        \\ \cellcolor{\mtabellenhintergrund} & \mprueferstrasse
+                }       
+                \ifthenelse{\equal{\mprueferstadt}{}}{}{
+                        \\ \cellcolor{\mtabellenhintergrund} & \mprueferstadt
+                }
+                \\ \hline
+        }
+        \cellcolor{\mtabellenhintergrund} Anlage & \manlage \\ \hline
+        \cellcolor{\mtabellenhintergrund} Standort & \manlagenstandort \\ \hline
+        \cellcolor{\mtabellenhintergrund} Versorgte Bereiche & \manlagenbereich \\ \hline
+        \cellcolor{\mtabellenhintergrund} Datum Inspektion & \mdatuminspektion \\ \hline
+        \cellcolor{\mtabellenhintergrund} Datum Bericht & \mdatumbericht        \\ \hline
+\end{tabular}

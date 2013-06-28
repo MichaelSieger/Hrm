@@ -1,0 +1,18 @@
+\definecolor{HartmannDarkGreen}{RGB}{23,169,79}				% Definition des dunklen Grüns über RGB-Farben
+\definecolor{HartmannLightGreen}{RGB}{150,179,161}			% Definition des hellen Grüns über RGB-Farben
+\definecolor{HartmannGreen}{RGB}{23,169,79}					% Definition des Dr. Hartmann grüns über RGB-Farben
+
+\TabellenKopfHintergrundfarbe{HartmannDarkGreen}			% Hintergundfarbe für die Tabellenköpfe
+\TabellenZweiteKopfHintergrundfarbe{HartmannLightGreen}		% Hintergundfarbe für die Tabellenköpfe
+\TabellenKopfSchriftfarbe{white}							% Schriftfarbe für die Tabellenköpfe
+\TabellenHintergrund{lightgray}								% Hintergrund der colorierten Tabellenzellen
+
+\TitelseiteLogo{\mpathtologos Service_HARTMANN.jpg}			% Bild auf der Titelseite, auskommentieren wenn kein Bild gewünscht
+\FusszeilenLogo{\mpathtologos Service_HARTMANN.jpg}
+
+% nicht schön!, aber keine andere Lösung gefunden, die beiden Werte hinter den zwei nullen müssen durch die entsprechende Größe des Logos erstetzt werden (erst Breite dann Höhe)
+\FusszeilenLogoGroesse{\includegraphics[bb = 0 15 1800 1100 ,height=1.3cm]{\mfusszeilenlogo}}
+
+\TitlePageFile{titlepagehartmann} 							% Name der gewünschten Titelseitendatei
+\ContentsPageFile{inhaltsverzeichnishartmann}				% Name der gewünschten Inhaltsverzeichnisdatei
+\HeaderFooterFile{\mpathtoheads hartmannservice}			% Pfad zur gewünschten datei welche die Kopf und Fusszeile festlegt (nohead wenn keine Kopf-bzw. Fusszeilen gewünscht)
