@@ -6,7 +6,6 @@ import static com.google.common.base.Preconditions.checkState;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Locale.Category;
 
 import javax.inject.Inject;
 
@@ -26,7 +25,6 @@ import de.hswt.hrm.catalog.model.Target;
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.ElementNotFoundException;
 import de.hswt.hrm.common.database.exception.SaveException;
-import de.hswt.hrm.common.exception.NotImplementedException;
 
 @Creatable
 public class CatalogService {
@@ -72,10 +70,6 @@ public class CatalogService {
 		return items;
 	}
 	
-	public Collection<Catalog> findCatalog(final Category category) {
-		throw new NotImplementedException();
-	}
-
 	public Collection<Activity> findAllActivity() throws DatabaseException {
 		return activityDao.findAll();
 	}
