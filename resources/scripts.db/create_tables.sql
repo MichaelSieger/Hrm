@@ -2,7 +2,6 @@
 -- This script generates the HRM Database Scheme 
 -- -----------------------------------------------------
 
-
 -- -----------------------------------------------------
 -- Table `Contact`
 -- -----------------------------------------------------
@@ -300,17 +299,6 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `Biological_Flag`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `Biological_Flag` (
-  `Flag_ID` INT NOT NULL AUTO_INCREMENT ,
-  `Flag_Name` VARCHAR(45) NULL ,
-  PRIMARY KEY (`Flag_ID`) ,
-  UNIQUE INDEX `Flag_Name_UNIQUE` (`Flag_Name` ASC) )
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
 -- Table `Biological_Rating`
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `Biological_Rating` (
@@ -321,11 +309,10 @@ CREATE  TABLE IF NOT EXISTS `Biological_Rating` (
   `Biological_Rating_Rating` INT NULL ,
   `Biological_Rating_Quantifier` INT NULL ,
   `Biological_Rating_Comment` VARCHAR(255) NULL ,
-  `Biological_Rating_Flag_FK` INT NULL ,
+  `Biological_Rating_Flag` VARCHAR(100) NULL ,
   PRIMARY KEY (`Biological_Rating_ID`) ,
   INDEX `Biological_Rating_Component_IDx` (`Biological_Rating_Component_FK` ASC) ,
   INDEX `Biological_Rating_Report_IDx` (`Biological_Rating_Report_FK` ASC) ,
-  INDEX `Biological_Rating_Flag_FK` (`Biological_Rating_Flag_FK` ASC) ,
   CONSTRAINT `Biological_Rating_Component_FK`
     FOREIGN KEY (`Biological_Rating_Component_FK` )
     REFERENCES `Scheme_Component` (`Scheme_Component_ID` )
@@ -334,11 +321,6 @@ CREATE  TABLE IF NOT EXISTS `Biological_Rating` (
   CONSTRAINT `Biological_Rating_Report_FK`
     FOREIGN KEY (`Biological_Rating_Report_FK` )
     REFERENCES `Report` (`Report_ID` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `Biological_Rating_Flag_FK`
-    FOREIGN KEY (`Biological_Rating_Flag_FK` )
-    REFERENCES `Biological_Flag` (`Flag_ID` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
