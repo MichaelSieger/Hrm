@@ -100,7 +100,7 @@ public class ComponentPart {
         });
 
         categoriesTab = new TabItem(tabFolder, SWT.NONE);
-        categoriesTab.setText("Categories");
+        categoriesTab.setText(I18N.tr("Categories"));
 
         componentsTab = new TabItem(tabFolder, SWT.NONE);
         componentsTab.setText(I18N.tr("Components"));
