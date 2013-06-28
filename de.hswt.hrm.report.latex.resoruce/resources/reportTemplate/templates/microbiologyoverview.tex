@@ -1,0 +1,47 @@
+% biologyOverallColor: 
+% grade > 4 = E
+% grade > 3 = D
+% grade > 2 = C
+% grade > 1 = B
+% grade > 1 = A
+% biologyOverallRating: overall rating of biology
+% actionNeeded: action needed (`Maßnahmen erforderlich`) or (`keine Maßnahmen erforderlich`)
+\newcommand{\BioNotenBalkenDiagramm}{
+                \centering
+                \psset{unit=0.4cm}
+                \psset{dimen=middle}
+                \begin{pspicture}(-2,-1)(7,7.5)
+                \psaxes[labels=y,axesstyle=axes,Ox=0,Oy=0,Dx=6,Dy=1]{-}(6,5)
+                \listplot[linecolor=black,plotstyle=bar,barwidth=1.5cm,fillcolor=\msymbolfarbe:biologyOverallColor: ,fillstyle=solid]{3 :biologyOverallRating:}         % to replace
+                \uput{5pt}[90](3,5){:biologyOverallRating:}                                                                                                             % to replace
+                \end{pspicture} 
+}
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{p{\tabellebioparameterA} 
+                p{\tabellebioparameterB} 
+                p{\tabellebioparameterC}
+                p{\tabellebioparameterD} 
+                m{\tabellebioparameterE}
+        }
+        \multicolumn{4}{c}{
+                \cellcolor{\mtabellenkopfhintergrundfarbe}
+                \textcolor{\mtabellenkopfschriftfarbe}{\textbf{Biologische Parameter (Kontaktkulturen)}}
+        } & \multicolumn{1}{c}{
+                        \cellcolor{\mtabellenkopfhintergrundfarbe} 
+                        \textcolor{\mtabellenkopfschriftfarbe}{\textbf{Gesamtnote}}
+        } \\ \hline
+        \multicolumn{1}{c}{\cellcolor{\mtabellenhintergrund} Note} & 
+                \multicolumn{1}{c}{\cellcolor{\mtabellenhintergrund} Bewertung} & 
+                \multicolumn{1}{c}{\cellcolor{\mtabellenhintergrund} KBE 25cm\textsuperscript{2}} & 
+                \multicolumn{1}{c}{\cellcolor{\mtabellenhintergrund} Definition nach VDI-6022} & 
+                \multirow{5}{*}{\parbox[b]{4.2cm}{\vspace{0.15cm} \BioNotenBalkenDiagramm}}\\ \cline{1-4}
+        \multicolumn{1}{c}{1} & Sehr gut & \multicolumn{1}{c}{0} & kein Wachstum & \\ \cline{1-4}
+        \multicolumn{1}{c}{2} & Gut & \multicolumn{1}{c}{< 25} & unauffällig & \\ \cline{1-4}
+        \multicolumn{1}{c}{3} & Ausreichend & \multicolumn{1}{c}{25-100} & grenzwertig & \\ \cline{1-4}
+        \multicolumn{1}{c}{4} & Mangelhaft & \multicolumn{1}{c}{> 100} & unzureichend & \\ \cline{1-4}
+        \multicolumn{1}{c}{5} & Ungenügend & & völlig unzureichend & \\ \cline{1-4}
+        \multicolumn{4}{c}{\cellcolor{\mtabellenhintergrund}:actionNeeded:} & \\ \hline                                                         % to replace
+\end{tabular}
+\end{center}
+\end{table}

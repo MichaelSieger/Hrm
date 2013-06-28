@@ -1,0 +1,19 @@
+\definecolor{BayernFMBlue}{RGB}{0,145,254}					% Definition des Bayern FM Blaus über RGB-Farben
+\definecolor{BayernFMOrange}{RGB}{254,125,33}				% Definition des Bayern FM Oranges über RGB-Farben
+\definecolor{BayernFMGray}{RGB}{98,98,98}					% Definition des Bayern FM Graus über RGB-Farben
+\definecolor{SysHygBlue}{RGB}{0,159,224}					% Definition des System Hygiene Blaus über RGB-Farben
+
+\TabellenKopfHintergrundfarbe{BayernFMBlue}					% Hintergundfarbe für die Tabellenköpfe
+\TabellenZweiteKopfHintergrundfarbe{BayernFMGray}			% Hintergundfarbe für die Tabellenköpfe
+\TabellenKopfSchriftfarbe{white}							% Schriftfarbe für die Tabellenköpfe
+\TabellenHintergrund{lightgray}								% Hintergrund der colorierten Tabellenzellen
+
+\TitelseiteLogo{\mpathtologos bayernfm.jpg}			% Bild auf der Titelseite, auskommentieren wenn kein Bild gewünscht
+\FusszeilenLogo{\mpathtologos bayernfm.jpg}
+
+% nicht schön!, aber keine andere Lösung gefunden, die beiden Werte hinter den zwei nullen müssen durch die entsprechende Größe des Logos erstetzt werden (erst Breite dann Höhe)
+\FusszeilenLogoGroesse{\includegraphics[bb = 10 0 1100 700 ,height=1.3cm]{\mfusszeilenlogo}}
+
+\TitlePageFile{titlepage} 									% Name der gewünschten Titelseitendatei
+\ContentsPageFile{inhaltsverzeichnis} 						% Name der gewünschten Inhaltsverzeichnisdatei
+\HeaderFooterFile{\mpathtoheads bayernfm}				% Pfad zur gewünschten datei welche die Kopf und Fusszeile festlegt (nohead wenn keine Kopf-bzw. Fusszeilen gewünscht)

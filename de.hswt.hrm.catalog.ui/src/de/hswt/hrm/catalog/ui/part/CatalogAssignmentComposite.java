@@ -50,10 +50,13 @@ import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.SaveException;
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.common.ui.swt.layouts.LayoutUtil;
+import de.hswt.hrm.i18n.I18n;
+import de.hswt.hrm.i18n.I18nFactory;
 
 public class CatalogAssignmentComposite extends Composite {
 
     private static final Logger LOG = LoggerFactory.getLogger(CatalogAssignmentComposite.class);
+    private static final I18n I18N = I18nFactory.getI18n(CatalogAssignmentComposite.class);
 
     @Inject
     private CatalogService catalogService;
@@ -168,7 +171,7 @@ public class CatalogAssignmentComposite extends Composite {
         Section catalogSection = formToolkit.createSection(this, Section.TITLE_BAR);
         catalogSection.setLayoutData(LayoutUtil.createFillData());
         formToolkit.paintBordersFor(catalogSection);
-        catalogSection.setText("Catalogs");
+        catalogSection.setText(I18N.tr("Catalogs"));
 
         Composite catalogComposite = formToolkit.createComposite(catalogSection);
         gl = new GridLayout();
@@ -184,7 +187,7 @@ public class CatalogAssignmentComposite extends Composite {
         Section assignedTargetSection = formToolkit.createSection(this, Section.TITLE_BAR);
         assignedTargetSection.setLayoutData(LayoutUtil.createFillData());
         formToolkit.paintBordersFor(assignedTargetSection);
-        assignedTargetSection.setText("Assigned Target");
+        assignedTargetSection.setText(I18N.tr("Assigned Target"));
 
         Composite assignedTargetComposite = new Composite(assignedTargetSection, SWT.NONE);
         formToolkit.adapt(assignedTargetComposite);
@@ -219,7 +222,7 @@ public class CatalogAssignmentComposite extends Composite {
         assignedCurrentSection.setLayoutData(LayoutUtil.createFillData());
         assignedCurrentSection.setBounds(0, 0, 105, 21);
         formToolkit.paintBordersFor(assignedCurrentSection);
-        assignedCurrentSection.setText("Assigned Current");
+        assignedCurrentSection.setText(I18N.tr("Assigned Current"));
 
         Composite assignedCurrentComposite = new Composite(assignedCurrentSection, SWT.NONE);
         formToolkit.adapt(assignedCurrentComposite);
@@ -252,7 +255,7 @@ public class CatalogAssignmentComposite extends Composite {
         Section assignedActivitySection = formToolkit.createSection(this, Section.TITLE_BAR);
         assignedActivitySection.setLayoutData(LayoutUtil.createFillData());
         formToolkit.paintBordersFor(assignedActivitySection);
-        assignedActivitySection.setText("Assigned Activity");
+        assignedActivitySection.setText(I18N.tr("Assigned Activity"));
 
         Composite matchedActivityComposite = new Composite(assignedActivitySection, SWT.NONE);
         formToolkit.adapt(matchedActivityComposite);
@@ -371,7 +374,7 @@ public class CatalogAssignmentComposite extends Composite {
         Section informationSection = formToolkit.createSection(this, Section.TITLE_BAR);
         informationSection.setLayoutData(LayoutUtil.createFillData());
         formToolkit.paintBordersFor(informationSection);
-        informationSection.setText("Information");
+        informationSection.setText(I18N.tr("Information"));
 
         Composite informationComposite = new Composite(informationSection, SWT.NONE);
         formToolkit.adapt(informationComposite);
@@ -383,7 +386,7 @@ public class CatalogAssignmentComposite extends Composite {
 
         Label nameLabel = new Label(informationComposite, SWT.NONE);
         formToolkit.adapt(nameLabel, true, true);
-        nameLabel.setText("Name");
+        nameLabel.setText(I18N.tr("Name"));
 
         nameText = new Text(informationComposite, SWT.BORDER | SWT.READ_ONLY);
         nameText.setLayoutData(LayoutUtil.createHorzFillData());
@@ -392,7 +395,7 @@ public class CatalogAssignmentComposite extends Composite {
         Label descLabel = new Label(informationComposite, SWT.NONE);
         descLabel.setLayoutData(new GridData(SWT.LEFT, SWT.FILL, false, false, 1, 1));
         formToolkit.adapt(descLabel, true, true);
-        descLabel.setText("Description");
+        descLabel.setText(I18N.tr("Description"));
 
         descText = new Text(informationComposite, SWT.BORDER | SWT.READ_ONLY | SWT.MULTI | SWT.WRAP);
         descText.setLayoutData(LayoutUtil.createFillData());
@@ -401,7 +404,7 @@ public class CatalogAssignmentComposite extends Composite {
         Section targetSection = formToolkit.createSection(this, Section.TITLE_BAR);
         targetSection.setLayoutData(LayoutUtil.createFillData());
         formToolkit.paintBordersFor(targetSection);
-        targetSection.setText("Available Target");
+        targetSection.setText(I18N.tr("Available Target"));
 
         Composite targetComposite = new Composite(targetSection, SWT.NONE);
         formToolkit.adapt(targetComposite);
@@ -432,7 +435,7 @@ public class CatalogAssignmentComposite extends Composite {
         Section currentSection = formToolkit.createSection(this, Section.TITLE_BAR);
         currentSection.setLayoutData(LayoutUtil.createFillData());
         formToolkit.paintBordersFor(currentSection);
-        currentSection.setText("Available Current");
+        currentSection.setText(I18N.tr("Available Current"));
 
         Composite currentComposite = new Composite(currentSection, SWT.NONE);
         formToolkit.adapt(currentComposite);
@@ -463,7 +466,7 @@ public class CatalogAssignmentComposite extends Composite {
         Section activitySection = formToolkit.createSection(this, Section.TITLE_BAR);
         activitySection.setLayoutData(LayoutUtil.createFillData());
         formToolkit.paintBordersFor(activitySection);
-        activitySection.setText("Available Activity");
+        activitySection.setText(I18N.tr("Available Activity"));
 
         Composite activityComposite = new Composite(activitySection, SWT.NONE);
         formToolkit.adapt(activityComposite);

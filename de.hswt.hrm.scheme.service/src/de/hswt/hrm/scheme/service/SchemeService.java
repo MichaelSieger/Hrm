@@ -131,6 +131,14 @@ public class SchemeService {
 		
 		// Delete old scheme components
 		for (SchemeComponent comp : toDelete) {
+			// If a scheme component gets deleted completely (not present in new scheme)
+			// we also have to remove the attribute values first
+			for (Attribute attr : schemeComponentDao
+					.findAttributesOfSchemeComponent(comp).keySet()) {
+
+				schemeComponentDao.delete(comp, attr);
+			}
+
 			schemeComponentDao.delete(comp);
 		}
 	}

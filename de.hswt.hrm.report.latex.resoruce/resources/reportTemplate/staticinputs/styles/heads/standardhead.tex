@@ -1,0 +1,25 @@
+% Hier werden die Kopf- und Fuﬂzeilen festgelegt. Der erste Abschnitt wirkt sich nur auf die Erscheinung aus. Der zweite Abschnitt enth‰llt die Angaben.
+
+% 1. Abschnitt, Erscheingsbild
+\pagestyle{scrheadings}
+\clearscrheadings
+\setkomafont{pagehead}{\normalfont}
+\setheadsepline{1pt}
+%\setfootsepline{1pt}
+\setlength{\footskip}{0.3cm}
+
+% 2. Abschnitt, Angaben bzw. Daten
+\ihead{\textbf{Anlage} \manlage}														% Kopzeile Mitte
+\chead{}																				% Kopzeile Mitte
+\ohead{\ifthenelse{\equal{\mobjekt}{}}{}{\mobjekt}\ifthenelse{\equal{\mobjektstrasse}{}}{}{\\\mobjektstrasse}\ifthenelse{\equal{\mobjektstadt}{}}{}{\\\mobjektstadt}}																		               						% Kopzeile rechts
+\ifoot{																					% Fuﬂzeile Mitte
+	\tiny{
+		\mauftragnehmer $\cdot$ 
+		\mauftragnehmerstrasse $\cdot$ 
+		\mauftragnehmerstadt
+	}
+}												
+\cfoot{
+	\mfusszeilenlogogroesse																% Fuﬂzeile links
+}
+\ofoot{\small{\thepage{} von \pageref{LastPage}}}										% Fuﬂzeile rechts

@@ -1,0 +1,179 @@
+% Dies definiert die Titelseite, sowohl den Inhalt als auch die Positionierung
+
+\begin{titlepage}
+"" %\includegraphics[bb=169 158 233 242]{images/loewe.jpg}
+
+\textblockcolor{white}
+\begin{textblock}{12}(4.5,4.05)
+	\textblockcolor{white}
+	\ifthenelse{\isnamedefined{mtitelseiteobjektfoto}}{
+		\includegraphics[width=15.75cm]{\mtitelseiteobjektfoto}
+	}{}
+\end{textblock}
+
+\setlength{\TPMargin}{10pt}
+\begin{textblock}{13}(3.5,3)
+\textblockcolor{\mtabellenkopfhintergrundfarbe}
+\ifthenelse{\equal{\mtitelseiteobjektname}{}}{}{
+	\raggedleft{\textcolor{\mtabellenkopfschriftfarbe}{
+		\Large{\textbf{\mtitelseiteobjektname}}}\hspace{0.5cm}}
+}
+\end{textblock}
+
+\setlength{\TPMargin}{0pt}
+\textblockcolor{white}
+\begin{textblock}{13}(3.5,11)
+""\\
+\begin{tabular}{
+		p{5cm}
+		>{\columncolor{\mtabellenkopfhintergrundfarbe}}p{0.8cm}
+		>{\columncolor{\mtabellenhintergrund}}p{3.0cm} 
+		p{6.6cm}
+	}
+	\cellcolor{\mtabellenkopfhintergrundfarbe}
+	& \multirow{13}{*}{}
+	& \multicolumn{2}{l}{
+		\cellcolor{\mtabellenkopfhintergrundfarbe}
+	} \\
+	\cellcolor{\mtabellenkopfhintergrundfarbe}
+	& & \multicolumn{2}{l}{
+		\cellcolor{\mtabellenkopfhintergrundfarbe}
+	} \\
+	& & & \textcolor{white}{\mobjekt} \\%{149.03 Polizeigebäude\\Nordallee\\85326 München}\\
+	& & & \textcolor{white}{\mobjektstrasse} \\ 
+	& & & \\ & & & \\ 
+	& & & \textcolor{white}{\mauftraggeber} \\
+	& & & \textcolor{white}{\mauftraggeberstrasse} \\ 
+	& & & \\
+	\ifthenelse{\equal{\mauftragnehmer}{}}{}{
+		& & & \textcolor{white}{\mauftragnehmer} \\
+		\ifthenelse{\equal{\mauftragnehmerstrasse}{}}{}{
+			& & & \textcolor{white}{\mauftragnehmerstrasse} \\ 
+		}		
+		\ifthenelse{\equal{\mauftragnehmerstadt}{}}{}{
+			& & & \\
+		}
+	}
+	\ifthenelse{\equal{\mpruefer}{}}{}{
+		& & & \textcolor{white}{\mpruefer} \\
+		\ifthenelse{\equal{\mprueferstrasse}{}}{}{
+			& & & \textcolor{white}{\mprueferstrasse} \\ 
+		}
+		\ifthenelse{\equal{\mprueferstadt}{}}{}{
+			& & & \\
+		}
+	}
+	& & & \\ & & & \\ 
+%	\ifthenelse{\isnamedefined{mtitelseitelogo}}{
+%		& & \cellcolor{white} & \cellcolor{white} \\ 
+%		& & \cellcolor{white} & \cellcolor{white} \\
+%		& & \cellcolor{white} & \cellcolor{white} \\
+%		& & \cellcolor{white} & \cellcolor{white}
+%	}{
+%		& \cellcolor{\mtabellenzweitekopfhintergrundfarbe} & \cellcolor{\mtabellenzweitekopfhintergrundfarbe}
+%	}
+
+\end{tabular}\makebox[0pt][r]{\begin{tabular}{
+		p{5cm}
+		p{0.8cm}
+		p{3.0cm}
+		p{6.6cm}
+	}
+	& \multirow{17}{*}{
+		\begin{turn}{90}		
+		\parbox{4.5cm}{	
+			\textcolor{\mtabellenkopfschriftfarbe}{
+					\Large{\textbf{INSPEKTIONSBERICHT}}
+			}
+		}
+		\end{turn}	
+	}
+	& \multicolumn{2}{l}{
+		%\cellcolor{\mtabellenkopfhintergrundfarbe}
+		\textcolor{\mtabellenkopfschriftfarbe}{
+			\textbf{Hygieneinspektion der Raumlufttechnischen Anlage}
+		}	
+	} \\
+	& & \multicolumn{2}{l}{
+		%\cellcolor{\mtabellenkopfhintergrundfarbe}
+		\textcolor{\mtabellenkopfschriftfarbe}{
+			\textbf{gemäß VDI 6022}
+		}
+	} \\ \cline{3-4}
+	& & Objekt & \mobjekt \\%{149.03 Polizeigebäude\\Nordallee\\85326 München}\\
+	& & & \mobjektstrasse \\
+	& & & \mobjektstadt \\ \cline{3-4}
+	& & RLT-Anlage & \manlage \\ \cline{3-4}
+	& & Auftraggeber & \mauftraggeber \\ 
+	& & & \mauftraggeberstrasse \\
+	& & & \mauftraggeberstadt \\ \cline{3-4}
+	\ifthenelse{\equal{\mauftragnehmer}{}}{}{
+		& & Auftragnehmer & \mauftragnehmer 
+		\ifthenelse{\equal{\mauftragnehmerstrasse}{}}{}{
+			\\ & & & \mauftragnehmerstrasse 
+		}		
+		\ifthenelse{\equal{\mauftragnehmerstadt}{}}{}{
+			\\ & & & \mauftragnehmerstadt 
+		}
+		\\ \cline{3-4}
+	}
+	\ifthenelse{\equal{\mpruefer}{}}{}{
+		& & Prüfer & \mpruefer
+		\ifthenelse{\equal{\mprueferstrasse}{}}{}{
+			\\ & & & \mprueferstrasse
+		}
+		\ifthenelse{\equal{\mprueferstadt}{}}{}{
+			\\ & & & \mprueferstadt
+		}
+		\\ \cline{3-4}
+	}
+	& & Datum Inspektion & \mdatuminspektion \\ \cline{3-4}
+	& & Datum Bericht & \mdatumbericht	\\ \cline{1-4}
+
+%	\ifthenelse{\isnamedefined{mtitelseitelogo}}{
+%		& & \multicolumn{2}{r}{
+%				\multirow{4}{*}{
+%					\includegraphics[height=1.6cm]{\mtitelseitelogo}
+%				}
+%			} \\ 
+%		& \\ & \\ 
+%	}{}
+%	& & &
+\end{tabular}}\\\\\\
+\end{textblock}
+
+\setlength{\TPMargin}{0.7pt}
+\textblockcolor{\mtabellenkopfhintergrundfarbe}
+\begin{textblock}{0.46}(3.5,3.38)
+	\begin{pspicture}(1,15)
+		\psframe[border=0pt,
+				dimen=inner,
+				linewith=0pt,
+				linestyle=none,
+				fillstyle=solid,
+				fillcolor=\mtabellenkopfhintergrundfarbe](0,0)(0.5,1)
+		\psframe[border=0pt,
+				dimen=inner,
+				linestyle=none,
+				fillstyle=gradient,
+				gradbegin=\mtabellenkopfhintergrundfarbe,
+				gradend=white,
+				gradmidpoint=0.25](0,1)(0.5,13.2)
+		\psframe[border=0pt,
+				dimen=inner,
+				linestyle=none,
+				fillstyle=solid,
+				fillcolor=\mtabellenkopfhintergrundfarbe](0,13.2)(0.5,14.2)
+	\end{pspicture}
+\end{textblock}
+
+\setlength{\TPMargin}{0pt}
+\begin{textblock}{4.1}(3.5,11.6)
+	\vspace{1.3cm}
+	\hspace{0.1cm}
+	\ifthenelse{\isnamedefined{mtitelseitelogo}}{
+		\includegraphics[width=4.8cm]{\mtitelseitelogo}
+	}{}
+\end{textblock}
+
+\end{titlepage}

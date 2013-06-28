@@ -267,6 +267,52 @@ public class SchemeComponentDao implements ISchemeComponentDao {
     }
     
     @Override
+    public void delete(SchemeComponent component, Attribute attribute) throws DatabaseException {
+    	checkNotNull(component, "Component must not be null.");
+    	checkNotNull(attribute, "Attribute must not be null.");
+    	checkState(component.getId() >= 0, "Component must have a valid ID.");
+    	checkState(attribute.getId() >= 0, "Attribute must have a valid ID.");
+    	checkState(component.getId() == attribute.getComponent().getId(), 
+    			"Scheme Component does not match attributes component.");
+    	
+    	StringBuilder builder = new StringBuilder();
+    	builder.append("DELETE FROM ").append(ATTR_CROSS_TABLE_NAME);
+    	builder.append(" WHERE ");
+    	builder.append(AttrCrossFields.FK_ATTRIBUTE);
+    	builder.append(" = :").append(AttrCrossFields.FK_ATTRIBUTE);
+    	builder.append(" AND ").append(AttrCrossFields.FK_COMPONENT);
+    	builder.append(" = :").append(AttrCrossFields.FK_COMPONENT);
+    	builder.append(";");
+    	
+    	String query = builder.toString();
+    	
+    	try (Connection con = DatabaseFactory.getConnection()) {
+    		con.setAutoCommit(false);
+    		
+    		try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
+    			stmt.setParameter(AttrCrossFields.FK_ATTRIBUTE, attribute.getId());
+    			stmt.setParameter(AttrCrossFields.FK_COMPONENT, component.getId());
+    			
+    			int affected = stmt.executeUpdate();
+    			
+    			if (affected > 1) {
+    				con.rollback();
+    				throw new DatabaseException("Query would accidently affect more than one row.");
+    			}
+    			else if (affected < 1) {
+    				con.rollback();
+    				throw new DatabaseException("Query didn't affect any rows.");
+    			}
+    			
+    			con.commit();
+    		}
+    	}
+    	catch (SQLException e) {
+    		throw new DatabaseException("Unexpected error.", e);
+    	}
+    }
+    
+    @Override
     public Map<Attribute, String> findAttributesOfSchemeComponent(SchemeComponent schemeComponent)
     		throws DatabaseException {
     	

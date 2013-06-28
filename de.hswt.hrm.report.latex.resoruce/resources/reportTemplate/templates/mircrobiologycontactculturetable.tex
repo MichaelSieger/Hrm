@@ -1,0 +1,35 @@
+% rows: the rows from template mircrobiologycontactculturerow.tex
+% contactCultureGradeSum: the sum of all contact culture grades
+% contactCultureWheightingSum: the sum of all weights
+% contactCultureRatingAverage: the contact culture avarage rating
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{@{}p{0pt}@{}
+            p{\tabellebionotenA} 
+            p{\tabellebionotenB} 
+            p{\tabellebionotenC} 
+            p{\tabellebionotenD} 
+            p{\tabellebionotenE} 
+            p{\tabellebionotenF}
+    }
+    \multicolumn{7}{c}{
+            \cellcolor{\mtabellenkopfhintergrundfarbe}
+            \textcolor{\mtabellenkopfschriftfarbe}{\textbf{Gesamtnotenberechnung}}
+    } \\ \hline
+    & & & & & & \\ \hline
+    \multicolumn{7}{c}{
+            \cellcolor{\mtabellenzweitekopfhintergrundfarbe}
+            \textcolor{\mtabellenkopfschriftfarbe}{\textbf{Kontaktkulturen}}
+    } \\ \hline
+    \multicolumn{2}{l}{\cellcolor{\mtabellenhintergrund}Entnahmestelle} & 
+        \multicolumn{1}{c}{\cellcolor{\mtabellenhintergrund}Keimzahl} & 
+        \multicolumn{1}{c}{\cellcolor{\mtabellenhintergrund}Note} & 
+        \multicolumn{1}{c}{\cellcolor{\mtabellenhintergrund}Gewichtung} & 
+        \multicolumn{1}{c}{\cellcolor{\mtabellenhintergrund}Bewertung} & 
+        \multicolumn{1}{l}{\cellcolor{\mtabellenhintergrund}Bemerkung} \\ \hline
+    :rows:                                                                                                          %to replace
+    \\ \hline
+    \multicolumn{4}{c}{\cellcolor{\mtabellenhintergrund} Teilnote $ = \sum{}$Bewertung$ \div \sum{}$Gewichtung} &
+        \multicolumn{1}{c}{\cellcolor{\mtabellenhintergrund} :contactCultureGradeSum:} &                            % to replace
+        \multicolumn{1}{c}{\cellcolor{\mtabellenhintergrund} :contactCultureWheightingSum:} &                       % to replace
+        \multicolumn{1}{c}{\cellcolor{\mtabellenhintergrund} :contactCultureRatingAverage:} \\ \hline               % to replace

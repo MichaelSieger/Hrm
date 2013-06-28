@@ -1,0 +1,91 @@
+% global definitions 
+\def\TReg{\textsuperscript{\textregistered}} % \TReg
+\def\TCop{\textsuperscript{\textcopyright}} % \TCop 
+\def\TTra{\textsuperscript{\texttrademark}} % \TTra
+\setlength\fboxsep{0pt}                                                                         % Innenabstand der Bilderrahmen zum Bild
+\setlength\fboxrule{2pt}                                                                        % Dicke der Bilderrahmen in Bildpunkten 
+\setmarginsrb{20mm}{10mm}{20mm}{10mm}                                           % Ränder {links}{oben}{rechts}{unten}
+             {15mm}{5mm}{15mm}{10mm}                                            % Abstände {Höhe Fußzeile}{Kopzeile Text}{Höhe Fußzeile}{Fußzeile Text}
+
+\setlength{\arrayrulewidth}{0.7pt}
+\arrayrulecolor{darkgray}
+\renewcommand{\arraystretch}{1.1}
+
+% macro init
+
+\BioGridGroesse{0.90cm}                                                 % Die Ausdehnung bzw der Maßstab des Biogrids 
+\BioGridBreite{15}                                                      % Breite des Biogrids (Anzahl Teilflächen)
+\BioGridHoehe{9}                                                        % Höhe des Biogrids (Anzahl Teilflächen)
+\PhysGridGroesse{0.90cm}                                                % Die Ausdehnung bzw der Maßstab des Physgrids 
+\PhysGridBreite{15}                                                     % Breite des Physgrids (Anzahl Teilflächen)
+\PhysGridHohe{9}                                                        % Höhe des Physgrids (Anzahl Teilflächen)
+
+\definecolor{MyGreen}{RGB}{151,248,71}                                  % Definition des dunklen grüns über RGB-Farben
+\definecolor{MyLightGreen}{RGB}{206,255,166}                            % Definition des hellen grüns über RGB-Farben
+\definecolor{MyYellow}{RGB}{255,244,143}                                % Definition des hellen gelbes über RGB-Farben
+\definecolor{MyViolett}{RGB}{244,146,238}                               % Definition von violett über RGB-Farben
+\definecolor{MyRed}{RGB}{248,84,57}                                     % Definition des hellen rotes über RGB-Farben
+
+% Symbolfarben festlegen
+\SymbolFarbeX{white}
+\SymbolFarbeA{MyGreen}
+\SymbolFarbeB{MyLightGreen}
+\SymbolFarbeC{MyYellow}
+\SymbolFarbeD{MyViolett}
+\SymbolFarbeE{MyRed}
+
+% Breite der zweispaltigen Tabellenspalten
+\TabellenZweiSpaltenBreiteErste{6cm}                                            % Spaltenbreite der ersten Spalte bei zweispaltigen Tabellen in cm
+\TabellenZweiSpaltenBreiteZweite{10.15cm}                                       % Spaltenbreite der zweiten Spalte bei zweispaltigen Tabellen in cm
+
+% Breite der biologischen Parameter Tabellenspalten
+\TabelleBioParameterA{1cm}
+\TabelleBioParameterB{2.4cm}
+\TabelleBioParameterC{2.27cm}
+\TabelleBioParameterD{5.2cm}
+\TabelleBioParameterE{4.2cm}
+
+% Breite der biologischen Notenberechnung Tabellenspalten
+\TabelleBioNotenA{3.8cm}
+\TabelleBioNotenB{2.5cm}
+\TabelleBioNotenC{1cm}
+\TabelleBioNotenD{2cm}
+\TabelleBioNotenE{2cm}
+\TabelleBioNotenF{3.4cm}
+
+% Breite der physikalischen Parameter Tabellenspalten
+\TabellePhysParameterA{1cm}
+\TabellePhysParameterB{2.4cm}
+\TabellePhysParameterC{7.8cm}
+\TabellePhysParameterD{4.2cm}
+
+% Breite der physikalischen Notenberechnung Tabellenspalten
+\TabellePhysNotenA{3.7cm}
+\TabellePhysNotenB{1.5cm}
+\TabellePhysNotenC{1cm}
+\TabellePhysNotenD{2cm}
+\TabellePhysNotenE{2cm}
+\TabellePhysNotenF{4.5cm}
+
+% Makros für die Breite der physikalischen Soll-Ist-Maßnahmen-Übersichttabellenspalten
+\TabellePhysSollIstMnA{4.37cm}
+\TabellePhysSollIstMnB{5.69cm}
+\TabellePhysSollIstMnC{5.69cm}
+
+% Breite der physikalischen Soll-Ist Tabellenspalten
+\TabellePhysSollIstA{3cm}
+\TabellePhysSollIstB{1.41cm}
+\TabellePhysSollIstC{1.41cm}
+\TabellePhysSollIstD{1.27cm}
+\TabellePhysSollIstE{1.27cm}
+\TabellePhysSollIstF{1.41cm}
+\TabellePhysSollIstG{1.41cm}
+\TabellePhysSollIstH{3cm}
+
+\PathToTitlePages{staticinputs/styles/titlepages/}              % relativer Pfad zu den Kopf und Titelseiten
+\PathToContentPages{staticinputs/styles/contentpages/}          % relativer Pfad zu den Kopf und Inahltsverzeichnissen
+\PathToHeads{staticinputs/styles/heads/}                        % relativer Pfad zu den Kopf und Fusszeilendateien
+\PathToStyles{staticinputs/styles/}                                 % relativer Pfad tu den Bericht-Styles
+\PathToImages{images/}                                           % relativer Pfad zu den Bildern                   
+\PathToLogos{images/logos/}                                     % relativer Pfad zu den Logos                   
+
