@@ -18,10 +18,14 @@ import de.hswt.hrm.component.model.Component;
 import de.hswt.hrm.component.service.CategoryService;
 import de.hswt.hrm.component.service.ComponentService;
 import de.hswt.hrm.component.ui.wizard.ComponentWizard;
+import de.hswt.hrm.i18n.I18n;
+import de.hswt.hrm.i18n.I18nFactory;
 
 
 
 public final class ComponentCompositeUtil {
+    
+    private static final I18n I18N = I18nFactory.getI18n(ComponentCompositeUtil.class);
 	
     private ComponentCompositeUtil() {
 
@@ -51,14 +55,14 @@ public final class ComponentCompositeUtil {
     }
 
     private static ColumnDescription<Component> getRating() {
-        return new ColumnDescription<>("Rating", new ColumnLabelProvider() {
+        return new ColumnDescription<>(I18N.tr("with rating"), new ColumnLabelProvider() {
             @Override
             public String getText(Object element) {
                 Component c = (Component) element;
                if(c.getBoolRating() == true){
-            	   return "Yes";
+            	   return I18N.tr("Yes");
                }else{
-            	   return "No";
+            	   return I18N.tr("No");
                }
             }
         }, new Comparator<Component>() {
@@ -72,7 +76,7 @@ public final class ComponentCompositeUtil {
     }
 
 	private static ColumnDescription<Component> getCategory() {
-        return new ColumnDescription<>("Category", new ColumnLabelProvider() {
+        return new ColumnDescription<>(I18N.tr("Category"), new ColumnLabelProvider() {
             @Override
             public String getText(Object element) {
                	Component c = (Component) element;
@@ -87,7 +91,7 @@ public final class ComponentCompositeUtil {
     }
 
 	private static ColumnDescription<Component> getName() {
-        return new ColumnDescription<>("Name", new ColumnLabelProvider() {
+        return new ColumnDescription<>(I18N.tr("Name"), new ColumnLabelProvider() {
             @Override
             public String getText(Object element) {
                	Component c = (Component) element;
@@ -103,7 +107,7 @@ public final class ComponentCompositeUtil {
     
     
     private static ColumnDescription<Component> getQuantifier() {
-        return new ColumnDescription<>("Quantifier", new ColumnLabelProvider() {
+        return new ColumnDescription<>(I18N.tr("Weight"), new ColumnLabelProvider() {
             @Override
             public String getText(Object element) {
                 Component c = (Component) element;
