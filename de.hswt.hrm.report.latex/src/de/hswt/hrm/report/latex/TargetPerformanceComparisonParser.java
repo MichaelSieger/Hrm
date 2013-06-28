@@ -88,12 +88,12 @@ public class TargetPerformanceComparisonParser {
             this.parseRow(component.getTargetPerformanceActivity());
             target = null;
             target = buffer.toString();
-            target.replace(TABLE_COMPONENT_NAME, component.getTargetName());
-            target.replace(TABLE_RATING, component.getTargetGrade());
-            target.replace(TABLE_ROWS, this.rowEndTarget.toString());
+            target = target.replace(TABLE_COMPONENT_NAME, component.getTargetName());
+            target = target.replace(TABLE_RATING, component.getTargetGrade());
+            target = target.replace(TABLE_ROWS, this.rowEndTarget.toString());
             if (!component.getPhotos().isEmpty()) {
-                target.replace(TABLE_IMG_HEADER, bufferImg.toString());
-                target.replace(TABLE_IMG_ROWS,
+                target = target.replace(TABLE_IMG_HEADER, bufferImg.toString());
+                target = target.replace(TABLE_IMG_ROWS,
                         this.imgParser.parse(this.path, component.getPhotos()));
             }
 
@@ -122,9 +122,9 @@ public class TargetPerformanceComparisonParser {
         // create rows
         for (TargetPerformanceActivity state : states) {
             target = buffer.toString();
-            target.replace(ROW_TARGET, state.getTarget().toString());
-            target.replace(ROW_PERFORMANCE, state.getCurrent().toString());
-            target.replace(ROW_TASK, state.getTarget().toString());
+            target = target.replace(ROW_TARGET, state.getTarget().toString());
+            target = target.replace(ROW_PERFORMANCE, state.getCurrent().toString());
+            target = target.replace(ROW_TASK, state.getTarget().toString());
             rowEndTarget.append(target);
         }
 

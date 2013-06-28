@@ -77,11 +77,11 @@ public class PhysicalParameterParser {
 
         String target = buffer.toString();
         this.totalGrade = this.sumRatings / this.sumQuantifier;
-        target.replace(ROWS, this.rows);
-        target.replace(GRADE_SUM, String.valueOf(sumRatings));
-        target.replace(GRADE_SUM, String.valueOf(sumRatings));
-        target.replace(WHEIGHTING_SUM, String.valueOf(sumQuantifier));
-        target.replace(RATING_AV, String.valueOf(this.totalGrade));
+        target = target.replace(ROWS, this.rows);
+        target = target.replace(GRADE_SUM, String.valueOf(sumRatings));
+        target = target.replace(GRADE_SUM, String.valueOf(sumRatings));
+        target = target.replace(WHEIGHTING_SUM, String.valueOf(sumQuantifier));
+        target = target.replace(RATING_AV, String.valueOf(this.totalGrade));
 
         this.endTarget = target;
     }
@@ -110,32 +110,35 @@ public class PhysicalParameterParser {
 
         // - un-String the calls below..
         preTarget = buffer.toString();
-        preTarget.replace(PROPERTY, "Temperatur");
+        preTarget = preTarget.replace(PROPERTY, "Temperatur");
         // TODO no Integer!! ==> FLOAT! && what if none?!?
-        preTarget.replace(VALUE, "String.valueOf(inspection.getTemperature().orFloat())");
-        preTarget.replace(PARAM_GRADE, String.valueOf(inspection.getTemperatureRating().or(0)));
-        preTarget.replace(PARAM_WHEIGHTING,
+        preTarget = preTarget.replace(VALUE,
+                "String.valueOf(inspection.getTemperature().orFloat())");
+        preTarget = preTarget.replace(PARAM_GRADE,
+                String.valueOf(inspection.getTemperatureRating().or(0)));
+        preTarget = preTarget.replace(PARAM_WHEIGHTING,
                 String.valueOf(inspection.getTemperatureQuantifier().or(0)));
-        preTarget.replace(
+        preTarget = preTarget.replace(
                 PARAM_RATING,
                 String.valueOf(inspection.getTemperatureRating().or(0)
                         * inspection.getTemperatureQuantifier().or(0)));
         // TODO comment!?!
-        preTarget.replace(PARAM_COMMENT, "inspection.getTempComment");
+        preTarget = preTarget.replace(PARAM_COMMENT, "inspection.getTempComment");
         target.append(preTarget);
 
-        preTarget = buffer.toString();
-        preTarget.replace(PROPERTY, "relative Luftfeuchtigkeit");
+        preTarget = preTarget = buffer.toString();
+        preTarget = preTarget.replace(PROPERTY, "relative Luftfeuchtigkeit");
         // TODO no Integer!! ==> FLOAT! && what if none?!?
-        preTarget.replace(VALUE, "String.valueOf(inspection.getHumidity().orFloat())");
-        preTarget.replace(PARAM_GRADE, String.valueOf(inspection.getHumidityRating()));
-        preTarget.replace(PARAM_WHEIGHTING, String.valueOf(inspection.getHumidityQuantifier()));
-        preTarget.replace(
+        preTarget = preTarget.replace(VALUE, "String.valueOf(inspection.getHumidity().orFloat())");
+        preTarget = preTarget.replace(PARAM_GRADE, String.valueOf(inspection.getHumidityRating()));
+        preTarget = preTarget.replace(PARAM_WHEIGHTING,
+                String.valueOf(inspection.getHumidityQuantifier()));
+        preTarget = preTarget.replace(
                 PARAM_RATING,
                 String.valueOf(inspection.getHumidityRating().or(0)
                         * inspection.getHumidityQuantifier().or(0)));
         // TODO comment!?!
-        preTarget.replace(PARAM_COMMENT, "inspection.getHumidityComment");
+        preTarget = preTarget.replace(PARAM_COMMENT, "inspection.getHumidityComment");
         target.append(preTarget);
 
         this.rows = target.toString();

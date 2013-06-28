@@ -71,10 +71,10 @@ public class PhysicalInspectionParser {
         target = buffer.toString();
 
         this.totalGrade = Math.round(10F * this.sumRatings / this.sumQuantifier) / 10F;
-        target.replace(ROWS, this.targetRow.toString());
-        target.replace(GRADE_SUM, String.valueOf(this.sumRatings));
-        target.replace(WHEIGHTED_SUM, String.valueOf(this.sumQuantifier));
-        target.replace(RATING_AV, String.valueOf(this.totalGrade));
+        target = target.replace(ROWS, this.targetRow.toString());
+        target = target.replace(GRADE_SUM, String.valueOf(this.sumRatings));
+        target = target.replace(WHEIGHTED_SUM, String.valueOf(this.sumQuantifier));
+        target = target.replace(RATING_AV, String.valueOf(this.totalGrade));
 
     }
 
@@ -97,14 +97,14 @@ public class PhysicalInspectionParser {
             this.sumRatings += rating.getRating();
             this.sumQuantifier += rating.getQuantifier();
             preTarget = buffer.toString();
-            preTarget.replace(INSPECTOIN_SAMPLE_POINT, rating.getComponent().getName());
-            preTarget.replace(GRADE, String.valueOf(rating.getRating()));
-            preTarget.replace(WHEIGHTING, String.valueOf(rating.getQuantifier()));
-            preTarget.replace(
+            preTarget = preTarget.replace(INSPECTOIN_SAMPLE_POINT, rating.getComponent().getName());
+            preTarget = preTarget.replace(GRADE, String.valueOf(rating.getRating()));
+            preTarget = preTarget.replace(WHEIGHTING, String.valueOf(rating.getQuantifier()));
+            preTarget = preTarget.replace(
                     RATING,
                     String.valueOf(Math.round(10F * Float.valueOf(rating.getRating())
                             * Float.valueOf(rating.getQuantifier())) % 10F));
-            preTarget.replace(PHYS_COMMENT, rating.getNote());
+            preTarget = preTarget.replace(PHYS_COMMENT, rating.getNote());
             targetRow.append(preTarget);
 
         }

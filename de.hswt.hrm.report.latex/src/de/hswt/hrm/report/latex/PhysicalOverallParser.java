@@ -72,8 +72,8 @@ public class PhysicalOverallParser {
         }
 
         String target = bufferTable.toString();
-        target.replace(ROWS, bufferRow.toString());
-        target.replace(OVERALL_RATING,
+        target = target.replace(ROWS, bufferRow.toString());
+        target = target.replace(OVERALL_RATING,
                 String.valueOf(Math.round((this.inspection_av + this.param_av) / 2 * 10F) / 10F));
 
         return target;
