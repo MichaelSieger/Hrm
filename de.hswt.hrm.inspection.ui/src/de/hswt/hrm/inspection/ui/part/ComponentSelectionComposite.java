@@ -229,6 +229,10 @@ public class ComponentSelectionComposite extends Composite {
     public void setSchemeGridItems(Collection<SchemeGridItem> items) {
         schemeGrid.setItems(items);
     }
+    
+    public InspectionSchemeGrid getInspectionSchemeGrid(){
+    	return schemeGrid;
+    }
 
     @Override
     public void dispose() {

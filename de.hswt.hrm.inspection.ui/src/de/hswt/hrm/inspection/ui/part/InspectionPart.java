@@ -22,9 +22,7 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.ui.forms.widgets.Form;
@@ -33,21 +31,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Function;
-import com.google.common.base.Optional;
 import com.google.common.base.Throwables;
 import com.google.common.collect.Collections2;
 
-import de.hswt.hrm.common.Config;
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.ElementNotFoundException;
 import de.hswt.hrm.common.observer.Observer;
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
-import de.hswt.hrm.common.ui.swt.wizards.WizardCreator;
-import de.hswt.hrm.component.model.Component;
 import de.hswt.hrm.inspection.model.BiologicalRating;
 import de.hswt.hrm.inspection.model.Inspection;
-import de.hswt.hrm.inspection.ui.wizard.ReportCreationWizard;
 import de.hswt.hrm.inspection.ui.wizard.ReportExportWizard;
+import de.hswt.hrm.inspection.ui.grid.BiologicalDisplay;
 import de.hswt.hrm.plant.model.Plant;
 import de.hswt.hrm.report.latex.service.ReportService;
 import de.hswt.hrm.scheme.model.Scheme;
@@ -229,13 +223,13 @@ public class InspectionPart {
                 plantChanged(item);
             }
         });
+        final BiologicalDisplay bDisplay = new BiologicalDisplay(physicalComposite.getInspectionSchemeGrid());
         selectedInspection
                 .addBiologicalRatingObserver(new Observer<Collection<BiologicalRating>>() {
 
                     @Override
                     public void changed(Collection<BiologicalRating> item) {
-                        // TODO Auto-generated method stub
-
+                    	bDisplay.update(item);
                     }
                 });
     }
