@@ -38,4 +38,5 @@ Require-Bundle: com.google.guava;bundle-version="10.0.1",
 Service-Component: OSGI-INF/biologicalrating-component.xml,
  OSGI-INF/physicalrating-component.xml,
  OSGI-INF/inspection-component.xml,
- OSGI-INF/layout-component.xml
+ OSGI-INF/layout-component.xml,
+ OSGI-INF/performance-component.xml

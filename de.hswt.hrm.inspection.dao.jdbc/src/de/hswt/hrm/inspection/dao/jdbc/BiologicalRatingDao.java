@@ -10,6 +10,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import javax.inject.Inject;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,6 +36,7 @@ public class BiologicalRatingDao implements IBiologicalRatingDao {
     private final IInspectionDao inspectionDao;
     private final ISchemeComponentDao schemeComponentDao;
 
+    @Inject
     public BiologicalRatingDao(final IInspectionDao inspectionDao,
             final ISchemeComponentDao schemeComponentDao) {
 
