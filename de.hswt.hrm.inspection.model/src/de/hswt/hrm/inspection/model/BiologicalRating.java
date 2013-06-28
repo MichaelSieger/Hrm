@@ -18,11 +18,11 @@ public class BiologicalRating {
     private Optional<String> comment;
     private Optional<String> flag;
 
-    //private static final String IS_MANDATORY = "Field is a mandatory.";
-    //private static final String INVALID_NUMBER = "%d is an invalid number.%n Must be greater 0";
+    // private static final String IS_MANDATORY = "Field is a mandatory.";
+    // private static final String INVALID_NUMBER = "%d is an invalid number.%n Must be greater 0";
 
-    public BiologicalRating(int id, Inspection inspection, SchemeComponent component, int bacteriaCount,
-    		int rating, int quantifier, String comment, String flag) {
+    public BiologicalRating(int id, Inspection inspection, SchemeComponent component,
+            int bacteriaCount, int rating, int quantifier, String comment, String flag) {
         this.id = id;
         setInspection(inspection);
         setComponent(component);
@@ -32,13 +32,13 @@ public class BiologicalRating {
         setComment(comment);
         setFlag(flag);
     }
-    
-    public BiologicalRating(Inspection inspection, SchemeComponent component){
-    	this(inspection, component, -1, -1, -1, null, null);
+
+    public BiologicalRating(Inspection inspection, SchemeComponent component) {
+        this(inspection, component, -1, -1, -1, null, null);
     }
 
     public BiologicalRating(Inspection inspection, SchemeComponent component, int bacteriaCount,
-    		int rating, int quantifier, String comment, String flag) {
+            int rating, int quantifier, String comment, String flag) {
         this(-1, inspection, component, bacteriaCount, rating, quantifier, comment, flag);
     }
 
@@ -103,18 +103,12 @@ public class BiologicalRating {
     public int getId() {
         return id;
     }
-    
-    public boolean isValid(){
-    	return bacteriaCount.isPresent() &&
-    		   rating.isPresent() &&
-    		   quantifier.isPresent() &&
-    		   comment.isPresent() &&
-    		   flag.isPresent() &&
-    		   bacteriaCount.get() > 0 &&
-    		   rating.get() > 0 &&
-    		   quantifier.get() > 0 &&
-    		   !isNullOrEmpty(comment.get()) &&
-    		   !isNullOrEmpty(flag.get());  
+
+    public boolean isValid() {
+        return bacteriaCount.isPresent() && rating.isPresent() && quantifier.isPresent()
+                && comment.isPresent() && flag.isPresent() && bacteriaCount.get() > 0
+                && rating.get() > 0 && quantifier.get() > 0 && !isNullOrEmpty(comment.get())
+                && !isNullOrEmpty(flag.get());
     }
 
     @Override
