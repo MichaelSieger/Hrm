@@ -16,8 +16,12 @@ import de.hswt.hrm.common.ui.swt.table.ColumnDescription;
 import de.hswt.hrm.common.ui.swt.wizards.WizardCreator;
 import de.hswt.hrm.component.model.Category;
 import de.hswt.hrm.component.ui.wizard.CategoryWizard;
+import de.hswt.hrm.i18n.I18n;
+import de.hswt.hrm.i18n.I18nFactory;
 
 public class CategoryCompositeUtil {
+    
+    private static final I18n I18N = I18nFactory.getI18n(CategoryCompositeUtil.class);
 
     public CategoryCompositeUtil() {
         
@@ -45,7 +49,7 @@ public class CategoryCompositeUtil {
     }
     
     private static ColumnDescription<Category> getName() {
-        return new ColumnDescription<>("Name", new ColumnLabelProvider() {
+        return new ColumnDescription<>(I18N.tr("Name"), new ColumnLabelProvider() {
             @Override
             public String getText(Object element) {
                 Category cat = (Category) element;
@@ -60,7 +64,7 @@ public class CategoryCompositeUtil {
     }
 
     private static ColumnDescription<Category> getDefaultQuantifier() {
-        return new ColumnDescription<>("Gewichtung", new ColumnLabelProvider() {
+        return new ColumnDescription<>(I18N.tr("Weight"), new ColumnLabelProvider() {
             @Override
             public String getText(Object element) {
                 Category cat = (Category) element;
@@ -77,14 +81,14 @@ public class CategoryCompositeUtil {
     }
 
     private static ColumnDescription<Category> getDefaultBoolRating() {
-        return new ColumnDescription<>("Bewertet", new ColumnLabelProvider() {
+        return new ColumnDescription<>(I18N.tr("with rating"), new ColumnLabelProvider() {
             @Override
             public String getText(Object element) {
                 Category cat = (Category) element;
                 if (cat.getDefaultBoolRating()) {
-                    return "Ja";
+                    return I18N.tr("Yes");
                 } else {
-                    return "Nein";
+                    return I18N.tr("No");
                 }
             }
         }, new Comparator<Category>() {
@@ -93,14 +97,14 @@ public class CategoryCompositeUtil {
                 String bRate1;
                 String bRate2;
                 if (c1.getDefaultBoolRating()) {
-                    bRate1 = "Ja";
+                    bRate1 = I18N.tr("Yes");
                 } else {
-                    bRate1 = "Nein";
+                    bRate1 = I18N.tr("No");
                 }
                 if (c2.getDefaultBoolRating()) {
-                    bRate2 = "Ja";
+                    bRate2 = I18N.tr("Yes");
                 } else {
-                    bRate2 = "Nein";
+                    bRate2 = I18N.tr("No");
                 }
                 return bRate1.compareToIgnoreCase(bRate2);
             }
@@ -108,7 +112,7 @@ public class CategoryCompositeUtil {
     }
 
     private static ColumnDescription<Category> getWidth() {
-        return new ColumnDescription<>("Breite", new ColumnLabelProvider() {
+        return new ColumnDescription<>(I18N.tr("Width"), new ColumnLabelProvider() {
             @Override
             public String getText(Object element) {
                 Category cat = (Category) element;
@@ -125,7 +129,7 @@ public class CategoryCompositeUtil {
     }
 
     private static ColumnDescription<Category> getHeight() {
-        return new ColumnDescription<>("Höhe", new ColumnLabelProvider() {
+        return new ColumnDescription<>(I18N.tr("Height"), new ColumnLabelProvider() {
             @Override
             public String getText(Object element) {
                 Category cat = (Category) element;

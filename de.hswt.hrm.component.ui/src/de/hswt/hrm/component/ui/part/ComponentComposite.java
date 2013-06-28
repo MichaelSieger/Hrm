@@ -48,13 +48,16 @@ import de.hswt.hrm.component.model.Component;
 import de.hswt.hrm.component.service.CategoryService;
 import de.hswt.hrm.component.service.ComponentService;
 import de.hswt.hrm.component.ui.filter.ComponentFilter;
+import de.hswt.hrm.i18n.I18n;
+import de.hswt.hrm.i18n.I18nFactory;
 import de.hswt.hrm.scheme.service.ComponentConverter;
 
 public class ComponentComposite extends Composite {
 
 	private final static Logger LOG = LoggerFactory
 			.getLogger(ComponentComposite.class);
-
+	private static final I18n I18N = I18nFactory.getI18n(ComponentComposite.class);
+	
 	@Inject
 	private ComponentService service;
 
@@ -140,7 +143,7 @@ public class ComponentComposite extends Composite {
 
 		Label imageLabel = new Label(composite, SWT.NONE);
 		imageLabel.setAlignment(SWT.CENTER);
-		imageLabel.setText("Image");
+		imageLabel.setText(I18N.tr("Image"));
 		imageLabel.setLayoutData(LayoutUtil.createRightGridData());
 		imageLabel.setBackground(getDisplay().getSystemColor(SWT.COLOR_WHITE));
 		
@@ -165,9 +168,8 @@ public class ComponentComposite extends Composite {
 			tableViewer.setInput(components);
 		} catch (DatabaseException e) {
 			LOG.error("Unable to retrieve list of components.", e);
-
-			MessageDialog.openError(parent.getShell(), "Connection Error",
-					"Could not load components from Database.");
+			MessageDialog.openError(parent.getShell(), I18N.tr("Connection Error"),
+					I18N.tr("Could not load components from Database."));
 		}
 	}
 

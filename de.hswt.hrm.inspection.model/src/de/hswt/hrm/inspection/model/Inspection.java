@@ -1,5 +1,6 @@
 package de.hswt.hrm.inspection.model;
 
+import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Strings.isNullOrEmpty;
@@ -8,6 +9,7 @@ import de.hswt.hrm.common.observer.Observable;
 import de.hswt.hrm.common.observer.Observer;
 import de.hswt.hrm.contact.model.Contact;
 import de.hswt.hrm.photo.model.Photo;
+import de.hswt.hrm.scheme.model.Scheme;
 import de.hswt.hrm.scheme.model.SchemeComponent;
 
 import java.util.ArrayList;
@@ -48,6 +50,7 @@ public class Inspection {
     private int germsRating;
     private int germsQuantifier;
     private String germsComment;
+    private Scheme scheme;
     private final Observable<Collection<BiologicalRating>> biologicalRatings = new Observable<>();
     private final Observable<Collection<PhysicalRating>> physicalRatings = new Observable<>();
 
@@ -55,9 +58,9 @@ public class Inspection {
     private static final String INVALID_NUMBER = "%d is an invalid number.%n Must be greater 0";
 
     public Inspection(int id, Calendar reportDate, Calendar inspectionDate,
-            Calendar nextInspection, String title, Layout layout, Plant plant) {
+            Calendar nextInspection, String title, Layout layout, Plant plant, Scheme scheme) {
         this.id = id;
-        //TODO pass in constructor
+        // TODO pass in constructor
         physicalRatings.set(new ArrayList<PhysicalRating>());
         biologicalRatings.set(new ArrayList<BiologicalRating>());
         setReportDate(reportDate);
@@ -66,11 +69,12 @@ public class Inspection {
         setTitle(title);
         setPlant(plant);
         setLayout(layout);
+        setScheme(scheme);
     }
 
     public Inspection(Calendar reportDate, Calendar inspectionDate, Calendar nextInspection,
-            String title, Layout layout, Plant plant) {
-        this(-1, reportDate, inspectionDate, nextInspection, title, layout, plant);
+            String title, Layout layout, Plant plant, Scheme scheme) {
+        this(-1, reportDate, inspectionDate, nextInspection, title, layout, plant, scheme);
     }
 
     public Layout getLayout() {
@@ -309,73 +313,82 @@ public class Inspection {
     public void setPlantpicture(Photo plantpicture) {
         this.plantpicture = plantpicture;
     }
-    
 
-	public void setPhysicalRatingRating(SchemeComponent schemeComponent, Integer rating) {
-    	checkNotNull(schemeComponent);
-    	checkArgument(rating >= 0 && rating < 6);
-    	Optional<PhysicalRating> pRating = getPhysicalRating(schemeComponent);
-    	if(pRating.isPresent()){
-    		pRating.get().setRating(rating);
-    	}else{
-    		PhysicalRating nRating = new PhysicalRating(this, schemeComponent);
-    		nRating.setRating(rating);
-    		physicalRatings.get().add(nRating);
-    	}
-    	physicalRatings.notifyDataChanged();
-	}
-	
-	private Optional<PhysicalRating> getPhysicalRating(SchemeComponent schemeComponent){
-    	Iterator<PhysicalRating> it = physicalRatings.get().iterator();
-    	while(it.hasNext()){
-    		PhysicalRating r = it.next();
-    		if(schemeComponent.equals(r.getComponent())){
-    			return Optional.of(r);
-    		}
-    	}
-    	return Optional.absent();
-	}
-    
-    public void setBiologicalRatingRating(SchemeComponent schemeComponent, int rating){
-    	checkNotNull(schemeComponent);
-    	checkArgument(rating >= 0 && rating < 6);
-    	Optional<BiologicalRating> bRating = getBiologicalRating(schemeComponent);
-    	if(bRating.isPresent()){
-    		bRating.get().setRating(rating);
-    	}else{
-    		BiologicalRating nRating = new BiologicalRating(this, schemeComponent);
-    		nRating.setRating(rating);
-    		biologicalRatings.get().add(nRating);
-    	}
-    	biologicalRatings.notifyDataChanged();
+    public Scheme getScheme() {
+        return scheme;
     }
-    
-    private Optional<BiologicalRating> getBiologicalRating(SchemeComponent schemeComponent){
-    	Iterator<BiologicalRating> it = biologicalRatings.get().iterator();
-    	while(it.hasNext()){
-    		BiologicalRating r = it.next();
-    		if(schemeComponent.equals(r.getComponent())){
-    			return Optional.of(r);
-    		}
-    	}
-    	return Optional.absent();
+
+    public void setScheme(Scheme scheme) {
+        checkNotNull(scheme);
+        checkState(scheme.getId() >= 0, "Scheme must have a valid ID.");
+        this.scheme = scheme;
     }
-    
-    //Observers
+
+    public void setPhysicalRatingRating(SchemeComponent schemeComponent, Integer rating) {
+        checkNotNull(schemeComponent);
+        checkArgument(rating >= 0 && rating < 6);
+        Optional<PhysicalRating> pRating = getPhysicalRating(schemeComponent);
+        if (pRating.isPresent()) {
+            pRating.get().setRating(rating);
+        }
+        else {
+            PhysicalRating nRating = new PhysicalRating(this, schemeComponent);
+            nRating.setRating(rating);
+            physicalRatings.get().add(nRating);
+        }
+        physicalRatings.notifyDataChanged();
+    }
+
+    private Optional<PhysicalRating> getPhysicalRating(SchemeComponent schemeComponent) {
+        Iterator<PhysicalRating> it = physicalRatings.get().iterator();
+        while (it.hasNext()) {
+            PhysicalRating r = it.next();
+            if (schemeComponent.equals(r.getComponent())) {
+                return Optional.of(r);
+            }
+        }
+        return Optional.absent();
+    }
+
+    public void setBiologicalRatingRating(SchemeComponent schemeComponent, int rating) {
+        checkNotNull(schemeComponent);
+        checkArgument(rating >= 0 && rating < 6);
+        Optional<BiologicalRating> bRating = getBiologicalRating(schemeComponent);
+        if (bRating.isPresent()) {
+            bRating.get().setRating(rating);
+        }
+        else {
+            BiologicalRating nRating = new BiologicalRating(this, schemeComponent);
+            nRating.setRating(rating);
+            biologicalRatings.get().add(nRating);
+        }
+        biologicalRatings.notifyDataChanged();
+    }
+
+    private Optional<BiologicalRating> getBiologicalRating(SchemeComponent schemeComponent) {
+        Iterator<BiologicalRating> it = biologicalRatings.get().iterator();
+        while (it.hasNext()) {
+            BiologicalRating r = it.next();
+            if (schemeComponent.equals(r.getComponent())) {
+                return Optional.of(r);
+            }
+        }
+        return Optional.absent();
+    }
+
+    // Observers
 
     public void addPlantObserver(Observer<Plant> o) {
         plant.addObserver(o);
     }
-    
-    public void addPhysicalRatingObserver(Observer<Collection<PhysicalRating>> o){
-    	physicalRatings.addObserver(o);
+
+    public void addPhysicalRatingObserver(Observer<Collection<PhysicalRating>> o) {
+        physicalRatings.addObserver(o);
     }
-    
-    public void addBiologicalRatingObserver(Observer<Collection<BiologicalRating>> o){
-    	biologicalRatings.addObserver(o);
+
+    public void addBiologicalRatingObserver(Observer<Collection<BiologicalRating>> o) {
+        biologicalRatings.addObserver(o);
     }
-    
-    //HashCode, equals
 
     @Override
     public int hashCode() {
