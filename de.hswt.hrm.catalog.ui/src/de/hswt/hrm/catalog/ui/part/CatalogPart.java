@@ -21,11 +21,15 @@ import org.eclipse.ui.forms.widgets.Form;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
+import de.hswt.hrm.i18n.I18n;
+import de.hswt.hrm.i18n.I18nFactory;
 
 public class CatalogPart {
 
     @Inject
     private IEclipseContext context;
+    
+    private static final I18n I18N = I18nFactory.getI18n(CatalogPart.class);
 
     private FormToolkit toolkit = new FormToolkit(Display.getDefault());
 
@@ -65,7 +69,7 @@ public class CatalogPart {
         form.setSeparatorVisible(true);
         form.getBody().setBackgroundMode(SWT.INHERIT_FORCE);
         toolkit.paintBordersFor(form);
-        form.setText("Catalogs");
+        form.setText(I18N.tr("Catalogs"));
         toolkit.decorateFormHeading(form);
         createActions();
 
@@ -105,7 +109,7 @@ public class CatalogPart {
         toolkit.paintBordersFor(tabFolder);
 
         itemsTab = new TabItem(tabFolder, SWT.NONE);
-        itemsTab.setText("Catalog items");
+        itemsTab.setText(I18N.tr("Catalog Items"));
 
         catalogItemsPart = new CatalogItemsComposite(tabFolder);
         // important: inject the services
@@ -114,7 +118,7 @@ public class CatalogPart {
         itemsTab.setControl(catalogItemsPart);
 
         assignmentTab = new TabItem(tabFolder, SWT.NONE);
-        assignmentTab.setText("Item assignment");
+        assignmentTab.setText(I18N.tr("Item assignment"));
 
         assignmentComposite = new CatalogAssignmentComposite(tabFolder);
         ContextInjectionFactory.inject(assignmentComposite, context);
@@ -134,47 +138,47 @@ public class CatalogPart {
 
     private void createActions() {
         // TODO translate
-        Action editCatalogItemAction = new Action("Edit") {
+        Action editCatalogItemAction = new Action(I18N.tr("Edit")) {
             @Override
             public void run() {
                 super.run();
                 catalogItemsPart.editItem();
             }
         };
-        editCatalogItemAction.setDescription("Edit an exisitng catalog item.");
+        editCatalogItemAction.setDescription(I18N.tr("Edit an existing catalog item."));
         editCatalogItemContribution = new ActionContributionItem(editCatalogItemAction);
         form.getToolBarManager().add(editCatalogItemContribution);
 
-        Action editCatalogAction = new Action("Edit") {
+        Action editCatalogAction = new Action(I18N.tr("Edit")) {
             @Override
             public void run() {
                 super.run();
                 assignmentComposite.editCatalog();
             }
         };
-        editCatalogAction.setDescription("Edit an Existing Catalog");
+        editCatalogAction.setDescription(I18N.tr("Edit an existing catalog."));
         editCatalogContribution = new ActionContributionItem(editCatalogAction);
         form.getToolBarManager().add(editCatalogContribution);
 
-        Action addCatalogItemAction = new Action("Add") {
+        Action addCatalogItemAction = new Action(I18N.tr("Add")) {
             @Override
             public void run() {
                 super.run();
                 catalogItemsPart.addCatalogItem();
             }
         };
-        addCatalogItemAction.setDescription("Add's a new catalog item.");
+        addCatalogItemAction.setDescription(I18N.tr("Add a new catalog item."));
         addCatalogItemContribution = new ActionContributionItem(addCatalogItemAction);
         form.getToolBarManager().add(addCatalogItemContribution);
 
-        Action addCatalogAction = new Action("Add") {
+        Action addCatalogAction = new Action(I18N.tr("Add")) {
             @Override
             public void run() {
                 super.run();
                 assignmentComposite.addCatalog();
             }
         };
-        addCatalogAction.setDescription("Add's a new catalog .");
+        addCatalogAction.setDescription(I18N.tr("Add a new catalog."));
         addCatalogContribution = new ActionContributionItem(addCatalogAction);
         form.getToolBarManager().add(addCatalogContribution);
 
