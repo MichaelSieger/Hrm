@@ -194,7 +194,17 @@ public class InspectionPart {
                 }
             }
         });
-
+        ReportBiologicalComposite c = (ReportBiologicalComposite) biologicalComposite.getRatingComposite();
+        c.addGradeSelectionObserver(new Observer<Integer>() {
+			
+			@Override
+			public void changed(Integer item) {
+				SchemeComponent c = biologicalComposite.getSelectedSchemeComponent();
+				if(c != null){
+					selectedInspection.setBiologicalRatingRating(c, item);
+				}
+			}
+		});
         createActions();
     }
 

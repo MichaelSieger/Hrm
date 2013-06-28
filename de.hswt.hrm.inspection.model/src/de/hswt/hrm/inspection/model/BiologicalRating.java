@@ -9,6 +9,10 @@ import de.hswt.hrm.scheme.model.SchemeComponent;
 
 public class BiologicalRating {
 
+	public static final String AIR_GERMS_CONCENTRATION = "AIR_GERMS_CONCENTRATION";
+
+	public static final String CONTACT_CULTURE = "CONTACT_CULTURE";
+
     private final int id;
     private SchemeComponent component;
     private Inspection inspection;
@@ -89,7 +93,7 @@ public class BiologicalRating {
     }
 
     public void setComment(String comment) {
-        this.comment = Optional.of(comment);
+        this.comment = Optional.fromNullable(comment);
     }
 
     public String getFlag() {
@@ -97,7 +101,7 @@ public class BiologicalRating {
     }
 
     public void setFlag(String flag) {
-        this.flag = Optional.of(flag);
+        this.flag = Optional.fromNullable(flag);
     }
 
     public int getId() {
@@ -117,6 +121,14 @@ public class BiologicalRating {
     		   !isNullOrEmpty(flag.get());  
     }
 
+    public boolean isAirGermsConcentration() {
+    	return getFlag().equals(BiologicalRating.AIR_GERMS_CONCENTRATION);
+    }
+    
+    public boolean isContactCultures() {
+    	return getFlag().equals(BiologicalRating.CONTACT_CULTURE);
+    }
+    
     @Override
     public int hashCode() {
         final int prime = 31;

@@ -8,12 +8,15 @@ import de.hswt.hrm.common.observer.Observable;
 import de.hswt.hrm.common.observer.Observer;
 import de.hswt.hrm.contact.model.Contact;
 import de.hswt.hrm.photo.model.Photo;
+import de.hswt.hrm.scheme.model.SchemeComponent;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Iterator;
 
 import com.google.common.base.Optional;
+import com.google.common.base.Preconditions;
 
 public class Inspection {
     private final int id;
@@ -305,6 +308,31 @@ public class Inspection {
 
     public void setPlantpicture(Photo plantpicture) {
         this.plantpicture = plantpicture;
+    }
+    
+    public void setBiologicalRatingRating(SchemeComponent schemeComponent, int rating){
+    	checkNotNull(schemeComponent);
+    	checkArgument(rating >= 0 && rating < 6);
+    	Optional<BiologicalRating> bRating = getBiologicalRating(schemeComponent);
+    	if(bRating.isPresent()){
+    		bRating.get().setRating(rating);
+    	}else{
+    		BiologicalRating nRating = new BiologicalRating(this, schemeComponent);
+    		nRating.setRating(rating);
+    		biologicalRatings.get().add(nRating);
+    	}
+    	biologicalRatings.notifyDataChanged();
+    }
+    
+    private Optional<BiologicalRating> getBiologicalRating(SchemeComponent schemeComponent){
+    	Iterator<BiologicalRating> it = biologicalRatings.get().iterator();
+    	while(it.hasNext()){
+    		BiologicalRating r = it.next();
+    		if(schemeComponent.equals(r.getComponent())){
+    			return Optional.of(r);
+    		}
+    	}
+    	return Optional.absent();
     }
     
     //Observers
