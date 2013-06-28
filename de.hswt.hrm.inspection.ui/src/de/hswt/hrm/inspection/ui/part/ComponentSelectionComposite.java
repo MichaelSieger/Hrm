@@ -160,11 +160,25 @@ public class ComponentSelectionComposite extends Composite {
             @Override
             public void changed(SchemeComponent item) {
                 schemeGrid.setSelected(item);
-                // TODO set componentsList selection
+                setListSelection(item);
             }
         });
 
         initListViewer();
+    }
+    
+    private void setListSelection(SchemeComponent c){
+    	if(c == null){
+    		componentsList.getList().deselectAll();
+    	}else{
+        	for(int i = 0; i < componentsList.getList().getItemCount(); i++){
+        		if(componentsList.getElementAt(i).equals(c)){
+        			componentsList.getList().select(i);
+        			return;
+        		}
+        	}
+        	throw new RuntimeException("Internal Error");
+    	}
     }
 
     private void initListViewer() {

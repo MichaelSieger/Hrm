@@ -1,8 +1,9 @@
 package de.hswt.hrm.inspection.model;
 
-import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Strings.isNullOrEmpty;
+
+import com.google.common.base.Optional;
 
 import de.hswt.hrm.scheme.model.SchemeComponent;
 
@@ -15,14 +16,14 @@ public class BiologicalRating {
     private final int id;
     private SchemeComponent component;
     private Inspection inspection;
-    private int bacteriaCount;
-    private int rating;
-    private int quantifier;
-    private String comment;
-    private String flag;
+    private Optional<Integer> bacteriaCount;
+    private Optional<Integer> rating;
+    private Optional<Integer> quantifier;
+    private Optional<String> comment;
+    private Optional<String> flag;
 
-    private static final String IS_MANDATORY = "Field is a mandatory.";
-    private static final String INVALID_NUMBER = "%d is an invalid number.%n Must be greater 0";
+    //private static final String IS_MANDATORY = "Field is a mandatory.";
+    //private static final String INVALID_NUMBER = "%d is an invalid number.%n Must be greater 0";
 
     public BiologicalRating(int id, Inspection inspection, SchemeComponent component, int bacteriaCount,
     		int rating, int quantifier, String comment, String flag) {
@@ -34,6 +35,10 @@ public class BiologicalRating {
         setQuantifier(quantifier);
         setComment(comment);
         setFlag(flag);
+    }
+    
+    public BiologicalRating(Inspection inspection, SchemeComponent component){
+    	this(inspection, component, -1, -1, -1, null, null);
     }
 
     public BiologicalRating(Inspection inspection, SchemeComponent component, int bacteriaCount,
@@ -60,52 +65,60 @@ public class BiologicalRating {
     }
 
     public int getBacteriaCount() {
-        return bacteriaCount;
+        return bacteriaCount.get();
     }
 
     public void setBacteriaCount(int bacteriaCount) {
-        checkArgument(bacteriaCount > 0, INVALID_NUMBER, bacteriaCount);
-        this.bacteriaCount = bacteriaCount;
+        this.bacteriaCount = Optional.of(bacteriaCount);
     }
 
     public int getRating() {
-        return rating;
+        return rating.get();
     }
 
     public void setRating(int rating) {
-        checkArgument(rating > 0, INVALID_NUMBER, rating);
-        this.rating = rating;
+        this.rating = Optional.of(rating);
     }
 
     public int getQuantifier() {
-        return quantifier;
+        return quantifier.get();
     }
 
     public void setQuantifier(int quantifier) {
-        checkArgument(quantifier > 0, INVALID_NUMBER, quantifier);
-        this.quantifier = quantifier;
+        this.quantifier = Optional.of(quantifier);
     }
 
     public String getComment() {
-        return comment;
+        return comment.get();
     }
 
     public void setComment(String comment) {
-        checkArgument(!isNullOrEmpty(comment), IS_MANDATORY);
-        this.comment = comment;
+        this.comment = Optional.of(comment);
     }
 
     public String getFlag() {
-        return flag;
+        return flag.get();
     }
 
     public void setFlag(String flag) {
-        checkArgument(!isNullOrEmpty(flag), IS_MANDATORY);
-        this.flag = flag;
+        this.flag = Optional.of(flag);
     }
 
     public int getId() {
         return id;
+    }
+    
+    public boolean isValid(){
+    	return bacteriaCount.isPresent() &&
+    		   rating.isPresent() &&
+    		   quantifier.isPresent() &&
+    		   comment.isPresent() &&
+    		   flag.isPresent() &&
+    		   bacteriaCount.get() > 0 &&
+    		   rating.get() > 0 &&
+    		   quantifier.get() > 0 &&
+    		   !isNullOrEmpty(comment.get()) &&
+    		   !isNullOrEmpty(flag.get());  
     }
 
     public boolean isAirGermsConcentration() {
@@ -120,14 +133,14 @@ public class BiologicalRating {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + bacteriaCount;
-        result = prime * result + ((comment == null) ? 0 : comment.hashCode());
+        result = prime * result + bacteriaCount.get();
+        result = prime * result + ((!comment.isPresent()) ? 0 : comment.get().hashCode());
         result = prime * result + ((component == null) ? 0 : component.hashCode());
-        result = prime * result + ((flag == null) ? 0 : flag.hashCode());
+        result = prime * result + ((!flag.isPresent()) ? 0 : flag.get().hashCode());
         result = prime * result + id;
         result = prime * result + ((inspection == null) ? 0 : inspection.hashCode());
-        result = prime * result + quantifier;
-        result = prime * result + rating;
+        result = prime * result + quantifier.get();
+        result = prime * result + rating.get();
         return result;
     }
 
