@@ -201,7 +201,7 @@ public class ComponentWizardPageOne extends WizardPage {
 		
 		Button addAttributeButton = new Button(attributesComposite, SWT.NONE);
 		formToolkit.adapt(addAttributeButton, true, true);
-		addAttributeButton.setText(I18N.tr("Add"));
+		addAttributeButton.setText(I18N.tr("Add attribute"));
 		addAttributeButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
