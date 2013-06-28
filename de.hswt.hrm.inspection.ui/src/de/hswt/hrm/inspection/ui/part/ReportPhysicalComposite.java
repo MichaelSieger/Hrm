@@ -4,10 +4,13 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.window.IShellProvider;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 
+import de.hswt.hrm.common.observer.Observable;
+import de.hswt.hrm.common.observer.Observer;
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.common.ui.swt.layouts.LayoutUtil;
 import de.hswt.hrm.common.ui.swt.utils.ContentProposalUtil;
@@ -19,6 +22,7 @@ import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Label;
@@ -51,6 +55,8 @@ public class ReportPhysicalComposite extends AbstractComponentRatingComposite {
 	private List gradeList;
 	private List weightList;
 	private List list;
+	
+	private final Observable<Integer> grade = new Observable();
 
 	// @TODO remove when example is no longer needed
 	private static final String[] items = new String[] { "Alpha", "Beta",
@@ -160,6 +166,20 @@ public class ReportPhysicalComposite extends AbstractComponentRatingComposite {
 		}
 		// TODO set 0 selected or grade from db
 		gradeList.select(0);
+		gradeList.addSelectionListener(new SelectionListener() {
+			
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				int sel = gradeList.getSelectionIndex();
+				if(sel == -1){
+					sel = 0;
+				}
+				grade.set(sel);
+			}
+			
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {}
+		});
 
 		weightList = new List(physicalComposite, SWT.BORDER);
 		weightList.setLayoutData(LayoutUtil.createHorzFillData(2));
@@ -266,6 +286,10 @@ public class ReportPhysicalComposite extends AbstractComponentRatingComposite {
 		sc.setMinSize(composite.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 	}
 
+	public void addGradeSelectionObserver(Observer<Integer> o){
+		grade.addObserver(o);
+	}
+	
 	@Override
 	public void setSelectedComponent(Component component) {
 		// TODO Auto-generated method stub

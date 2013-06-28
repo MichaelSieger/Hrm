@@ -310,6 +310,32 @@ public class Inspection {
         this.plantpicture = plantpicture;
     }
     
+
+	public void setPhysicalRatingRating(SchemeComponent schemeComponent, Integer rating) {
+    	checkNotNull(schemeComponent);
+    	checkArgument(rating >= 0 && rating < 6);
+    	Optional<PhysicalRating> pRating = getPhysicalRating(schemeComponent);
+    	if(pRating.isPresent()){
+    		pRating.get().setRating(rating);
+    	}else{
+    		PhysicalRating nRating = new PhysicalRating(this, schemeComponent);
+    		nRating.setRating(rating);
+    		physicalRatings.get().add(nRating);
+    	}
+    	physicalRatings.notifyDataChanged();
+	}
+	
+	private Optional<PhysicalRating> getPhysicalRating(SchemeComponent schemeComponent){
+    	Iterator<PhysicalRating> it = physicalRatings.get().iterator();
+    	while(it.hasNext()){
+    		PhysicalRating r = it.next();
+    		if(schemeComponent.equals(r.getComponent())){
+    			return Optional.of(r);
+    		}
+    	}
+    	return Optional.absent();
+	}
+    
     public void setBiologicalRatingRating(SchemeComponent schemeComponent, int rating){
     	checkNotNull(schemeComponent);
     	checkArgument(rating >= 0 && rating < 6);
