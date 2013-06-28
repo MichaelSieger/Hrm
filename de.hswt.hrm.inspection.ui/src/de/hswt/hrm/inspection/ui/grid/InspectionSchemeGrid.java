@@ -1,6 +1,7 @@
 package de.hswt.hrm.inspection.ui.grid;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
@@ -112,6 +113,10 @@ public class InspectionSchemeGrid {
 
 	public void addColorbox(Colorbox b) {
 		grid.addColorbox(b);
+	}
+
+	public void removeAll(Collection<SchemeGridItem> c) {
+		grid.removeAll(c);
 	}
 
 }
