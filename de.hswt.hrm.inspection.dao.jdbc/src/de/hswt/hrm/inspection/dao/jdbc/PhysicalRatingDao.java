@@ -106,6 +106,9 @@ public class PhysicalRatingDao implements IPhysicalRatingDao {
 
     @Override
     public PhysicalRating insert(PhysicalRating physicalRating) throws SaveException {
+        checkNotNull(physicalRating, "Physical Rating must not be null.");
+        checkState(physicalRating.isValid(), "Physical Rating is invalid");
+
         SqlQueryBuilder builder = new SqlQueryBuilder();
         builder.insert(TABLE_NAME, Fields.RATING, Fields.NOTE, Fields.COMPONENT_FK,
                 Fields.REPORT_FK, Fields.QUANTIFIER);
@@ -147,12 +150,14 @@ public class PhysicalRatingDao implements IPhysicalRatingDao {
         catch (SQLException | DatabaseException e) {
             throw new SaveException(e);
         }
+
     }
 
     @Override
     public void update(PhysicalRating physicalRating) throws ElementNotFoundException,
             SaveException {
         checkNotNull(physicalRating, "Physical Rating must not be null.");
+        checkState(physicalRating.isValid(), "Physical Rating is invalid");
 
         if (physicalRating.getId() < 0) {
             throw new ElementNotFoundException("Element has no valid ID.");
@@ -182,6 +187,7 @@ public class PhysicalRatingDao implements IPhysicalRatingDao {
         catch (SQLException | DatabaseException e) {
             throw new SaveException(e);
         }
+
     }
 
     @Override

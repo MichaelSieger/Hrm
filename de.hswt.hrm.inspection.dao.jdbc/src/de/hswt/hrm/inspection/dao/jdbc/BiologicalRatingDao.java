@@ -29,15 +29,16 @@ import de.hswt.hrm.scheme.dao.core.ISchemeComponentDao;
 import de.hswt.hrm.scheme.model.SchemeComponent;
 
 public class BiologicalRatingDao implements IBiologicalRatingDao {
-	private final static Logger LOG = LoggerFactory.getLogger(BiologicalRatingDao.class);
-	private final IInspectionDao inspectionDao;
-	private final ISchemeComponentDao schemeComponentDao;
+    private final static Logger LOG = LoggerFactory.getLogger(BiologicalRatingDao.class);
+    private final IInspectionDao inspectionDao;
+    private final ISchemeComponentDao schemeComponentDao;
 
-    public BiologicalRatingDao(final IInspectionDao inspectionDao, 
-    		final ISchemeComponentDao schemeComponentDao) {
-    	
-    	checkNotNull(inspectionDao, "InspectionDao not properly injected to BiologicalRatingDao");
-        checkNotNull(schemeComponentDao, "SchemeComponentDao not properly injected to BiologicalRatingDao");
+    public BiologicalRatingDao(final IInspectionDao inspectionDao,
+            final ISchemeComponentDao schemeComponentDao) {
+
+        checkNotNull(inspectionDao, "InspectionDao not properly injected to BiologicalRatingDao");
+        checkNotNull(schemeComponentDao,
+                "SchemeComponentDao not properly injected to BiologicalRatingDao");
 
         this.inspectionDao = inspectionDao;
         LOG.debug("InspectionDao injected into BiologicalRatingDao.");
@@ -147,35 +148,29 @@ public class BiologicalRatingDao implements IBiologicalRatingDao {
 
     @Override
     public BiologicalRating insert(BiologicalRating biological) throws DatabaseException {
-    	checkNotNull(biological, "BiologicalRating must not be null.");
-    	checkState(biological.getComponent().getId() >= 0, "Component must have a valid ID.");
-    	checkState(biological.getInspection().getId() >= 0, "Inspection must have a valid ID.");
-    	
+        checkNotNull(biological, "BiologicalRating must not be null.");
+        checkState(biological.isValid(), "Biological Rating is invalid");
+        checkState(biological.getComponent().getId() >= 0, "Component must have a valid ID.");
+        checkState(biological.getInspection().getId() >= 0, "Inspection must have a valid ID.");
+
         SqlQueryBuilder builder = new SqlQueryBuilder();
-        builder.insert(
-        		TABLE_NAME, 
-		        Fields.BACTERIA, 
-		        Fields.RATING, 
-		        Fields.QUANTIFIER, 
-		        Fields.COMMENT, 
-		        Fields.FK_COMPONENT,
-		        Fields.FK_REPORT,
-		        Fields.FK_FLAG);
+        builder.insert(TABLE_NAME, Fields.BACTERIA, Fields.RATING, Fields.QUANTIFIER,
+                Fields.COMMENT, Fields.FK_COMPONENT, Fields.FK_REPORT, Fields.FK_FLAG);
 
         String query = builder.toString();
-        
+
         try (Connection con = DatabaseFactory.getConnection()) {
-        	try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
-        		
-        		stmt.setParameter(Fields.BACTERIA, biological.getBacteriaCount());
-        		stmt.setParameter(Fields.RATING, biological.getRating());
-        		stmt.setParameter(Fields.QUANTIFIER, biological.getQuantifier());
-        		stmt.setParameter(Fields.COMMENT, biological.getComment());
-        		stmt.setParameter(Fields.FK_COMPONENT, biological.getComponent().getId());
-        		stmt.setParameter(Fields.FK_REPORT, biological.getInspection().getId());
-        		stmt.setParameter(Fields.FK_FLAG, getFlagId(con, biological.getFlag()));
-        	
-        		int affectedRows = stmt.executeUpdate();
+            try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
+
+                stmt.setParameter(Fields.BACTERIA, biological.getBacteriaCount());
+                stmt.setParameter(Fields.RATING, biological.getRating());
+                stmt.setParameter(Fields.QUANTIFIER, biological.getQuantifier());
+                stmt.setParameter(Fields.COMMENT, biological.getComment());
+                stmt.setParameter(Fields.FK_COMPONENT, biological.getComponent().getId());
+                stmt.setParameter(Fields.FK_REPORT, biological.getInspection().getId());
+                stmt.setParameter(Fields.FK_FLAG, getFlagId(con, biological.getFlag()));
+
+                int affectedRows = stmt.executeUpdate();
                 if (affectedRows != 1) {
                     throw new SaveException();
                 }
@@ -185,15 +180,11 @@ public class BiologicalRatingDao implements IBiologicalRatingDao {
                         int id = generatedKeys.getInt(1);
 
                         // Create new biological rating with id
-                        BiologicalRating inserted = new BiologicalRating(
-                        		id,
-                        		biological.getInspection(), 
-                        		biological.getComponent(), 
-                        		biological.getBacteriaCount(),
-                        		biological.getRating(),
-                        		biological.getQuantifier(),
-                        		biological.getComment(),
-                        		biological.getFlag());
+                        BiologicalRating inserted = new BiologicalRating(id,
+                                biological.getInspection(), biological.getComponent(),
+                                biological.getBacteriaCount(), biological.getRating(),
+                                biological.getQuantifier(), biological.getComment(),
+                                biological.getFlag());
 
                         return inserted;
                     }
@@ -201,32 +192,34 @@ public class BiologicalRatingDao implements IBiologicalRatingDao {
                         throw new SaveException("Could not retrieve generated ID.");
                     }
                 }
-        	}
+            }
         }
         catch (SQLException e) {
-        	throw new DatabaseException("Unexpected error.", e);
+            throw new DatabaseException("Unexpected error.", e);
         }
     }
 
     @Override
     public void update(BiologicalRating biological) throws ElementNotFoundException, SaveException {
+        checkState(biological.isValid(), "Biological Rating is invalid");
+
         throw new NotImplementedException();
     }
 
     /**
-     * All statements should join the flag table to be able to parse it
-     * correctly here...
+     * All statements should join the flag table to be able to parse it correctly here...
+     * 
      * @param rs
      * @return
-     * @throws SQLException 
-     * @throws DatabaseException 
-     * @throws ElementNotFoundException 
+     * @throws SQLException
+     * @throws DatabaseException
+     * @throws ElementNotFoundException
      */
-    private Collection<BiologicalRating> fromResultSet(final ResultSet rs) 
-    		throws SQLException, ElementNotFoundException, DatabaseException {
-    	
+    private Collection<BiologicalRating> fromResultSet(final ResultSet rs) throws SQLException,
+            ElementNotFoundException, DatabaseException {
+
         checkNotNull(rs, "ResultSet must not be null.");
-        
+
         Collection<BiologicalRating> ratingList = new ArrayList<>();
 
         while (rs.next()) {
@@ -243,43 +236,36 @@ public class BiologicalRatingDao implements IBiologicalRatingDao {
             Inspection inspection = inspectionDao.findById(inspectionId);
             // Should be added through a join
             String flag = rs.getString(FlagFields.NAME);
-            
-            BiologicalRating biological = new BiologicalRating(
-            		id,
-            		inspection,
-            		component,
-            		bacteria,
-            		rating,
-            		quantifier,
-            		comment,
-            		flag);
-            
+
+            BiologicalRating biological = new BiologicalRating(id, inspection, component, bacteria,
+                    rating, quantifier, comment, flag);
+
             ratingList.add(biological);
         }
 
         return ratingList;
     }
-    
-    private int getFlagId(final Connection con, final String name) throws SQLException {
-    	SqlQueryBuilder builder = new SqlQueryBuilder();
-    	builder.select(FLAG_TABLE_NAME, FlagFields.ID);
-    	builder.where(FlagFields.NAME);
 
-    	try (NamedParameterStatement stmt = 
-    			NamedParameterStatement.fromConnection(con, builder.toString())) {
-    		
-    		stmt.setParameter(FlagFields.NAME, name);
-    		
-    		ResultSet rs = stmt.executeQuery();
-    		if (!rs.next()) {
-    			throw new IllegalStateException("Could not find flag '" + name + "' in database.");
-    		}
-    		
-    		int id = rs.getInt(FlagFields.ID);
-    		rs.close();
-    		
-    		return id;
-    	}
+    private int getFlagId(final Connection con, final String name) throws SQLException {
+        SqlQueryBuilder builder = new SqlQueryBuilder();
+        builder.select(FLAG_TABLE_NAME, FlagFields.ID);
+        builder.where(FlagFields.NAME);
+
+        try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con,
+                builder.toString())) {
+
+            stmt.setParameter(FlagFields.NAME, name);
+
+            ResultSet rs = stmt.executeQuery();
+            if (!rs.next()) {
+                throw new IllegalStateException("Could not find flag '" + name + "' in database.");
+            }
+
+            int id = rs.getInt(FlagFields.ID);
+            rs.close();
+
+            return id;
+        }
     }
 
     private static final String TABLE_NAME = "Biological_Rating";
