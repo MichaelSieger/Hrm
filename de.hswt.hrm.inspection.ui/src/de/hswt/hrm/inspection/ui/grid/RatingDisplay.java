@@ -7,9 +7,11 @@ public class RatingDisplay {
 
 	private final Color[] colors;
 	private final InspectionSchemeGrid grid;
+	private final SamplingPoints samplingPoints;
 	
-	public RatingDisplay(InspectionSchemeGrid grid){
+	public RatingDisplay(InspectionSchemeGrid grid, SamplingPoints samplingPoints){
 		this.grid = grid;
+		this.samplingPoints = samplingPoints;
 		Display device = grid.getControl().getDisplay();
 		colors = new Color[]
 				{
@@ -28,6 +30,10 @@ public class RatingDisplay {
 	
 	protected Color[] getColors(){
 		return colors;
+	}
+
+	public SamplingPoints getSamplingPoints() {
+		return samplingPoints;
 	}
 	
 }
