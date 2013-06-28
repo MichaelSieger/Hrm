@@ -146,6 +146,7 @@ public class PhysicalRatingDao implements IPhysicalRatingDao {
                                 physicalRating.getRating(), physicalRating.getQuantifier());
 
                         inserted.setNote(physicalRating.getNote().orNull());
+                        inserted.setSamplingPointType(physicalRating.getSamplingPointType().orNull());
                         return inserted;
                     }
                     else {
