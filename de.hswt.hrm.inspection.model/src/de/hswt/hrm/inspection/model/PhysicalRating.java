@@ -16,8 +16,8 @@ public class PhysicalRating {
     private SchemeComponent component;
     private Inspection inspection;
 
-    //private static final String INVALID_NUMBER = "%d is an invalid number.%n Must be greater 0";
-    //private static final String INVALID_LENGTH = "Empty String is not allowed !";
+    // private static final String INVALID_NUMBER = "%d is an invalid number.%n Must be greater 0";
+    // private static final String INVALID_LENGTH = "Empty String is not allowed !";
 
     public PhysicalRating(int id, Inspection inspection, SchemeComponent component, int rating,
             int quantifier) {
@@ -28,9 +28,9 @@ public class PhysicalRating {
         setRating(rating);
         setQuantifier(quantifier);
     }
-    
-    public PhysicalRating(Inspection inspection, SchemeComponent schemeComponent){
-    	this(inspection, schemeComponent, -1, -1);
+
+    public PhysicalRating(Inspection inspection, SchemeComponent schemeComponent) {
+        this(inspection, schemeComponent, -1, -1);
     }
 
     public PhysicalRating(Inspection inspection, SchemeComponent component, int rating,
@@ -83,14 +83,10 @@ public class PhysicalRating {
     public void setQuantifier(int quantifier) {
         this.quantifier = Optional.of(quantifier);
     }
-    
-    public boolean isValid(){
-    	return rating.isPresent() &&
-    		   note.isPresent() &&
-    		   quantifier.isPresent() &&
-    		   quantifier.get() > 0 &&
-    		   note.get().length() > 0 &&
-    		   rating.get() > 0;
+
+    public boolean isValid() {
+        return rating.isPresent() && note.isPresent() && quantifier.isPresent()
+                && quantifier.get() > 0 && note.get().length() > 0 && rating.get() > 0;
     }
 
     @Override
