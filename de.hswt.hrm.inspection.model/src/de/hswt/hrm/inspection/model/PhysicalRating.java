@@ -4,9 +4,7 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Strings.isNullOrEmpty;
 
-import com.google.common.base.Optional;
-
-import de.hswt.hrm.component.model.Component;
+import de.hswt.hrm.scheme.model.SchemeComponent;
 
 public class PhysicalRating {
 
@@ -15,13 +13,13 @@ public class PhysicalRating {
     private int rating;
     private int quantifier;
     private String note;
-    private Component component;
+    private SchemeComponent component;
     private Inspection inspection;
 
     private static final String IS_MANDATORY = "Field is a mandatory.";
     private static final String INVALID_NUMBER = "%d is an invalid number.%n Must be greater 0";
 
-    public PhysicalRating(int id, Inspection inspection, Component component, int rating, 
+    public PhysicalRating(int id, Inspection inspection, SchemeComponent component, int rating, 
     		String note, int quantifier) {
     	
         this.id = id;
@@ -32,7 +30,7 @@ public class PhysicalRating {
         setQuantifier(quantifier);
     }
 
-    public PhysicalRating(Inspection inspection, Component component, int rating, String note, int quantifier) {
+    public PhysicalRating(Inspection inspection, SchemeComponent component, int rating, String note, int quantifier) {
         this(-1, inspection, component, rating, note, quantifier);
     }
 
@@ -54,11 +52,11 @@ public class PhysicalRating {
         this.note = note;
     }
 
-    public Component getComponent() {
+    public SchemeComponent getComponent() {
         return component;
     }
 
-    public void setComponent(Component component) {
+    public void setComponent(SchemeComponent component) {
         checkNotNull(component);
         this.component = component;
     }
