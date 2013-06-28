@@ -1,7 +1,5 @@
 package de.hswt.hrm.inspection.ui.part;
 
-import java.util.ArrayList;
-
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
@@ -44,6 +42,9 @@ public class ReportPerformanceComposite extends
 
 	@Inject
 	private IShellProvider shellProvider;
+
+	private ListViewer componentsList;
+
 	private FormToolkit formToolkit = new FormToolkit(Display.getDefault());
 
 	/**
@@ -148,7 +149,7 @@ public class ReportPerformanceComposite extends
 		Tree tree = treeViewer.getTree();
 		treeViewer.setContentProvider(new PerformanceTreeContentProvider());
 		treeViewer.setLabelProvider(new PerformanceTreeLabelProvider());
-		// treeViewer.setInput(getMockData());
+
 		GridData gd_tree = new GridData(SWT.FILL, SWT.FILL, true, true, 2, 8);
 		gd_tree.heightHint = 241;
 		tree.setLayoutData(gd_tree);
@@ -170,6 +171,7 @@ public class ReportPerformanceComposite extends
 	}
 
 	private void initalizeListViewer(ListViewer viewer) {
+
 		viewer.setContentProvider(ArrayContentProvider.getInstance());
 		viewer.setLabelProvider(new LabelProvider() {
 			@Override
@@ -178,6 +180,7 @@ public class ReportPerformanceComposite extends
 
 			}
 		});
+
 	}
 
 	@Override
@@ -194,7 +197,14 @@ public class ReportPerformanceComposite extends
 	@Override
 	public void setSelectedComponent(Component component) {
 		// TODO Auto-generated method stub
+	}
 
+	public void setComponentsList(ListViewer componentsList) {
+		this.componentsList = componentsList;
+	}
+
+	public ListViewer getComponentsList() {
+		return componentsList;
 	}
 
 }

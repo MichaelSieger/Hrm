@@ -308,6 +308,12 @@ public class InspectionPart {
         physicalComposite.setSchemeGridItems(schemeGridItems);
         biologicalComposite.setSchemeGridItems(schemeGridItems);
         performanceComposite.setSchemeGridItems(schemeGridItems);
+        
+		ReportPerformanceComposite rpc = (ReportPerformanceComposite) performanceComposite
+				.getRatingComposite();
+		rpc.setComponentsList(performanceComposite.getComponentsList());
+		
+		
     }
 
     protected void showOverviewActions(boolean visible) {
