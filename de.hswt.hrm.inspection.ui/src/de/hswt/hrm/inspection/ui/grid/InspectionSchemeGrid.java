@@ -110,4 +110,8 @@ public class InspectionSchemeGrid {
 		grid.setColorGrid(color, c.getX(), c.getY(), c.getWidth(), c.getHeight(), true, true);
 	}
 
+	public void addColorbox(Colorbox b) {
+		grid.addColorbox(b);
+	}
+
 }
