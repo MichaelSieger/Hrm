@@ -527,4 +527,10 @@ public class SchemeGrid extends DoubleBufferedCanvas {
 	public void removeModifyListener(ModifyListener listener) {
 		modifyListeners.remove(listener);
 	}
+
+
+	public void addColorbox(Colorbox c) {
+		colors.add(c);
+		this.redraw();
+	}
 }
