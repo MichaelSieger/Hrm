@@ -48,7 +48,7 @@ public class CatalogWizzardPageOne extends WizardPage {
         super(pageName);
         this.item = item;
         setDescription(createDiscription());
-        setTitle(I18N.tr("Catalog Wizard"));
+        setTitle(I18N.tr("Catalog Item Wizard"));
     }
 
     public void createControl(Composite parent) {
@@ -141,10 +141,10 @@ public class CatalogWizzardPageOne extends WizardPage {
 
     private String createDiscription() {
         if (item.isPresent()) {
-            return I18N.tr("Edit a catalog.");
+            return I18N.tr("Edit a catalog item.");
         }
 
-        return I18N.tr("Add a new catalog.");
+        return I18N.tr("Add a new catalog item.");
     }
 
     public ICatalogItem getItem() {
