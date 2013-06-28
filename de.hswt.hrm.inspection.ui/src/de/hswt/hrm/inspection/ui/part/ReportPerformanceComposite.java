@@ -41,8 +41,8 @@ import de.hswt.hrm.scheme.model.SchemeComponent;
 public class ReportPerformanceComposite extends
 		AbstractComponentRatingComposite {
 
-	@Inject
-	private InspectionService inspectionService;
+//	@Inject
+//	private InspectionService inspectionService;
 
 	@Inject
 	private IEclipseContext context;

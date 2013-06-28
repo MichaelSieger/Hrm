@@ -231,6 +231,9 @@ public class InspectionPart {
         }
 
         if (selectedInspection != inspection) {
+        	if(selectedInspection != null){
+        		selectedInspection.clearObservers();
+        	}
             selectedInspection = inspection;
             reportGeneralComposite.setInspection(selectedInspection);
             reportGeneralComposite.refreshGeneralInformation();
@@ -269,7 +272,24 @@ public class InspectionPart {
 				combinedDisplay.updatePhysical(item);
 			}
 		});
-        
+		final ReportPerformanceComposite rpc = (ReportPerformanceComposite) performanceComposite
+				.getRatingComposite();
+		rpc.setComponentsList(performanceComposite.getComponentsList());
+		rpc.getComponentsList().getList()
+				.addSelectionListener(new SelectionAdapter() {
+					@Override
+					public void widgetSelected(SelectionEvent e) {
+						IStructuredSelection selection = (IStructuredSelection) rpc
+								.getComponentsList().getSelection();
+						if (selection == null) {
+							return;
+						}
+						SchemeComponent sc = (SchemeComponent) selection
+								.getFirstElement();
+						System.out.println(sc.getComponent().getCategory()
+								.get().getCatalog());
+					}
+				});
     }
 
     private void plantChanged(Plant plant) {
@@ -309,26 +329,6 @@ public class InspectionPart {
         physicalComposite.setSchemeGridItems(schemeGridItems);
         biologicalComposite.setSchemeGridItems(schemeGridItems);
         performanceComposite.setSchemeGridItems(schemeGridItems);
-        
-		final ReportPerformanceComposite rpc = (ReportPerformanceComposite) performanceComposite
-				.getRatingComposite();
-		rpc.setComponentsList(performanceComposite.getComponentsList());
-		rpc.getComponentsList().getList()
-				.addSelectionListener(new SelectionAdapter() {
-					@Override
-					public void widgetSelected(SelectionEvent e) {
-						IStructuredSelection selection = (IStructuredSelection) rpc
-								.getComponentsList().getSelection();
-						if (selection == null) {
-							return;
-						}
-						SchemeComponent sc = (SchemeComponent) selection
-								.getFirstElement();
-						System.out.println(sc.getComponent().getCategory()
-								.get().getCatalog());
-					}
-				});
-		
 		
     }
 
