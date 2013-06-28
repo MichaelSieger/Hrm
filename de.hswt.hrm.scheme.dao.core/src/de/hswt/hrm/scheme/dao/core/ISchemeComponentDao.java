@@ -28,7 +28,8 @@ public interface ISchemeComponentDao {
     SchemeComponent findById(int id) throws DatabaseException, ElementNotFoundException;
     
     /**
-     * Returns a map of all attributes and their values for the given scheme component.
+     * Returns a map of all attributes and their values for the given scheme component
+     * (only attributes that has a value assigned are returned).
      * 
      * @param schemeComponent
      * @return

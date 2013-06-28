@@ -25,6 +25,7 @@ import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.ElementNotFoundException;
 import de.hswt.hrm.common.database.exception.SaveException;
 import de.hswt.hrm.inspection.dao.core.IPerformanceDao;
+import de.hswt.hrm.inspection.model.Inspection;
 import de.hswt.hrm.inspection.model.Performance;
 import de.hswt.hrm.misc.priority.dao.core.IPriorityDao;
 import de.hswt.hrm.misc.priority.model.Priority;
@@ -78,6 +79,39 @@ public class PerformanceDao implements IPerformanceDao {
             throw new DatabaseException("Unexpected error.", e);
         }
     }
+	
+	@Override
+	public Collection<Performance> findByInspection(Inspection inspection) throws DatabaseException {
+		checkNotNull(inspection, "Inspection must not be null");
+		checkState(inspection.getId() >= 0, "Inspection has a invalid ID.");
+		
+		SqlQueryBuilder builder = new SqlQueryBuilder();
+        builder.insert(TABLE_NAME,
+        		Fields.ID,
+				Fields.COMPONENT_FK, 
+				Fields.TARGET_FK, 
+				Fields.CURRENT_FK, 
+				Fields.ACTIVITY_FK, 
+				Fields.PRIORITY_FK);
+        builder.where(Fields.INSPECTION_FK);
+
+        String query = builder.toString();
+
+        try (Connection con = DatabaseFactory.getConnection()) {
+            try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
+            	stmt.setParameter(Fields.INSPECTION_FK, inspection.getId());
+            	
+                ResultSet rs = stmt.executeQuery();
+                Collection<Performance> performanceList = fromResultSet(rs);
+                rs.close();
+
+                return performanceList;
+            }
+        }
+        catch (SQLException e) {
+            throw new DatabaseException("Unexpected error.", e);
+        }
+	}
 	
 	@Override
 	public Performance insert(final Performance performance) 
@@ -176,6 +210,7 @@ public class PerformanceDao implements IPerformanceDao {
 	
 	private static class Fields {
 		private static final String ID = "Performance_ID";
+		private static final String INSPECTION_FK = "Performance_Inspection_FK";
 		private static final String COMPONENT_FK = "Performance_Component_FK";
 		private static final String TARGET_FK = "Performance_Target_FK";
 		private static final String CURRENT_FK = "Performance_Current_FK";
