@@ -14,9 +14,12 @@ import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.SaveException;
 import de.hswt.hrm.component.model.Category;
 import de.hswt.hrm.component.service.CategoryService;
+import de.hswt.hrm.i18n.I18n;
+import de.hswt.hrm.i18n.I18nFactory;
 
 public class CategoryWizard extends Wizard {
     private static final Logger LOG = LoggerFactory.getLogger(CategoryWizard.class);
+    private static final I18n I18N = I18nFactory.getI18n(CategoryWizard.class);
 
     @Inject
     private CategoryService categoryService;
@@ -32,15 +35,15 @@ public class CategoryWizard extends Wizard {
         first = new CategoryWizardPageOne("Erste Seite", category);
 
         if (category.isPresent()) {
-            setWindowTitle("Kategorie bearbeiten: " + category.get().getName());
+            setWindowTitle(I18N.tr("Edit Category"));
         }
         else {
-            setWindowTitle("Neue Kategorie erstellen");
+            setWindowTitle(I18N.tr("Add Category"));
         }
     }
 
     public void addPages() {
-        first = new CategoryWizardPageOne("Category Wizard", category);
+        first = new CategoryWizardPageOne(I18N.tr("Category Wizard"), category);
         ContextInjectionFactory.inject(first, context);
         addPage(first);
     }
