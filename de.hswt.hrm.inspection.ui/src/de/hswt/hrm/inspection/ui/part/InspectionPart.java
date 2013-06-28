@@ -15,6 +15,7 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.ActionContributionItem;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.window.IShellProvider;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
@@ -309,9 +310,24 @@ public class InspectionPart {
         biologicalComposite.setSchemeGridItems(schemeGridItems);
         performanceComposite.setSchemeGridItems(schemeGridItems);
         
-		ReportPerformanceComposite rpc = (ReportPerformanceComposite) performanceComposite
+		final ReportPerformanceComposite rpc = (ReportPerformanceComposite) performanceComposite
 				.getRatingComposite();
 		rpc.setComponentsList(performanceComposite.getComponentsList());
+		rpc.getComponentsList().getList()
+				.addSelectionListener(new SelectionAdapter() {
+					@Override
+					public void widgetSelected(SelectionEvent e) {
+						IStructuredSelection selection = (IStructuredSelection) rpc
+								.getComponentsList().getSelection();
+						if (selection == null) {
+							return;
+						}
+						SchemeComponent sc = (SchemeComponent) selection
+								.getFirstElement();
+						System.out.println(sc.getComponent().getCategory()
+								.get().getCatalog());
+					}
+				});
 		
 		
     }

@@ -5,11 +5,14 @@ import javax.inject.Inject;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.ListViewer;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.window.IShellProvider;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -23,13 +26,17 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
 
+import de.hswt.hrm.catalog.model.Catalog;
+import de.hswt.hrm.catalog.model.Current;
 import de.hswt.hrm.catalog.model.ICatalogItem;
+import de.hswt.hrm.catalog.model.Target;
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.common.ui.swt.layouts.LayoutUtil;
 import de.hswt.hrm.component.model.Component;
 import de.hswt.hrm.inspection.service.InspectionService;
 import de.hswt.hrm.inspection.ui.performance.tree.PerformanceTreeContentProvider;
 import de.hswt.hrm.inspection.ui.performance.tree.PerformanceTreeLabelProvider;
+import de.hswt.hrm.scheme.model.SchemeComponent;
 
 public class ReportPerformanceComposite extends
 		AbstractComponentRatingComposite {
@@ -177,7 +184,6 @@ public class ReportPerformanceComposite extends
 			@Override
 			public String getText(Object element) {
 				return ((ICatalogItem) element).getName();
-
 			}
 		});
 
