@@ -270,6 +270,8 @@ public class SchemeComponentDao implements ISchemeComponentDao {
     public void delete(SchemeComponent component, Attribute attribute) throws DatabaseException {
     	checkNotNull(component, "Component must not be null.");
     	checkNotNull(attribute, "Attribute must not be null.");
+    	checkState(component.getId() >= 0, "Component must have a valid ID.");
+    	checkState(attribute.getId() >= 0, "Attribute must have a valid ID.");
     	checkState(component.getId() == attribute.getComponent().getId(), 
     			"Scheme Component does not match attributes component.");
     	
