@@ -89,7 +89,7 @@ public class BiologicalRating {
     }
 
     public void setComment(String comment) {
-        this.comment = Optional.of(comment);
+        this.comment = Optional.fromNullable(comment);
     }
 
     public String getFlag() {
@@ -97,7 +97,7 @@ public class BiologicalRating {
     }
 
     public void setFlag(String flag) {
-        this.flag = Optional.of(flag);
+        this.flag = Optional.fromNullable(flag);
     }
 
     public int getId() {
