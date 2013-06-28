@@ -31,6 +31,8 @@ import de.hswt.hrm.plant.model.Plant;
 import de.hswt.hrm.contact.dao.core.IContactDao;
 import de.hswt.hrm.photo.model.Photo;
 import de.hswt.hrm.photo.dao.core.IPhotoDao;
+import de.hswt.hrm.scheme.dao.core.ISchemeDao;
+import de.hswt.hrm.scheme.model.Scheme;
 
 public class InspectionDao implements IInspectionDao {
     // FIXME Make dao injectable
@@ -38,14 +40,15 @@ public class InspectionDao implements IInspectionDao {
 
     private final IContactDao contactDao;
     private final IPlantDao plantDao;
-
     private final IPhotoDao photoDao;
-
+    private final ISchemeDao schemeDao;
+    
     @Inject
-    public InspectionDao(IContactDao contactDao, IPlantDao plantDao, IPhotoDao photoDao) {
+    public InspectionDao(IContactDao contactDao, IPlantDao plantDao, IPhotoDao photoDao, ISchemeDao schemeDao) {
         this.contactDao = contactDao;
         this.plantDao = plantDao;
         this.photoDao = photoDao;
+        this.schemeDao = schemeDao;
 
     }
 
@@ -60,7 +63,7 @@ public class InspectionDao implements IInspectionDao {
                 Fields.FRONTPICTURE_FK, Fields.PLANTPICTURE_FK, Fields.TEMPERATURECOMMENT,
                 Fields.HUMIDITYCOMMENT, Fields.LEGIONELLA, Fields.LEGIONELLARATING,
                 Fields.LEGIONELLAQUANTIFIER, Fields.LEGIONELLACOMMENT, Fields.GERMS,
-                Fields.GERMSRATING, Fields.GERMSQUANTIFIER, Fields.GERMSCOMMENT);
+                Fields.GERMSRATING, Fields.GERMSQUANTIFIER, Fields.GERMSCOMMENT, Fields.SCHEME);
 
         String query = builder.toString();
 
@@ -93,7 +96,7 @@ public class InspectionDao implements IInspectionDao {
                 Fields.FRONTPICTURE_FK, Fields.PLANTPICTURE_FK, Fields.TEMPERATURECOMMENT,
                 Fields.HUMIDITYCOMMENT, Fields.LEGIONELLA, Fields.LEGIONELLARATING,
                 Fields.LEGIONELLAQUANTIFIER, Fields.LEGIONELLACOMMENT, Fields.GERMS,
-                Fields.GERMSRATING, Fields.GERMSQUANTIFIER, Fields.GERMSCOMMENT);
+                Fields.GERMSRATING, Fields.GERMSQUANTIFIER, Fields.GERMSCOMMENT, Fields.SCHEME);
         builder.where(Fields.ID);
 
         String query = builder.toString();
@@ -132,7 +135,7 @@ public class InspectionDao implements IInspectionDao {
                 Fields.FRONTPICTURE_FK, Fields.PLANTPICTURE_FK, Fields.TEMPERATURECOMMENT,
                 Fields.HUMIDITYCOMMENT, Fields.LEGIONELLA, Fields.LEGIONELLARATING,
                 Fields.LEGIONELLAQUANTIFIER, Fields.LEGIONELLACOMMENT, Fields.GERMS,
-                Fields.GERMSRATING, Fields.GERMSQUANTIFIER, Fields.GERMSCOMMENT);
+                Fields.GERMSRATING, Fields.GERMSQUANTIFIER, Fields.GERMSCOMMENT, Fields.SCHEME);
 
         final String query = builder.toString();
 
@@ -178,6 +181,7 @@ public class InspectionDao implements IInspectionDao {
                 stmt.setParameter(Fields.GERMSRATING, inspection.getGermsRating().orNull());
                 stmt.setParameter(Fields.GERMSQUANTIFIER, inspection.getGermsQuantifier().orNull());
                 stmt.setParameter(Fields.GERMSCOMMENT, inspection.getGermsComment().orNull());
+                stmt.setParameter(Fields.SCHEME, inspection.getScheme().getId());
 
                 int affectedRows = stmt.executeUpdate();
                 if (affectedRows != 1) {
@@ -192,7 +196,7 @@ public class InspectionDao implements IInspectionDao {
                         Inspection inserted = new Inspection(id, inspection.getReportDate(),
                                 inspection.getInspectionDate(), inspection.getNextInspectionDate(),
                                 inspection.getTitle(), inspection.getLayout(),
-                                inspection.getPlant());
+                                inspection.getPlant(), inspection.getScheme());
 
                         inserted.setRequester(inspection.getRequester().orNull());
                         inserted.setContractor(inspection.getContractor().orNull());
@@ -251,7 +255,7 @@ public class InspectionDao implements IInspectionDao {
                 Fields.FRONTPICTURE_FK, Fields.PLANTPICTURE_FK, Fields.TEMPERATURECOMMENT,
                 Fields.HUMIDITYCOMMENT, Fields.LEGIONELLA, Fields.LEGIONELLARATING,
                 Fields.LEGIONELLAQUANTIFIER, Fields.LEGIONELLACOMMENT, Fields.GERMS,
-                Fields.GERMSRATING, Fields.GERMSQUANTIFIER, Fields.GERMSCOMMENT);
+                Fields.GERMSRATING, Fields.GERMSQUANTIFIER, Fields.GERMSCOMMENT, Fields.SCHEME);
         builder.where(Fields.ID);
 
         final String query = builder.toString();
@@ -298,6 +302,7 @@ public class InspectionDao implements IInspectionDao {
                 stmt.setParameter(Fields.GERMSRATING, inspection.getGermsRating().orNull());
                 stmt.setParameter(Fields.GERMSQUANTIFIER, inspection.getGermsQuantifier().orNull());
                 stmt.setParameter(Fields.GERMSCOMMENT, inspection.getGermsComment().orNull());
+                stmt.setParameter(Fields.SCHEME, inspection.getScheme().getId());
 
                 int affectedRows = stmt.executeUpdate();
                 if (affectedRows != 1) {
@@ -325,6 +330,9 @@ public class InspectionDao implements IInspectionDao {
             int plantId = JdbcUtil.getId(rs, Fields.PLANT_FK);
             checkArgument(plantId >= 0, "Invalid plant key from database.");
             Plant plant = plantDao.findById(plantId);
+            int schemeId = JdbcUtil.getId(rs, Fields.SCHEME);
+            checkArgument(schemeId >= 0, "Invalid scheme key from database");
+            Scheme scheme = schemeDao.findById(schemeId);
 
             // optional fks's
             int requesterId = JdbcUtil.getId(rs, Fields.REQUESTER_FK);
@@ -367,7 +375,7 @@ public class InspectionDao implements IInspectionDao {
             Calendar nextInspectionDate = JdbcUtil.calendarFromDate(date);
 
             Inspection inserted = new Inspection(id, reportDate, inspectionDate,
-                    nextInspectionDate, title, layout, plant);
+                    nextInspectionDate, title, layout, plant, scheme);
 
             // optional fk's
             if (requesterId >= 0) {
@@ -448,6 +456,7 @@ public class InspectionDao implements IInspectionDao {
         public static final String GERMSRATING = "Report_Germs_Rating";
         public static final String GERMSQUANTIFIER = "Report_Germs_Quantifier";
         public static final String GERMSCOMMENT = "Report_Germs_Comment";
+        public static final String SCHEME = "Report_Scheme_FK";
 
     }
 
