@@ -70,6 +70,7 @@ public class InspectionSchemeGrid {
      * @param selected
      */
     public void setSelected(SchemeComponent selected) {
+    	selected = findById(selected);
         if (this.selected != selected) {
             this.selected = selected;
             if (listener != null) {
@@ -89,7 +90,19 @@ public class InspectionSchemeGrid {
             }
         }
     }
-
+    
+    /*
+     * The positions of a SchemeComponent can change. If a SchemeComponent comes from 
+     * an external Source, find the equivalent SchemeComponent in this grid.
+     */
+    private SchemeComponent findById(SchemeComponent s){
+    	for(SchemeGridItem item : grid.getItems()){
+    		if(item.asSchemeComponent().getId() == s.getId()){
+    			return item.asSchemeComponent();
+    		}
+    	}
+    	return null;
+    }
     public void setItems(Collection<SchemeGridItem> items) {
         setSelected(null);
         grid.setItems(items);
@@ -130,8 +143,9 @@ public class InspectionSchemeGrid {
 		Collection<Colorbox> colors = grid.getColors();
 		List<Colorbox> nColors = new ArrayList<>();
 		Collection<SchemeGridItem> items = grid.getItems();
+		selectionBox = moveColorbox(selectionBox, x, y);
 		for(Colorbox c : colors){
-			nColors.add(new Colorbox(c.getX() + x, c.getY() + y, c.getWidth(), c.getHeight(), c.getColor()));
+			nColors.add(moveColorbox(c, x, y));
 		}
 		for(SchemeGridItem item : items){
 			item.setX(item.getX() + x);
@@ -139,6 +153,10 @@ public class InspectionSchemeGrid {
 		}
 		grid.setItems(items);
 		grid.setColors(nColors);
+	}
+	
+	private Colorbox moveColorbox(Colorbox c, int x, int y){
+		return new Colorbox(c.getX() + x, c.getY() + y, c.getWidth(), c.getHeight(), c.getColor());
 	}
 
 	public Collection<SchemeGridItem> getItems() {
