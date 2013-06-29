@@ -551,4 +551,16 @@ public class SchemeGrid extends DoubleBufferedCanvas {
 		this.redraw();
 	}
 
+
+	public Collection<Colorbox> getColors() {
+		return colors;
+	}
+
+
+	public void setColors(List<Colorbox> nColors) {
+		colors.clear();
+		colors.addAll(nColors);
+		redraw();
+	}
+
 }
