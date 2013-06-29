@@ -6,7 +6,9 @@ import com.google.common.base.Optional;
 
 import de.hswt.hrm.scheme.model.SchemeComponent;
 
-public class PhysicalRating {
+public class PhysicalRating 
+	implements Rating
+{
 
     private final int id;
 

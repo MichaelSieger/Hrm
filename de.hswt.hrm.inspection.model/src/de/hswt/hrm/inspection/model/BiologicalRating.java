@@ -7,7 +7,9 @@ import com.google.common.base.Optional;
 
 import de.hswt.hrm.scheme.model.SchemeComponent;
 
-public class BiologicalRating {
+public class BiologicalRating 
+	implements Rating
+{
 
     public static final String AIR_GERMS_CONCENTRATION = "AIR_GERMS_CONCENTRATION";
 
