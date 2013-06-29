@@ -1,5 +1,6 @@
 package de.hswt.hrm.inspection.ui.grid;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -125,4 +126,18 @@ public class InspectionSchemeGrid {
 		grid.addAll(c);
 	}
 
+	public void move(int x, int y){
+		Collection<Colorbox> colors = grid.getColors();
+		List<Colorbox> nColors = new ArrayList<>();
+		Collection<SchemeGridItem> items = grid.getItems();
+		for(Colorbox c : colors){
+			nColors.add(new Colorbox(c.getX() + x, c.getY() + y, c.getWidth(), c.getHeight(), c.getColor()));
+		}
+		for(SchemeGridItem item : items){
+			item.setX(item.getX() + x);
+			item.setY(item.getY() + y);
+		}
+		grid.setItems(items);
+		grid.setColors(nColors);
+	}
 }
