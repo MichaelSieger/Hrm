@@ -6,6 +6,7 @@ import static com.google.common.base.Preconditions.checkState;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Locale.Category;
 
 import javax.inject.Inject;
 
@@ -22,6 +23,9 @@ import de.hswt.hrm.catalog.model.Catalog;
 import de.hswt.hrm.catalog.model.Current;
 import de.hswt.hrm.catalog.model.ICatalogItem;
 import de.hswt.hrm.catalog.model.Target;
+import de.hswt.hrm.catalog.model.tree.TreeCatalog;
+import de.hswt.hrm.catalog.model.tree.TreeCurrent;
+import de.hswt.hrm.catalog.model.tree.TreeTarget;
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.ElementNotFoundException;
 import de.hswt.hrm.common.database.exception.SaveException;
@@ -54,7 +58,28 @@ public class CatalogService {
 		this.catalogDao = catalogDao;
 		LOG.debug("CatalagDao injected into CatalogService.");
 	}
-
+	
+	public TreeCatalog findTreeCatalog(Catalog catalog) throws DatabaseException {
+		checkNotNull(catalog, "Catalog must not be null.");
+		checkState(catalog.getId() >= 0, "Catalog must have a valid ID.");
+		
+		ArrayList<TreeTarget> targets = new ArrayList<>();
+		for (Target target : findTargetByCatalog(catalog)) {
+			ArrayList<TreeCurrent> currents = new ArrayList<>();
+			
+			for (Current current : findCurrentByTarget(target)) {
+				ArrayList<Activity> activities = new ArrayList<>();
+				activities.addAll(findActivityByCurrent(current));
+				
+				currents.add(new TreeCurrent(current, activities));
+			}
+			
+			targets.add(new TreeTarget(target, currents));
+		}
+		
+		return new TreeCatalog(catalog, targets);
+	}
+	
 	public Collection<ICatalogItem> findAllCatalogItem()
 			throws DatabaseException {
 		Collection<Activity> activities = activityDao.findAll();
