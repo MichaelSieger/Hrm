@@ -4,8 +4,15 @@ import de.hswt.hrm.inspection.model.Inspection;
 
 public class OverallEvaluationParser {
 
-    public String parse(Inspection inspection){
-        return inspection.getSummary().toString();
+    private Inspection inspection;
+
+    public OverallEvaluationParser(Inspection inspection) {
+        this.inspection = inspection;
+
+    }
+
+    public String parse() {
+        return this.inspection.getSummary().toString();
     }
 
 }
