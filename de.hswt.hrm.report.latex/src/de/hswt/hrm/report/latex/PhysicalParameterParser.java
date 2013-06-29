@@ -112,7 +112,6 @@ public class PhysicalParameterParser {
 
         preTarget = buffer.toString();
         preTarget = preTarget.replace(PROPERTY, "Temperatur");
-        // TODO no Integer!! ==> FLOAT! && what if none?!?
         preTarget = preTarget.replace(VALUE, String.valueOf(inspection.getTemperature().or(0F)));
         preTarget = preTarget.replace(PARAM_GRADE,
                 String.valueOf(inspection.getTemperatureRating().or(0)));
@@ -122,7 +121,6 @@ public class PhysicalParameterParser {
                 PARAM_RATING,
                 String.valueOf(inspection.getTemperatureRating().or(0)
                         * inspection.getTemperatureQuantifier().or(0)));
-        // TODO comment!?!
         preTarget = preTarget.replace(PARAM_COMMENT, inspection.getAirtemperatureComment().or("-"));
         target.append(preTarget);
 

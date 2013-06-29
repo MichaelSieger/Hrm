@@ -8,7 +8,6 @@ import java.util.Properties;
 
 import de.hswt.hrm.photo.model.Photo;
 
-// TODO more than 2 photos possible. To implement: even-odd handler 
 public class TargetPerformanceComparisonImageParser {
 
     private StringBuffer buffer = new StringBuffer();
