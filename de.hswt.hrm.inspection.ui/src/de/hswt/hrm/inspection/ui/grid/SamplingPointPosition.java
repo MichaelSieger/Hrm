@@ -13,7 +13,7 @@ import de.hswt.hrm.scheme.ui.SchemeGridItem;
 
 public class SamplingPointPosition {
 	
-	private static class Placement{
+	public static class Placement{
 		int x;
 		int y;
 		int width;
@@ -38,7 +38,14 @@ public class SamplingPointPosition {
 	public static SchemeGridItem getSamplingPoint(
 				SamplingPoints points, 
 				SamplingPointType type,
-				Scheme scheme, SchemeComponent orig){
+				Scheme scheme, SchemeComponent orig, Placement pos){
+
+		RenderedComponent rc = points.getRenderedComponent(type, isEven(orig, pos.direction));
+		SchemeComponent comp = new SchemeComponent(scheme, pos.x, pos.y, pos.direction, rc.getComponent());
+		return new SchemeGridItem(rc, comp);
+	}
+	
+	public static Placement getPlacement(Scheme scheme, SchemeComponent orig){
 		Placement pos = null;
 		for(Placement r : getPlacements(orig)){
 			if(canPlace(scheme, r)){
@@ -46,10 +53,7 @@ public class SamplingPointPosition {
 				break;
 			}
 		}
-		Preconditions.checkArgument(pos != null, "Can't place sampling point");
-		RenderedComponent rc = points.getRenderedComponent(type, isEven(orig, pos.direction));
-		SchemeComponent comp = new SchemeComponent(scheme, pos.x, pos.y, pos.direction, rc.getComponent());
-		return new SchemeGridItem(rc, comp);
+		return pos;
 	}
 	
 	private static boolean isEven(SchemeComponent c, Direction dir){
