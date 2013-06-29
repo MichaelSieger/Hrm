@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Rectangle;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
@@ -37,6 +38,12 @@ public class BiologicalDisplay extends RatingDisplay{
 				samplePoints.add(SamplingPointPosition.getSamplingPoint(
 									getSamplingPoints(), samplingPoint.get(), scheme, rating.getComponent()));
 			}
+		}
+		Rectangle r = getBounds(samplePoints);
+		int moveX = -Math.min(0, r.x);
+		int moveY = -Math.min(0, r.y);
+		if(moveX != 0 || moveY != 0){
+			schemeGrid.move(moveX, moveY);
 		}
 		schemeGrid.addAll(samplePoints);
 	}
