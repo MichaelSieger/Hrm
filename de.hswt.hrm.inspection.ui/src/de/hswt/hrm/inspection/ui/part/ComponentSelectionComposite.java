@@ -201,7 +201,7 @@ public class ComponentSelectionComposite extends Composite implements Inspection
         			return;
         		}
         	}
-        	throw new RuntimeException("Internal Error");
+        	componentsList.getList().deselectAll();
     	}
     }
 
