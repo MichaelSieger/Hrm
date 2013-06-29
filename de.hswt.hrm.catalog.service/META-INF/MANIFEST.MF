@@ -13,6 +13,7 @@ Require-Bundle: org.eclipse.e4.core.di;bundle-version="1.2.0",
 Export-Package: de.hswt.hrm.catalog.service
 Import-Package: de.hswt.hrm.catalog.dao.core,
  de.hswt.hrm.catalog.model,
+ de.hswt.hrm.catalog.model.tree,
  de.hswt.hrm.common,
  de.hswt.hrm.common.database.exception,
  de.hswt.hrm.common.exception

@@ -48,6 +48,7 @@ import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.common.ui.swt.layouts.LayoutUtil;
 import de.hswt.hrm.common.ui.swt.utils.ContentProposalUtil;
 import de.hswt.hrm.component.model.Component;
+import de.hswt.hrm.inspection.model.util.PerformanceUtil;
 import de.hswt.hrm.inspection.service.InspectionService;
 import de.hswt.hrm.inspection.ui.performance.tree.PerformanceTreeContentProvider;
 import de.hswt.hrm.inspection.ui.performance.tree.PerformanceTreeLabelProvider;
@@ -347,20 +348,11 @@ public class ReportPerformanceComposite extends AbstractComponentRatingComposite
 	                Activity activity = (Activity)selection.getFirstElement();
 	               
 	               
-	                treeViewer.add(treeViewer.getInput(),  getPerformanceTriplet(target, current, activity));
+	                treeViewer.add(treeViewer.getInput(),  
+	                		PerformanceUtil.createTreeTriplet(target, current, activity));
 	                
 			}
 			
-			private TreeTarget getPerformanceTriplet(Target target, Current current, Activity activity) {
-				
-				java.util.List<Activity> activties = new ArrayList<>(1);
-				activties.add(activity);
-				java.util.List<TreeCurrent> currents = new ArrayList<>(1);
-				currents.add(new TreeCurrent(current,activties));
-				return new TreeTarget(target, currents);
-				
-			}
-
 			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {
 				
