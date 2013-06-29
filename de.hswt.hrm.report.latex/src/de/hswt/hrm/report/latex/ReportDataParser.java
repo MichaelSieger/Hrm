@@ -112,7 +112,7 @@ public class ReportDataParser {
 
         // TODO
         buffer.append(prop.getProperty("reportdata.object.title").replace(OBJECT_TITLE,
-                "report.getTitle()"));
+                inspection.getTitle()));
 
         appendNewLine();
 
@@ -136,9 +136,8 @@ public class ReportDataParser {
 
         appendNewLine();
 
-        // TODO
         buffer.append(prop.getProperty("reportdata.date.inspection").replace(INSPECTION_DATE,
-                "report.getInspectionDate()"));
+                inspection.getInspectionDate().toString()));
 
         appendNewLine();
 
@@ -152,15 +151,13 @@ public class ReportDataParser {
 
         appendNewLine();
 
-        // TODO Location
         buffer.append(prop.getProperty("reportdata.plant.place").replace(PLANT_PLACE,
-                "plant.getLocation"));
+               plant.getLocation()));
 
         appendNewLine();
 
-        // TODO
         buffer.append(prop.getProperty("reportdata.plant.servicearea").replace(PLANT_SERVICE_AREA,
-                "plant.getArea"));
+                plant.getArea()));
 
         appendNewLine();
 
