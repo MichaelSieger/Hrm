@@ -72,7 +72,7 @@ public class SamplingPointPosition {
 		default:
 			throw new RuntimeException("Internal Error");
 		}
-		return edge % 2 == 1;
+		return edge % 2 == 0;
 	}
 	
 	private static boolean canPlace(Collection<SchemeGridItem> items, Placement r){
