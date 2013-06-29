@@ -140,6 +140,7 @@ public class CategoryWizardPageOne extends WizardPage {
 		addSelectionListener(weightCombo);
 		addSelectionListener(heightList);
 		addSelectionListener(ratingCheckButton);
+		addSelectionListener(catalogCombo.getCombo());
 
 		FormUtil.initSectionColors((Section) XWT.findElementByName(container,
 				"General"));
@@ -236,19 +237,20 @@ public class CategoryWizardPageOne extends WizardPage {
 		if (heightList.getSelectionIndex() > -1) {
 			height = Integer.parseInt(heightList.getItem(heightList
 					.getSelectionIndex()));
+		} else {
+			setErrorMessage(I18N.tr("Select a grid height!"));
+			return;
 		}
 
 		if (catalogCombo.getCombo().getSelectionIndex() > -1) {
 			IStructuredSelection selection = (IStructuredSelection) catalogCombo
 					.getSelection();
 			catalog = Optional.of((Catalog) selection.getFirstElement());
-			System.out.println(catalog);
+		} else {
+			setErrorMessage(null);
 		}
 
-		else {
-			setErrorMessage(I18N.tr("Select a grid height!"));
-			return;
-		}
+		
 	}
 
 	@Override
