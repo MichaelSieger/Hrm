@@ -26,6 +26,7 @@ public class PhysicalRating
             int quantifier) {
 
         this.id = id;
+        samplingPointType = Optional.absent();
         setInspection(inspection);
         setComponent(component);
         setRating(rating);
