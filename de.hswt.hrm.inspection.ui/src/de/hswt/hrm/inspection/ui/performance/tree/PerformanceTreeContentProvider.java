@@ -5,8 +5,8 @@ import java.util.List;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
-import de.hswt.hrm.inspection.treeviewer.model.TreeCurrent;
-import de.hswt.hrm.inspection.treeviewer.model.TreeTarget;
+import de.hswt.hrm.inspection.model.tree.TreeCurrent;
+import de.hswt.hrm.inspection.model.tree.TreeTarget;
 
 public class PerformanceTreeContentProvider implements ITreeContentProvider {
 
@@ -35,11 +35,11 @@ public class PerformanceTreeContentProvider implements ITreeContentProvider {
     public Object[] getChildren(Object parentElement) {
         if (parentElement instanceof TreeTarget) {
             TreeTarget target = (TreeTarget) parentElement;
-            return target.getCurrent().toArray();
+            return target.getCurrents().toArray();
         }
         else if (parentElement instanceof TreeCurrent) {
             TreeCurrent current = (TreeCurrent) parentElement;
-            return current.getActivity().toArray();
+            return current.getActivities().toArray();
         }
         return EMPTY_ARRAY;
     }

@@ -2,9 +2,9 @@ package de.hswt.hrm.inspection.ui.performance.tree;
 
 import org.eclipse.jface.viewers.LabelProvider;
 
-import de.hswt.hrm.inspection.treeviewer.model.TreeActivity;
-import de.hswt.hrm.inspection.treeviewer.model.TreeCurrent;
-import de.hswt.hrm.inspection.treeviewer.model.TreeTarget;
+import de.hswt.hrm.catalog.model.Activity;
+import de.hswt.hrm.inspection.model.tree.TreeCurrent;
+import de.hswt.hrm.inspection.model.tree.TreeTarget;
 
 public class PerformanceTreeLabelProvider extends LabelProvider {
 
@@ -16,8 +16,8 @@ public class PerformanceTreeLabelProvider extends LabelProvider {
         else  if (element instanceof TreeCurrent) {
             return ((TreeCurrent)element).getName();
         }
-        else  if (element instanceof TreeActivity) {
-            return ((TreeActivity)element).getName();
+        else  if (element instanceof Activity) {
+            return ((Activity)element).getName();
         }
         return null;
        

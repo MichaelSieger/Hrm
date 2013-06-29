@@ -42,11 +42,11 @@ import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.common.ui.swt.layouts.LayoutUtil;
 import de.hswt.hrm.component.model.Component;
+import de.hswt.hrm.inspection.model.tree.TreeTarget;
 import de.hswt.hrm.inspection.service.InspectionService;
-import de.hswt.hrm.inspection.treeviewer.model.MockModel;
-import de.hswt.hrm.inspection.treeviewer.model.TreeTarget;
 import de.hswt.hrm.inspection.ui.performance.tree.PerformanceTreeContentProvider;
 import de.hswt.hrm.inspection.ui.performance.tree.PerformanceTreeLabelProvider;
+import de.hswt.hrm.inspection.ui.stub.PerformanceStub;
 import de.hswt.hrm.scheme.model.SchemeComponent;
 
 public class ReportPerformanceComposite extends AbstractComponentRatingComposite {
@@ -168,7 +168,7 @@ public class ReportPerformanceComposite extends AbstractComponentRatingComposite
         treeViewer.setContentProvider(new PerformanceTreeContentProvider());
         treeViewer.setLabelProvider(new PerformanceTreeLabelProvider());
         // TODO replace with data from DB is present
-        treeViewer.setInput(new MockModel().getAssignedItems());
+        treeViewer.setInput(PerformanceStub.getAssignedItems().getTargets());
 
         GridData gd_tree = new GridData(SWT.FILL, SWT.FILL, true, true, 2, 8);
         gd_tree.heightHint = 241;
@@ -278,8 +278,7 @@ public class ReportPerformanceComposite extends AbstractComponentRatingComposite
                     return;
                 }
                 Target t = (Target) selection.getFirstElement();
-                TreeTarget tt = new TreeTarget();
-                tt.setName(t.getName());
+                TreeTarget tt = new TreeTarget(t);
                 treeViewer.add(treeViewer.getInput(), tt);
 
             }
