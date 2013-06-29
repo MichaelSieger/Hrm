@@ -1,26 +1,18 @@
 package de.hswt.hrm.report.latex;
 
 import java.io.IOException;
+import java.nio.file.FileSystems;
 import java.util.Collection;
 import java.util.Map;
 
 import de.hswt.hrm.component.model.Attribute;
-import de.hswt.hrm.contact.model.Contact;
 import de.hswt.hrm.inspection.model.Inspection;
 import de.hswt.hrm.inspection.model.PhysicalRating;
 import de.hswt.hrm.report.latex.collectors.TargetPerformancePhotoStates;
 
 public class MainParser {
 
-    /*
-     * Parsers
-     */
     private FileWriter fileWriter;
-    private OverallEvaluationParser overallEvaluationParser;
-    private PhysicalEvaluationParser physicalEvaluationParser;
-    private ReportDataParser reportDataParser;
-    private TargetPerformanceComparisonParser targetPerformanceComperisonParser;
-    private ComponentsParser componentsParser;
 
     /*
      * initialized with constructor params
@@ -31,11 +23,13 @@ public class MainParser {
     private Inspection inspection;
     private Collection<PhysicalRating> ratings;
 
+    /*
+     * Constructor
+     */
     public MainParser(String path, Inspection inspection,
             Collection<TargetPerformancePhotoStates> componentsTable,
             Collection<Map<Attribute, String>> componentAttributes,
-            Collection<PhysicalRating> ratings, Contact contactCustomer, Contact contactContractor,
-            Contact conctactController) {
+            Collection<PhysicalRating> ratings) {
         this.path = path;
         this.componentsTable = componentsTable;
         this.inspection = inspection;
@@ -44,19 +38,18 @@ public class MainParser {
 
     }
 
-    // TODO dirPath & fileName
     public void parse() throws IOException {
+        path = FileSystems.getDefault().getPath(path, "inputs").toString();
         fileWriter = new FileWriter();
-        fileWriter.writeToFile("", "", new OverallEvaluationParser(inspection).parse());
-        fileWriter.writeToFile("dirPath", "fileName",
-                new OverallEvaluationParser(inspection).parse());
-        fileWriter.writeToFile("dirPath", "fileName", new PhysicalEvaluationParser(path, ratings,
+        fileWriter.writeToFile(path, "overallevaluation.tex", new OverallEvaluationParser(
                 inspection).parse());
-        fileWriter.writeToFile("dirPath", "fileName",
+        fileWriter.writeToFile(path, "physicalvaluation.tex", new PhysicalEvaluationParser(path,
+                ratings, inspection).parse());
+        fileWriter.writeToFile(path, "reportdata.tex",
                 new ReportDataParser(path, inspection).parse());
-        fileWriter.writeToFile("dirPath", "fileName", new TargetPerformanceComparisonParser(path,
-                componentsTable).parse());
-        fileWriter.writeToFile("dirPath", "fileName", new ComponentsParser(path, inspection,
+        fileWriter.writeToFile(path, "targetperformancecomparison.tex",
+                new TargetPerformanceComparisonParser(path, componentsTable).parse());
+        fileWriter.writeToFile(path, "fileName", new ComponentsParser(path, inspection,
                 componentAttributes).parse());
 
     }
