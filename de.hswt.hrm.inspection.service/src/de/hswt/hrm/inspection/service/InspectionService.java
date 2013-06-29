@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.ElementNotFoundException;
+import de.hswt.hrm.common.database.exception.SaveException;
 import de.hswt.hrm.inspection.dao.core.IBiologicalRatingDao;
 import de.hswt.hrm.inspection.dao.core.IInspectionDao;
 import de.hswt.hrm.inspection.dao.core.IPerformanceDao;
@@ -82,6 +83,10 @@ public class InspectionService {
  
     	return performanceDao.findByInspection(inspection);
     }
+
+    public Scheme findScheme(Inspection inspection) throws DatabaseException {
+    	return inspectionDao.findScheme(inspection);
+    }
     
     public Collection<Photo> findPhoto(Performance performance)
     		throws DatabaseException {
@@ -91,7 +96,26 @@ public class InspectionService {
     	return photoDao.findByPerformance(performance.getId());
     }
     
-    public Scheme findScheme(Inspection inspection) throws DatabaseException {
-    	return inspectionDao.findScheme(inspection);
+    public void addPhoto(Performance performance, Photo photo) 
+    		throws SaveException, DatabaseException {
+    	
+    	checkNotNull(performance, "Performance must not be null.");
+    	checkState(performance.getId() >= 0, "Performance must have a valid ID.");
+    	checkNotNull(photo, "Photo must not be null.");
+    	checkState(photo.getId() >= 0, "Photo must have a valid ID.");
+    	
+    	photoDao.addPhoto(performance.getId(), photo);
     }
+    
+    public void removePhoto(Performance performance, Photo photo) 
+    		throws ElementNotFoundException, DatabaseException {
+    	
+    	checkNotNull(performance, "Performance must not be null.");
+    	checkState(performance.getId() >= 0, "Performance must have a valid ID.");
+    	checkNotNull(photo, "Photo must not be null.");
+    	checkState(photo.getId() >= 0, "Photo must have a valid ID.");
+    	
+    	photoDao.removePhoto(performance.getId(), photo);
+    }
+    
 }
