@@ -1,4 +1,4 @@
-package de.hswt.hrm.inspection.treeviewer.model;
+package de.hswt.hrm.inspection.model.tree;
 
 import java.util.ArrayList;
 import java.util.List;

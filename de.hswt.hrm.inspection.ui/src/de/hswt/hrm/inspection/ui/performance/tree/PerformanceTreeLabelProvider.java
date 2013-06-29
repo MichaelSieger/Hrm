@@ -2,9 +2,9 @@ package de.hswt.hrm.inspection.ui.performance.tree;
 
 import org.eclipse.jface.viewers.LabelProvider;
 
-import de.hswt.hrm.inspection.treeviewer.model.TreeActivity;
-import de.hswt.hrm.inspection.treeviewer.model.TreeCurrent;
-import de.hswt.hrm.inspection.treeviewer.model.TreeTarget;
+import de.hswt.hrm.inspection.model.tree.TreeActivity;
+import de.hswt.hrm.inspection.model.tree.TreeCurrent;
+import de.hswt.hrm.inspection.model.tree.TreeTarget;
 
 public class PerformanceTreeLabelProvider extends LabelProvider {
 
