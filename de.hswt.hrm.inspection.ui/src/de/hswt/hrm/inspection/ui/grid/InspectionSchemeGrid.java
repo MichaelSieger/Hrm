@@ -140,4 +140,8 @@ public class InspectionSchemeGrid {
 		grid.setItems(items);
 		grid.setColors(nColors);
 	}
+
+	public Collection<SchemeGridItem> getItems() {
+		return grid.getItems();
+	}
 }
