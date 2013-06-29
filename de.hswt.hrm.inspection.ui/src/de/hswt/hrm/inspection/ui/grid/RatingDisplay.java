@@ -1,7 +1,13 @@
 package de.hswt.hrm.inspection.ui.grid;
 
+import java.util.Collection;
+import java.util.Iterator;
+
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Display;
+
+import de.hswt.hrm.scheme.ui.SchemeGridItem;
 
 public class RatingDisplay {
 
@@ -30,6 +36,26 @@ public class RatingDisplay {
 	
 	protected Color[] getColors(){
 		return colors;
+	}
+	
+	protected static Rectangle getBounds(Collection<SchemeGridItem> c){
+		Iterator<SchemeGridItem> it = c.iterator();
+		if(!it.hasNext()){
+			return new Rectangle(0, 0, 0, 0);
+		}
+		SchemeGridItem first = it.next();
+		int lx = first.getX();
+		int ly = first.getY();
+		int hx = first.getX() + first.getWidth();
+		int hy = first.getY() + first.getHeight();
+		while(it.hasNext()){
+			SchemeGridItem item = it.next();
+			lx = Math.min(lx, item.getX());
+			ly = Math.min(ly, item.getY());
+			hx = Math.max(hx, item.getX() + item.getWidth());
+			hy = Math.max(hy, item.getY() + item.getHeight());
+		}
+		return new Rectangle(lx, ly, hx - lx + 1, hy - ly + 1);
 	}
 
 	public SamplingPoints getSamplingPoints() {
