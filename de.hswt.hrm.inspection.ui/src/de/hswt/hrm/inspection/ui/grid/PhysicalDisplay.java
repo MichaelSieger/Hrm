@@ -8,6 +8,7 @@ import com.google.common.base.Preconditions;
 
 import de.hswt.hrm.inspection.model.BiologicalRating;
 import de.hswt.hrm.inspection.model.PhysicalRating;
+import de.hswt.hrm.scheme.model.Scheme;
 
 
 public class PhysicalDisplay extends RatingDisplay{
@@ -16,7 +17,8 @@ public class PhysicalDisplay extends RatingDisplay{
 		super(grid, samplingPoints);
 	}
 	
-	public void update(Collection<PhysicalRating> ratings){
+	public void update(Collection<PhysicalRating> ratings, Scheme scheme){
+		updateSamplingPoints(ratings, scheme);
 		InspectionSchemeGrid grid = getSchemeGrid();
 		Color[] colors = getColors();
 		for(PhysicalRating r : ratings){
