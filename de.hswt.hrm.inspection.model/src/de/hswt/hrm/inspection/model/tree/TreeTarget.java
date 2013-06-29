@@ -1,31 +1,39 @@
 package de.hswt.hrm.inspection.model.tree;
 
-import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
+import de.hswt.hrm.catalog.model.Target;
+
+/**
+ * Wrapper for the target class that provides a tree like interface.
+ */
 public class TreeTarget {
-
-    private String name;
-    private List<TreeCurrent> current;
-
-    public TreeTarget() {
-        this.current = new ArrayList<>();
+	private final Target target;
+	private List<TreeCurrent> currents;
+	
+    public TreeTarget(final Target target) {
+        this(target, new LinkedList<TreeCurrent>());
+    }
+    
+    public TreeTarget(final Target target, List<TreeCurrent> currents) {
+    	this.target = target;
+    	this.currents = currents;
     }
 
     public String getName() {
-        return name;
+        return target.getName();
     }
 
-    public List<TreeCurrent> getCurrent() {
-        return current;
+    /**
+     * @return Unmodifiable collection of matching currents.
+     */
+    public List<TreeCurrent> getCurrents() {
+    	return Collections.unmodifiableList(currents);
     }
 
-    public void setTarget(List<TreeCurrent> current) {
-        this.current = current;
+    public void setCurrents(List<TreeCurrent> currents) {
+        this.currents = currents;
     }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
 }

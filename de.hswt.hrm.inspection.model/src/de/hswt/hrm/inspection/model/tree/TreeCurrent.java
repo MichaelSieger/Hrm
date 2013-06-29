@@ -1,31 +1,37 @@
 package de.hswt.hrm.inspection.model.tree;
 
-import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
+import de.hswt.hrm.catalog.model.Activity;
+import de.hswt.hrm.catalog.model.Current;
+
 public class TreeCurrent {
-
-    private String name;
-    private List<TreeActivity> activity;
-
-    public TreeCurrent() {
-        this.activity = new ArrayList<>();
+	private final Current current;
+	private List<Activity> activities;
+	
+    public TreeCurrent(final Current current) {
+        this(current, new LinkedList<Activity>());
+    }
+    
+    public TreeCurrent(final Current current, List<Activity> activities) {
+    	this.current = current;
+    	this.activities = activities;
     }
 
     public String getName() {
-        return name;
+        return current.getName();
     }
 
-    public void setName(String name) {
-        this.name = name;
+    /**
+     * @return Unmodifiable collection of matching currents.
+     */
+    public List<Activity> getActivities() {
+    	return Collections.unmodifiableList(activities);
     }
 
-    public List<TreeActivity> getActivity() {
-        return activity;
+    public void setActivities(List<Activity> activities) {
+        this.activities = activities;
     }
-
-    public void setActivity(List<TreeActivity> activity) {
-        this.activity = activity;
-    }
-
 }
