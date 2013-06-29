@@ -50,4 +50,26 @@ public interface IPhotoDao {
      * @throws DatabaseException 
      */
 	Collection<Photo> findByPerformance(int id) throws DatabaseException;
+
+	/**
+	 * Adds the photo to the performance.
+	 * 
+	 * @param performanceId
+	 * @param photo
+	 * @throws SaveException
+	 * @throws DatabaseException
+	 */
+	void addPhoto(int performanceId, Photo photo) 
+			throws SaveException, DatabaseException;
+	
+	/**
+	 * Removes the photo from the performance.
+	 * 
+	 * @param performanceId
+	 * @param photo
+	 * @throws ElementNotFoundException If photo is not assigned to the performance.
+	 * @throws DatabaseException
+	 */
+	void removePhoto(int performanceId, Photo photo)
+			throws ElementNotFoundException, DatabaseException;
 }

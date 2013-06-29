@@ -2,6 +2,7 @@ package de.hswt.hrm.photo.dao.jdbc;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkState;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -78,6 +79,79 @@ public class PhotoDao implements IPhotoDao {
         }
     }
     
+    @Override
+    public void addPhoto(final int performanceId, final Photo photo)
+    		throws SaveException, DatabaseException {
+    	
+    	checkNotNull(photo, "Photo must not be null.");
+    	checkArgument(performanceId >= 0, "Invalid ID given.");
+    	checkState(photo.getId() >= 0, "Photo must have a valid ID.");
+    	
+    	SqlQueryBuilder builder = new SqlQueryBuilder();
+    	builder.insert(PERFOMANCE_CROSS_TABLE, 
+    			PerfCrossFields.FK_PERFORMANCE, 
+    			PerfCrossFields.FK_PICTURE);
+    	
+    	String query = builder.toString();
+    	
+    	try (Connection con = DatabaseFactory.getConnection()) {
+    		try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
+    			stmt.setParameter(PerfCrossFields.FK_PERFORMANCE, performanceId);
+    			stmt.setParameter(PerfCrossFields.FK_PICTURE, photo.getId());
+    			
+    			int affected = stmt.executeUpdate();
+    			if (affected != 1) {
+    				throw new SaveException("No row added, or more than one row affected.");
+    			}
+    		}
+    	}
+    	catch (SQLException e) {
+    		throw DatabaseUtil.createUnexpectedException(e);
+    	}
+    }
+    
+    @Override
+    public void removePhoto(final int performanceId, final Photo photo)
+    		throws ElementNotFoundException, DatabaseException {
+    	
+    	checkNotNull(photo, "Photo must not be null.");
+    	checkArgument(performanceId >= 0, "Invalid ID given.");
+    	checkState(photo.getId() >= 0, "Photo must have a valid ID.");
+    	
+    	StringBuilder builder = new StringBuilder();
+    	builder.append("DELETE FROM ").append(PERFOMANCE_CROSS_TABLE);
+    	builder.append(" WHERE ");
+    	builder.append(PerfCrossFields.FK_PERFORMANCE);
+    	builder.append(" = :").append(PerfCrossFields.FK_PERFORMANCE);
+    	builder.append(" AND ").append(PerfCrossFields.FK_PICTURE);
+    	builder.append(" = :").append(PerfCrossFields.FK_PICTURE).append(";");
+    	
+    	String query = builder.toString();
+    	
+    	try (Connection con = DatabaseFactory.getConnection()) {
+    		con.setAutoCommit(false);
+    		
+    		try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
+    			stmt.setParameter(PerfCrossFields.FK_PERFORMANCE, performanceId);
+    			stmt.setParameter(PerfCrossFields.FK_PICTURE, photo.getId());
+    			
+    			int affected = stmt.executeUpdate();
+    			if (affected > 1) {
+    				con.rollback();
+    				throw new DatabaseException("Query would accidently affected more than one row.");
+    			}
+    			else if (affected < 0) {
+    				throw new ElementNotFoundException();
+    			}
+    			
+    			con.commit();
+    		}
+    	}
+    	catch (SQLException e) {
+    		throw DatabaseUtil.createUnexpectedException(e);
+    	}
+    }
+    
 	@Override
 	public Collection<Photo> findByPerformance(final int id) throws DatabaseException {
 		checkArgument(id >= 0, "ID must be greater or equal to 0.");
@@ -111,9 +185,7 @@ public class PhotoDao implements IPhotoDao {
 			}
 		}
 		catch (SQLException e) {
-			DatabaseUtil.throwUnexpectedException(e);
-			// TODO find better implementation to avoid return null
-			return null; // unreachable
+			throw DatabaseUtil.createUnexpectedException(e);
 		}
 	}
 

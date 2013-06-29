@@ -69,11 +69,11 @@ public final class DatabaseUtil {
 	}
 	
 	/**
-	 * Throws a Database exception which text is set to "Unexpected exception.".
+	 * Creates a DatabaseException which text is set to "Unexpected exception.".
 	 * @param cause
 	 * @throws DatabaseException
 	 */
-	public static void throwUnexpectedException(Throwable cause) throws DatabaseException {
-		throw new DatabaseException("Unexpected exception.", cause);
+	public static DatabaseException createUnexpectedException(Throwable cause) {
+		return new DatabaseException("Unexpected exception.", cause);
 	}
 }
