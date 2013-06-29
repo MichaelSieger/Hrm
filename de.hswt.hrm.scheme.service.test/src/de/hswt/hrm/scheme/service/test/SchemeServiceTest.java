@@ -124,9 +124,9 @@ public class SchemeServiceTest extends AbstractDatabaseTest {
         schemeComp = schemeComponentDao.insert(schemeComp);
 
         Attribute attr = attributes.get(0);
-        schemeComponentDao.setAttributeValue(schemeComp, attr, "Some value");
+        schemeComponentDao.addAttributeValue(schemeComp, attr, "Some value");
         attr = attributes.get(1);
-        schemeComponentDao.setAttributeValue(schemeComp, attr, "Some other value");
+        schemeComponentDao.addAttributeValue(schemeComp, attr, "Some other value");
     }
 
     @Test
@@ -190,7 +190,7 @@ public class SchemeServiceTest extends AbstractDatabaseTest {
                 attributes.get(0).getComponent());
         schemeComp = schemeComponentDao.insert(schemeComp);
         Attribute attr = attributes.get(0);
-        schemeComponentDao.setAttributeValue(schemeComp, attr, "Some value");
+        schemeComponentDao.addAttributeValue(schemeComp, attr, "Some value");
         SchemeComponent comp2 = new SchemeComponent(scheme, 10, 10, Direction.leftRight, component);
         schemeComponentDao.insert(comp2);
 

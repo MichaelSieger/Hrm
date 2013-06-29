@@ -26,9 +26,9 @@ public class PriorityService {
     @Inject
     public PriorityService(IPriorityDao prioDao) {
 
-        checkNotNull(prioDao, "SummaryDao must be injected properly");
+        checkNotNull(prioDao, "PriorityDao must be injected properly");
         this.prioDao = prioDao;
-        LOG.debug("Summary Dao injected successfully");
+        LOG.debug("Priority Dao injected successfully");
     }
     
     public Collection<Priority> findAll() throws DatabaseException {

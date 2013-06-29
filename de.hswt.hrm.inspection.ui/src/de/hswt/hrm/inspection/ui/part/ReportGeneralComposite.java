@@ -820,7 +820,7 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
         initCommentAutoCompletion(legionellaCommentCombo);
         formToolkit.adapt(legionellaCommentCombo);
         formToolkit.paintBordersFor(legionellaCommentCombo);
-        ContentProposalUtil.enableContentProposal(legionellaCommentCombo);
+        
 
         Label sumGermsLabel = new Label(biologicalComposite, SWT.NONE);
         sumGermsLabel.setLayoutData(LayoutUtil.createLeftCenteredGridData());
@@ -944,7 +944,7 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
         initCommentAutoCompletion(temperatureCommentCombo);
         formToolkit.adapt(temperatureCommentCombo);
         formToolkit.paintBordersFor(temperatureCommentCombo);
-        ContentProposalUtil.enableContentProposal(temperatureCommentCombo);
+      
 
         Label humidityLabel = new Label(physicalComposite, SWT.NONE);
         humidityLabel.setLayoutData(LayoutUtil.createLeftCenteredGridData());

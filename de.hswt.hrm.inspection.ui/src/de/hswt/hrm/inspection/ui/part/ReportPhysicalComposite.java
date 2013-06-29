@@ -1,44 +1,51 @@
 package de.hswt.hrm.inspection.ui.part;
 
+import java.util.Collection;
+
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
-import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.window.IShellProvider;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Composite;
-
-import de.hswt.hrm.common.observer.Observable;
-import de.hswt.hrm.common.observer.Observer;
-import de.hswt.hrm.common.ui.swt.forms.FormUtil;
-import de.hswt.hrm.common.ui.swt.layouts.LayoutUtil;
-import de.hswt.hrm.common.ui.swt.utils.ContentProposalUtil;
-import de.hswt.hrm.component.model.Component;
-
-import org.eclipse.ui.forms.widgets.FormToolkit;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Combo;
-import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.List;
+import org.eclipse.ui.forms.widgets.FormToolkit;
+import org.eclipse.ui.forms.widgets.Section;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import de.hswt.hrm.common.database.exception.DatabaseException;
+import de.hswt.hrm.common.observer.Observable;
+import de.hswt.hrm.common.observer.Observer;
+import de.hswt.hrm.common.ui.swt.forms.FormUtil;
+import de.hswt.hrm.common.ui.swt.layouts.LayoutUtil;
+import de.hswt.hrm.common.ui.swt.utils.ContentProposalUtil;
+import de.hswt.hrm.component.model.Component;
+import de.hswt.hrm.inspection.service.InspectionService;
+import de.hswt.hrm.misc.comment.model.Comment;
+import de.hswt.hrm.misc.comment.service.CommentService;
 
 public class ReportPhysicalComposite extends AbstractComponentRatingComposite {
 
-	// TODO remove unused injections, add others as needed
-	// TODO use this if it is implemented
-	// @Inject
-	// private InspectionService inspectionService;
+	@Inject
+	private InspectionService inspectionService;
 
 	@Inject
 	private IEclipseContext context;
+
+	@Inject
+	private CommentService commentService;
 
 	@Inject
 	private IShellProvider shellProvider;
@@ -55,12 +62,11 @@ public class ReportPhysicalComposite extends AbstractComponentRatingComposite {
 	private List gradeList;
 	private List weightList;
 	private List list;
-	
-	private final Observable<Integer> grade = new Observable();
 
-	// @TODO remove when example is no longer needed
-	private static final String[] items = new String[] { "Alpha", "Beta",
-			"gaama", "pie", "alge", "bata" };
+	private static final Logger LOG = LoggerFactory
+			.getLogger(ReportPhysicalComposite.class);
+
+	private final Observable<Integer> grade = new Observable();
 
 	/**
 	 * Create the composite.
@@ -129,7 +135,8 @@ public class ReportPhysicalComposite extends AbstractComponentRatingComposite {
 		imageSection.setLayoutData(LayoutUtil.createHorzFillData());
 		FormUtil.initSectionColors(imageSection);
 
-		Section tagSection = formToolkit.createSection(composite, Section.TITLE_BAR);
+		Section tagSection = formToolkit.createSection(composite,
+				Section.TITLE_BAR);
 		formToolkit.paintBordersFor(tagSection);
 		tagSection.setText("Scheme tags");
 		tagSection.setLayoutData(LayoutUtil.createHorzFillData(2));
@@ -167,18 +174,19 @@ public class ReportPhysicalComposite extends AbstractComponentRatingComposite {
 		// TODO set 0 selected or grade from db
 		gradeList.select(0);
 		gradeList.addSelectionListener(new SelectionListener() {
-			
+
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				int sel = gradeList.getSelectionIndex();
-				if(sel == -1){
+				if (sel == -1) {
 					sel = 0;
 				}
 				grade.set(sel);
 			}
-			
+
 			@Override
-			public void widgetDefaultSelected(SelectionEvent e) {}
+			public void widgetDefaultSelected(SelectionEvent e) {
+			}
 		});
 
 		weightList = new List(physicalComposite, SWT.BORDER);
@@ -200,15 +208,8 @@ public class ReportPhysicalComposite extends AbstractComponentRatingComposite {
 		formToolkit.adapt(commentCombo);
 		formToolkit.paintBordersFor(commentCombo);
 
-		// TODO fill with comments from db
-		// allow custom inputs
-		// use content proposals, like google search, see below
-
-		// example of content proposal
-		// TODO replace this with the content of comments
-		// set items first!
-		commentCombo.setItems(items);
-		ContentProposalUtil.enableContentProposal(commentCombo);
+		initCommentAutoCompletion(commentCombo);
+		
 
 		/***************************************
 		 * Photo/image section
@@ -221,7 +222,7 @@ public class ReportPhysicalComposite extends AbstractComponentRatingComposite {
 		gl.marginWidth = 0;
 		imageComposite.setLayout(gl);
 		imageSection.setClient(imageComposite);
-		
+
 		list = new List(imageComposite, SWT.BORDER);
 		list.setLayoutData(LayoutUtil.createFillData(1, 6));
 		formToolkit.adapt(list, true, true);
@@ -254,7 +255,8 @@ public class ReportPhysicalComposite extends AbstractComponentRatingComposite {
 		gl.marginWidth = 0;
 		tagsComposite.setLayout(gl);
 		tagsComposite.setLayoutData(LayoutUtil.createHorzFillData(2));
-		tagsComposite.setBackground(getDisplay().getSystemColor(SWT.COLOR_WHITE));
+		tagsComposite.setBackground(getDisplay()
+				.getSystemColor(SWT.COLOR_WHITE));
 		tagSection.setClient(tagsComposite);
 
 		nothingRadioButton = new Button(tagsComposite, SWT.RADIO);
@@ -286,10 +288,30 @@ public class ReportPhysicalComposite extends AbstractComponentRatingComposite {
 		sc.setMinSize(composite.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 	}
 
-	public void addGradeSelectionObserver(Observer<Integer> o){
+	public void addGradeSelectionObserver(Observer<Integer> o) {
 		grade.addObserver(o);
 	}
-	
+
+	private void initCommentAutoCompletion(Combo combo) {
+
+		Collection<Comment> comments;
+		try {
+			comments = commentService.findAll();
+			String[] s = new String[comments.size()];
+			int i = 0;
+
+			for (Comment c : comments) {
+				s[i] = c.getText();
+				i++;
+			}
+			combo.setItems(s);
+			ContentProposalUtil.enableContentProposal(combo);
+		} catch (DatabaseException e) {
+			LOG.debug("An error occured", e);
+		}
+
+	}
+
 	@Override
 	public void setSelectedComponent(Component component) {
 		// TODO Auto-generated method stub
