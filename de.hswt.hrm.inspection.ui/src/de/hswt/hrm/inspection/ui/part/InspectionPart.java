@@ -284,7 +284,7 @@ public class InspectionPart implements ComponentSelectionChangedListener, PlantC
 			
 			@Override
 			public void changed(Collection<PhysicalRating> item) {
-				pDisplay.update(item);
+				pDisplay.update(item, selectedInspection.getScheme());
 				combinedDisplay.updatePhysical(item);
 			}
 		});
