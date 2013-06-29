@@ -33,6 +33,7 @@ import de.hswt.hrm.common.ui.swt.layouts.LayoutUtil;
 import de.hswt.hrm.common.ui.swt.utils.ContentProposalUtil;
 import de.hswt.hrm.component.model.Component;
 import de.hswt.hrm.inspection.model.Inspection;
+import de.hswt.hrm.inspection.model.SamplingPointType;
 import de.hswt.hrm.inspection.service.InspectionService;
 import de.hswt.hrm.misc.comment.model.Comment;
 import de.hswt.hrm.misc.comment.service.CommentService;
@@ -69,7 +70,8 @@ public class ReportPhysicalComposite extends AbstractComponentRatingComposite {
 	private static final Logger LOG = LoggerFactory
 			.getLogger(ReportPhysicalComposite.class);
 
-	private final Observable<Integer> grade = new Observable();
+	private final Observable<Integer> grade = new Observable<>();
+	private final Observable<SamplingPointType> samplePointType = new Observable<>();
 
 	/**
 	 * Create the composite.
@@ -267,23 +269,66 @@ public class ReportPhysicalComposite extends AbstractComponentRatingComposite {
 		nothingRadioButton.setLayoutData(LayoutUtil.createHorzFillData());
 		nothingRadioButton.setText("Nothing");
 		nothingRadioButton.setSelection(true);
+		nothingRadioButton.addSelectionListener(new SelectionListener() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				samplePointType.set(SamplingPointType.none);
+			}
+
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+			}
+		});
 
 		climateParameterRadioButton = new Button(tagsComposite, SWT.RADIO);
 		formToolkit.adapt(climateParameterRadioButton, true, true);
 		climateParameterRadioButton.setLayoutData(LayoutUtil
 				.createHorzFillData());
 		climateParameterRadioButton.setText("Climate parameter");
+		climateParameterRadioButton.addSelectionListener(new SelectionListener() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				samplePointType.set(SamplingPointType.climateParameter);
+			}
+
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+			}
+		});
 
 		photoRadioButton = new Button(tagsComposite, SWT.RADIO);
 		formToolkit.adapt(photoRadioButton, true, true);
 		photoRadioButton.setLayoutData(LayoutUtil.createHorzFillData());
 		photoRadioButton.setText("Photo");
+		photoRadioButton.addSelectionListener(new SelectionListener() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				samplePointType.set(SamplingPointType.photo);
+			}
+
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+			}
+		});
 
 		dustRadioButton = new Button(tagsComposite, SWT.RADIO);
 		formToolkit.adapt(dustRadioButton, true, true);
 		dustRadioButton.setLayoutData(LayoutUtil.createHorzFillData());
 		dustRadioButton.setText("Dust concentration determination");
+		dustRadioButton.addSelectionListener(new SelectionListener() {
 
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				samplePointType.set(SamplingPointType.dustConcentration);
+			}
+
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+			}
+		});
 		// DateTime dateFrom = new DateTime(composite, SWT.BORDER | SWT.DATE |
 		// SWT.DROP_DOWN);
 		// dateFrom.setDate(2007, 0, 1);
@@ -293,6 +338,10 @@ public class ReportPhysicalComposite extends AbstractComponentRatingComposite {
 
 	public void addGradeSelectionObserver(Observer<Integer> o) {
 		grade.addObserver(o);
+	}
+	
+	public void addSamplePointObserver(Observer<SamplingPointType> o) {
+		samplePointType.addObserver(o);
 	}
 
 	private void initCommentAutoCompletion(Combo combo) {
