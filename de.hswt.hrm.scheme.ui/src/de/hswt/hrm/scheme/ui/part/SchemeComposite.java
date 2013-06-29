@@ -300,6 +300,8 @@ public class SchemeComposite extends Composite {
 
             currentScheme = scheme;
             treeDragListener.setScheme(currentScheme);
+            gridDragListener.setScheme(currentScheme);
+            gridListener.setScheme(currentScheme);
             plant = scheme.getPlant().get();
             grid.setItems(toSchemeGridItems(scheme.getSchemeComponents()));
             clearDirty();
@@ -482,7 +484,7 @@ public class SchemeComposite extends Composite {
     }
 
     private void initGridDropTargetListener() {
-        gridListener = new GridDropTargetListener(grid, this, schemeService, componentsService);
+        gridListener = new GridDropTargetListener(grid, this, componentsService);
         gridDropTarget.addDropListener(gridListener);
     }
 
@@ -502,7 +504,7 @@ public class SchemeComposite extends Composite {
     }
 
     private void initGridDND() {
-        gridDragListener = new GridDragListener(grid, schemeService, componentsService);
+        gridDragListener = new GridDragListener(grid, componentsService);
         gridDragSource.addDragListener(gridDragListener);
     }
 
