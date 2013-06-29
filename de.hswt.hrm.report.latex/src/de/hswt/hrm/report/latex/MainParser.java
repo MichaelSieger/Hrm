@@ -11,7 +11,6 @@ import de.hswt.hrm.component.service.ComponentService;
 import de.hswt.hrm.inspection.model.Inspection;
 import de.hswt.hrm.inspection.model.Performance;
 import de.hswt.hrm.inspection.model.PhysicalRating;
-import de.hswt.hrm.report.latex.collectors.TargetPerformancePhotoStates;
 import de.hswt.hrm.inspection.service.InspectionService;
 
 public class MainParser {
@@ -33,7 +32,6 @@ public class MainParser {
      * Constructor
      */
     public MainParser(String path, Inspection inspection,
-            Collection<TargetPerformancePhotoStates> componentsTable,
             Collection<Map<Attribute, String>> componentAttributes,
             Collection<PhysicalRating> ratings, InspectionService insService,
             ComponentService compService) throws DatabaseException {
