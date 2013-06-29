@@ -12,6 +12,7 @@ import com.google.common.base.Preconditions;
 
 import de.hswt.hrm.inspection.model.BiologicalRating;
 import de.hswt.hrm.inspection.model.SamplingPointType;
+import de.hswt.hrm.inspection.ui.grid.SamplingPointPosition.Placement;
 import de.hswt.hrm.scheme.model.Scheme;
 import de.hswt.hrm.scheme.ui.SchemeGridItem;
 
@@ -35,17 +36,33 @@ public class BiologicalDisplay extends RatingDisplay{
 			schemeGrid.setColor(rating.getComponent(), colors[r]);
 			Optional<SamplingPointType> samplingPoint = rating.getSamplingPointType();
 			if(samplingPoint.isPresent() && samplingPoint.get() != SamplingPointType.none){
-				samplePoints.add(SamplingPointPosition.getSamplingPoint(
-									getSamplingPoints(), samplingPoint.get(), scheme, rating.getComponent()));
+				Placement place = SamplingPointPosition.getPlacement(scheme, rating.getComponent());
+				if(place != null){
+					if(place.x < 0){
+						int moveX = -place.x;
+						schemeGrid.move(moveX, 0);
+						place.x += moveX;
+						moveSamplePoints(moveX, 0);
+					}
+					if(place.y < 0){
+						int moveY = -place.y;
+						schemeGrid.move(0, moveY);
+						place.y += moveY;
+						moveSamplePoints(0, moveY);
+					}
+					samplePoints.add(SamplingPointPosition.getSamplingPoint(
+										getSamplingPoints(), samplingPoint.get(), scheme, rating.getComponent(), place));
+				}
 			}
 		}
-		Rectangle r = getBounds(samplePoints);
-		int moveX = -Math.min(0, r.x);
-		int moveY = -Math.min(0, r.y);
-		if(moveX != 0 || moveY != 0){
-			schemeGrid.move(moveX, moveY);
-		}
 		schemeGrid.addAll(samplePoints);
+	}
+	
+	private void moveSamplePoints(int x, int y){
+		for(SchemeGridItem item : samplePoints){
+			item.setX(item.getX() + x);
+			item.setY(item.getY() + y);
+		}
 	}
 	
 }
