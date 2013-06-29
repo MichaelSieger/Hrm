@@ -1,5 +1,7 @@
 package de.hswt.hrm.inspection.ui.grid;
 
+import java.util.Collection;
+
 import org.eclipse.swt.graphics.Rectangle;
 
 import com.google.common.base.Preconditions;
@@ -45,10 +47,10 @@ public class SamplingPointPosition {
 		return new SchemeGridItem(rc, comp);
 	}
 	
-	public static Placement getPlacement(Scheme scheme, SchemeComponent orig){
+	public static Placement getPlacement(Collection<SchemeGridItem> items, SchemeComponent orig){
 		Placement pos = null;
 		for(Placement r : getPlacements(orig)){
-			if(canPlace(scheme, r)){
+			if(canPlace(items, r)){
 				pos = r;
 				break;
 			}
@@ -73,8 +75,8 @@ public class SamplingPointPosition {
 		return edge % 2 == 1;
 	}
 	
-	private static boolean canPlace(Scheme scheme, Placement r){
-		for(SchemeComponent c : scheme.getSchemeComponents()){
+	private static boolean canPlace(Collection<SchemeGridItem> items, Placement r){
+		for(SchemeGridItem c : items){
 			Rectangle r2 = new Rectangle(c.getX(), c.getY(), c.getWidth(), c.getHeight());
 			if(r.getRectangle().intersects(r2)){
 				return false;
