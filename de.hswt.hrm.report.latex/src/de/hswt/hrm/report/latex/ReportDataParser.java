@@ -55,166 +55,167 @@ public class ReportDataParser {
     private final String PLANT_VOLTAGE = ":plantVoltage:";
 
     /*
+     * initialized with constructor params
+     */
+    private String path;
+    private Contact contactCustomer;
+    private Contact contactContractor;
+    private Contact conctactController;
+    private Plant plant;
+    private Place place;
+    private Inspection inspection;
+
+    public ReportDataParser(String path, Inspection inspection) {
+        this.inspection = inspection;
+        this.path = path;
+        this.conctactController = inspection.getChecker().orNull();
+        this.contactCustomer = inspection.getRequester().orNull();
+        this.contactContractor = inspection.getContractor().orNull();
+        this.place = plant.getPlace().orNull();
+        this.plant = inspection.getPlant();
+
+    }
+
+    /*
      * @return String , ready to be written to file reportdata.tex
      */
-    public String parse(String pathDir, Contact contactCustomer, Contact contactContractor,
-            Contact conctactController, Plant plant, Place place, Inspection inspection)
-            throws FileNotFoundException, IOException {
+    public String parse() throws FileNotFoundException, IOException {
 
-        prop.load(Files.newInputStream(Paths.get(pathDir, "templates", "reportdata.properties")));
+        prop.load(Files.newInputStream(Paths.get(path, "templates", "reportdata.properties")));
 
         buffer.setLength(0);
+        if (!(contactCustomer == null)) {
+            buffer.append(prop.getProperty("reportdata.customer.name").replace(CUSTOMER_NAME,
+                    contactCustomer.getName() + " " + contactCustomer.getName()));
+            appendNewLine();
 
-        buffer.append(prop.getProperty("reportdata.customer.name").replace(CUSTOMER_NAME,
-                contactCustomer.getName() + " " + contactCustomer.getName()));
+            buffer.append(prop.getProperty("reportdata.customer.street").replace(CUSTOMER_STREET,
+                    contactCustomer.getStreet() + " " + contactCustomer.getStreetNo()));
+            appendNewLine();
 
-        appendNewLine();
+            buffer.append(prop.getProperty("reportdata.customer.city").replace(CUSTOMER_CITY,
+                    contactCustomer.getPostCode() + " " + contactCustomer.getCity()));
+            appendNewLine();
+        }
 
-        buffer.append(prop.getProperty("reportdata.customer.street").replace(CUSTOMER_STREET,
-                contactCustomer.getStreet() + " " + contactCustomer.getStreetNo()));
+        if (!(contactContractor == null)) {
+            buffer.append(prop.getProperty("reportdata.contractor.name").replace(CONTRACTOR_NAME,
+                    contactContractor.getName() + " " + contactContractor.getName()));
+            appendNewLine();
 
-        appendNewLine();
+            buffer.append(prop.getProperty("reportdata.contractor.street").replace(
+                    CONTRACTOR_STREET,
+                    contactContractor.getStreet() + " " + contactContractor.getStreetNo()));
+            appendNewLine();
 
-        buffer.append(prop.getProperty("reportdata.customer.city").replace(CUSTOMER_CITY,
-                contactCustomer.getPostCode() + " " + contactCustomer.getCity()));
+            buffer.append(prop.getProperty("reportdata.contractor.city").replace(CONTRACTOR_CITY,
+                    contactContractor.getPostCode() + " " + contactContractor.getCity()));
+            appendNewLine();
+        }
 
-        appendNewLine();
+        if (!(conctactController == null)) {
+            buffer.append(prop.getProperty("reportdata.controller.name").replace(CONTROLLER_NAME,
+                    conctactController.getName() + " " + conctactController.getName()));
+            appendNewLine();
 
-        buffer.append(prop.getProperty("reportdata.contractor.name").replace(CONTRACTOR_NAME,
-                contactContractor.getName() + " " + contactContractor.getName()));
+            buffer.append(prop.getProperty("reportdata.controller.street").replace(
+                    CONTROLLER_STREET,
+                    conctactController.getStreet() + " " + conctactController.getName()));
+            appendNewLine();
 
-        appendNewLine();
-
-        buffer.append(prop.getProperty("reportdata.contractor.street").replace(CONTRACTOR_STREET,
-                contactContractor.getStreet() + " " + contactContractor.getStreetNo()));
-
-        appendNewLine();
-
-        buffer.append(prop.getProperty("reportdata.contractor.city").replace(CONTRACTOR_CITY,
-                contactContractor.getPostCode() + " " + contactContractor.getCity()));
-
-        appendNewLine();
-
-        buffer.append(prop.getProperty("reportdata.controller.name").replace(CONTROLLER_NAME,
-                conctactController.getName() + " " + conctactController.getName()));
-
-        appendNewLine();
-
-        buffer.append(prop.getProperty("reportdata.controller.street").replace(CONTROLLER_STREET,
-                conctactController.getStreet() + " " + conctactController.getName()));
-
-        appendNewLine();
-
-        buffer.append(prop.getProperty("reportdata.controller.city").replace(CONTROLLER_CITY,
-                conctactController.getPostCode() + " " + conctactController.getCity()));
-
-        appendNewLine();
+            buffer.append(prop.getProperty("reportdata.controller.city").replace(CONTROLLER_CITY,
+                    conctactController.getPostCode() + " " + conctactController.getCity()));
+            appendNewLine();
+        }
 
         // TODO
         buffer.append(prop.getProperty("reportdata.object.title").replace(OBJECT_TITLE,
                 inspection.getTitle()));
-
         appendNewLine();
 
-        buffer.append(prop.getProperty("reportdata.object.name").replace(OBJECT_NAME,
-                place.getPlaceName()));
+        if (!(place == null)) {
+            buffer.append(prop.getProperty("reportdata.object.name").replace(OBJECT_NAME,
+                    place.getPlaceName()));
+            appendNewLine();
 
-        appendNewLine();
+            buffer.append(prop.getProperty("reportdata.object.street").replace(OBJECT_STREET,
+                    place.getStreet() + " " + place.getStreetNo()));
+            appendNewLine();
 
-        buffer.append(prop.getProperty("reportdata.object.street").replace(OBJECT_STREET,
-                place.getStreet() + " " + place.getStreetNo()));
+            buffer.append(prop.getProperty("reportdata.object.city").replace(OBJECT_CITY,
+                    place.getPostCode() + " " + place.getCity()));
+            appendNewLine();
+        }
 
-        appendNewLine();
-
-        buffer.append(prop.getProperty("reportdata.object.city").replace(OBJECT_CITY,
-                place.getPostCode() + " " + place.getCity()));
-
-        appendNewLine();
         // TODO
         buffer.append(prop.getProperty("reportdata.object.image").replace(OBJECT_IMAGE,
                 "place.getImage"));
-
         appendNewLine();
 
         buffer.append(prop.getProperty("reportdata.date.inspection").replace(INSPECTION_DATE,
                 inspection.getInspectionDate().toString()));
-
         appendNewLine();
 
         buffer.append(prop.getProperty("reportdata.data.report").replace(REPORT_DATE,
                 "report.getReportDate()"));
-
         appendNewLine();
 
-        // TODO
         buffer.append(prop.getProperty("reportdata.plant").replace(PLANT, "plant.getPlantName()"));
-
         appendNewLine();
 
         buffer.append(prop.getProperty("reportdata.plant.place").replace(PLANT_PLACE,
-               plant.getLocation()));
-
+                plant.getLocation()));
         appendNewLine();
 
         buffer.append(prop.getProperty("reportdata.plant.servicearea").replace(PLANT_SERVICE_AREA,
                 plant.getArea()));
-
         appendNewLine();
 
         // TODO
         buffer.append(prop.getProperty("reportdata.plant.image").replace(PLANT_IMAGE,
                 "Photo.getPlantImage"));
-
         appendNewLine();
 
         if (plant.getManufactor().isPresent()) {
             buffer.append(prop.getProperty("reportdata.plant.manufacturer").replace(
                     PLANT_MANUFACTURER, plant.getManufactor().get()));
-
             appendNewLine();
         }
 
         if (plant.getType().isPresent()) {
             buffer.append(prop.getProperty("reportdata.plant.type").replace(PLANT_TYPE,
                     plant.getType().get()));
-
             appendNewLine();
         }
 
         buffer.append(prop.getProperty("reportdata.plant.year").replace(PLANT_YEAR,
                 plant.getConstructionYear().toString()));
-
         appendNewLine();
 
         if (plant.getAirPerformance().isPresent()) {
             buffer.append(prop.getProperty("reportdata.plant.power").replace(PLANT_AIR_POWER,
                     plant.getAirPerformance().get()));
-
             appendNewLine();
         }
         if (plant.getMotorPower().isPresent()) {
 
             buffer.append(prop.getProperty("reportdata.plant.engine.power").replace(
                     PLANT_ENGINE_POWER, plant.getMotorPower().get()));
-
             appendNewLine();
         }
         if (plant.getMotorRpm().isPresent()) {
             buffer.append(prop.getProperty("reportdata.plant.engine.rpm").replace(PLANT_RPM,
                     plant.getMotorRpm().get()));
-
             appendNewLine();
         }
         if (plant.getCurrent().isPresent()) {
             buffer.append(prop.getProperty("reportdata.plant.current").replace(PLANT_CURRENT,
                     plant.getCurrent().get()));
-
             appendNewLine();
         }
         if (plant.getVoltage().isPresent())
             buffer.append(prop.getProperty("reportdata.plant.voltage").replace(PLANT_VOLTAGE,
                     plant.getVoltage().get()));
-
         appendNewLine();
 
         return buffer.toString();
