@@ -146,10 +146,11 @@ public class ReportDataParser {
             appendNewLine();
         }
 
-        // TODO
-        buffer.append(prop.getProperty("reportdata.object.image").replace(OBJECT_IMAGE,
-                "place.getImage"));
-        appendNewLine();
+        if (inspection.getFrontpicture().isPresent()) {
+            buffer.append(prop.getProperty("reportdata.object.image").replace(OBJECT_IMAGE,
+                    inspection.getFrontpicture().orNull().getName()));
+            appendNewLine();
+        }
 
         buffer.append(prop.getProperty("reportdata.date.inspection").replace(INSPECTION_DATE,
                 inspection.getInspectionDate().toString()));
@@ -170,10 +171,11 @@ public class ReportDataParser {
                 plant.getArea()));
         appendNewLine();
 
-        // TODO
-        buffer.append(prop.getProperty("reportdata.plant.image").replace(PLANT_IMAGE,
-                "Photo.getPlantImage"));
-        appendNewLine();
+        if (inspection.getPlantpicture().isPresent()) {
+            buffer.append(prop.getProperty("reportdata.plant.image").replace(PLANT_IMAGE,
+                    inspection.getPlantpicture().orNull().getName()));
+            appendNewLine();
+        }
 
         if (plant.getManufactor().isPresent()) {
             buffer.append(prop.getProperty("reportdata.plant.manufacturer").replace(
