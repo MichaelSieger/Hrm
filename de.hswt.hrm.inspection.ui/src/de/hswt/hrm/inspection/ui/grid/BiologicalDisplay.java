@@ -14,6 +14,7 @@ import de.hswt.hrm.inspection.model.BiologicalRating;
 import de.hswt.hrm.inspection.model.SamplingPointType;
 import de.hswt.hrm.inspection.ui.grid.SamplingPointPosition.Placement;
 import de.hswt.hrm.scheme.model.Scheme;
+import de.hswt.hrm.scheme.model.SchemeComponent;
 import de.hswt.hrm.scheme.ui.SchemeGridItem;
 
 public class BiologicalDisplay extends RatingDisplay{
@@ -36,7 +37,8 @@ public class BiologicalDisplay extends RatingDisplay{
 			schemeGrid.setColor(rating.getComponent(), colors[r]);
 			Optional<SamplingPointType> samplingPoint = rating.getSamplingPointType();
 			if(samplingPoint.isPresent() && samplingPoint.get() != SamplingPointType.none){
-				Placement place = SamplingPointPosition.getPlacement(scheme, rating.getComponent());
+				Collection<SchemeGridItem> items = schemeGrid.getItems();
+				Placement place = SamplingPointPosition.getPlacement(items, findById(items, rating.getComponent()));
 				if(place != null){
 					if(place.x < 0){
 						int moveX = -place.x;
@@ -56,6 +58,15 @@ public class BiologicalDisplay extends RatingDisplay{
 			}
 		}
 		schemeGrid.addAll(samplePoints);
+	}
+	
+	private SchemeComponent findById(Collection<SchemeGridItem> items, SchemeComponent c){
+		for(SchemeGridItem i : items){
+			if(i.asSchemeComponent().getId() == c.getId()){
+				return i.asSchemeComponent();
+			}
+		}
+		throw new RuntimeException("Internal Error");
 	}
 	
 	private void moveSamplePoints(int x, int y){
