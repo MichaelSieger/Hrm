@@ -93,11 +93,11 @@ INSERT INTO `hrm`.`Component_Picture`(`Component_Picture_Filename`, `Component_P
 ------------------------------------------------------------
 -- Insert 5 different components in the `Component` Table
 ------------------------------------------------------------																																																																										
-INSERT INTO `hrm`.`Component` (`Component_Name`, `Component_Symbol_LR_FK`, `Component_Symbol_RL_FK`, `Component_Symbol_UD_FK`, `Component_Symbol_DU_FK`, `Component_Quantifier`, `Component_Category_FK`, `Component_Bool_Rating`) VALUES ('Außenluft', '1', '2', NULL, NULL, '2', '2', '2');
+INSERT INTO `hrm`.`Component` (`Component_Name`, `Component_Symbol_LR_FK`, `Component_Symbol_RL_FK`, `Component_Symbol_UD_FK`, `Component_Symbol_DU_FK`, `Component_Quantifier`, `Component_Category_FK`, `Component_Bool_Rating`) VALUES ('Außenluft', '1', '2', NULL, NULL, '2', '2', '1');
 INSERT INTO `hrm`.`Component` (`Component_Name`, `Component_Symbol_LR_FK`, `Component_Symbol_RL_FK`, `Component_Symbol_UD_FK`, `Component_Symbol_DU_FK`, `Component_Quantifier`, `Component_Category_FK`, `Component_Bool_Rating`) VALUES ('F5', '4', '3', NULL, NULL, '2', '1', '1');
 INSERT INTO `hrm`.`Component` (`Component_Name`, `Component_Symbol_LR_FK`, `Component_Symbol_RL_FK`, `Component_Symbol_UD_FK`, `Component_Symbol_DU_FK`, `Component_Quantifier`, `Component_Category_FK`, `Component_Bool_Rating`) VALUES ('F6', '6', '5', NULL, NULL, '2', '1', '1');
-INSERT INTO `hrm`.`Component` (`Component_Name`, `Component_Symbol_LR_FK`, `Component_Symbol_RL_FK`, `Component_Symbol_UD_FK`, `Component_Symbol_DU_FK`, `Component_Quantifier`, `Component_Category_FK`, `Component_Bool_Rating`) VALUES ('Zugang', '8', '9', '7', '10', '2', '3', '3');
-INSERT INTO `hrm`.`Component` (`Component_Name`, `Component_Symbol_LR_FK`, `Component_Symbol_RL_FK`, `Component_Symbol_UD_FK`, `Component_Symbol_DU_FK`, `Component_Quantifier`, `Component_Category_FK`, `Component_Bool_Rating`) VALUES ('Schacht', '11', NULL, '11', NULL, '2', '4', '3');
+INSERT INTO `hrm`.`Component` (`Component_Name`, `Component_Symbol_LR_FK`, `Component_Symbol_RL_FK`, `Component_Symbol_UD_FK`, `Component_Symbol_DU_FK`, `Component_Quantifier`, `Component_Category_FK`, `Component_Bool_Rating`) VALUES ('Zugang', '8', '9', '7', '10', '2', '3', '0');
+INSERT INTO `hrm`.`Component` (`Component_Name`, `Component_Symbol_LR_FK`, `Component_Symbol_RL_FK`, `Component_Symbol_UD_FK`, `Component_Symbol_DU_FK`, `Component_Quantifier`, `Component_Category_FK`, `Component_Bool_Rating`) VALUES ('Schacht', '11', NULL, '11', NULL, '2', '4', '0');
 
 ------------------------------------------------------------
 -- Insert 3 different scheme components in the `Scheme_Components` Table
