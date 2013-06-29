@@ -248,6 +248,11 @@ public class ReportPerformanceComposite extends AbstractComponentRatingComposite
                     return;
                 }
                 SchemeComponent sc = (SchemeComponent) selection.getFirstElement();
+                if (sc == null){
+                	if (sc == null){
+                		return;
+                	}
+                }
                 Catalog c = sc.getComponent().getCategory().get().getCatalog().get();
                 try {
 
@@ -325,27 +330,27 @@ public class ReportPerformanceComposite extends AbstractComponentRatingComposite
 			
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				
-//				treeViewer.add(treeViewer.getInput(), PerformanceStub.getAssignedItems().getTargets().get(0));
-				
-				 IStructuredSelection selection = (IStructuredSelection) targetListViewer
-	                        .getSelection();
-	                if (selection == null) {
-	                    return;
-	                }
-	                
-	                Target target = (Target)selection.getFirstElement();
-	                selection = (IStructuredSelection) currentListViewer.getSelection();
-	                if (selection == null) {
-	                    return;
-	                }
-	                Current current = (Current)selection.getFirstElement();
-	               
-	                selection = (IStructuredSelection) activityListViewer.getSelection();
-	                if (selection == null) {
-	                    return;
-	                }
-	                Activity activity = (Activity)selection.getFirstElement();
+
+				IStructuredSelection selection = (IStructuredSelection) targetListViewer
+						.getSelection();
+				if (selection == null) {
+					return;
+				}
+
+				Target target = (Target) selection.getFirstElement();
+				selection = (IStructuredSelection) currentListViewer
+						.getSelection();
+				if (selection == null) {
+					return;
+				}
+				Current current = (Current) selection.getFirstElement();
+
+				selection = (IStructuredSelection) activityListViewer
+						.getSelection();
+				if (selection == null) {
+					return;
+				}
+				Activity activity = (Activity) selection.getFirstElement();
 	               
 	               
 	                treeViewer.add(treeViewer.getInput(),  

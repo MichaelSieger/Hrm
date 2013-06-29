@@ -83,6 +83,8 @@ public class InspectionPart {
     private FormToolkit formToolkit = new FormToolkit(Display.getDefault());
 
     private Form form;
+    
+    private boolean first = true;
 
     private ReportsOverviewComposite reportsOverviewComposite;
 
@@ -143,12 +145,14 @@ public class InspectionPart {
         tabFolder.setBackgroundMode(SWT.INHERIT_FORCE);
         tabFolder.addSelectionListener(new SelectionAdapter() {
             @Override
-            public void widgetSelected(SelectionEvent e) {
-                if (tabFolder.getItem(tabFolder.getSelectionIndex()).equals(generalTab)) {
-                    setInspection(reportsOverviewComposite.getSelectedInspection());
-                }
-            }
-        });
+			public void widgetSelected(SelectionEvent e) {
+            	if (first){
+            		first = false;
+            		return;
+            	}
+				setInspection(reportsOverviewComposite.getSelectedInspection());
+			}
+		});
 
         formToolkit.adapt(tabFolder);
         formToolkit.paintBordersFor(tabFolder);
