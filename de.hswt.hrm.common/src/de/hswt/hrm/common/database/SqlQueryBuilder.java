@@ -172,6 +172,27 @@ public class SqlQueryBuilder {
     }
     
     /**
+     * Add ORDER BY ... ASC clause to statement.
+     * 
+     * @param column
+     * @return
+     */
+    public SqlQueryBuilder orderBy(final String column) {
+    	if (type == Type.UNSET) {
+            throw new IllegalStateException("You have to start with a call to 'select' or"
+                    + " 'update'");
+        }
+        else if (type == Type.INSERT) {
+            throw new IllegalStateException("Where cannot be used on a insert statement.");
+        }
+    	
+    	query.append( " ORDER BY ");
+    	query.append(column).append(" ASC");
+    	
+    	return this;
+    }
+    
+    /**
      * Add AND to statement.
      * @param column Column which should be checked.
      * @return

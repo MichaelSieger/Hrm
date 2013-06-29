@@ -34,6 +34,16 @@ public class SqlQueryBuilderTest {
     }
     
     @Test
+    public void testSelectStatmentWithOrderBy() {
+        final String expected = "SELECT col1, col2 FROM table ORDER BY col2 ASC;";
+        
+        SqlQueryBuilder builder = new SqlQueryBuilder();
+        builder.select("table", "col1", "col2");
+        builder.orderBy("col2");
+        assertEquals("Wrong select statement build.", expected, builder.toString());
+    }
+    
+    @Test
     public void testSelectStatmentMultipleWhere() {
         final String expected = "SELECT col1, col2 FROM table WHERE col2 = :col2 AND col3 = :col3;";
         
