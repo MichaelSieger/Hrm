@@ -217,7 +217,6 @@ public class ComponentSelectionComposite extends Composite implements Inspection
         componentsList.setComparator(new ViewerComparator() {
             @Override
             public int compare(Viewer viewer, Object e1, Object e2) {
-
                 SchemeComponent item1 = (SchemeComponent) e1;
                 SchemeComponent item2 = (SchemeComponent) e2;
                 return item1.getComponent().getName()
@@ -283,7 +282,9 @@ public class ComponentSelectionComposite extends Composite implements Inspection
         
         List<SchemeComponent> input = new ArrayList<>();
         for (SchemeGridItem item : schemeGridItems) {
-            input.add(item.asSchemeComponent());
+        	if (item.asSchemeComponent().getComponent().getBoolRating()) {
+                input.add(item.asSchemeComponent());
+        	}
         }
 
         componentsList.setInput(input);
