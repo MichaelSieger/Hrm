@@ -159,6 +159,7 @@ public class CategoryDao implements ICategoryDao {
     @Override
     public void update(Category category) throws ElementNotFoundException, SaveException {
         checkNotNull(category, "Category must not be null.");
+        
 
         if (category.getId() < 0) {
             throw new ElementNotFoundException("Element has no valid ID.");
@@ -181,7 +182,12 @@ public class CategoryDao implements ICategoryDao {
                 stmt.setParameter(Fields.WIDTH, category.getWidth());
                 stmt.setParameter(Fields.DEFAULT_QUANTIFIER, category.getDefaultQuantifier());
                 stmt.setParameter(Fields.DEFAULT_BOOL_RATING, category.getDefaultBoolRating());
-                stmt.setParameter(Fields.CATALOG, category.getCatalog().get().getId());
+                if (category.getCatalog().isPresent()) {
+                	stmt.setParameter(Fields.CATALOG, category.getCatalog().get().getId());
+                }
+                else {
+                	stmt.setParameterNull(Fields.CATALOG);
+                }
 
                 int affectedRows = stmt.executeUpdate();
                 if (affectedRows != 1) {
