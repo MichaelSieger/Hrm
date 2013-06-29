@@ -49,7 +49,7 @@ public class MainParser {
                 new ReportDataParser(path, inspection).parse());
         fileWriter.writeToFile(path, "targetperformancecomparison.tex",
                 new TargetPerformanceComparisonParser(path, componentsTable).parse());
-        fileWriter.writeToFile(path, "fileName", new ComponentsParser(path, inspection,
+        fileWriter.writeToFile(path, "components.tex", new ComponentsParser(path, inspection,
                 componentAttributes).parse());
 
     }
