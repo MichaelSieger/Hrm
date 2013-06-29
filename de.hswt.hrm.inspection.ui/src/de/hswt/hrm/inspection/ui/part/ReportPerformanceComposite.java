@@ -48,6 +48,7 @@ import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.common.ui.swt.layouts.LayoutUtil;
 import de.hswt.hrm.common.ui.swt.utils.ContentProposalUtil;
 import de.hswt.hrm.component.model.Component;
+import de.hswt.hrm.inspection.model.Inspection;
 import de.hswt.hrm.inspection.model.util.PerformanceUtil;
 import de.hswt.hrm.inspection.service.InspectionService;
 import de.hswt.hrm.inspection.ui.performance.tree.PerformanceTreeContentProvider;
@@ -56,6 +57,7 @@ import de.hswt.hrm.inspection.ui.stub.PerformanceStub;
 import de.hswt.hrm.misc.comment.model.Comment;
 import de.hswt.hrm.misc.priority.model.Priority;
 import de.hswt.hrm.misc.priority.service.PriorityService;
+import de.hswt.hrm.plant.model.Plant;
 import de.hswt.hrm.scheme.model.SchemeComponent;
 
 public class ReportPerformanceComposite extends AbstractComponentRatingComposite {
@@ -248,6 +250,11 @@ public class ReportPerformanceComposite extends AbstractComponentRatingComposite
                     return;
                 }
                 SchemeComponent sc = (SchemeComponent) selection.getFirstElement();
+                if (sc == null){
+                	if (sc == null){
+                		return;
+                	}
+                }
                 Catalog c = sc.getComponent().getCategory().get().getCatalog().get();
                 try {
 
@@ -325,27 +332,27 @@ public class ReportPerformanceComposite extends AbstractComponentRatingComposite
 			
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				
-//				treeViewer.add(treeViewer.getInput(), PerformanceStub.getAssignedItems().getTargets().get(0));
-				
-				 IStructuredSelection selection = (IStructuredSelection) targetListViewer
-	                        .getSelection();
-	                if (selection == null) {
-	                    return;
-	                }
-	                
-	                Target target = (Target)selection.getFirstElement();
-	                selection = (IStructuredSelection) currentListViewer.getSelection();
-	                if (selection == null) {
-	                    return;
-	                }
-	                Current current = (Current)selection.getFirstElement();
-	               
-	                selection = (IStructuredSelection) activityListViewer.getSelection();
-	                if (selection == null) {
-	                    return;
-	                }
-	                Activity activity = (Activity)selection.getFirstElement();
+
+				IStructuredSelection selection = (IStructuredSelection) targetListViewer
+						.getSelection();
+				if (selection == null) {
+					return;
+				}
+
+				Target target = (Target) selection.getFirstElement();
+				selection = (IStructuredSelection) currentListViewer
+						.getSelection();
+				if (selection == null) {
+					return;
+				}
+				Current current = (Current) selection.getFirstElement();
+
+				selection = (IStructuredSelection) activityListViewer
+						.getSelection();
+				if (selection == null) {
+					return;
+				}
+				Activity activity = (Activity) selection.getFirstElement();
 	               
 	               
 	                treeViewer.add(treeViewer.getInput(),  
@@ -384,5 +391,23 @@ public class ReportPerformanceComposite extends AbstractComponentRatingComposite
     public ListViewer getComponentsList() {
         return componentsList;
     }
+
+	@Override
+	public void inspectionChanged(Inspection inspection) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void inspectionComponentSelectionChanged(SchemeComponent component) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void plantChanged(Plant plant) {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

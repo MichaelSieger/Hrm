@@ -1,6 +1,7 @@
 package de.hswt.hrm.inspection.service;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkState;
 
 import java.util.Collection;
 
@@ -12,6 +13,7 @@ import org.slf4j.LoggerFactory;
 
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.ElementNotFoundException;
+import de.hswt.hrm.common.database.exception.SaveException;
 import de.hswt.hrm.inspection.dao.core.IBiologicalRatingDao;
 import de.hswt.hrm.inspection.dao.core.IInspectionDao;
 import de.hswt.hrm.inspection.dao.core.IPerformanceDao;
@@ -20,6 +22,8 @@ import de.hswt.hrm.inspection.model.BiologicalRating;
 import de.hswt.hrm.inspection.model.Inspection;
 import de.hswt.hrm.inspection.model.Performance;
 import de.hswt.hrm.inspection.model.PhysicalRating;
+import de.hswt.hrm.photo.dao.core.IPhotoDao;
+import de.hswt.hrm.photo.model.Photo;
 import de.hswt.hrm.scheme.model.Scheme;
 
 @Creatable
@@ -30,19 +34,23 @@ public class InspectionService {
     private final IPhysicalRatingDao physicalDao;
     private final IBiologicalRatingDao biologicalDao;
     private final IPerformanceDao performanceDao;
+    private final IPhotoDao photoDao;
 
     @Inject
     public InspectionService(IInspectionDao inspectionDao, IPhysicalRatingDao physicalDao,
-    		IBiologicalRatingDao biologicalDao, IPerformanceDao performanceDao) {
+    		IBiologicalRatingDao biologicalDao, IPerformanceDao performanceDao,
+    		IPhotoDao photoDao) {
         checkNotNull(inspectionDao, "InspectionDao not properly injected.");
         checkNotNull(physicalDao, "PhysicalRatingDao not properly injected.");
         checkNotNull(biologicalDao, "BiologicalRatingDao not properly injected.");
         checkNotNull(performanceDao, "PerformanceDao not properly injected.");
+        checkNotNull(photoDao, "PhotoDao not properly injected.");
     	
     	this.inspectionDao = inspectionDao;
     	this.physicalDao = physicalDao;
     	this.biologicalDao = biologicalDao;
     	this.performanceDao = performanceDao;
+    	this.photoDao = photoDao;
 
     	// TODO Add log outputs
         if (inspectionDao == null) {
@@ -75,8 +83,39 @@ public class InspectionService {
  
     	return performanceDao.findByInspection(inspection);
     }
-    
+
     public Scheme findScheme(Inspection inspection) throws DatabaseException {
     	return inspectionDao.findScheme(inspection);
     }
+    
+    public Collection<Photo> findPhoto(Performance performance)
+    		throws DatabaseException {
+
+    	checkNotNull(performance, "Performance must not be null.");
+    	checkState(performance.getId() >= 0, "Performance must have a valid ID.");
+    	return photoDao.findByPerformance(performance.getId());
+    }
+    
+    public void addPhoto(Performance performance, Photo photo) 
+    		throws SaveException, DatabaseException {
+    	
+    	checkNotNull(performance, "Performance must not be null.");
+    	checkState(performance.getId() >= 0, "Performance must have a valid ID.");
+    	checkNotNull(photo, "Photo must not be null.");
+    	checkState(photo.getId() >= 0, "Photo must have a valid ID.");
+    	
+    	photoDao.addPhoto(performance.getId(), photo);
+    }
+    
+    public void removePhoto(Performance performance, Photo photo) 
+    		throws ElementNotFoundException, DatabaseException {
+    	
+    	checkNotNull(performance, "Performance must not be null.");
+    	checkState(performance.getId() >= 0, "Performance must have a valid ID.");
+    	checkNotNull(photo, "Photo must not be null.");
+    	checkState(photo.getId() >= 0, "Photo must have a valid ID.");
+    	
+    	photoDao.removePhoto(performance.getId(), photo);
+    }
+    
 }

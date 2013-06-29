@@ -99,6 +99,7 @@ public class CategoryWizard extends Wizard {
             category.setDefaultBoolRating(first.isRating());
             category.setWidth(first.getWidth());
             category.setHeight(first.getHeight());
+            category.setCatalog(first.getCatalog().get());
         }
         else {
             category = new Category(first.getName(), first.getWidth(), first.getHeight(),

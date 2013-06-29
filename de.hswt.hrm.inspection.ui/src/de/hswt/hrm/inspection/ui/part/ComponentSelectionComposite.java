@@ -123,7 +123,7 @@ public class ComponentSelectionComposite extends Composite {
 
         ratingComposite = getRatingInstance(verticalSash);
         ContextInjectionFactory.inject(ratingComposite, context);
-
+        
         Section schemeSection = toolkit.createSection(verticalSash, Section.TITLE_BAR);
         toolkit.paintBordersFor(schemeSection);
         schemeSection.setText("Scheme");
