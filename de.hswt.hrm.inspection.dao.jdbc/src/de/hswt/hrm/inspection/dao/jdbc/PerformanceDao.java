@@ -24,6 +24,7 @@ import de.hswt.hrm.common.database.SqlQueryBuilder;
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.ElementNotFoundException;
 import de.hswt.hrm.common.database.exception.SaveException;
+import de.hswt.hrm.inspection.dao.core.IInspectionDao;
 import de.hswt.hrm.inspection.dao.core.IPerformanceDao;
 import de.hswt.hrm.inspection.model.Inspection;
 import de.hswt.hrm.inspection.model.Performance;
@@ -38,11 +39,12 @@ public class PerformanceDao implements IPerformanceDao {
 	private final ICurrentDao currentDao;
 	private final IActivityDao activityDao;
 	private final IPriorityDao priorityDao;
+	private final IInspectionDao inspectionDao;
 	
 	@Inject
 	public PerformanceDao(final ITargetDao targetDao, final ISchemeComponentDao schemeComponentDao,
 			final ICurrentDao currentDao, final IActivityDao activityDao, 
-			final IPriorityDao priorityDao) {
+			final IPriorityDao priorityDao, final IInspectionDao inspectionDao) {
 		// TODO add log messages
 		
 		this.schemeComponentDao = schemeComponentDao;
@@ -50,6 +52,7 @@ public class PerformanceDao implements IPerformanceDao {
 		this.currentDao = currentDao;
 		this.activityDao = activityDao;
 		this.priorityDao = priorityDao;
+		this.inspectionDao = inspectionDao;
 	}
 	
 	@Override
@@ -61,7 +64,8 @@ public class PerformanceDao implements IPerformanceDao {
 				Fields.TARGET_FK, 
 				Fields.CURRENT_FK, 
 				Fields.ACTIVITY_FK, 
-				Fields.PRIORITY_FK);
+				Fields.PRIORITY_FK,
+				Fields.INSPECTION_FK);
 
         String query = builder.toString();
 
@@ -92,7 +96,8 @@ public class PerformanceDao implements IPerformanceDao {
 				Fields.TARGET_FK, 
 				Fields.CURRENT_FK, 
 				Fields.ACTIVITY_FK, 
-				Fields.PRIORITY_FK);
+				Fields.PRIORITY_FK,
+				Fields.INSPECTION_FK);
         builder.where(Fields.INSPECTION_FK);
 
         String query = builder.toString();
@@ -122,6 +127,7 @@ public class PerformanceDao implements IPerformanceDao {
 		checkState(performance.getPriority().getId() >= 0, "Performance has an invalid ID.");
 		checkState(performance.getSchemeComponent().getId() >= 0, "SchemeComponent has an invalid ID.");
 		checkState(performance.getTarget().getId() >= 0, "Target has an invalid ID.");
+	    checkState(performance.getInspection().getId() >= 0, "Inspection has an invalid ID.");
 		
 		SqlQueryBuilder builder = new SqlQueryBuilder();
 		builder.insert(TABLE_NAME,
@@ -129,7 +135,8 @@ public class PerformanceDao implements IPerformanceDao {
 				Fields.TARGET_FK, 
 				Fields.CURRENT_FK, 
 				Fields.ACTIVITY_FK, 
-				Fields.PRIORITY_FK);
+				Fields.PRIORITY_FK,
+				Fields.INSPECTION_FK);
 		
 		String query = builder.toString();
 		
@@ -140,6 +147,7 @@ public class PerformanceDao implements IPerformanceDao {
 				stmt.setParameter(Fields.CURRENT_FK, performance.getCurrent().getId());
 				stmt.setParameter(Fields.ACTIVITY_FK, performance.getActivity().getId());
 				stmt.setParameter(Fields.PRIORITY_FK, performance.getPriority().getId());
+				stmt.setParameter(Fields.INSPECTION_FK, performance.getInspection().getId());
 				
 				int affected = stmt.executeUpdate();
 				
@@ -157,7 +165,8 @@ public class PerformanceDao implements IPerformanceDao {
                         		performance.getTarget(), 
                         		performance.getCurrent(), 
                         		performance.getActivity(), 
-                        		performance.getPriority());
+                        		performance.getPriority(),
+                        		performance.getInspection());
                     }
                     else {
                     	throw new SaveException("Could not retrieve generated ID.");
@@ -193,6 +202,9 @@ public class PerformanceDao implements IPerformanceDao {
 			int priorityId = JdbcUtil.getId(rs, Fields.PRIORITY_FK);
 			checkState(priorityId >= 0, "Invalid priority ID retrieved from database.");
 			Priority priority = priorityDao.findById(priorityId);
+	        int inspectionId = JdbcUtil.getId(rs, Fields.INSPECTION_FK);
+	        checkState(inspectionId >= 0, "Invalid inspection ID retrieved from database.");
+	        Inspection inspection = inspectionDao.findById(inspectionId);
 			
 			performanceList.add(new Performance(
 					id, 
@@ -200,13 +212,14 @@ public class PerformanceDao implements IPerformanceDao {
 					target, 
 					current, 
 					activity, 
-					priority));
+					priority,
+					inspection));
         }
         
         return performanceList;
 	}
 	
-	private static final String TABLE_NAME = "";
+	private static final String TABLE_NAME = "Performance";
 	
 	private static class Fields {
 		private static final String ID = "Performance_ID";
