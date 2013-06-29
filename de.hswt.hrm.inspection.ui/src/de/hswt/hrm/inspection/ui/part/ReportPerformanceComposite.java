@@ -1,6 +1,7 @@
 package de.hswt.hrm.inspection.ui.part;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -41,12 +42,15 @@ import de.hswt.hrm.catalog.service.CatalogService;
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.common.ui.swt.layouts.LayoutUtil;
+import de.hswt.hrm.common.ui.swt.utils.ContentProposalUtil;
 import de.hswt.hrm.component.model.Component;
 import de.hswt.hrm.inspection.model.tree.TreeTarget;
 import de.hswt.hrm.inspection.service.InspectionService;
 import de.hswt.hrm.inspection.ui.performance.tree.PerformanceTreeContentProvider;
 import de.hswt.hrm.inspection.ui.performance.tree.PerformanceTreeLabelProvider;
 import de.hswt.hrm.inspection.ui.stub.PerformanceStub;
+import de.hswt.hrm.misc.comment.model.Comment;
+import de.hswt.hrm.misc.priority.model.Priority;
 import de.hswt.hrm.misc.priority.service.PriorityService;
 import de.hswt.hrm.scheme.model.SchemeComponent;
 
@@ -185,6 +189,7 @@ public class ReportPerformanceComposite extends AbstractComponentRatingComposite
 
         Combo combo = new Combo(composite, SWT.DROP_DOWN | SWT.READ_ONLY);
         combo.setLayoutData(LayoutUtil.createHorzFillData());
+        initCommentAutoCompletion(combo);
         formToolkit.adapt(combo);
         formToolkit.paintBordersFor(combo);
 
@@ -310,6 +315,26 @@ public class ReportPerformanceComposite extends AbstractComponentRatingComposite
         });
 
     }
+    
+    private void initCommentAutoCompletion(Combo combo) {
+
+		Collection<Priority> prioritities;
+		try {
+			prioritities = priorityService.findAll();
+			String[] s = new String[prioritities.size()];
+			int i = 0;
+
+			for (Priority p : prioritities) {
+				s[i] = p.getText();
+				i++;
+			}
+			combo.setItems(s);
+			ContentProposalUtil.enableContentProposal(combo);
+		} catch (DatabaseException e) {
+			LOG.debug("An error occured", e);
+		}
+
+	}
 
     public ListViewer getComponentsList() {
         return componentsList;
