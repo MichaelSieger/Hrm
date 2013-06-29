@@ -92,6 +92,20 @@ public class ComponentDaoTest extends AbstractDatabaseTest {
         assertEquals("ID not set correctly.", parsed.getId(), fromDb.getId());
         compareComponents(component, fromDb);
     }
+    
+    @Test
+    public void testUpdate() throws ElementNotFoundException, DatabaseException {
+        IComponentDao componentDao = getInjectedDao();
+        Component component = getComponent();
+        Component parsed = componentDao.insert(component);
+        assertTrue("ID not set correctly.", parsed.getId() >= 0);
+        
+        parsed.setName("Some other name");
+        componentDao.update(parsed);
+        
+        Component actual = componentDao.findById(parsed.getId());
+        compareComponents(parsed, actual);
+    }
 
     @Test
     public void testAddAttribute() throws DatabaseException {
