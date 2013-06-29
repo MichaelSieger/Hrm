@@ -77,7 +77,7 @@ public class ReportPerformanceComposite extends AbstractComponentRatingComposite
     @Inject
     private PriorityService priorityService;
 
-    private ListViewer componentsList;
+//    private ListViewer componentsList;
     private ListViewer targetListViewer;
     private ListViewer currentListViewer;
     private ListViewer activityListViewer;
@@ -235,41 +235,7 @@ public class ReportPerformanceComposite extends AbstractComponentRatingComposite
     public void setSelectedComponent(Component component) {
     }
 
-    public void setComponentsList(ListViewer componentsList) {
-        this.componentsList = componentsList;
-        initalize();
-    }
-
     public void initalize() {
-        componentsList.getList().addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                IStructuredSelection selection = (IStructuredSelection) componentsList
-                        .getSelection();
-                if (selection == null) {
-                    return;
-                }
-                SchemeComponent sc = (SchemeComponent) selection.getFirstElement();
-                if (sc == null){
-                	if (sc == null){
-                		return;
-                	}
-                }
-                Catalog c = sc.getComponent().getCategory().get().getCatalog().get();
-                try {
-
-                    targetListViewer.setInput(catalogService.findTargetByCatalog(c));
-                    currentListViewer.getList().removeAll();
-                    activityListViewer.getList().removeAll();
-                    currentListViewer.getList().setEnabled(false);
-                    activityListViewer.getList().setEnabled(false);
-
-                }
-                catch (DatabaseException e1) {
-                    LOG.debug("An error occured", e);
-                }
-            }
-        });
         targetListViewer.getList().addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
@@ -388,10 +354,6 @@ public class ReportPerformanceComposite extends AbstractComponentRatingComposite
 
 	}
 
-    public ListViewer getComponentsList() {
-        return componentsList;
-    }
-
 	@Override
 	public void inspectionChanged(Inspection inspection) {
 		// TODO Auto-generated method stub
@@ -400,8 +362,23 @@ public class ReportPerformanceComposite extends AbstractComponentRatingComposite
 
 	@Override
 	public void inspectionComponentSelectionChanged(SchemeComponent component) {
-		// TODO Auto-generated method stub
-		
+        if (component == null){
+       		return;
+        }
+        Catalog c = component.getComponent().getCategory().get().getCatalog().get();
+        try {
+
+            targetListViewer.setInput(catalogService.findTargetByCatalog(c));
+            currentListViewer.getList().removeAll();
+            activityListViewer.getList().removeAll();
+            currentListViewer.getList().setEnabled(false);
+            activityListViewer.getList().setEnabled(false);
+
+        }
+        catch (DatabaseException e) {
+            LOG.debug("An error occured", e);
+        }
+        initalize();
 	}
 
 	@Override

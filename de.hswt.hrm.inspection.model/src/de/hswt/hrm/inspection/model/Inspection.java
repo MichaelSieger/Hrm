@@ -22,7 +22,7 @@ import com.google.common.base.Optional;
 public class Inspection {
     private final int id;
     private Layout layout;
-    private final Observable<Plant> plant = new Observable<>();
+    private Plant plant;
     private Contact requester;
     private Contact contractor;
     private Contact checker;
@@ -86,12 +86,12 @@ public class Inspection {
     }
 
     public Plant getPlant() {
-        return plant.get();
+        return plant;
     }
 
     public void setPlant(Plant plant) {
         checkNotNull(plant);
-        this.plant.set(plant);
+        this.plant = plant;
     }
 
     public Optional<Contact> getRequester() {
@@ -389,10 +389,6 @@ public class Inspection {
 
     // Observers
 
-    public void addPlantObserver(Observer<Plant> o) {
-        plant.addObserver(o);
-    }
-
     public void addPhysicalRatingObserver(Observer<Collection<PhysicalRating>> o) {
         physicalRatings.addObserver(o);
     }
@@ -401,11 +397,10 @@ public class Inspection {
         biologicalRatings.addObserver(o);
     }
     
-    public void clearObservers(){
-    	plant.clearObservers();
-    	physicalRatings.clearObservers();
-    	biologicalRatings.clearObservers();
-    }
+//    public void clearObservers(){
+//    	physicalRatings.clearObservers();
+//    	biologicalRatings.clearObservers();
+//    }
 
     @Override
     public int hashCode() {

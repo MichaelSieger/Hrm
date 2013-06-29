@@ -1,6 +1,5 @@
 package de.hswt.hrm.inspection.ui.part;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -15,7 +14,6 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.ActionContributionItem;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.window.IShellProvider;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
@@ -31,14 +29,6 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.base.Function;
-import com.google.common.base.Throwables;
-import com.google.common.collect.Collections2;
-
-import de.hswt.hrm.catalog.model.Catalog;
-import de.hswt.hrm.catalog.service.CatalogService;
-import de.hswt.hrm.common.database.exception.DatabaseException;
-import de.hswt.hrm.common.database.exception.ElementNotFoundException;
 import de.hswt.hrm.common.observer.Observer;
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.i18n.I18n;
@@ -54,20 +44,16 @@ import de.hswt.hrm.inspection.ui.grid.PhysicalDisplay;
 import de.hswt.hrm.inspection.ui.grid.SamplingPoints;
 import de.hswt.hrm.inspection.ui.listener.ComponentSelectionChangedListener;
 import de.hswt.hrm.inspection.ui.listener.InspectionObserver;
+import de.hswt.hrm.inspection.ui.listener.PlantChangedListener;
 import de.hswt.hrm.plant.model.Plant;
 import de.hswt.hrm.report.latex.service.ReportService;
-import de.hswt.hrm.scheme.model.Scheme;
 import de.hswt.hrm.scheme.model.SchemeComponent;
-import de.hswt.hrm.scheme.service.ComponentConverter;
 import de.hswt.hrm.scheme.service.SchemeService;
-import de.hswt.hrm.scheme.ui.SchemeGridItem;
 
-public class InspectionPart implements ComponentSelectionChangedListener{
+public class InspectionPart implements ComponentSelectionChangedListener, PlantChangedListener {
     
     private static final I18n I18N = I18nFactory.getI18n(InspectionPart.class);
     
-    private static final String RENDER_ERROR = "Error on rendering image";
-
     private final static Logger LOG = LoggerFactory.getLogger(InspectionPart.class);
 
     @Inject
@@ -180,7 +166,6 @@ public class InspectionPart implements ComponentSelectionChangedListener{
         reportGeneralComposite = new ReportGeneralComposite(tabFolder, this);
         ContextInjectionFactory.inject(reportGeneralComposite, context);
         inspectionObeserver.add(reportGeneralComposite);
-        reportGeneralComposite.addComponentSelectionListener(this);
         generalTab.setControl(reportGeneralComposite);
 
         biolocicalRatingTab = new TabItem(tabFolder, SWT.NONE);
@@ -189,8 +174,8 @@ public class InspectionPart implements ComponentSelectionChangedListener{
         biologicalComposite = new ComponentSelectionComposite(tabFolder,
                 ReportBiologicalComposite.class);
         ContextInjectionFactory.inject(biologicalComposite, context);
-        inspectionObeserver.add(biologicalComposite.getRatingComposite());
-        biologicalComposite.getRatingComposite().addComponentSelectionListener(this);
+        inspectionObeserver.add(biologicalComposite);
+        biologicalComposite.addComponentSelectionListener(this);
         biolocicalRatingTab.setControl(biologicalComposite);
 
         physicalRatingTab = new TabItem(tabFolder, SWT.NONE);
@@ -199,8 +184,8 @@ public class InspectionPart implements ComponentSelectionChangedListener{
         physicalComposite = new ComponentSelectionComposite(tabFolder,
                 ReportPhysicalComposite.class);
         ContextInjectionFactory.inject(physicalComposite, context);
-        inspectionObeserver.add(physicalComposite.getRatingComposite());
-        physicalComposite.getRatingComposite().addComponentSelectionListener(this);
+        inspectionObeserver.add(physicalComposite);
+        physicalComposite.addComponentSelectionListener(this);
         physicalRatingTab.setControl(physicalComposite);
 
         performanceTab = new TabItem(tabFolder, SWT.NONE);
@@ -209,8 +194,8 @@ public class InspectionPart implements ComponentSelectionChangedListener{
         performanceComposite = new ComponentSelectionComposite(tabFolder,
                 ReportPerformanceComposite.class);
         ContextInjectionFactory.inject(performanceComposite, context);
-        inspectionObeserver.add(performanceComposite.getRatingComposite());
-        performanceComposite.getRatingComposite().addComponentSelectionListener(this);
+        inspectionObeserver.add(performanceComposite);
+        performanceComposite.addComponentSelectionListener(this);
         performanceTab.setControl(performanceComposite);
         tabFolder.addSelectionListener(new SelectionAdapter() {
             @Override
@@ -268,9 +253,6 @@ public class InspectionPart implements ComponentSelectionChangedListener{
         }
 
         if (selectedInspection != inspection) {
-        	if(selectedInspection != null){
-        		selectedInspection.clearObservers();
-        	}
             selectedInspection = inspection;
 
             for (InspectionObserver observer : inspectionObeserver) {
@@ -285,12 +267,6 @@ public class InspectionPart implements ComponentSelectionChangedListener{
 
     private void initInspectionObservers() {
     	// TODO
-        selectedInspection.addPlantObserver(new Observer<Plant>() {
-            @Override
-            public void changed(Plant item) {
-                plantChangedSieger(item);
-            }
-        });
         SamplingPoints points = new SamplingPoints(biolocicalRatingTab.getDisplay());
         final CombinedDisplay combinedDisplay = new CombinedDisplay(performanceComposite.getInspectionSchemeGrid(), points);
         final BiologicalDisplay bDisplay = new BiologicalDisplay(biologicalComposite.getInspectionSchemeGrid(), points);
@@ -313,50 +289,6 @@ public class InspectionPart implements ComponentSelectionChangedListener{
 			}
 		});
         
-    }
-
-    private void plantChangedSieger(Plant plant) {
-        Scheme scheme;
-        try {
-            scheme = schemeService.findCurrentSchemeByPlant(plant);
-        }
-        catch (ElementNotFoundException e) {
-            // TODO what to do if there is no scheme?
-            throw Throwables.propagate(e);
-        }
-        catch (DatabaseException e) {
-            throw Throwables.propagate(e);
-        }
-        Collection<SchemeGridItem> schemeGridItems = Collections2.transform(
-                scheme.getSchemeComponents(), new Function<SchemeComponent, SchemeGridItem>() {
-                    public SchemeGridItem apply(SchemeComponent c) {
-                        try {
-                            return new SchemeGridItem(ComponentConverter.convert(
-                                    tabFolder.getDisplay(), c.getComponent()), c);
-                        }
-                        catch (IOException e) {
-                            LOG.error(RENDER_ERROR);
-                            return null;
-                        }
-                    }
-                });
-
-        List<SchemeComponent> input = new ArrayList<>();
-        for (SchemeGridItem item : schemeGridItems) {
-            input.add(item.asSchemeComponent());
-        }
-        performanceComposite.getComponentsList().setInput(input);
-        biologicalComposite.getComponentsList().setInput(input);
-        physicalComposite.getComponentsList().setInput(input);
-
-        physicalComposite.setSchemeGridItems(schemeGridItems);
-        biologicalComposite.setSchemeGridItems(schemeGridItems);
-        performanceComposite.setSchemeGridItems(schemeGridItems);
-        
-		final ReportPerformanceComposite rpc = (ReportPerformanceComposite) performanceComposite
-				.getRatingComposite();
-		rpc.setComponentsList(performanceComposite.getComponentsList());
-		
     }
 
     protected void showOverviewActions(boolean visible) {

@@ -6,6 +6,4 @@ import de.hswt.hrm.scheme.model.SchemeComponent;
 public interface ComponentSelectionChangedListener {
 
 	public void componentSelectionChanged(SchemeComponent component);
-
-	public void plantChanged(Plant plant);
 }

@@ -60,6 +60,9 @@ import de.hswt.hrm.inspection.service.InspectionService;
 import de.hswt.hrm.inspection.service.LayoutService;
 import de.hswt.hrm.inspection.ui.dialog.ContactSelectionDialog;
 import de.hswt.hrm.inspection.ui.dialog.PlantSelectionDialog;
+import de.hswt.hrm.inspection.ui.listener.ComponentSelectionChangedListener;
+import de.hswt.hrm.inspection.ui.listener.InspectionObserver;
+import de.hswt.hrm.inspection.ui.listener.PlantChangedListener;
 import de.hswt.hrm.misc.comment.model.Comment;
 import de.hswt.hrm.misc.comment.service.CommentService;
 import de.hswt.hrm.photo.model.Photo;
@@ -69,7 +72,7 @@ import de.hswt.hrm.scheme.model.SchemeComponent;
 import de.hswt.hrm.summary.model.Summary;
 import de.hswt.hrm.summary.service.SummaryService;
 
-public class ReportGeneralComposite extends AbstractComponentRatingComposite {
+public class ReportGeneralComposite extends Composite implements InspectionObserver {
 
     private final static Logger LOG = LoggerFactory.getLogger(ReportGeneralComposite.class);
     
@@ -129,8 +132,6 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
 
     Combo reportStyleCombo;
 
-    private InspectionPart inspectionPart;
-
     java.util.List<Photo> photos = new LinkedList<Photo>();
 
     private Inspection inspection;
@@ -155,6 +156,8 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
 
     private Photo selectedPlantPhoto;
 
+    private PlantChangedListener plantChangedListener;
+    
     /**
      * Do not use this constructor when instantiate this composite! It is only included to make the
      * WindowsBuilder working.
@@ -172,11 +175,11 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
      * 
      * @param parent
      */
-    public ReportGeneralComposite(Composite parent, InspectionPart inspectionPart) {
+    public ReportGeneralComposite(Composite parent, PlantChangedListener plantChangedListener) {
         super(parent, SWT.NONE);
-        this.inspectionPart = inspectionPart;
         formToolkit.dispose();
         formToolkit = FormUtil.createToolkit();
+        this.plantChangedListener = plantChangedListener;
     }
 
     @PostConstruct
@@ -306,6 +309,7 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
                 if (psd.open() == Window.OK) {
                     if (inspection != null) {
                         inspection.setPlant(psd.getPlant());
+                        plantChangedListener.plantChanged(psd.getPlant());
                     }
                 }
             }
@@ -1016,11 +1020,6 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
 
     }
 
-    @Override
-    public void setSelectedComponent(Component component) {
-
-    }
-
     private void fillGrades(Combo combo) {
         for (int i = 0; i < 6; i++) {
             combo.add(Integer.toString(i));
@@ -1279,28 +1278,27 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
     }
 
 	@Override
-	public void inspectionChanged(Inspection inspection) {
-        if (this.inspection != inspection) {
-            this.inspection = inspection;
-            if (inspection != null) {
-                inspection.addPlantObserver(new Observer<Plant>() {
-
-                    @Override
-                    public void changed(Plant item) {
-                        plantSelected(item);
-                    }
-                });
-            }
-        }
-        refreshGeneralInformation();
-    }
-
-	@Override
-	public void inspectionComponentSelectionChanged(SchemeComponent component) {
-		
+	public void plantChanged(Plant plant) {
 	}
 
 	@Override
-	public void plantChanged(Plant plant) {
+	public void inspectionChanged(Inspection inspection) {
+        if (this.inspection != inspection) {
+            this.inspection = inspection;
+//            if (inspection != null) {
+//                inspection.addPlantObserver(new Observer<Plant>() {
+//                    @Override
+//                    public void changed(Plant item) {
+//                        plantSelected(item);
+//                    }
+//                });
+//            }
+        }
+        refreshGeneralInformation();
+	}
+
+	@Override
+	public void inspectionComponentSelectionChanged(SchemeComponent component) {
+		// TODO Auto-generated method stub
 	}
 }

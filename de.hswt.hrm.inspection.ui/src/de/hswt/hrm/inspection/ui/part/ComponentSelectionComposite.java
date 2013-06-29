@@ -1,8 +1,10 @@
 package de.hswt.hrm.inspection.ui.part;
 
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -26,23 +28,41 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import com.google.common.base.Function;
 import com.google.common.base.Preconditions;
+import com.google.common.base.Throwables;
+import com.google.common.collect.Collections2;
 
-import de.hswt.hrm.common.observer.Observable;
-import de.hswt.hrm.common.observer.Observer;
+import de.hswt.hrm.common.database.exception.DatabaseException;
+import de.hswt.hrm.common.database.exception.ElementNotFoundException;
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
-import de.hswt.hrm.component.model.Component;
+import de.hswt.hrm.inspection.model.Inspection;
 import de.hswt.hrm.inspection.ui.grid.InspectionSchemeGrid;
 import de.hswt.hrm.inspection.ui.grid.SchemeComponentSelectionListener;
+import de.hswt.hrm.inspection.ui.listener.ComponentSelectionChangedListener;
+import de.hswt.hrm.inspection.ui.listener.InspectionObserver;
+import de.hswt.hrm.plant.model.Plant;
+import de.hswt.hrm.scheme.model.Scheme;
 import de.hswt.hrm.scheme.model.SchemeComponent;
+import de.hswt.hrm.scheme.service.ComponentConverter;
+import de.hswt.hrm.scheme.service.SchemeService;
 import de.hswt.hrm.scheme.ui.SchemeGridItem;
 
-public class ComponentSelectionComposite extends Composite {
+public class ComponentSelectionComposite extends Composite implements InspectionObserver {
 
+	private static final String RENDER_ERROR = "Error on rendering image";
+
+    private final static Logger LOG = LoggerFactory.getLogger(ComponentSelectionComposite.class);
+	
     @Inject
     private IEclipseContext context;
 
+    @Inject
+    private SchemeService schemeService;
+    
     private Class<? extends AbstractComponentRatingComposite> ratingCompositeClass;
 
     private FormToolkit toolkit = new FormToolkit(Display.getDefault());
@@ -53,8 +73,10 @@ public class ComponentSelectionComposite extends Composite {
 
     private InspectionSchemeGrid schemeGrid;
 
-    private Observable<SchemeComponent> selectedComponent = new Observable<>();
+    private SchemeComponent selectedComponent;
 
+    private java.util.List<ComponentSelectionChangedListener> componentSelectionListeners;
+    
     /**
      * Do not use this constructor when instantiate this composite! It is only included to make the
      * WindowsBuilder working.
@@ -79,6 +101,7 @@ public class ComponentSelectionComposite extends Composite {
         this.ratingCompositeClass = ratingCompositeClass;
         toolkit.dispose();
         toolkit = FormUtil.createToolkit();
+        componentSelectionListeners = new ArrayList<>();
     }
 
     @PostConstruct
@@ -108,10 +131,12 @@ public class ComponentSelectionComposite extends Composite {
                 IStructuredSelection sel = (IStructuredSelection) componentsList.getSelection();
                 Preconditions.checkArgument(sel.size() < 2);
                 if (sel.isEmpty()) {
-                    selectedComponent.set(null);
+                    setSelectComponent(null);
+                    fireComponentSelectionChanged(null);
                 }
                 else {
-                    selectedComponent.set((SchemeComponent) sel.getFirstElement());
+                    setSelectComponent((SchemeComponent) sel.getFirstElement());
+                    fireComponentSelectionChanged((SchemeComponent) sel.getFirstElement());
                 }
             }
         });
@@ -151,20 +176,19 @@ public class ComponentSelectionComposite extends Composite {
         schemeGrid.setSelectionListener(new SchemeComponentSelectionListener() {
 
             @Override
-            public void selected(SchemeComponent selected) {
-                selectedComponent.set(selected);
-            }
-        });
-        selectedComponent.addObserver(new Observer<SchemeComponent>() {
-
-            @Override
-            public void changed(SchemeComponent item) {
-                schemeGrid.setSelected(item);
-                setListSelection(item);
+            public void selected(SchemeComponent component) {
+                setSelectComponent(component);
+                fireComponentSelectionChanged(component);
             }
         });
 
         initListViewer();
+    }
+    
+    private void setSelectComponent(SchemeComponent component) {
+    	selectedComponent = component;
+        schemeGrid.setSelected(component);
+        setListSelection(component);
     }
     
     private void setListSelection(SchemeComponent c){
@@ -200,9 +224,7 @@ public class ComponentSelectionComposite extends Composite {
                         .compareToIgnoreCase(item2.getComponent().getName());
 
             }
-
         });
-
     }
 
     private AbstractComponentRatingComposite getRatingInstance(Control control) {
@@ -213,35 +235,58 @@ public class ComponentSelectionComposite extends Composite {
                         .newInstance(control);
             }
             catch (NoSuchMethodException | SecurityException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
             catch (InstantiationException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
             catch (IllegalAccessException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
             catch (IllegalArgumentException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
             catch (InvocationTargetException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }
         return composite;
     }
 
-    public ListViewer getComponentsList() {
-        return componentsList;
-    }
+    private void plantChangedInternal(Plant plant) {
+        Scheme scheme;
+        try {
+            scheme = schemeService.findCurrentSchemeByPlant(plant);
+        }
+        catch (ElementNotFoundException e) {
+            // TODO what to do if there is no scheme?
+            throw Throwables.propagate(e);
+        }
+        catch (DatabaseException e) {
+            throw Throwables.propagate(e);
+        }
+    	
+        Collection<SchemeGridItem> schemeGridItems = Collections2.transform(
+                scheme.getSchemeComponents(), new Function<SchemeComponent, SchemeGridItem>() {
+                    public SchemeGridItem apply(SchemeComponent c) {
+                        try {
+                            return new SchemeGridItem(ComponentConverter.convert(
+                                    getDisplay(), c.getComponent()), c);
+                        }
+                        catch (IOException e) {
+                            LOG.error(RENDER_ERROR);
+                            return null;
+                        }
+                    }
+                });
+        schemeGrid.setItems(schemeGridItems);
+        
+        List<SchemeComponent> input = new ArrayList<>();
+        for (SchemeGridItem item : schemeGridItems) {
+            input.add(item.asSchemeComponent());
+        }
 
-    public void setSchemeGridItems(Collection<SchemeGridItem> items) {
-        schemeGrid.setItems(items);
+        componentsList.setInput(input);
     }
     
     public InspectionSchemeGrid getInspectionSchemeGrid(){
@@ -252,23 +297,50 @@ public class ComponentSelectionComposite extends Composite {
     	return ratingComposite;
     }
 
+	public SchemeComponent getSelectedSchemeComponent() {
+		return selectedComponent;
+	}
+
+	@Override
+	public void inspectionChanged(Inspection inspection) {
+		plantChangedInternal(inspection.getPlant());
+		ratingComposite.inspectionChanged(inspection);
+	}
+
+	@Override
+	public void inspectionComponentSelectionChanged(SchemeComponent component) {
+		setSelectComponent(component);
+		ratingComposite.inspectionComponentSelectionChanged(component);
+	}
+
+	@Override
+	public void plantChanged(Plant plant) {
+		plantChangedInternal(plant);
+		ratingComposite.plantChanged(plant);
+	}
+
+	private void fireComponentSelectionChanged(SchemeComponent component) {
+		for (ComponentSelectionChangedListener listener : componentSelectionListeners)  {
+			listener.componentSelectionChanged(component);
+		}
+	}
+
+	public void addComponentSelectionListener(ComponentSelectionChangedListener listener) {
+		componentSelectionListeners.add(listener);
+	}
+
+	public void removeComponentSelectionListener(ComponentSelectionChangedListener listener) {
+		componentSelectionListeners.remove(listener);
+	}
+    
     @Override
     public void dispose() {
         toolkit.dispose();
         super.dispose();
     }
 
-    public void addSchemeComponentSelectionObserver(Observer<SchemeComponent> o) {
-        selectedComponent.addObserver(o);
-    }
-
     @Override
     protected void checkSubclass() {
         // Disable the check that prevents subclassing of SWT components
     }
-
-	public SchemeComponent getSelectedSchemeComponent() {
-		return selectedComponent.get();
-	}
-
 }
