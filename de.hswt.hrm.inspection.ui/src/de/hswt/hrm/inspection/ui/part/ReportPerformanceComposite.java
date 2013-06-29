@@ -47,6 +47,7 @@ import de.hswt.hrm.inspection.service.InspectionService;
 import de.hswt.hrm.inspection.ui.performance.tree.PerformanceTreeContentProvider;
 import de.hswt.hrm.inspection.ui.performance.tree.PerformanceTreeLabelProvider;
 import de.hswt.hrm.inspection.ui.stub.PerformanceStub;
+import de.hswt.hrm.misc.priority.service.PriorityService;
 import de.hswt.hrm.scheme.model.SchemeComponent;
 
 public class ReportPerformanceComposite extends AbstractComponentRatingComposite {
@@ -62,6 +63,9 @@ public class ReportPerformanceComposite extends AbstractComponentRatingComposite
 
     @Inject
     private IShellProvider shellProvider;
+    
+    @Inject
+    private PriorityService priorityService;
 
     private ListViewer componentsList;
     private ListViewer targetListViewer;
