@@ -35,11 +35,11 @@ public class PerformanceTreeContentProvider implements ITreeContentProvider {
     public Object[] getChildren(Object parentElement) {
         if (parentElement instanceof TreeTarget) {
             TreeTarget target = (TreeTarget) parentElement;
-            return target.getCurrent().toArray();
+            return target.getCurrents().toArray();
         }
         else if (parentElement instanceof TreeCurrent) {
             TreeCurrent current = (TreeCurrent) parentElement;
-            return current.getActivity().toArray();
+            return current.getActivities().toArray();
         }
         return EMPTY_ARRAY;
     }
