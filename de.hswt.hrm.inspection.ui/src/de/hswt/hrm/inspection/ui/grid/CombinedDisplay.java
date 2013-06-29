@@ -11,6 +11,7 @@ import de.hswt.hrm.inspection.model.BiologicalRating;
 import de.hswt.hrm.inspection.model.PhysicalRating;
 import de.hswt.hrm.scheme.model.SchemeComponent;
 import de.hswt.hrm.scheme.ui.Colorbox;
+import de.hswt.hrm.scheme.ui.SchemeGridItem;
 
 public class CombinedDisplay extends RatingDisplay{
 
@@ -35,20 +36,21 @@ public class CombinedDisplay extends RatingDisplay{
 		InspectionSchemeGrid grid = getSchemeGrid();
 		grid.clearColors();
 		Color[] colors = getColors();
+		Collection<SchemeGridItem> items = grid.getItems();
 		for(BiologicalRating r : biologicalRatings){
+			SchemeComponent component = findById(items, r.getComponent());
 			int rating = r.getRating();
 			Preconditions.checkArgument(rating >= 0 && rating <= colors.length);
-			SchemeComponent c = r.getComponent();
-			double m = ((double)r.getComponent().getWidth())/2 + 1;
-			Colorbox b = new Colorbox(c.getX(), c.getY(), m, c.getHeight(), colors[rating]);
+			double m = ((double)component.getWidth())/2 + 1;
+			Colorbox b = new Colorbox(component.getX(), component.getY(), m, component.getHeight(), colors[rating]);
 			grid.addColorbox(b);
 		}
 		for(PhysicalRating r : physicalRatings){
+			SchemeComponent component = findById(items, r.getComponent());
 			int rating = r.getRating();
 			Preconditions.checkArgument(rating >= 0 && rating <= colors.length);
-			SchemeComponent c = r.getComponent();
 			double m = ((double)r.getComponent().getWidth())/2;
-			Colorbox b = new Colorbox(m + c.getX(), c.getY(), c.getWidth() - m, c.getHeight(), colors[rating]);
+			Colorbox b = new Colorbox(m + component.getX(), component.getY(), component.getWidth() - m, component.getHeight(), colors[rating]);
 			grid.addColorbox(b);
 		}
 	}
