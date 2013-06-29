@@ -68,15 +68,11 @@ public class DragData
      * @throws DatabaseException 
      * @throws ElementNotFoundException 
      */
-    public SchemeGridItem toSchemeGridItem(List<RenderedComponent> comps, SchemeService schemeService, ComponentService componentService){
+    public SchemeGridItem toSchemeGridItem(List<RenderedComponent> comps, Scheme scheme, ComponentService componentService){
     	Preconditions.checkNotNull(comps);
-    	Preconditions.checkNotNull(schemeService);
+    	Preconditions.checkNotNull(scheme);
     	Preconditions.checkNotNull(componentService);
     	try {
-    		Scheme scheme = null;
-    		if(schemeId != -1){
-    			scheme = schemeService.findById(schemeId);
-    		}
 			return new SchemeGridItem(comps.get(renderedComponentIndex), 
 												new SchemeComponent(scheme, 
 														x, 
