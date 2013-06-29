@@ -38,21 +38,21 @@ import de.hswt.hrm.scheme.dao.core.ISchemeDao;
 import de.hswt.hrm.scheme.model.Scheme;
 
 public class InspectionDao implements IInspectionDao {
-    // FIXME Make dao injectable
-    ILayoutDao layoutDao = new LayoutDao();
 
     private final IContactDao contactDao;
     private final IPlantDao plantDao;
     private final IPhotoDao photoDao;
     private final ISchemeDao schemeDao;
-    
+    private final ILayoutDao layoutDao;
+
     @Inject
-    public InspectionDao(IContactDao contactDao, IPlantDao plantDao, IPhotoDao photoDao, ISchemeDao schemeDao) {
+    public InspectionDao(IContactDao contactDao, IPlantDao plantDao, IPhotoDao photoDao,
+            ISchemeDao schemeDao, ILayoutDao layoutDao) {
         this.contactDao = contactDao;
         this.plantDao = plantDao;
         this.photoDao = photoDao;
         this.schemeDao = schemeDao;
-
+        this.layoutDao = layoutDao;
     }
 
     @Override
@@ -85,16 +85,16 @@ public class InspectionDao implements IInspectionDao {
             throw new DatabaseException("Unexpected error.", e);
         }
     }
-    
+
     @Override
     public Scheme findScheme(Inspection inspection) throws DatabaseException {
-    	checkNotNull(inspection, "Inspection must not be null.");
-    	checkState(inspection.getId() >= 0, "ID must be non negative.");
+        checkNotNull(inspection, "Inspection must not be null.");
+        checkState(inspection.getId() >= 0, "ID must be non negative.");
 
         SqlQueryBuilder builder = new SqlQueryBuilder();
         builder.select(TABLE_NAME, Fields.SCHEME);
         builder.where(Fields.ID);
-        
+
         String query = builder.toString();
 
         try (Connection con = DatabaseFactory.getConnection()) {
@@ -106,7 +106,7 @@ public class InspectionDao implements IInspectionDao {
                 int schemeId = JdbcUtil.getId(rs, Fields.SCHEME);
                 checkState(schemeId >= 0, "Invalid scheme ID returned from database.");
                 DbUtils.closeQuietly(rs);
-                
+
                 return schemeDao.findById(schemeId);
             }
         }
