@@ -54,7 +54,7 @@ public class SamplingPoints {
 	
 	public RenderedComponent getRenderedComponent(SamplingPointType type, boolean isEven){
 		RenderedComponent comp;
-		int index = (isEven ? 1 : 0);
+		int index = (isEven ? 0 : 1);
 		switch(type){
 		case airMeasurement:
 			comp = airMeasurement[index];
@@ -108,7 +108,7 @@ public class SamplingPoints {
 	}
 	
 	private Category getSamplePointCategory(int w){
-		return new Category("Sampling Points", w, 1, 1, false);
+		return new Category(String.format("Sampling Points size=%d", w), w, 1, 1, false);
 	}
 
 }
