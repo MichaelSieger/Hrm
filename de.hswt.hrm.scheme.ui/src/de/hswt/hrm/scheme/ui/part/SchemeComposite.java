@@ -467,6 +467,7 @@ public class SchemeComposite extends Composite {
             eda.open();
 
             Map<Attribute, String> newValues = eda.getNewValues();
+            System.out.println(newValues);
             for (Entry<Attribute, String> entry : newValues.entrySet()) {
 
                 schemeService.setAttributeValue(schemeComponent, entry.getKey(), entry.getValue());

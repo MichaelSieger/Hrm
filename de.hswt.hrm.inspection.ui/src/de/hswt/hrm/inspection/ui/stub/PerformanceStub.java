@@ -7,9 +7,9 @@ import de.hswt.hrm.catalog.model.Activity;
 import de.hswt.hrm.catalog.model.Catalog;
 import de.hswt.hrm.catalog.model.Current;
 import de.hswt.hrm.catalog.model.Target;
-import de.hswt.hrm.inspection.model.tree.TreeCatalog;
-import de.hswt.hrm.inspection.model.tree.TreeCurrent;
-import de.hswt.hrm.inspection.model.tree.TreeTarget;
+import de.hswt.hrm.catalog.model.tree.TreeCatalog;
+import de.hswt.hrm.catalog.model.tree.TreeCurrent;
+import de.hswt.hrm.catalog.model.tree.TreeTarget;
 
 public final class PerformanceStub {
 	

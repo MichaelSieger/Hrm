@@ -5,8 +5,8 @@ import java.util.List;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
-import de.hswt.hrm.inspection.model.tree.TreeCurrent;
-import de.hswt.hrm.inspection.model.tree.TreeTarget;
+import de.hswt.hrm.catalog.model.tree.TreeCurrent;
+import de.hswt.hrm.catalog.model.tree.TreeTarget;
 
 public class PerformanceTreeContentProvider implements ITreeContentProvider {
 

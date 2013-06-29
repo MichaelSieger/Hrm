@@ -4,5 +4,6 @@ Bundle-Name: Model
 Bundle-SymbolicName: de.hswt.hrm.catalog.model
 Bundle-Version: 0.0.1.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Export-Package: de.hswt.hrm.catalog.model
+Export-Package: de.hswt.hrm.catalog.model,
+ de.hswt.hrm.catalog.model.tree
 Import-Package: com.google.common.base
