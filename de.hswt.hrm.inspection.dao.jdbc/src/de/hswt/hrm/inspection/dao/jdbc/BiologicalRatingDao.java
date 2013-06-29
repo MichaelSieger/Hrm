@@ -22,7 +22,6 @@ import de.hswt.hrm.common.database.SqlQueryBuilder;
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.ElementNotFoundException;
 import de.hswt.hrm.common.database.exception.SaveException;
-import de.hswt.hrm.common.exception.NotImplementedException;
 import de.hswt.hrm.inspection.dao.core.IBiologicalRatingDao;
 import de.hswt.hrm.inspection.dao.core.IInspectionDao;
 import de.hswt.hrm.inspection.model.BiologicalRating;
@@ -203,9 +202,48 @@ public class BiologicalRatingDao implements IBiologicalRatingDao {
 
     @Override
     public void update(BiologicalRating biological) throws ElementNotFoundException, SaveException {
+        checkNotNull(biological, "Physical Rating must not be null.");
         checkState(biological.isValid(), "Biological Rating is invalid");
 
-        throw new NotImplementedException();
+        if (biological.getId() < 0) {
+            throw new ElementNotFoundException("Element has no valid ID.");
+        }
+
+        SqlQueryBuilder builder = new SqlQueryBuilder();
+        builder.update(TABLE_NAME, Fields.BACTERIA, Fields.RATING, Fields.QUANTIFIER,
+                Fields.COMMENT, Fields.FK_COMPONENT, Fields.FK_REPORT, Fields.FLAG,
+                Fields.SAMPLINGPOINTTYPE);
+        builder.where(Fields.ID);
+
+        final String query = builder.toString();
+
+        try (Connection con = DatabaseFactory.getConnection()) {
+            try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
+
+                stmt.setParameter(Fields.BACTERIA, biological.getBacteriaCount());
+                stmt.setParameter(Fields.RATING, biological.getRating());
+                stmt.setParameter(Fields.QUANTIFIER, biological.getQuantifier());
+                stmt.setParameter(Fields.COMMENT, biological.getComment());
+                stmt.setParameter(Fields.FK_COMPONENT, biological.getComponent().getId());
+                stmt.setParameter(Fields.FK_REPORT, biological.getInspection().getId());
+                stmt.setParameter(Fields.FLAG, biological.getFlag());
+                if (biological.getSamplingPointType().isPresent()) {
+                    stmt.setParameter(Fields.SAMPLINGPOINTTYPE, biological.getSamplingPointType()
+                            .get().ordinal());
+                }
+                else {
+                    stmt.setParameterNull(Fields.SAMPLINGPOINTTYPE);
+                }
+                int affectedRows = stmt.executeUpdate();
+                if (affectedRows != 1) {
+                    throw new SaveException();
+                }
+            }
+        }
+        catch (SQLException | DatabaseException e) {
+            throw new SaveException(e);
+        }
+
     }
 
     /**
