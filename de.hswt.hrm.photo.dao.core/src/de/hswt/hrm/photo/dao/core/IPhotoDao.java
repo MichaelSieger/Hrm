@@ -41,4 +41,13 @@ public interface IPhotoDao {
      * @throws SaveException If the photo could not be updated.
      */
     void update(Photo photo) throws ElementNotFoundException, SaveException;
+
+    /**
+     * Find photos for the given performance.
+     * 
+     * @param id
+     * @return
+     * @throws DatabaseException 
+     */
+	Collection<Photo> findByPerformance(int id) throws DatabaseException;
 }

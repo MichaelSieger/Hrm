@@ -15,4 +15,6 @@ Import-Package: de.hswt.hrm.common.database.exception,
  de.hswt.hrm.common.exception,
  de.hswt.hrm.inspection.dao.core,
  de.hswt.hrm.inspection.model,
+ de.hswt.hrm.photo.dao.core,
+ de.hswt.hrm.photo.model,
  de.hswt.hrm.scheme.model

@@ -12,6 +12,7 @@ import java.util.Collection;
 import org.apache.commons.dbutils.DbUtils;
 
 import de.hswt.hrm.common.database.DatabaseFactory;
+import de.hswt.hrm.common.database.DatabaseUtil;
 import de.hswt.hrm.common.database.NamedParameterStatement;
 import de.hswt.hrm.common.database.SqlQueryBuilder;
 import de.hswt.hrm.common.database.exception.DatabaseException;
@@ -76,6 +77,45 @@ public class PhotoDao implements IPhotoDao {
             throw new DatabaseException(e);
         }
     }
+    
+	@Override
+	public Collection<Photo> findByPerformance(final int id) throws DatabaseException {
+		checkArgument(id >= 0, "ID must be greater or equal to 0.");
+		
+		StringBuilder builder = new StringBuilder();
+		builder.append("SELECT");
+		builder.append(" ").append(Fields.ID);
+		builder.append(", ").append(Fields.BLOB);
+		builder.append(", ").append(Fields.NAME);
+		builder.append(", ").append(Fields.LABEL);
+		builder.append(" FROM ").append(TABLE_NAME);
+		builder.append(" JOIN ").append(PERFOMANCE_CROSS_TABLE);
+		builder.append(" ON ").append(TABLE_NAME).append(".").append(Fields.ID);
+		builder.append(" = ");
+		builder.append(PERFOMANCE_CROSS_TABLE).append(".").append(PerfCrossFields.FK_PICTURE);
+		builder.append(" WHERE ");
+		builder.append(PERFOMANCE_CROSS_TABLE).append(".").append(PerfCrossFields.FK_PERFORMANCE);
+		builder.append(" = :").append(PerfCrossFields.FK_PERFORMANCE).append(";");
+		
+		String query = builder.toString();
+		
+		try (Connection con = DatabaseFactory.getConnection()) {
+			try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
+				stmt.setParameter(PerfCrossFields.FK_PERFORMANCE, id);
+				
+				ResultSet rs = stmt.executeQuery();
+				Collection<Photo> photos = fromResultSet(rs);
+				DbUtils.closeQuietly(rs);
+				
+				return photos;
+			}
+		}
+		catch (SQLException e) {
+			DatabaseUtil.throwUnexpectedException(e);
+			// TODO find better implementation to avoid return null
+			return null; // unreachable
+		}
+	}
 
     @Override
     public Photo insert(Photo photo) throws SaveException {
@@ -174,5 +214,12 @@ public class PhotoDao implements IPhotoDao {
         private static final String BLOB = "Picture_Blob";
         private static final String NAME = "Picture_Name";
         private static final String LABEL = "Picture_Label";
+    }
+    
+    private static final String PERFOMANCE_CROSS_TABLE = "Picture_Catalog";
+    
+    private static final class PerfCrossFields {
+    	private static final String FK_PICTURE = "Picture_Catalog_Picture_FK";
+    	private static final String FK_PERFORMANCE = "Picture_Catalog_Performance_FK";
     }
 }
