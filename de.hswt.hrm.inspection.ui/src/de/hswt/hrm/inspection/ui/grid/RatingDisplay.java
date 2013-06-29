@@ -69,7 +69,7 @@ public class RatingDisplay {
 		grid.addAll(samplePointItems);
 	}
 	
-	private SchemeComponent findById(Collection<SchemeGridItem> items, SchemeComponent c){
+	protected SchemeComponent findById(Collection<SchemeGridItem> items, SchemeComponent c){
 		for(SchemeGridItem i : items){
 			if(i.asSchemeComponent().getId() == c.getId()){
 				return i.asSchemeComponent();
