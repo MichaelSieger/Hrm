@@ -229,8 +229,8 @@ public class InspectionPart implements ComponentSelectionChangedListener, PlantC
 				}
 			}
 		});
-        ((ReportPhysicalComposite)physicalComposite.getRatingComposite())
-        		.addGradeSelectionObserver(new Observer<Integer>() {
+        ReportPhysicalComposite reportPhy = (ReportPhysicalComposite)physicalComposite.getRatingComposite();
+        reportPhy.addGradeSelectionObserver(new Observer<Integer>() {
 
 					@Override
 					public void changed(Integer item) {
@@ -240,6 +240,16 @@ public class InspectionPart implements ComponentSelectionChangedListener, PlantC
 						}
 					}
 				});
+        reportPhy.addSamplePointObserver(new Observer<SamplingPointType>() {
+			
+			@Override
+			public void changed(SamplingPointType item) {
+				SchemeComponent c = physicalComposite.getSelectedSchemeComponent();
+				if(c != null){
+					selectedInspection.setPhysicalRatingSamplingPoint(c, item);
+				}
+			}
+		});
         createActions();
     }
 
@@ -288,7 +298,6 @@ public class InspectionPart implements ComponentSelectionChangedListener, PlantC
 				combinedDisplay.updatePhysical(item);
 			}
 		});
-        
     }
 
     protected void showOverviewActions(boolean visible) {
