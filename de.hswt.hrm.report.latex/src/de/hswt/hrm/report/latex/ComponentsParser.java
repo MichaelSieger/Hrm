@@ -43,7 +43,7 @@ public class ComponentsParser {
     private StringBuffer bufferTable;
     private BufferedReader reader;
     private String line;
-    private String target;
+    private String targetTable;
 
     private Inspection inspection;
     private Plant plant;
@@ -57,8 +57,8 @@ public class ComponentsParser {
     private String innerRow;
     private StringBuffer innerRowTarget;
 
-    private String outerRow;
-    private StringBuffer outerRowTarget;
+    private String outerTable;
+    private StringBuffer outerTableTarget;
 
     public ComponentsParser(String path, Inspection inspection,
             Collection<Map<Attribute, String>> componentAttributes) {
@@ -83,7 +83,7 @@ public class ComponentsParser {
                 bufferTable.append("\n");
             }
         }
-        this.target = bufferTable.toString();
+        this.targetTable = bufferTable.toString();
 
         Path pathRow = FileSystems.getDefault().getPath(this.path, FILE_DIR, FILE_NAME_ROW);
         bufferRow.setLength(0);
@@ -103,11 +103,11 @@ public class ComponentsParser {
         parseRowOverview();
         parseRow();
 
-        target = target.replace(TABLE_COMPONENT_NAME, PLANT_OVERVIEW);
-        target = target.replace(TABLE_ROW, rowsOverview.toString());
-        endTarget.append(target);
+        targetTable = targetTable.replace(TABLE_COMPONENT_NAME, PLANT_OVERVIEW);
+        targetTable = targetTable.replace(TABLE_ROW, rowsOverview.toString());
+        endTarget.append(targetTable);
         endTarget.append("\n");
-        endTarget.append(outerRowTarget.toString());
+        endTarget.append(outerTableTarget.toString());
 
         return endTarget.toString();
 
@@ -117,8 +117,8 @@ public class ComponentsParser {
         for (Map<Attribute, String> attributes : componentAttributes) {
             // for each scheme component
             if (!attributes.isEmpty()) {
-                this.outerRow = bufferTable.toString();
-                outerRow = outerRow.replace(TABLE_COMPONENT_NAME, attributes.keySet().iterator()
+                this.outerTable = bufferTable.toString();
+                outerTable = outerTable.replace(TABLE_COMPONENT_NAME, attributes.keySet().iterator()
                         .next().getComponent().getName());
             }
 
@@ -130,9 +130,9 @@ public class ComponentsParser {
                 this.innerRowTarget.append(innerRow);
                 this.innerRowTarget.append("\n");
             }
-            outerRow = outerRow.replace(TABLE_ROW, innerRowTarget.toString());
-            outerRowTarget.append(outerRow);
-            outerRowTarget.append("\n");
+            outerTable = outerTable.replace(TABLE_ROW, innerRowTarget.toString());
+            outerTableTarget.append(outerTable);
+            outerTableTarget.append("\n");
 
         }
 

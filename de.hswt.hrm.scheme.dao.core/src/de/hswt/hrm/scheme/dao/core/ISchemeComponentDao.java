@@ -47,7 +47,7 @@ public interface ISchemeComponentDao {
      * @throws DatabaseException
      * @throws IllegalStateException If the attribute does not belong to the component.
      */
-    void setAttributeValue(SchemeComponent component, Attribute attribute, String value)
+    void addAttributeValue(SchemeComponent component, Attribute attribute, String value)
     		throws DatabaseException;
     
     /**
@@ -101,5 +101,11 @@ public interface ISchemeComponentDao {
 	 * @throws DatabaseException
 	 */
 	void delete(SchemeComponent component, Attribute attribute)
+			throws DatabaseException;
+
+	void updateAttributeValue(SchemeComponent comp, Attribute attribute,
+			String value) throws DatabaseException;
+
+	boolean hasAttributeValue(SchemeComponent component, Attribute attribute)
 			throws DatabaseException;
 }

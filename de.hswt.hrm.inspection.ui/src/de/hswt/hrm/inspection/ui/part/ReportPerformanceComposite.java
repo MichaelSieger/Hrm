@@ -1,7 +1,6 @@
 package de.hswt.hrm.inspection.ui.part;
 
 import java.util.ArrayList;
-import java.util.Collection;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -42,315 +41,274 @@ import de.hswt.hrm.catalog.service.CatalogService;
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.common.ui.swt.layouts.LayoutUtil;
-import de.hswt.hrm.common.ui.swt.utils.ContentProposalUtil;
 import de.hswt.hrm.component.model.Component;
+import de.hswt.hrm.inspection.model.tree.TreeTarget;
 import de.hswt.hrm.inspection.service.InspectionService;
-import de.hswt.hrm.inspection.treeviewer.model.MockModel;
-import de.hswt.hrm.inspection.treeviewer.model.TreeTarget;
 import de.hswt.hrm.inspection.ui.performance.tree.PerformanceTreeContentProvider;
 import de.hswt.hrm.inspection.ui.performance.tree.PerformanceTreeLabelProvider;
-import de.hswt.hrm.misc.comment.model.Comment;
-import de.hswt.hrm.misc.priority.model.Priority;
-import de.hswt.hrm.misc.priority.service.PriorityService;
+import de.hswt.hrm.inspection.ui.stub.PerformanceStub;
 import de.hswt.hrm.scheme.model.SchemeComponent;
 
-public class ReportPerformanceComposite extends
-		AbstractComponentRatingComposite {
+public class ReportPerformanceComposite extends AbstractComponentRatingComposite {
 
-	@Inject
-	private InspectionService inspectionService;
+    @Inject
+    private InspectionService inspectionService;
 
-	@Inject
-	private IEclipseContext context;
+    @Inject
+    private IEclipseContext context;
 
-	@Inject
-	private CatalogService catalogService;
+    @Inject
+    private CatalogService catalogService;
 
-	@Inject
-	private PriorityService priorityService;
+    @Inject
+    private IShellProvider shellProvider;
 
-	@Inject
-	private IShellProvider shellProvider;
+    private ListViewer componentsList;
+    private ListViewer targetListViewer;
+    private ListViewer currentListViewer;
+    private ListViewer activityListViewer;
+    private TreeViewer treeViewer;
+    private FormToolkit formToolkit = new FormToolkit(Display.getDefault());
 
-	private ListViewer componentsList;
-	private ListViewer targetListViewer;
-	private ListViewer currentListViewer;
-	private ListViewer activityListViewer;
-	private TreeViewer treeViewer;
-	private FormToolkit formToolkit = new FormToolkit(Display.getDefault());
+    private static final Logger LOG = LoggerFactory.getLogger(ReportPerformanceComposite.class);
 
-	private static final Logger LOG = LoggerFactory
-			.getLogger(ReportPerformanceComposite.class);
+    /**
+     * Do not use this constructor when instantiate this composite! It is only included to make the
+     * WindowsBuilder working.
+     * 
+     * @param parent
+     * @param style
+     */
+    private ReportPerformanceComposite(Composite parent, int style) {
+        super(parent, SWT.NONE);
+        createControls();
+    }
 
-	/**
-	 * Do not use this constructor when instantiate this composite! It is only
-	 * included to make the WindowsBuilder working.
-	 * 
-	 * @param parent
-	 * @param style
-	 */
-	private ReportPerformanceComposite(Composite parent, int style) {
-		super(parent, SWT.NONE);
-		createControls();
-	}
+    /**
+     * Create the composite.
+     * 
+     * @param parent
+     */
+    public ReportPerformanceComposite(Composite parent) {
+        super(parent, SWT.NONE);
+        formToolkit.dispose();
+        formToolkit = FormUtil.createToolkit();
+    }
 
-	/**
-	 * Create the composite.
-	 * 
-	 * @param parent
-	 */
-	public ReportPerformanceComposite(Composite parent) {
-		super(parent, SWT.NONE);
-		formToolkit.dispose();
-		formToolkit = FormUtil.createToolkit();
-	}
+    @PostConstruct
+    public void createControls() {
+        setBackgroundMode(SWT.INHERIT_FORCE);
+        GridLayout gl = new GridLayout(5, false);
+        gl.marginWidth = 0;
+        gl.marginHeight = 0;
+        gl.marginLeft = 5;
+        gl.marginBottom = 5;
+        setLayout(gl);
 
-	@PostConstruct
-	public void createControls() {
-		setBackgroundMode(SWT.INHERIT_FORCE);
-		GridLayout gl = new GridLayout(5, false);
-		gl.marginWidth = 0;
-		gl.marginHeight = 0;
-		gl.marginLeft = 5;
-		gl.marginBottom = 5;
-		setLayout(gl);
+        Section targetSection = formToolkit.createSection(this, Section.TITLE_BAR);
+        targetSection.setLayoutData(LayoutUtil.createFillData());
+        formToolkit.paintBordersFor(targetSection);
+        FormUtil.initSectionColors(targetSection);
+        targetSection.setText("Targets");
 
-		Section targetSection = formToolkit.createSection(this,
-				Section.TITLE_BAR);
-		targetSection.setLayoutData(LayoutUtil.createFillData());
-		formToolkit.paintBordersFor(targetSection);
-		FormUtil.initSectionColors(targetSection);
-		targetSection.setText("Targets");
+        targetListViewer = new ListViewer(targetSection, SWT.BORDER | SWT.V_SCROLL);
+        List targetList = targetListViewer.getList();
+        targetSection.setClient(targetList);
 
-		targetListViewer = new ListViewer(targetSection, SWT.BORDER
-				| SWT.V_SCROLL);
-		List targetList = targetListViewer.getList();
-		targetSection.setClient(targetList);
+        Section currentSection = formToolkit.createSection(this, Section.TITLE_BAR);
+        currentSection.setLayoutData(LayoutUtil.createFillData());
+        formToolkit.paintBordersFor(currentSection);
+        FormUtil.initSectionColors(currentSection);
+        currentSection.setText("Current");
 
-		Section currentSection = formToolkit.createSection(this,
-				Section.TITLE_BAR);
-		currentSection.setLayoutData(LayoutUtil.createFillData());
-		formToolkit.paintBordersFor(currentSection);
-		FormUtil.initSectionColors(currentSection);
-		currentSection.setText("Current");
+        currentListViewer = new ListViewer(currentSection, SWT.BORDER | SWT.V_SCROLL);
+        List currentList = currentListViewer.getList();
+        currentSection.setClient(currentList);
 
-		currentListViewer = new ListViewer(currentSection, SWT.BORDER
-				| SWT.V_SCROLL);
-		List currentList = currentListViewer.getList();
-		currentSection.setClient(currentList);
+        Section activitySection = formToolkit.createSection(this, Section.TITLE_BAR);
+        activitySection.setLayoutData(LayoutUtil.createFillData());
+        formToolkit.paintBordersFor(activitySection);
+        FormUtil.initSectionColors(activitySection);
+        activitySection.setText("Activities");
 
-		Section activitySection = formToolkit.createSection(this,
-				Section.TITLE_BAR);
-		activitySection.setLayoutData(LayoutUtil.createFillData());
-		formToolkit.paintBordersFor(activitySection);
-		FormUtil.initSectionColors(activitySection);
-		activitySection.setText("Activities");
+        activityListViewer = new ListViewer(activitySection, SWT.BORDER | SWT.V_SCROLL);
+        List activityList = activityListViewer.getList();
+        activitySection.setClient(activityList);
 
-		activityListViewer = new ListViewer(activitySection, SWT.BORDER
-				| SWT.V_SCROLL);
-		List activityList = activityListViewer.getList();
-		activitySection.setClient(activityList);
+        Composite buttonComposite = new Composite(this, SWT.NONE);
+        formToolkit.adapt(buttonComposite);
+        formToolkit.paintBordersFor(buttonComposite);
+        buttonComposite.setLayout(new FillLayout(SWT.VERTICAL));
 
-		Composite buttonComposite = new Composite(this, SWT.NONE);
-		formToolkit.adapt(buttonComposite);
-		formToolkit.paintBordersFor(buttonComposite);
-		buttonComposite.setLayout(new FillLayout(SWT.VERTICAL));
+        Button addButton = new Button(buttonComposite, SWT.NONE);
+        formToolkit.adapt(addButton, true, true);
+        addButton.setText(">>");
 
-		Button addButton = new Button(buttonComposite, SWT.NONE);
-		formToolkit.adapt(addButton, true, true);
-		addButton.setText(">>");
+        Button removeButton = new Button(buttonComposite, SWT.NONE);
+        formToolkit.adapt(removeButton, true, true);
+        removeButton.setText("<<");
 
-		Button removeButton = new Button(buttonComposite, SWT.NONE);
-		formToolkit.adapt(removeButton, true, true);
-		removeButton.setText("<<");
+        Section containedSection = formToolkit.createSection(this, Section.TITLE_BAR);
+        containedSection.setLayoutData(LayoutUtil.createFillData());
+        formToolkit.paintBordersFor(containedSection);
+        FormUtil.initSectionColors(containedSection);
+        containedSection.setText("Assigned");
 
-		Section containedSection = formToolkit.createSection(this,
-				Section.TITLE_BAR);
-		containedSection.setLayoutData(LayoutUtil.createFillData());
-		formToolkit.paintBordersFor(containedSection);
-		FormUtil.initSectionColors(containedSection);
-		containedSection.setText("Assigned");
+        Composite composite = new Composite(containedSection, SWT.NONE);
+        formToolkit.adapt(composite);
+        formToolkit.paintBordersFor(composite);
+        containedSection.setClient(composite);
+        GridLayout gl_composite = new GridLayout(2, false);
+        gl_composite.marginWidth = 0;
+        gl_composite.marginHeight = 0;
+        composite.setLayout(gl_composite);
 
-		Composite composite = new Composite(containedSection, SWT.NONE);
-		formToolkit.adapt(composite);
-		formToolkit.paintBordersFor(composite);
-		containedSection.setClient(composite);
-		GridLayout gl_composite = new GridLayout(2, false);
-		gl_composite.marginWidth = 0;
-		gl_composite.marginHeight = 0;
-		composite.setLayout(gl_composite);
+        treeViewer = new TreeViewer(composite, SWT.BORDER);
+        Tree tree = treeViewer.getTree();
+        treeViewer.setContentProvider(new PerformanceTreeContentProvider());
+        treeViewer.setLabelProvider(new PerformanceTreeLabelProvider());
+        // TODO replace with data from DB is present
+        treeViewer.setInput(PerformanceStub.getAssignedItems().getTargets());
 
-		treeViewer = new TreeViewer(composite, SWT.BORDER);
-		Tree tree = treeViewer.getTree();
-		treeViewer.setContentProvider(new PerformanceTreeContentProvider());
-		treeViewer.setLabelProvider(new PerformanceTreeLabelProvider());
-		// TODO replace with data from DB is present
-		treeViewer.setInput(new MockModel().getAssignedItems());
+        GridData gd_tree = new GridData(SWT.FILL, SWT.FILL, true, true, 2, 8);
+        gd_tree.heightHint = 241;
+        tree.setLayoutData(gd_tree);
+        formToolkit.paintBordersFor(tree);
 
-		GridData gd_tree = new GridData(SWT.FILL, SWT.FILL, true, true, 2, 8);
-		gd_tree.heightHint = 241;
-		tree.setLayoutData(gd_tree);
-		formToolkit.paintBordersFor(tree);
+        // TODO translate
+        Label label = new Label(composite, SWT.NONE);
+        label.setText("Priority");
 
-		// TODO translate
-		Label label = new Label(composite, SWT.NONE);
-		label.setText("Priority");
+        Combo combo = new Combo(composite, SWT.DROP_DOWN | SWT.READ_ONLY);
+        combo.setLayoutData(LayoutUtil.createHorzFillData());
+        formToolkit.adapt(combo);
+        formToolkit.paintBordersFor(combo);
 
-		Combo combo = new Combo(composite, SWT.DROP_DOWN | SWT.READ_ONLY);
-		combo.setLayoutData(LayoutUtil.createHorzFillData());
-		initCommentAutoCompletion(combo);
-		formToolkit.adapt(combo);
-		formToolkit.paintBordersFor(combo);
+        initalizeListViewer(targetListViewer);
+        initalizeListViewer(activityListViewer);
+        initalizeListViewer(currentListViewer);
+        currentList.setEnabled(false);
+        activityList.setEnabled(false);
+    }
 
-		initalizeListViewer(targetListViewer);
-		initalizeListViewer(activityListViewer);
-		initalizeListViewer(currentListViewer);
-		currentList.setEnabled(false);
-		activityList.setEnabled(false);
-	}
+    private void initalizeListViewer(ListViewer viewer) {
 
-	private void initalizeListViewer(ListViewer viewer) {
+        viewer.setContentProvider(ArrayContentProvider.getInstance());
+        viewer.setLabelProvider(new LabelProvider() {
+            @Override
+            public String getText(Object element) {
+                return ((ICatalogItem) element).getName();
+            }
+        });
 
-		viewer.setContentProvider(ArrayContentProvider.getInstance());
-		viewer.setLabelProvider(new LabelProvider() {
-			@Override
-			public String getText(Object element) {
-				return ((ICatalogItem) element).getName();
-			}
-		});
+    }
 
-	}
+    @Override
+    protected void checkSubclass() {
+    }
 
-	@Override
-	protected void checkSubclass() {
-	}
+    @Override
+    public void dispose() {
+        formToolkit.dispose();
+        super.dispose();
+    }
 
-	@Override
-	public void dispose() {
-		formToolkit.dispose();
-		super.dispose();
-	}
+    @Override
+    public void setSelectedComponent(Component component) {
+    }
 
-	@Override
-	public void setSelectedComponent(Component component) {
-	}
+    public void setComponentsList(ListViewer componentsList) {
+        this.componentsList = componentsList;
+        initalize();
+    }
 
-	public void setComponentsList(ListViewer componentsList) {
-		this.componentsList = componentsList;
-		initalize();
-	}
+    public void initalize() {
+        componentsList.getList().addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                IStructuredSelection selection = (IStructuredSelection) componentsList
+                        .getSelection();
+                if (selection == null) {
+                    return;
+                }
+                SchemeComponent sc = (SchemeComponent) selection.getFirstElement();
+                Catalog c = sc.getComponent().getCategory().get().getCatalog().get();
+                try {
 
-	public void initalize() {
-		componentsList.getList().addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				IStructuredSelection selection = (IStructuredSelection) componentsList
-						.getSelection();
-				if (selection == null) {
-					return;
-				}
-				SchemeComponent sc = (SchemeComponent) selection
-						.getFirstElement();
-				Catalog c = sc.getComponent().getCategory().get().getCatalog()
-						.get();
-				try {
+                    targetListViewer.setInput(catalogService.findTargetByCatalog(c));
+                    currentListViewer.getList().removeAll();
+                    activityListViewer.getList().removeAll();
+                    currentListViewer.getList().setEnabled(false);
+                    activityListViewer.getList().setEnabled(false);
 
-					targetListViewer.setInput(catalogService
-							.findTargetByCatalog(c));
-					currentListViewer.getList().removeAll();
-					activityListViewer.getList().removeAll();
-					currentListViewer.getList().setEnabled(false);
-					activityListViewer.getList().setEnabled(false);
+                }
+                catch (DatabaseException e1) {
+                    LOG.debug("An error occured", e);
+                }
+            }
+        });
+        targetListViewer.getList().addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                IStructuredSelection selection = (IStructuredSelection) targetListViewer
+                        .getSelection();
+                if (selection == null) {
+                    return;
+                }
+                Target t = (Target) selection.getFirstElement();
 
-				} catch (DatabaseException e1) {
-					LOG.debug("An error occured", e);
-				}
-			}
-		});
-		targetListViewer.getList().addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				IStructuredSelection selection = (IStructuredSelection) targetListViewer
-						.getSelection();
-				if (selection == null) {
-					return;
-				}
-				Target t = (Target) selection.getFirstElement();
+                try {
 
-				try {
+                    currentListViewer.setInput(catalogService.findCurrentByTarget(t));
+                    currentListViewer.getList().setEnabled(true);
+                }
+                catch (DatabaseException e1) {
+                    LOG.debug("An error occured", e);
+                }
+            }
+        });
 
-					currentListViewer.setInput(catalogService
-							.findCurrentByTarget(t));
-					currentListViewer.getList().setEnabled(true);
-				} catch (DatabaseException e1) {
-					LOG.debug("An error occured", e);
-				}
-			}
-		});
+        targetListViewer.addDoubleClickListener(new IDoubleClickListener() {
 
-		targetListViewer.addDoubleClickListener(new IDoubleClickListener() {
+            @Override
+            public void doubleClick(DoubleClickEvent event) {
+                IStructuredSelection selection = (IStructuredSelection) targetListViewer
+                        .getSelection();
+                if (selection == null) {
+                    return;
+                }
+                Target t = (Target) selection.getFirstElement();
+                TreeTarget tt = new TreeTarget(t);
+                treeViewer.add(treeViewer.getInput(), tt);
 
-			@Override
-			public void doubleClick(DoubleClickEvent event) {
-				IStructuredSelection selection = (IStructuredSelection) targetListViewer
-						.getSelection();
-				if (selection == null) {
-					return;
-				}
-				Target t = (Target) selection.getFirstElement();
-				TreeTarget tt = new TreeTarget();
-				tt.setName(t.getName());
-				treeViewer.add(treeViewer.getInput(), tt);
+            }
+        });
 
-			}
-		});
+        currentListViewer.getList().addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                IStructuredSelection selection = (IStructuredSelection) currentListViewer
+                        .getSelection();
+                if (selection == null) {
+                    return;
+                }
+                Current c = (Current) selection.getFirstElement();
 
-		currentListViewer.getList().addSelectionListener(
-				new SelectionAdapter() {
-					@Override
-					public void widgetSelected(SelectionEvent e) {
-						IStructuredSelection selection = (IStructuredSelection) currentListViewer
-								.getSelection();
-						if (selection == null) {
-							return;
-						}
-						Current c = (Current) selection.getFirstElement();
+                try {
 
-						try {
+                    activityListViewer.setInput(catalogService.findActivityByCurrent(c));
+                    activityListViewer.getList().setEnabled(true);
+                }
+                catch (DatabaseException e1) {
+                    LOG.debug("An error occured", e);
+                }
+            }
+        });
 
-							activityListViewer.setInput(catalogService
-									.findActivityByCurrent(c));
-							activityListViewer.getList().setEnabled(true);
-						} catch (DatabaseException e1) {
-							LOG.debug("An error occured", e);
-						}
-					}
-				});
+    }
 
-	}
-
-	public ListViewer getComponentsList() {
-		return componentsList;
-	}
-
-	private void initCommentAutoCompletion(Combo combo) {
-
-		Collection<Priority> prioritites;
-		try {
-			prioritites = priorityService.findAll();
-			String[] s = new String[prioritites.size()];
-			int i = 0;
-
-			for (Priority p : prioritites) {
-				s[i] = p.getText();
-				i++;
-			}
-			combo.setItems(s);
-			ContentProposalUtil.enableContentProposal(combo);
-		} catch (DatabaseException e) {
-			LOG.debug("An error occured", e);
-		}
-
-	}
+    public ListViewer getComponentsList() {
+        return componentsList;
+    }
 
 }

@@ -202,9 +202,23 @@ public class SchemeService {
 		return schemeComponentDao.findAttributesOfSchemeComponent(component);
 	}
 	
+	/**
+	 * Sets the given value for the attribute of the scheme component. If there is already
+	 * a value present in the database it gets updated.
+	 * 
+	 * @param component
+	 * @param attribute
+	 * @param value
+	 * @throws DatabaseException
+	 */
 	public void setAttributeValue(SchemeComponent component, Attribute attribute, String value) 
 			throws DatabaseException {
 		
-		schemeComponentDao.setAttributeValue(component, attribute, value);
+		if (schemeComponentDao.hasAttributeValue(component, attribute)) {
+			schemeComponentDao.updateAttributeValue(component, attribute, value);
+		}
+		else {
+			schemeComponentDao.addAttributeValue(component, attribute, value);
+		}
 	}
 }
