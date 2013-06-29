@@ -162,7 +162,7 @@ public class ComponentSelectionComposite extends Composite implements Inspection
         FillLayout fl_schemeComposite = new FillLayout(SWT.HORIZONTAL);
         fl_schemeComposite.marginHeight = 5;
         schemeComposite.setLayout(fl_schemeComposite);
-        verticalSash.setWeights(new int[] { 3, 1 });
+        verticalSash.setWeights(new int[] { 2, 1 });
         horizontalSash.setWeights(new int[] { 1, 5 });
 
         ScrolledComposite schemeScroll = new ScrolledComposite(schemeComposite, SWT.BORDER
@@ -217,7 +217,6 @@ public class ComponentSelectionComposite extends Composite implements Inspection
         componentsList.setComparator(new ViewerComparator() {
             @Override
             public int compare(Viewer viewer, Object e1, Object e2) {
-
                 SchemeComponent item1 = (SchemeComponent) e1;
                 SchemeComponent item2 = (SchemeComponent) e2;
                 return item1.getComponent().getName()
@@ -283,7 +282,9 @@ public class ComponentSelectionComposite extends Composite implements Inspection
         
         List<SchemeComponent> input = new ArrayList<>();
         for (SchemeGridItem item : schemeGridItems) {
-            input.add(item.asSchemeComponent());
+        	if (item.asSchemeComponent().getComponent().getBoolRating()) {
+                input.add(item.asSchemeComponent());
+        	}
         }
 
         componentsList.setInput(input);
