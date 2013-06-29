@@ -128,7 +128,6 @@ public class ReportDataParser {
             appendNewLine();
         }
 
-        // TODO
         buffer.append(prop.getProperty("reportdata.object.title").replace(OBJECT_TITLE,
                 inspection.getTitle()));
         appendNewLine();
