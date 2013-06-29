@@ -43,271 +43,289 @@ import de.hswt.hrm.i18n.I18nFactory;
 
 public class CategoryWizardPageOne extends WizardPage {
 
-    private static final Logger LOG = LoggerFactory.getLogger(CategoryWizardPageOne.class);
-    private static final I18n I18N = I18nFactory.getI18n(CategoryWizardPageOne.class);
-    private static int MAX_QUANIFIER = 10;
+	private static final Logger LOG = LoggerFactory
+			.getLogger(CategoryWizardPageOne.class);
+	private static final I18n I18N = I18nFactory
+			.getI18n(CategoryWizardPageOne.class);
+	private static int MAX_QUANIFIER = 10;
 
-    private Composite container;
-    private Optional<Category> category;
+	private Composite container;
+	private Optional<Category> category;
 
-    @Inject
-    CatalogService catalogService;
+	@Inject
+	CatalogService catalogService;
 
-    private int[] validGridSizeValue = { 1, 2, 4, 6 };
+	private int[] validGridSizeValue = { 1, 2, 4, 6 };
 
-    private Text nameText;
+	private Text nameText;
 
-    private Combo weightCombo;
+	private Combo weightCombo;
 
-    private ComboViewer catalogCombo;
+	private ComboViewer catalogCombo;
 
-    private List widthList;
+	private List widthList;
 
-    private List heightList;
+	private List heightList;
 
-    private Button ratingCheckButton;
+	private Button ratingCheckButton;
 
-    private String name;
+	private String name;
 
-    private int weight;
+	private int weight;
 
-    private int width;
+	private int width;
 
-    private int height;
+	private int height;
 
-    private boolean rating;
-    
-    private Optional<Catalog> catalog;
+	private boolean rating;
 
-    private boolean first = true;
+	private Optional<Catalog> catalog;
 
-    public CategoryWizardPageOne(String title, Optional<Category> category) {
-        super(title);
-        this.category = category;
-        setDescription(createDescription());
-        setTitle(I18N.tr("Category Wizard"));
-    }
+	private boolean first = true;
 
-    private String createDescription() {
-        if (category.isPresent()) {
-            return I18N.tr("Edit a category");
-        }
-        return I18N.tr("Add a new category");
-    }
+	public CategoryWizardPageOne(String title, Optional<Category> category) {
+		super(title);
+		this.category = category;
+		setDescription(createDescription());
+		setTitle(I18N.tr("Category Wizard"));
+	}
 
-    public void createControl(Composite parent) {
-        parent.setLayout(new PageContainerFillLayout());
-        URL url = CategoryWizardPageOne.class.getClassLoader().getResource(
-                "de/hswt/hrm/component/ui/xwt/CategoryWizardPageOne"
-                        + IConstants.XWT_EXTENSION_SUFFIX);
-        try {
-            container = (Composite) XWTForms.load(parent, url);
-        }
-        catch (Exception e) {
-            LOG.error("An error occured: ", e);
-        }
-        
-        translate();
+	private String createDescription() {
+		if (category.isPresent()) {
+			return I18N.tr("Edit a category");
+		}
+		return I18N.tr("Add a new category");
+	}
 
-        nameText = (Text) XWT.findElementByName(container, "name");
-        weightCombo = (Combo) XWT.findElementByName(container, "defaultQuantifier");
-        widthList = (List) XWT.findElementByName(container, "width");
-        heightList = (List) XWT.findElementByName(container, "height");
-        ratingCheckButton = (Button) XWT.findElementByName(container, "defaultBoolRating");
-        catalogCombo = (ComboViewer) XWT.findElementByName(container, "catalogCombo");
+	public void createControl(Composite parent) {
+		parent.setLayout(new PageContainerFillLayout());
+		URL url = CategoryWizardPageOne.class.getClassLoader().getResource(
+				"de/hswt/hrm/component/ui/xwt/CategoryWizardPageOne"
+						+ IConstants.XWT_EXTENSION_SUFFIX);
+		try {
+			container = (Composite) XWTForms.load(parent, url);
+		} catch (Exception e) {
+			LOG.error("An error occured: ", e);
+		}
 
-        initItems();
+		translate();
 
-        if (this.category.isPresent()) {
-            updateFields();
-        }
+		nameText = (Text) XWT.findElementByName(container, "name");
+		weightCombo = (Combo) XWT.findElementByName(container,
+				"defaultQuantifier");
+		widthList = (List) XWT.findElementByName(container, "width");
+		heightList = (List) XWT.findElementByName(container, "height");
+		ratingCheckButton = (Button) XWT.findElementByName(container,
+				"defaultBoolRating");
+		catalogCombo = (ComboViewer) XWT.findElementByName(container,
+				"catalogCombo");
 
-        nameText.addKeyListener(new KeyListener() {
-            public void keyPressed(KeyEvent e) {
-            }
+		initItems();
+		initalizeCatalogCombo();
 
-            public void keyReleased(KeyEvent e) {
-                checkPageComplete();
-            }
-        });
+		if (this.category.isPresent()) {
+			updateFields();
+		}
 
-        addSelectionListener(widthList);
-        addSelectionListener(weightCombo);
-        addSelectionListener(heightList);
-        addSelectionListener(ratingCheckButton);
+		nameText.addKeyListener(new KeyListener() {
+			public void keyPressed(KeyEvent e) {
+			}
 
-        FormUtil.initSectionColors((Section) XWT.findElementByName(container, "General"));
+			public void keyReleased(KeyEvent e) {
+				checkPageComplete();
+			}
+		});
 
-        setControl(container);
-        initializeCategoryCombo();
-        checkPageComplete();
-    }
+		addSelectionListener(widthList);
+		addSelectionListener(weightCombo);
+		addSelectionListener(heightList);
+		addSelectionListener(ratingCheckButton);
 
-    private void initializeCategoryCombo() {
+		FormUtil.initSectionColors((Section) XWT.findElementByName(container,
+				"General"));
 
-        try {
-            Collection<Catalog> catalogs = catalogService.findAllCatalog();
+		setControl(container);
+		checkPageComplete();
+	}
 
-            catalogCombo.setLabelProvider(new LabelProvider() {
+	private void initalizeCatalogCombo() {
 
-                @Override
-                public String getText(Object element) {
-                    Catalog c = (Catalog) element;
-                    return c.getName();
-                }
+		try {
+			Collection<Catalog> catalogs = catalogService.findAllCatalog();
 
-            });
-            catalogCombo.setContentProvider(ArrayContentProvider.getInstance());
-            catalogCombo.setInput(catalogs);
-        }
-        catch (DatabaseException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+			catalogCombo.setLabelProvider(new LabelProvider() {
 
-    }
+				@Override
+				public String getText(Object element) {
+					Catalog c = (Catalog) element;
+					return c.getName();
+				}
 
-    private void initItems() {
-        for (Integer value : validGridSizeValue) {
-            widthList.add(String.valueOf(value));
-            heightList.add(String.valueOf(value));
-        }
-        for (int i = 1; i <= MAX_QUANIFIER; i++) {
-            weightCombo.add(String.valueOf(i));
-        }
-    }
+			});
+			catalogCombo.setContentProvider(ArrayContentProvider.getInstance());
+			catalogCombo.setInput(catalogs);
+		} catch (DatabaseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
-    private void updateFields() {
-        Category cat = category.get();
-        nameText.setText(cat.getName());
-        weightCombo.select(weightCombo.indexOf(String.valueOf(cat.getDefaultQuantifier())));
-        ratingCheckButton.setSelection(cat.getDefaultBoolRating());
-        widthList.select(widthList.indexOf(String.valueOf(cat.getWidth())));
+	}
+
+	private void initItems() {
+		for (Integer value : validGridSizeValue) {
+			widthList.add(String.valueOf(value));
+			heightList.add(String.valueOf(value));
+		}
+		for (int i = 1; i <= MAX_QUANIFIER; i++) {
+			weightCombo.add(String.valueOf(i));
+		}
+	}
+
+	private void updateFields() {
+		Category cat = category.get();
+		nameText.setText(cat.getName());
+		weightCombo.select(weightCombo.indexOf(String.valueOf(cat
+				.getDefaultQuantifier())));
+		ratingCheckButton.setSelection(cat.getDefaultBoolRating());
+		widthList.select(widthList.indexOf(String.valueOf(cat.getWidth())));
 		heightList.select(heightList.indexOf(String.valueOf(cat.getHeight())));
-		// TODO select
-    }
 
-    private void checkPageComplete() {
-        if (first) {
-            first = false;
-            setPageComplete(false);
-            return;
-        }
+		String[] items = catalogCombo.getCombo().getItems();
+		int i = 0;
 
-        rating = ratingCheckButton.getSelection();
+		if (!cat.getCatalog().isPresent()) {
+			return;
+		} else {
+			while (!cat.getCatalog().get().getName().equals(items[i])) {
+				i++;
+			}
+			catalogCombo.getCombo().select(i);
+		}
 
-        setErrorMessage(null);
-        // FIXME check if category is not empty or it already exists
-        name = nameText.getText();
+	}
 
-        if (weightCombo.getSelectionIndex() > -1) {
-            weight = Integer.parseInt(weightCombo.getItem(weightCombo.getSelectionIndex()));
-        }
-        else {
-            setErrorMessage(I18N.tr("Select a standard weight!"));
-            return;
-        }
+	private void checkPageComplete() {
+		if (first) {
+			first = false;
+			setPageComplete(false);
+			return;
+		}
 
-        if (widthList.getSelectionIndex() > -1) {
-            width = Integer.parseInt(widthList.getItem(widthList.getSelectionIndex()));
-        }
-        else {
-            setErrorMessage(I18N.tr("Select a grid width!"));
-            return;
-        }
+		rating = ratingCheckButton.getSelection();
 
-        if (heightList.getSelectionIndex() > -1) {
-            height = Integer.parseInt(heightList.getItem(heightList.getSelectionIndex()));
-        }
-        
-        if (catalogCombo.getCombo().getSelectionIndex() > -1){
-        	IStructuredSelection selection = (IStructuredSelection) catalogCombo.getSelection();
-        	catalog = Optional.of((Catalog)selection.getFirstElement());
-        	System.out.println(catalog);
-        }
-        
-        else {
-            setErrorMessage(I18N.tr("Select a grid height!"));
-            return;
-        }
-    }
+		setErrorMessage(null);
+		// FIXME check if category is not empty or it already exists
+		name = nameText.getText();
 
-    @Override
-    public void setErrorMessage(String newMessage) {
-        if (newMessage == null || newMessage.isEmpty()) {
-            setPageComplete(true);
-        }
-        else {
-            setPageComplete(false);
-        }
-        super.setErrorMessage(newMessage);
-    }
+		if (weightCombo.getSelectionIndex() > -1) {
+			weight = Integer.parseInt(weightCombo.getItem(weightCombo
+					.getSelectionIndex()));
+		} else {
+			setErrorMessage(I18N.tr("Select a standard weight!"));
+			return;
+		}
 
-    private void addSelectionListener(Control control) {
-        control.addListener(SWT.Selection, new Listener() {
-            @Override
-            public void handleEvent(Event event) {
-                checkPageComplete();
-            }
-        });
-    }
-    
-    private void translate() {
-        // Section
-        setSectionText("General", I18N.tr("Category definition"));
-        // Labels
-        setLabelText("lblName", I18N.tr("Name")+":");
-        setLabelText("lblWeight", I18N.tr("Weight")+":");
-        setLabelText("lblCatalog", I18N.tr("Catalog")+":");
-        setLabelText("lblWidth", I18N.tr("Width in grid")+":");
-        setLabelText("lblHeight", I18N.tr("Height in grid")+":");
-        // CheckButton
-        setCheckButtonText("defaultBoolRating", I18N.tr("with rating"));
-    }
-    
-    private void setLabelText(String labelName, String text) {
-        Label l = (Label) XWT.findElementByName(container, labelName);
-        if (l == null) {
-            LOG.error("Label '"+labelName+"' not found.");
-        }
-        l.setText(text);
-    }
-    
-    private void setSectionText(String sectionName, String text) {
-        Section s = (Section) XWT.findElementByName(container, sectionName);
-        if (s == null) {
-            LOG.error("Section '"+sectionName+"' not found.");
-        }
-        s.setText(text);
-    }
-    
-    private void setCheckButtonText(String buttonName, String text) {
-        Button b = (Button) XWT.findElementByName(container, buttonName);
-        if (b == null) {
-            LOG.error("Button '"+buttonName+"' not found.");
-        }
-        b.setText(text);
-    }
+		if (widthList.getSelectionIndex() > -1) {
+			width = Integer.parseInt(widthList.getItem(widthList
+					.getSelectionIndex()));
+		} else {
+			setErrorMessage(I18N.tr("Select a grid width!"));
+			return;
+		}
 
-    public String getName() {
-        return name;
-    }
+		if (heightList.getSelectionIndex() > -1) {
+			height = Integer.parseInt(heightList.getItem(heightList
+					.getSelectionIndex()));
+		}
 
-    public int getWeight() {
-        return weight;
-    }
+		if (catalogCombo.getCombo().getSelectionIndex() > -1) {
+			IStructuredSelection selection = (IStructuredSelection) catalogCombo
+					.getSelection();
+			catalog = Optional.of((Catalog) selection.getFirstElement());
+			System.out.println(catalog);
+		}
 
-    public int getWidth() {
-        return width;
-    }
+		else {
+			setErrorMessage(I18N.tr("Select a grid height!"));
+			return;
+		}
+	}
 
-    public int getHeight() {
-        return height;
-    }
+	@Override
+	public void setErrorMessage(String newMessage) {
+		if (newMessage == null || newMessage.isEmpty()) {
+			setPageComplete(true);
+		} else {
+			setPageComplete(false);
+		}
+		super.setErrorMessage(newMessage);
+	}
 
-    public boolean isRating() {
-        return rating;
-    }
+	private void addSelectionListener(Control control) {
+		control.addListener(SWT.Selection, new Listener() {
+			@Override
+			public void handleEvent(Event event) {
+				checkPageComplete();
+			}
+		});
+	}
+
+	private void translate() {
+		// Section
+		setSectionText("General", I18N.tr("Category definition"));
+		// Labels
+		setLabelText("lblName", I18N.tr("Name") + ":");
+		setLabelText("lblWeight", I18N.tr("Weight") + ":");
+		setLabelText("lblCatalog", I18N.tr("Catalog") + ":");
+		setLabelText("lblWidth", I18N.tr("Width in grid") + ":");
+		setLabelText("lblHeight", I18N.tr("Height in grid") + ":");
+		// CheckButton
+		setCheckButtonText("defaultBoolRating", I18N.tr("with rating"));
+	}
+
+	private void setLabelText(String labelName, String text) {
+		Label l = (Label) XWT.findElementByName(container, labelName);
+		if (l == null) {
+			LOG.error("Label '" + labelName + "' not found.");
+		}
+		l.setText(text);
+	}
+
+	private void setSectionText(String sectionName, String text) {
+		Section s = (Section) XWT.findElementByName(container, sectionName);
+		if (s == null) {
+			LOG.error("Section '" + sectionName + "' not found.");
+		}
+		s.setText(text);
+	}
+
+	private void setCheckButtonText(String buttonName, String text) {
+		Button b = (Button) XWT.findElementByName(container, buttonName);
+		if (b == null) {
+			LOG.error("Button '" + buttonName + "' not found.");
+		}
+		b.setText(text);
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public int getWeight() {
+		return weight;
+	}
+
+	public int getWidth() {
+		return width;
+	}
+
+	public int getHeight() {
+		return height;
+	}
+
+	public boolean isRating() {
+		return rating;
+	}
 
 	public Optional<Catalog> getCatalog() {
 		return catalog;
