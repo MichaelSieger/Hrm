@@ -141,9 +141,13 @@ public class InspectionSchemeGrid {
 
 	public void move(int x, int y){
 		Collection<Colorbox> colors = grid.getColors();
+		colors.remove(selectionBox);
 		List<Colorbox> nColors = new ArrayList<>();
 		Collection<SchemeGridItem> items = grid.getItems();
-		selectionBox = moveColorbox(selectionBox, x, y);
+		if(selectionBox != null){
+			selectionBox = moveColorbox(selectionBox, x, y);
+			nColors.add(selectionBox);
+		}
 		for(Colorbox c : colors){
 			nColors.add(moveColorbox(c, x, y));
 		}
@@ -156,7 +160,7 @@ public class InspectionSchemeGrid {
 	}
 	
 	private Colorbox moveColorbox(Colorbox c, int x, int y){
-		return new Colorbox(c.getX() + x, c.getY() + y, c.getWidth(), c.getHeight(), c.getColor());
+		return new Colorbox(c.getX() + x, c.getY() + y, c.getWidth(), c.getHeight(), c.getColor(), c.isFill());
 	}
 
 	public Collection<SchemeGridItem> getItems() {
