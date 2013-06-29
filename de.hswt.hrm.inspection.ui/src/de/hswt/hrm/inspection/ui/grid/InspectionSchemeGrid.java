@@ -43,7 +43,9 @@ public class InspectionSchemeGrid {
 
             @Override
             public void itemClicked(MouseEvent e, SchemeGridItem item) {
-                setSelected(item.asSchemeComponent());
+            	if(item.asSchemeComponent().getComponent().getBoolRating()){
+            		setSelected(item.asSchemeComponent());
+            	}
             }
         });
     }
