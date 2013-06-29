@@ -411,7 +411,7 @@ public class SchemeComponentDao implements ISchemeComponentDao {
     }
     
     @Override
-    public void setAttributeValue(SchemeComponent comp, Attribute attribute, String value)
+    public void addAttributeValue(SchemeComponent comp, Attribute attribute, String value)
     		throws DatabaseException {
     	
     	checkArgument(comp.getId() >= 0, "SchemeComponent must have a valid ID.");
@@ -444,6 +444,90 @@ public class SchemeComponentDao implements ISchemeComponentDao {
     	}
     	catch (SQLException e) {
     		throw new DatabaseException("Unknown error.", e);
+    	}
+    }
+    
+    @Override
+    public void updateAttributeValue(SchemeComponent comp, Attribute attribute, String value) 
+    		throws DatabaseException {
+    	
+    	checkState(attribute.getId() >= 0, "Attribute must have a valid ID.");
+    	checkState(comp.getId() >= 0, "SchemeComponent must have a valid ID.");
+    	checkState(attribute.getComponent().getId() == comp.getComponent().getId(), 
+    			"SchemeComponent does not match the attributes component.");
+    	
+    	StringBuilder builder = new StringBuilder();
+    	builder.append("UPDATE ").append(ATTR_CROSS_TABLE_NAME);
+    	builder.append(" SET ").append(AttrCrossFields.VALUE);
+    	builder.append(" = :").append(AttrCrossFields.VALUE);
+    	builder.append(" WHERE ");
+    	builder.append(AttrCrossFields.FK_ATTRIBUTE);
+    	builder.append(" = :").append(AttrCrossFields.FK_ATTRIBUTE);
+    	builder.append(" AND ");
+    	builder.append(AttrCrossFields.FK_COMPONENT);
+    	builder.append(" = :").append(AttrCrossFields.FK_COMPONENT).append(";");
+
+    	String query = builder.toString();
+    	
+    	try (Connection con = DatabaseFactory.getConnection()) {
+    		con.setAutoCommit(false);
+    		
+    		try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
+    			stmt.setParameter(AttrCrossFields.FK_ATTRIBUTE, attribute.getId());
+    			stmt.setParameter(AttrCrossFields.FK_COMPONENT, comp.getId());
+    			stmt.setParameter(AttrCrossFields.VALUE, value);
+    			
+    			int affected = stmt.executeUpdate();
+    			if (affected > 1) {
+    				con.rollback();
+    				throw new DatabaseException("Statement would accidently affect more than one row.");
+    			}
+    			else if (affected < 1) {
+    				throw new SaveException("No rows affected.");
+    			}
+    			
+    			con.commit();
+    		}
+    	}
+    	catch (SQLException e) {
+    		throw new DatabaseException("Unexpected error.", e);
+    	}
+    }
+    
+    @Override
+    public boolean hasAttributeValue(SchemeComponent component, Attribute attribute) 
+    		throws DatabaseException {
+    	
+    	checkState(attribute.getId() >= 0, "Attribute must have a valid ID.");
+    	checkState(component.getId() >= 0, "SchemeComponent must have a valid ID.");
+    	
+    	StringBuilder builder = new StringBuilder();
+    	builder.append("SELECT ").append(AttrCrossFields.VALUE);
+    	builder.append(" FROM ").append(ATTR_CROSS_TABLE_NAME);
+    	builder.append(" WHERE ");
+    	builder.append(AttrCrossFields.FK_ATTRIBUTE);
+    	builder.append(" = :").append(AttrCrossFields.FK_ATTRIBUTE);
+    	builder.append(" AND ").append(AttrCrossFields.FK_COMPONENT);
+    	builder.append(" = :").append(AttrCrossFields.FK_COMPONENT);
+    	builder.append(";");
+    	
+    	String query = builder.toString();
+    	
+    	try (Connection con = DatabaseFactory.getConnection()) {
+    		try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
+    			stmt.setParameter(AttrCrossFields.FK_ATTRIBUTE, attribute.getId());
+    			stmt.setParameter(AttrCrossFields.FK_COMPONENT, component.getId());
+    			
+    			ResultSet rs = stmt.executeQuery();
+    			boolean hasValue = rs.next();
+    			
+    			DbUtils.closeQuietly(rs);
+    			
+    			return hasValue;
+    		}
+    	}
+    	catch (SQLException e) {
+    		throw new DatabaseException("Unexpected error.", e);
     	}
     }
     
