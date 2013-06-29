@@ -2,6 +2,7 @@ package de.hswt.hrm.inspection.ui.part;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.LinkedList;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -34,6 +35,7 @@ import org.eclipse.ui.forms.widgets.Section;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.hswt.hrm.catalog.model.Activity;
 import de.hswt.hrm.catalog.model.Catalog;
 import de.hswt.hrm.catalog.model.Current;
 import de.hswt.hrm.catalog.model.ICatalogItem;
@@ -44,6 +46,7 @@ import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.common.ui.swt.layouts.LayoutUtil;
 import de.hswt.hrm.common.ui.swt.utils.ContentProposalUtil;
 import de.hswt.hrm.component.model.Component;
+import de.hswt.hrm.inspection.model.tree.TreeCurrent;
 import de.hswt.hrm.inspection.model.tree.TreeTarget;
 import de.hswt.hrm.inspection.service.InspectionService;
 import de.hswt.hrm.inspection.ui.performance.tree.PerformanceTreeContentProvider;
@@ -76,6 +79,9 @@ public class ReportPerformanceComposite extends AbstractComponentRatingComposite
     private ListViewer currentListViewer;
     private ListViewer activityListViewer;
     private TreeViewer treeViewer;
+    
+    private Button addButton;
+    
     private FormToolkit formToolkit = new FormToolkit(Display.getDefault());
 
     private static final Logger LOG = LoggerFactory.getLogger(ReportPerformanceComposite.class);
@@ -148,7 +154,7 @@ public class ReportPerformanceComposite extends AbstractComponentRatingComposite
         formToolkit.paintBordersFor(buttonComposite);
         buttonComposite.setLayout(new FillLayout(SWT.VERTICAL));
 
-        Button addButton = new Button(buttonComposite, SWT.NONE);
+        addButton = new Button(buttonComposite, SWT.NONE);
         formToolkit.adapt(addButton, true, true);
         addButton.setText(">>");
 
@@ -176,7 +182,7 @@ public class ReportPerformanceComposite extends AbstractComponentRatingComposite
         treeViewer.setContentProvider(new PerformanceTreeContentProvider());
         treeViewer.setLabelProvider(new PerformanceTreeLabelProvider());
         // TODO replace with data from DB is present
-        treeViewer.setInput(PerformanceStub.getAssignedItems().getTargets());
+        treeViewer.setInput(new ArrayList<TreeTarget>());
 
         GridData gd_tree = new GridData(SWT.FILL, SWT.FILL, true, true, 2, 8);
         gd_tree.heightHint = 241;
@@ -313,6 +319,53 @@ public class ReportPerformanceComposite extends AbstractComponentRatingComposite
                 }
             }
         });
+        
+        addButton.addSelectionListener(new SelectionListener() {
+			
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				
+//				treeViewer.add(treeViewer.getInput(), PerformanceStub.getAssignedItems().getTargets().get(0));
+				
+				 IStructuredSelection selection = (IStructuredSelection) targetListViewer
+	                        .getSelection();
+	                if (selection == null) {
+	                    return;
+	                }
+	                
+	                Target target = (Target)selection.getFirstElement();
+	                selection = (IStructuredSelection) currentListViewer.getSelection();
+	                if (selection == null) {
+	                    return;
+	                }
+	                Current current = (Current)selection.getFirstElement();
+	               
+	                selection = (IStructuredSelection) activityListViewer.getSelection();
+	                if (selection == null) {
+	                    return;
+	                }
+	                Activity activity = (Activity)selection.getFirstElement();
+	               
+	               
+	                treeViewer.add(treeViewer.getInput(),  getPerformanceTriplet(target, current, activity));
+	                
+			}
+			
+			private TreeTarget getPerformanceTriplet(Target target, Current current, Activity activity) {
+				
+				java.util.List<Activity> activties = new ArrayList<>(1);
+				activties.add(activity);
+				java.util.List<TreeCurrent> currents = new ArrayList<>(1);
+				currents.add(new TreeCurrent(current,activties));
+				return new TreeTarget(target, currents);
+				
+			}
+
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+				
+			}
+		});
 
     }
     
