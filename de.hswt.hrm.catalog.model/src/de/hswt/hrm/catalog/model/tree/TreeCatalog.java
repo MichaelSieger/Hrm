@@ -1,4 +1,4 @@
-package de.hswt.hrm.inspection.model.tree;
+package de.hswt.hrm.catalog.model.tree;
 
 import java.util.Collections;
 import java.util.LinkedList;
