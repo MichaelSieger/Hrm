@@ -337,6 +337,18 @@ public class Inspection {
         }
         physicalRatings.notifyDataChanged();
     }
+    
+    public void setPhysicalRatingSamplingPoint(SchemeComponent schemeComponent, SamplingPointType type){
+    	Optional<PhysicalRating> pRating = getPhysicalRating(schemeComponent);
+    	if(pRating.isPresent()){
+    		pRating.get().setSamplingPointType(type);
+    	}else{
+    		PhysicalRating nRating = new PhysicalRating(this, schemeComponent);
+            nRating.setSamplingPointType(type);
+            physicalRatings.get().add(nRating);
+    	}
+    	physicalRatings.notifyDataChanged();
+    }
 
     private Optional<PhysicalRating> getPhysicalRating(SchemeComponent schemeComponent) {
         Iterator<PhysicalRating> it = physicalRatings.get().iterator();
