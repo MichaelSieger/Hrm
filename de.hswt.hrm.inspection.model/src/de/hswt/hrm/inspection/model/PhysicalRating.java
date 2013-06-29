@@ -33,7 +33,7 @@ public class PhysicalRating
     }
 
     public PhysicalRating(Inspection inspection, SchemeComponent schemeComponent) {
-        this(inspection, schemeComponent, -1, -1);
+        this(inspection, schemeComponent, 0, -1);
     }
 
     public PhysicalRating(Inspection inspection, SchemeComponent component, int rating,
