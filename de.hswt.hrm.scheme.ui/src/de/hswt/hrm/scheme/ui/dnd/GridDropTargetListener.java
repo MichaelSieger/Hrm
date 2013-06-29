@@ -15,6 +15,7 @@ import com.google.common.base.Preconditions;
 
 import de.hswt.hrm.component.service.ComponentService;
 import de.hswt.hrm.scheme.model.RenderedComponent;
+import de.hswt.hrm.scheme.model.Scheme;
 import de.hswt.hrm.scheme.service.SchemeService;
 import de.hswt.hrm.scheme.ui.PlaceOccupiedException;
 import de.hswt.hrm.scheme.ui.SchemeGrid;
@@ -32,20 +33,18 @@ public class GridDropTargetListener implements DropTargetListener {
 	private final SchemeGrid grid;
 	private List<RenderedComponent> comps = Collections.emptyList();
 	private final SchemeComposite composite;
-	
-	private SchemeService schemeService;
+
+	private Scheme scheme;
 	
 	private ComponentService componentService;
 
-	public GridDropTargetListener(SchemeGrid grid, SchemeComposite schemeCompositeNew, SchemeService schemeService, ComponentService componentService) {
+	public GridDropTargetListener(SchemeGrid grid, SchemeComposite schemeCompositeNew, ComponentService componentService) {
 		super();
 		Preconditions.checkNotNull(grid);
 		Preconditions.checkNotNull(schemeCompositeNew);
-		Preconditions.checkNotNull(schemeService);
 		Preconditions.checkNotNull(componentService);
 		this.grid = grid;
 		this.composite = schemeCompositeNew;
-		this.schemeService = schemeService;
 		this.componentService = componentService;
 	}
 
@@ -57,7 +56,7 @@ public class GridDropTargetListener implements DropTargetListener {
 	public void drop(DropTargetEvent ev) {
 		DragData dragging = (DragData) ev.data;
 		if (dragging != null) {
-			SchemeGridItem item = dragging.toSchemeGridItem(comps, schemeService, componentService);
+			SchemeGridItem item = dragging.toSchemeGridItem(comps, scheme, componentService);
 			Point loc = grid.toDisplay(0, 0);
 			final int x = ev.x - loc.x;
 			final int y = ev.y - loc.y;
@@ -109,4 +108,9 @@ public class GridDropTargetListener implements DropTargetListener {
 	public void setComponents(List<RenderedComponent> comps) {
 		this.comps = comps;
 	}
+	
+	public void setScheme(Scheme scheme){
+		this.scheme = scheme;
+	}
+	
 }

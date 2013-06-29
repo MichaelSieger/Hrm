@@ -14,6 +14,7 @@ import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.ElementNotFoundException;
 import de.hswt.hrm.component.service.ComponentService;
 import de.hswt.hrm.scheme.model.RenderedComponent;
+import de.hswt.hrm.scheme.model.Scheme;
 import de.hswt.hrm.scheme.service.SchemeService;
 import de.hswt.hrm.scheme.ui.PlaceOccupiedException;
 import de.hswt.hrm.scheme.ui.SchemeGrid;
@@ -35,13 +36,12 @@ public class GridDragListener implements DragSourceListener {
 
     private DragData dragging;
     
-    private final SchemeService schemeService;
+    private Scheme scheme;
 
     private final ComponentService componentService;
     
-    public GridDragListener(SchemeGrid grid, SchemeService schemeService, ComponentService componentService) {
+    public GridDragListener(SchemeGrid grid, ComponentService componentService) {
         this.grid = grid;
-        this.schemeService = schemeService;
         this.componentService = componentService;
     }
 
@@ -70,12 +70,16 @@ public class GridDragListener implements DragSourceListener {
     @Override
     public void dragFinished(DragSourceEvent ev) {
         if (!ev.doit) {
-        	grid.setImage(dragging.toSchemeGridItem(comps, schemeService, componentService));
+        	grid.setImage(dragging.toSchemeGridItem(comps, scheme, componentService));
         }
         startX = -1;
         startY = -1;
         dragging = null;
         grid.clearColors();
+    }
+    
+    public void setScheme(Scheme scheme){
+    	this.scheme = scheme;
     }
 
     public DragData getDraggingItem() {
