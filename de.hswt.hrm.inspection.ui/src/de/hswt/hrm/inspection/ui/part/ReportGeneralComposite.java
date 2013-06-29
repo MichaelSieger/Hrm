@@ -65,6 +65,7 @@ import de.hswt.hrm.misc.comment.service.CommentService;
 import de.hswt.hrm.photo.model.Photo;
 import de.hswt.hrm.photo.ui.wizard.PhotoWizard;
 import de.hswt.hrm.plant.model.Plant;
+import de.hswt.hrm.scheme.model.SchemeComponent;
 import de.hswt.hrm.summary.model.Summary;
 import de.hswt.hrm.summary.service.SummaryService;
 
@@ -1045,22 +1046,7 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
         // Disable the check that prevents subclassing of SWT components
     }
 
-    public void setInspection(Inspection inspection) {
-        if (this.inspection != inspection) {
-            this.inspection = inspection;
-            if (inspection != null) {
-                inspection.addPlantObserver(new Observer<Plant>() {
-
-                    @Override
-                    public void changed(Plant item) {
-                        plantSelected(item);
-                    }
-                });
-            }
-        }
-    }
-
-    public boolean refreshGeneralInformation() {
+    private boolean refreshGeneralInformation() {
 
         if (inspection == null) {
             MessageDialog.openError(shellProvider.getShell(), I18N.tr("Selection Error"),
@@ -1291,4 +1277,30 @@ public class ReportGeneralComposite extends AbstractComponentRatingComposite {
         controllerCityText.setText("");
 
     }
+
+	@Override
+	public void inspectionChanged(Inspection inspection) {
+        if (this.inspection != inspection) {
+            this.inspection = inspection;
+            if (inspection != null) {
+                inspection.addPlantObserver(new Observer<Plant>() {
+
+                    @Override
+                    public void changed(Plant item) {
+                        plantSelected(item);
+                    }
+                });
+            }
+        }
+        refreshGeneralInformation();
+    }
+
+	@Override
+	public void inspectionComponentSelectionChanged(SchemeComponent component) {
+		
+	}
+
+	@Override
+	public void plantChanged(Plant plant) {
+	}
 }

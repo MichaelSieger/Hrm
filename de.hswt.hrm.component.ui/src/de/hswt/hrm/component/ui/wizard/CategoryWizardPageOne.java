@@ -10,7 +10,9 @@ import org.eclipse.e4.xwt.XWT;
 import org.eclipse.e4.xwt.forms.XWTForms;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
@@ -74,6 +76,8 @@ public class CategoryWizardPageOne extends WizardPage {
     private int height;
 
     private boolean rating;
+    
+    private Optional<Catalog> catalog;
 
     private boolean first = true;
 
@@ -179,7 +183,8 @@ public class CategoryWizardPageOne extends WizardPage {
         weightCombo.select(weightCombo.indexOf(String.valueOf(cat.getDefaultQuantifier())));
         ratingCheckButton.setSelection(cat.getDefaultBoolRating());
         widthList.select(widthList.indexOf(String.valueOf(cat.getWidth())));
-        heightList.select(heightList.indexOf(String.valueOf(cat.getHeight())));
+		heightList.select(heightList.indexOf(String.valueOf(cat.getHeight())));
+		// TODO select
     }
 
     private void checkPageComplete() {
@@ -214,6 +219,13 @@ public class CategoryWizardPageOne extends WizardPage {
         if (heightList.getSelectionIndex() > -1) {
             height = Integer.parseInt(heightList.getItem(heightList.getSelectionIndex()));
         }
+        
+        if (catalogCombo.getCombo().getSelectionIndex() > -1){
+        	IStructuredSelection selection = (IStructuredSelection) catalogCombo.getSelection();
+        	catalog = Optional.of((Catalog)selection.getFirstElement());
+        	System.out.println(catalog);
+        }
+        
         else {
             setErrorMessage(I18N.tr("Select a grid height!"));
             return;
@@ -296,4 +308,8 @@ public class CategoryWizardPageOne extends WizardPage {
     public boolean isRating() {
         return rating;
     }
+
+	public Optional<Catalog> getCatalog() {
+		return catalog;
+	}
 }
