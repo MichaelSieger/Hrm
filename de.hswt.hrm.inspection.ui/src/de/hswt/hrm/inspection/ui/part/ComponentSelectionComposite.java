@@ -162,7 +162,7 @@ public class ComponentSelectionComposite extends Composite implements Inspection
         FillLayout fl_schemeComposite = new FillLayout(SWT.HORIZONTAL);
         fl_schemeComposite.marginHeight = 5;
         schemeComposite.setLayout(fl_schemeComposite);
-        verticalSash.setWeights(new int[] { 3, 1 });
+        verticalSash.setWeights(new int[] { 2, 1 });
         horizontalSash.setWeights(new int[] { 1, 5 });
 
         ScrolledComposite schemeScroll = new ScrolledComposite(schemeComposite, SWT.BORDER
