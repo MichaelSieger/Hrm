@@ -8,19 +8,23 @@ import org.eclipse.jface.wizard.Wizard;
 
 import com.google.common.base.Optional;
 
+import de.hswt.hrm.i18n.I18n;
+import de.hswt.hrm.i18n.I18nFactory;
 import de.hswt.hrm.inspection.model.Inspection;
 
 public class ReportCreationWizard extends Wizard {
 
 	@Inject
 	private IEclipseContext context;
+	
+	private static final I18n I18N = I18nFactory.getI18n(ReportCreationWizard.class);
 
 	private ReportCreationWizardPageOne pageOne;
 	
 	private Optional<Inspection> inspection;
 	
 	public ReportCreationWizard() {
-		setWindowTitle("Report creation");
+		setWindowTitle(I18N.tr("Report creation"));
 	}
 
 	@Override
