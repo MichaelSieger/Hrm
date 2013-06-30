@@ -123,8 +123,7 @@ public class BiologicalRatingDao implements IBiologicalRatingDao {
         builder.where(Fields.FK_REPORT);
 
         String query = builder.toString();
-        System.out.println(query);
-
+       
         try (Connection con = DatabaseFactory.getConnection()) {
             try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
                 stmt.setParameter(Fields.FK_REPORT, inspection.getId());
