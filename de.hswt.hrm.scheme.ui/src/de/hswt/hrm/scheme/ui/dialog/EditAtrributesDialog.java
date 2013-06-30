@@ -27,8 +27,6 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.widgets.Section;
 
-import com.google.common.base.Joiner;
-
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.common.ui.swt.layouts.LayoutUtil;
 import de.hswt.hrm.common.ui.swt.table.ColumnDescription;
@@ -41,11 +39,10 @@ import de.hswt.hrm.i18n.I18nFactory;
 import de.hswt.hrm.scheme.ui.util.SchemeDialogUtil;
 
 public class EditAtrributesDialog extends TitleAreaDialog {
-
+    private static final I18n I18N = I18nFactory.getI18n(EditAtrributesDialog.class);
+    
     private Component component;
     
-    private static final I18n I18N = I18nFactory.getI18n(EditAtrributesDialog.class);
-
     private Table table;
     private TableViewer tableViewer;
 
@@ -53,18 +50,16 @@ public class EditAtrributesDialog extends TitleAreaDialog {
 
     private Collection<Attribute> attributes;
 
-    private Map<Attribute, String> assignedValues;
-
-    private Map<Attribute, String> newValues;
+    private Map<Attribute, String> attributeMap;
 
     public EditAtrributesDialog(Shell parentShell, Component component,
             Collection<Attribute> attributes, Map<Attribute, String> assignedValues) {
         super(parentShell);
         this.component = component;
         this.attributes = attributes;
-        this.assignedValues = assignedValues;
-        this.newValues = new HashMap<>();
-
+        
+        // We're working on a copy as we won't change the given map
+        this.attributeMap = new HashMap<>(assignedValues);
     }
 
     @Override
@@ -120,7 +115,7 @@ public class EditAtrributesDialog extends TitleAreaDialog {
 
     private void initTable() {
 
-        List<ColumnDescription<Attribute>> columns = SchemeDialogUtil.getColumns(assignedValues);
+        List<ColumnDescription<Attribute>> columns = SchemeDialogUtil.getColumns(attributeMap);
 
         TableViewerController<Attribute> filler = new TableViewerController<>(tableViewer);
         filler.createColumns(columns);
@@ -136,7 +131,7 @@ public class EditAtrributesDialog extends TitleAreaDialog {
                 return a1.getName().compareToIgnoreCase(a2.getName());
             }
         });
-
+        
         final TableEditor editor = new TableEditor(table);
         // The editor must have the same size as the cell and must
         // not be any smaller than 50 pixels.
@@ -159,10 +154,7 @@ public class EditAtrributesDialog extends TitleAreaDialog {
                 if (item == null)
                     return;
 
-                final Attribute temp = (Attribute) item.getData();
-                System.out.println("map before change");
-                System.out.println(Joiner.on('\n').withKeyValueSeparator(" -> ")
-                        .join(assignedValues));
+                final Attribute attr = (Attribute) item.getData();
 
                 // The control that will be the editor must be a child of the Table
                 newEditor = new Text(table, SWT.NONE);
@@ -171,29 +163,22 @@ public class EditAtrributesDialog extends TitleAreaDialog {
                     public void modifyText(ModifyEvent me) {
                         Text text = (Text) editor.getEditor();
                         editor.getItem().setText(EDITABLECOLUMN, text.getText());
-                        for (Attribute a : assignedValues.keySet()) {
-                            if (a.getName().equalsIgnoreCase(temp.getName())) {
-                                newValues.put(a, text.getText());
-                                break;
-                            }
-                            else if (!text.getText().isEmpty()) {
-                                newValues.put(temp, text.getText());
-                            }
-                        }
-
+                        
+                        // Store updated value in map aka sync map with table
+                        attributeMap.put(attr, text.getText());
                     }
                 });
 
                 newEditor.selectAll();
                 newEditor.setFocus();
                 editor.setEditor(newEditor, item, EDITABLECOLUMN);
-
             }
         });
 
     }
 
-    public Map<Attribute, String> getNewValues() {
-        return newValues;
+    // The attribute map is automatically synced with the table
+    public Map<Attribute, String> getAttributeMap() {
+        return attributeMap;
     }
 }

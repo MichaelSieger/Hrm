@@ -55,7 +55,7 @@ public class GridDragListener implements DragSourceListener {
         SchemeGridItem item = grid.removeImagePixel(startX, startY);
         if (item != null) {
             RenderedComponent c = item.getRenderedComponent();
-            dragging = new DragData(comps.indexOf(c), item.asSchemeComponent());
+            dragging = new DragData(comps.indexOf(c), item.getSchemeComponent());
         }
         else {
             ev.doit = false;

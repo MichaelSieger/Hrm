@@ -44,8 +44,8 @@ public class InspectionSchemeGrid {
 
             @Override
             public void itemClicked(MouseEvent e, SchemeGridItem item) {
-            	if(item.asSchemeComponent().getComponent().getBoolRating()){
-            		setSelected(item.asSchemeComponent());
+            	if(item.getSchemeComponent().getComponent().getBoolRating()){
+            		setSelected(item.getSchemeComponent());
             	}
             }
         });
@@ -98,8 +98,8 @@ public class InspectionSchemeGrid {
     private SchemeComponent findById(SchemeComponent s){
     	if(s != null){
         	for(SchemeGridItem item : grid.getItems()){
-        		if(item.asSchemeComponent().getId() == s.getId()){
-        			return item.asSchemeComponent();
+        		if(item.getSchemeComponent().getId() == s.getId()){
+        			return item.getSchemeComponent();
         		}
         	}
     	}
