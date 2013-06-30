@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.ElementNotFoundException;
 import de.hswt.hrm.common.database.exception.SaveException;
+import de.hswt.hrm.common.exception.NotImplementedException;
 import de.hswt.hrm.inspection.dao.core.IBiologicalRatingDao;
 import de.hswt.hrm.inspection.dao.core.IInspectionDao;
 import de.hswt.hrm.inspection.dao.core.IPerformanceDao;
@@ -72,16 +73,33 @@ public class InspectionService {
     	return biologicalDao.findByInspection(inspection);
     }
     
+    public Collection<BiologicalRating> insertBiologicalRatings(
+            Collection<BiologicalRating> ratings)
+        throws SaveException, DatabaseException {
+        
+        throw new NotImplementedException();
+    }
+    
     public Collection<PhysicalRating> findPhysicalRating(Inspection inspection)
     		throws DatabaseException {
     	
     	return physicalDao.findByInspection(inspection);
     }
     
+    public Collection<PhysicalRating> insertPhysicalRatings(Collection<PhysicalRating> ratings)
+            throws SaveException, DatabaseException {
+        
+        throw new NotImplementedException();
+    }
+    
     public Collection<Performance> findPerformance(Inspection inspection) 
     		throws DatabaseException {
  
     	return performanceDao.findByInspection(inspection);
+    }
+    
+    public Collection<Performance> inserPerformanceRatings(Collection<Performance> ratings) {
+        throw new NotImplementedException();
     }
 
     public Scheme findScheme(Inspection inspection) throws DatabaseException {
