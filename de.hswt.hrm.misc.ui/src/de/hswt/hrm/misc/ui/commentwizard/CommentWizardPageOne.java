@@ -136,7 +136,7 @@ public class CommentWizardPageOne extends WizardPage {
         }
 
         else if (isAlreadyPresent(nameText.getText())) {
-            setErrorMessage("A comment with name" + " '"+ nameText.getText()+ "' " + "is already present.");
+            setErrorMessage(I18N.tr("A comment with name") + " '"+ nameText.getText()+ "' " + I18N.tr("is already present."));
         }
 
     }
