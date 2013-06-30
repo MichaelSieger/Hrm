@@ -39,6 +39,8 @@ import com.google.common.collect.Collections2;
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.ElementNotFoundException;
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
+import de.hswt.hrm.i18n.I18n;
+import de.hswt.hrm.i18n.I18nFactory;
 import de.hswt.hrm.inspection.model.Inspection;
 import de.hswt.hrm.inspection.ui.grid.InspectionSchemeGrid;
 import de.hswt.hrm.inspection.ui.grid.SchemeComponentSelectionListener;
@@ -56,6 +58,8 @@ public class ComponentSelectionComposite extends Composite implements Inspection
 	private static final String RENDER_ERROR = "Error on rendering image";
 
     private final static Logger LOG = LoggerFactory.getLogger(ComponentSelectionComposite.class);
+    
+    private static final I18n I18N = I18nFactory.getI18n(ComponentSelectionComposite.class);
 	
     @Inject
     private IEclipseContext context;
@@ -118,7 +122,7 @@ public class ComponentSelectionComposite extends Composite implements Inspection
 
         Section listSection = toolkit.createSection(horizontalSash, Section.TITLE_BAR);
         toolkit.paintBordersFor(listSection);
-        listSection.setText("Components");
+        listSection.setText(I18N.tr("Components"));
         FormUtil.initSectionColors(listSection);
 
         componentsList = new ListViewer(listSection, SWT.BORDER);
@@ -151,7 +155,7 @@ public class ComponentSelectionComposite extends Composite implements Inspection
         
         Section schemeSection = toolkit.createSection(verticalSash, Section.TITLE_BAR);
         toolkit.paintBordersFor(schemeSection);
-        schemeSection.setText("Scheme");
+        schemeSection.setText(I18N.tr("Scheme"));
         schemeSection.setExpanded(true);
         FormUtil.initSectionColors(schemeSection);
 
