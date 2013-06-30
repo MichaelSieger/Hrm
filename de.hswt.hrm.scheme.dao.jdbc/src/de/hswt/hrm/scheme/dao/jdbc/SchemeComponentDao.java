@@ -20,6 +20,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.hswt.hrm.common.database.DatabaseFactory;
+import de.hswt.hrm.common.database.DatabaseUtil;
+import de.hswt.hrm.common.database.LoadOptions;
 import de.hswt.hrm.common.database.NamedParameterStatement;
 import de.hswt.hrm.common.database.SqlQueryBuilder;
 import de.hswt.hrm.common.database.exception.DatabaseException;
@@ -170,13 +172,26 @@ public class SchemeComponentDao implements ISchemeComponentDao {
                 try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
                     if (generatedKeys.next()) {
                         int id = generatedKeys.getInt(1);
-
+                        
                         SchemeComponent inserted = new SchemeComponent(
                         		id,
                         		schemeComponent.getScheme(),
                         		schemeComponent.getX(),
                                 schemeComponent.getY(), schemeComponent.getDirection(),
-                                schemeComponent.getComponent());
+                                schemeComponent.getComponent(),
+                                null);
+                        
+                        // Insert attributes if present
+                        if (schemeComponent.getAttributes().isPresent()) {
+                            Map<Attribute, String> attributes = 
+                                    schemeComponent.getAttributes().get();
+                            
+                            for (Attribute attr : attributes.keySet()) {
+                                addAttributeValue(inserted, attr, attributes.get(attr));
+                            }
+                            
+                            inserted.setAttributes(attributes);
+                        }
 
                         return inserted;
                     }
@@ -194,7 +209,7 @@ public class SchemeComponentDao implements ISchemeComponentDao {
 
     @Override
     public void update(SchemeComponent schemeComponent) 
-            throws ElementNotFoundException, SaveException {
+            throws ElementNotFoundException, SaveException, DatabaseException {
         
         checkNotNull(schemeComponent, "SchemeComponent must not be null.");
         checkState(schemeComponent.getId() >= 0, "SchemeComponent has no valid ID.");
@@ -208,6 +223,8 @@ public class SchemeComponentDao implements ISchemeComponentDao {
 
         final String query = builder.toString();
 
+        Map<Attribute, String> oldAttributes = findAttributesOfSchemeComponent(schemeComponent);
+        
         try (Connection con = DatabaseFactory.getConnection()) {
             try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
                 stmt.setParameter(Fields.COMPONENT, schemeComponent.getComponent().getId());
@@ -220,10 +237,30 @@ public class SchemeComponentDao implements ISchemeComponentDao {
                 if (affectedRows != 1) {
                     throw new SaveException();
                 }
+                
+                // Update attributes
+                if (schemeComponent.getAttributes().isPresent()) {
+                    // Insert / update existing values
+                    Map<Attribute, String> newAttributes = schemeComponent.getAttributes().get();
+                    for (Attribute attr : newAttributes.keySet()) {
+                        if (oldAttributes.containsKey(attr)) {
+                            updateAttributeValue(schemeComponent, attr, newAttributes.get(attr));
+                            oldAttributes.remove(attr);
+                        }
+                        else {
+                            addAttributeValue(schemeComponent, attr, newAttributes.get(attr));
+                        }
+                    }
+                }
+                
+                // Delete removed attributes (all in case there are none present now)
+                for (Attribute attr : oldAttributes.keySet()) {
+                    delete(schemeComponent, attr);
+                }
             }
         }
         catch (SQLException | DatabaseException e) {
-            throw new SaveException(e);
+            throw DatabaseUtil.createUnexpectedException(e);
         }
     }
     
@@ -314,10 +351,19 @@ public class SchemeComponentDao implements ISchemeComponentDao {
     
     @Override
     public Map<Attribute, String> findAttributesOfSchemeComponent(SchemeComponent schemeComponent)
+            throws DatabaseException {
+        
+        checkNotNull(schemeComponent, "SchemeComponent must not be null.");
+        checkState(schemeComponent.getId() >= 0, "SchemeComponent must have a valid ID.");
+        
+        return findAttributesOfSchemeComponent(schemeComponent.getId());
+    }
+    
+    @Override
+    public Map<Attribute, String> findAttributesOfSchemeComponent(int componentId)
     		throws DatabaseException {
     	
-    	checkNotNull(schemeComponent, "SchemeComponent must not be null.");
-    	checkArgument(schemeComponent.getId() >= 0, "SchemeComponent must have a valid ID.");
+    	checkArgument(componentId >= 0, "SchemeComponent must have a valid ID.");
     	
     	SqlQueryBuilder builder = new SqlQueryBuilder();
     	builder.select(ATTR_CROSS_TABLE_NAME, 
@@ -330,7 +376,7 @@ public class SchemeComponentDao implements ISchemeComponentDao {
     	
     	try (Connection con = DatabaseFactory.getConnection()) {
     		try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
-    			stmt.setParameter(AttrCrossFields.FK_COMPONENT, schemeComponent.getId());
+    			stmt.setParameter(AttrCrossFields.FK_COMPONENT, componentId);
     			
     			ResultSet rs = stmt.executeQuery();
 
@@ -531,7 +577,15 @@ public class SchemeComponentDao implements ISchemeComponentDao {
     	}
     }
     
-    private Collection<SchemeComponent> fromResultSet(ResultSet rs) throws SQLException, ElementNotFoundException, DatabaseException {
+    private Collection<SchemeComponent> fromResultSet(ResultSet rs)
+            throws SQLException, ElementNotFoundException, DatabaseException {
+        
+        return fromResultSet(rs, LoadOptions.LAZY);
+    }
+    
+    private Collection<SchemeComponent> fromResultSet(ResultSet rs, LoadOptions options)
+            throws SQLException, ElementNotFoundException, DatabaseException {
+        
         checkNotNull(rs, "Result must not be null.");
         
         LOG.debug("Parsing resultset from scheme component.");
@@ -552,7 +606,19 @@ public class SchemeComponentDao implements ISchemeComponentDao {
         		scheme = schemeDao.findById(schemeId);
             }
             
-            SchemeComponent schemeComponent = new SchemeComponent(id, scheme, xPos, yPos, dir, component);
+            Map<Attribute, String> attributes = null;
+            if (options == LoadOptions.EAGER) {
+                attributes = findAttributesOfSchemeComponent(id);
+            }
+            
+            SchemeComponent schemeComponent = new SchemeComponent(
+                    id, 
+                    scheme, 
+                    xPos, 
+                    yPos, 
+                    dir, 
+                    component,
+                    attributes);
             schemeComponent.setComponent(component);
             
             schemeComponentList.add(schemeComponent);

@@ -12,13 +12,16 @@ import com.google.common.base.Optional;
 
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.SaveException;
+import de.hswt.hrm.i18n.I18n;
+import de.hswt.hrm.i18n.I18nFactory;
 import de.hswt.hrm.inspection.model.Layout;
 import de.hswt.hrm.inspection.service.LayoutService;
 
 public class PreferencesWizard extends Wizard {
 
     private static final Logger LOG = LoggerFactory.getLogger(PreferencesWizard.class);
-
+    private static final I18n I18N = I18nFactory.getI18n(PreferencesWizard.class);
+    
     @Inject
     private LayoutService prefService;
 
@@ -31,10 +34,10 @@ public class PreferencesWizard extends Wizard {
         ContextInjectionFactory.inject(first, context);
 
         if (preference.isPresent()) {
-            setWindowTitle("Edit Preference: " + preference.get().getName());
+            setWindowTitle(I18N.tr("Edit Preference"));
         }
         else {
-            setWindowTitle("Create new Preference");
+            setWindowTitle(I18N.tr("Add a new Preference"));
         }
     }
 

@@ -71,8 +71,8 @@ public class RatingDisplay {
 	
 	protected SchemeComponent findById(Collection<SchemeGridItem> items, SchemeComponent c){
 		for(SchemeGridItem i : items){
-			if(i.asSchemeComponent().getId() == c.getId()){
-				return i.asSchemeComponent();
+			if(i.getSchemeComponent().getId() == c.getId()){
+				return i.getSchemeComponent();
 			}
 		}
 		throw new RuntimeException("Internal Error");

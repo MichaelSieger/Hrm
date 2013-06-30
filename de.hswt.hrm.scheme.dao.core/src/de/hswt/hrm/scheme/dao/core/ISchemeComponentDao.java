@@ -38,6 +38,9 @@ public interface ISchemeComponentDao {
     Map<Attribute, String> findAttributesOfSchemeComponent(SchemeComponent schemeComponent) 
     		throws DatabaseException;
     
+    Map<Attribute, String> findAttributesOfSchemeComponent(int componentId)
+            throws DatabaseException;
+    
     /**
      * Set a value for an attribute of the given scheme component.
      * 
@@ -68,9 +71,11 @@ public interface ISchemeComponentDao {
      * @param schemeComponent SchemeComponent that should be updated.
      * @throws ElementNotFoundException If the given schemeComponent is not present in the database.
      * @throws SaveException If the schemeComponent could not be updated.
+     * @throws DatabaseException 
      * @throws IllegalStateException If scheme or component have an invalid ID.
      */
-    void update(SchemeComponent schemeComponent) throws ElementNotFoundException, SaveException;
+    void update(SchemeComponent schemeComponent) 
+            throws ElementNotFoundException, SaveException, DatabaseException;
 
     /**
      * @param component

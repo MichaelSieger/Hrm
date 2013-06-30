@@ -37,6 +37,8 @@ import de.hswt.hrm.common.ui.swt.layouts.LayoutUtil;
 import de.hswt.hrm.common.ui.swt.table.ColumnComparator;
 import de.hswt.hrm.common.ui.swt.table.ColumnDescription;
 import de.hswt.hrm.common.ui.swt.table.TableViewerController;
+import de.hswt.hrm.i18n.I18n;
+import de.hswt.hrm.i18n.I18nFactory;
 import de.hswt.hrm.misc.comment.model.Comment;
 import de.hswt.hrm.misc.comment.service.CommentService;
 import de.hswt.hrm.misc.ui.commentfilter.CommentFilter;
@@ -46,6 +48,7 @@ import de.hswt.hrm.summary.ui.part.SummaryPartUtil;
 
 public class CommentComposite extends Composite {
     private final static Logger LOG = LoggerFactory.getLogger(CommentComposite.class);
+    private static final I18n I18N = I18nFactory.getI18n(CommentComposite.class);
 
     @Inject
     private CommentService commentService;
@@ -197,8 +200,8 @@ public class CommentComposite extends Composite {
 
     private void showDBConnectionError() {
         // TODO translate
-        MessageDialog.openError(shellProvider.getShell(), "Connection Error",
-                "Could not load comments from Database.");
+        MessageDialog.openError(shellProvider.getShell(), I18N.tr("Connection Error"),
+                I18N.tr("Could not load comments from Database."));
     }
 
     private void updateTableFilter(String filterString) {

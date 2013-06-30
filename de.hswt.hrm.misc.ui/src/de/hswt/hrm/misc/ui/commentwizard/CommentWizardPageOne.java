@@ -12,6 +12,7 @@ import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.widgets.Section;
 import org.slf4j.Logger;
@@ -22,6 +23,8 @@ import com.google.common.base.Optional;
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.common.ui.swt.layouts.PageContainerFillLayout;
+import de.hswt.hrm.i18n.I18n;
+import de.hswt.hrm.i18n.I18nFactory;
 import de.hswt.hrm.misc.comment.model.Comment;
 import de.hswt.hrm.misc.comment.service.CommentService;
 import de.hswt.hrm.summary.model.Summary;
@@ -39,19 +42,20 @@ public class CommentWizardPageOne extends WizardPage {
     private CommentService commentService;
 
     private static final Logger LOG = LoggerFactory.getLogger(CommentWizardPageOne.class);
+    private static final I18n I18N = I18nFactory.getI18n(CommentWizardPageOne.class);
 
     public CommentWizardPageOne(String title, Optional<Comment> comment) {
         super(title);
         this.comment = comment;
         setDescription(createDescription());
-        setTitle("Comment Wizard");
+        setTitle(I18N.tr("Comment Wizard"));
     }
 
     private String createDescription() {
         if (comment.isPresent()) {
-            return "Change a Comment";
+            return I18N.tr("Edit a comment");
         }
-        return "Add a new Comment";
+        return I18N.tr("Add a new comment");
     }
 
     @Override
@@ -69,7 +73,9 @@ public class CommentWizardPageOne extends WizardPage {
 
         nameText = (Text) XWT.findElementByName(container, "name");
         descText = (Text) XWT.findElementByName(container, "desc");
-
+        
+        translate();
+        
         if (this.comment.isPresent()) {
             updateFields();
         }
@@ -122,15 +128,15 @@ public class CommentWizardPageOne extends WizardPage {
         setErrorMessage(null);
 
         if (descText.getText().isEmpty()) {
-            setErrorMessage("Description must not be empty");
+            setErrorMessage(I18N.tr("Field is mandatory")+": "+I18N.tr("Description"));
         }
 
         else if (nameText.getText().isEmpty()) {
-            setErrorMessage("Name must not be empty...");
+            setErrorMessage(I18N.tr("Field is mandatory")+": "+I18N.tr("Name"));
         }
 
         else if (isAlreadyPresent(nameText.getText())) {
-            setErrorMessage("A Comment with name " + nameText.getText() + " is already present");
+            setErrorMessage(I18N.tr("A comment with name") + " '"+ nameText.getText()+ "' " + I18N.tr("is already present."));
         }
 
     }
@@ -159,6 +165,32 @@ public class CommentWizardPageOne extends WizardPage {
         }
         return present;
 
+    }
+    
+    private void translate() {
+        // Section
+        setSectionText("Mandatory", I18N.tr("Comment"));
+        // Labels
+        setLabelText("lblName", I18N.tr("Name"));
+        setLabelText("text", I18N.tr("Text"));
+    }
+    
+    private void setSectionText (String sectionName, String text) {
+        Section s = (Section) XWT.findElementByName(container, sectionName);
+        if (s == null) {
+            LOG.error("Section '" + sectionName + "' not found.");
+            return;
+        }
+        s.setText(text);
+    }
+    
+    private void setLabelText(String labelName, String text) {
+        Label l = (Label) XWT.findElementByName(container, labelName);
+        if (l == null) {
+            LOG.error("Label '" + labelName + "' not found.");
+            return;
+        }
+        l.setText(text);
     }
 
     @Override

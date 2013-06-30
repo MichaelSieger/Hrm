@@ -287,8 +287,8 @@ public class ComponentSelectionComposite extends Composite implements Inspection
         
         List<SchemeComponent> input = new ArrayList<>();
         for (SchemeGridItem item : schemeGridItems) {
-        	if (item.asSchemeComponent().getComponent().getBoolRating()) {
-                input.add(item.asSchemeComponent());
+        	if (item.getSchemeComponent().getComponent().getBoolRating()) {
+                input.add(item.getSchemeComponent());
         	}
         }
 

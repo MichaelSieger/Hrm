@@ -14,10 +14,14 @@ import com.google.common.base.Optional;
 
 import de.hswt.hrm.common.ui.swt.table.ColumnDescription;
 import de.hswt.hrm.common.ui.swt.wizards.WizardCreator;
+import de.hswt.hrm.i18n.I18n;
+import de.hswt.hrm.i18n.I18nFactory;
 import de.hswt.hrm.inspection.model.Layout;
 import de.hswt.hrm.misc.ui.preferenceswizard.PreferencesWizard;
 
 public class ReportPreferenceUtil {
+    
+    private static final I18n I18N = I18nFactory.getI18n(ReportPreferenceUtil.class);
 
 	public static Optional<Layout> showWizard(IEclipseContext context,
 			Shell shell, Optional<Layout> pref) {
@@ -41,7 +45,7 @@ public class ReportPreferenceUtil {
 	}
 
 	private static ColumnDescription<Layout> getNameColumn() {
-		return new ColumnDescription<>("Name", new ColumnLabelProvider() {
+		return new ColumnDescription<>(I18N.tr("Name"), new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
 				Layout e = (Layout) element;
@@ -56,7 +60,7 @@ public class ReportPreferenceUtil {
 	}
 
 	private static ColumnDescription<Layout> getTextColumn() {
-		return new ColumnDescription<>("File name", new ColumnLabelProvider() {
+		return new ColumnDescription<>(I18N.tr("File name"), new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
 				Layout e = (Layout) element;

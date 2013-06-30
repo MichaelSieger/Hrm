@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -54,6 +55,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Function;
+import com.google.common.base.Joiner;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Collections2;
@@ -460,22 +462,37 @@ public class SchemeComposite extends Composite {
                 return;
             }
 
-            SchemeComponent schemeComponent = item.asSchemeComponent();
-            Map<Attribute, String> assignedValues = schemeService
-                    .findAttributesOfSchemeComponent(schemeComponent);
+            
+            SchemeComponent schemeComponent = item.getSchemeComponent();
+            Map<Attribute, String> assignedValues = null;
+            if (schemeComponent.getId() < 0) { // scheme component noch nicht in DB
+                assignedValues = schemeComponent.getAttributes().or(
+                        new HashMap<Attribute, String>(0));
+            }
+            else {
+                // If attribute map is not present we handle it as "lazy" load
+                // FIXME: check if this has to be improved (especially for multi user support)!
+                if (schemeComponent.getAttributes().isPresent()) {
+                    assignedValues = schemeComponent.getAttributes().get();
+                }
+                else {
+                    LOG.debug("Lazy load attribute values.");
+                    assignedValues = schemeService.findAttributesOfSchemeComponent(schemeComponent);
+                }
+            }
 
             EditAtrributesDialog eda = new EditAtrributesDialog(shellProvider.getShell(), item
                     .getRenderedComponent().getComponent(), attributes, assignedValues);
             eda.open();
-
-            Map<Attribute, String> newValues = eda.getNewValues();
-            System.out.println(newValues);
-            for (Entry<Attribute, String> entry : newValues.entrySet()) {
-
-                schemeService.setAttributeValue(schemeComponent, entry.getKey(), entry.getValue());
-
+            if (eda.getReturnCode() == Window.OK) {
+                Map<Attribute, String> newValues = eda.getAttributeMap();
+                schemeComponent.setAttributes(newValues);
+                LOG.debug("Update attribute values to: \n\t" 
+                        + Joiner.on("\n\t").withKeyValueSeparator(" -> ").join(newValues));
             }
-
+            else {
+                LOG.debug("Attribute edit cancelled.");
+            }
         }
         catch (DatabaseException e) {
             LOG.error("an error occured", e);
@@ -691,7 +708,7 @@ public class SchemeComposite extends Composite {
         Collection<SchemeComponent> schemeComps = Collections2.transform(grid.getItems(),
                 new Function<SchemeGridItem, SchemeComponent>() {
                     public SchemeComponent apply(SchemeGridItem item) {
-                        return item.asSchemeComponent();
+                        return item.getSchemeComponent();
                     }
                 });
         Preconditions.checkNotNull(plant, "The Plant must be set before saving");
