@@ -48,6 +48,8 @@ import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.common.ui.swt.layouts.LayoutUtil;
 import de.hswt.hrm.common.ui.swt.utils.ContentProposalUtil;
 import de.hswt.hrm.component.model.Component;
+import de.hswt.hrm.i18n.I18n;
+import de.hswt.hrm.i18n.I18nFactory;
 import de.hswt.hrm.inspection.model.Inspection;
 import de.hswt.hrm.inspection.model.util.PerformanceUtil;
 import de.hswt.hrm.inspection.service.InspectionService;
@@ -88,6 +90,7 @@ public class ReportPerformanceComposite extends AbstractComponentRatingComposite
     private FormToolkit formToolkit = new FormToolkit(Display.getDefault());
 
     private static final Logger LOG = LoggerFactory.getLogger(ReportPerformanceComposite.class);
+    private static final I18n I18N = I18nFactory.getI18n(ReportPerformanceComposite.class);
 
     /**
      * Do not use this constructor when instantiate this composite! It is only included to make the
@@ -126,7 +129,7 @@ public class ReportPerformanceComposite extends AbstractComponentRatingComposite
         targetSection.setLayoutData(LayoutUtil.createFillData());
         formToolkit.paintBordersFor(targetSection);
         FormUtil.initSectionColors(targetSection);
-        targetSection.setText("Targets");
+        targetSection.setText(I18N.tr("Target"));
 
         targetListViewer = new ListViewer(targetSection, SWT.BORDER | SWT.V_SCROLL);
         List targetList = targetListViewer.getList();
@@ -136,7 +139,7 @@ public class ReportPerformanceComposite extends AbstractComponentRatingComposite
         currentSection.setLayoutData(LayoutUtil.createFillData());
         formToolkit.paintBordersFor(currentSection);
         FormUtil.initSectionColors(currentSection);
-        currentSection.setText("Current");
+        currentSection.setText(I18N.tr("Current"));
 
         currentListViewer = new ListViewer(currentSection, SWT.BORDER | SWT.V_SCROLL);
         List currentList = currentListViewer.getList();
@@ -146,7 +149,7 @@ public class ReportPerformanceComposite extends AbstractComponentRatingComposite
         activitySection.setLayoutData(LayoutUtil.createFillData());
         formToolkit.paintBordersFor(activitySection);
         FormUtil.initSectionColors(activitySection);
-        activitySection.setText("Activities");
+        activitySection.setText(I18N.tr("Activity"));
 
         activityListViewer = new ListViewer(activitySection, SWT.BORDER | SWT.V_SCROLL);
         List activityList = activityListViewer.getList();
@@ -169,7 +172,7 @@ public class ReportPerformanceComposite extends AbstractComponentRatingComposite
         containedSection.setLayoutData(LayoutUtil.createFillData());
         formToolkit.paintBordersFor(containedSection);
         FormUtil.initSectionColors(containedSection);
-        containedSection.setText("Assigned");
+        containedSection.setText(I18N.tr("Assigned"));
 
         Composite composite = new Composite(containedSection, SWT.NONE);
         formToolkit.adapt(composite);
@@ -192,9 +195,8 @@ public class ReportPerformanceComposite extends AbstractComponentRatingComposite
         tree.setLayoutData(gd_tree);
         formToolkit.paintBordersFor(tree);
 
-        // TODO translate
         Label label = new Label(composite, SWT.NONE);
-        label.setText("Priority");
+        label.setText(I18N.tr("Priority"));
 
         Combo combo = new Combo(composite, SWT.DROP_DOWN | SWT.READ_ONLY);
         combo.setLayoutData(LayoutUtil.createHorzFillData());

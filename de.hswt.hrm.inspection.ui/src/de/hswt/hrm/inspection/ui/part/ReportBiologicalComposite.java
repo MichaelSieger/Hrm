@@ -25,6 +25,7 @@ import org.eclipse.ui.forms.widgets.Section;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.hswt.hrm.inspection.model.BiologicalRating;
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.observer.Observable;
 import de.hswt.hrm.common.observer.Observer;
@@ -32,7 +33,8 @@ import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.common.ui.swt.layouts.LayoutUtil;
 import de.hswt.hrm.common.ui.swt.utils.ContentProposalUtil;
 import de.hswt.hrm.component.model.Component;
-import de.hswt.hrm.inspection.model.BiologicalRating;
+import de.hswt.hrm.i18n.I18n;
+import de.hswt.hrm.i18n.I18nFactory;
 import de.hswt.hrm.inspection.model.Inspection;
 import de.hswt.hrm.inspection.model.SamplingPointType;
 import de.hswt.hrm.inspection.service.InspectionService;
@@ -79,6 +81,8 @@ public class ReportBiologicalComposite extends AbstractComponentRatingComposite 
 	
 	private static final Logger LOG = LoggerFactory
 			.getLogger(ReportBiologicalComposite.class);
+	
+	private static final I18n I18N = I18nFactory.getI18n(ReportBiologicalComposite.class);
 
 	private final Observable<Integer> selectedGrade = new Observable<>();
 	private final Observable<SamplingPointType> samplePointType = new Observable<>();
@@ -137,21 +141,21 @@ public class ReportBiologicalComposite extends AbstractComponentRatingComposite 
 		Section contactCultureSection = formToolkit.createSection(composite,
 				Section.TITLE_BAR);
 		formToolkit.paintBordersFor(contactCultureSection);
-		contactCultureSection.setText("Contact cultures");
+		contactCultureSection.setText(I18N.tr("Contact cultures"));
 		contactCultureSection.setLayoutData(LayoutUtil.createHorzFillData());
 		FormUtil.initSectionColors(contactCultureSection);
 
 		Section airSection = formToolkit.createSection(composite,
 				Section.TITLE_BAR);
 		formToolkit.paintBordersFor(airSection);
-		airSection.setText("Air germs concentration");
+		airSection.setText(I18N.tr("Air germs concentration"));
 		airSection.setLayoutData(LayoutUtil.createHorzFillData());
 		FormUtil.initSectionColors(airSection);
 
 		Section tagSection = formToolkit.createSection(composite,
 				Section.TITLE_BAR);
 		formToolkit.paintBordersFor(tagSection);
-		tagSection.setText("Scheme tags");
+		tagSection.setText(I18N.tr("Scheme tags"));
 		tagSection.setLayoutData(LayoutUtil.createHorzFillData(2));
 		FormUtil.initSectionColors(tagSection);
 
@@ -171,12 +175,12 @@ public class ReportBiologicalComposite extends AbstractComponentRatingComposite 
 		Label contactGradeLabel = new Label(contactCultureComposite, SWT.NONE);
 		contactGradeLabel.setLayoutData(LayoutUtil.createHorzFillData(2));
 		formToolkit.adapt(contactGradeLabel, true, true);
-		contactGradeLabel.setText("Grade");
+		contactGradeLabel.setText(I18N.tr("Grade"));
 
 		Label contactWeightLabel = new Label(contactCultureComposite, SWT.NONE);
 		contactWeightLabel.setLayoutData(LayoutUtil.createHorzFillData(2));
 		formToolkit.adapt(contactWeightLabel, true, true);
-		contactWeightLabel.setText("Weight");
+		contactWeightLabel.setText(I18N.tr("Weight"));
 
 		contactGgradeList = new List(contactCultureComposite, SWT.BORDER);
 		contactGgradeList.setLayoutData(LayoutUtil.createHorzFillData(2));
@@ -216,7 +220,7 @@ public class ReportBiologicalComposite extends AbstractComponentRatingComposite 
 		contactConcentrationLabel
 				.setLayoutData(LayoutUtil.createLeftGridData());
 		formToolkit.adapt(contactConcentrationLabel, true, true);
-		contactConcentrationLabel.setText("Concentration");
+		contactConcentrationLabel.setText(I18N.tr("Concentration"));
 
 		contactCultureConcentrationText = formToolkit.createText(
 				contactCultureComposite, "", SWT.NONE);
@@ -227,7 +231,7 @@ public class ReportBiologicalComposite extends AbstractComponentRatingComposite 
 		Label contactCommentLabel = new Label(contactCultureComposite, SWT.NONE);
 		contactCommentLabel.setLayoutData(LayoutUtil.createLeftGridData());
 		formToolkit.adapt(contactCommentLabel, true, true);
-		contactCommentLabel.setText("Comment");
+		contactCommentLabel.setText(I18N.tr("Comment"));
 
 		contactCommentCombo = new Combo(contactCultureComposite, SWT.NONE);
 		contactCommentCombo.setLayoutData(LayoutUtil.createHorzFillData(3));
@@ -252,12 +256,12 @@ public class ReportBiologicalComposite extends AbstractComponentRatingComposite 
 		Label airGradeLabel = new Label(airGermsComposite, SWT.NONE);
 		airGradeLabel.setLayoutData(LayoutUtil.createHorzFillData(2));
 		formToolkit.adapt(contactGradeLabel, true, true);
-		airGradeLabel.setText("Grade");
+		airGradeLabel.setText(I18N.tr("Grade"));
 
 		Label airWeightLabel = new Label(airGermsComposite, SWT.NONE);
 		airWeightLabel.setLayoutData(LayoutUtil.createHorzFillData(2));
 		formToolkit.adapt(contactWeightLabel, true, true);
-		airWeightLabel.setText("Weight");
+		airWeightLabel.setText(I18N.tr("Weight"));
 
 		airGradeList = new List(airGermsComposite, SWT.BORDER);
 		airGradeList.setLayoutData(LayoutUtil.createHorzFillData(2));
@@ -283,7 +287,7 @@ public class ReportBiologicalComposite extends AbstractComponentRatingComposite 
 		airGermsConcentrationLabel.setLayoutData(LayoutUtil
 				.createLeftGridData());
 		formToolkit.adapt(airGermsConcentrationLabel, true, true);
-		airGermsConcentrationLabel.setText("Concentration");
+		airGermsConcentrationLabel.setText(I18N.tr("Concentration"));
 
 		airGermsConcentrationText = formToolkit.createText(airGermsComposite,
 				"", SWT.NONE);
@@ -294,7 +298,7 @@ public class ReportBiologicalComposite extends AbstractComponentRatingComposite 
 		Label airCommentLabel = new Label(airGermsComposite, SWT.NONE);
 		airCommentLabel.setLayoutData(LayoutUtil.createLeftGridData());
 		formToolkit.adapt(airCommentLabel, true, true);
-		airCommentLabel.setText("Comment");
+		airCommentLabel.setText(I18N.tr("Comment"));
 
 		airCommentCombo = new Combo(airGermsComposite, SWT.NONE);
 		airCommentCombo.setLayoutData(LayoutUtil.createHorzFillData(3));
@@ -320,7 +324,7 @@ public class ReportBiologicalComposite extends AbstractComponentRatingComposite 
 		nothingRadioButton = new Button(tagsComposite, SWT.RADIO);
 		formToolkit.adapt(nothingRadioButton, true, true);
 		nothingRadioButton.setLayoutData(LayoutUtil.createHorzFillData());
-		nothingRadioButton.setText("Nothing");
+		nothingRadioButton.setText(I18N.tr("Nothing"));
 		nothingRadioButton.setSelection(true);
 		nothingRadioButton.addSelectionListener(new SelectionListener() {
 
@@ -337,7 +341,7 @@ public class ReportBiologicalComposite extends AbstractComponentRatingComposite 
 		airGermsRadioButton = new Button(tagsComposite, SWT.RADIO);
 		formToolkit.adapt(airGermsRadioButton, true, true);
 		airGermsRadioButton.setLayoutData(LayoutUtil.createHorzFillData());
-		airGermsRadioButton.setText("Air germs meassurement");
+		airGermsRadioButton.setText(I18N.tr("Air germs meassurement"));
 		airGermsRadioButton.addSelectionListener(new SelectionListener() {
 
 			@Override
@@ -353,7 +357,7 @@ public class ReportBiologicalComposite extends AbstractComponentRatingComposite 
 		waterAnalysisRadioButton = new Button(tagsComposite, SWT.RADIO);
 		formToolkit.adapt(waterAnalysisRadioButton, true, true);
 		waterAnalysisRadioButton.setLayoutData(LayoutUtil.createHorzFillData());
-		waterAnalysisRadioButton.setText("Water analysis / Legionella");
+		waterAnalysisRadioButton.setText(I18N.tr("Water analysis")+" / "+I18N.tr("Legionella"));
 		waterAnalysisRadioButton.addSelectionListener(new SelectionListener() {
 
 			@Override
@@ -370,7 +374,7 @@ public class ReportBiologicalComposite extends AbstractComponentRatingComposite 
 		formToolkit.adapt(contactCultureRadioButton, true, true);
 		contactCultureRadioButton
 				.setLayoutData(LayoutUtil.createHorzFillData());
-		contactCultureRadioButton.setText("Contact culture");
+		contactCultureRadioButton.setText(I18N.tr("Contact cultures"));
 		contactCultureRadioButton.addSelectionListener(new SelectionListener() {
 
 			@Override

@@ -30,6 +30,8 @@ import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.common.ui.swt.layouts.LayoutUtil;
 import de.hswt.hrm.common.ui.swt.layouts.PageContainerFillLayout;
 import de.hswt.hrm.common.ui.swt.utils.SWTResourceManager;
+import de.hswt.hrm.i18n.I18n;
+import de.hswt.hrm.i18n.I18nFactory;
 import de.hswt.hrm.inspection.model.Inspection;
 import de.hswt.hrm.inspection.model.Layout;
 import de.hswt.hrm.inspection.service.LayoutService;
@@ -73,14 +75,16 @@ public class ReportCreationWizardPageOne extends WizardPage {
 	private Layout reportStyle;
 
 	private Combo reportStyleCombo;
+	
+	private static final I18n I18N = I18nFactory.getI18n(ReportCreationWizardPageOne.class);
 
 	/**
 	 * Create the wizard.
 	 */
 	public ReportCreationWizardPageOne() {
 		super("wizardPage");
-		setTitle("Create report");
-		setDescription("Please provide the basic report informations.");
+		setTitle(I18N.tr("Create report"));
+		setDescription(I18N.tr("Please provide the basic report informations."));
 	}
 
 	/**
@@ -97,7 +101,7 @@ public class ReportCreationWizardPageOne extends WizardPage {
 		Section generalSection = formToolkit.createSection(parent,
 				Section.TITLE_BAR);
 		formToolkit.paintBordersFor(generalSection);
-		generalSection.setText("Report informations");
+		generalSection.setText(I18N.tr("Report information"));
 		generalSection.setLayoutData(LayoutUtil.createHorzFillData());
 		FormUtil.initSectionColors(generalSection);
 
@@ -113,7 +117,7 @@ public class ReportCreationWizardPageOne extends WizardPage {
 		Label titleLabel = new Label(generalComposite, SWT.NONE);
 		titleLabel.setLayoutData(LayoutUtil.createLeftCenteredGridData());
 		formToolkit.adapt(titleLabel, true, true);
-		titleLabel.setText("Title");
+		titleLabel.setText(I18N.tr("Title"));
 
 		titleText = new Text(generalComposite, SWT.NONE);
 		titleText.setTextLimit(50);
@@ -132,14 +136,14 @@ public class ReportCreationWizardPageOne extends WizardPage {
 		Label plantLabel = new Label(generalComposite, SWT.NONE);
 		plantLabel.setLayoutData(LayoutUtil.createLeftCenteredGridData());
 		formToolkit.adapt(plantLabel, true, true);
-		plantLabel.setText("Plant");
+		plantLabel.setText(I18N.tr("Plant"));
 
 		plantText = new Text(generalComposite, SWT.READ_ONLY);
 		plantText.setLayoutData(LayoutUtil.createHorzCenteredFillData(2, 1));
 		formToolkit.adapt(plantText, true, true);
 
 		Button plantSelectionButton = formToolkit.createButton(
-				generalComposite, "Select plant", SWT.PUSH);
+				generalComposite, I18N.tr("Select")+" "+I18N.tr("Plant"), SWT.PUSH);
 		plantSelectionButton.setLayoutData(LayoutUtil.createRightGridData(2));
 		plantSelectionButton.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -165,7 +169,7 @@ public class ReportCreationWizardPageOne extends WizardPage {
 		Label reportDateLabel = new Label(generalComposite, SWT.NONE);
 		reportDateLabel.setLayoutData(LayoutUtil.createLeftCenteredGridData());
 		formToolkit.adapt(reportDateLabel, true, true);
-		reportDateLabel.setText("Report date");
+		reportDateLabel.setText(I18N.tr("Report Date"));
 
 		reportDateTime = new DateTime(generalComposite, SWT.BORDER | SWT.DATE
 				| SWT.DROP_DOWN);
@@ -185,7 +189,7 @@ public class ReportCreationWizardPageOne extends WizardPage {
 		inspectionDateLabel.setLayoutData(LayoutUtil
 				.createLeftCenteredGridData());
 		formToolkit.adapt(inspectionDateLabel, true, true);
-		inspectionDateLabel.setText("Inspection data");
+		inspectionDateLabel.setText(I18N.tr("Inspection Date"));
 
 		inspectionDateTime = new DateTime(generalComposite, SWT.BORDER
 				| SWT.DATE | SWT.DROP_DOWN);
@@ -205,7 +209,7 @@ public class ReportCreationWizardPageOne extends WizardPage {
 		nextInspectionLabel.setLayoutData(LayoutUtil
 				.createLeftCenteredGridData());
 		formToolkit.adapt(nextInspectionLabel, true, true);
-		nextInspectionLabel.setText("Next inspection");
+		nextInspectionLabel.setText(I18N.tr("Next Inspection"));
 
 		nextInspectionDateTime = new DateTime(generalComposite, SWT.BORDER
 				| SWT.DATE | SWT.DROP_DOWN);
@@ -222,7 +226,7 @@ public class ReportCreationWizardPageOne extends WizardPage {
 		});
 
 		Button twoYearsButton = formToolkit.createButton(generalComposite,
-				"2 years", SWT.PUSH);
+				"2 "+I18N.tr("years"), SWT.PUSH);
 		twoYearsButton.setLayoutData(LayoutUtil.createRightGridData(2));
 		twoYearsButton.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -232,7 +236,7 @@ public class ReportCreationWizardPageOne extends WizardPage {
 		});
 
 		Button threeYearsButton = formToolkit.createButton(generalComposite,
-				"3 years", SWT.PUSH);
+				"3 "+I18N.tr("years"), SWT.PUSH);
 		threeYearsButton.setLayoutData(LayoutUtil.createRightGridData());
 		threeYearsButton.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -244,7 +248,7 @@ public class ReportCreationWizardPageOne extends WizardPage {
 		Label reportStyleLabel = new Label(generalComposite, SWT.NONE);
 		reportStyleLabel.setLayoutData(LayoutUtil.createLeftCenteredGridData());
 		formToolkit.adapt(reportStyleLabel, true, true);
-		reportStyleLabel.setText("Report style");
+		reportStyleLabel.setText(I18N.tr("Layout"));
 
 		reportStyleCombo = new Combo(generalComposite, SWT.DROP_DOWN
 				| SWT.READ_ONLY);
@@ -294,7 +298,7 @@ public class ReportCreationWizardPageOne extends WizardPage {
 
 		if (!titleFirst) {
 			if (titleText.getText().isEmpty()) {
-				setErrorMessage("Pleade provide a title for the report.");
+				setErrorMessage(I18N.tr("Please provide a title for the report."));
 				return;
 			} else {
 				title = titleText.getText();
@@ -306,7 +310,7 @@ public class ReportCreationWizardPageOne extends WizardPage {
 
 		if (!plantFirst) {
 			if (plant == null) {
-				setErrorMessage("Pleade select the plant of the report.");
+				setErrorMessage(I18N.tr("Please select the plant of the report."));
 				return;
 			} else {
 				ok = true;
