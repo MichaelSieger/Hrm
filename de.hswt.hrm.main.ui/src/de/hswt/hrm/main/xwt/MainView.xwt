@@ -8,8 +8,7 @@
 			<GridData verticalAlignment="FILL" horizontalAlignment="FILL" />
 		</Button.layoutData>
 	</Button>
-	<Label
-		text="Kontakte:&#13;&#10;-Konakte anlegen&#13;&#10;-Kontakte bearbeiten&#13;&#10;&#13;&#10;">
+	<Label x:Name="lblToContacts">
 		<Label.layoutData>
 			<GridData grabExcessHorizontalSpace="true" />
 		</Label.layoutData>
@@ -19,8 +18,7 @@
 			<GridData horizontalAlignment="FILL" verticalAlignment="FILL" />
 		</Button.layoutData>
 	</Button>
-	<Label
-		text="Standorte:&#13;&#10;-Standorte anlegen&#13;&#10;-Standorte bearbeiten">
+	<Label x:Name="lblToPlaces">
 		<Label.layoutData>
 			<GridData grabExcessHorizontalSpace="true" />
 		</Label.layoutData>
@@ -30,8 +28,7 @@
 			<GridData horizontalAlignment="FILL" verticalAlignment="FILL" />
 		</Button.layoutData>
 	</Button>
-	<Label
-		text="Anlagen:&#13;&#10;-Anlagen anlegen&#13;&#10;-Anlagen bearbeiten">
+	<Label x:Name="lblToPlants">
 		<Label.layoutData>
 			<GridData grabExcessHorizontalSpace="true" />
 		</Label.layoutData>
@@ -47,18 +44,15 @@
 			<GridData horizontalAlignment="RIGHT" />
 		</Button.layoutData>
 	</Button>
-	<Label
-		text="Katalog:&#13;&#10;-Katalog anlegen&#13;&#10;-Katalog bearbeiten" />
+	<Label x:Name="lblToCatalog"/>
 	<Button x:Name="toComponents" image="/resources/icons/Components.jpg" />
-	<Label
-		text="Kategorie:&#13;&#10;-Komponenten anlegen&#13;&#10;-Kategorien bearbeiten&#13;&#10;" />
+	<Label x:Name="lblToComponents"/>
 	<Button image="/resources/icons/Report.jpg" x:Name="toInspection" />
-	<Label
-		text="Inspektion:&#13;&#10;-Inspektionen anlegen&#13;&#10;-Insprektionen bearbeiten" />
+	<Label x:Name="lblToInspection"/>
 	<Label />
 	<Label />
 	<Button image="/resources/icons/Tools.jpg" x:Name="toMisc" />
-	<Label text="Zur Gesamtbewertung&#13;&#10;" />
+	<Label x:Name="lblToMisc"/>
 	<Label />
 	<Label />
 </Composite>
