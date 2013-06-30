@@ -66,6 +66,7 @@ import de.hswt.hrm.inspection.ui.listener.PlantChangedListener;
 import de.hswt.hrm.misc.comment.model.Comment;
 import de.hswt.hrm.misc.comment.service.CommentService;
 import de.hswt.hrm.photo.model.Photo;
+import de.hswt.hrm.photo.service.PhotoService;
 import de.hswt.hrm.photo.ui.wizard.PhotoWizard;
 import de.hswt.hrm.plant.model.Plant;
 import de.hswt.hrm.scheme.model.SchemeComponent;
@@ -89,13 +90,16 @@ public class ReportGeneralComposite extends Composite implements InspectionObser
 
     @Inject
     private LayoutService layoutService;
+    
+    @Inject
+    private PhotoService photoService;
 
     @Inject
     private IEclipseContext context;
 
     @Inject
     private IShellProvider shellProvider;
-
+    
     private FormToolkit formToolkit = new FormToolkit(Display.getDefault());
 
     private Section generalSection;
@@ -1086,7 +1090,12 @@ public class ReportGeneralComposite extends Composite implements InspectionObser
         fillGerms();
         fillTemperature();
         fillHumidity();
+        fillPhotos();
 
+    }
+
+    private void fillPhotos() {
+        
     }
 
     private void fillSummary() {

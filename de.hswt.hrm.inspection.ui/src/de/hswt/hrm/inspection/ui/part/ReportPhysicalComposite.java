@@ -28,6 +28,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.hswt.hrm.common.database.exception.DatabaseException;
+import de.hswt.hrm.common.database.exception.SaveException;
 import de.hswt.hrm.common.observer.Observable;
 import de.hswt.hrm.common.observer.Observer;
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
@@ -227,7 +228,7 @@ public class ReportPhysicalComposite extends AbstractComponentRatingComposite {
 				if (rating == null) {
 					return;
 				}
-				rating.setRating(selection);
+				rating.setQuantifier(selection);
 			}
 		});
 
@@ -425,6 +426,9 @@ public class ReportPhysicalComposite extends AbstractComponentRatingComposite {
         if (rating.getNote() !=null) {
             commentCombo.setText(rating.getNote().get());
         }
+        if (rating.getQuantifier() == 5){
+            save();
+        }
     }
     
     private PhysicalRating getRatingForComponent(SchemeComponent component) {
@@ -460,6 +464,21 @@ public class ReportPhysicalComposite extends AbstractComponentRatingComposite {
 	public void dispose() {
 		formToolkit.dispose();
 		super.dispose();
+	}
+	
+	public void save(){
+	    try {
+	        
+            inspectionService.insertPhysicalRatings(ratings);
+        }
+        catch (SaveException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        catch (DatabaseException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 	}
 
 	@Override

@@ -327,11 +327,11 @@ public class InspectionPart implements ComponentSelectionChangedListener, PlantC
             @Override
             public void run() {
                 super.run();
-                reportsOverviewComposite.addInspection();
+                 
             }
         };
         saveAction.setDescription(I18N.tr("Save the current edited report."));
-        saveAction.setEnabled(false);
+        saveAction.setEnabled(true);
         saveContribution = new ActionContributionItem(saveAction);
         form.getToolBarManager().add(saveContribution);
 
