@@ -12,12 +12,15 @@ import com.google.common.base.Optional;
 
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.SaveException;
+import de.hswt.hrm.i18n.I18n;
+import de.hswt.hrm.i18n.I18nFactory;
 import de.hswt.hrm.misc.comment.model.Comment;
 import de.hswt.hrm.misc.comment.service.CommentService;
 
 public class CommentWizard extends Wizard {
 
     private static final Logger LOG = LoggerFactory.getLogger(CommentWizard.class);
+    private static final I18n I18N = I18nFactory.getI18n(CommentWizard.class);
 
     @Inject
     private CommentService commentService;
@@ -31,10 +34,10 @@ public class CommentWizard extends Wizard {
         ContextInjectionFactory.inject(first, context);
 
         if (comment.isPresent()) {
-            setWindowTitle("Edit Comment: " + comment.get().getName());
+            setWindowTitle(I18N.tr("Edit Comment"));
         }
         else {
-            setWindowTitle("Create new Comment");
+            setWindowTitle(I18N.tr("Add Comment"));
         }
     }
 
