@@ -14,9 +14,6 @@ public class Plant {
 
     // mandatory fields
     private int id;
-    // Laut Anforderung: Anzahl der Elemente (ergibt sich aus der schematischen Bezeichnung) Wie ist
-    // das gemeint?
-    private int numberOfElements;
     private String description;
     private String area;
     private String location;
@@ -53,17 +50,6 @@ public class Plant {
 
     public int getId() {
         return id;
-    }
-    
-
-    // TODO abklären siehe oben
-    public int getNumberOfElements() {
-        return numberOfElements;
-    }
-
-    // TODO abklären siehe oben
-    public void setNumberOfElements(int numberOfElements) {
-        this.numberOfElements = numberOfElements;
     }
 
     public String getDescription() {
@@ -196,7 +182,6 @@ public class Plant {
         result = prime * result + ((motorPower == null) ? 0 : motorPower.hashCode());
         result = prime * result + ((motorRpm == null) ? 0 : motorRpm.hashCode());
         result = prime * result + ((note == null) ? 0 : note.hashCode());
-        result = prime * result + numberOfElements;
         result = prime * result + ((place == null) ? 0 : place.hashCode());
         result = prime * result + ((type == null) ? 0 : type.hashCode());
         result = prime * result
@@ -293,9 +278,6 @@ public class Plant {
             }
         }
         else if (!note.equals(other.note)) {
-            return false;
-        }
-        if (numberOfElements != other.numberOfElements) {
             return false;
         }
         if (place == null) {

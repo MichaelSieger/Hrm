@@ -17,6 +17,7 @@ import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.SaveException;
 import de.hswt.hrm.component.model.Attribute;
 import de.hswt.hrm.component.model.Component;
+import de.hswt.hrm.component.model.ComponentIcon;
 import de.hswt.hrm.component.service.CategoryService;
 import de.hswt.hrm.component.service.ComponentService;
 import de.hswt.hrm.i18n.I18n;
@@ -153,23 +154,27 @@ public class ComponentWizard extends Wizard {
             component.setQuantifier(first.getQuantifier());
             component.setCategory(first.getCategory());
             component.setBoolRating(first.getRating());
+            // FIXME: add filenames!!
             if (second.getImageLR() != null) {
-                component.setLeftRightImage(second.getImageLR());
+                component.setLeftRightImage(new ComponentIcon(second.getImageLR(), ""));
             }
             if (second.getImageRL() != null) {
-                component.setRightLeftImage(second.getImageRL());
+                component.setRightLeftImage(new ComponentIcon(second.getImageRL(), ""));
             }
             if (second.getImageDU() != null) {
-                component.setDownUpImage(second.getImageDU());
+                component.setDownUpImage(new ComponentIcon(second.getImageDU(), ""));
             }
             if (second.getImageUD() != null) {
-                component.setUpDownImage(second.getImageUD());
+                component.setUpDownImage(new ComponentIcon(second.getImageUD(), ""));
             }
 
         }
         else {
-            component = new Component(first.getName(), second.getImageLR(), second.getImageRL(),
-                    second.getImageUD(), second.getImageDU(), first.getQuantifier(),
+        	// FIXME: add filenames!!
+            component = new Component(first.getName(), new ComponentIcon(second.getImageLR(), ""),
+            		new ComponentIcon(second.getImageRL(), ""), 
+            		new ComponentIcon(second.getImageUD(), ""),
+            		new ComponentIcon(second.getImageDU(), ""), first.getQuantifier(),
                     first.getRating());
             component.setCategory(first.getCategory());
         }

@@ -11,6 +11,7 @@ import org.eclipse.swt.widgets.Display;
 import de.hswt.hrm.common.BundleUtil;
 import de.hswt.hrm.component.model.Category;
 import de.hswt.hrm.component.model.Component;
+import de.hswt.hrm.component.model.ComponentIcon;
 import de.hswt.hrm.scheme.model.RenderedComponent;
 import de.hswt.hrm.scheme.service.ComponentConverter;
 import de.hswt.hrm.scheme.ui.tree.IImageTreeModel;
@@ -48,29 +49,38 @@ public class ImageTreeModelMock implements IImageTreeModel {
 	
 	
 	private Component getBioMesureComponent() throws FileNotFoundException, IOException{
-		Component c = new Component("Keimmessung", loadBytes("pkk1d.pdf"), loadBytes("pkk1l.pdf"),
-							  loadBytes("pkk1r.pdf"), loadBytes("pkk1u.pdf"), 1, true);
+		Component c = new Component("Keimmessung", 
+				new ComponentIcon(loadBytes("pkk1d.pdf"), "pkk1d.pdf"),
+				new ComponentIcon(loadBytes("pkk1l.pdf"), "pkk1l.pdf"),
+				new ComponentIcon(loadBytes("pkk1r.pdf"), "pkklr.pdf"),
+				new ComponentIcon(loadBytes("pkk1u.pdf"), "pkklu.pdf"), 1, true);
 		c.setCategory(getMeasureCategory());
 		return c;
 	}
 	
 	private Component getVentilationComponent() throws FileNotFoundException, IOException{
 		Component c = new Component(
-				"Außenluft", loadBytes("1_0.pdf"), loadBytes("1_l_0.pdf"), null, null, 3, true);
+				"Außenluft", 
+				new ComponentIcon(loadBytes("1_0.pdf"), "1_0.pdf"),
+				new ComponentIcon(loadBytes("1_l_0.pdf"), "1_l_0.pdf"), null, null, 3, true);
 		c.setCategory(getVentilationCategory());
 		return c;
 	}
 	
 	private Component getFilterComponent2() throws FileNotFoundException, IOException{
 		Component c = new Component(
-				"F6", loadBytes("8_r_0.pdf"), loadBytes("8_l_0.pdf"), null, null, 3, true);
+				"F6", 
+				new ComponentIcon(loadBytes("8_r_0.pdf"), "8_r_0.pdf"), 
+				new ComponentIcon(loadBytes("8_l_0.pdf"), "8_l_0.pdf"), null, null, 3, true);
 		c.setCategory(getFilterCategory());
 		return c;
 	}
 	
 	private Component getFilterComponent() throws FileNotFoundException, IOException{
 		Component c = new Component(
-				"F5", loadBytes("7_r_0.pdf"), loadBytes("7_l_0.pdf"), null, null, 3, true);
+				"F5", 
+				new ComponentIcon(loadBytes("7_r_0.pdf"), "7_r_0.pdf"),
+				new ComponentIcon(loadBytes("7_l_0.pdf"), "7_l_0.pdf"), null, null, 3, true);
 		c.setCategory(getFilterCategory());
 		return c;
 	}

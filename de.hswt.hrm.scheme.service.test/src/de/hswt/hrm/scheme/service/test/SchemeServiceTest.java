@@ -20,6 +20,7 @@ import de.hswt.hrm.component.dao.jdbc.ComponentDao;
 import de.hswt.hrm.component.model.Attribute;
 import de.hswt.hrm.component.model.Category;
 import de.hswt.hrm.component.model.Component;
+import de.hswt.hrm.component.model.ComponentIcon;
 import de.hswt.hrm.place.dao.core.IPlaceDao;
 import de.hswt.hrm.place.dao.jdbc.PlaceDao;
 import de.hswt.hrm.place.model.Place;
@@ -79,8 +80,11 @@ public class SchemeServiceTest extends AbstractDatabaseTest {
         IComponentDao componentDao = new ComponentDao(categoryDao);
         Category cat = categoryDao.insert(new Category("SomeCat", 1, 1, 1, true));
 
-        Component component = new Component("SomeComp", new byte[1], new byte[1], new byte[1],
-                new byte[1], 1, true);
+        Component component = new Component("SomeComp", 
+        		new ComponentIcon(new byte[1], ""), 
+        		new ComponentIcon(new byte[1], ""),
+        		new ComponentIcon(new byte[1], ""),
+        		new ComponentIcon(new byte[1], ""), 1, true);
         component.setCategory(cat);
         component = componentDao.insert(component);
 

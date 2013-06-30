@@ -10,6 +10,7 @@ import com.google.common.base.Throwables;
 import de.hswt.hrm.common.BundleUtil;
 import de.hswt.hrm.component.model.Category;
 import de.hswt.hrm.component.model.Component;
+import de.hswt.hrm.component.model.ComponentIcon;
 import de.hswt.hrm.inspection.model.SamplingPointType;
 import de.hswt.hrm.scheme.model.RenderedComponent;
 import de.hswt.hrm.scheme.service.ComponentConverter;
@@ -98,12 +99,13 @@ public class SamplingPoints {
 		return new RenderedComponent[] {rc1, rc2};
 	}
 	
-	private Component getComponent(String name) throws IOException{
+	private Component getComponent(String name) throws IOException {
+		
 		return new Component
-				(name, getBytes(name+DIRS[0]), 
-						getBytes(name+DIRS[1]), 
-						getBytes(name+DIRS[2]), 
-						getBytes(name+DIRS[3]), false);
+				(name, new ComponentIcon(getBytes(name+DIRS[0]), "samplingpoint_leftright.pdf"), 
+						new ComponentIcon(getBytes(name+DIRS[1]), "samplingpoint_rightleft.pdf"), 
+						new ComponentIcon(getBytes(name+DIRS[2]), "samplingpoint_updown.pdf"), 
+						new ComponentIcon(getBytes(name+DIRS[3]), "samplingpoint_downup.pdf"), false);
 		
 	}
 	

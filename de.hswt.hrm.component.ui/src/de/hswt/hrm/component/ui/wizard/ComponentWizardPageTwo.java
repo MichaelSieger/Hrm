@@ -223,17 +223,17 @@ public class ComponentWizardPageTwo extends WizardPage {
 
     private void updateFields() {
     	Component comp = component.get();
-    	if(comp.getDownUpImage() != null){
-    		setPreviewImage(comp.getDownUpImage(), duLabel);
+    	if(comp.getDownUpImage().isPresent()){
+    		setPreviewImage(comp.getDownUpImage().get().getBlob(), duLabel);
     	}
-    	if(comp.getRightLeftImage() != null){
-    		setPreviewImage(comp.getRightLeftImage(), rlLabel);
+    	if(comp.getRightLeftImage().isPresent()){
+    		setPreviewImage(comp.getRightLeftImage().get().getBlob(), rlLabel);
     	}
-    	if(comp.getLeftRightImage() != null){
-    		setPreviewImage(comp.getLeftRightImage(), lrLabel);
+    	if(comp.getLeftRightImage().isPresent()){
+    		setPreviewImage(comp.getLeftRightImage().get().getBlob(), lrLabel);
     	}
-    	if(comp.getUpDownImage() != null){
-    		setPreviewImage(comp.getUpDownImage(), udLabel);
+    	if(comp.getUpDownImage().isPresent()){
+    		setPreviewImage(comp.getUpDownImage().get().getBlob(), udLabel);
     	}
     }
     

@@ -99,6 +99,7 @@ public class PerformanceDao implements IPerformanceDao {
 				Fields.PRIORITY_FK,
 				Fields.INSPECTION_FK);
         builder.where(Fields.INSPECTION_FK);
+        builder.orderBy(Fields.COMPONENT_FK);
 
         String query = builder.toString();
 

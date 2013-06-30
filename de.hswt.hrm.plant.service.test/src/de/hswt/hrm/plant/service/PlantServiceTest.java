@@ -102,7 +102,6 @@ public class PlantServiceTest extends AbstractDatabaseTest {
         expected.setMotorPower("30 PS");
         expected.setMotorRpm("1500 RPM");
         expected.setNote("Remember, remember the 5th of November..");
-        expected.setNumberOfElements(10);
         expected.setPlace(place);
         expected.setType("Don't know");
         expected.setVentilatorPerformance("Best performance ever!");

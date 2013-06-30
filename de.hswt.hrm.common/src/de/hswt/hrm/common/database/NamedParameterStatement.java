@@ -171,7 +171,7 @@ public class NamedParameterStatement implements AutoCloseable {
      * @param value
      *            Value for the parameter.
      */
-    public void setParameter(String name, int value) {
+    public void setParameter(String name, Integer value) {
         params.put(name, value);
     }
 
@@ -183,7 +183,7 @@ public class NamedParameterStatement implements AutoCloseable {
      * @param value
      *            Value for the parameter.
      */
-    public void setParameter(String name, long value) {
+    public void setParameter(String name, Long value) {
         params.put(name, value);
     }
 
@@ -195,7 +195,7 @@ public class NamedParameterStatement implements AutoCloseable {
      * @param value
      *            Value for the parameter.
      */
-    public void setParameter(String name, double value) {
+    public void setParameter(String name, Double value) {
         params.put(name, value);
     }
 
@@ -207,7 +207,7 @@ public class NamedParameterStatement implements AutoCloseable {
      * @param value
      *            Value for the parameter.
      */
-    public void setParameter(String name, float value) {
+    public void setParameter(String name, Float value) {
         params.put(name, value);
     }
 
@@ -219,7 +219,7 @@ public class NamedParameterStatement implements AutoCloseable {
      * @param value
      *            Value for the parameter.
      */
-    public void setParameter(String name, byte value) {
+    public void setParameter(String name, Byte value) {
         params.put(name, value);
     }
 
