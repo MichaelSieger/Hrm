@@ -233,10 +233,6 @@ public class ReportPerformanceComposite extends AbstractComponentRatingComposite
         super.dispose();
     }
 
-    @Override
-    public void setSelectedComponent(Component component) {
-    }
-
     public void initalize() {
         targetListViewer.getList().addSelectionListener(new SelectionAdapter() {
             @Override

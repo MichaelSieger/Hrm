@@ -20,6 +20,10 @@ import java.util.Iterator;
 import com.google.common.base.Optional;
 
 public class Inspection {
+	
+    private static final String IS_MANDATORY = "Field is a mandatory.";
+    private static final String INVALID_NUMBER = "%d is an invalid number.%n Must be greater 0.";
+	
     private final int id;
     private Layout layout;
     private Plant plant;
@@ -52,9 +56,6 @@ public class Inspection {
     private Scheme scheme;
     private final Observable<Collection<BiologicalRating>> biologicalRatings = new Observable<>();
     private final Observable<Collection<PhysicalRating>> physicalRatings = new Observable<>();
-
-    private static final String IS_MANDATORY = "Field is a mandatory.";
-    private static final String INVALID_NUMBER = "%d is an invalid number.%n Must be greater 0";
 
     public Inspection(int id, Calendar reportDate, Calendar inspectionDate,
             Calendar nextInspection, String title, Layout layout, Plant plant, Scheme scheme) {

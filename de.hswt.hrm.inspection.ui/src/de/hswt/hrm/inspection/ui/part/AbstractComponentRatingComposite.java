@@ -15,7 +15,7 @@ public abstract class AbstractComponentRatingComposite extends Composite {
 		setLayout(new FillLayout());
 	}
 
-	public abstract void setSelectedComponent(Component component);
+//	public abstract void setSelectedComponent(Component component);
 
 	protected abstract void inspectionChanged(Inspection inspection);
 

@@ -9,6 +9,8 @@ import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.jface.window.IShellProvider;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
+import org.eclipse.swt.events.FocusAdapter;
+import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -79,6 +81,10 @@ public class ReportPhysicalComposite extends AbstractComponentRatingComposite {
 
 	private final Observable<Integer> grade = new Observable<>();
 	private final Observable<SamplingPointType> samplePointType = new Observable<>();
+
+	private SchemeComponent currentSchemeComponent;
+
+	private Inspection inspection;
 
 	/**
 	 * Create the composite.
@@ -185,14 +191,16 @@ public class ReportPhysicalComposite extends AbstractComponentRatingComposite {
 		}
 		gradeList.select(0);
 		gradeList.addSelectionListener(new SelectionListener() {
-
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				int sel = gradeList.getSelectionIndex();
-				if (sel == -1) {
-					sel = 0;
+				int selection = gradeList.getSelectionIndex();
+				if (selection == -1) {
+					selection = 0;
 				}
-				grade.set(sel);
+				grade.set(selection);
+				PhysicalRating rating = 
+						getRatingForComponent(currentSchemeComponent);
+				rating.setRating(selection);
 			}
 
 			@Override
@@ -206,8 +214,22 @@ public class ReportPhysicalComposite extends AbstractComponentRatingComposite {
 		for (int i = 1; i <= 6; i++) {
 			weightList.add(Integer.toString(i));
 		}
-		
 		weightList.select(0);
+		weightList.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				int selection = weightList.getSelectionIndex();
+				if (selection == -1) {
+					selection = 0;
+				}
+				PhysicalRating rating = 
+						getRatingForComponent(currentSchemeComponent);
+				if (rating == null) {
+					return;
+				}
+				rating.setRating(selection);
+			}
+		});
 
 		Label commentLabel = new Label(physicalComposite, SWT.NONE);
 		commentLabel.setLayoutData(LayoutUtil.createLeftGridData());
@@ -216,6 +238,17 @@ public class ReportPhysicalComposite extends AbstractComponentRatingComposite {
 
 		commentCombo = new Combo(physicalComposite, SWT.MULTI);
 		commentCombo.setLayoutData(LayoutUtil.createHorzFillData(3));
+		commentCombo.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent e) {
+				PhysicalRating rating = 
+						getRatingForComponent(currentSchemeComponent);
+				if (rating == null) {
+					return;
+				}
+				rating.setNote(commentCombo.getText());
+			}
+		});
 		formToolkit.adapt(commentCombo);
 		formToolkit.paintBordersFor(commentCombo);
 
@@ -275,15 +308,10 @@ public class ReportPhysicalComposite extends AbstractComponentRatingComposite {
 		nothingRadioButton.setLayoutData(LayoutUtil.createHorzFillData());
 		nothingRadioButton.setText(I18N.tr("Nothing"));
 		nothingRadioButton.setSelection(true);
-		nothingRadioButton.addSelectionListener(new SelectionListener() {
-
+		nothingRadioButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				samplePointType.set(SamplingPointType.none);
-			}
-
-			@Override
-			public void widgetDefaultSelected(SelectionEvent e) {
 			}
 		});
 
@@ -292,15 +320,10 @@ public class ReportPhysicalComposite extends AbstractComponentRatingComposite {
 		climateParameterRadioButton.setLayoutData(LayoutUtil
 				.createHorzFillData());
 		climateParameterRadioButton.setText(I18N.tr("Climate parameter"));
-		climateParameterRadioButton.addSelectionListener(new SelectionListener() {
-
+		climateParameterRadioButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				samplePointType.set(SamplingPointType.climateParameter);
-			}
-
-			@Override
-			public void widgetDefaultSelected(SelectionEvent e) {
 			}
 		});
 
@@ -308,15 +331,10 @@ public class ReportPhysicalComposite extends AbstractComponentRatingComposite {
 		formToolkit.adapt(photoRadioButton, true, true);
 		photoRadioButton.setLayoutData(LayoutUtil.createHorzFillData());
 		photoRadioButton.setText(I18N.tr("Photo"));
-		photoRadioButton.addSelectionListener(new SelectionListener() {
-
+		photoRadioButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				samplePointType.set(SamplingPointType.photo);
-			}
-
-			@Override
-			public void widgetDefaultSelected(SelectionEvent e) {
 			}
 		});
 
@@ -324,18 +342,13 @@ public class ReportPhysicalComposite extends AbstractComponentRatingComposite {
 		formToolkit.adapt(dustRadioButton, true, true);
 		dustRadioButton.setLayoutData(LayoutUtil.createHorzFillData());
 		dustRadioButton.setText(I18N.tr("Dust concentration determination"));
-		dustRadioButton.addSelectionListener(new SelectionListener() {
+		dustRadioButton.addSelectionListener(new SelectionAdapter() {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				samplePointType.set(SamplingPointType.dustConcentration);
 			}
-
-			@Override
-			public void widgetDefaultSelected(SelectionEvent e) {
-			}
 		});
-		;
 
 		sc.setMinSize(composite.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 	}
@@ -368,25 +381,31 @@ public class ReportPhysicalComposite extends AbstractComponentRatingComposite {
 
 	}
 
-	@Override
-	public void setSelectedComponent(Component component) {
-		// TODO Auto-generated method stub
-	}
-
 	private void addPhoto() {
 		// TODO request for one or more photos (wizard, dialog?)
 	}
 
 	@Override
 	public void inspectionChanged(Inspection inspection) {
-	    updateInspectionRatings(inspection);
+		if (inspection == null) {
+			return;
+		}
+		
+		this.inspection = inspection;
+		
+	    updateInspectionRatings();
 	}
 	
 	
     @Override
     public void inspectionComponentSelectionChanged(SchemeComponent component) {
+    	if (component == null) {
+    		return;
+    	}
+    	
+    	currentSchemeComponent = component;
 
-        PhysicalRating rating = getRatingForComponent(component);
+    	PhysicalRating rating = getRatingForComponent(component);
 
         if (rating != null) {
             updateRatingValues(rating);
@@ -396,19 +415,15 @@ public class ReportPhysicalComposite extends AbstractComponentRatingComposite {
             weightList.select(0);
             commentCombo.setText("");
         }
-
     }
 	
     private void updateRatingValues(PhysicalRating rating) {
-  
         gradeList.select(rating.getRating());
         grade.set(gradeList.getSelectionIndex());
         weightList.select(rating.getQuantifier());
         if (rating.getNote().isPresent()) {
             commentCombo.setText(rating.getNote().get());
         }
-        
-        
     }
     
     private PhysicalRating getRatingForComponent(SchemeComponent component) {
@@ -416,9 +431,10 @@ public class ReportPhysicalComposite extends AbstractComponentRatingComposite {
             if (rating.getComponent().equals(component)) {
                 return rating;
             }
-
         }
-        return null;
+        PhysicalRating rating = new PhysicalRating(inspection, currentSchemeComponent);
+        ratings.add(rating);
+        return rating;
     }
 
     @Override
@@ -427,7 +443,7 @@ public class ReportPhysicalComposite extends AbstractComponentRatingComposite {
 		
 	}
 	
-	private void updateInspectionRatings(Inspection inspection) {
+	private void updateInspectionRatings() {
         try {
             ratings = inspectionService.findPhysicalRating(inspection);
            

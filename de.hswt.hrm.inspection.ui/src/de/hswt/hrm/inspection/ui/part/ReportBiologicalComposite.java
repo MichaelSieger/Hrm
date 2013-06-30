@@ -438,12 +438,6 @@ public class ReportBiologicalComposite extends AbstractComponentRatingComposite 
 	}
 
 	@Override
-	public void setSelectedComponent(Component component) {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	@Override
 	protected void checkSubclass() {
 		// Disable the check that prevents subclassing of SWT components
 	}
