@@ -16,6 +16,8 @@ import org.eclipse.ui.forms.widgets.Section;
 
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.common.ui.swt.utils.SWTResourceManager;
+import de.hswt.hrm.i18n.I18n;
+import de.hswt.hrm.i18n.I18nFactory;
 import de.hswt.hrm.plant.model.Plant;
 import de.hswt.hrm.plant.ui.shared.PlantComposite;
 
@@ -25,6 +27,8 @@ public class PlantSelectionDialog extends TitleAreaDialog {
     private IEclipseContext context;
     private Plant plant;
     private Button okButton;
+    
+    private static final I18n I18N = I18nFactory.getI18n(PlantSelectionDialog.class);
 
     public PlantSelectionDialog(Shell parentShell, IEclipseContext context) {
         super(parentShell);
@@ -37,17 +41,25 @@ public class PlantSelectionDialog extends TitleAreaDialog {
 
         draw(composite); // Contents of Dialog
 
-        setMessage("Please select a plant.");
-        setTitle("Plant selection");
+        setMessage(I18N.tr("Please select")+" "+I18N.tr("a plant")+".");
+        setTitle(I18N.tr("Plant selection"));
 
         return composite;
 
+    }
+    
+    @Override
+    protected Control createButtonBar(Composite parent) {
+        Control c = super.createButtonBar(parent);
+        getButton(OK).setText(I18N.tr("OK"));
+        getButton(CANCEL).setText(I18N.tr("Cancel"));
+        return c;
     }
 
     private void draw(Composite parent) {
         Section headerSection = new Section(parent, Section.TITLE_BAR);
         headerSection.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
-        headerSection.setText("Plants");
+        headerSection.setText(I18N.tr("Plants"));
         headerSection.setExpanded(true);
         FormUtil.initSectionColors(headerSection);
         headerSection.setLayout(new FillLayout());
