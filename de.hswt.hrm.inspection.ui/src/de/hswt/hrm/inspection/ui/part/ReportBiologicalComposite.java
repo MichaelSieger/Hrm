@@ -9,6 +9,7 @@ import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.jface.window.IShellProvider;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
+import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.FillLayout;
@@ -194,7 +195,6 @@ public class ReportBiologicalComposite extends AbstractComponentRatingComposite 
 		for (int i = 0; i < 6; i++) {
 			contactGgradeList.add(Integer.toString(i));
 		}
-		// TODO set 0 selected or grade from db
 		contactGgradeList.select(0);
 		contactGgradeList.addSelectionListener(new SelectionListener() {
 
@@ -204,6 +204,8 @@ public class ReportBiologicalComposite extends AbstractComponentRatingComposite 
 				if (sel != -1) {
 					selectedGrade.set(sel);
 				}
+				BiologicalRating rating = getRatingForComponent(currentSchemeComponent);
+				rating.setRating(sel);
 			}
 
 			@Override
@@ -217,8 +219,23 @@ public class ReportBiologicalComposite extends AbstractComponentRatingComposite 
 		for (int i = 1; i <= 6; i++) {
 			contactWeightList.add(Integer.toString(i));
 		}
-		// TODO set category weight or weight from db
+		
 		contactWeightList.select(0);
+		contactWeightList.addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                int selection = contactWeightList.getSelectionIndex();
+                if (selection == -1) {
+                    selection = 0;
+                }
+                BiologicalRating rating = 
+                        getRatingForComponent(currentSchemeComponent);
+                if (rating == null) {
+                    return;
+                }
+                rating.setQuantifier(selection);
+            }
+        });
 
 		Label contactConcentrationLabel = new Label(contactCultureComposite,
 				SWT.NONE);
@@ -231,7 +248,21 @@ public class ReportBiologicalComposite extends AbstractComponentRatingComposite 
 				contactCultureComposite, "", SWT.NONE);
 		contactCultureConcentrationText.setLayoutData(LayoutUtil
 				.createHorzCenteredFillData(3));
-		// TODO init with value
+		contactCultureConcentrationText.addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                int selection = contactWeightList.getSelectionIndex();
+                if (selection == -1) {
+                    selection = 0;
+                }
+                BiologicalRating rating = 
+                        getRatingForComponent(currentSchemeComponent);
+                if (rating == null) {
+                    return;
+                }
+                rating.setBacteriaCount(selection);
+            }
+        });
 
 		Label contactCommentLabel = new Label(contactCultureComposite, SWT.NONE);
 		contactCommentLabel.setLayoutData(LayoutUtil.createLeftGridData());
@@ -450,11 +481,18 @@ public class ReportBiologicalComposite extends AbstractComponentRatingComposite 
             updateRatingValues(rating);
         }
         else {
-            //TODO set default values
+            airGradeList.select(0);
+            airWeightList.select(0);
+            airCommentCombo.setText("");
+            airGermsConcentrationText.setText("");
         }
 	}
 
 	private void updateRatingValues(BiologicalRating rating) {
+	    
+	    System.out.println(rating.isAirGermsConcentration());
+	    System.out.println(rating.isContactCultures());
+	    
         if (rating.isAirGermsConcentration()){
             updateAirGermsConcentration(rating);
         }
@@ -468,6 +506,7 @@ public class ReportBiologicalComposite extends AbstractComponentRatingComposite 
         airGradeList.select(rating.getRating());
         selectedGrade.set(airGradeList.getSelectionIndex());
         airWeightList.select(rating.getQuantifier());
+        airGermsConcentrationText.setText(String.valueOf(rating.getBacteriaCount()));
         if (!rating.getComment().isEmpty()) {
             airCommentCombo.setText(rating.getComment());
         }
@@ -476,6 +515,7 @@ public class ReportBiologicalComposite extends AbstractComponentRatingComposite 
     private void updateAirGermsConcentration(BiologicalRating rating) {
         contactGgradeList.select(rating.getRating());
         contactWeightList.select(rating.getQuantifier());
+        contactCultureConcentrationText.setText(String.valueOf(rating.getBacteriaCount()));
         if (!rating.getComment().isEmpty()) {
             contactCommentCombo.setText(rating.getComment());
         }

@@ -69,7 +69,6 @@ public class PhotoWizard extends Wizard {
     		this.photos.get(i).setLabel(item.getText());
     		i++;
     	}
-//FIXME enable PHOTOservice
     	int x = 0;
     	for(Photo photo : photos){
     		if(photo.getId() == -1){
@@ -94,7 +93,6 @@ public class PhotoWizard extends Wizard {
     
     private void fillPhotoValues(Optional<List<Photo>> photos) {
         List<Photo> newPhotos = new ArrayList<Photo>();
-        
         currentPhotoList = Optional.fromNullable(newPhotos);
     }
     
