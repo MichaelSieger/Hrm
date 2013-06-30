@@ -14,9 +14,13 @@ import com.google.common.base.Optional;
 
 import de.hswt.hrm.common.ui.swt.table.ColumnDescription;
 import de.hswt.hrm.common.ui.swt.wizards.WizardCreator;
+import de.hswt.hrm.i18n.I18n;
+import de.hswt.hrm.i18n.I18nFactory;
 import de.hswt.hrm.misc.comment.model.Comment;
 
 public class CommentPartUtil {
+    
+    private static final I18n I18N = I18nFactory.getI18n(CommentPartUtil.class);
 
 	public static Optional<Comment> showWizard(IEclipseContext context,
 			Shell shell, Optional<Comment> comment) {
@@ -40,7 +44,7 @@ public class CommentPartUtil {
 	}
 
 	private static ColumnDescription<Comment> getNameColumn() {
-		return new ColumnDescription<>("Name", new ColumnLabelProvider() {
+		return new ColumnDescription<>(I18N.tr("Name"), new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
 				Comment e = (Comment) element;
@@ -55,7 +59,7 @@ public class CommentPartUtil {
 	}
 
 	private static ColumnDescription<Comment> getTextColumn() {
-		return new ColumnDescription<>("Text", new ColumnLabelProvider() {
+		return new ColumnDescription<>(I18N.tr("Text"), new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
 				Comment e = (Comment) element;
