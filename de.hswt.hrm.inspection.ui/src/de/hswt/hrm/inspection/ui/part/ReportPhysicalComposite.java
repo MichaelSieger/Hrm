@@ -381,28 +381,40 @@ public class ReportPhysicalComposite extends AbstractComponentRatingComposite {
 	
     @Override
     public void inspectionComponentSelectionChanged(SchemeComponent component) {
-     
-        for (PhysicalRating rating : ratings) {
-            if (rating.getComponent().equals(component)) {
-                updateComponentValues(rating);
-            }
-            else {
-                gradeList.select(0);
-                weightList.select(0);
-                commentCombo.setText("");
-            }
 
+        PhysicalRating rating = getRatingForComponent(component);
+
+        if (rating != null) {
+            updateRatingValues(rating);
+        }
+        else {
+            gradeList.select(0);
+            weightList.select(0);
+            commentCombo.setText("");
         }
 
-	}
+    }
 	
-    private void updateComponentValues(PhysicalRating rating) {
+    private void updateRatingValues(PhysicalRating rating) {
+  
         gradeList.select(rating.getRating());
+        grade.set(gradeList.getSelectionIndex());
         weightList.select(rating.getQuantifier());
         if (rating.getNote().isPresent()) {
             commentCombo.setText(rating.getNote().get());
         }
+        
+        
+    }
+    
+    private PhysicalRating getRatingForComponent(SchemeComponent component) {
+        for (PhysicalRating rating : ratings) {
+            if (rating.getComponent().equals(component)) {
+                return rating;
+            }
 
+        }
+        return null;
     }
 
     @Override
