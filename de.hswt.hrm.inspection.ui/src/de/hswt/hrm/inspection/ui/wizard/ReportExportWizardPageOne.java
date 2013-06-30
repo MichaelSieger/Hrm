@@ -25,6 +25,8 @@ import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.common.ui.swt.layouts.LayoutUtil;
 import de.hswt.hrm.common.ui.swt.layouts.PageContainerFillLayout;
 import de.hswt.hrm.common.ui.swt.utils.SWTResourceManager;
+import de.hswt.hrm.i18n.I18n;
+import de.hswt.hrm.i18n.I18nFactory;
 
 public class ReportExportWizardPageOne extends WizardPage {
 
@@ -43,13 +45,15 @@ public class ReportExportWizardPageOne extends WizardPage {
 
 	private boolean keepFiles = true;
 	
+	private static final I18n I18N = I18nFactory.getI18n(ReportExportWizardPageOne.class);
+	
     /**
      * Create the wizard.
      */
     public ReportExportWizardPageOne() {
         super("wizardPage");
-        setTitle("Create report");
-        setDescription("Please provide the basic report informations.");
+        setTitle(I18N.tr("Export report"));
+        setDescription(I18N.tr("Please provide the output directory for the exported report."));
     }
 
     /**
@@ -65,7 +69,7 @@ public class ReportExportWizardPageOne extends WizardPage {
 
         Section exportSection = formToolkit.createSection(parent, Section.TITLE_BAR);
         formToolkit.paintBordersFor(exportSection);
-        exportSection.setText("Report export");
+        exportSection.setText(I18N.tr("Report export"));
         exportSection.setLayoutData(LayoutUtil.createHorzFillData());
         FormUtil.initSectionColors(exportSection);
 
@@ -80,16 +84,16 @@ public class ReportExportWizardPageOne extends WizardPage {
 
         directoryLabel = new Label(exportComposite, SWT.NONE);
         directoryLabel.setLayoutData(LayoutUtil.createLeftCenteredGridData());
-        directoryLabel.setText("Standard directory");
+        directoryLabel.setText(I18N.tr("Standard directory"));
 
         directoryText = new Text(exportComposite, SWT.READ_ONLY);
-        directoryText.setToolTipText("A local directory where all the reports are created.");
+        directoryText.setToolTipText(I18N.tr("A local directory where all the reports are created."));
         directoryText.setLayoutData(LayoutUtil.createHorzCenteredFillData());
 
         browseButton = new Button(exportComposite, SWT.NONE);
         browseButton
-                .setToolTipText("Browse for a local directory where all the reports are created.");
-        browseButton.setText("Browse ...");
+                .setToolTipText(I18N.tr("Browse for a local directory where all the reports are created."));
+        browseButton.setText(I18N.tr("Browse ..."));
         browseButton.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
@@ -101,7 +105,7 @@ public class ReportExportWizardPageOne extends WizardPage {
 		keepCheckButton.setLayoutData(LayoutUtil.createLeftCenteredGridData(
 				3));
 		formToolkit.adapt(keepCheckButton, true, true);
-		keepCheckButton.setText("keep all files");
+		keepCheckButton.setText(I18N.tr("keep all files"));
 		keepCheckButton.setSelection(keepFiles);
 		keepCheckButton.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -127,8 +131,8 @@ public class ReportExportWizardPageOne extends WizardPage {
         Config config = Config.getInstance();
     	
     	DirectoryDialog dialog = new DirectoryDialog(shellProvider.getShell());
-        dialog.setText("Report directory selection");
-        dialog.setMessage("Select a directory as root for the report export.");
+        dialog.setText(I18N.tr("Report directory selection"));
+        dialog.setMessage(I18N.tr("Select a directory as root for the report export."));
         dialog.setFilterPath(config.getProperty(Config.Keys.REPORT_STYLE_FOLDER, ""));
         String dir = dialog.open();
         if (dir != null) {
@@ -146,7 +150,7 @@ public class ReportExportWizardPageOne extends WizardPage {
         boolean ok = false;
 
         if (!Files.isDirectory(rootPath)) {
-        	setErrorMessage("Select a valid directory.");
+        	setErrorMessage(I18N.tr("Select a valid directory."));
         } else {
         	ok = true;
         }
