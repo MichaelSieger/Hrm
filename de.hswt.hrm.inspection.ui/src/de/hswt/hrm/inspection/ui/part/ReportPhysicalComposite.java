@@ -379,7 +379,7 @@ public class ReportPhysicalComposite extends AbstractComponentRatingComposite {
 
 	@Override
 	public void inspectionChanged(Inspection inspection) {
-	    updateInspectionData(inspection);
+	    updateInspectionRatings(inspection);
 	}
 	
 	
@@ -427,7 +427,7 @@ public class ReportPhysicalComposite extends AbstractComponentRatingComposite {
 		
 	}
 	
-	private void updateInspectionData(Inspection inspection) {
+	private void updateInspectionRatings(Inspection inspection) {
         try {
             ratings = inspectionService.findPhysicalRating(inspection);
            
