@@ -418,10 +418,11 @@ public class ReportPhysicalComposite extends AbstractComponentRatingComposite {
     }
 	
     private void updateRatingValues(PhysicalRating rating) {
+        
         gradeList.select(rating.getRating());
         grade.set(gradeList.getSelectionIndex());
         weightList.select(rating.getQuantifier());
-        if (rating.getNote().isPresent()) {
+        if (rating.getNote() !=null) {
             commentCombo.setText(rating.getNote().get());
         }
     }
