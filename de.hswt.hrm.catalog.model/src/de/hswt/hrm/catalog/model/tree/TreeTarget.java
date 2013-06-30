@@ -10,7 +10,9 @@ import de.hswt.hrm.catalog.model.Target;
  * Wrapper for the target class that provides a tree like interface.
  */
 public class TreeTarget {
+
 	private final Target target;
+	
 	private List<TreeCurrent> currents;
 	
     public TreeTarget(final Target target) {

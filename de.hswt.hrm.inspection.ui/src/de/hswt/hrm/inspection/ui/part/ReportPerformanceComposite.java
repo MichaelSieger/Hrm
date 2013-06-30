@@ -2,12 +2,15 @@ package de.hswt.hrm.inspection.ui.part;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -49,6 +52,7 @@ import de.hswt.hrm.common.ui.swt.utils.ContentProposalUtil;
 import de.hswt.hrm.i18n.I18n;
 import de.hswt.hrm.i18n.I18nFactory;
 import de.hswt.hrm.inspection.model.Inspection;
+import de.hswt.hrm.inspection.model.Performance;
 import de.hswt.hrm.inspection.model.util.PerformanceUtil;
 import de.hswt.hrm.inspection.service.InspectionService;
 import de.hswt.hrm.inspection.ui.performance.tree.PerformanceTreeContentProvider;
@@ -88,6 +92,13 @@ public class ReportPerformanceComposite extends AbstractComponentRatingComposite
     
     private FormToolkit formToolkit = new FormToolkit(Display.getDefault());
 
+    private Map<Performance, TreeTarget> performances;
+    
+    private Inspection inspection;
+    
+    private SchemeComponent currentSchemeComponent;
+	private ComboViewer priorityComboViewer;
+    
     /**
      * Do not use this constructor when instantiate this composite! It is only included to make the
      * WindowsBuilder working.
@@ -109,6 +120,7 @@ public class ReportPerformanceComposite extends AbstractComponentRatingComposite
         super(parent, SWT.NONE);
         formToolkit.dispose();
         formToolkit = FormUtil.createToolkit();
+        performances = new LinkedHashMap<>();
     }
 
     @PostConstruct
@@ -197,11 +209,27 @@ public class ReportPerformanceComposite extends AbstractComponentRatingComposite
         Label label = new Label(composite, SWT.NONE);
         label.setText(I18N.tr("Priority"));
 
-        Combo combo = new Combo(composite, SWT.DROP_DOWN | SWT.READ_ONLY);
-        combo.setLayoutData(LayoutUtil.createHorzFillData());
-        initPriorityComboData(combo);
-        formToolkit.adapt(combo);
-        formToolkit.paintBordersFor(combo);
+        priorityComboViewer = new ComboViewer(composite, SWT.DROP_DOWN | SWT.READ_ONLY);
+        priorityComboViewer.setContentProvider(ArrayContentProvider.getInstance());
+        priorityComboViewer.setLabelProvider(new LabelProvider() {
+        	@Override
+        	public String getText(Object element) {
+        		if (element instanceof Priority) {
+        			return ((Priority)element).getText();
+        		}
+        		return super.getText(element);
+        	}
+        });       
+        priorityComboViewer.getCombo().setLayoutData(LayoutUtil.createHorzFillData());
+        priorityComboViewer.getCombo().addSelectionListener(new SelectionAdapter() {
+        	@Override
+        	public void widgetSelected(SelectionEvent e) {
+        		priorityChanged();
+        	}
+		});
+        priorityComboViewer.setInput(getPriorities());
+        formToolkit.adapt(priorityComboViewer.getCombo());
+        formToolkit.paintBordersFor(priorityComboViewer.getCombo());
 
         initalizeListViewer(targetListViewer);
         initalizeListViewer(activityListViewer);
@@ -263,24 +291,19 @@ public class ReportPerformanceComposite extends AbstractComponentRatingComposite
 		});
     }
     
-	private void initPriorityComboData(Combo combo) {
+    
+	private Priority[] getPriorities() {
 
 		Collection<Priority> prioritities;
 		try {
 			prioritities = priorityService.findAll();
-			String[] s = new String[prioritities.size()];
-			int i = 0;
-
-			for (Priority p : prioritities) {
-				s[i] = p.getText();
-				i++;
-			}
-			combo.setItems(s);
-			ContentProposalUtil.enableContentProposal(combo);
+			Priority[] prios = new Priority[prioritities.size()];
+			prioritities.toArray(prios);
+			return prios;
 		} catch (DatabaseException e) {
 			LOG.debug("An error occured", e);
 		}
-
+		return new Priority[0];
 	}
 
     private void targetSelected() {
@@ -314,6 +337,25 @@ public class ReportPerformanceComposite extends AbstractComponentRatingComposite
         }
     }
     
+    
+    private void priorityChanged() {
+    	IStructuredSelection selection = (IStructuredSelection)priorityComboViewer.getSelection();
+    	if (selection.isEmpty()) {
+    		return;
+    	}
+    	
+    	TreeTarget tt = getSelectedTreeTarget();
+    	if (tt == null) {
+    		return;
+    	}
+    	
+    	Performance performance = getPerformanceOfTreeTarget(tt);
+    	if (performance != null) {
+    		// FIXME add setter for priority
+//    		performance.setPriority((Priority)selection.getFirstElement());
+    	}
+    }
+    
     private void addActivity() {
 		IStructuredSelection selection = (IStructuredSelection) targetListViewer
 				.getSelection();
@@ -335,21 +377,53 @@ public class ReportPerformanceComposite extends AbstractComponentRatingComposite
 			return;
 		}
 		Activity activity = (Activity) selection.getFirstElement();
-        treeViewer.add(treeViewer.getInput(),  
-        		PerformanceUtil.createTreeTriplet(target, current, activity));
-        treeViewer.expandAll();
+		
+		Performance performance = new Performance(currentSchemeComponent, 
+				target, current, activity, null, inspection);
+		TreeTarget tt = PerformanceUtil.createTreeTriplet(performance);
+        if (!performances.containsKey(performance)) {
+            performances.put(performance, tt);
+    		treeViewer.add(treeViewer.getInput(), tt);
+            treeViewer.expandAll();
+        }
     }
     
-    protected void removeActivity() {
-    	ITreeSelection selection = ((ITreeSelection)treeViewer.getSelection());
-    	if (selection.isEmpty()) {
+    private void removeActivity() {
+    	TreeTarget tt = getSelectedTreeTarget();
+    	if (tt == null) {
     		return;
     	}
-		treeViewer.remove(selection.getPaths()[0].getFirstSegment());
+    	performances.remove(getPerformanceOfTreeTarget(tt));
+		treeViewer.remove(tt);
 	}
+
+    private TreeTarget getSelectedTreeTarget() {
+    	ITreeSelection selection = ((ITreeSelection)treeViewer.getSelection());
+    	if (selection.isEmpty()) {
+    		return null;
+    	}
+    	return (TreeTarget)selection.getPaths()[0].getFirstSegment();
+    }
+    
+    private Performance getPerformanceOfTreeTarget(TreeTarget treeTarget) {
+    	for (Performance performance : performances.keySet()) {
+    		if (performances.get(performance).equals(treeTarget)) {
+    			return performance;
+    		}
+    	}
+    	return null;
+    }
+    
+    private void deselectPriorityCombo() {
+		int selection = priorityComboViewer.getCombo().getSelectionIndex();
+		if (selection >= 0) {
+			priorityComboViewer.getCombo().deselect(selection);
+		}
+    }
     
 	@Override
 	public void inspectionChanged(Inspection inspection) {
+		this.inspection = inspection;
 	}
 
 	@SuppressWarnings("rawtypes")
@@ -358,6 +432,9 @@ public class ReportPerformanceComposite extends AbstractComponentRatingComposite
 		if (component == null){
        		return;
         }
+		
+		currentSchemeComponent = component;
+		
         Catalog c = component.getComponent().getCategory().get().getCatalog().get();
         try {
 
@@ -366,6 +443,14 @@ public class ReportPerformanceComposite extends AbstractComponentRatingComposite
             activityListViewer.getList().removeAll();
             ((java.util.List)treeViewer.getInput()).clear();
             treeViewer.refresh();
+            for (Performance performance : performances.keySet()) {
+            	if (performance.getSchemeComponent().equals(currentSchemeComponent)) {
+            		treeViewer.add(treeViewer.getInput(), 
+            				performances.get(performance));
+            	}
+            }
+            treeViewer.expandAll();
+            deselectPriorityCombo();
         }
         catch (DatabaseException e) {
         	e.printStackTrace();
@@ -375,7 +460,9 @@ public class ReportPerformanceComposite extends AbstractComponentRatingComposite
 
 	@Override
 	public void plantChanged(Plant plant) {
-		// TODO Auto-generated method stub
+		performances.clear();
+		deselectPriorityCombo();
+		priorityComboViewer.setInput(getPriorities());
 	}
 
 	@Override

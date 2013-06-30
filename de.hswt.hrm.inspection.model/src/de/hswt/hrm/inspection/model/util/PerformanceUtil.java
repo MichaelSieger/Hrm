@@ -10,6 +10,7 @@ import de.hswt.hrm.catalog.model.Target;
 import de.hswt.hrm.catalog.model.tree.TreeCatalog;
 import de.hswt.hrm.catalog.model.tree.TreeCurrent;
 import de.hswt.hrm.catalog.model.tree.TreeTarget;
+import de.hswt.hrm.inspection.model.Performance;
 
 /**
  * Util class to ease usage of performance / catalog classes.
@@ -44,5 +45,15 @@ public final class PerformanceUtil {
 		currents.add(new TreeCurrent(current, activities));
 		
 		return new TreeTarget(target, currents);
+	}
+	
+	public static TreeTarget createTreeTriplet(final Performance performance) {
+		List<Activity> activities = new ArrayList<>(1);
+		activities.add(performance.getActivity());
+		
+		List<TreeCurrent> currents = new ArrayList<>(1);
+		currents.add(new TreeCurrent(performance.getCurrent(), activities));
+		
+		return new TreeTarget(performance.getTarget(), currents);
 	}
 }
