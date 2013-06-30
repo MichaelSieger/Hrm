@@ -33,11 +33,8 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Function;
 import com.google.common.base.Preconditions;
-import com.google.common.base.Throwables;
 import com.google.common.collect.Collections2;
 
-import de.hswt.hrm.common.database.exception.DatabaseException;
-import de.hswt.hrm.common.database.exception.ElementNotFoundException;
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.i18n.I18n;
 import de.hswt.hrm.i18n.I18nFactory;
@@ -50,7 +47,6 @@ import de.hswt.hrm.plant.model.Plant;
 import de.hswt.hrm.scheme.model.Scheme;
 import de.hswt.hrm.scheme.model.SchemeComponent;
 import de.hswt.hrm.scheme.service.ComponentConverter;
-import de.hswt.hrm.scheme.service.SchemeService;
 import de.hswt.hrm.scheme.ui.SchemeGridItem;
 
 public class ComponentSelectionComposite extends Composite implements InspectionObserver {
@@ -64,9 +60,6 @@ public class ComponentSelectionComposite extends Composite implements Inspection
     @Inject
     private IEclipseContext context;
 
-    @Inject
-    private SchemeService schemeService;
-    
     private Class<? extends AbstractComponentRatingComposite> ratingCompositeClass;
 
     private FormToolkit toolkit = new FormToolkit(Display.getDefault());
@@ -188,6 +181,7 @@ public class ComponentSelectionComposite extends Composite implements Inspection
     
     private void setSelectComponent(SchemeComponent component) {
     	selectedComponent = component;
+		ratingComposite.inspectionComponentSelectionChanged(component);
         schemeGrid.setSelected(component);
         setListSelection(component);
         if (!updateFromOutside) {
@@ -257,18 +251,7 @@ public class ComponentSelectionComposite extends Composite implements Inspection
         return composite;
     }
 
-    private void plantChangedInternal(Plant plant) {
-        Scheme scheme;
-        try {
-            scheme = schemeService.findCurrentSchemeByPlant(plant);
-        }
-        catch (ElementNotFoundException e) {
-            // TODO what to do if there is no scheme?
-            throw Throwables.propagate(e);
-        }
-        catch (DatabaseException e) {
-            throw Throwables.propagate(e);
-        }
+    private void plantChangedInternal(Plant plant, Scheme scheme) {
     	
         Collection<SchemeGridItem> schemeGridItems = Collections2.transform(
                 scheme.getSchemeComponents(), new Function<SchemeComponent, SchemeGridItem>() {
@@ -308,8 +291,8 @@ public class ComponentSelectionComposite extends Composite implements Inspection
 	}
 
 	@Override
-	public void inspectionChanged(Inspection inspection) {
-		plantChangedInternal(inspection.getPlant());
+	public void inspectionChanged(Inspection inspection, Scheme scheme) {
+		plantChangedInternal(inspection.getPlant(), scheme);
 		ratingComposite.inspectionChanged(inspection);
 	}
 
@@ -317,12 +300,11 @@ public class ComponentSelectionComposite extends Composite implements Inspection
 	public void inspectionComponentSelectionChanged(SchemeComponent component) {
 		updateFromOutside = true;
 		setSelectComponent(component);
-		ratingComposite.inspectionComponentSelectionChanged(component);
 	}
 
 	@Override
-	public void plantChanged(Plant plant) {
-		plantChangedInternal(plant);
+	public void plantChanged(Plant plant, Scheme scheme) {
+		plantChangedInternal(plant, scheme);
 		ratingComposite.plantChanged(plant);
 	}
 

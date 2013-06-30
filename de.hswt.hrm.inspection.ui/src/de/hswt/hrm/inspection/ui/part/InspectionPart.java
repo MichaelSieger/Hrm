@@ -29,6 +29,10 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.base.Throwables;
+
+import de.hswt.hrm.common.database.exception.DatabaseException;
+import de.hswt.hrm.common.database.exception.ElementNotFoundException;
 import de.hswt.hrm.common.observer.Observer;
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.common.ui.swt.wizards.WizardCreator;
@@ -48,6 +52,7 @@ import de.hswt.hrm.inspection.ui.listener.InspectionObserver;
 import de.hswt.hrm.inspection.ui.listener.PlantChangedListener;
 import de.hswt.hrm.plant.model.Plant;
 import de.hswt.hrm.report.latex.service.ReportService;
+import de.hswt.hrm.scheme.model.Scheme;
 import de.hswt.hrm.scheme.model.SchemeComponent;
 import de.hswt.hrm.scheme.service.SchemeService;
 
@@ -266,8 +271,9 @@ public class InspectionPart implements ComponentSelectionChangedListener, PlantC
         if (selectedInspection != inspection) {
             selectedInspection = inspection;
 
+            Scheme scheme = getSchemeFromPlant(inspection.getPlant());
             for (InspectionObserver observer : inspectionObeserver) {
-            	observer.inspectionChanged(inspection);
+            	observer.inspectionChanged(inspection, scheme);
             }
             if (inspection != null) {
                 initInspectionObservers();
@@ -401,9 +407,26 @@ public class InspectionPart implements ComponentSelectionChangedListener, PlantC
 	
 	@Override
 	public void plantChanged(Plant plant) {
+		Scheme scheme = getSchemeFromPlant(plant);
 		for (InspectionObserver observer : inspectionObeserver) {
-			observer.plantChanged(plant);
+			observer.plantChanged(plant, scheme);
 		}
 	}
 
+	private Scheme getSchemeFromPlant(Plant plant) {
+        Scheme scheme;
+        try {
+            scheme = schemeService.findCurrentSchemeByPlant(plant);
+        }
+        catch (ElementNotFoundException e) {
+            // TODO what to do if there is no scheme?
+            throw Throwables.propagate(e);
+        }
+        catch (DatabaseException e) {
+            throw Throwables.propagate(e);
+        }
+
+        return scheme;
+	}
+	
 }

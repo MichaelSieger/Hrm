@@ -11,6 +11,7 @@ import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.ITreeSelection;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.ListViewer;
 import org.eclipse.jface.viewers.TreeViewer;
@@ -28,6 +29,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Tree;
+import org.eclipse.swt.widgets.TreeColumn;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
 import org.slf4j.Logger;
@@ -58,6 +60,9 @@ import de.hswt.hrm.scheme.model.SchemeComponent;
 
 public class ReportPerformanceComposite extends AbstractComponentRatingComposite {
 
+    private static final Logger LOG = LoggerFactory.getLogger(ReportPerformanceComposite.class);
+    private static final I18n I18N = I18nFactory.getI18n(ReportPerformanceComposite.class);
+
     @Inject
     private InspectionService inspectionService;
 
@@ -73,18 +78,15 @@ public class ReportPerformanceComposite extends AbstractComponentRatingComposite
     @Inject
     private PriorityService priorityService;
 
-//    private ListViewer componentsList;
     private ListViewer targetListViewer;
     private ListViewer currentListViewer;
     private ListViewer activityListViewer;
     private TreeViewer treeViewer;
     
     private Button addButton;
+	private Button removeButton;
     
     private FormToolkit formToolkit = new FormToolkit(Display.getDefault());
-
-    private static final Logger LOG = LoggerFactory.getLogger(ReportPerformanceComposite.class);
-    private static final I18n I18N = I18nFactory.getI18n(ReportPerformanceComposite.class);
 
     /**
      * Do not use this constructor when instantiate this composite! It is only included to make the
@@ -158,7 +160,7 @@ public class ReportPerformanceComposite extends AbstractComponentRatingComposite
         formToolkit.adapt(addButton, true, true);
         addButton.setText(">>");
 
-        Button removeButton = new Button(buttonComposite, SWT.NONE);
+        removeButton = new Button(buttonComposite, SWT.NONE);
         formToolkit.adapt(removeButton, true, true);
         removeButton.setText("<<");
 
@@ -179,10 +181,13 @@ public class ReportPerformanceComposite extends AbstractComponentRatingComposite
 
         treeViewer = new TreeViewer(composite, SWT.BORDER);
         Tree tree = treeViewer.getTree();
-        treeViewer.setContentProvider(new PerformanceTreeContentProvider());
         treeViewer.setLabelProvider(new PerformanceTreeLabelProvider());
+        treeViewer.setContentProvider(new PerformanceTreeContentProvider());
         // TODO replace with data from DB is present
         treeViewer.setInput(new ArrayList<TreeTarget>());
+        
+        TreeColumn column = new TreeColumn(treeViewer.getTree(),SWT.NONE);
+        column.setWidth(200);
 
         GridData gd_tree = new GridData(SWT.FILL, SWT.FILL, true, true, 2, 8);
         gd_tree.heightHint = 241;
@@ -194,15 +199,13 @@ public class ReportPerformanceComposite extends AbstractComponentRatingComposite
 
         Combo combo = new Combo(composite, SWT.DROP_DOWN | SWT.READ_ONLY);
         combo.setLayoutData(LayoutUtil.createHorzFillData());
-        initCommentAutoCompletion(combo);
+        initPriorityComboData(combo);
         formToolkit.adapt(combo);
         formToolkit.paintBordersFor(combo);
 
         initalizeListViewer(targetListViewer);
         initalizeListViewer(activityListViewer);
         initalizeListViewer(currentListViewer);
-        currentList.setEnabled(false);
-        activityList.setEnabled(false);
         
         initalizeListViewerListener();
     }
@@ -231,20 +234,6 @@ public class ReportPerformanceComposite extends AbstractComponentRatingComposite
             }
         });
 
-//        targetListViewer.addDoubleClickListener(new IDoubleClickListener() {
-//            @Override
-//            public void doubleClick(DoubleClickEvent event) {
-//                IStructuredSelection selection = (IStructuredSelection) targetListViewer
-//                        .getSelection();
-//                if (selection == null) {
-//                    return;
-//                }
-//                Target t = (Target) selection.getFirstElement();
-//                TreeTarget tt = new TreeTarget(t);
-//                treeViewer.add(treeViewer.getInput(), tt);
-//            }
-//        });
-
         currentListViewer.getList().addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
@@ -265,9 +254,16 @@ public class ReportPerformanceComposite extends AbstractComponentRatingComposite
 				addActivity();
 			}
 		});
+
+        removeButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				removeActivity();
+			}
+		});
     }
     
-    private void initCommentAutoCompletion(Combo combo) {
+	private void initPriorityComboData(Combo combo) {
 
 		Collection<Priority> prioritities;
 		try {
@@ -288,7 +284,6 @@ public class ReportPerformanceComposite extends AbstractComponentRatingComposite
 	}
 
     private void targetSelected() {
-    	System.out.println("inside tatget selected");
         IStructuredSelection selection = (IStructuredSelection) targetListViewer
                 .getSelection();
         if (selection == null) {
@@ -297,9 +292,7 @@ public class ReportPerformanceComposite extends AbstractComponentRatingComposite
         Target t = (Target) selection.getFirstElement();
 
         try {
-
             currentListViewer.setInput(catalogService.findCurrentByTarget(t));
-            currentListViewer.getList().setEnabled(true);
         }
         catch (DatabaseException e) {
             LOG.debug("An error occured", e);
@@ -307,7 +300,6 @@ public class ReportPerformanceComposite extends AbstractComponentRatingComposite
     }
     
     private void currentSelected() {
-    	System.out.println("inside current selected");
         IStructuredSelection selection = (IStructuredSelection) currentListViewer
                 .getSelection();
         if (selection == null) {
@@ -316,7 +308,6 @@ public class ReportPerformanceComposite extends AbstractComponentRatingComposite
         Current c = (Current) selection.getFirstElement();
         try {
             activityListViewer.setInput(catalogService.findActivityByCurrent(c));
-            activityListViewer.getList().setEnabled(true);
         }
         catch (DatabaseException e) {
             LOG.debug("An error occured", e);
@@ -324,7 +315,6 @@ public class ReportPerformanceComposite extends AbstractComponentRatingComposite
     }
     
     private void addActivity() {
-    	System.out.println("inside add activity");
 		IStructuredSelection selection = (IStructuredSelection) targetListViewer
 				.getSelection();
 		if (selection == null) {
@@ -350,16 +340,22 @@ public class ReportPerformanceComposite extends AbstractComponentRatingComposite
         treeViewer.expandAll();
     }
     
+    protected void removeActivity() {
+    	ITreeSelection selection = ((ITreeSelection)treeViewer.getSelection());
+    	if (selection.isEmpty()) {
+    		return;
+    	}
+		treeViewer.remove(selection.getPaths()[0].getFirstSegment());
+	}
+    
 	@Override
 	public void inspectionChanged(Inspection inspection) {
-		// TODO Auto-generated method stub
-		
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public void inspectionComponentSelectionChanged(SchemeComponent component) {
-		System.out.println("inside inspection changed event");
-        if (component == null){
+		if (component == null){
        		return;
         }
         Catalog c = component.getComponent().getCategory().get().getCatalog().get();
@@ -368,11 +364,11 @@ public class ReportPerformanceComposite extends AbstractComponentRatingComposite
             targetListViewer.setInput(catalogService.findTargetByCatalog(c));
             currentListViewer.getList().removeAll();
             activityListViewer.getList().removeAll();
-            currentListViewer.getList().setEnabled(false);
-            activityListViewer.getList().setEnabled(false);
-
+            ((java.util.List)treeViewer.getInput()).clear();
+            treeViewer.refresh();
         }
         catch (DatabaseException e) {
+        	e.printStackTrace();
             LOG.debug("An error occured", e);
         }
 	}

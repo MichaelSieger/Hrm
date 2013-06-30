@@ -69,6 +69,7 @@ import de.hswt.hrm.photo.model.Photo;
 import de.hswt.hrm.photo.service.PhotoService;
 import de.hswt.hrm.photo.ui.wizard.PhotoWizard;
 import de.hswt.hrm.plant.model.Plant;
+import de.hswt.hrm.scheme.model.Scheme;
 import de.hswt.hrm.scheme.model.SchemeComponent;
 import de.hswt.hrm.summary.model.Summary;
 import de.hswt.hrm.summary.service.SummaryService;
@@ -1286,21 +1287,13 @@ public class ReportGeneralComposite extends Composite implements InspectionObser
     }
 
 	@Override
-	public void plantChanged(Plant plant) {
+	public void plantChanged(Plant plant, Scheme scheme) {
 	}
 
 	@Override
-	public void inspectionChanged(Inspection inspection) {
+	public void inspectionChanged(Inspection inspection, Scheme scheme) {
         if (this.inspection != inspection) {
             this.inspection = inspection;
-//            if (inspection != null) {
-//                inspection.addPlantObserver(new Observer<Plant>() {
-//                    @Override
-//                    public void changed(Plant item) {
-//                        plantSelected(item);
-//                    }
-//                });
-//            }
         }
         refreshGeneralInformation();
 	}
