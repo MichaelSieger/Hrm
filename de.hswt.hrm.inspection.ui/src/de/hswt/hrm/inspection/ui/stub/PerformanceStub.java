@@ -17,19 +17,19 @@ public final class PerformanceStub {
 	
     public static TreeCatalog getAssignedItems() {
     	
-        List<Activity> activities = new ArrayList<>(1);
-        activities.add(new Activity("Activity", "With some activity text."));
-        List<TreeCurrent> currents = new ArrayList<>(1);
-        TreeCurrent current = new TreeCurrent(new Current("Current", "With some current text."), activities);
-        currents.add(current);
-        
-        List<TreeTarget> targets =  new ArrayList<>(1);
-        TreeTarget target = new TreeTarget(new Target("Target", "With some target text."), currents);
-        targets.add(target);
-
-
-        TreeCatalog stub = new TreeCatalog(new Catalog("Some Catalog"), targets);
-        return stub;
-
+//        List<Activity> activities = new ArrayList<>(1);
+//        activities.add(new Activity("Activity", "With some activity text."));
+//        List<TreeCurrent> currents = new ArrayList<>(1);
+//        TreeCurrent current = new TreeCurrent(new Current("Current", "With some current text."), activities);
+//        currents.add(current);
+//        
+//        List<TreeTarget> targets =  new ArrayList<>(1);
+//        TreeTarget target = new TreeTarget(new Target("Target", "With some target text."), currents);
+//        targets.add(target);
+//
+//
+//        TreeCatalog stub = new TreeCatalog(new Catalog("Some Catalog"), targets);
+//        return stub;
+    	return null;
     }
 }

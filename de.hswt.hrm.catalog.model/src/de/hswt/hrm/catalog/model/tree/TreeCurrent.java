@@ -34,4 +34,36 @@ public class TreeCurrent {
     public void setActivities(List<Activity> activities) {
         this.activities = activities;
     }
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((activities == null) ? 0 : activities.hashCode());
+		result = prime * result + ((current == null) ? 0 : current.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		TreeCurrent other = (TreeCurrent) obj;
+		if (activities == null) {
+			if (other.activities != null)
+				return false;
+		} else if (!activities.equals(other.activities))
+			return false;
+		if (current == null) {
+			if (other.current != null)
+				return false;
+		} else if (!current.equals(other.current))
+			return false;
+		return true;
+	}
 }
