@@ -188,6 +188,8 @@ public class SchemeComponentDao implements ISchemeComponentDao {
                             
                             for (Attribute attr : attributes.keySet()) {
                                 addAttributeValue(inserted, attr, attributes.get(attr));
+                                LOG.debug(String.format("Add attribute '%s' with value '%s'.",
+                                        attr.getName(), attributes.get(attr)));
                             }
                             
                             inserted.setAttributes(attributes);
