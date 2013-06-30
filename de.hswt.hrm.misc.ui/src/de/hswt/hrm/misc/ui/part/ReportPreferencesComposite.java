@@ -39,13 +39,16 @@ import de.hswt.hrm.common.ui.swt.layouts.LayoutUtil;
 import de.hswt.hrm.common.ui.swt.table.ColumnComparator;
 import de.hswt.hrm.common.ui.swt.table.ColumnDescription;
 import de.hswt.hrm.common.ui.swt.table.TableViewerController;
+import de.hswt.hrm.i18n.I18n;
+import de.hswt.hrm.i18n.I18nFactory;
 import de.hswt.hrm.inspection.model.Layout;
 import de.hswt.hrm.inspection.service.LayoutService;
 
 public class ReportPreferencesComposite extends Composite {
 
     private final static Logger LOG = LoggerFactory.getLogger(ReportPreferencesComposite.class);
-
+    private static final I18n I18N = I18nFactory.getI18n(ReportPreferencesComposite.class);
+    
      @Inject
      private LayoutService prefService;
 
@@ -100,16 +103,16 @@ public class ReportPreferencesComposite extends Composite {
 
         lblNewLabel = new Label(composite, SWT.NONE);
         lblNewLabel.setLayoutData(LayoutUtil.createLeftCenteredGridData());
-        lblNewLabel.setText("Standard directory");
+        lblNewLabel.setText(I18N.tr("Standard directory"));
 
         directoryText = new Text(composite, SWT.BORDER | SWT.READ_ONLY);
-        directoryText.setToolTipText("A local directory where all the reports are created.");
+        directoryText.setToolTipText(I18N.tr("A local directory where all the reports are created."));
         directoryText.setLayoutData(LayoutUtil.createHorzCenteredFillData());
 
         browseButton = new Button(composite, SWT.NONE);
         browseButton
-                .setToolTipText("Browse for a local directory where all the reports are created.");
-        browseButton.setText("Browse ...");
+                .setToolTipText(I18N.tr("Browse for a local directory where all the reports are created."));
+        browseButton.setText(I18N.tr("Browse ..."));
         browseButton.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
@@ -118,7 +121,7 @@ public class ReportPreferencesComposite extends Composite {
         });
 
         stylesLabel = new Label(composite, SWT.NONE);
-        stylesLabel.setText("Style");
+        stylesLabel.setText(I18N.tr("Style"));
         stylesLabel.setLayoutData(LayoutUtil.createLeftGridData());
         
         tableViewer = new TableViewer(composite, SWT.BORDER | SWT.FULL_SELECTION);
@@ -182,8 +185,8 @@ public class ReportPreferencesComposite extends Composite {
 
     private void showDBConnectionError() {
         // TODO translate
-        MessageDialog.openError(shellProvider.getShell(), "Connection Error",
-                "Could not load preferences from Database.");
+        MessageDialog.openError(shellProvider.getShell(), I18N.tr("Connection Error"),
+                I18N.tr("Could not load preferences from Database."));
     }
 
     /**
@@ -238,8 +241,8 @@ public class ReportPreferencesComposite extends Composite {
         Config config = Config.getInstance();
     	
     	DirectoryDialog dialog = new DirectoryDialog(this.getShell());
-        dialog.setText("Report standard directory selection");
-        dialog.setMessage("Select a directory as root of all created reports.");
+        dialog.setText(I18N.tr("Report directory selection"));
+        dialog.setMessage(I18N.tr("Select a directory as root of all created reports."));
         dialog.setFilterPath(config.getProperty(Config.Keys.REPORT_STYLE_FOLDER, ""));
         String dir = dialog.open();
         if (dir != null) {
