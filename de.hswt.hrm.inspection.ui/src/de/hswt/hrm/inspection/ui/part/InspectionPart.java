@@ -341,10 +341,7 @@ public class InspectionPart implements ComponentSelectionChangedListener, PlantC
             public void run() {
                 super.run();
 
-                for (InspectionObserver observer : inspectionObeserver) {
-                	observer.inspectionChanged(selectedInspection);
-                }
-
+                setInspection(reportsOverviewComposite.getSelectedInspection());
                 tabFolder.setSelection(generalTab);
             }
         };

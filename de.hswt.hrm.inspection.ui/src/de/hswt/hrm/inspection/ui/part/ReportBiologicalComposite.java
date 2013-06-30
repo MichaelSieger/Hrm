@@ -32,12 +32,14 @@ import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.common.ui.swt.layouts.LayoutUtil;
 import de.hswt.hrm.common.ui.swt.utils.ContentProposalUtil;
 import de.hswt.hrm.component.model.Component;
+import de.hswt.hrm.inspection.model.BiologicalRating;
 import de.hswt.hrm.inspection.model.Inspection;
 import de.hswt.hrm.inspection.model.SamplingPointType;
 import de.hswt.hrm.inspection.service.InspectionService;
 import de.hswt.hrm.misc.comment.model.Comment;
 import de.hswt.hrm.misc.comment.service.CommentService;
 import de.hswt.hrm.plant.model.Plant;
+import de.hswt.hrm.scheme.model.Scheme;
 import de.hswt.hrm.scheme.model.SchemeComponent;
 
 public class ReportBiologicalComposite extends AbstractComponentRatingComposite {
@@ -412,11 +414,12 @@ public class ReportBiologicalComposite extends AbstractComponentRatingComposite 
 
 	@Override
 	public void inspectionChanged(Inspection inspection) {
-		// TODO Auto-generated method stub
-		
+		updateInspectionData(inspection);
 	}
 
-	@Override
+	
+
+    @Override
 	public void inspectionComponentSelectionChanged(SchemeComponent component) {
 		// TODO Auto-generated method stub
 		
@@ -438,6 +441,28 @@ public class ReportBiologicalComposite extends AbstractComponentRatingComposite 
 	protected void checkSubclass() {
 		// Disable the check that prevents subclassing of SWT components
 	}
+	
+	private void updateInspectionData(Inspection inspection) {
+
+        try {
+            Collection<BiologicalRating> ratings = inspectionService
+                    .findBiologicalRating(inspection);
+            System.out.println(ratings.size());
+            
+            for (BiologicalRating rating : ratings) {
+                System.out.println(rating.getBacteriaCount());
+                System.out.println(rating.getComment());
+                System.out.println(rating.getComponent());
+                System.out.println(rating.getQuantifier());
+
+            }
+        }
+        catch (DatabaseException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+	    
+    }
 
 
 }
