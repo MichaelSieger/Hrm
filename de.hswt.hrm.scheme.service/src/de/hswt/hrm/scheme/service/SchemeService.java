@@ -4,7 +4,9 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -65,15 +67,18 @@ public class SchemeService {
 	    scheme.setSchemeComponents(components);
 	    
 	    // Add all components
+	    List<SchemeComponent> updated = new ArrayList<>(components.size());
 	    for (SchemeComponent comp : components) {
 	    	comp.setScheme(scheme);
 	    	if (comp.getId() < 0) {
-	    		schemeComponentDao.insert(comp);
+	    		updated.add(schemeComponentDao.insert(comp));
 	    	}
 	    	else {
 	    		schemeComponentDao.update(comp);
+	    		updated.add(comp);
 	    	}
 	    }
+	    scheme.setSchemeComponents(updated);
 	    
 	    return scheme;
 	}
@@ -89,10 +94,12 @@ public class SchemeService {
 		checkState(scheme.getId() != schemeCopy.getId(), "Copy should not have the same ID.");
 		
 		// Copy components
-		for (SchemeComponent comp : findSchemeComponents(scheme)) {
+		Collection<SchemeComponent> components = findSchemeComponents(scheme);
+		for (SchemeComponent comp : components) {
 			comp.setScheme(schemeCopy);
 			schemeComponentDao.insert(comp);
 		}
+		
 		
 		return findById(schemeCopy.getId());
 	}
@@ -116,18 +123,23 @@ public class SchemeService {
 		Collection<SchemeComponent> toDelete = findSchemeComponents(scheme);
 		
 		// Add new componentslist
+		List<SchemeComponent> updated = new ArrayList<>(); 
 		for (SchemeComponent comp : components) {
 			comp.setScheme(scheme);
 			SchemeComponent targetComp = schemeComponentDao.insert(comp);
+			updated.add(targetComp);
 			
 			// Reassign attributes to new component
-			Map<Attribute, String> attributes = 
-					schemeComponentDao.findAttributesOfSchemeComponent(comp);
-			
-			for (Attribute attr : attributes.keySet()) {
-				schemeComponentDao.reassignAttributeValue(attr, comp, targetComp);
+			if (comp.getId() >= 0) {  // Only SchemeComponents with valid ID could have attributes
+    			Map<Attribute, String> attributes = 
+    					schemeComponentDao.findAttributesOfSchemeComponent(comp);
+    			
+    			for (Attribute attr : attributes.keySet()) {
+    				schemeComponentDao.reassignAttributeValue(attr, comp, targetComp);
+    			}
 			}
 		}
+		scheme.setSchemeComponents(updated);
 		
 		// Delete old scheme components
 		for (SchemeComponent comp : toDelete) {
