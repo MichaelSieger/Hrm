@@ -2,14 +2,14 @@
 	<Composite.layout>
 		<FillLayout/>
 	</Composite.layout>
-	<Section x:Style="(p1:Section).EXPANDED | (p1:Section).TITLE_BAR" x:Name="Mandatory" text="Comment">
+	<Section x:Style="(p1:Section).EXPANDED | (p1:Section).TITLE_BAR" x:Name="Mandatory">
 		<Section.client>
 			<Composite>
 				<Composite.layout>
 					<GridLayout numColumns="4"/>
 				</Composite.layout>
-				<Label text="Name"/>
-				<Text x:Style="BORDER" x:Name="name" x:TooltipText="Name">
+				<Label text="Name" x:Name="lblName"/>
+				<Text x:Style="BORDER" x:Name="name">
 					<Text.layoutData>
 						<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL" horizontalSpan="3"/>
 					</Text.layoutData>
@@ -19,7 +19,7 @@
 						<GridData verticalAlignment="TOP"/>
 					</Label.layoutData>
 				</Label>
-				<Text x:Style="BORDER | WRAP | V_SCROLL | MULTI" x:Name="desc" x:TooltipText="Beschreibung">
+				<Text x:Style="BORDER | WRAP | V_SCROLL | MULTI" x:Name="desc">
 					<Text.layoutData>
 						<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL" verticalAlignment="FILL" heightHint="80" widthHint="300" horizontalSpan="3"/>
 					</Text.layoutData>
