@@ -53,7 +53,7 @@ public class SchemeService {
 	 * @throws ElementNotFoundException 
 	 */
 	public Scheme insert(Plant plant, Collection<SchemeComponent> components)
-			throws SaveException, ElementNotFoundException {
+			throws SaveException, ElementNotFoundException, DatabaseException {
 		
 	    checkNotNull(plant, "Plant is mandatory.");
 	    checkArgument(plant.getId() >= 0, "Plant must have a valid ID.");
