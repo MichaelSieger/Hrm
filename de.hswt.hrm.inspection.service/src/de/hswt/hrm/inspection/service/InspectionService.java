@@ -79,6 +79,9 @@ public class InspectionService {
             Collection<BiologicalRating> ratings)
         throws SaveException, DatabaseException {
         
+        checkNotNull(ratings, "List of ratings must not be null.");
+        checkState(ratings.size() > 0, "List of ratings must at least have one rating.");
+        
         // FIXME: better use a DAO method that allows to store the hole collection, as
         // otherwise there is a connection opened per row
         Collection<BiologicalRating> inserted = new ArrayList<>(ratings.size());
@@ -87,6 +90,14 @@ public class InspectionService {
         }
         
         return inserted;
+    }
+    
+    public void update(BiologicalRating rating) 
+            throws ElementNotFoundException, SaveException, DatabaseException {
+        checkNotNull(rating, "BiologicalRating must not be null.");
+        checkState(rating.getId() >= 0, "BiologicalRating must have a valid ID.");
+        
+        biologicalDao.update(rating);
     }
     
     public Collection<PhysicalRating> findPhysicalRating(Inspection inspection)
@@ -98,6 +109,9 @@ public class InspectionService {
     public Collection<PhysicalRating> insertPhysicalRatings(Collection<PhysicalRating> ratings)
             throws SaveException, DatabaseException {
         
+        checkNotNull(ratings, "List of ratings must not be null.");
+        checkState(ratings.size() > 0, "List of ratings must at least have one rating.");
+        
         // FIXME: better use a DAO method that allows to store the hole collection, as
         // otherwise there is a connection opened per row
         Collection<PhysicalRating> inserted = new ArrayList<>(ratings.size());
@@ -106,6 +120,14 @@ public class InspectionService {
         }
         
         return inserted;
+    }
+    
+    public void update(PhysicalRating rating) 
+            throws ElementNotFoundException, SaveException, DatabaseException {
+        checkNotNull(rating, "PhysicalRating must not be null.");
+        checkState(rating.getId() >= 0, "PhysicalRating must have a valid ID.");
+        
+        physicalDao.update(rating);
     }
     
     public Collection<Performance> findPerformance(Inspection inspection) 
@@ -117,6 +139,9 @@ public class InspectionService {
     public Collection<Performance> inserPerformanceRatings(Collection<Performance> ratings) 
             throws SaveException, DatabaseException {
         
+        checkNotNull(ratings, "List of ratings must not be null.");
+        checkState(ratings.size() > 0, "List of ratings must at least have one rating.");
+        
         // FIXME: better use a DAO method that allows to store the hole collection, as
         // otherwise there is a connection opened per row
         Collection<Performance> inserted = new ArrayList<>(ratings.size());
@@ -125,6 +150,15 @@ public class InspectionService {
         }
         
         return inserted;
+    }
+    
+    public void update(Performance rating) 
+            throws ElementNotFoundException, SaveException, DatabaseException {
+        
+        checkNotNull(rating, "PerformanceRating must not be null.");
+        checkState(rating.getId() >= 0, "PerformanceRating must have a valid ID.");
+        
+        performanceDao.update(rating);
     }
 
     public Scheme findScheme(Inspection inspection) throws DatabaseException {

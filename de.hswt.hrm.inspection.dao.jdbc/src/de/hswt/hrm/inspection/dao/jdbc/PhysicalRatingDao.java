@@ -15,6 +15,7 @@ import javax.inject.Inject;
 import com.google.common.base.Optional;
 
 import de.hswt.hrm.common.database.DatabaseFactory;
+import de.hswt.hrm.common.database.DatabaseUtil;
 import de.hswt.hrm.common.database.NamedParameterStatement;
 import de.hswt.hrm.common.database.SqlQueryBuilder;
 import de.hswt.hrm.common.database.exception.DatabaseException;
@@ -163,8 +164,8 @@ public class PhysicalRatingDao implements IPhysicalRatingDao {
     }
 
     @Override
-    public void update(PhysicalRating physicalRating) throws ElementNotFoundException,
-            SaveException {
+    public void update(PhysicalRating physicalRating) 
+            throws ElementNotFoundException, SaveException, DatabaseException {
         checkNotNull(physicalRating, "Physical Rating must not be null.");
         checkState(physicalRating.isValid(), "Physical Rating is invalid");
 
@@ -200,8 +201,8 @@ public class PhysicalRatingDao implements IPhysicalRatingDao {
                 }
             }
         }
-        catch (SQLException | DatabaseException e) {
-            throw new SaveException(e);
+        catch (SQLException e) {
+            throw DatabaseUtil.createUnexpectedException(e);
         }
 
     }
