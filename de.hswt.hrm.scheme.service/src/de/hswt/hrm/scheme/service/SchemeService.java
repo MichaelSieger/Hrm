@@ -130,11 +130,13 @@ public class SchemeService {
 			updated.add(targetComp);
 			
 			// Reassign attributes to new component
-			Map<Attribute, String> attributes = 
-					schemeComponentDao.findAttributesOfSchemeComponent(comp);
-			
-			for (Attribute attr : attributes.keySet()) {
-				schemeComponentDao.reassignAttributeValue(attr, comp, targetComp);
+			if (comp.getId() >= 0) {  // Only SchemeComponents with valid ID could have attributes
+    			Map<Attribute, String> attributes = 
+    					schemeComponentDao.findAttributesOfSchemeComponent(comp);
+    			
+    			for (Attribute attr : attributes.keySet()) {
+    				schemeComponentDao.reassignAttributeValue(attr, comp, targetComp);
+    			}
 			}
 		}
 		scheme.setSchemeComponents(updated);
