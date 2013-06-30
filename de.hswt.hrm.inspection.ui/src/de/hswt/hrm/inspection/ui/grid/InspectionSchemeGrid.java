@@ -96,10 +96,12 @@ public class InspectionSchemeGrid {
      * an external Source, find the equivalent SchemeComponent in this grid.
      */
     private SchemeComponent findById(SchemeComponent s){
-    	for(SchemeGridItem item : grid.getItems()){
-    		if(item.asSchemeComponent().getId() == s.getId()){
-    			return item.asSchemeComponent();
-    		}
+    	if(s != null){
+        	for(SchemeGridItem item : grid.getItems()){
+        		if(item.asSchemeComponent().getId() == s.getId()){
+        			return item.asSchemeComponent();
+        		}
+        	}
     	}
     	return null;
     }
