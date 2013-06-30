@@ -4,8 +4,10 @@ import static org.mockito.Mockito.*;
 import static org.junit.Assert.*;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Test;
 
@@ -111,16 +113,19 @@ public class SchemeServiceTest extends AbstractDatabaseTest {
     }
     
     @Test
-    public void testInsertScheme() throws SaveException {
+    public void testInsertScheme() throws ElementNotFoundException, DatabaseException {
         Plant plant = createTestPlant();
         Component component = createTestComponent();
-        ISchemeDao schemeDao = createSchemeDao();
+        SchemeService service = createSchemeService();
 
         Scheme scheme = new Scheme(plant);
-        SchemeComponent c1 = new SchemeComponent(scheme, 1, 1, Direction.downUp, component);
-        SchemeComponent c2 = new SchemeComponent(scheme, 5, 5, Direction.rightLeft, component);
-        scheme = schemeDao.insert(scheme);
+        List<SchemeComponent> components = new ArrayList<>();
+        components.add(new SchemeComponent(scheme, 1, 1, Direction.downUp, component));
+        components.add(new SchemeComponent(scheme, 5, 5, Direction.rightLeft, component));
+        scheme = service.insert(plant, components);
         
+        assertEquals("SchemeComponents not correctly inserted.", 
+                2, scheme.getSchemeComponents().size());
         checkSchemeComponentIds(scheme.getSchemeComponents());
 
         // TODO: check if scheme can be resolved correctly
@@ -142,6 +147,34 @@ public class SchemeServiceTest extends AbstractDatabaseTest {
         schemeComponentDao.addAttributeValue(schemeComp, attr, "Some value");
         attr = attributes.get(1);
         schemeComponentDao.addAttributeValue(schemeComp, attr, "Some other value");
+    }
+    
+    @Test
+    public void testEagerAttributesSet() throws DatabaseException {
+        List<Attribute> attributes = createTestAttributes();
+        ISchemeDao schemeDao = createSchemeDao();
+        ISchemeComponentDao schemeComponentDao = createSchemeComponentDao();
+        Scheme scheme = new Scheme(createTestPlant());
+        scheme = schemeDao.insert(scheme);
+        Map<Attribute, String> attributeValues = new HashMap<Attribute, String>();
+        attributeValues.put(attributes.get(0), "Value");
+        
+        SchemeComponent schemeComp = new SchemeComponent(scheme, 0, 0, Direction.leftRight,
+                attributes.get(0).getComponent(), attributeValues);
+
+        schemeComp = schemeComponentDao.insert(schemeComp);
+
+        assertTrue("Attribute values not correctly set in inserted object.", 
+                schemeComp.getAttributes().isPresent());
+        assertEquals("Attribute values not correctly set in inserted object.", 
+                1, schemeComp.getAttributes().get().size());
+        assertEquals("Attribute values not correctly set in inserted object.", 
+                "Value", schemeComp.getAttributes().get().get(attributes.get(0)));
+        Map<Attribute, String> retrievedAttributes = 
+                schemeComponentDao.findAttributesOfSchemeComponent(schemeComp);
+        assertEquals("Attribute value not inserted.", 1, retrievedAttributes.size());
+        assertEquals("Attribute value not stored correctly.", "Value", 
+                retrievedAttributes.get(attributes.get(0)));
     }
 
     @Test
