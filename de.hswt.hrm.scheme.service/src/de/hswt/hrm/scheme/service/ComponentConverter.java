@@ -63,12 +63,30 @@ public class ComponentConverter {
 		}
 		final int w = component.getCategory().get().getWidth();
 		final int h = component.getCategory().get().getHeight();
+
+		byte[] lr = null;
+		if (component.getLeftRightImage().isPresent()) {
+		    lr = component.getLeftRightImage().get().getBlob();
+		}
+		byte[] rl = null;
+		if (component.getRightLeftImage().isPresent()) {
+		    rl = component.getRightLeftImage().get().getBlob();
+		}
+		byte[] ud = null;
+		if (component.getUpDownImage().isPresent()) {
+		    ud = component.getUpDownImage().get().getBlob();
+		}
+		byte[] du = null;
+		if (component.getDownUpImage().isPresent()) {
+		    du = component.getDownUpImage().get().getBlob();
+		}
+
 		// FIXME: check if we must handle null values here...
 		return new RenderedComponent(component, 
-				createImage(display, component.getLeftRightImage().get().getBlob(), h, w), //Is Swapped because width and height
-				createImage(display, component.getRightLeftImage().get().getBlob(), h, w), //refer to the upstanding image
-				createImage(display, component.getUpDownImage().get().getBlob(), w, h), 
-				createImage(display, component.getDownUpImage().get().getBlob(), w, h));
+				createImage(display, lr, h, w), //Is Swapped because width and height
+				createImage(display, rl, h, w), //refer to the upstanding image
+				createImage(display, ud, w, h), 
+				createImage(display, du, w, h));
 	}
 	
 	private static ThumbnailImage createImage(Display display, byte[] data, int w, int h) throws IOException{
