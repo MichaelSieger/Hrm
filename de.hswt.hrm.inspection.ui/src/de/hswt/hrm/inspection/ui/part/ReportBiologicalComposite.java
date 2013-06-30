@@ -425,6 +425,12 @@ public class ReportBiologicalComposite extends AbstractComponentRatingComposite 
 
 	@Override
 	public void inspectionChanged(Inspection inspection) {
+	    
+	    if (inspection == null) {
+            return;
+        }
+        
+        this.inspection = inspection;
 		updateInspectionData(inspection);
 	}
 
@@ -449,8 +455,30 @@ public class ReportBiologicalComposite extends AbstractComponentRatingComposite 
 	}
 
 	private void updateRatingValues(BiologicalRating rating) {
-        // TODO Auto-generated method stub
+        if (rating.isAirGermsConcentration()){
+            updateAirGermsConcentration(rating);
+        }
+        else if (rating.isContactCultures()){
+            updateContactConcentration(rating);
+        }
         
+    }
+
+    private void updateContactConcentration(BiologicalRating rating) {
+        airGradeList.select(rating.getRating());
+        selectedGrade.set(airGradeList.getSelectionIndex());
+        airWeightList.select(rating.getQuantifier());
+        if (!rating.getComment().isEmpty()) {
+            airCommentCombo.setText(rating.getComment());
+        }
+    }
+
+    private void updateAirGermsConcentration(BiologicalRating rating) {
+        contactGgradeList.select(rating.getRating());
+        contactWeightList.select(rating.getQuantifier());
+        if (!rating.getComment().isEmpty()) {
+            contactCommentCombo.setText(rating.getComment());
+        }
     }
 
     private BiologicalRating getRatingForComponent(SchemeComponent component) {
