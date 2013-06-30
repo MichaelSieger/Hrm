@@ -36,6 +36,7 @@ import de.hswt.hrm.component.model.Component;
 import de.hswt.hrm.i18n.I18n;
 import de.hswt.hrm.i18n.I18nFactory;
 import de.hswt.hrm.inspection.model.Inspection;
+import de.hswt.hrm.inspection.model.PhysicalRating;
 import de.hswt.hrm.inspection.model.SamplingPointType;
 import de.hswt.hrm.inspection.service.InspectionService;
 import de.hswt.hrm.misc.comment.model.Comment;
@@ -84,6 +85,10 @@ public class ReportBiologicalComposite extends AbstractComponentRatingComposite 
 	
 	private static final I18n I18N = I18nFactory.getI18n(ReportBiologicalComposite.class);
 
+	private SchemeComponent currentSchemeComponent;
+	
+	private Inspection inspection;
+	
 	private final Observable<Integer> selectedGrade = new Observable<>();
 	private final Observable<SamplingPointType> samplePointType = new Observable<>();
 
@@ -427,11 +432,39 @@ public class ReportBiologicalComposite extends AbstractComponentRatingComposite 
 
     @Override
 	public void inspectionComponentSelectionChanged(SchemeComponent component) {
-		// TODO Auto-generated method stub
-		
+        if (component == null) {
+            return;
+        }
+        
+        currentSchemeComponent = component;
+
+        BiologicalRating rating = getRatingForComponent(component);
+        
+        if (rating != null){
+            updateRatingValues(rating);
+        }
+        else {
+            //TODO set default values
+        }
 	}
 
-	@Override
+	private void updateRatingValues(BiologicalRating rating) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    private BiologicalRating getRatingForComponent(SchemeComponent component) {
+        for (BiologicalRating rating : ratings){
+            if (rating.getComponent().equals(component));
+                return rating;
+        }
+        
+        BiologicalRating rating = new BiologicalRating(inspection, currentSchemeComponent);
+        ratings.add(rating);
+        return rating;
+    }
+
+    @Override
 	public void plantChanged(Plant plant) {
 		// TODO Auto-generated method stub
 		
