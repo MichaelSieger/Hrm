@@ -37,7 +37,7 @@ public class SchemeGridItem {
 		this.schemeComponent = item.schemeComponent;
 	}
 
-	public SchemeComponent asSchemeComponent() {
+	public SchemeComponent getSchemeComponent() {
 		return schemeComponent;
 	}
 

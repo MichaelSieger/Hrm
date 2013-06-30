@@ -12,12 +12,15 @@ import com.google.common.base.Optional;
 
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.SaveException;
+import de.hswt.hrm.i18n.I18n;
+import de.hswt.hrm.i18n.I18nFactory;
 import de.hswt.hrm.summary.model.Summary;
 import de.hswt.hrm.summary.service.SummaryService;
 
 public class SummaryWizzard extends Wizard {
 
     private static final Logger LOG = LoggerFactory.getLogger(SummaryWizzard.class);
+    private static final I18n I18N = I18nFactory.getI18n(SummaryWizzard.class);
 
     @Inject
     private SummaryService evalService;
@@ -31,10 +34,10 @@ public class SummaryWizzard extends Wizard {
         ContextInjectionFactory.inject(first, context);
 
         if (eval.isPresent()) {
-            setWindowTitle("Edit Summary: " + eval.get().getName());
+            setWindowTitle(I18N.tr("Edit Summary"));
         }
         else {
-            setWindowTitle("Create new Summary");
+            setWindowTitle(I18N.tr("Add a new Summary"));
         }
     }
 

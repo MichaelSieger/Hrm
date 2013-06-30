@@ -2,6 +2,11 @@ package de.hswt.hrm.scheme.model;
 
 import static com.google.common.base.Preconditions.*;
 
+import java.util.Map;
+
+import com.google.common.base.Optional;
+
+import de.hswt.hrm.component.model.Attribute;
 import de.hswt.hrm.component.model.Category;
 import de.hswt.hrm.component.model.Component;
 
@@ -11,7 +16,7 @@ import de.hswt.hrm.component.model.Component;
  * @author Michael Sieger
  *
  */
-public class SchemeComponent{
+public final class SchemeComponent {
 	
     private final int id;
     private int x;
@@ -19,10 +24,10 @@ public class SchemeComponent{
     private Direction direction;
     private Component component;
     private Scheme scheme;
-    
+    Map<Attribute, String> attributes;
     
     public SchemeComponent(int id, Scheme scheme, int x, int y, Direction direction, 
-    		Component component) {
+    		Component component, Map<Attribute, String> attributes) {
     	
         this.id = id;
         setX(x);
@@ -30,10 +35,17 @@ public class SchemeComponent{
         setDirection(direction);
         setComponent(component);
         setScheme(scheme);
+        setAttributes(attributes);
     }
     
     public SchemeComponent(Scheme scheme, int x, int y, Direction direction, Component component) {
-        this(-1, scheme, x, y, direction, component);
+        this(-1, scheme, x, y, direction, component, null);
+    }
+    
+    public SchemeComponent(Scheme scheme, int x, int y, Direction direction, Component component,
+            Map<Attribute, String> attributes) {
+        
+        this(-1, scheme, x, y, direction, component, attributes);
     }
 
     public Direction getDirection() {
@@ -65,6 +77,14 @@ public class SchemeComponent{
     public void setY(int y) {
     	checkArgument(y >= 0);
         this.y = y;
+    }
+    
+    public Optional<Map<Attribute, String>> getAttributes() {
+        return Optional.fromNullable(attributes);
+    }
+    
+    public void setAttributes(Map<Attribute, String> attributes) {
+        this.attributes = attributes;
     }
 
 	public Component getComponent() {

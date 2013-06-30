@@ -23,6 +23,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
+import de.hswt.hrm.i18n.I18n;
+import de.hswt.hrm.i18n.I18nFactory;
 import de.hswt.hrm.misc.ui.prioritycomposite.PriorityComposite;
 import de.hswt.hrm.summary.ui.part.SummaryComposite;
 
@@ -34,6 +36,7 @@ import org.eclipse.swt.events.SelectionEvent;
 public class MiscPart {
 
     private final static Logger LOG = LoggerFactory.getLogger(MiscPart.class);
+    private static final I18n I18N = I18nFactory.getI18n(MiscPart.class);
 
     @Inject
     private IShellProvider shellProvider;
@@ -97,7 +100,7 @@ public class MiscPart {
         form.setSeparatorVisible(true);
         form.getBody().setBackgroundMode(SWT.INHERIT_FORCE);
         toolkit.paintBordersFor(form);
-        form.setText("Miscellaneous");
+        form.setText(I18N.tr("Miscellaneous"));
         toolkit.decorateFormHeading(form);
 
         FillLayout fillLayout = new FillLayout(SWT.HORIZONTAL);
@@ -111,16 +114,16 @@ public class MiscPart {
         toolkit.paintBordersFor(tabFolder);
 
         summaryTab = new TabItem(tabFolder, SWT.NONE);
-        summaryTab.setText("Summaries");
+        summaryTab.setText(I18N.tr("Summaries"));
 
         commentsTab = new TabItem(tabFolder, SWT.NONE);
-        commentsTab.setText("Comments");
+        commentsTab.setText(I18N.tr("Comments"));
 
         priorityTab = new TabItem(tabFolder, SWT.NONE);
-        priorityTab.setText("Priorities");
+        priorityTab.setText(I18N.tr("Priorities"));
         
         reportPreferencesTab = new TabItem(tabFolder, SWT.NONE);
-        reportPreferencesTab.setText("Report preferences");
+        reportPreferencesTab.setText(I18N.tr("Report preferences"));
 
         tabFolder.addSelectionListener(new SelectionAdapter() {
             @Override
@@ -141,7 +144,7 @@ public class MiscPart {
         });
         
         Section evaluationSection = toolkit.createSection(tabFolder, Section.TITLE_BAR);
-        evaluationSection.setText("Summaries");
+        evaluationSection.setText(I18N.tr("Summaries"));
 		summaryTab.setControl(evaluationSection);
 
         evaluationComposite = new SummaryComposite(evaluationSection);
@@ -149,7 +152,7 @@ public class MiscPart {
 		evaluationSection.setClient(evaluationComposite);
 
         Section commentsSection = toolkit.createSection(tabFolder, Section.TITLE_BAR);
-        commentsSection.setText("Comments");
+        commentsSection.setText(I18N.tr("Comments"));
 		commentsTab.setControl(commentsSection);
 
         commentsComposite = new CommentComposite(commentsSection);
@@ -158,7 +161,7 @@ public class MiscPart {
 
 
         Section reportPreferencesSection = toolkit.createSection(tabFolder, Section.TITLE_BAR);
-        reportPreferencesSection.setText("Report preferences");
+        reportPreferencesSection.setText(I18N.tr("Report preferences"));
 		reportPreferencesTab.setControl(reportPreferencesSection);
 
         reportPreferencesComposite = new ReportPreferencesComposite(reportPreferencesSection);
@@ -166,7 +169,7 @@ public class MiscPart {
 		reportPreferencesSection.setClient(reportPreferencesComposite);
 		
         Section prioritySection = toolkit.createSection(tabFolder, Section.TITLE_BAR);
-        prioritySection.setText("Priorities");
+        prioritySection.setText(I18N.tr("Priorities"));
         priorityTab.setControl(prioritySection);
 		
 		priorityComposite = new PriorityComposite(prioritySection);
@@ -178,95 +181,94 @@ public class MiscPart {
     }
 
     private void createActions() {
-        // TODO translate
-        Action addSummaryAction = new Action("Add") {
+        Action addSummaryAction = new Action(I18N.tr("Add")) {
             @Override
             public void run() {
                 evaluationComposite.addEvaluation();
             }
         };
-        addSummaryAction.setDescription("Add's a new summary.");
+        addSummaryAction.setDescription(I18N.tr("Add a new summary."));
         addSummaryContribution = new ActionContributionItem(addSummaryAction);
 
-        Action editSummaryAction = new Action("Edit") {
+        Action editSummaryAction = new Action(I18N.tr("Edit")) {
             @Override
             public void run() {
                 evaluationComposite.editEvaluation();
             }
         };
-        editSummaryAction.setDescription("Edit an exisitng summary.");
+        editSummaryAction.setDescription(I18N.tr("Edit an existing summary."));
         editSummaryContribution = new ActionContributionItem(editSummaryAction);
 
         
-        Action addCommentAction = new Action("Add") {
+        Action addCommentAction = new Action(I18N.tr("Add")) {
             @Override
             public void run() {
                 commentsComposite.addComment();
             }
         };
-        addCommentAction.setDescription("Add's a new comment.");
+        addCommentAction.setDescription(I18N.tr("Add a new comment."));
         addCommentContribution = new ActionContributionItem(addCommentAction);
 
-        Action editCommentAction = new Action("Edit") {
+        Action editCommentAction = new Action(I18N.tr("Edit")) {
             @Override
             public void run() {
                commentsComposite.editComment();
             }
         };
-        editCommentAction.setDescription("Edit an exisitng comment.");
+        editCommentAction.setDescription(I18N.tr("Edit an existing comment."));
         editCommentContribution = new ActionContributionItem(editCommentAction);
 
-        Action addStyleAction = new Action("Add Layout") {
+        Action addStyleAction = new Action(I18N.tr("Add Layout")) {
             @Override
             public void run() {
                 reportPreferencesComposite.addPrefernence();
             }
         };
-        addStyleAction.setDescription("Add's a new report layout.");
+        addStyleAction.setDescription(I18N.tr("Add a new report layout."));
         addStyleContribution = new ActionContributionItem(addStyleAction);
 
-        Action editStyleAction = new Action("Edit Layout") {
+        Action editStyleAction = new Action(I18N.tr("Edit Layout")) {
             @Override
             public void run() {
             	reportPreferencesComposite.editPreference();
             }
         };
-        editStyleAction.setDescription("Edit an exisitng Layout.");
+        editStyleAction.setDescription(I18N.tr("Edit an existing layout."));
         editStyleContribution = new ActionContributionItem(editStyleAction);
         
-        Action editPriorityAction = new Action("Edit") {
+        Action editPriorityAction = new Action(I18N.tr("Edit")) {
             @Override
             public void run() {
             	priorityComposite.editPriority();
             }
         };
-        editPriorityAction.setDescription("Edit an exisiting Priority.");
+        editPriorityAction.setDescription(I18N.tr("Edit an existing priority."));
         editPriorityContribution = new ActionContributionItem(editPriorityAction);
         
-        Action addPriorityAction = new Action("Add") {
+        Action addPriorityAction = new Action(I18N.tr("Add")) {
             @Override
             public void run() {
             	priorityComposite.addPriority();
             }
         };
-        addPriorityAction.setDescription("Add a new Priority");
+        addPriorityAction.setDescription(I18N.tr("Add a new priority."));
         addPriorityContribution = new ActionContributionItem(addPriorityAction);
         
-        Action movePriorityUPAction = new Action("Move Up") {
+        Action movePriorityUPAction = new Action(I18N.tr("Move")+" "+I18N.tr("Up")) {
             @Override
             public void run() {
             	priorityComposite.movePriorityUp();
             }
         };
-        movePriorityUPAction.setDescription("Move Priority Up");
+        movePriorityUPAction.setDescription(I18N.tr("Move priority up."));
         movePriorityUpContribution = new ActionContributionItem(movePriorityUPAction);
-        Action movePriorityDownAction = new Action("Move Down") {
+        Action movePriorityDownAction = new Action(I18N.tr("Move")+" "+I18N.tr("Down")) {
             @Override
             public void run() {
             	priorityComposite.movePriorityDown();
             }
         };
-        movePriorityDownAction.setDescription("Move Priority Down");
+        movePriorityDownAction.setDescription(I18N.tr("Move priority down."));
         movePriorityDownContribution = new ActionContributionItem(movePriorityDownAction);
         
         form.getToolBarManager().add(editSummaryContribution);

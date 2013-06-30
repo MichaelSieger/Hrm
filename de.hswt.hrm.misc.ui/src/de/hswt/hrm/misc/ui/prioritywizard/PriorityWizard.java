@@ -12,6 +12,8 @@ import com.google.common.base.Optional;
 
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.SaveException;
+import de.hswt.hrm.i18n.I18n;
+import de.hswt.hrm.i18n.I18nFactory;
 import de.hswt.hrm.misc.comment.model.Comment;
 import de.hswt.hrm.misc.priority.model.Priority;
 import de.hswt.hrm.misc.priority.service.PriorityService;
@@ -19,6 +21,7 @@ import de.hswt.hrm.misc.priority.service.PriorityService;
 public class PriorityWizard extends Wizard {
 
     private static final Logger LOG = LoggerFactory.getLogger(PriorityWizard.class);
+    private static final I18n I18N = I18nFactory.getI18n(PriorityWizard.class);
 
     @Inject
     private PriorityService prioService;
@@ -32,10 +35,10 @@ public class PriorityWizard extends Wizard {
         ContextInjectionFactory.inject(first, context);
 
         if (prio.isPresent()) {
-            setWindowTitle("Edit Priority: " + prio.get().getName());
+            setWindowTitle(I18N.tr("Edit Priority"));
         }
         else {
-            setWindowTitle("Create new Priority");
+            setWindowTitle("Add a new Priority");
         }
     }
 

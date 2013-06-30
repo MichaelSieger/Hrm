@@ -2,19 +2,19 @@
 	<Composite.layout>
 		<FillLayout/>
 	</Composite.layout>
-	<Section x:Style="(p1:Section).EXPANDED | (p1:Section).TITLE_BAR" x:Name="Mandatory" text="Summary">
+	<Section x:Style="(p1:Section).EXPANDED | (p1:Section).TITLE_BAR" x:Name="Mandatory">
 		<Section.client>
 			<Composite>
 				<Composite.layout>
 					<GridLayout numColumns="4"/>
 				</Composite.layout>
-				<Label text="Name"/>
-				<Text x:Style="BORDER" x:Name="name" x:TooltipText="Name">
+				<Label text="Name" x:Name="lblName"/>
+				<Text x:Style="BORDER" x:Name="name">
 					<Text.layoutData>
 						<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL" horizontalSpan="3"/>
 					</Text.layoutData>
 				</Text>
-				<Label text="File Name:" x:Name="text">
+				<Label text="File Name:" x:Name="lblFileName">
 					<Label.layoutData>
 						<GridData verticalAlignment="TOP" horizontalAlignment="RIGHT"/>
 					</Label.layoutData>

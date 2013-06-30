@@ -38,12 +38,15 @@ import de.hswt.hrm.common.database.exception.SaveException;
 import de.hswt.hrm.common.ui.swt.table.ColumnDescription;
 import de.hswt.hrm.common.ui.swt.table.TableViewerController;
 import de.hswt.hrm.common.ui.swt.utils.SWTResourceManager;
+import de.hswt.hrm.i18n.I18n;
+import de.hswt.hrm.i18n.I18nFactory;
 import de.hswt.hrm.misc.priority.model.Priority;
 import de.hswt.hrm.misc.priority.service.PriorityService;
 
 public class PriorityComposite extends Composite {
 
     private final static Logger LOG = LoggerFactory.getLogger(PriorityComposite.class);
+    private static final I18n I18N = I18nFactory.getI18n(PriorityComposite.class);
      @Inject
      private PriorityService prioService;
 
@@ -160,9 +163,8 @@ public class PriorityComposite extends Composite {
     }
 
     private void showDBConnectionError() {
-        // TODO translate
-        MessageDialog.openError(shellProvider.getShell(), "Connection Error",
-                "Could not load priorites from Database.");
+        MessageDialog.openError(shellProvider.getShell(), I18N.tr("Connection Error"),
+                I18N.tr("Could not load priorites from Database."));
     }
 
     /**

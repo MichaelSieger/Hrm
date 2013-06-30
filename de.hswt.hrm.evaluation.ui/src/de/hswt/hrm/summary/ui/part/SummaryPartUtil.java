@@ -14,10 +14,14 @@ import com.google.common.base.Optional;
 
 import de.hswt.hrm.common.ui.swt.table.ColumnDescription;
 import de.hswt.hrm.common.ui.swt.wizards.WizardCreator;
+import de.hswt.hrm.i18n.I18n;
+import de.hswt.hrm.i18n.I18nFactory;
 import de.hswt.hrm.summary.model.Summary;
 import de.hswt.hrm.summary.ui.wizzard.SummaryWizzard;
 
 public class SummaryPartUtil {
+    
+    private static final I18n I18N = I18nFactory.getI18n(SummaryPartUtil.class);
 
 	public static Optional<Summary> showWizard(IEclipseContext context,
 			Shell shell, Optional<Summary> eval) {
@@ -41,7 +45,7 @@ public class SummaryPartUtil {
 	}
 
 	private static ColumnDescription<Summary> getNameColumn() {
-		return new ColumnDescription<>("Name", new ColumnLabelProvider() {
+		return new ColumnDescription<>(I18N.tr("Name"), new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
 				Summary e = (Summary) element;
@@ -56,7 +60,7 @@ public class SummaryPartUtil {
 	}
 
 	private static ColumnDescription<Summary> getTextColumn() {
-		return new ColumnDescription<>("Text", new ColumnLabelProvider() {
+		return new ColumnDescription<>(I18N.tr("Text"), new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
 				Summary e = (Summary) element;

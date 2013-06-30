@@ -12,6 +12,7 @@ import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.widgets.Section;
 import org.slf4j.Logger;
@@ -22,6 +23,8 @@ import com.google.common.base.Optional;
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.common.ui.swt.layouts.PageContainerFillLayout;
+import de.hswt.hrm.i18n.I18n;
+import de.hswt.hrm.i18n.I18nFactory;
 import de.hswt.hrm.inspection.model.Layout;
 import de.hswt.hrm.inspection.service.LayoutService;
 import de.hswt.hrm.summary.model.Summary;
@@ -40,19 +43,20 @@ public class PreferencesWizardPageOne extends WizardPage {
     private LayoutService prefService;
 
     private static final Logger LOG = LoggerFactory.getLogger(PreferencesWizardPageOne.class);
+    private static final I18n I18N = I18nFactory.getI18n(PreferencesWizardPageOne.class);
 
     public PreferencesWizardPageOne(String title, Optional<Layout> preference) {
         super(title);
         this.preference = preference;
         setDescription(createDescription());
-        setTitle("Style Wizard");
+        setTitle(I18N.tr("Layout Wizard"));
     }
 
     private String createDescription() {
         if (preference.isPresent()) {
-            return "Change a Preference";
+            return I18N.tr("Edit a preference");
         }
-        return "Add a new Preference";
+        return I18N.tr("Add a preference");
     }
 
     @Override
@@ -70,6 +74,8 @@ public class PreferencesWizardPageOne extends WizardPage {
 
         nameText = (Text) XWT.findElementByName(container, "name");
         fileText = (Text) XWT.findElementByName(container, "fileName");
+        
+        translate();
 
         if (this.preference.isPresent()) {
             updateFields();
@@ -121,15 +127,15 @@ public class PreferencesWizardPageOne extends WizardPage {
         setErrorMessage(null);
 
         if (fileText.getText().isEmpty()) {
-            setErrorMessage("FileName must not be empty");
+            setErrorMessage(I18N.tr("Field is mandatory")+": "+I18N.tr("File name"));
         }
 
         else if (nameText.getText().isEmpty()) {
-            setErrorMessage("Name must not be empty...");
+            setErrorMessage(I18N.tr("Field is mandatory")+": "+I18N.tr("Name"));
         }
 
         else if (isAlreadyPresent(nameText.getText())) {
-            setErrorMessage("A ReportPreference with name " + nameText.getText() + " is already present");
+            setErrorMessage(I18N.tr("A preference with name") + " '"+ nameText.getText()+ "' " + I18N.tr("is already present."));
         }
 
     }
@@ -158,6 +164,32 @@ public class PreferencesWizardPageOne extends WizardPage {
         }
         return present;
 
+    }
+    
+    private void translate() {
+        // Section
+        setSectionText("Mandatory", I18N.tr("Report preferences"));
+        // Labels
+        setLabelText("lblName", I18N.tr("Name"));
+        setLabelText("lblFileName", I18N.tr("File name"));
+    }
+    
+    private void setSectionText (String sectionName, String text) {
+        Section s = (Section) XWT.findElementByName(container, sectionName);
+        if (s == null) {
+            LOG.error("Section '" + sectionName + "' not found.");
+            return;
+        }
+        s.setText(text);
+    }
+    
+    private void setLabelText(String labelName, String text) {
+        Label l = (Label) XWT.findElementByName(container, labelName);
+        if (l == null) {
+            LOG.error("Label '" + labelName + "' not found.");
+            return;
+        }
+        l.setText(text);
     }
 
     @Override

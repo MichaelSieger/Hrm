@@ -12,6 +12,7 @@ import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.widgets.Section;
 import org.slf4j.Logger;
@@ -22,6 +23,8 @@ import com.google.common.base.Optional;
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.common.ui.swt.layouts.PageContainerFillLayout;
+import de.hswt.hrm.i18n.I18n;
+import de.hswt.hrm.i18n.I18nFactory;
 import de.hswt.hrm.summary.model.Summary;
 import de.hswt.hrm.summary.service.SummaryService;
 
@@ -39,19 +42,20 @@ public class SummaryWizzardPageOne extends WizardPage {
     private SummaryService evalService;
 
     private static final Logger LOG = LoggerFactory.getLogger(SummaryWizzardPageOne.class);
+    private static final I18n I18N = I18nFactory.getI18n(SummaryWizzardPageOne.class);
 
     public SummaryWizzardPageOne(String title, Optional<Summary> eval) {
         super(title);
         this.eval = eval;
         setDescription(createDescription());
-        setTitle("Summary Wizard");
+        setTitle(I18N.tr("Summary Wizard"));
     }
 
     private String createDescription() {
         if (eval.isPresent()) {
-            return "Change a Summary";
+            return I18N.tr("Edit a summary");
         }
-        return "Add a new Summary";
+        return I18N.tr("Add a summary");
     }
 
     @Override
@@ -68,6 +72,8 @@ public class SummaryWizzardPageOne extends WizardPage {
 
         nameText = (Text) XWT.findElementByName(container, "name");
         descText = (Text) XWT.findElementByName(container, "desc");
+        
+        translate();
 
         if (this.eval.isPresent()) {
             updateFields();
@@ -119,15 +125,15 @@ public class SummaryWizzardPageOne extends WizardPage {
         setErrorMessage(null);
 
         if (descText.getText().isEmpty()) {
-            setErrorMessage("Description must not be empty");
+            setErrorMessage(I18N.tr("Field is mandatory")+": "+I18N.tr("Description"));
         }
 
         else if (nameText.getText().isEmpty()) {
-            setErrorMessage("Name must not be empty...");
+            setErrorMessage(I18N.tr("Field is mandatory")+": "+I18N.tr("Name"));
         }
 
         else if (isAlreadyPresent(nameText.getText())) {
-            setErrorMessage("A Summary with name " + nameText.getText() + " is already present");
+            setErrorMessage(I18N.tr("A summary with name") + " '"+ nameText.getText()+ "' " + I18N.tr("is already present."));
         }
 
     }
@@ -155,6 +161,32 @@ public class SummaryWizzardPageOne extends WizardPage {
         }
         return present;
 
+    }
+    
+    private void translate() {
+        // Section
+        setSectionText("Mandatory", I18N.tr("Summary"));
+        // Labels
+        setLabelText("lblName", I18N.tr("Name"));
+        setLabelText("text", I18N.tr("Text"));
+    }
+    
+    private void setSectionText (String sectionName, String text) {
+        Section s = (Section) XWT.findElementByName(container, sectionName);
+        if (s == null) {
+            LOG.error("Section '" + sectionName + "' not found.");
+            return;
+        }
+        s.setText(text);
+    }
+    
+    private void setLabelText(String labelName, String text) {
+        Label l = (Label) XWT.findElementByName(container, labelName);
+        if (l == null) {
+            LOG.error("Label '" + labelName + "' not found.");
+            return;
+        }
+        l.setText(text);
     }
 
     @Override

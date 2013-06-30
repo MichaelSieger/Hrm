@@ -14,11 +14,15 @@ import com.google.common.base.Optional;
 
 import de.hswt.hrm.common.ui.swt.table.ColumnDescription;
 import de.hswt.hrm.common.ui.swt.wizards.WizardCreator;
+import de.hswt.hrm.i18n.I18n;
+import de.hswt.hrm.i18n.I18nFactory;
 import de.hswt.hrm.misc.priority.model.Priority;
 import de.hswt.hrm.misc.ui.prioritywizard.PriorityWizard;
 
 public class PriorityPartUtil {
 
+    private static final I18n I18N = I18nFactory.getI18n(PriorityPartUtil.class);
+    
 	public static Optional<Priority> showWizard(IEclipseContext context,
 			Shell shell, Optional<Priority> prio) {
 
@@ -42,7 +46,7 @@ public class PriorityPartUtil {
 	}
 
 	private static ColumnDescription<Priority> getNameColumn() {
-		return new ColumnDescription<>("Name", new ColumnLabelProvider() {
+		return new ColumnDescription<>(I18N.tr("Name"), new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
 				Priority e = (Priority) element;
@@ -57,7 +61,7 @@ public class PriorityPartUtil {
 	}
 
 	private static ColumnDescription<Priority> getTextColumn() {
-		return new ColumnDescription<Priority>("Text", new ColumnLabelProvider() {
+		return new ColumnDescription<Priority>(I18N.tr("Text"), new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
 				Priority e = (Priority) element;
@@ -72,7 +76,7 @@ public class PriorityPartUtil {
 	}
 	
     private static ColumnDescription<Priority> getPriority() {
-        return new ColumnDescription<>("Priority", new ColumnLabelProvider() {
+        return new ColumnDescription<>(I18N.tr("Priority"), new ColumnLabelProvider() {
             @Override
             public String getText(Object element) {
                 Priority prio = (Priority) element;
