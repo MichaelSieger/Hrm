@@ -413,43 +413,12 @@ public class ReportGeneralComposite extends Composite implements InspectionObser
         }
     }
 
-    private void plantSelected(Plant plant) {
-        plantText.setText(plant.getDescription());
-    }
-
-    private void initLayouts(Combo combo) {
-
-        try {
-            // Obtain all layouts form the DB
-            java.util.List<Layout> layouts = (java.util.List<Layout>) layoutService.findAll();
-
-            String[] items = new String[layouts.size()];
-            int index = 0;
-            for (Layout l : layouts) {
-                items[index] = l.getName();
-                index++;
-
-            }
-            combo.setItems(items);
-            index = 0;
-            for (String s : items) {
-                combo.setData(s, layouts.get(index));
-                index++;
-            }
-        }
-
-        catch (DatabaseException e) {
-            e.printStackTrace();
-        }
-
-    }
-
     private void createPersonsComponents() {
         Composite personsComposite = new Composite(personsSection, SWT.NONE);
         personsComposite.setBackgroundMode(SWT.INHERIT_DEFAULT);
         formToolkit.adapt(personsComposite);
         formToolkit.paintBordersFor(personsComposite);
-        GridLayout gl = new GridLayout(3, false);
+        GridLayout gl = new GridLayout(4, false);
         gl.marginWidth = 1;
         personsComposite.setLayout(gl);
         personsSection.setClient(personsComposite);
@@ -457,15 +426,15 @@ public class ReportGeneralComposite extends Composite implements InspectionObser
         Label customerLabel = new Label(personsComposite, SWT.NONE);
         formToolkit.adapt(customerLabel, true, true);
         customerLabel.setText(I18N.tr("Customer"));
-        customerLabel.setLayoutData(LayoutUtil.createLeftGridData());
+        customerLabel.setLayoutData(LayoutUtil.createHorzFillData(2));
 
         Button customerClearButton = formToolkit.createButton(personsComposite, I18N.tr("Clear")+" "+I18N.tr("Customer"),
                 SWT.PUSH);
-        customerClearButton.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false));
+        customerClearButton.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 
         Button customerSelectionButton = formToolkit.createButton(personsComposite,
                 I18N.tr("Select")+" "+I18N.tr("Customer"), SWT.PUSH);
-        customerSelectionButton.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
+        customerSelectionButton.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false));
 
         Label customerNameLabel = new Label(personsComposite, SWT.NONE);
         customerNameLabel.setLayoutData(LayoutUtil.createLeftCenteredGridData());
@@ -473,7 +442,7 @@ public class ReportGeneralComposite extends Composite implements InspectionObser
         customerNameLabel.setText(I18N.tr("Name"));
 
         customerNameText = new Text(personsComposite, SWT.READ_ONLY);
-        customerNameText.setLayoutData(LayoutUtil.createHorzCenteredFillData(2));
+        customerNameText.setLayoutData(LayoutUtil.createHorzCenteredFillData(3));
         formToolkit.adapt(customerNameText, true, true);
 
         Label customerStreetLabel = new Label(personsComposite, SWT.NONE);
@@ -482,7 +451,7 @@ public class ReportGeneralComposite extends Composite implements InspectionObser
         customerStreetLabel.setText(I18N.tr("Street"));
 
         customerStreetText = new Text(personsComposite, SWT.READ_ONLY);
-        customerStreetText.setLayoutData(LayoutUtil.createHorzCenteredFillData(2));
+        customerStreetText.setLayoutData(LayoutUtil.createHorzCenteredFillData(3));
         formToolkit.adapt(customerStreetText, true, true);
 
         Label customerCityLabel = new Label(personsComposite, SWT.NONE);
@@ -491,25 +460,24 @@ public class ReportGeneralComposite extends Composite implements InspectionObser
         customerCityLabel.setText(I18N.tr("City"));
 
         customerCityText = new Text(personsComposite, SWT.READ_ONLY);
-        customerCityText.setLayoutData(LayoutUtil.createHorzCenteredFillData(2));
+        customerCityText.setLayoutData(LayoutUtil.createHorzCenteredFillData(3));
         formToolkit.adapt(customerCityText, true, true);
 
         Label dummy = new Label(personsComposite, SWT.NONE);
-        dummy.setLayoutData(LayoutUtil.createFillData(2));
-        new Label(personsComposite, SWT.NONE);
+        dummy.setLayoutData(LayoutUtil.createFillData(4));
 
         Label requestorLabel = new Label(personsComposite, SWT.NONE);
         formToolkit.adapt(requestorLabel, true, true);
         requestorLabel.setText(I18N.tr("Requestor"));
-        requestorLabel.setLayoutData(LayoutUtil.createLeftGridData());
+        requestorLabel.setLayoutData(LayoutUtil.createHorzFillData(2));
 
         Button requestorClearButton = formToolkit.createButton(personsComposite, I18N.tr("Clear")+" "+I18N.tr("Requestor"),
                 SWT.PUSH);
-        requestorClearButton.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false));
+        requestorClearButton.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 
         Button requestorSelectionButton = formToolkit.createButton(personsComposite,
                 I18N.tr("Select")+" "+I18N.tr("Requestor"), SWT.PUSH);
-        requestorSelectionButton.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
+        requestorSelectionButton.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false));
 
         Label requestorNameLabel = new Label(personsComposite, SWT.NONE);
         requestorNameLabel.setLayoutData(LayoutUtil.createLeftCenteredGridData());
@@ -517,7 +485,7 @@ public class ReportGeneralComposite extends Composite implements InspectionObser
         requestorNameLabel.setText(I18N.tr("Name"));
 
         requestorNameText = new Text(personsComposite, SWT.READ_ONLY);
-        requestorNameText.setLayoutData(LayoutUtil.createHorzCenteredFillData(2));
+        requestorNameText.setLayoutData(LayoutUtil.createHorzCenteredFillData(3));
         formToolkit.adapt(requestorNameText, true, true);
 
         Label requestorStreetLabel = new Label(personsComposite, SWT.NONE);
@@ -526,7 +494,7 @@ public class ReportGeneralComposite extends Composite implements InspectionObser
         requestorStreetLabel.setText(I18N.tr("Street"));
 
         requestorStreetText = new Text(personsComposite, SWT.READ_ONLY);
-        requestorStreetText.setLayoutData(LayoutUtil.createHorzCenteredFillData(2));
+        requestorStreetText.setLayoutData(LayoutUtil.createHorzCenteredFillData(3));
         formToolkit.adapt(requestorStreetText, true, true);
 
         Label requestorCityLabel = new Label(personsComposite, SWT.NONE);
@@ -535,25 +503,24 @@ public class ReportGeneralComposite extends Composite implements InspectionObser
         requestorCityLabel.setText(I18N.tr("City"));
 
         requestorCityText = new Text(personsComposite, SWT.READ_ONLY);
-        requestorCityText.setLayoutData(LayoutUtil.createHorzCenteredFillData(2));
+        requestorCityText.setLayoutData(LayoutUtil.createHorzCenteredFillData(3));
         formToolkit.adapt(requestorCityText, true, true);
 
         dummy = new Label(personsComposite, SWT.NONE);
-        dummy.setLayoutData(LayoutUtil.createFillData(2));
-        new Label(personsComposite, SWT.NONE);
+        dummy.setLayoutData(LayoutUtil.createFillData(4));
 
         Label controllerLabel = new Label(personsComposite, SWT.NONE);
         formToolkit.adapt(controllerLabel, true, true);
         controllerLabel.setText(I18N.tr("Controller"));
-        controllerLabel.setLayoutData(LayoutUtil.createLeftGridData());
+        controllerLabel.setLayoutData(LayoutUtil.createHorzFillData(2));
 
         Button controllerClearButton = formToolkit.createButton(personsComposite, I18N.tr("Clear")+" "+I18N.tr("Controller"),
                 SWT.PUSH);
-        controllerClearButton.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false));
+        controllerClearButton.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 
         Button controllerSelectionButton = formToolkit.createButton(personsComposite,
                 I18N.tr("Select")+" "+I18N.tr("Controller"), SWT.PUSH);
-        controllerSelectionButton.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
+        controllerSelectionButton.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false));
 
         Label controllerNameLabel = new Label(personsComposite, SWT.NONE);
         controllerNameLabel.setLayoutData(LayoutUtil.createLeftCenteredGridData());
@@ -561,7 +528,7 @@ public class ReportGeneralComposite extends Composite implements InspectionObser
         controllerNameLabel.setText(I18N.tr("Name"));
 
         controllerNameText = new Text(personsComposite, SWT.READ_ONLY);
-        controllerNameText.setLayoutData(LayoutUtil.createHorzCenteredFillData(2));
+        controllerNameText.setLayoutData(LayoutUtil.createHorzCenteredFillData(3));
         formToolkit.adapt(controllerNameText, true, true);
 
         Label controllerStreetLabel = new Label(personsComposite, SWT.NONE);
@@ -570,7 +537,7 @@ public class ReportGeneralComposite extends Composite implements InspectionObser
         controllerStreetLabel.setText(I18N.tr("Street"));
 
         controllerStreetText = new Text(personsComposite, SWT.READ_ONLY);
-        controllerStreetText.setLayoutData(LayoutUtil.createHorzCenteredFillData(2));
+        controllerStreetText.setLayoutData(LayoutUtil.createHorzCenteredFillData(3));
         formToolkit.adapt(controllerStreetText, true, true);
 
         Label controllerCityLabel = new Label(personsComposite, SWT.NONE);
@@ -579,7 +546,7 @@ public class ReportGeneralComposite extends Composite implements InspectionObser
         controllerCityLabel.setText(I18N.tr("City"));
 
         controllerCityText = new Text(personsComposite, SWT.READ_ONLY);
-        controllerCityText.setLayoutData(LayoutUtil.createHorzCenteredFillData(2));
+        controllerCityText.setLayoutData(LayoutUtil.createHorzCenteredFillData(3));
         formToolkit.adapt(controllerCityText, true, true);
 
         customerClearButton.addSelectionListener(new SelectionAdapter() {
@@ -995,6 +962,38 @@ public class ReportGeneralComposite extends Composite implements InspectionObser
         formToolkit.adapt(humitiyCommentCombo);
         formToolkit.paintBordersFor(humitiyCommentCombo);
         ContentProposalUtil.enableContentProposal(humitiyCommentCombo);
+
+    }
+
+    
+    private void plantSelected(Plant plant) {
+        plantText.setText(plant.getDescription());
+    }
+
+    private void initLayouts(Combo combo) {
+
+        try {
+            // Obtain all layouts form the DB
+            java.util.List<Layout> layouts = (java.util.List<Layout>) layoutService.findAll();
+
+            String[] items = new String[layouts.size()];
+            int index = 0;
+            for (Layout l : layouts) {
+                items[index] = l.getName();
+                index++;
+
+            }
+            combo.setItems(items);
+            index = 0;
+            for (String s : items) {
+                combo.setData(s, layouts.get(index));
+                index++;
+            }
+        }
+
+        catch (DatabaseException e) {
+            e.printStackTrace();
+        }
 
     }
 
