@@ -64,7 +64,6 @@ public class SchemeService {
 		// We insert a new scheme here !
 	    Scheme scheme = new Scheme(plant);
 	    scheme = schemeDao.insert(scheme);
-	    scheme.setSchemeComponents(components);
 	    
 	    // Add all components
 	    List<SchemeComponent> updated = new ArrayList<>(components.size());

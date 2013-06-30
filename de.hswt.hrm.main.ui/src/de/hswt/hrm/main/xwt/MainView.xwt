@@ -1,86 +1,58 @@
 <Composite xmlns="http://www.eclipse.org/xwt/presentation"
 	xmlns:x="http://www.eclipse.org/xwt" x:Class="de.hswt.hrm.main.handlers.MainPartEventHandler">
 	<Composite.layout>
-		<GridLayout numColumns="5" />
+		<GridLayout numColumns="6" />
 	</Composite.layout>
 	<Button x:Name="toContacts" image="/resources/icons/Contacts.jpg">
 		<Button.layoutData>
 			<GridData verticalAlignment="FILL" horizontalAlignment="FILL" />
 		</Button.layoutData>
 	</Button>
-	<Label
-		text="Kontakte&#13;&#10;-Konakte anlegen&#13;&#10;-Kontakte bearbeiten&#13;&#10;&#13;&#10;">
+	<Label x:Name="lblToContacts">
 		<Label.layoutData>
-			<GridData grabExcessHorizontalSpace="true" verticalAlignment="CENTER"/>
+			<GridData grabExcessHorizontalSpace="true" />
 		</Label.layoutData>
 	</Label>
-	<Label/>
-	<Label
-		text="Anlagen&#13;&#10;-Anlagen anlegen&#13;&#10;-Anlagen bearbeiten" alignment="RIGHT">
-		<Label.layoutData>
-			<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
-		</Label.layoutData>
-	</Label>
-	<Button x:Name="toPlants" image="/resources/icons/Plants.jpg">
-		<Button.layoutData>
-			<GridData horizontalAlignment="RIGHT" verticalAlignment="CENTER" grabExcessHorizontalSpace="false"/>
-		</Button.layoutData>
-	</Button>
-
 	<Button x:Name="toPlaces" image="/resources/icons/Places.jpg">
 		<Button.layoutData>
 			<GridData horizontalAlignment="FILL" verticalAlignment="FILL" />
 		</Button.layoutData>
 	</Button>
-	<Label
-		text="Standorte&#13;&#10;-Standorte anlegen&#13;&#10;-Standorte bearbeiten">
+	<Label x:Name="lblToPlaces">
 		<Label.layoutData>
-			<GridData grabExcessHorizontalSpace="true" verticalAlignment="CENTER"/>
+			<GridData grabExcessHorizontalSpace="true" />
+		</Label.layoutData>
+	</Label>
+	<Button x:Name="toPlants" image="/resources/icons/Plants.jpg">
+		<Button.layoutData>
+			<GridData horizontalAlignment="FILL" verticalAlignment="FILL" />
+		</Button.layoutData>
+	</Button>
+	<Label x:Name="lblToPlants">
+		<Label.layoutData>
+			<GridData grabExcessHorizontalSpace="true" />
 		</Label.layoutData>
 	</Label>
 	<Label />
-	<Label text="Inspektionen&#13;&#10;-Inspektionen anlegen&#13;&#10;-Inspektionen bearbeiten" alignment="RIGHT">
-		<Label.layoutData>
-			<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
-		</Label.layoutData>
-	</Label>
-	<Button image="/resources/icons/Report.jpg" x:Name="toInspection">
-		<Button.layoutData>
-			<GridData horizontalAlignment="RIGHT" verticalAlignment="CENTER" grabExcessHorizontalSpace="false"/>
-		</Button.layoutData>
-	</Button>
-
-
+	<Label />
+	<Label />
+	<Label />
+	<Label />
+	<Label />
 	<Button x:Name="toCatalog" image="/resources/icons/Catalog.jpg">
 		<Button.layoutData>
 			<GridData horizontalAlignment="RIGHT" />
 		</Button.layoutData>
 	</Button>
-	<Label text="Kataloge&#13;&#10;-Katalog anlegen&#13;&#10;-Katalog bearbeiten">
-		<Label.layoutData>
-			<GridData grabExcessHorizontalSpace="true" verticalAlignment="CENTER"/>
-		</Label.layoutData>
-	</Label>
-	<Label/>
-	<Label/>
-	<Label/>
+	<Label x:Name="lblToCatalog"/>
 	<Button x:Name="toComponents" image="/resources/icons/Components.jpg" />
-	<Label
-		text="Komponenten&#13;&#10;-Komponenten anlegen&#13;&#10;-Kategorien bearbeiten&#13;&#10;">
-		<Label.layoutData>
-			<GridData grabExcessHorizontalSpace="true" verticalAlignment="CENTER"/>
-		</Label.layoutData>
-	</Label>
-	<Label/>
-	<Label/>
-	<Label/>
+	<Label x:Name="lblToComponents"/>
+	<Button image="/resources/icons/Report.jpg" x:Name="toInspection" />
+	<Label x:Name="lblToInspection"/>
+	<Label />
+	<Label />
 	<Button image="/resources/icons/Tools.jpg" x:Name="toMisc" />
-	<Label text="Sonstiges&#13;&#10;-Kommentare verwalten&#13;&#10;-Prioritäten verwalten&#13;&#10;-Einstellungen">
-		<Label.layoutData>
-			<GridData grabExcessHorizontalSpace="true" verticalAlignment="CENTER"/>
-		</Label.layoutData>
-	</Label>
-	<Label/>
-	<Label/>
-	<Label/>
+	<Label x:Name="lblToMisc"/>
+	<Label />
+	<Label />
 </Composite>

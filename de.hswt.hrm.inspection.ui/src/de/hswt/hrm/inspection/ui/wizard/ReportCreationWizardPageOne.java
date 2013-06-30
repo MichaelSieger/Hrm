@@ -117,7 +117,7 @@ public class ReportCreationWizardPageOne extends WizardPage {
 		Label titleLabel = new Label(generalComposite, SWT.NONE);
 		titleLabel.setLayoutData(LayoutUtil.createLeftCenteredGridData());
 		formToolkit.adapt(titleLabel, true, true);
-		titleLabel.setText(I18N.tr("Title"));
+		titleLabel.setText(I18N.tr("Title")+":");
 
 		titleText = new Text(generalComposite, SWT.NONE);
 		titleText.setTextLimit(50);
@@ -136,7 +136,7 @@ public class ReportCreationWizardPageOne extends WizardPage {
 		Label plantLabel = new Label(generalComposite, SWT.NONE);
 		plantLabel.setLayoutData(LayoutUtil.createLeftCenteredGridData());
 		formToolkit.adapt(plantLabel, true, true);
-		plantLabel.setText(I18N.tr("Plant"));
+		plantLabel.setText(I18N.tr("Plant")+":");
 
 		plantText = new Text(generalComposite, SWT.READ_ONLY);
 		plantText.setLayoutData(LayoutUtil.createHorzCenteredFillData(2, 1));
@@ -169,7 +169,7 @@ public class ReportCreationWizardPageOne extends WizardPage {
 		Label reportDateLabel = new Label(generalComposite, SWT.NONE);
 		reportDateLabel.setLayoutData(LayoutUtil.createLeftCenteredGridData());
 		formToolkit.adapt(reportDateLabel, true, true);
-		reportDateLabel.setText(I18N.tr("Report Date"));
+		reportDateLabel.setText(I18N.tr("Report Date")+":");
 
 		reportDateTime = new DateTime(generalComposite, SWT.BORDER | SWT.DATE
 				| SWT.DROP_DOWN);
@@ -189,7 +189,7 @@ public class ReportCreationWizardPageOne extends WizardPage {
 		inspectionDateLabel.setLayoutData(LayoutUtil
 				.createLeftCenteredGridData());
 		formToolkit.adapt(inspectionDateLabel, true, true);
-		inspectionDateLabel.setText(I18N.tr("Inspection Date"));
+		inspectionDateLabel.setText(I18N.tr("Inspection Date")+":");
 
 		inspectionDateTime = new DateTime(generalComposite, SWT.BORDER
 				| SWT.DATE | SWT.DROP_DOWN);
@@ -209,7 +209,7 @@ public class ReportCreationWizardPageOne extends WizardPage {
 		nextInspectionLabel.setLayoutData(LayoutUtil
 				.createLeftCenteredGridData());
 		formToolkit.adapt(nextInspectionLabel, true, true);
-		nextInspectionLabel.setText(I18N.tr("Next Inspection"));
+		nextInspectionLabel.setText(I18N.tr("Next Inspection")+":");
 
 		nextInspectionDateTime = new DateTime(generalComposite, SWT.BORDER
 				| SWT.DATE | SWT.DROP_DOWN);
@@ -248,7 +248,7 @@ public class ReportCreationWizardPageOne extends WizardPage {
 		Label reportStyleLabel = new Label(generalComposite, SWT.NONE);
 		reportStyleLabel.setLayoutData(LayoutUtil.createLeftCenteredGridData());
 		formToolkit.adapt(reportStyleLabel, true, true);
-		reportStyleLabel.setText(I18N.tr("Layout"));
+		reportStyleLabel.setText(I18N.tr("Layout")+":");
 
 		reportStyleCombo = new Combo(generalComposite, SWT.DROP_DOWN
 				| SWT.READ_ONLY);
