@@ -133,7 +133,7 @@ public class SummaryWizzardPageOne extends WizardPage {
         }
 
         else if (isAlreadyPresent(nameText.getText())) {
-            setErrorMessage("A summary with name" + " '"+ nameText.getText()+ "' " + "is already present.");
+            setErrorMessage(I18N.tr("A summary with name") + " '"+ nameText.getText()+ "' " + I18N.tr("is already present."));
         }
 
     }
