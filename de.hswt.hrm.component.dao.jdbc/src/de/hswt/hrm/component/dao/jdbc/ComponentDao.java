@@ -17,6 +17,8 @@ import org.apache.commons.dbutils.DbUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.base.Optional;
+
 import de.hswt.hrm.common.database.DatabaseFactory;
 import de.hswt.hrm.common.database.NamedParameterStatement;
 import de.hswt.hrm.common.database.SqlQueryBuilder;
@@ -27,6 +29,7 @@ import de.hswt.hrm.component.dao.core.ICategoryDao;
 import de.hswt.hrm.component.dao.core.IComponentDao;
 import de.hswt.hrm.component.model.Attribute;
 import de.hswt.hrm.component.model.Component;
+import de.hswt.hrm.component.model.ComponentIcon;
 
 public class ComponentDao implements IComponentDao {
     private final static Logger LOG = LoggerFactory.getLogger(ComponentDao.class);
@@ -226,16 +229,27 @@ public class ComponentDao implements IComponentDao {
         try (Connection con = DatabaseFactory.getConnection()) {
             con.setAutoCommit(false);
 
-            int downUpImageId;
-            int leftRightImageId;
-            int rightLeftImageId;
-            int upDownImageId;
+            Optional<ComponentIcon> downUpImage = Optional.<ComponentIcon>absent();
+            Optional<ComponentIcon> leftRightImage = Optional.<ComponentIcon>absent();
+            Optional<ComponentIcon> rightLeftImage = Optional.<ComponentIcon>absent();
+            Optional<ComponentIcon> upDownImage = Optional.<ComponentIcon>absent();
             try {
                 // Insert the blobs
-                downUpImageId = insertComponentImage(con, component.getDownUpImage());
-                leftRightImageId = insertComponentImage(con, component.getLeftRightImage());
-                rightLeftImageId = insertComponentImage(con, component.getRightLeftImage());
-                upDownImageId = insertComponentImage(con, component.getUpDownImage());
+            	if (component.getDownUpImage().isPresent()) {
+            		downUpImage = Optional.of(insertIcon(con, component.getDownUpImage().get()));
+            	}
+            	
+            	if (component.getLeftRightImage().isPresent()) {
+            		leftRightImage = Optional.of(insertIcon(con, component.getLeftRightImage().get()));
+            	}
+            	
+            	if (component.getRightLeftImage().isPresent()) {
+            		rightLeftImage = Optional.of(insertIcon(con, component.getRightLeftImage().get()));
+            	}
+            	
+            	if (component.getUpDownImage().isPresent()) {
+            		upDownImage = Optional.of(insertIcon(con, component.getUpDownImage().get()));
+            	}
             }
             catch (Exception e) {
                 LOG.error("Unable to insert one or more component images.", e);
@@ -245,10 +259,34 @@ public class ComponentDao implements IComponentDao {
 
             try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
                 stmt.setParameter(Fields.NAME, component.getName());
-                stmt.setParameter(Fields.SYMBOL_LR, leftRightImageId);
-                stmt.setParameter(Fields.SYMBOL_RL, rightLeftImageId);
-                stmt.setParameter(Fields.SYMBOL_UD, upDownImageId);
-                stmt.setParameter(Fields.SYMBOL_DU, downUpImageId);
+                if (leftRightImage.isPresent()) {
+                	stmt.setParameter(Fields.SYMBOL_LR, leftRightImage.get().getId());
+                }
+                else {
+                	stmt.setParameterNull(Fields.SYMBOL_LR);
+                }
+                
+                if (rightLeftImage.isPresent()) {
+                	stmt.setParameter(Fields.SYMBOL_RL, rightLeftImage.get().getId());
+                }
+                else {
+                	stmt.setParameterNull(Fields.SYMBOL_RL);
+                }
+                
+                if (upDownImage.isPresent()) {
+                	stmt.setParameter(Fields.SYMBOL_UD, upDownImage.get().getId());
+                }
+                else {
+                	stmt.setParameterNull(Fields.SYMBOL_UD);
+                }
+                
+                if (downUpImage.isPresent()) {
+                	stmt.setParameter(Fields.SYMBOL_DU, downUpImage.get().getId());
+                }
+                else {
+                	stmt.setParameterNull(Fields.SYMBOL_DU);
+                }
+                
                 stmt.setParameter(Fields.BOOL_RATING, component.getBoolRating());
                 stmt.setParameter(Fields.CATEGORY, component.getCategory().get().getId());
 
@@ -266,8 +304,8 @@ public class ComponentDao implements IComponentDao {
 
                         // Create new Component with id
                         Component inserted = new Component(id, component.getName(),
-                                component.getLeftRightImage(), component.getRightLeftImage(),
-                                component.getUpDownImage(), component.getDownUpImage(), component
+                                leftRightImage.orNull(), rightLeftImage.orNull(),
+                                upDownImage.orNull(), downUpImage.orNull(), component
                                         .getQuantifier().or(-1), component.getBoolRating());
 
                         inserted.setCategory(component.getCategory().orNull());
@@ -296,7 +334,7 @@ public class ComponentDao implements IComponentDao {
         }
 
         SqlQueryBuilder builder = new SqlQueryBuilder();
-        builder.update(TABLE_NAME, Fields.ID, Fields.NAME, Fields.SYMBOL_LR, Fields.SYMBOL_RL,
+        builder.update(TABLE_NAME, Fields.NAME, Fields.SYMBOL_LR, Fields.SYMBOL_RL,
                 Fields.SYMBOL_UD, Fields.SYMBOL_DU, Fields.QUANTIFIER, Fields.BOOL_RATING,
                 Fields.CATEGORY);
         builder.where(Fields.ID);
@@ -304,13 +342,86 @@ public class ComponentDao implements IComponentDao {
         final String query = builder.toString();
 
         try (Connection con = DatabaseFactory.getConnection()) {
+        	con.setAutoCommit(false);
+
+        	// FIXME: later we must delete images!!!
+        	Optional<ComponentIcon> downUpImage = Optional.<ComponentIcon>absent();
+            Optional<ComponentIcon> leftRightImage = Optional.<ComponentIcon>absent();
+            Optional<ComponentIcon> rightLeftImage = Optional.<ComponentIcon>absent();
+            Optional<ComponentIcon> upDownImage = Optional.<ComponentIcon>absent();
+            try {
+                // Insert the blobs
+            	if (component.getDownUpImage().isPresent()) {
+            		if (component.getDownUpImage().get().getId() < 0) {
+            			downUpImage = Optional.of(insertIcon(con, component.getDownUpImage().get()));
+            		}
+            		else {
+            			downUpImage = component.getDownUpImage();
+            		}
+            	}
+            	
+            	if (component.getLeftRightImage().isPresent()) {
+            		if (component.getLeftRightImage().get().getId() < 0) {
+            			leftRightImage = Optional.of(insertIcon(con, component.getLeftRightImage().get()));
+            		}
+            		else {
+            			leftRightImage = component.getLeftRightImage();
+            		}
+            	}
+            	
+            	if (component.getRightLeftImage().isPresent()) {
+            		if (component.getRightLeftImage().get().getId() < 0) {
+            			rightLeftImage = Optional.of(insertIcon(con, component.getRightLeftImage().get()));
+            		}
+            		else {
+            			rightLeftImage = component.getRightLeftImage();
+            		}
+            	}
+            	
+            	if (component.getUpDownImage().isPresent()) {
+            		if (component.getUpDownImage().get().getId() < 0) {
+            			upDownImage = Optional.of(insertIcon(con, component.getUpDownImage().get()));
+            		}
+            		else {
+            			upDownImage = component.getUpDownImage();
+            		}
+            	}
+            }
+            catch (Exception e) {
+                LOG.error("Unable to insert one or more component images.", e);
+                con.rollback();
+                throw new SaveException("Unable to insert one or more component images.", e);
+            }
+        	
             try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
                 stmt.setParameter(Fields.ID, component.getId());
-                stmt.setParameter(Fields.NAME, component.getName());
-                stmt.setParameter(Fields.SYMBOL_LR, component.getLeftRightImage());
-                stmt.setParameter(Fields.SYMBOL_RL, component.getRightLeftImage());
-                stmt.setParameter(Fields.SYMBOL_UD, component.getUpDownImage());
-                stmt.setParameter(Fields.SYMBOL_DU, component.getDownUpImage());
+            	stmt.setParameter(Fields.NAME, component.getName());
+                
+                if (leftRightImage.isPresent()) {
+                	stmt.setParameter(Fields.SYMBOL_LR, leftRightImage.get().getId());
+                }
+                else {
+                	stmt.setParameterNull(Fields.SYMBOL_LR);
+                }
+                if (rightLeftImage.isPresent()) {
+                	stmt.setParameter(Fields.SYMBOL_RL, rightLeftImage.get().getId());
+                }
+                else {
+                	stmt.setParameterNull(Fields.SYMBOL_RL);
+                }
+                if (upDownImage.isPresent()) {
+                	stmt.setParameter(Fields.SYMBOL_UD, upDownImage.get().getId());
+                }
+                else {
+                	stmt.setParameterNull(Fields.SYMBOL_UD);
+                }
+                if (downUpImage.isPresent()) {
+                	stmt.setParameter(Fields.SYMBOL_DU, downUpImage.get().getId());
+                }
+                else {
+                	stmt.setParameterNull(Fields.SYMBOL_DU);
+                }
+                
                 stmt.setParameter(Fields.QUANTIFIER, component.getQuantifier().get());
                 stmt.setParameter(Fields.BOOL_RATING, component.getBoolRating());
                 stmt.setParameter(Fields.CATEGORY, component.getCategory().get().getId());
@@ -319,6 +430,8 @@ public class ComponentDao implements IComponentDao {
                 if (affectedRows != 1) {
                     throw new SaveException();
                 }
+                
+                con.commit();
             }
         }
         catch (SQLException | DatabaseException e) {
@@ -413,10 +526,10 @@ public class ComponentDao implements IComponentDao {
             int id = rs.getInt(Fields.ID);
             String name = rs.getString(Fields.NAME);
             long start = System.nanoTime();
-            byte[] leftRightImage = findBlob(rs.getInt(Fields.SYMBOL_LR));
-            byte[] rightLeftImage = findBlob(rs.getInt(Fields.SYMBOL_RL));
-            byte[] upDownImage = findBlob(rs.getInt(Fields.SYMBOL_UD));
-            byte[] downUpImage = findBlob(rs.getInt(Fields.SYMBOL_DU));
+            ComponentIcon leftRightImage = findIcon(rs.getInt(Fields.SYMBOL_LR));
+            ComponentIcon rightLeftImage = findIcon(rs.getInt(Fields.SYMBOL_RL));
+            ComponentIcon upDownImage = findIcon(rs.getInt(Fields.SYMBOL_UD));
+            ComponentIcon downUpImage = findIcon(rs.getInt(Fields.SYMBOL_DU));
             long stop = System.nanoTime();
             LOG.debug(String.format("Blobs retrieved in %d ms.", (stop - start) / 1000000));
             int quantifier = rs.getInt(Fields.QUANTIFIER);
@@ -447,25 +560,30 @@ public class ComponentDao implements IComponentDao {
         return attributeList;
     }
 
-    public byte[] findBlob(int id) throws DatabaseException {
+    public ComponentIcon findIcon(int id) throws DatabaseException {
         if (id <= 0) {
             return null;
         }
         SqlQueryBuilder builder = new SqlQueryBuilder();
-        builder.select(BLOB_TABLE_NAME, BlobFields.BLOB);
+        builder.select(BLOB_TABLE_NAME, BlobFields.BLOB, BlobFields.FILENAME);
         builder.where(BlobFields.ID);
         final String query = builder.toString();
 
         try (Connection con = DatabaseFactory.getConnection()) {
             try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
                 stmt.setParameter(BlobFields.ID, id);
+                
                 ResultSet result = stmt.executeQuery();
+                
                 if (!result.next()) {
                     throw new ElementNotFoundException();
                 }
-                byte[] bytes = result.getBytes(BlobFields.BLOB);
+                
+                byte[] blob = result.getBytes(BlobFields.BLOB);
+                String filename = result.getString(BlobFields.FILENAME); 
                 DbUtils.closeQuietly(result);
-                return bytes;
+                
+                return new ComponentIcon(id, blob, filename);
             }
         }
         catch (SQLException e) {
@@ -480,7 +598,7 @@ public class ComponentDao implements IComponentDao {
      * @return
      * @throws DatabaseException
      */
-    private int insertComponentImage(final Connection con, final byte[] blob)
+    private ComponentIcon insertIcon(final Connection con, final ComponentIcon icon)
             throws DatabaseException {
 
         try {
@@ -493,11 +611,13 @@ public class ComponentDao implements IComponentDao {
 
         StringBuilder builder = new StringBuilder();
         builder.append("INSERT INTO ").append(BLOB_TABLE_NAME);
-        builder.append(" (").append(BlobFields.BLOB).append(")");
-        builder.append(" VALUES (?);");
+        builder.append(" (").append(BlobFields.BLOB);
+        builder.append(", ").append(BlobFields.FILENAME).append(")");
+        builder.append(" VALUES (?, ?);");
 
         try (PreparedStatement stmt = con.prepareStatement(builder.toString())) {
-            stmt.setBytes(1, blob);
+            stmt.setBytes(1, icon.getBlob());
+            stmt.setString(2, icon.getFilename());
 
             int affected = stmt.executeUpdate();
             if (affected != 1) {
@@ -507,9 +627,11 @@ public class ComponentDao implements IComponentDao {
             try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
                     int id = generatedKeys.getInt(1);
-
+                    
+                    DbUtils.closeQuietly(generatedKeys);
+                    
                     // Create new Component with id
-                    return id;
+                    return new ComponentIcon(id, icon.getBlob(), icon.getFilename());
                 }
                 else {
                     throw new SaveException("Could not retrieve generated ID.");
@@ -540,6 +662,7 @@ public class ComponentDao implements IComponentDao {
     private static class BlobFields {
         public static final String ID = "Component_Picture_ID";
         public static final String BLOB = "Component_Picture_Blob";
+        public static final String FILENAME = "Component_Picture_Filename";
     }
 
     private static class AttributeFields {

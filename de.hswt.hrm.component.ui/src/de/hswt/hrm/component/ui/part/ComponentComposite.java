@@ -239,21 +239,23 @@ public class ComponentComposite extends Composite {
 	}
 
 	private void setPreview() {
-		byte[] bytes;
+		byte[] bytes = null;
 		IStructuredSelection sel = (IStructuredSelection) tableViewer
 				.getSelection();
 		Component selectedComponent = (Component) sel.getFirstElement();
 
 		if (selectedComponent != null) {
-			bytes = selectedComponent.getRightLeftImage();
-			if (bytes == null) {
-				bytes = selectedComponent.getLeftRightImage();
+			if (selectedComponent.getRightLeftImage().isPresent()) {
+				bytes = selectedComponent.getRightLeftImage().get().getBlob();
 			}
-			if (bytes == null) {
-				bytes = selectedComponent.getDownUpImage();
+			if (bytes == null && selectedComponent.getLeftRightImage().isPresent()) {
+				bytes = selectedComponent.getLeftRightImage().get().getBlob();
 			}
-			if (bytes == null) {
-				bytes = selectedComponent.getUpDownImage();
+			if (bytes == null && selectedComponent.getDownUpImage().isPresent()) {
+				bytes = selectedComponent.getDownUpImage().get().getBlob();
+			}
+			if (bytes == null && selectedComponent.getDownUpImage().isPresent()) {
+				bytes = selectedComponent.getUpDownImage().get().getBlob();
 			}
 
 			ByteBuffer buf = ByteBuffer.wrap(bytes);

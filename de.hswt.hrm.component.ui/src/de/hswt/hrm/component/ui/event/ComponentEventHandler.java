@@ -126,25 +126,26 @@ public class ComponentEventHandler {
     }
     
     public void onClick(Event event){        
-    	byte[] bytes;
+    	byte[] bytes = null;
     	Label previewImage = (Label) XWT.findElementByName(event.widget, "imagePreview");
     	TableViewer viewer = (TableViewer) XWT.findElementByName(event.widget, "componentTable");
     	
         IStructuredSelection sel =  (IStructuredSelection) viewer.getSelection();
         Component selectedComponent = (Component) sel.getFirstElement();
-        
-        bytes = selectedComponent.getRightLeftImage();
-        if(bytes == null){
-        	bytes = selectedComponent.getDownUpImage();
-        }
-         if(bytes == null){
-        	bytes = selectedComponent.getUpDownImage();
-         }
-         if(bytes == null){
-        	bytes = selectedComponent.getLeftRightImage();
-         }
-        
 
+        // FIXME: this code is doubled somewhere else -> move to helper
+        if (selectedComponent.getRightLeftImage().isPresent()) {
+        	bytes = selectedComponent.getRightLeftImage().get().getBlob();
+        }
+        if(bytes == null && selectedComponent.getDownUpImage().isPresent()){
+        	bytes = selectedComponent.getDownUpImage().get().getBlob();
+        }
+         if(bytes == null && selectedComponent.getUpDownImage().isPresent()){
+        	bytes = selectedComponent.getUpDownImage().get().getBlob();
+         }
+         if(bytes == null && selectedComponent.getLeftRightImage().isPresent()){
+        	bytes = selectedComponent.getLeftRightImage().get().getBlob();
+         }
 		
 		ByteBuffer buf = ByteBuffer.wrap(bytes);
 		PDFFile pdffile;

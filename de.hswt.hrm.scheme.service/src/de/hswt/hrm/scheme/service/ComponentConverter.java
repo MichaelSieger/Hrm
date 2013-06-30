@@ -63,11 +63,12 @@ public class ComponentConverter {
 		}
 		final int w = component.getCategory().get().getWidth();
 		final int h = component.getCategory().get().getHeight();
+		// FIXME: check if we must handle null values here...
 		return new RenderedComponent(component, 
-				createImage(display, component.getLeftRightImage(), h, w), //Is Swapped because width and height
-				createImage(display, component.getRightLeftImage(), h, w), //refer to the upstanding image
-				createImage(display, component.getUpDownImage(), w, h), 
-				createImage(display, component.getDownUpImage(), w, h));
+				createImage(display, component.getLeftRightImage().get().getBlob(), h, w), //Is Swapped because width and height
+				createImage(display, component.getRightLeftImage().get().getBlob(), h, w), //refer to the upstanding image
+				createImage(display, component.getUpDownImage().get().getBlob(), w, h), 
+				createImage(display, component.getDownUpImage().get().getBlob(), w, h));
 	}
 	
 	private static ThumbnailImage createImage(Display display, byte[] data, int w, int h) throws IOException{

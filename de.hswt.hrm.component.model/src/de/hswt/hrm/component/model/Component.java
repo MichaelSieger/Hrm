@@ -8,20 +8,17 @@ import com.google.common.base.Optional;
 
 
 /**
- * Represents a Component
- * 
- * @author Michael Sieger
- * 
+ * Represents a Component.
  */
 public class Component {
 
     private final int id;
 
     private String name;
-    private byte[] leftRightImage;
-    private byte[] rightLeftImage;
-    private byte[] upDownImage;
-    private byte[] downUpImage;
+    private ComponentIcon leftRightImage;
+    private ComponentIcon rightLeftImage;
+    private ComponentIcon upDownImage;
+    private ComponentIcon downUpImage;
     private int quantifier;
     private boolean boolRating;
     private Category category;
@@ -30,8 +27,10 @@ public class Component {
     private static final String IS_MANDATORY = "Field is a mandatory.";
 
 
-    public Component(int id, String name, byte[] leftRightImage, byte[] rightLeftImage,
-            byte[] upDownImage, byte[] downUpImage, int quantifier, boolean boolRating) {
+    public Component(int id, String name, ComponentIcon leftRightImage, 
+    		ComponentIcon rightLeftImage, ComponentIcon upDownImage, 
+    		ComponentIcon downUpImage, int quantifier, boolean boolRating) {
+    	
     	// FIXME: correct constructor
     	this.id = id;
         setName(name);
@@ -63,14 +62,16 @@ public class Component {
 //                NO_IMAGE_ERROR);
 //    }
 
-    public Component(String name, byte[] leftRightImage, byte[] rightLeftImage, byte[] upDownImage,
-            byte[] downUpImage, boolean boolRating) {
+    public Component(String name, ComponentIcon leftRightImage, ComponentIcon rightLeftImage,
+    		ComponentIcon upDownImage, ComponentIcon downUpImage, boolean boolRating) {
     	
     	this(name, leftRightImage, rightLeftImage, upDownImage, downUpImage, -1, boolRating);
     }
     
-    public Component(String name, byte[] leftRightImage, byte[] rightLeftImage, byte[] upDownImage,
-            byte[] downUpImage, int quantifier, boolean boolRating) {
+    public Component(String name, ComponentIcon leftRightImage, ComponentIcon rightLeftImage,
+    		ComponentIcon upDownImage, ComponentIcon downUpImage, int quantifier, 
+    		boolean boolRating) {
+    	
         this(-1, name, leftRightImage, rightLeftImage, upDownImage, downUpImage, quantifier,
                 boolRating);
     }
@@ -99,56 +100,73 @@ public class Component {
         this.name = name;
     }
 
-    public byte[] getLeftRightImage() {
-        return leftRightImage;
+    public Optional<ComponentIcon> getLeftRightImage() {
+        return Optional.fromNullable(leftRightImage);
     }
 
-    // TODO ask Michi
-    public void setLeftRightImage(byte[] leftRightImage) {
-        if (leftRightImage == null) {
+    public void setLeftRightImage(ComponentIcon icon) {
+    	if (leftRightImage == null) {
             checkArgument(rightLeftImage != null || upDownImage != null || downUpImage != null,
                     NO_IMAGE_ERROR);
         }
-        this.leftRightImage = leftRightImage;
+    	
+    	leftRightImage = icon;
+    }
+    
+    private void setLeftRightImage(byte[] leftRightImage) {
+        
+//        this.leftRightImage = leftRightImage;
     }
 
-    public byte[] getRightLeftImage() {
-        return rightLeftImage;
+    public Optional<ComponentIcon> getRightLeftImage() {
+        return Optional.fromNullable(rightLeftImage);
     }
 
-    // TODO ask Michi
-    public void setRightLeftImage(byte[] rightLeftImage) {
-        if (rightLeftImage != null) {
+    public void setRightLeftImage(ComponentIcon icon) {
+    	if (rightLeftImage != null) {
             checkArgument(leftRightImage != null || upDownImage != null || downUpImage != null,
                     NO_IMAGE_ERROR);
         }
-        this.rightLeftImage = rightLeftImage;
+    	
+    	rightLeftImage = icon;
+    }
+    
+    private void setRightLeftImage(byte[] rightLeftImage) {
+//        this.rightLeftImage = rightLeftImage;
     }
 
-    public byte[] getUpDownImage() {
-        return upDownImage;
+    public Optional<ComponentIcon> getUpDownImage() {
+        return Optional.fromNullable(upDownImage);
     }
 
-    // TODO ask Michi
-    public void setUpDownImage(byte[] upDownImage) {
-        if (upDownImage != null) {
+    public void setUpDownImage(ComponentIcon icon) {
+    	if (upDownImage != null) {
             checkArgument(rightLeftImage != null || leftRightImage != null || downUpImage != null,
                     NO_IMAGE_ERROR);
         }
-        this.upDownImage = upDownImage;
+    	
+    	upDownImage = icon;
+    }
+    
+    private void setUpDownImage(byte[] upDownImage) {
+//        this.upDownImage = upDownImage;
     }
 
-    public byte[] getDownUpImage() {
-        return downUpImage;
+    public Optional<ComponentIcon> getDownUpImage() {
+        return Optional.fromNullable(downUpImage);
     }
 
-    // TODO ask Michi
-    public void setDownUpImage(byte[] downUpImage) {
-        if (downUpImage != null) {
-            checkArgument(rightLeftImage != null || leftRightImage != null || upDownImage != null,
+    public void setDownUpImage(ComponentIcon icon) {
+    	if (upDownImage != null) {
+            checkArgument(rightLeftImage != null || leftRightImage != null || downUpImage != null,
                     NO_IMAGE_ERROR);
         }
-        this.downUpImage = downUpImage;
+    	
+    	downUpImage = icon;
+    }
+    
+    private void setDownUpImage(byte[] downUpImage) {
+//        this.downUpImage = downUpImage;
     }
 
     public Optional<Integer> getQuantifier() {
@@ -195,7 +213,4 @@ public class Component {
 			return false;
 		return true;
 	}
-    
-    
-    
 }

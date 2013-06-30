@@ -10,6 +10,8 @@ import java.util.Collection;
 
 import org.junit.Test;
 
+import com.google.common.base.Optional;
+
 import de.hswt.hrm.catalog.dao.core.ICatalogDao;
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.ElementNotFoundException;
@@ -19,6 +21,7 @@ import de.hswt.hrm.component.dao.core.IComponentDao;
 import de.hswt.hrm.component.model.Attribute;
 import de.hswt.hrm.component.model.Category;
 import de.hswt.hrm.component.model.Component;
+import de.hswt.hrm.component.model.ComponentIcon;
 import de.hswt.hrm.test.database.AbstractDatabaseTest;
 
 public class ComponentDaoTest extends AbstractDatabaseTest {
@@ -40,25 +43,44 @@ public class ComponentDaoTest extends AbstractDatabaseTest {
         Category cat = new Category("Some Category", 2, 2, 1, true);
         cat = categoryDao.insert(cat);
 
-        Component comp = new Component("Testcomp", new byte[5], new byte[5], new byte[5],
-                new byte[5], 1, true);
+        Component comp = new Component("Testcomp", 
+        		new ComponentIcon(new byte[5], "some_file.jpg"), 
+        		new ComponentIcon(new byte[5], "some_file.jpg"), 
+        		new ComponentIcon(new byte[5], "some_file.jpg"),
+        		new ComponentIcon(new byte[5], "some_file.jpg"), 
+        		1, 
+        		true);
 
         comp.setCategory(cat);
         return comp;
     }
 
-    private boolean equals(final byte[] a, final byte[] b) {
-        if (a.length != b.length) {
+    private boolean iconEquals(final Optional<ComponentIcon> a, final Optional<ComponentIcon> b) {
+    	if (a.isPresent() != b.isPresent()) {
+    		return false;
+    	}
+    	
+    	if (a.isPresent()) {
+    		return iconEquals(a.get(), b.get());
+    	}
+    	
+    	return true;
+    }
+    
+    private boolean iconEquals(final ComponentIcon a, final ComponentIcon b) {
+        if (a.getBlob().length != b.getBlob().length) {
             return false;
         }
 
-        for (int i = 0; i < a.length; i++) {
-            if (a[i] != b[i]) {
+        byte[] blobA = a.getBlob();
+        byte[] blobB = b.getBlob();
+        for (int i = 0; i < blobA.length; i++) {
+            if (blobA[i] != blobB[i]) {
                 return false;
             }
         }
-
-        return true;
+        
+        return a.getFilename().equals(b.getFilename());
     }
 
     private void compareComponents(final Component expected, final Component actual) {
@@ -67,16 +89,16 @@ public class ComponentDaoTest extends AbstractDatabaseTest {
         assertEquals("Category not set correctly.", expected.getCategory().orNull(), actual
                 .getCategory().orNull());
         assertTrue("DownUpImage not set correctly.",
-                equals(expected.getDownUpImage(), actual.getDownUpImage()));
+                iconEquals(expected.getDownUpImage(), actual.getDownUpImage()));
         assertTrue("LeftRightImage not set correctly.",
-                equals(expected.getLeftRightImage(), actual.getLeftRightImage()));
+                iconEquals(expected.getLeftRightImage(), actual.getLeftRightImage()));
         assertEquals("Name not set correctly.", expected.getName(), actual.getName());
         assertEquals("Quantifier not set correctly.", expected.getQuantifier(),
                 actual.getQuantifier());
         assertTrue("RightLeftImage not set correctly.",
-                equals(expected.getRightLeftImage(), actual.getRightLeftImage()));
+                iconEquals(expected.getRightLeftImage(), actual.getRightLeftImage()));
         assertTrue("UpDownImage not set correctly.",
-                equals(expected.getUpDownImage(), actual.getUpDownImage()));
+                iconEquals(expected.getUpDownImage(), actual.getUpDownImage()));
     }
 
     @Test
@@ -101,6 +123,7 @@ public class ComponentDaoTest extends AbstractDatabaseTest {
         assertTrue("ID not set correctly.", parsed.getId() >= 0);
         
         parsed.setName("Some other name");
+        parsed.setDownUpImage(new ComponentIcon(new byte[10], "new_file_for_component.png"));
         componentDao.update(parsed);
         
         Component actual = componentDao.findById(parsed.getId());
