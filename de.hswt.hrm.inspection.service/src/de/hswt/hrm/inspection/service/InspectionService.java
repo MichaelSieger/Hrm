@@ -3,7 +3,9 @@ package de.hswt.hrm.inspection.service;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -77,7 +79,14 @@ public class InspectionService {
             Collection<BiologicalRating> ratings)
         throws SaveException, DatabaseException {
         
-        throw new NotImplementedException();
+        // FIXME: better use a DAO method that allows to store the hole collection, as
+        // otherwise there is a connection opened per row
+        Collection<BiologicalRating> inserted = new ArrayList<>(ratings.size());
+        for (BiologicalRating rating : ratings) {
+            inserted.add(biologicalDao.insert(rating));
+        }
+        
+        return inserted;
     }
     
     public Collection<PhysicalRating> findPhysicalRating(Inspection inspection)
@@ -89,7 +98,14 @@ public class InspectionService {
     public Collection<PhysicalRating> insertPhysicalRatings(Collection<PhysicalRating> ratings)
             throws SaveException, DatabaseException {
         
-        throw new NotImplementedException();
+        // FIXME: better use a DAO method that allows to store the hole collection, as
+        // otherwise there is a connection opened per row
+        Collection<PhysicalRating> inserted = new ArrayList<>(ratings.size());
+        for (PhysicalRating rating : ratings) {
+            inserted.add(physicalDao.insert(rating));
+        }
+        
+        return inserted;
     }
     
     public Collection<Performance> findPerformance(Inspection inspection) 
@@ -98,8 +114,17 @@ public class InspectionService {
     	return performanceDao.findByInspection(inspection);
     }
     
-    public Collection<Performance> inserPerformanceRatings(Collection<Performance> ratings) {
-        throw new NotImplementedException();
+    public Collection<Performance> inserPerformanceRatings(Collection<Performance> ratings) 
+            throws SaveException, DatabaseException {
+        
+        // FIXME: better use a DAO method that allows to store the hole collection, as
+        // otherwise there is a connection opened per row
+        Collection<Performance> inserted = new ArrayList<>(ratings.size());
+        for (Performance rating : ratings) {
+            inserted.add(performanceDao.insert(rating));
+        }
+        
+        return inserted;
     }
 
     public Scheme findScheme(Inspection inspection) throws DatabaseException {
