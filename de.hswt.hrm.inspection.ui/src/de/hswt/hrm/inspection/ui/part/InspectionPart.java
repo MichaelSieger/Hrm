@@ -31,6 +31,7 @@ import org.slf4j.LoggerFactory;
 
 import de.hswt.hrm.common.observer.Observer;
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
+import de.hswt.hrm.common.ui.swt.wizards.WizardCreator;
 import de.hswt.hrm.i18n.I18n;
 import de.hswt.hrm.i18n.I18nFactory;
 import de.hswt.hrm.inspection.model.BiologicalRating;
@@ -382,7 +383,7 @@ public class InspectionPart implements ComponentSelectionChangedListener, PlantC
     	ContextInjectionFactory.inject(wizard, context);
 
     	// Show wizard
-    	WizardDialog wd = new WizardDialog(shellProvider.getShell(), wizard);
+    	WizardDialog wd = WizardCreator.createWizardDialog(shellProvider.getShell(), wizard);
     	wd.open();
 	}
     
