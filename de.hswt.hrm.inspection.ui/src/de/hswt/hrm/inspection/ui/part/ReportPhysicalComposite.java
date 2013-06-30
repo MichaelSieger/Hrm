@@ -32,6 +32,8 @@ import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.common.ui.swt.layouts.LayoutUtil;
 import de.hswt.hrm.common.ui.swt.utils.ContentProposalUtil;
 import de.hswt.hrm.component.model.Component;
+import de.hswt.hrm.i18n.I18n;
+import de.hswt.hrm.i18n.I18nFactory;
 import de.hswt.hrm.inspection.model.Inspection;
 import de.hswt.hrm.inspection.model.SamplingPointType;
 import de.hswt.hrm.inspection.service.InspectionService;
@@ -69,6 +71,8 @@ public class ReportPhysicalComposite extends AbstractComponentRatingComposite {
 
 	private static final Logger LOG = LoggerFactory
 			.getLogger(ReportPhysicalComposite.class);
+	
+	private static final I18n I18N = I18nFactory.getI18n(ReportPhysicalComposite.class);
 
 	private final Observable<Integer> grade = new Observable<>();
 	private final Observable<SamplingPointType> samplePointType = new Observable<>();
@@ -129,21 +133,21 @@ public class ReportPhysicalComposite extends AbstractComponentRatingComposite {
 		Section physicalSection = formToolkit.createSection(composite,
 				Section.TITLE_BAR);
 		formToolkit.paintBordersFor(physicalSection);
-		physicalSection.setText("Physical rating");
+		physicalSection.setText(I18N.tr("Physical rating"));
 		physicalSection.setLayoutData(LayoutUtil.createHorzFillData());
 		FormUtil.initSectionColors(physicalSection);
 
 		Section imageSection = formToolkit.createSection(composite,
 				Section.TITLE_BAR);
 		formToolkit.paintBordersFor(imageSection);
-		imageSection.setText("Photos");
+		imageSection.setText(I18N.tr("Photos"));
 		imageSection.setLayoutData(LayoutUtil.createHorzFillData());
 		FormUtil.initSectionColors(imageSection);
 
 		Section tagSection = formToolkit.createSection(composite,
 				Section.TITLE_BAR);
 		formToolkit.paintBordersFor(tagSection);
-		tagSection.setText("Scheme tags");
+		tagSection.setText(I18N.tr("Scheme tags"));
 		tagSection.setLayoutData(LayoutUtil.createHorzFillData(2));
 		FormUtil.initSectionColors(tagSection);
 
@@ -162,12 +166,12 @@ public class ReportPhysicalComposite extends AbstractComponentRatingComposite {
 		Label gradeLabel = new Label(physicalComposite, SWT.NONE);
 		gradeLabel.setLayoutData(LayoutUtil.createHorzFillData(2));
 		formToolkit.adapt(gradeLabel, true, true);
-		gradeLabel.setText("Grade");
+		gradeLabel.setText(I18N.tr("Grade"));
 
 		Label weightLabel = new Label(physicalComposite, SWT.NONE);
 		weightLabel.setLayoutData(LayoutUtil.createHorzFillData(2));
 		formToolkit.adapt(weightLabel, true, true);
-		weightLabel.setText("Weight");
+		weightLabel.setText(I18N.tr("Weight"));
 
 		gradeList = new List(physicalComposite, SWT.BORDER);
 		gradeList.setLayoutData(LayoutUtil.createHorzFillData(2));
@@ -206,7 +210,7 @@ public class ReportPhysicalComposite extends AbstractComponentRatingComposite {
 		Label commentLabel = new Label(physicalComposite, SWT.NONE);
 		commentLabel.setLayoutData(LayoutUtil.createLeftGridData());
 		formToolkit.adapt(commentLabel, true, true);
-		commentLabel.setText("Comment");
+		commentLabel.setText(I18N.tr("Comment"));
 
 		commentCombo = new Combo(physicalComposite, SWT.MULTI);
 		commentCombo.setLayoutData(LayoutUtil.createHorzFillData(3));
@@ -234,7 +238,7 @@ public class ReportPhysicalComposite extends AbstractComponentRatingComposite {
 
 		Button addPhotoButton = new Button(imageComposite, SWT.NONE);
 		formToolkit.adapt(addPhotoButton, true, true);
-		addPhotoButton.setText("Add");
+		addPhotoButton.setText(I18N.tr("Add photo"));
 		addPhotoButton.setLayoutData(LayoutUtil.createRightGridData());
 		addPhotoButton.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -245,7 +249,7 @@ public class ReportPhysicalComposite extends AbstractComponentRatingComposite {
 
 		Button removeImageButton = new Button(imageComposite, SWT.NONE);
 		formToolkit.adapt(removeImageButton, true, true);
-		removeImageButton.setText("Remove");
+		removeImageButton.setText(I18N.tr("Remove"));
 		removeImageButton.setLayoutData(LayoutUtil.createRightGridData());
 		new Label(imageComposite, SWT.NONE);
 		new Label(imageComposite, SWT.NONE);
@@ -267,7 +271,7 @@ public class ReportPhysicalComposite extends AbstractComponentRatingComposite {
 		nothingRadioButton = new Button(tagsComposite, SWT.RADIO);
 		formToolkit.adapt(nothingRadioButton, true, true);
 		nothingRadioButton.setLayoutData(LayoutUtil.createHorzFillData());
-		nothingRadioButton.setText("Nothing");
+		nothingRadioButton.setText(I18N.tr("Nothing"));
 		nothingRadioButton.setSelection(true);
 		nothingRadioButton.addSelectionListener(new SelectionListener() {
 
@@ -285,7 +289,7 @@ public class ReportPhysicalComposite extends AbstractComponentRatingComposite {
 		formToolkit.adapt(climateParameterRadioButton, true, true);
 		climateParameterRadioButton.setLayoutData(LayoutUtil
 				.createHorzFillData());
-		climateParameterRadioButton.setText("Climate parameter");
+		climateParameterRadioButton.setText(I18N.tr("Climate parameter"));
 		climateParameterRadioButton.addSelectionListener(new SelectionListener() {
 
 			@Override
@@ -301,7 +305,7 @@ public class ReportPhysicalComposite extends AbstractComponentRatingComposite {
 		photoRadioButton = new Button(tagsComposite, SWT.RADIO);
 		formToolkit.adapt(photoRadioButton, true, true);
 		photoRadioButton.setLayoutData(LayoutUtil.createHorzFillData());
-		photoRadioButton.setText("Photo");
+		photoRadioButton.setText(I18N.tr("Photo"));
 		photoRadioButton.addSelectionListener(new SelectionListener() {
 
 			@Override
@@ -317,7 +321,7 @@ public class ReportPhysicalComposite extends AbstractComponentRatingComposite {
 		dustRadioButton = new Button(tagsComposite, SWT.RADIO);
 		formToolkit.adapt(dustRadioButton, true, true);
 		dustRadioButton.setLayoutData(LayoutUtil.createHorzFillData());
-		dustRadioButton.setText("Dust concentration determination");
+		dustRadioButton.setText(I18N.tr("Dust concentration determination"));
 		dustRadioButton.addSelectionListener(new SelectionListener() {
 
 			@Override
