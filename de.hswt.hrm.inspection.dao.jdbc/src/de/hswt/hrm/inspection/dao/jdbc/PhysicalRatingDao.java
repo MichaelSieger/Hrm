@@ -287,6 +287,6 @@ public class PhysicalRatingDao implements IPhysicalRatingDao {
         private static final String COMPONENT_FK = "Component_Physical_Rating_Component_FK";
         private static final String REPORT_FK = "Component_Physical_Rating_Report_FK";
         private static final String QUANTIFIER = "Component_Physical_Rating_Quantifier";
-        private static final String SAMPLINGPOINTTYPE = "Component_Physical_Rating_Sampling_Point_Type";
+        private static final String SAMPLINGPOINTTYPE = "Component_Physical_Rating_Sampling_Type_Point";
     }
 }

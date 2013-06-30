@@ -33,6 +33,7 @@ import de.hswt.hrm.common.ui.swt.layouts.LayoutUtil;
 import de.hswt.hrm.common.ui.swt.utils.ContentProposalUtil;
 import de.hswt.hrm.component.model.Component;
 import de.hswt.hrm.inspection.model.Inspection;
+import de.hswt.hrm.inspection.model.PhysicalRating;
 import de.hswt.hrm.inspection.model.SamplingPointType;
 import de.hswt.hrm.inspection.service.InspectionService;
 import de.hswt.hrm.misc.comment.model.Comment;
@@ -53,6 +54,8 @@ public class ReportPhysicalComposite extends AbstractComponentRatingComposite {
 
 	@Inject
 	private IShellProvider shellProvider;
+	
+	private Collection<PhysicalRating> ratings;
 
 	private FormToolkit formToolkit = new FormToolkit(Display.getDefault());
 
@@ -176,7 +179,6 @@ public class ReportPhysicalComposite extends AbstractComponentRatingComposite {
 		for (int i = 0; i < 6; i++) {
 			gradeList.add(Integer.toString(i));
 		}
-		// TODO set 0 selected or grade from db
 		gradeList.select(0);
 		gradeList.addSelectionListener(new SelectionListener() {
 
@@ -200,7 +202,7 @@ public class ReportPhysicalComposite extends AbstractComponentRatingComposite {
 		for (int i = 1; i <= 6; i++) {
 			weightList.add(Integer.toString(i));
 		}
-		// TODO set category weight or weight from db
+		
 		weightList.select(0);
 
 		Label commentLabel = new Label(physicalComposite, SWT.NONE);
@@ -329,9 +331,7 @@ public class ReportPhysicalComposite extends AbstractComponentRatingComposite {
 			public void widgetDefaultSelected(SelectionEvent e) {
 			}
 		});
-		// DateTime dateFrom = new DateTime(composite, SWT.BORDER | SWT.DATE |
-		// SWT.DROP_DOWN);
-		// dateFrom.setDate(2007, 0, 1);
+		;
 
 		sc.setMinSize(composite.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 	}
@@ -375,21 +375,53 @@ public class ReportPhysicalComposite extends AbstractComponentRatingComposite {
 
 	@Override
 	public void inspectionChanged(Inspection inspection) {
-		// TODO Auto-generated method stub
-		
+	    updateInspectionData(inspection);
 	}
 	
-	@Override
-	public void inspectionComponentSelectionChanged(SchemeComponent component) {
-		// TODO Auto-generated method stub
-		
+	
+    @Override
+    public void inspectionComponentSelectionChanged(SchemeComponent component) {
+     
+        for (PhysicalRating rating : ratings) {
+            if (rating.getComponent().equals(component)) {
+                updateComponentValues(rating);
+            }
+            else {
+                gradeList.select(0);
+                weightList.select(0);
+                commentCombo.setText("");
+            }
+
+        }
+
 	}
 	
-	@Override
+    private void updateComponentValues(PhysicalRating rating) {
+        gradeList.select(rating.getRating());
+        weightList.select(rating.getQuantifier());
+        if (rating.getNote().isPresent()) {
+            commentCombo.setText(rating.getNote().get());
+        }
+
+    }
+
+    @Override
 	public void plantChanged(Plant plant) {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	private void updateInspectionData(Inspection inspection) {
+        try {
+            ratings = inspectionService.findPhysicalRating(inspection);
+           
+        }
+        catch (DatabaseException e) {
+            LOG.error("An error occured");
+        }
+        
+    }
+
 
 	@Override
 	public void dispose() {

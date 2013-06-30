@@ -74,7 +74,9 @@ public class ReportBiologicalComposite extends AbstractComponentRatingComposite 
 	private Text contactCultureConcentrationText;
 
 	private Text airGermsConcentrationText;
-
+	
+	private Collection<BiologicalRating> ratings;
+	
 	private static final Logger LOG = LoggerFactory
 			.getLogger(ReportBiologicalComposite.class);
 
@@ -445,18 +447,10 @@ public class ReportBiologicalComposite extends AbstractComponentRatingComposite 
 	private void updateInspectionData(Inspection inspection) {
 
         try {
-            Collection<BiologicalRating> ratings = inspectionService
-                    .findBiologicalRating(inspection);
-            System.out.println(ratings.size());
-            
-            for (BiologicalRating rating : ratings) {
-                System.out.println(rating.getBacteriaCount());
-                System.out.println(rating.getComment());
-                System.out.println(rating.getComponent());
-                System.out.println(rating.getQuantifier());
+            ratings = inspectionService.findBiologicalRating(inspection);
 
-            }
         }
+
         catch (DatabaseException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
