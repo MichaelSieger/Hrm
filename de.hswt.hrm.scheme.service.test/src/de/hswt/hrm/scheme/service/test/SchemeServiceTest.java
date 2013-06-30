@@ -104,13 +104,24 @@ public class SchemeServiceTest extends AbstractDatabaseTest {
         return attributes;
     }
 
+    private void checkSchemeComponentIds(Collection<SchemeComponent> components) {
+        for (SchemeComponent comp : components) {
+            assertTrue("SchemeComponent has an invalid ID.", comp.getId() >= 0);
+        }
+    }
+    
     @Test
     public void testInsertScheme() throws SaveException {
         Plant plant = createTestPlant();
+        Component component = createTestComponent();
         ISchemeDao schemeDao = createSchemeDao();
 
         Scheme scheme = new Scheme(plant);
-        schemeDao.insert(scheme);
+        SchemeComponent c1 = new SchemeComponent(scheme, 1, 1, Direction.downUp, component);
+        SchemeComponent c2 = new SchemeComponent(scheme, 5, 5, Direction.rightLeft, component);
+        scheme = schemeDao.insert(scheme);
+        
+        checkSchemeComponentIds(scheme.getSchemeComponents());
 
         // TODO: check if scheme can be resolved correctly
     }
