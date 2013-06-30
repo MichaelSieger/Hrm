@@ -73,7 +73,9 @@ public class CommentWizardPageOne extends WizardPage {
 
         nameText = (Text) XWT.findElementByName(container, "name");
         descText = (Text) XWT.findElementByName(container, "desc");
-
+        
+        translate();
+        
         if (this.comment.isPresent()) {
             updateFields();
         }
