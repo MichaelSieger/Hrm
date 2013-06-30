@@ -123,6 +123,7 @@ public class BiologicalRatingDao implements IBiologicalRatingDao {
         builder.where(Fields.FK_REPORT);
 
         String query = builder.toString();
+        System.out.println(query);
 
         try (Connection con = DatabaseFactory.getConnection()) {
             try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
@@ -298,6 +299,6 @@ public class BiologicalRatingDao implements IBiologicalRatingDao {
         public static final String FK_COMPONENT = "Biological_Rating_Component_FK";
         public static final String FK_REPORT = "Biological_Rating_Report_FK";
         public static final String FLAG = "Biological_Rating_Flag";
-        public static final String SAMPLINGPOINTTYPE = "Biological_Rating_Sampling_Point_Type";
+        public static final String SAMPLINGPOINTTYPE = "Biological_Rating_Sampling_TYPE_POINT";
     }
 }
