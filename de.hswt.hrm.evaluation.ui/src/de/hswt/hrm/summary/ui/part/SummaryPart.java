@@ -26,12 +26,15 @@ import com.google.common.base.Optional;
 
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
+import de.hswt.hrm.i18n.I18n;
+import de.hswt.hrm.i18n.I18nFactory;
 import de.hswt.hrm.summary.model.Summary;
 import de.hswt.hrm.summary.service.SummaryService;
 
 public class SummaryPart {
 
     private final static Logger LOG = LoggerFactory.getLogger(SummaryPart.class);
+    private static final I18n I18N = I18nFactory.getI18n(SummaryPart.class);
 
     @Inject
     private SummaryService evalService;
@@ -76,7 +79,7 @@ public class SummaryPart {
         form.getHead().setOrientation(SWT.RIGHT_TO_LEFT);
         form.setSeparatorVisible(true);
         toolkit.paintBordersFor(form);
-        form.setText("Evaluation");
+        form.setText(I18N.tr("Summary"));
         toolkit.decorateFormHeading(form);
 
         FillLayout fillLayout = new FillLayout(SWT.HORIZONTAL);
@@ -96,22 +99,22 @@ public class SummaryPart {
     }
 
     private void createActions() {
-        editAction = new Action("Edit") {
+        editAction = new Action(I18N.tr("Edit")) {
             @Override
             public void run() {
                 super.run();
                 editEvaluation();
             }
         };
-        editAction.setDescription("Edit an exisitng Evaluation.");
-        addAction = new Action("Add") {
+        editAction.setDescription("Edit an exisiting summary.");
+        addAction = new Action(I18N.tr("Add")) {
             @Override
             public void run() {
                 super.run();
                 addEvaluation();
             }
         };
-        addAction.setDescription("Add's a new Evaluation.");
+        addAction.setDescription("Add a new summary.");
 
         form.getToolBarManager().add(editAction);
         form.getToolBarManager().add(addAction);
@@ -126,9 +129,8 @@ public class SummaryPart {
     }
 
     private void showDBConnectionError() {
-        // TODO translate
-        MessageDialog.openError(shellProvider.getShell(), "Connection Error",
-                "Could not load evaluations from Database.");
+        MessageDialog.openError(shellProvider.getShell(), I18N.tr("Connection Error"),
+                I18N.tr("Could not load summaries from Database."));
     }
 
     /**
