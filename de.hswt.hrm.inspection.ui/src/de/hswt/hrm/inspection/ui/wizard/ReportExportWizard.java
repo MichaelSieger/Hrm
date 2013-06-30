@@ -8,6 +8,8 @@ import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.jface.wizard.Wizard;
 
+import de.hswt.hrm.i18n.I18n;
+import de.hswt.hrm.i18n.I18nFactory;
 import de.hswt.hrm.inspection.model.Inspection;
 import de.hswt.hrm.inspection.ui.runner.ReportExportRunner;
 
@@ -20,8 +22,10 @@ public class ReportExportWizard extends Wizard {
 	
 	private Inspection inspection;
 	
+	private static final I18n I18N = I18nFactory.getI18n(ReportExportWizard.class);
+	
 	public ReportExportWizard(Inspection inspection) {
-		setWindowTitle("Report export");
+		setWindowTitle(I18N.tr("Report export"));
 		this.inspection = inspection;
 	}
 
