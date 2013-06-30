@@ -51,9 +51,11 @@ public interface IBiologicalRatingDao {
      * @param biological Biological that should be updated.
      * @throws ElementNotFoundException If the given Biological is not present in the database.
      * @throws SaveException If the biological could not be updated.
+     * @throws DatabaseException 
      * @throws IllegalStateException If physical rating is invalid.
 
      */
-    void update(BiologicalRating biological) throws ElementNotFoundException, SaveException;
+    void update(BiologicalRating biological) 
+            throws ElementNotFoundException, SaveException, DatabaseException;
 }
 

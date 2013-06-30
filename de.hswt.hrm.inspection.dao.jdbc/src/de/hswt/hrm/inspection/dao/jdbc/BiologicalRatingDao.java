@@ -16,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.hswt.hrm.common.database.DatabaseFactory;
+import de.hswt.hrm.common.database.DatabaseUtil;
 import de.hswt.hrm.common.database.JdbcUtil;
 import de.hswt.hrm.common.database.NamedParameterStatement;
 import de.hswt.hrm.common.database.SqlQueryBuilder;
@@ -201,7 +202,8 @@ public class BiologicalRatingDao implements IBiologicalRatingDao {
     }
 
     @Override
-    public void update(BiologicalRating biological) throws ElementNotFoundException, SaveException {
+    public void update(BiologicalRating biological) 
+            throws ElementNotFoundException, SaveException, DatabaseException {
         checkNotNull(biological, "Physical Rating must not be null.");
         checkState(biological.isValid(), "Biological Rating is invalid");
 
@@ -240,8 +242,8 @@ public class BiologicalRatingDao implements IBiologicalRatingDao {
                 }
             }
         }
-        catch (SQLException | DatabaseException e) {
-            throw new SaveException(e);
+        catch (SQLException e) {
+            throw DatabaseUtil.createUnexpectedException(e);
         }
 
     }

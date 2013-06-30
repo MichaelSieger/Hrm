@@ -48,8 +48,10 @@ public interface IPhysicalRatingDao {
      * @param physical Physical that should be updated.
      * @throws ElementNotFoundException If the given Physical is not present in the database.
      * @throws SaveException If the physical could not be updated.
+     * @throws DatabaseException 
      * @throws IllegalStateException If physical rating is invalid.
      */
-    void update(PhysicalRating physical) throws ElementNotFoundException, SaveException;
+    void update(PhysicalRating physical) 
+            throws ElementNotFoundException, SaveException, DatabaseException;
 }
 
