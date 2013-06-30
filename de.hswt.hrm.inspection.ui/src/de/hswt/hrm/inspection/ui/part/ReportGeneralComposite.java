@@ -430,7 +430,7 @@ public class ReportGeneralComposite extends Composite implements InspectionObser
 
         Button customerClearButton = formToolkit.createButton(personsComposite, I18N.tr("Clear")+" "+I18N.tr("Customer"),
                 SWT.PUSH);
-        customerClearButton.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+        customerClearButton.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false));
 
         Button customerSelectionButton = formToolkit.createButton(personsComposite,
                 I18N.tr("Select")+" "+I18N.tr("Customer"), SWT.PUSH);
@@ -473,7 +473,7 @@ public class ReportGeneralComposite extends Composite implements InspectionObser
 
         Button requestorClearButton = formToolkit.createButton(personsComposite, I18N.tr("Clear")+" "+I18N.tr("Requestor"),
                 SWT.PUSH);
-        requestorClearButton.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+        requestorClearButton.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false));
 
         Button requestorSelectionButton = formToolkit.createButton(personsComposite,
                 I18N.tr("Select")+" "+I18N.tr("Requestor"), SWT.PUSH);
@@ -516,7 +516,7 @@ public class ReportGeneralComposite extends Composite implements InspectionObser
 
         Button controllerClearButton = formToolkit.createButton(personsComposite, I18N.tr("Clear")+" "+I18N.tr("Controller"),
                 SWT.PUSH);
-        controllerClearButton.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+        controllerClearButton.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false));
 
         Button controllerSelectionButton = formToolkit.createButton(personsComposite,
                 I18N.tr("Select")+" "+I18N.tr("Controller"), SWT.PUSH);

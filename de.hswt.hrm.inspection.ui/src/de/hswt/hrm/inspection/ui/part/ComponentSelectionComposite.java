@@ -79,6 +79,8 @@ public class ComponentSelectionComposite extends Composite implements Inspection
 
     private SchemeComponent selectedComponent;
 
+    private boolean updateFromOutside = false;
+    
     private java.util.List<ComponentSelectionChangedListener> componentSelectionListeners;
     
     /**
@@ -129,18 +131,15 @@ public class ComponentSelectionComposite extends Composite implements Inspection
         listSection.setClient(componentsList.getList());
         toolkit.adapt(componentsList.getList(), true, true);
         componentsList.addSelectionChangedListener(new ISelectionChangedListener() {
-
             @Override
             public void selectionChanged(SelectionChangedEvent event) {
                 IStructuredSelection sel = (IStructuredSelection) componentsList.getSelection();
                 Preconditions.checkArgument(sel.size() < 2);
                 if (sel.isEmpty()) {
                     setSelectComponent(null);
-                    fireComponentSelectionChanged(null);
                 }
                 else {
                     setSelectComponent((SchemeComponent) sel.getFirstElement());
-                    fireComponentSelectionChanged((SchemeComponent) sel.getFirstElement());
                 }
             }
         });
@@ -178,11 +177,9 @@ public class ComponentSelectionComposite extends Composite implements Inspection
         schemeGrid = new InspectionSchemeGrid(schemeScroll, SWT.NONE);
         schemeScroll.setContent(schemeGrid.getControl());
         schemeGrid.setSelectionListener(new SchemeComponentSelectionListener() {
-
             @Override
             public void selected(SchemeComponent component) {
                 setSelectComponent(component);
-                fireComponentSelectionChanged(component);
             }
         });
 
@@ -193,6 +190,10 @@ public class ComponentSelectionComposite extends Composite implements Inspection
     	selectedComponent = component;
         schemeGrid.setSelected(component);
         setListSelection(component);
+        if (!updateFromOutside) {
+        	updateFromOutside = false;
+            fireComponentSelectionChanged(component);
+        }
     }
     
     private void setListSelection(SchemeComponent c){
@@ -314,6 +315,7 @@ public class ComponentSelectionComposite extends Composite implements Inspection
 
 	@Override
 	public void inspectionComponentSelectionChanged(SchemeComponent component) {
+		updateFromOutside = true;
 		setSelectComponent(component);
 		ratingComposite.inspectionComponentSelectionChanged(component);
 	}
