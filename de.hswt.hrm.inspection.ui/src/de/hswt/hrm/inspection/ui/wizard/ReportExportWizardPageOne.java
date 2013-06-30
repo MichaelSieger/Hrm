@@ -84,7 +84,7 @@ public class ReportExportWizardPageOne extends WizardPage {
 
         directoryLabel = new Label(exportComposite, SWT.NONE);
         directoryLabel.setLayoutData(LayoutUtil.createLeftCenteredGridData());
-        directoryLabel.setText(I18N.tr("Standard directory"));
+        directoryLabel.setText(I18N.tr("Standard directory")+":");
 
         directoryText = new Text(exportComposite, SWT.READ_ONLY);
         directoryText.setToolTipText(I18N.tr("A local directory where all the reports are created."));

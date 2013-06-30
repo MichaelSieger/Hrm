@@ -171,8 +171,8 @@ public class CommentWizardPageOne extends WizardPage {
         // Section
         setSectionText("Mandatory", I18N.tr("Comment"));
         // Labels
-        setLabelText("lblName", I18N.tr("Name"));
-        setLabelText("text", I18N.tr("Text"));
+        setLabelText("lblName", I18N.tr("Name")+":");
+        setLabelText("text", I18N.tr("Text")+":");
     }
     
     private void setSectionText (String sectionName, String text) {

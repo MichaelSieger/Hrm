@@ -170,8 +170,8 @@ public class PreferencesWizardPageOne extends WizardPage {
         // Section
         setSectionText("Mandatory", I18N.tr("Report preferences"));
         // Labels
-        setLabelText("lblName", I18N.tr("Name"));
-        setLabelText("lblFileName", I18N.tr("File name"));
+        setLabelText("lblName", I18N.tr("Name")+":");
+        setLabelText("lblFileName", I18N.tr("File name")+":");
     }
     
     private void setSectionText (String sectionName, String text) {
