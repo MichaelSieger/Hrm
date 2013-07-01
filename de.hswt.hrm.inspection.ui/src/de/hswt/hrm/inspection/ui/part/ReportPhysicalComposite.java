@@ -460,7 +460,9 @@ public class ReportPhysicalComposite extends AbstractComponentRatingComposite {
 	@Override
 	protected void saveValues() {
 	    try {
-            inspectionService.insertPhysicalRatings(ratings);
+	    	if (ratings != null && ratings.size() > 0) {
+	    		inspectionService.insertPhysicalRatings(ratings);
+	    	}
         }
         catch (SaveException e) {
             // TODO Auto-generated catch block
