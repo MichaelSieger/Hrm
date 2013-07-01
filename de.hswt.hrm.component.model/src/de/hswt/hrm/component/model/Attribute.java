@@ -3,8 +3,12 @@ package de.hswt.hrm.component.model;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public class Attribute {
-    private final int id;
+import java.io.Serializable;
+
+public class Attribute implements Serializable {
+	private static final long serialVersionUID = -730240565044775148L;
+	
+	private final int id;
     private final Component component;
     private String name;
 
