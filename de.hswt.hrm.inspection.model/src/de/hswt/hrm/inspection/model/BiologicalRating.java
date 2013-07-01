@@ -1,7 +1,6 @@
 package de.hswt.hrm.inspection.model;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.base.Strings.isNullOrEmpty;
 import static com.google.common.base.Preconditions.checkArgument;
 
 import com.google.common.base.Optional;
@@ -128,8 +127,8 @@ public class BiologicalRating
         return getBacteriaCount() >= 0 && getRating() >= 0 
         		&& getQuantifier() >= 0
                 && getComment().isPresent() && getFlag().isPresent() 
-                && !isNullOrEmpty(getComment().get())
-                && !isNullOrEmpty(getFlag().get());
+                && !getComment().or("").isEmpty()
+                && !getFlag().or("").isEmpty();
     }
 
     public boolean isAirGermsConcentration() {

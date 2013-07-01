@@ -1,5 +1,6 @@
 package de.hswt.hrm.inspection.model;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.google.common.base.Optional;
@@ -12,21 +13,21 @@ public class PhysicalRating
 
     private final int id;
 
-    private Optional<Integer> rating;
-    private Optional<Integer> quantifier;
-    private Optional<String> note;
+    private int rating;
+    private int quantifier;
+    private String note;
     private SchemeComponent component;
     private Inspection inspection;
-    private Optional<SamplingPointType> samplingPointType;
+    private SamplingPointType samplingPointType;
 
-    // private static final String INVALID_NUMBER = "%d is an invalid number.%n Must be greater 0";
+    private static final String INVALID_NUMBER = "%s is an invalid number. Must be greater or equals 0.";
     // private static final String INVALID_LENGTH = "Empty String is not allowed !";
 
     public PhysicalRating(int id, Inspection inspection, SchemeComponent component, int rating,
             int quantifier) {
 
         this.id = id;
-        samplingPointType = Optional.absent();
+        samplingPointType = null;
         setInspection(inspection);
         setComponent(component);
         setRating(rating);
@@ -43,19 +44,20 @@ public class PhysicalRating
     }
 
     public int getRating() {
-        return rating.get();
+        return rating;
     }
 
     public void setRating(int rating) {
-        this.rating = Optional.of(rating);
+    	checkArgument(rating >= 0, INVALID_NUMBER, rating);
+        this.rating = rating;
     }
 
     public Optional<String> getNote() {
-        return note;
+        return Optional.fromNullable(note);
     }
 
     public void setNote(String note) {
-        this.note = Optional.fromNullable(note);
+        this.note = note;
     }
 
     public SchemeComponent getComponent() {
@@ -81,104 +83,78 @@ public class PhysicalRating
     }
 
     public int getQuantifier() {
-        return quantifier.get();
+        return quantifier;
     }
 
     public void setQuantifier(int quantifier) {
-        this.quantifier = Optional.of(quantifier);
+    	checkArgument(quantifier >= 0, INVALID_NUMBER, quantifier);
+        this.quantifier = quantifier;
     }
 
     public Optional<SamplingPointType> getSamplingPointType() {
-        return samplingPointType;
+        return Optional.fromNullable(samplingPointType);
     }
 
     public void setSamplingPointType(SamplingPointType samplingPointType) {
-        this.samplingPointType = Optional.fromNullable(samplingPointType);
+        this.samplingPointType = samplingPointType;
     }
 
     public boolean isValid() {
-        return rating.isPresent() && note.isPresent() && quantifier.isPresent()
-                && quantifier.get() > 0 && note.get().length() > 0 && rating.get() > 0;
+        return getRating() >= 0 && !getNote().or("").isEmpty() && getQuantifier() >= 0;
     }
 
     @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((component == null) ? 0 : component.hashCode());
-        result = prime * result + id;
-        result = prime * result + ((inspection == null) ? 0 : inspection.hashCode());
-        result = prime * result + ((note == null) ? 0 : note.hashCode());
-        result = prime * result + ((quantifier == null) ? 0 : quantifier.hashCode());
-        result = prime * result + ((rating == null) ? 0 : rating.hashCode());
-        result = prime * result + ((samplingPointType == null) ? 0 : samplingPointType.hashCode());
-        return result;
-    }
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((component == null) ? 0 : component.hashCode());
+		result = prime * result + id;
+		result = prime * result
+				+ ((inspection == null) ? 0 : inspection.hashCode());
+		result = prime * result + ((note == null) ? 0 : note.hashCode());
+		result = prime * result + quantifier;
+		result = prime * result + rating;
+		result = prime
+				* result
+				+ ((samplingPointType == null) ? 0 : samplingPointType
+						.hashCode());
+		return result;
+	}
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        PhysicalRating other = (PhysicalRating) obj;
-        if (component == null) {
-            if (other.component != null) {
-                return false;
-            }
-        }
-        else if (!component.equals(other.component)) {
-            return false;
-        }
-        if (id != other.id) {
-            return false;
-        }
-        if (inspection == null) {
-            if (other.inspection != null) {
-                return false;
-            }
-        }
-        else if (!inspection.equals(other.inspection)) {
-            return false;
-        }
-        if (note == null) {
-            if (other.note != null) {
-                return false;
-            }
-        }
-        else if (!note.equals(other.note)) {
-            return false;
-        }
-        if (quantifier == null) {
-            if (other.quantifier != null) {
-                return false;
-            }
-        }
-        else if (!quantifier.equals(other.quantifier)) {
-            return false;
-        }
-        if (rating == null) {
-            if (other.rating != null) {
-                return false;
-            }
-        }
-        else if (!rating.equals(other.rating)) {
-            return false;
-        }
-        if (samplingPointType == null) {
-            if (other.samplingPointType != null) {
-                return false;
-            }
-        }
-        else if (!samplingPointType.equals(other.samplingPointType)) {
-            return false;
-        }
-        return true;
-    }
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		PhysicalRating other = (PhysicalRating) obj;
+		if (component == null) {
+			if (other.component != null)
+				return false;
+		} else if (!component.equals(other.component))
+			return false;
+		if (id != other.id)
+			return false;
+		if (inspection == null) {
+			if (other.inspection != null)
+				return false;
+		} else if (!inspection.equals(other.inspection))
+			return false;
+		if (note == null) {
+			if (other.note != null)
+				return false;
+		} else if (!note.equals(other.note))
+			return false;
+		if (quantifier != other.quantifier)
+			return false;
+		if (rating != other.rating)
+			return false;
+		if (samplingPointType != other.samplingPointType)
+			return false;
+		return true;
+	}
 
 }
