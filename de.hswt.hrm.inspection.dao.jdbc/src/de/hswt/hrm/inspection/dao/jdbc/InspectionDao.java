@@ -308,14 +308,17 @@ public class InspectionDao implements IInspectionDao {
 
     @Override
     public void update(Inspection inspection) throws ElementNotFoundException, SaveException {
-        checkNotNull(inspection, "inspection must not be null.");
+        checkNotNull(inspection, "Inspection must not be null.");
+    	checkState(inspection.getPlant().getId() >= 0, "Plant must have a valid ID.");
+    	checkState(inspection.getLayout().getId() >= 0, "Layout must have a valid ID.");
+    	checkState(inspection.getId() >= 0, "Inspection must have a valid ID.");
 
         if (inspection.getId() < 0) {
             throw new ElementNotFoundException("Element has no valid ID.");
         }
 
         SqlQueryBuilder builder = new SqlQueryBuilder();
-        builder.update(TABLE_NAME, Fields.ID, Fields.LAYOUT_FK, Fields.PLANT_FK,
+        builder.update(TABLE_NAME, Fields.LAYOUT_FK, Fields.PLANT_FK,
                 Fields.REQUESTER_FK, Fields.CONTRACTOR_FK, Fields.CHECKER_FK,
                 Fields.INSPECTIONDATE, Fields.REPORTDATE, Fields.NEXTDATE, Fields.TEMPERATURE,
                 Fields.HUMIDITY, Fields.SUMMARY, Fields.TITEL, Fields.TEMPERATURERATING,
@@ -330,11 +333,30 @@ public class InspectionDao implements IInspectionDao {
 
         try (Connection con = DatabaseFactory.getConnection()) {
             try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
+            	stmt.setParameter(Fields.ID, inspection.getId());
                 stmt.setParameter(Fields.LAYOUT_FK, inspection.getLayout().getId());
                 stmt.setParameter(Fields.PLANT_FK, inspection.getPlant().getId());
-                stmt.setParameter(Fields.REQUESTER_FK, inspection.getRequester().get().getId());
-                stmt.setParameter(Fields.CONTRACTOR_FK, inspection.getContractor().get().getId());
-                stmt.setParameter(Fields.CHECKER_FK, inspection.getChecker().get().getId());
+                
+                if (inspection.getRequester().isPresent()) {
+                	stmt.setParameter(Fields.REQUESTER_FK, inspection.getRequester().get().getId());
+                }
+                else {
+                	stmt.setParameterNull(Fields.REQUESTER_FK);
+                }
+                
+                if (inspection.getContractor().isPresent()) {
+                	stmt.setParameter(Fields.CONTRACTOR_FK, inspection.getContractor().get().getId());
+                }
+                else {
+                	stmt.setParameterNull(Fields.CONTRACTOR_FK);
+                }
+                
+                if (inspection.getChecker().isPresent()) {
+                	stmt.setParameter(Fields.CHECKER_FK, inspection.getChecker().get().getId());
+                }
+                else {
+                	stmt.setParameterNull(Fields.CHECKER_FK);
+                }
                 stmt.setParameter(Fields.INSPECTIONDATE,
                         JdbcUtil.timestampFromCalendar(inspection.getInspectionDate()));
                 stmt.setParameter(Fields.REPORTDATE,
@@ -352,10 +374,23 @@ public class InspectionDao implements IInspectionDao {
                 stmt.setParameter(Fields.HUMIDITYRATING, inspection.getHumidityRating().orNull());
                 stmt.setParameter(Fields.HUMIDITYQUANTIFIER, inspection.getHumidityQuantifier()
                         .orNull());
-                stmt.setParameter(Fields.FRONTPICTURE_FK, inspection.getFrontpicture().get()
-                        .getId());
-                stmt.setParameter(Fields.PLANTPICTURE_FK, inspection.getPlantpicture().get()
-                        .getId());
+                
+                if (inspection.getFrontpicture().isPresent()) {
+		            stmt.setParameter(Fields.FRONTPICTURE_FK, inspection.getFrontpicture().get()
+		                    .getId());
+                }
+                else {
+                	stmt.setParameterNull(Fields.FRONTPICTURE_FK);
+                }
+                
+                if (inspection.getPlantpicture().isPresent()) {
+	                stmt.setParameter(Fields.PLANTPICTURE_FK, inspection.getPlantpicture().get()
+	                        .getId());
+                }
+                else {
+                	stmt.setParameterNull(Fields.PLANTPICTURE_FK);
+                }
+                
                 stmt.setParameter(Fields.TEMPERATURECOMMENT, inspection.getAirtemperatureComment()
                         .orNull());
                 stmt.setParameter(Fields.HUMIDITYCOMMENT, inspection.getHumidityComment().orNull());
