@@ -318,7 +318,7 @@ public class InspectionPart implements ComponentSelectionChangedListener, PlantC
     }
 
     private void createActions() {
-        // TODO translate
+       
         Action evaluateAction = new Action(I18N.tr("Report")) {
             @Override
             public void run() {
