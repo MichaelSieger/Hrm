@@ -229,7 +229,7 @@ public class BiologicalRatingDao implements IBiologicalRatingDao {
 
         try (Connection con = DatabaseFactory.getConnection()) {
             try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
-
+            	stmt.setParameter(Fields.ID, biological.getId());
                 stmt.setParameter(Fields.BACTERIA, biological.getBacteriaCount());
                 stmt.setParameter(Fields.RATING, biological.getRating());
                 stmt.setParameter(Fields.QUANTIFIER, biological.getQuantifier());
