@@ -587,8 +587,8 @@ public class ReportBiologicalComposite extends AbstractComponentRatingComposite 
         selectedGrade.set(airGradeList.getSelectionIndex());
         airWeightList.select(rating.getQuantifier());
         airGermsConcentrationText.setText(String.valueOf(rating.getBacteriaCount()));
-        if (!rating.getComment().isEmpty()) {
-            airCommentCombo.setText(rating.getComment());
+        if (!rating.getComment().or("").isEmpty()) {
+            airCommentCombo.setText(rating.getComment().get());
         }
     }
 
@@ -596,8 +596,8 @@ public class ReportBiologicalComposite extends AbstractComponentRatingComposite 
         contactGgradeList.select(rating.getRating());
         contactWeightList.select(rating.getQuantifier());
         contactCultureConcentrationText.setText(String.valueOf(rating.getBacteriaCount()));
-        if (!rating.getComment().isEmpty()) {
-            contactCommentCombo.setText(rating.getComment());
+        if (!rating.getComment().or("").isEmpty()) {
+            contactCommentCombo.setText(rating.getComment().get());
         }
     }
 

@@ -160,10 +160,10 @@ public class BiologicalRatingDao implements IBiologicalRatingDao {
                 stmt.setParameter(Fields.BACTERIA, biological.getBacteriaCount());
                 stmt.setParameter(Fields.RATING, biological.getRating());
                 stmt.setParameter(Fields.QUANTIFIER, biological.getQuantifier());
-                stmt.setParameter(Fields.COMMENT, biological.getComment());
+                stmt.setParameter(Fields.COMMENT, biological.getComment().orNull());
                 stmt.setParameter(Fields.FK_COMPONENT, biological.getComponent().getId());
                 stmt.setParameter(Fields.FK_REPORT, biological.getInspection().getId());
-                stmt.setParameter(Fields.FLAG, biological.getFlag());
+                stmt.setParameter(Fields.FLAG, biological.getFlag().orNull());
                 if (biological.getSamplingPointType().isPresent()) {
                     stmt.setParameter(Fields.SAMPLINGPOINTTYPE, biological.getSamplingPointType()
                             .get().ordinal());
@@ -185,8 +185,8 @@ public class BiologicalRatingDao implements IBiologicalRatingDao {
                         BiologicalRating inserted = new BiologicalRating(id,
                                 biological.getInspection(), biological.getComponent(),
                                 biological.getBacteriaCount(), biological.getRating(),
-                                biological.getQuantifier(), biological.getComment(),
-                                biological.getFlag());
+                                biological.getQuantifier(), biological.getComment().orNull(),
+                                biological.getFlag().orNull());
                         inserted.setSamplingPointType(biological.getSamplingPointType().orNull());
                         return inserted;
                     }
@@ -225,10 +225,10 @@ public class BiologicalRatingDao implements IBiologicalRatingDao {
                 stmt.setParameter(Fields.BACTERIA, biological.getBacteriaCount());
                 stmt.setParameter(Fields.RATING, biological.getRating());
                 stmt.setParameter(Fields.QUANTIFIER, biological.getQuantifier());
-                stmt.setParameter(Fields.COMMENT, biological.getComment());
+                stmt.setParameter(Fields.COMMENT, biological.getComment().orNull());
                 stmt.setParameter(Fields.FK_COMPONENT, biological.getComponent().getId());
                 stmt.setParameter(Fields.FK_REPORT, biological.getInspection().getId());
-                stmt.setParameter(Fields.FLAG, biological.getFlag());
+                stmt.setParameter(Fields.FLAG, biological.getFlag().orNull());
                 if (biological.getSamplingPointType().isPresent()) {
                     stmt.setParameter(Fields.SAMPLINGPOINTTYPE, biological.getSamplingPointType()
                             .get().ordinal());

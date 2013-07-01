@@ -2,6 +2,7 @@ package de.hswt.hrm.inspection.model;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Strings.isNullOrEmpty;
+import static com.google.common.base.Preconditions.checkArgument;
 
 import com.google.common.base.Optional;
 
@@ -18,20 +19,20 @@ public class BiologicalRating
     private final int id;
     private SchemeComponent component;
     private Inspection inspection;
-    private Optional<Integer> bacteriaCount;
-    private Optional<Integer> rating;
-    private Optional<Integer> quantifier;
-    private Optional<String> comment;
-    private Optional<String> flag;
-    private Optional<SamplingPointType> samplingPointType;
+    private int bacteriaCount;
+    private int rating;
+    private int quantifier;
+    private String comment;
+    private String flag;
+    private SamplingPointType samplingPointType;
 
     // private static final String IS_MANDATORY = "Field is a mandatory.";
-    // private static final String INVALID_NUMBER = "%d is an invalid number.%n Must be greater 0";
+    private static final String INVALID_NUMBER = "%s is an invalid number. Must be greater or equals 0.";
 
     public BiologicalRating(int id, Inspection inspection, SchemeComponent component,
             int bacteriaCount, int rating, int quantifier, String comment, String flag) {
         this.id = id;
-        samplingPointType = Optional.absent();
+        samplingPointType = null;
         setInspection(inspection);
         setComponent(component);
         setBacteriaCount(bacteriaCount);
@@ -69,43 +70,46 @@ public class BiologicalRating
     }
 
     public int getBacteriaCount() {
-        return bacteriaCount.get();
+        return bacteriaCount;
     }
 
     public void setBacteriaCount(int bacteriaCount) {
-        this.bacteriaCount = Optional.of(bacteriaCount);
+    	checkArgument(bacteriaCount >= 0, INVALID_NUMBER, bacteriaCount);
+        this.bacteriaCount = bacteriaCount;
     }
 
     public int getRating() {
-        return rating.get();
+        return rating;
     }
 
     public void setRating(int rating) {
-        this.rating = Optional.of(rating);
+    	checkArgument(rating >= 0, INVALID_NUMBER, rating);
+        this.rating = rating;
     }
 
     public int getQuantifier() {
-        return quantifier.get();
+        return quantifier;
     }
 
     public void setQuantifier(int quantifier) {
-        this.quantifier = Optional.of(quantifier);
+    	checkArgument(quantifier >= 0, INVALID_NUMBER, quantifier);
+        this.quantifier = quantifier;
     }
 
-    public String getComment() {
-        return comment.get();
+    public Optional<String> getComment() {
+        return Optional.fromNullable(comment);
     }
 
     public void setComment(String comment) {
-        this.comment = Optional.fromNullable(comment);
+        this.comment = comment;
     }
 
-    public String getFlag() {
-        return flag.get();
+    public Optional<String> getFlag() {
+        return Optional.fromNullable(flag);
     }
 
     public void setFlag(String flag) {
-        this.flag = Optional.fromNullable(flag);
+        this.flag = flag;
     }
 
     public int getId() {
@@ -113,18 +117,19 @@ public class BiologicalRating
     }
 
     public Optional<SamplingPointType> getSamplingPointType() {
-        return samplingPointType;
+        return Optional.fromNullable(samplingPointType);
     }
 
     public void setSamplingPointType(SamplingPointType samplingPointType) {
-        this.samplingPointType = Optional.fromNullable(samplingPointType);
+        this.samplingPointType = samplingPointType;
     }
 
     public boolean isValid() {
-        return bacteriaCount.isPresent() && rating.isPresent() && quantifier.isPresent()
-                && comment.isPresent() && flag.isPresent() && bacteriaCount.get() > 0
-                && rating.get() > 0 && quantifier.get() > 0 && !isNullOrEmpty(comment.get())
-                && !isNullOrEmpty(flag.get());
+        return getBacteriaCount() >= 0 && getRating() >= 0 
+        		&& getQuantifier() >= 0
+                && getComment().isPresent() && getFlag().isPresent() 
+                && !isNullOrEmpty(getComment().get())
+                && !isNullOrEmpty(getFlag().get());
     }
 
     public boolean isAirGermsConcentration() {
@@ -136,101 +141,66 @@ public class BiologicalRating
     }
 
     @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((bacteriaCount == null) ? 0 : bacteriaCount.hashCode());
-        result = prime * result + ((comment == null) ? 0 : comment.hashCode());
-        result = prime * result + ((component == null) ? 0 : component.hashCode());
-        result = prime * result + ((flag == null) ? 0 : flag.hashCode());
-        result = prime * result + id;
-        result = prime * result + ((inspection == null) ? 0 : inspection.hashCode());
-        result = prime * result + ((quantifier == null) ? 0 : quantifier.hashCode());
-        result = prime * result + ((rating == null) ? 0 : rating.hashCode());
-        result = prime * result + ((samplingPointType == null) ? 0 : samplingPointType.hashCode());
-        return result;
-    }
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + bacteriaCount;
+		result = prime * result + ((comment == null) ? 0 : comment.hashCode());
+		result = prime * result
+				+ ((component == null) ? 0 : component.hashCode());
+		result = prime * result + ((flag == null) ? 0 : flag.hashCode());
+		result = prime * result + id;
+		result = prime * result
+				+ ((inspection == null) ? 0 : inspection.hashCode());
+		result = prime * result + quantifier;
+		result = prime * result + rating;
+		result = prime
+				* result
+				+ ((samplingPointType == null) ? 0 : samplingPointType
+						.hashCode());
+		return result;
+	}
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        BiologicalRating other = (BiologicalRating) obj;
-        if (bacteriaCount == null) {
-            if (other.bacteriaCount != null) {
-                return false;
-            }
-        }
-        else if (!bacteriaCount.equals(other.bacteriaCount)) {
-            return false;
-        }
-        if (comment == null) {
-            if (other.comment != null) {
-                return false;
-            }
-        }
-        else if (!comment.equals(other.comment)) {
-            return false;
-        }
-        if (component == null) {
-            if (other.component != null) {
-                return false;
-            }
-        }
-        else if (!component.equals(other.component)) {
-            return false;
-        }
-        if (flag == null) {
-            if (other.flag != null) {
-                return false;
-            }
-        }
-        else if (!flag.equals(other.flag)) {
-            return false;
-        }
-        if (id != other.id) {
-            return false;
-        }
-        if (inspection == null) {
-            if (other.inspection != null) {
-                return false;
-            }
-        }
-        else if (!inspection.equals(other.inspection)) {
-            return false;
-        }
-        if (quantifier == null) {
-            if (other.quantifier != null) {
-                return false;
-            }
-        }
-        else if (!quantifier.equals(other.quantifier)) {
-            return false;
-        }
-        if (rating == null) {
-            if (other.rating != null) {
-                return false;
-            }
-        }
-        else if (!rating.equals(other.rating)) {
-            return false;
-        }
-        if (samplingPointType == null) {
-            if (other.samplingPointType != null) {
-                return false;
-            }
-        }
-        else if (!samplingPointType.equals(other.samplingPointType)) {
-            return false;
-        }
-        return true;
-    }
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		BiologicalRating other = (BiologicalRating) obj;
+		if (bacteriaCount != other.bacteriaCount)
+			return false;
+		if (comment == null) {
+			if (other.comment != null)
+				return false;
+		} else if (!comment.equals(other.comment))
+			return false;
+		if (component == null) {
+			if (other.component != null)
+				return false;
+		} else if (!component.equals(other.component))
+			return false;
+		if (flag == null) {
+			if (other.flag != null)
+				return false;
+		} else if (!flag.equals(other.flag))
+			return false;
+		if (id != other.id)
+			return false;
+		if (inspection == null) {
+			if (other.inspection != null)
+				return false;
+		} else if (!inspection.equals(other.inspection))
+			return false;
+		if (quantifier != other.quantifier)
+			return false;
+		if (rating != other.rating)
+			return false;
+		if (samplingPointType != other.samplingPointType)
+			return false;
+		return true;
+	}
 
 }
