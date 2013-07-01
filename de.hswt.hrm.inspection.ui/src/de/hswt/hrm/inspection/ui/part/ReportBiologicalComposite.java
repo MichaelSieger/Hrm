@@ -1,5 +1,6 @@
 package de.hswt.hrm.inspection.ui.part;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.annotation.PostConstruct;
@@ -603,6 +604,10 @@ public class ReportBiologicalComposite extends AbstractComponentRatingComposite 
 
     private BiologicalRating getContactRatingForComponent(SchemeComponent component) {
     	
+    	if (component == null){
+    		return null;
+    	}
+    	
         for (BiologicalRating rating : contactRatings){
             if (rating.getComponent().equals(component));
                 return rating;
@@ -648,6 +653,14 @@ public class ReportBiologicalComposite extends AbstractComponentRatingComposite 
 			airRatings.clear();
 		}
 
+		if (contactRatings == null) {
+			contactRatings = new ArrayList<>();
+		}
+
+		if (airRatings == null) {
+			airRatings = new ArrayList<>();
+		}
+		
 		try {
             ratings = inspectionService.findBiologicalRating(inspection);
             for (BiologicalRating rating : ratings) {
