@@ -22,7 +22,7 @@ import com.google.common.base.Optional;
 public class Inspection {
 	
     private static final String IS_MANDATORY = "Field is a mandatory.";
-    private static final String INVALID_NUMBER = "%d is an invalid number.%n Must be greater 0.";
+    private static final String INVALID_NUMBER = "%s is an invalid number. Must be greater or equals 0.";
 	
     private final int id;
     private Layout layout;
@@ -148,7 +148,7 @@ public class Inspection {
     }
 
     public void setTemperature(float temperature) {
-        checkArgument(temperature > 0, INVALID_NUMBER, temperature);
+        checkArgument(temperature >= 0, INVALID_NUMBER, temperature);
         this.temperature = temperature;
     }
 
@@ -157,7 +157,7 @@ public class Inspection {
     }
 
     public void setHumidity(float humidity) {
-        checkArgument(humidity > 0, INVALID_NUMBER, humidity);
+        checkArgument(humidity >= 0, INVALID_NUMBER, humidity);
         this.humidity = humidity;
     }
 
@@ -166,7 +166,6 @@ public class Inspection {
     }
 
     public void setSummary(String summary) {
-        checkArgument(!isNullOrEmpty(summary), IS_MANDATORY);
         this.summary = summary;
     }
 
