@@ -189,12 +189,15 @@ public class BiologicalRatingDao implements IBiologicalRatingDao {
                                 biological.getFlag().orNull());
                         inserted.setSamplingPointType(biological.getSamplingPointType().orNull());
                         
-                        LOG.info("BiologicalRating inserted:\n"
-                        		+ id + ", " 
-                        		+ biological.getComponent().getComponent().getName() + ", "
-                        		+ biological.getRating() + ", "
-                        		+ biological.getQuantifier() + ", "
-                        		+ biological.getFlag().or("NO FLAG SET!"));
+                        LOG.info("BiologicalRating inserted:{\n"
+                        		+ "\tID: " + id + ",\n" 
+                        		+ "\tName: " + biological.getComponent().getComponent().getName() + ",\n"
+                        		+ "\tBacteriaCount: " + biological.getBacteriaCount() + ",\n"
+                        		+ "\tRating: "+biological.getRating() + ",\n"
+                        		+ "\tQuantifier: " + biological.getQuantifier() + ",\n"
+                        		+ "\tComment: " + biological.getComment().or("") + ",\n"
+                        		+ "\tFlag: " + biological.getFlag().or("NOT SET!") + "\n"
+                        		+ "}");
                         
                         return inserted;
                     }
@@ -249,12 +252,15 @@ public class BiologicalRatingDao implements IBiologicalRatingDao {
                     throw new SaveException();
                 }
                 
-                LOG.info("BiologicalRating updated:\n"
-                		+ biological.getId() + ", " 
-                		+ biological.getComponent().getComponent().getName() + ", "
-                		+ biological.getRating() + ", "
-                		+ biological.getQuantifier() + ", "
-                		+ biological.getFlag().or("NO FLAG SET!"));
+                LOG.info("BiologicalRating updated:{\n"
+                		+ "\tID: " + biological.getId() + ",\n" 
+                		+ "\tName: " + biological.getComponent().getComponent().getName() + ",\n"
+                		+ "\tBacteriaCount: " + biological.getBacteriaCount() + ",\n"
+                		+ "\tRating: "+biological.getRating() + ",\n"
+                		+ "\tQuantifier: " + biological.getQuantifier() + ",\n"
+                		+ "\tComment: " + biological.getComment().or("") + ",\n"
+                		+ "\tFlag: " + biological.getFlag().or("NOT SET!") + "\n"
+                		+ "}");
             }
         }
         catch (SQLException e) {
