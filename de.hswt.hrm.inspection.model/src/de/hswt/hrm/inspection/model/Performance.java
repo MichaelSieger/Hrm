@@ -1,5 +1,9 @@
 package de.hswt.hrm.inspection.model;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
+import com.google.common.base.Optional;
+
 import de.hswt.hrm.catalog.model.Activity;
 import de.hswt.hrm.catalog.model.Current;
 import de.hswt.hrm.catalog.model.Target;
@@ -12,25 +16,22 @@ public final class Performance {
     private final Target target;
     private final Current current;
     private final Activity activity;
-    private final Priority priority;
     private final Inspection inspection;
+    private Priority priority;
 
     public Performance(final int id, final SchemeComponent schemeComponent, final Target target,
-            final Current current, final Activity activity, final Priority priority,
-            final Inspection inspection) {
+            final Current current, final Activity activity, final Inspection inspection) {
         this.id = id;
         this.schemeComponent = schemeComponent;
         this.target = target;
         this.current = current;
         this.activity = activity;
-        this.priority = priority;
         this.inspection = inspection;
     }
 
     public Performance(final SchemeComponent schemeComponent, final Target target,
-            final Current current, final Activity activity, final Priority priority,
-            final Inspection inspection) {
-        this(-1, schemeComponent, target, current, activity, priority, inspection);
+            final Current current, final Activity activity, final Inspection inspection) {
+        this(-1, schemeComponent, target, current, activity, inspection);
     }
 
     public int getId() {
@@ -53,8 +54,13 @@ public final class Performance {
         return activity;
     }
 
-    public Priority getPriority() {
-        return priority;
+    public Optional<Priority> getPriority() {
+        return Optional.fromNullable(priority);
+    }
+
+    public void setPriority(Priority priority) {
+        checkNotNull(priority);
+        this.priority = priority;
     }
 
     public Inspection getInspection() {
