@@ -602,6 +602,7 @@ public class ReportBiologicalComposite extends AbstractComponentRatingComposite 
     }
 
     private BiologicalRating getContactRatingForComponent(SchemeComponent component) {
+    	
         for (BiologicalRating rating : contactRatings){
             if (rating.getComponent().equals(component));
                 return rating;
@@ -639,8 +640,14 @@ public class ReportBiologicalComposite extends AbstractComponentRatingComposite 
 
 	private void updateInspectionData() {
 		Collection<BiologicalRating> ratings;
-		contactRatings.clear();
-		airRatings.clear();
+		
+		if (contactRatings != null){
+			contactRatings.clear();
+		}
+		if (airRatings != null){
+			airRatings.clear();
+		}
+
 		try {
             ratings = inspectionService.findBiologicalRating(inspection);
             for (BiologicalRating rating : ratings) {

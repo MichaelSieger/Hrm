@@ -65,6 +65,10 @@ public class InspectionService {
         return inspectionDao.findAll();
     }
     
+    public Inspection insert (Inspection inspection) throws SaveException{
+    	return inspectionDao.insert(inspection);
+    }
+    
     public Inspection findById(int id) throws ElementNotFoundException, DatabaseException {
     	return inspectionDao.findById(id);
     }
