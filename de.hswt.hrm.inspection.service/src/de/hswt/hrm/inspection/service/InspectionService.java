@@ -79,7 +79,7 @@ public class InspectionService {
     	return biologicalDao.findByInspection(inspection);
     }
     
-    public Collection<BiologicalRating> insertBiologicalRatings(
+    public Collection<BiologicalRating> saveBiologicalRatings(
             Collection<BiologicalRating> ratings)
         throws SaveException, DatabaseException {
         
@@ -90,18 +90,16 @@ public class InspectionService {
         // otherwise there is a connection opened per row
         Collection<BiologicalRating> inserted = new ArrayList<>(ratings.size());
         for (BiologicalRating rating : ratings) {
-            inserted.add(biologicalDao.insert(rating));
+        	if (rating.getId() < 0) {
+	            inserted.add(biologicalDao.insert(rating));
+	        }
+        	else {
+        		biologicalDao.update(rating);
+        		inserted.add(rating);
+        	}
         }
         
         return inserted;
-    }
-    
-    public void update(BiologicalRating rating) 
-            throws ElementNotFoundException, SaveException, DatabaseException {
-        checkNotNull(rating, "BiologicalRating must not be null.");
-        checkState(rating.getId() >= 0, "BiologicalRating must have a valid ID.");
-        
-        biologicalDao.update(rating);
     }
     
     public Collection<PhysicalRating> findPhysicalRating(Inspection inspection)
