@@ -1,13 +1,18 @@
 package de.hswt.hrm.scheme.ui.dnd;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Throwables;
 
 import de.hswt.hrm.common.database.exception.DatabaseException;
 import de.hswt.hrm.common.database.exception.ElementNotFoundException;
+import de.hswt.hrm.component.model.Attribute;
 import de.hswt.hrm.component.service.ComponentService;
 import de.hswt.hrm.scheme.model.Direction;
 import de.hswt.hrm.scheme.model.RenderedComponent;
@@ -42,6 +47,7 @@ public class DragData
     private final int schemeId;
     private final int componentId;
     private final Direction direction;
+    private final Map<Integer, String> attributes;
     
     public DragData(int renderedComponentIndex, SchemeComponent schemeComponent) {
         super();
@@ -54,6 +60,17 @@ public class DragData
         schemeId = (schemeComponent.getScheme() != null ? schemeComponent.getScheme().getId() : -1);
         componentId = (schemeComponent.getComponent() != null ? schemeComponent.getComponent().getId() : -1);
         direction = schemeComponent.getDirection();
+        
+        if (schemeComponent.getAttributes().isPresent()) {
+        	attributes = new HashMap<>();
+        	Map<Attribute, String> attributeValues = schemeComponent.getAttributes().get();
+        	for (Attribute attr : attributeValues.keySet()) {
+        		attributes.put(attr.getId(), attributeValues.get(attr));
+        	}
+        }
+        else {
+        	attributes = null;
+        }
     }
     
     public boolean hasPosition(){
@@ -73,12 +90,24 @@ public class DragData
     	Preconditions.checkNotNull(scheme);
     	Preconditions.checkNotNull(componentService);
     	try {
-			return new SchemeGridItem(comps.get(renderedComponentIndex), 
-												new SchemeComponent(scheme, 
-														x, 
-														y, 
-														direction, 
-														componentService.findById(componentId)));
+    		SchemeComponent schemeComponent = new SchemeComponent(scheme, 
+					x, 
+					y, 
+					direction, 
+					componentService.findById(componentId));
+
+    		if (attributes != null) {
+    			Map<Attribute, String> attributeValues = new HashMap<>();
+    			for (Entry<Integer, String> entry : attributes.entrySet()) {
+    				Attribute attr = componentService.findAttributeById(entry.getKey());
+    				attributeValues.put(attr, entry.getValue());
+    			}
+    			
+    			schemeComponent.setAttributes(attributeValues);
+    		}
+    		
+			return new SchemeGridItem(comps.get(renderedComponentIndex), schemeComponent);
+			
 		} catch (DatabaseException e) {
 			//All these items were loaded before, so this should not happen
 			throw Throwables.propagate(e);
