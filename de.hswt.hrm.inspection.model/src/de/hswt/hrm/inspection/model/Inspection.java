@@ -100,7 +100,6 @@ public class Inspection {
     }
 
     public void setRequester(Contact requester) {
-        checkNotNull(requester);
         this.requester = requester;
     }
 
@@ -109,7 +108,6 @@ public class Inspection {
     }
 
     public void setContractor(Contact contractor) {
-        checkNotNull(contractor);
         this.contractor = contractor;
     }
 
@@ -118,7 +116,6 @@ public class Inspection {
     }
 
     public void setChecker(Contact checker) {
-        checkNotNull(checker);
         this.checker = checker;
     }
 
