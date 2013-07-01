@@ -124,11 +124,10 @@ public class BiologicalRating
     }
 
     public boolean isValid() {
-        return getBacteriaCount() >= 0 && getRating() >= 0 
+        return getBacteriaCount() >= 0 
+        		&& getRating() >= 0 
         		&& getQuantifier() >= 0
-                && getComment().isPresent() && getFlag().isPresent() 
-                && !getComment().or("").isEmpty()
-                && !getFlag().or("").isEmpty();
+                && !getFlag().or("").isEmpty(); 
     }
 
     public boolean isAirGermsConcentration() {
