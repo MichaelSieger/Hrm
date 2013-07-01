@@ -131,11 +131,11 @@ public class BiologicalRating
     }
 
     public boolean isAirGermsConcentration() {
-        return getFlag().equals(BiologicalRating.AIR_GERMS_CONCENTRATION);
+        return getFlag().or("").equals(BiologicalRating.AIR_GERMS_CONCENTRATION);
     }
 
     public boolean isContactCultures() {
-        return getFlag().equals(BiologicalRating.CONTACT_CULTURE);
+        return getFlag().or("").equals(BiologicalRating.CONTACT_CULTURE);
     }
 
     @Override
