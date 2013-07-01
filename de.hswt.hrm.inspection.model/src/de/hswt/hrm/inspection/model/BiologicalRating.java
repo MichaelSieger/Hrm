@@ -42,7 +42,7 @@ public class BiologicalRating
     }
 
     public BiologicalRating(Inspection inspection, SchemeComponent component) {
-        this(inspection, component, -1, 0, -1, null, null);
+        this(inspection, component, 0, 0, 0, null, null);
     }
 
     public BiologicalRating(Inspection inspection, SchemeComponent component, int bacteriaCount,
