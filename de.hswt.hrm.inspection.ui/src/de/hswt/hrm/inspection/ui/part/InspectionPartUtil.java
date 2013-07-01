@@ -13,9 +13,11 @@ import org.eclipse.jface.viewers.OwnerDrawLabelProvider;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.TableItem;
 
 import com.google.common.base.Optional;
 
@@ -66,7 +68,7 @@ public class InspectionPartUtil {
 
 	private static ColumnDescription<Inspection> getColorColumn() {
 		return new ColumnDescription<>("", new OwnerDrawLabelProvider() {
-
+			
 			@Override
 			protected void paint(Event event, Object element) {
 				Inspection inspection = (Inspection) element;
@@ -89,13 +91,33 @@ public class InspectionPartUtil {
 				} else {
 					event.gc.setBackground(MORE_THEN_3);
 				}
+				
+				// Get correct width
+				Rectangle cellBounds = null;
+				if (event.item instanceof TableItem){
+					cellBounds = ((TableItem) event.item).getBounds(event.index);					
+				}
+				
 				// event.gc.fillOval(event.x + 10, event.y + 10, 10, 10);
-				int a = event.getBounds().height;
-				int b = event.getBounds().width;
+				int height = event.getBounds().height;
+				int width = event.getBounds().width;
+				if (cellBounds != null) {
+					height = cellBounds.height;
+					width = cellBounds.width;
+				}
+				
+				// calculate circle diameter
+				int diameter = height > width ? width : height;
+				if (diameter > 12) {
+					diameter = 12;
+				}
+				
+				// calculate upper left corner (coordinate system start at upper left)
+				int x = event.x + width / 2 - diameter / 2;
+				int y = event.y + height / 2 - diameter/ 2;
 
 				// event.gc.fillOval(event.x, event.y, event.y/2, event.y/2);
-				event.gc.fillOval(event.x + b / 2, event.y + b / 2, a / 2,
-						a / 2);
+				event.gc.fillOval(x, y, diameter, diameter);
 			}
 
 			@Override
