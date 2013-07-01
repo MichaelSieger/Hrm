@@ -1,12 +1,15 @@
 package de.hswt.hrm.inspection.ui.part;
 
 import java.util.Collection;
+import java.util.LinkedList;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
+import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.jface.window.IShellProvider;
+import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.FocusAdapter;
@@ -36,14 +39,19 @@ import de.hswt.hrm.common.observer.Observer;
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.common.ui.swt.layouts.LayoutUtil;
 import de.hswt.hrm.common.ui.swt.utils.ContentProposalUtil;
+import de.hswt.hrm.common.ui.swt.wizards.WizardCreator;
 import de.hswt.hrm.i18n.I18n;
 import de.hswt.hrm.i18n.I18nFactory;
 import de.hswt.hrm.inspection.model.Inspection;
 import de.hswt.hrm.inspection.model.PhysicalRating;
 import de.hswt.hrm.inspection.model.SamplingPointType;
+import de.hswt.hrm.inspection.physical.photo.PhysPhotoWizard;
 import de.hswt.hrm.inspection.service.InspectionService;
 import de.hswt.hrm.misc.comment.model.Comment;
 import de.hswt.hrm.misc.comment.service.CommentService;
+import de.hswt.hrm.photo.model.Photo;
+import de.hswt.hrm.photo.service.PhotoService;
+import de.hswt.hrm.photo.ui.wizard.PhotoWizard;
 import de.hswt.hrm.plant.model.Plant;
 import de.hswt.hrm.scheme.model.SchemeComponent;
 
@@ -57,11 +65,17 @@ public class ReportPhysicalComposite extends AbstractComponentRatingComposite {
 
 	@Inject
 	private CommentService commentService;
+	
+	@Inject
+	private PhotoService photoService;
 
 	@Inject
 	private IShellProvider shellProvider;
 	
 	private Collection<PhysicalRating> ratings;
+	
+	java.util.List<Photo> photoList;
+	
 
 	private FormToolkit formToolkit = new FormToolkit(Display.getDefault());
 
@@ -75,6 +89,9 @@ public class ReportPhysicalComposite extends AbstractComponentRatingComposite {
 	private List gradeList;
 	private List weightList;
 	private List list;
+	private java.util.List<Photo> selectedPhotos = new LinkedList<Photo>();
+	
+	private java.util.List<Photo> photos;
 
 	private static final Logger LOG = LoggerFactory
 			.getLogger(ReportPhysicalComposite.class);
@@ -280,7 +297,20 @@ public class ReportPhysicalComposite extends AbstractComponentRatingComposite {
 		addPhotoButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				addPhoto();
+				try {
+//					selectedPhotos.clear();
+					addPhoto();
+					String [] stringPhotos = new String[selectedPhotos.size()];
+					int i = 0;
+					for(Photo photo : selectedPhotos){
+						stringPhotos[i] = photo.getLabel();
+						i++;
+					}
+					list.setItems(stringPhotos);
+					list.redraw();
+				} catch (DatabaseException e1) {
+					e1.printStackTrace();
+				}
 			}
 		});
 
@@ -288,6 +318,22 @@ public class ReportPhysicalComposite extends AbstractComponentRatingComposite {
 		formToolkit.adapt(removeImageButton, true, true);
 		removeImageButton.setText(I18N.tr("Remove"));
 		removeImageButton.setLayoutData(LayoutUtil.createRightGridData());
+		removeImageButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				
+				if(list.getSelection().length != 0){
+					int i = 0;
+					
+					for(Photo photo : selectedPhotos){
+						if(list.getSelection()[0].equalsIgnoreCase(photo.getLabel())){
+							selectedPhotos.remove(i);
+						}
+						i++;
+					}
+					list.remove(list.getSelectionIndex());
+			}}
+		});
 		new Label(imageComposite, SWT.NONE);
 		new Label(imageComposite, SWT.NONE);
 		new Label(imageComposite, SWT.NONE);
@@ -383,8 +429,18 @@ public class ReportPhysicalComposite extends AbstractComponentRatingComposite {
 
 	}
 
-	private void addPhoto() {
-		// TODO request for one or more photos (wizard, dialog?)
+	private void addPhoto() throws DatabaseException {
+		photoList = new LinkedList<Photo>();
+		for(Photo photo : photoService.findAll()){
+			photoList.add(photo);	
+		}
+
+		
+		PhysPhotoWizard pw = new PhysPhotoWizard(photoList,selectedPhotos);
+        ContextInjectionFactory.inject(pw, context);
+
+        WizardDialog wd = WizardCreator.createWizardDialog(shellProvider.getShell(), pw);
+        wd.open();
 	}
 
 	@Override
