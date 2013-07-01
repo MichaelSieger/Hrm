@@ -585,12 +585,12 @@ public class ReportBiologicalComposite extends AbstractComponentRatingComposite 
 	}
 
     private void updateContactConcentration(BiologicalRating rating) {
-        airGradeList.select(rating.getRating());
-        selectedGrade.set(airGradeList.getSelectionIndex());
-        airWeightList.select(rating.getQuantifier());
-        airGermsConcentrationText.setText(String.valueOf(rating.getBacteriaCount()));
+        contactGgradeList.select(rating.getRating());
+        selectedGrade.set(contactGgradeList.getSelectionIndex());
+        contactWeightList.select(rating.getQuantifier());
+        contactCultureConcentrationText.setText(String.valueOf(rating.getBacteriaCount()));
         if (!rating.getComment().or("").isEmpty()) {
-            airCommentCombo.setText(rating.getComment().get());
+            contactCommentCombo.setText(rating.getComment().get());
         }
     }
 
@@ -682,8 +682,9 @@ public class ReportBiologicalComposite extends AbstractComponentRatingComposite 
 	protected void saveValues() {
 		
 		try {
+
 			inspectionService.saveBiologicalRatings(contactRatings);
-			//inspectionService.insertBiologicalRatings(airRatings);
+			// inspectionService.insertBiologicalRatings(airRatings);
 		} catch ( DatabaseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
