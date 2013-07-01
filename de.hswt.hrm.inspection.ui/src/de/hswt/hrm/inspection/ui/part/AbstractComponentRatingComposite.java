@@ -23,6 +23,8 @@ public abstract class AbstractComponentRatingComposite extends Composite {
 
 	protected abstract void plantChanged(Plant plant);
 
+	protected abstract void saveValues();
+	
 	@Override
 	protected void checkSubclass() {
 		// Disable the check that prevents subclassing of SWT components

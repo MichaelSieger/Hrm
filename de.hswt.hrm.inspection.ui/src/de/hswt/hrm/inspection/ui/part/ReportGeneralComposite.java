@@ -45,12 +45,10 @@ import org.slf4j.LoggerFactory;
 import com.google.common.base.Optional;
 
 import de.hswt.hrm.common.database.exception.DatabaseException;
-import de.hswt.hrm.common.observer.Observer;
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.common.ui.swt.layouts.LayoutUtil;
 import de.hswt.hrm.common.ui.swt.utils.ContentProposalUtil;
 import de.hswt.hrm.common.ui.swt.wizards.WizardCreator;
-import de.hswt.hrm.component.model.Component;
 import de.hswt.hrm.contact.model.Contact;
 import de.hswt.hrm.i18n.I18n;
 import de.hswt.hrm.i18n.I18nFactory;
@@ -60,7 +58,6 @@ import de.hswt.hrm.inspection.service.InspectionService;
 import de.hswt.hrm.inspection.service.LayoutService;
 import de.hswt.hrm.inspection.ui.dialog.ContactSelectionDialog;
 import de.hswt.hrm.inspection.ui.dialog.PlantSelectionDialog;
-import de.hswt.hrm.inspection.ui.listener.ComponentSelectionChangedListener;
 import de.hswt.hrm.inspection.ui.listener.InspectionObserver;
 import de.hswt.hrm.inspection.ui.listener.PlantChangedListener;
 import de.hswt.hrm.misc.comment.model.Comment;
@@ -970,11 +967,6 @@ public class ReportGeneralComposite extends Composite implements InspectionObser
 
     }
 
-    
-    private void plantSelected(Plant plant) {
-        plantText.setText(plant.getDescription());
-    }
-
     private void initLayouts(Combo combo) {
 
         try {
@@ -1003,8 +995,6 @@ public class ReportGeneralComposite extends Composite implements InspectionObser
     }
 
     private void importPhotos() {
-        Optional<java.util.List<Photo>> n = Optional.absent();
-
         PhotoWizard pw = new PhotoWizard(photos);
         ContextInjectionFactory.inject(pw, context);
 
@@ -1301,5 +1291,11 @@ public class ReportGeneralComposite extends Composite implements InspectionObser
 	@Override
 	public void inspectionComponentSelectionChanged(SchemeComponent component) {
 		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public void saveRequested() {
+		// TODO Auto-generated method stub
+		
 	}
 }

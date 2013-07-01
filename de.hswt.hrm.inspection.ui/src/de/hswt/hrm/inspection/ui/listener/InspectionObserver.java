@@ -12,6 +12,6 @@ public interface InspectionObserver {
 	public void inspectionComponentSelectionChanged(SchemeComponent component);
 
 	public void plantChanged(Plant plant, Scheme scheme);
-
 	
+	public void saveRequested();
 }

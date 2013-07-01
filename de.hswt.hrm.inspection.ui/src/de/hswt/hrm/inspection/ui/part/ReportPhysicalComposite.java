@@ -11,6 +11,8 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -34,7 +36,6 @@ import de.hswt.hrm.common.observer.Observer;
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.common.ui.swt.layouts.LayoutUtil;
 import de.hswt.hrm.common.ui.swt.utils.ContentProposalUtil;
-import de.hswt.hrm.component.model.Component;
 import de.hswt.hrm.i18n.I18n;
 import de.hswt.hrm.i18n.I18nFactory;
 import de.hswt.hrm.inspection.model.Inspection;
@@ -239,9 +240,9 @@ public class ReportPhysicalComposite extends AbstractComponentRatingComposite {
 
 		commentCombo = new Combo(physicalComposite, SWT.MULTI);
 		commentCombo.setLayoutData(LayoutUtil.createHorzFillData(3));
-		commentCombo.addFocusListener(new FocusAdapter() {
+		commentCombo.addModifyListener(new ModifyListener() {
 			@Override
-			public void focusLost(FocusEvent e) {
+			public void modifyText(ModifyEvent e) {
 				PhysicalRating rating = 
 						getRatingForComponent(currentSchemeComponent);
 				if (rating == null) {
@@ -426,9 +427,6 @@ public class ReportPhysicalComposite extends AbstractComponentRatingComposite {
         if (rating.getNote() !=null) {
             commentCombo.setText(rating.getNote().get());
         }
-        if (rating.getQuantifier() == 5){
-            save();
-        }
     }
     
     private PhysicalRating getRatingForComponent(SchemeComponent component) {
@@ -438,37 +436,30 @@ public class ReportPhysicalComposite extends AbstractComponentRatingComposite {
             }
         }
         PhysicalRating rating = new PhysicalRating(inspection, currentSchemeComponent);
+        if (component.getComponent().getQuantifier().isPresent())  {
+            rating.setQuantifier(component.getComponent().getQuantifier().get());
+        }
         ratings.add(rating);
         return rating;
     }
 
     @Override
 	public void plantChanged(Plant plant) {
-		// TODO Auto-generated method stub
-		
-	}
+    	updateInspectionRatings();
+    }
 	
 	private void updateInspectionRatings() {
-        try {
+		try {
             ratings = inspectionService.findPhysicalRating(inspection);
-           
         }
         catch (DatabaseException e) {
             LOG.error("An error occured");
         }
-        
     }
 
-
 	@Override
-	public void dispose() {
-		formToolkit.dispose();
-		super.dispose();
-	}
-	
-	public void save(){
+	protected void saveValues() {
 	    try {
-	        
             inspectionService.insertPhysicalRatings(ratings);
         }
         catch (SaveException e) {
@@ -481,6 +472,12 @@ public class ReportPhysicalComposite extends AbstractComponentRatingComposite {
         }
 	}
 
+	@Override
+	public void dispose() {
+		formToolkit.dispose();
+		super.dispose();
+	}
+	
 	@Override
 	protected void checkSubclass() {
 		// Disable the check that prevents subclassing of SWT components

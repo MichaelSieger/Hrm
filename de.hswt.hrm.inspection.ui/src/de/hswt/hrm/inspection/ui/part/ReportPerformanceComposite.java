@@ -421,9 +421,19 @@ public class ReportPerformanceComposite extends AbstractComponentRatingComposite
 		}
     }
     
+    private void reset() {
+		performances.clear();
+		deselectPriorityCombo();
+		priorityComboViewer.setInput(getPriorities());
+    }
+    
 	@Override
 	public void inspectionChanged(Inspection inspection) {
+		if (inspection == null) {
+			return;
+		}
 		this.inspection = inspection;
+		reset();
 	}
 
 	@SuppressWarnings("rawtypes")
@@ -460,9 +470,12 @@ public class ReportPerformanceComposite extends AbstractComponentRatingComposite
 
 	@Override
 	public void plantChanged(Plant plant) {
-		performances.clear();
-		deselectPriorityCombo();
-		priorityComboViewer.setInput(getPriorities());
+		reset();
+	}
+
+	@Override
+	protected void saveValues() {
+		
 	}
 
 	@Override

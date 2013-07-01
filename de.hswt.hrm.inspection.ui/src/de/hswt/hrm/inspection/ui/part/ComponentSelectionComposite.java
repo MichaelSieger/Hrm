@@ -321,6 +321,11 @@ public class ComponentSelectionComposite extends Composite implements Inspection
 	public void removeComponentSelectionListener(ComponentSelectionChangedListener listener) {
 		componentSelectionListeners.remove(listener);
 	}
+	
+	@Override
+	public void saveRequested() {
+		ratingComposite.saveValues();
+	}
     
     @Override
     public void dispose() {

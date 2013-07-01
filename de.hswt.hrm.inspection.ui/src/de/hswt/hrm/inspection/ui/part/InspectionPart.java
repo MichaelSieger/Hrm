@@ -260,14 +260,16 @@ public class InspectionPart implements ComponentSelectionChangedListener, PlantC
     }
 
     private void setInspection(Inspection inspection) {
-
-        if (inspection == null) {
+    	if (inspection == null) {
             MessageDialog.openError(shellProvider.getShell(), I18N.tr("Selection Error"),
                     I18N.tr("No inspection selected."));
             tabFolder.setSelection(0);
             return;
         }
 
+    	// TODO check if save needed
+    	saveInspection();
+    	
         if (selectedInspection != inspection) {
             selectedInspection = inspection;
 
@@ -332,8 +334,7 @@ public class InspectionPart implements ComponentSelectionChangedListener, PlantC
         Action saveAction = new Action(I18N.tr("Save")) {
             @Override
             public void run() {
-                super.run();
-                 
+            	saveInspection();
             }
         };
         saveAction.setDescription(I18N.tr("Save the current edited report."));
@@ -427,6 +428,12 @@ public class InspectionPart implements ComponentSelectionChangedListener, PlantC
         }
 
         return scheme;
+	}
+	
+	private void saveInspection() {
+		for (InspectionObserver observer : inspectionObeserver) {
+			observer.saveRequested();
+		}
 	}
 	
 }

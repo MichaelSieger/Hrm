@@ -9,6 +9,8 @@ import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.jface.window.IShellProvider;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -33,17 +35,14 @@ import de.hswt.hrm.common.observer.Observer;
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
 import de.hswt.hrm.common.ui.swt.layouts.LayoutUtil;
 import de.hswt.hrm.common.ui.swt.utils.ContentProposalUtil;
-import de.hswt.hrm.component.model.Component;
 import de.hswt.hrm.i18n.I18n;
 import de.hswt.hrm.i18n.I18nFactory;
 import de.hswt.hrm.inspection.model.Inspection;
-import de.hswt.hrm.inspection.model.PhysicalRating;
 import de.hswt.hrm.inspection.model.SamplingPointType;
 import de.hswt.hrm.inspection.service.InspectionService;
 import de.hswt.hrm.misc.comment.model.Comment;
 import de.hswt.hrm.misc.comment.service.CommentService;
 import de.hswt.hrm.plant.model.Plant;
-import de.hswt.hrm.scheme.model.Scheme;
 import de.hswt.hrm.scheme.model.SchemeComponent;
 
 public class ReportBiologicalComposite extends AbstractComponentRatingComposite {
@@ -79,8 +78,10 @@ public class ReportBiologicalComposite extends AbstractComponentRatingComposite 
 
 	private Text airGermsConcentrationText;
 	
-	private Collection<BiologicalRating> ratings;
-	
+	private Collection<BiologicalRating> contactRatings;
+
+	private Collection<BiologicalRating> airRatings;
+
 	private static final Logger LOG = LoggerFactory
 			.getLogger(ReportBiologicalComposite.class);
 	
@@ -196,20 +197,19 @@ public class ReportBiologicalComposite extends AbstractComponentRatingComposite 
 			contactGgradeList.add(Integer.toString(i));
 		}
 		contactGgradeList.select(0);
-		contactGgradeList.addSelectionListener(new SelectionListener() {
-
+		contactGgradeList.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				int sel = contactGgradeList.getSelectionIndex();
 				if (sel != -1) {
 					selectedGrade.set(sel);
 				}
-				BiologicalRating rating = getRatingForComponent(currentSchemeComponent);
+				BiologicalRating rating = 
+						getContactRatingForComponent(currentSchemeComponent);
+				if (rating == null) {
+					return;
+				}
 				rating.setRating(sel);
-			}
-
-			@Override
-			public void widgetDefaultSelected(SelectionEvent e) {
 			}
 		});
 
@@ -229,7 +229,7 @@ public class ReportBiologicalComposite extends AbstractComponentRatingComposite 
                     selection = 0;
                 }
                 BiologicalRating rating = 
-                        getRatingForComponent(currentSchemeComponent);
+                        getContactRatingForComponent(currentSchemeComponent);
                 if (rating == null) {
                     return;
                 }
@@ -249,14 +249,17 @@ public class ReportBiologicalComposite extends AbstractComponentRatingComposite 
 		contactCultureConcentrationText.setLayoutData(LayoutUtil
 				.createHorzCenteredFillData(3));
 		contactCultureConcentrationText.addSelectionListener(new SelectionAdapter() {
-            @Override
+			// TODO dies ist ein Text und keine combo box, bitte entsprechnd den listenenr ändern
+			// nur zahlen zulassen
+			// bei air nachziehen
+			@Override
             public void widgetSelected(SelectionEvent e) {
                 int selection = contactWeightList.getSelectionIndex();
                 if (selection == -1) {
                     selection = 0;
                 }
                 BiologicalRating rating = 
-                        getRatingForComponent(currentSchemeComponent);
+                        getContactRatingForComponent(currentSchemeComponent);
                 if (rating == null) {
                     return;
                 }
@@ -271,6 +274,17 @@ public class ReportBiologicalComposite extends AbstractComponentRatingComposite 
 
 		contactCommentCombo = new Combo(contactCultureComposite, SWT.NONE);
 		contactCommentCombo.setLayoutData(LayoutUtil.createHorzFillData(3));
+		contactCommentCombo.addModifyListener(new ModifyListener() {
+			@Override
+			public void modifyText(ModifyEvent e) {
+                BiologicalRating rating = 
+                        getContactRatingForComponent(currentSchemeComponent);
+                if (rating == null) {
+                    return;
+                }
+                rating.setComment(contactCommentCombo.getText());
+			}
+		});
 		formToolkit.adapt(contactCommentCombo);
 		formToolkit.paintBordersFor(contactCommentCombo);
 
@@ -308,6 +322,21 @@ public class ReportBiologicalComposite extends AbstractComponentRatingComposite 
 		}
 		// TODO set 0 selected or grade from db
 		airGradeList.select(0);
+		airGradeList.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				int sel = airGradeList.getSelectionIndex();
+				if (sel != -1) {
+					selectedGrade.set(sel);
+				}
+				BiologicalRating rating = 
+						getAirRatingForComponent(currentSchemeComponent);
+				if (rating == null) {
+					return;
+				}
+				rating.setRating(sel);
+			}
+		});
 
 		airWeightList = new List(airGermsComposite, SWT.BORDER);
 		airWeightList.setLayoutData(LayoutUtil.createHorzFillData(2));
@@ -317,6 +346,21 @@ public class ReportBiologicalComposite extends AbstractComponentRatingComposite 
 		}
 		// TODO set category weight or weight from db
 		airWeightList.select(0);
+		airWeightList.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				int sel = airWeightList.getSelectionIndex();
+				if (sel != -1) {
+					selectedGrade.set(sel);
+				}
+				BiologicalRating rating = 
+						getAirRatingForComponent(currentSchemeComponent);
+				if (rating == null) {
+					return;
+				}
+				rating.setQuantifier(sel);
+			}
+		});
 
 		Label airGermsConcentrationLabel = new Label(airGermsComposite,
 				SWT.NONE);
@@ -338,6 +382,17 @@ public class ReportBiologicalComposite extends AbstractComponentRatingComposite 
 
 		airCommentCombo = new Combo(airGermsComposite, SWT.NONE);
 		airCommentCombo.setLayoutData(LayoutUtil.createHorzFillData(3));
+		airCommentCombo.addModifyListener(new ModifyListener() {
+			@Override
+			public void modifyText(ModifyEvent e) {
+                BiologicalRating rating = 
+                        getAirRatingForComponent(currentSchemeComponent);
+                if (rating == null) {
+                    return;
+                }
+                rating.setComment(airCommentCombo.getText());
+			}
+		});
 		formToolkit.adapt(airCommentCombo);
 		formToolkit.paintBordersFor(airCommentCombo);
 		initCommentAutoCompletion(airCommentCombo);
@@ -456,13 +511,12 @@ public class ReportBiologicalComposite extends AbstractComponentRatingComposite 
 
 	@Override
 	public void inspectionChanged(Inspection inspection) {
-	    
 	    if (inspection == null) {
             return;
         }
         
         this.inspection = inspection;
-		updateInspectionData(inspection);
+		updateInspectionData();
 	}
 
 	
@@ -475,10 +529,15 @@ public class ReportBiologicalComposite extends AbstractComponentRatingComposite 
         
         currentSchemeComponent = component;
 
-        BiologicalRating rating = getRatingForComponent(component);
+        BiologicalRating contactRating = getContactRatingForComponent(component);
+        BiologicalRating airRating = getAirRatingForComponent(component);
         
-        if (rating != null){
-            updateRatingValues(rating);
+        if (contactRating != null){
+            updateContactConcentration(contactRating);
+        }
+        if (airRating != null) {
+            updateAirGermsConcentration(airRating);
+        	
         }
         else {
             airGradeList.select(0);
@@ -487,20 +546,6 @@ public class ReportBiologicalComposite extends AbstractComponentRatingComposite 
             airGermsConcentrationText.setText("");
         }
 	}
-
-	private void updateRatingValues(BiologicalRating rating) {
-	    
-	    System.out.println(rating.isAirGermsConcentration());
-	    System.out.println(rating.isContactCultures());
-	    
-        if (rating.isAirGermsConcentration()){
-            updateAirGermsConcentration(rating);
-        }
-        else if (rating.isContactCultures()){
-            updateContactConcentration(rating);
-        }
-        
-    }
 
     private void updateContactConcentration(BiologicalRating rating) {
         airGradeList.select(rating.getRating());
@@ -521,20 +566,64 @@ public class ReportBiologicalComposite extends AbstractComponentRatingComposite 
         }
     }
 
-    private BiologicalRating getRatingForComponent(SchemeComponent component) {
-        for (BiologicalRating rating : ratings){
+    private BiologicalRating getContactRatingForComponent(SchemeComponent component) {
+        for (BiologicalRating rating : contactRatings){
             if (rating.getComponent().equals(component));
                 return rating;
         }
         
         BiologicalRating rating = new BiologicalRating(inspection, currentSchemeComponent);
-        ratings.add(rating);
+        if (component.getComponent().getQuantifier().isPresent())  {
+            rating.setQuantifier(component.getComponent().getQuantifier().get());
+        }
+        rating.setFlag(BiologicalRating.CONTACT_CULTURE);
+        contactRatings.add(rating);
+        
+        return rating;
+    }
+
+    private BiologicalRating getAirRatingForComponent(SchemeComponent component) {
+        for (BiologicalRating rating : airRatings){
+            if (rating.getComponent().equals(component));
+                return rating;
+        }
+        
+        BiologicalRating rating = new BiologicalRating(inspection, currentSchemeComponent);
+        if (component.getComponent().getQuantifier().isPresent())  {
+            rating.setQuantifier(component.getComponent().getQuantifier().get());
+        }
+        rating.setFlag(BiologicalRating.AIR_GERMS_CONCENTRATION);
+        airRatings.add(rating);
         return rating;
     }
 
     @Override
 	public void plantChanged(Plant plant) {
-		// TODO Auto-generated method stub
+    	updateInspectionData();
+    }
+
+	private void updateInspectionData() {
+		Collection<BiologicalRating> ratings;
+		contactRatings.clear();
+		airRatings.clear();
+		try {
+            ratings = inspectionService.findBiologicalRating(inspection);
+            for (BiologicalRating rating : ratings) {
+            	if (rating.isContactCultures()) {
+            		contactRatings.add(rating);
+            	}
+            	else if (rating.isAirGermsConcentration()) {
+            		airRatings.add(rating);
+            	}
+            }
+        }
+        catch (DatabaseException e) {
+            e.printStackTrace();
+        }
+    }
+
+	@Override
+	protected void saveValues() {
 		
 	}
 
@@ -542,20 +631,5 @@ public class ReportBiologicalComposite extends AbstractComponentRatingComposite 
 	protected void checkSubclass() {
 		// Disable the check that prevents subclassing of SWT components
 	}
-	
-	private void updateInspectionData(Inspection inspection) {
-
-        try {
-            ratings = inspectionService.findBiologicalRating(inspection);
-
-        }
-
-        catch (DatabaseException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-	    
-    }
-
-
 }
+
