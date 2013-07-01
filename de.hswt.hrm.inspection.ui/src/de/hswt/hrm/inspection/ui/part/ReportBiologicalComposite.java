@@ -682,7 +682,7 @@ public class ReportBiologicalComposite extends AbstractComponentRatingComposite 
 	protected void saveValues() {
 		
 		try {
-			inspectionService.insertBiologicalRatings(contactRatings);
+			inspectionService.saveBiologicalRatings(contactRatings);
 			//inspectionService.insertBiologicalRatings(airRatings);
 		} catch ( DatabaseException e) {
 			// TODO Auto-generated catch block
