@@ -597,14 +597,15 @@ public class ReportBiologicalComposite extends AbstractComponentRatingComposite 
         }
     }
 
-    private void updateAirGermsConcentration(BiologicalRating rating) {
-        contactGgradeList.select(rating.getRating());
-        contactWeightList.select(rating.getQuantifier());
-        contactCultureConcentrationText.setText(String.valueOf(rating.getBacteriaCount()));
-        if (!rating.getComment().or("").isEmpty()) {
-            contactCommentCombo.setText(rating.getComment().get());
-        }
-    }
+	private void updateAirGermsConcentration(BiologicalRating rating) {
+		airGradeList.select(rating.getRating());
+		airWeightList.select(rating.getQuantifier());
+		airGermsConcentrationText.setText(String.valueOf(rating
+				.getBacteriaCount()));
+		if (!rating.getComment().or("").isEmpty()) {
+			airCommentCombo.setText(rating.getComment().get());
+		}
+	}
 
     private BiologicalRating getContactRatingForComponent(SchemeComponent component) {
     	
