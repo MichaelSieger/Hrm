@@ -8,14 +8,19 @@ import org.eclipse.jface.wizard.Wizard;
 
 import com.google.common.base.Optional;
 
+import de.hswt.hrm.common.database.exception.SaveException;
 import de.hswt.hrm.i18n.I18n;
 import de.hswt.hrm.i18n.I18nFactory;
 import de.hswt.hrm.inspection.model.Inspection;
+import de.hswt.hrm.inspection.service.InspectionService;
 
 public class ReportCreationWizard extends Wizard {
 
 	@Inject
 	private IEclipseContext context;
+	
+	@Inject
+	private InspectionService inspectionService;
 	
 	private static final I18n I18N = I18nFactory.getI18n(ReportCreationWizard.class);
 
@@ -36,7 +41,11 @@ public class ReportCreationWizard extends Wizard {
 
 	@Override
 	public boolean performFinish() {
-		inspection = Optional.fromNullable(pageOne.getInspection());
+		try {
+			inspection = Optional.fromNullable(inspectionService.insert(pageOne.getInspection()));
+		} catch (SaveException e) {
+			
+		}
 		return true;
 	}
 
