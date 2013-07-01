@@ -120,6 +120,9 @@ public class ReportBiologicalComposite extends AbstractComponentRatingComposite 
 		super(parent, SWT.NONE);
 		formToolkit.dispose();
 		formToolkit = FormUtil.createToolkit();
+		
+		contactRatings = new ArrayList<>();
+		airRatings = new ArrayList<>();
 	}
 
 	@PostConstruct
@@ -644,34 +647,30 @@ public class ReportBiologicalComposite extends AbstractComponentRatingComposite 
     	updateInspectionData();
     }
 
-	private void updateInspectionData() {
-		Collection<BiologicalRating> ratings;
-		
+    private void updateInspectionData(Collection<BiologicalRating> ratings) {
+
 		if (contactRatings != null){
 			contactRatings.clear();
 		}
 		if (airRatings != null){
 			airRatings.clear();
 		}
+        for (BiologicalRating rating : ratings) {
+        	if (rating.isContactCultures()) {
+        		contactRatings.add(rating);
+        	}
+        	else if (rating.isAirGermsConcentration()) {
+        		airRatings.add(rating);
+        	}
+        }
+    }
+    
+	private void updateInspectionData() {
+		Collection<BiologicalRating> ratings = null;
 
-		if (contactRatings == null) {
-			contactRatings = new ArrayList<>();
-		}
-
-		if (airRatings == null) {
-			airRatings = new ArrayList<>();
-		}
-		
 		try {
             ratings = inspectionService.findBiologicalRating(inspection);
-            for (BiologicalRating rating : ratings) {
-            	if (rating.isContactCultures()) {
-            		contactRatings.add(rating);
-            	}
-            	else if (rating.isAirGermsConcentration()) {
-            		airRatings.add(rating);
-            	}
-            }
+    		updateInspectionData(ratings);
         }
         catch (DatabaseException e) {
             e.printStackTrace();
@@ -682,9 +681,13 @@ public class ReportBiologicalComposite extends AbstractComponentRatingComposite 
 	protected void saveValues() {
 		
 		try {
-
-			inspectionService.saveBiologicalRatings(contactRatings);
-			// inspectionService.insertBiologicalRatings(airRatings);
+			Collection<BiologicalRating> temp = new ArrayList<>();
+			temp.addAll(contactRatings);
+			temp.addAll(airRatings);
+			Collection<BiologicalRating> saved = 
+					inspectionService.saveBiologicalRatings(temp);
+			updateInspectionData(saved);
+			inspectionComponentSelectionChanged(currentSchemeComponent);
 		} catch ( DatabaseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
