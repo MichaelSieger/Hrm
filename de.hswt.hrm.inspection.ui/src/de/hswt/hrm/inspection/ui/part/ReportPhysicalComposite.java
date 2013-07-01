@@ -71,6 +71,8 @@ public class ReportPhysicalComposite extends AbstractComponentRatingComposite {
 	private Button dustRadioButton;
 
 	private Combo commentCombo;
+	
+	private boolean hasChanged = false;
 
 	private List gradeList;
 	private List weightList;
@@ -424,7 +426,7 @@ public class ReportPhysicalComposite extends AbstractComponentRatingComposite {
         gradeList.select(rating.getRating());
         grade.set(gradeList.getSelectionIndex());
         weightList.select(rating.getQuantifier());
-        if (rating.getNote() !=null) {
+        if (rating.getNote().isPresent()) {
             commentCombo.setText(rating.getNote().get());
         }
     }
@@ -459,6 +461,11 @@ public class ReportPhysicalComposite extends AbstractComponentRatingComposite {
 
 	@Override
 	protected void saveValues() {
+		
+		if (!hasChanged){
+			return;
+		}
+		
 	    try {
 	    	if (ratings != null && ratings.size() > 0) {
 	    		inspectionService.insertPhysicalRatings(ratings);

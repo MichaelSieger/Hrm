@@ -33,6 +33,7 @@ import org.slf4j.LoggerFactory;
 
 import de.hswt.hrm.inspection.model.BiologicalRating;
 import de.hswt.hrm.common.database.exception.DatabaseException;
+import de.hswt.hrm.common.database.exception.SaveException;
 import de.hswt.hrm.common.observer.Observable;
 import de.hswt.hrm.common.observer.Observer;
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
@@ -680,6 +681,13 @@ public class ReportBiologicalComposite extends AbstractComponentRatingComposite 
 	@Override
 	protected void saveValues() {
 		
+		try {
+			inspectionService.insertBiologicalRatings(contactRatings);
+			//inspectionService.insertBiologicalRatings(airRatings);
+		} catch ( DatabaseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override
