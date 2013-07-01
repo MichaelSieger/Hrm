@@ -379,7 +379,7 @@ public class ReportPerformanceComposite extends AbstractComponentRatingComposite
 		Activity activity = (Activity) selection.getFirstElement();
 		
 		Performance performance = new Performance(currentSchemeComponent, 
-				target, current, activity, null, inspection);
+				target, current, activity, inspection);
 		TreeTarget tt = PerformanceUtil.createTreeTriplet(performance);
         if (!performances.containsKey(performance)) {
             performances.put(performance, tt);
