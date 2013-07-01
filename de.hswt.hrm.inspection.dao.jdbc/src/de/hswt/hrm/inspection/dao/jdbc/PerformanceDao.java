@@ -125,7 +125,7 @@ public class PerformanceDao implements IPerformanceDao {
 		
 		checkState(performance.getActivity().getId() >= 0, "Activity has an invalid ID.");
 		checkState(performance.getCurrent().getId() >= 0, "Current hat an invalid ID.");
-		checkState(performance.getPriority().getId() >= 0, "Performance has an invalid ID.");
+		checkState(performance.getPriority().get().getId() >= 0, "Performance has an invalid ID.");
 		checkState(performance.getSchemeComponent().getId() >= 0, "SchemeComponent has an invalid ID.");
 		checkState(performance.getTarget().getId() >= 0, "Target has an invalid ID.");
 	    checkState(performance.getInspection().getId() >= 0, "Inspection has an invalid ID.");
@@ -147,7 +147,7 @@ public class PerformanceDao implements IPerformanceDao {
 				stmt.setParameter(Fields.TARGET_FK, performance.getTarget().getId());
 				stmt.setParameter(Fields.CURRENT_FK, performance.getCurrent().getId());
 				stmt.setParameter(Fields.ACTIVITY_FK, performance.getActivity().getId());
-				stmt.setParameter(Fields.PRIORITY_FK, performance.getPriority().getId());
+				stmt.setParameter(Fields.PRIORITY_FK, performance.getPriority().get().getId());
 				stmt.setParameter(Fields.INSPECTION_FK, performance.getInspection().getId());
 				
 				int affected = stmt.executeUpdate();
@@ -166,7 +166,6 @@ public class PerformanceDao implements IPerformanceDao {
                         		performance.getTarget(), 
                         		performance.getCurrent(), 
                         		performance.getActivity(), 
-                        		performance.getPriority(),
                         		performance.getInspection());
                     }
                     else {
@@ -188,7 +187,7 @@ public class PerformanceDao implements IPerformanceDao {
         checkState(performance.getId() >= 0, "PerformanceRating must have a valid ID.");
         checkState(performance.getActivity().getId() >= 0, "Activity has an invalid ID.");
         checkState(performance.getCurrent().getId() >= 0, "Current hat an invalid ID.");
-        checkState(performance.getPriority().getId() >= 0, "Performance has an invalid ID.");
+        checkState(performance.getPriority().get().getId() >= 0, "Performance has an invalid ID.");
         checkState(performance.getSchemeComponent().getId() >= 0, "SchemeComponent has an invalid ID.");
         checkState(performance.getTarget().getId() >= 0, "Target has an invalid ID.");
         checkState(performance.getInspection().getId() >= 0, "Inspection has an invalid ID.");
@@ -213,7 +212,7 @@ public class PerformanceDao implements IPerformanceDao {
                 stmt.setParameter(Fields.TARGET_FK, performance.getTarget().getId());
                 stmt.setParameter(Fields.CURRENT_FK, performance.getCurrent().getId());
                 stmt.setParameter(Fields.ACTIVITY_FK, performance.getActivity().getId());
-                stmt.setParameter(Fields.PRIORITY_FK, performance.getPriority().getId());
+                stmt.setParameter(Fields.PRIORITY_FK, performance.getPriority().get().getId());
                 stmt.setParameter(Fields.INSPECTION_FK, performance.getInspection().getId());
                 
                 int affected = stmt.executeUpdate();
@@ -254,21 +253,27 @@ public class PerformanceDao implements IPerformanceDao {
 			int activityId = JdbcUtil.getId(rs, Fields.ACTIVITY_FK); 
 			checkState(activityId >= 0, "Invalid activity ID retrieved from database.");
 			Activity activity = activityDao.findById(activityId);
-			int priorityId = JdbcUtil.getId(rs, Fields.PRIORITY_FK);
-			checkState(priorityId >= 0, "Invalid priority ID retrieved from database.");
-			Priority priority = priorityDao.findById(priorityId);
 	        int inspectionId = JdbcUtil.getId(rs, Fields.INSPECTION_FK);
 	        checkState(inspectionId >= 0, "Invalid inspection ID retrieved from database.");
 	        Inspection inspection = inspectionDao.findById(inspectionId);
 			
-			performanceList.add(new Performance(
+            int priorityId = JdbcUtil.getId(rs, Fields.PRIORITY_FK);
+
+            
+			Performance perf = new Performance(
 					id, 
 					component, 
 					target, 
 					current, 
-					activity, 
-					priority,
-					inspection));
+					activity,
+					inspection);
+			
+            if (priorityId >= 0) {
+                Priority priority = priorityDao.findById(priorityId);
+                perf.setPriority(priority);
+            }
+            performanceList.add(perf);
+			
         }
         
         return performanceList;
