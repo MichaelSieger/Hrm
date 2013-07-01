@@ -468,7 +468,7 @@ public class ReportPhysicalComposite extends AbstractComponentRatingComposite {
 		
 	    try {
 	    	if (ratings != null && ratings.size() > 0) {
-	    		inspectionService.insertPhysicalRatings(ratings);
+	    		inspectionService.savePhysicalRatings(ratings);
 	    	}
         }
         catch (SaveException e) {

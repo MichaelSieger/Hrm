@@ -108,7 +108,7 @@ public class InspectionService {
     	return physicalDao.findByInspection(inspection);
     }
     
-    public Collection<PhysicalRating> insertPhysicalRatings(Collection<PhysicalRating> ratings)
+    public Collection<PhysicalRating> savePhysicalRatings(Collection<PhysicalRating> ratings)
             throws SaveException, DatabaseException {
         
         checkNotNull(ratings, "List of ratings must not be null.");
@@ -118,18 +118,16 @@ public class InspectionService {
         // otherwise there is a connection opened per row
         Collection<PhysicalRating> inserted = new ArrayList<>(ratings.size());
         for (PhysicalRating rating : ratings) {
-            inserted.add(physicalDao.insert(rating));
+        	if (rating.getId() < 0) {
+        		inserted.add(physicalDao.insert(rating));
+        	}
+        	else {
+        		physicalDao.update(rating);
+        		inserted.add(rating);
+        	}
         }
         
         return inserted;
-    }
-    
-    public void update(PhysicalRating rating) 
-            throws ElementNotFoundException, SaveException, DatabaseException {
-        checkNotNull(rating, "PhysicalRating must not be null.");
-        checkState(rating.getId() >= 0, "PhysicalRating must have a valid ID.");
-        
-        physicalDao.update(rating);
     }
     
     public Collection<Performance> findPerformance(Inspection inspection) 
@@ -138,7 +136,7 @@ public class InspectionService {
     	return performanceDao.findByInspection(inspection);
     }
     
-    public Collection<Performance> inserPerformanceRatings(Collection<Performance> ratings) 
+    public Collection<Performance> savePerformanceRatings(Collection<Performance> ratings) 
             throws SaveException, DatabaseException {
         
         checkNotNull(ratings, "List of ratings must not be null.");
@@ -146,23 +144,20 @@ public class InspectionService {
         
         // FIXME: better use a DAO method that allows to store the hole collection, as
         // otherwise there is a connection opened per row
-        Collection<Performance> inserted = new ArrayList<>(ratings.size());
+        Collection<Performance> updated = new ArrayList<>(ratings.size());
         for (Performance rating : ratings) {
-            inserted.add(performanceDao.insert(rating));
+        	if (rating.getId() < 0) {
+        		updated.add(performanceDao.insert(rating));
+        	}
+        	else {
+        		performanceDao.update(rating);
+        		updated.add(rating);
+        	}
         }
         
-        return inserted;
+        return updated;
     }
     
-    public void update(Performance rating) 
-            throws ElementNotFoundException, SaveException, DatabaseException {
-        
-        checkNotNull(rating, "PerformanceRating must not be null.");
-        checkState(rating.getId() >= 0, "PerformanceRating must have a valid ID.");
-        
-        performanceDao.update(rating);
-    }
-
     public Scheme findScheme(Inspection inspection) throws DatabaseException {
     	return inspectionDao.findScheme(inspection);
     }
