@@ -188,6 +188,14 @@ public class BiologicalRatingDao implements IBiologicalRatingDao {
                                 biological.getQuantifier(), biological.getComment().orNull(),
                                 biological.getFlag().orNull());
                         inserted.setSamplingPointType(biological.getSamplingPointType().orNull());
+                        
+                        LOG.info("BiologicalRating inserted:\n"
+                        		+ id + ", " 
+                        		+ biological.getComponent().getComponent().getName() + ", "
+                        		+ biological.getRating() + ", "
+                        		+ biological.getQuantifier() + ", "
+                        		+ biological.getFlag().or("NO FLAG SET!"));
+                        
                         return inserted;
                     }
                     else {
@@ -221,7 +229,7 @@ public class BiologicalRatingDao implements IBiologicalRatingDao {
 
         try (Connection con = DatabaseFactory.getConnection()) {
             try (NamedParameterStatement stmt = NamedParameterStatement.fromConnection(con, query)) {
-
+            	stmt.setParameter(Fields.ID, biological.getId());
                 stmt.setParameter(Fields.BACTERIA, biological.getBacteriaCount());
                 stmt.setParameter(Fields.RATING, biological.getRating());
                 stmt.setParameter(Fields.QUANTIFIER, biological.getQuantifier());
@@ -240,6 +248,13 @@ public class BiologicalRatingDao implements IBiologicalRatingDao {
                 if (affectedRows != 1) {
                     throw new SaveException();
                 }
+                
+                LOG.info("BiologicalRating updated:\n"
+                		+ biological.getId() + ", " 
+                		+ biological.getComponent().getComponent().getName() + ", "
+                		+ biological.getRating() + ", "
+                		+ biological.getQuantifier() + ", "
+                		+ biological.getFlag().or("NO FLAG SET!"));
             }
         }
         catch (SQLException e) {

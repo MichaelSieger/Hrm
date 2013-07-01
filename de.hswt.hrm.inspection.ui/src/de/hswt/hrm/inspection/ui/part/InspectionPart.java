@@ -268,7 +268,7 @@ public class InspectionPart implements ComponentSelectionChangedListener, PlantC
         }
 
     	// TODO check if save needed
-    	saveInspection();
+    	//saveInspection();
     	
         if (selectedInspection != inspection) {
             selectedInspection = inspection;

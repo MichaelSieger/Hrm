@@ -42,7 +42,7 @@ public class BiologicalRating
     }
 
     public BiologicalRating(Inspection inspection, SchemeComponent component) {
-        this(inspection, component, -1, 0, -1, null, null);
+        this(inspection, component, 0, 0, 0, null, null);
     }
 
     public BiologicalRating(Inspection inspection, SchemeComponent component, int bacteriaCount,
@@ -124,19 +124,18 @@ public class BiologicalRating
     }
 
     public boolean isValid() {
-        return getBacteriaCount() >= 0 && getRating() >= 0 
+        return getBacteriaCount() >= 0 
+        		&& getRating() >= 0 
         		&& getQuantifier() >= 0
-                && getComment().isPresent() && getFlag().isPresent() 
-                && !getComment().or("").isEmpty()
-                && !getFlag().or("").isEmpty();
+                && !getFlag().or("").isEmpty(); 
     }
 
     public boolean isAirGermsConcentration() {
-        return getFlag().equals(BiologicalRating.AIR_GERMS_CONCENTRATION);
+        return getFlag().or("").equals(BiologicalRating.AIR_GERMS_CONCENTRATION);
     }
 
     public boolean isContactCultures() {
-        return getFlag().equals(BiologicalRating.CONTACT_CULTURE);
+        return getFlag().or("").equals(BiologicalRating.CONTACT_CULTURE);
     }
 
     @Override

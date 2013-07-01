@@ -24,7 +24,7 @@ public final class SchemeComponent {
     private Direction direction;
     private Component component;
     private Scheme scheme;
-    Map<Attribute, String> attributes;
+    private Map<Attribute, String> attributes;
     
     public SchemeComponent(int id, Scheme scheme, int x, int y, Direction direction, 
     		Component component, Map<Attribute, String> attributes) {

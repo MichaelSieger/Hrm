@@ -1,5 +1,6 @@
 package de.hswt.hrm.inspection.ui.part;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.annotation.PostConstruct;
@@ -32,6 +33,7 @@ import org.slf4j.LoggerFactory;
 
 import de.hswt.hrm.inspection.model.BiologicalRating;
 import de.hswt.hrm.common.database.exception.DatabaseException;
+import de.hswt.hrm.common.database.exception.SaveException;
 import de.hswt.hrm.common.observer.Observable;
 import de.hswt.hrm.common.observer.Observer;
 import de.hswt.hrm.common.ui.swt.forms.FormUtil;
@@ -118,6 +120,9 @@ public class ReportBiologicalComposite extends AbstractComponentRatingComposite 
 		super(parent, SWT.NONE);
 		formToolkit.dispose();
 		formToolkit = FormUtil.createToolkit();
+		
+		contactRatings = new ArrayList<>();
+		airRatings = new ArrayList<>();
 	}
 
 	@PostConstruct
@@ -583,17 +588,8 @@ public class ReportBiologicalComposite extends AbstractComponentRatingComposite 
 	}
 
     private void updateContactConcentration(BiologicalRating rating) {
-        airGradeList.select(rating.getRating());
-        selectedGrade.set(airGradeList.getSelectionIndex());
-        airWeightList.select(rating.getQuantifier());
-        airGermsConcentrationText.setText(String.valueOf(rating.getBacteriaCount()));
-        if (!rating.getComment().or("").isEmpty()) {
-            airCommentCombo.setText(rating.getComment().get());
-        }
-    }
-
-    private void updateAirGermsConcentration(BiologicalRating rating) {
         contactGgradeList.select(rating.getRating());
+        selectedGrade.set(contactGgradeList.getSelectionIndex());
         contactWeightList.select(rating.getQuantifier());
         contactCultureConcentrationText.setText(String.valueOf(rating.getBacteriaCount()));
         if (!rating.getComment().or("").isEmpty()) {
@@ -601,7 +597,21 @@ public class ReportBiologicalComposite extends AbstractComponentRatingComposite 
         }
     }
 
+	private void updateAirGermsConcentration(BiologicalRating rating) {
+		airGradeList.select(rating.getRating());
+		airWeightList.select(rating.getQuantifier());
+		airGermsConcentrationText.setText(String.valueOf(rating
+				.getBacteriaCount()));
+		if (!rating.getComment().or("").isEmpty()) {
+			airCommentCombo.setText(rating.getComment().get());
+		}
+	}
+
     private BiologicalRating getContactRatingForComponent(SchemeComponent component) {
+    	
+    	if (component == null){
+    		return null;
+    	}
     	
         for (BiologicalRating rating : contactRatings){
             if (rating.getComponent().equals(component));
@@ -638,26 +648,30 @@ public class ReportBiologicalComposite extends AbstractComponentRatingComposite 
     	updateInspectionData();
     }
 
-	private void updateInspectionData() {
-		Collection<BiologicalRating> ratings;
-		
+    private void updateInspectionData(Collection<BiologicalRating> ratings) {
+
 		if (contactRatings != null){
 			contactRatings.clear();
 		}
 		if (airRatings != null){
 			airRatings.clear();
 		}
+        for (BiologicalRating rating : ratings) {
+        	if (rating.isContactCultures()) {
+        		contactRatings.add(rating);
+        	}
+        	else if (rating.isAirGermsConcentration()) {
+        		airRatings.add(rating);
+        	}
+        }
+    }
+    
+	private void updateInspectionData() {
+		Collection<BiologicalRating> ratings = null;
 
 		try {
             ratings = inspectionService.findBiologicalRating(inspection);
-            for (BiologicalRating rating : ratings) {
-            	if (rating.isContactCultures()) {
-            		contactRatings.add(rating);
-            	}
-            	else if (rating.isAirGermsConcentration()) {
-            		airRatings.add(rating);
-            	}
-            }
+    		updateInspectionData(ratings);
         }
         catch (DatabaseException e) {
             e.printStackTrace();
@@ -667,6 +681,18 @@ public class ReportBiologicalComposite extends AbstractComponentRatingComposite 
 	@Override
 	protected void saveValues() {
 		
+		try {
+			Collection<BiologicalRating> temp = new ArrayList<>();
+			temp.addAll(contactRatings);
+			temp.addAll(airRatings);
+			Collection<BiologicalRating> saved = 
+					inspectionService.saveBiologicalRatings(temp);
+			updateInspectionData(saved);
+			inspectionComponentSelectionChanged(currentSchemeComponent);
+		} catch ( DatabaseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override
