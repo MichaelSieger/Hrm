@@ -14,6 +14,8 @@ import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.events.VerifyEvent;
+import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -266,6 +268,23 @@ public class ReportBiologicalComposite extends AbstractComponentRatingComposite 
                 rating.setBacteriaCount(selection);
             }
         });
+		contactCultureConcentrationText.addVerifyListener(new VerifyListener() {
+            public void verifyText(VerifyEvent e) {
+
+                // Get the character typed
+                char enteredChar = e.character;
+
+                // Allow 0-9
+                if (Character.isDigit(enteredChar) || enteredChar == '.'
+                        || Character.isISOControl(enteredChar)) {
+                    e.doit = true;
+                }
+                else {
+                    e.doit = false;
+                }
+
+            }
+        });
 
 		Label contactCommentLabel = new Label(contactCultureComposite, SWT.NONE);
 		contactCommentLabel.setLayoutData(LayoutUtil.createLeftGridData());
@@ -373,7 +392,23 @@ public class ReportBiologicalComposite extends AbstractComponentRatingComposite 
 				"", SWT.NONE);
 		airGermsConcentrationText.setLayoutData(LayoutUtil
 				.createHorzCenteredFillData(3));
-		// TODO init with value
+		airGermsConcentrationText.addVerifyListener(new VerifyListener() {
+            public void verifyText(VerifyEvent e) {
+
+                // Get the character typed
+                char enteredChar = e.character;
+
+                // Allow 0-9
+                if (Character.isDigit(enteredChar) || enteredChar == '.'
+                        || Character.isISOControl(enteredChar)) {
+                    e.doit = true;
+                }
+                else {
+                    e.doit = false;
+                }
+
+            }
+        });
 
 		Label airCommentLabel = new Label(airGermsComposite, SWT.NONE);
 		airCommentLabel.setLayoutData(LayoutUtil.createLeftGridData());
